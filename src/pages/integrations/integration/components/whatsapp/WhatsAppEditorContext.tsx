@@ -3,6 +3,7 @@ import React, {
     useCallback,
     useContext,
     useEffect,
+    useMemo,
     useState,
 } from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -21,9 +22,12 @@ import {setNewMessageActions, setResponseText} from 'state/newMessage/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {mergeActionsJS} from 'state/ticket/utils'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
-import {getTicket} from 'state/ticket/selectors'
+import {getCustomerMessages, getTicket} from 'state/ticket/selectors'
 import {clearAppliedMacro} from 'state/ticket/actions'
-import {createApplyExternalTemplateAction} from './utils'
+import {
+    createApplyExternalTemplateAction,
+    isWhatsAppWindowOpen as checkIsWhatsAppWindowOpen,
+} from './utils'
 import {WhatsAppMessageTemplateSearchFilters} from './WhatsAppMessageTemplateSearch'
 
 export type WhatsAppEditorContextState = {
@@ -39,7 +43,7 @@ export type WhatsAppEditorContextState = {
     whatsAppMessageTemplatesEnabled: boolean
     isTemplateListVisible: boolean
     selectedTemplate?: WhatsAppMessageTemplate
-    isNewTicket: boolean
+    isWhatsAppWindowOpen: boolean
     searchFilter: WhatsAppMessageTemplateSearchFilters
 }
 
@@ -64,7 +68,7 @@ const Context = createContext<WhatsAppEditorContextState>({
     whatsAppMessageTemplatesEnabled: false,
     isTemplateListVisible: false,
     selectedTemplate: undefined,
-    isNewTicket: false,
+    isWhatsAppWindowOpen: false,
     searchFilter: {
         language: [],
         name: '',
@@ -86,26 +90,26 @@ export const WhatsAppEditorProvider = ({
         })
 
     const ticket = useAppSelector(getTicket)
-    const isNewTicket = !ticket.id
-    const [isTemplateListVisible, setIsTemplateListVisible] =
-        useState(isNewTicket)
+    const [isTemplateListVisible, setIsTemplateListVisible] = useState(true)
     const [selectedTemplateType, setSelectedTemplateType] =
-        useState<TemplateTypeFilterOption>(
-            isNewTicket
-                ? TemplateTypeFilterOption.Templates
-                : TemplateTypeFilterOption.Macros
-        )
+        useState<TemplateTypeFilterOption>(TemplateTypeFilterOption.Templates)
 
     const channel = useAppSelector(getNewMessageChannel)
 
     const whatsAppMessageTemplatesEnabled =
         useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
 
+    const customerMessagesList = useAppSelector(getCustomerMessages)
     const currentActions = useAppSelector(getNewMessageActions)
     const externalTemplateAction = useAppSelector(
         getNewMessageExternalTemplateAction
     )
     const selectedTemplate = externalTemplateAction?.arguments?.template
+
+    const isWhatsAppWindowOpen = useMemo(
+        () => checkIsWhatsAppWindowOpen(customerMessagesList.toJS()),
+        [customerMessagesList]
+    )
 
     const dispatch = useAppDispatch()
 
@@ -124,16 +128,16 @@ export const WhatsAppEditorProvider = ({
     }, [dispatch, ticket.id])
 
     useEffect(() => {
-        if (selectedTemplateType === TemplateTypeFilterOption.Templates) {
+        if (!selectedTemplate) {
             setIsTemplateListVisible(true)
         }
-    }, [selectedTemplateType])
+    }, [selectedTemplate])
 
     useEffect(() => {
-        if (!isNewTicket && !externalTemplateAction?.arguments?.template) {
+        if (isWhatsAppWindowOpen && !selectedTemplate) {
             setSelectedTemplateType(TemplateTypeFilterOption.Macros)
         }
-    }, [isNewTicket, externalTemplateAction])
+    }, [selectedTemplate, isWhatsAppWindowOpen])
 
     const selectNewTemplate = (template: WhatsAppMessageTemplate) => {
         cleanupEditorState()
@@ -162,10 +166,10 @@ export const WhatsAppEditorProvider = ({
                 setIsTemplateListVisible,
                 selectNewTemplate,
                 selectedTemplate,
-                isNewTicket,
                 searchFilter,
                 setSearchFilter,
                 cleanupEditorState,
+                isWhatsAppWindowOpen,
             }}
         >
             {children}

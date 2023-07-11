@@ -1,7 +1,11 @@
+import {TicketChannel} from 'business/types/ticket'
+import {TicketMessage} from 'models/ticket/types'
+import * as dateUtils from 'utils/date'
 import {
     normalizeLocale,
     countDistinctVariables,
     isWhatsAppMessageValid,
+    isWhatsAppWindowOpen,
 } from '../whatsapp/utils'
 
 describe('whatsAppUtils', () => {
@@ -76,6 +80,48 @@ describe('whatsAppUtils', () => {
         })
         it('should return locale string when there is no country code', () => {
             expect(normalizeLocale('en')).toEqual('en')
+        })
+    })
+
+    describe('isWhatsAppWindowOpen', () => {
+        jest.spyOn(dateUtils, 'getMoment').mockImplementation((): any =>
+            dateUtils.stringToDatetime('2023-01-10T00:00')
+        )
+
+        it('should return false when there is no message sent by customer in ticket', () => {
+            expect(isWhatsAppWindowOpen([])).toEqual(false)
+        })
+
+        it('should return false when there is no WhatsApp message sent by customer', () => {
+            const messages = [
+                {
+                    channel: TicketChannel.Phone,
+                },
+            ] as TicketMessage[]
+
+            expect(isWhatsAppWindowOpen(messages)).toEqual(false)
+        })
+
+        it(`should return false when there is a WhatsApp message sent by customer but it's older than 24 hours`, () => {
+            const messages = [
+                {
+                    channel: TicketChannel.WhatsApp,
+                    created_datetime: '2023-01-08T23:00',
+                },
+            ] as TicketMessage[]
+
+            expect(isWhatsAppWindowOpen(messages)).toEqual(false)
+        })
+
+        it(`should return true when there is a WhatsApp message sent by customer and it's newer than 24 hours`, () => {
+            const messages = [
+                {
+                    channel: TicketChannel.WhatsApp,
+                    created_datetime: '2023-01-09T23:00',
+                },
+            ] as TicketMessage[]
+
+            expect(isWhatsAppWindowOpen(messages)).toEqual(true)
         })
     })
 })

@@ -1,6 +1,9 @@
 import slackMessageParser, {Node, NodeType} from 'slack-message-parser'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import {MacroActionName} from 'models/macroAction/types'
+import {TicketMessage} from 'models/ticket/types'
+import {TicketChannel} from 'business/types/ticket'
+import {getMoment, stringToDatetime} from 'utils/date'
 
 export const WHATSAPP_VARIABLE_REGEX = /(\{\{\d\}\})/
 
@@ -79,3 +82,23 @@ export const createApplyExternalTemplateAction = (
             }),
     },
 })
+
+export const isWhatsAppWindowOpen = (
+    customerMessages: TicketMessage[]
+): boolean => {
+    const lastCustomerWhatsAppMessage =
+        customerMessages?.find(
+            (message) => message.channel === TicketChannel.WhatsApp
+        ) ?? null
+
+    if (!lastCustomerWhatsAppMessage) return false
+
+    const now = getMoment()
+    const lastMessageSentAt = stringToDatetime(
+        lastCustomerWhatsAppMessage.created_datetime
+    )
+
+    return lastMessageSentAt
+        ? now.isSameOrBefore(lastMessageSentAt.add(24, 'hours'))
+        : false
+}

@@ -29,9 +29,9 @@ export default function WhatsAppMessageTemplateSearch() {
     const {
         isTemplateListVisible,
         setIsTemplateListVisible,
-        isNewTicket,
         setSearchFilter,
         selectedTemplate,
+        isWhatsAppWindowOpen,
     } = useWhatsAppEditor()
 
     useDebounce(
@@ -53,11 +53,7 @@ export default function WhatsAppMessageTemplateSearch() {
         <div className={css.container}>
             <TextInput
                 tabIndex={3}
-                placeholder={
-                    isNewTicket
-                        ? 'Search WhatsApp templates by name'
-                        : 'Search macros or WhatsApp templates by name'
-                }
+                placeholder={'Search WhatsApp templates by name'}
                 onChange={(newName) => setFilters({...filters, name: newName})}
                 onFocus={handleInputFocus}
                 className={css.input}
@@ -66,7 +62,7 @@ export default function WhatsAppMessageTemplateSearch() {
             />
             {(isFocused || isTemplateListVisible) && (
                 <div className={css.filters}>
-                    {!isNewTicket && (
+                    {isWhatsAppWindowOpen && (
                         <TemplateTypeFilterDropdown
                             value={TemplateTypeFilterOption.Templates}
                         />
