@@ -1,3 +1,4 @@
+import {stringify} from 'qs'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
@@ -12,6 +13,8 @@ export async function listWhatsAppMessageTemplates(
         ApiListResponseCursorPagination<WhatsAppMessageTemplate[]>
     >('/integrations/whatsapp/message-templates', {
         params,
+        paramsSerializer: (params) =>
+            stringify(params, {arrayFormat: 'repeat'}),
     })
     return response.data
 }

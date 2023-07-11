@@ -91,9 +91,9 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
                             ACTION_COMPONENT_MAPPER[
                                 action.name as AvailableActions
                             ]
-                        return (
+                        return ActionPreview ? (
                             <ActionPreview key={action.name} action={action} />
-                        )
+                        ) : null
                     })}
 
                     {hasComplexActions && (

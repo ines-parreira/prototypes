@@ -73,6 +73,7 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "get",
+      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": [
         [Function],
