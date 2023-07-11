@@ -40,10 +40,7 @@ const ContactFormPublish = (): JSX.Element => {
                     >
                         Publish
                     </h2>
-                    <p>
-                        Display the contact form anywhere on your website using
-                        a direct link or code.
-                    </p>
+                    <p>Display the contact form anywhere on your website.</p>
                 </section>
 
                 <section>
@@ -52,7 +49,7 @@ const ContactFormPublish = (): JSX.Element => {
                             htmlFor="shareable-link"
                             className={contactFormCss.mbXs}
                         >
-                            Shareable form link
+                            Shareable link
                         </Label>
                         <InputGroup>
                             <Input
@@ -78,13 +75,13 @@ const ContactFormPublish = (): JSX.Element => {
 
                 <section>
                     <ContactFormInstallationCard
-                        title="Manually embed to website"
+                        title="Manually embed with code"
                         code={contactForm.code_snippet_template}
                         alert={`Make sure to insert the code on <b>all pages</b> you wish to display the contact form.`}
                         description={`Use HTML to manually display the contact form on specific pages of your website. <br /> Note: You must have access to your site theme.`}
                         instructions={[
                             'Edit the source code of your website',
-                            'Place the Contact Form code snippet within a <body> tag',
+                            'Add the code snippet anywhere between <body> and </body> where you want your Contact Form to be displayed on the page',
                             'Save the file and commit changes',
                         ]}
                     />

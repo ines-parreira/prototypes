@@ -12,7 +12,7 @@ exports[`ContactFormPublish Code snippet should provide correct manual embed ins
       <h3
         class="mbXs"
       >
-        Manually embed to website
+        Manually embed with code
       </h3>
       <p>
         Use HTML to manually display the contact form on specific pages of your website. 
@@ -64,7 +64,7 @@ exports[`ContactFormPublish Code snippet should provide correct manual embed ins
             </div>
           </div>
           <div>
-            Place the Contact Form code snippet within a &lt;body&gt; tag
+            Add the code snippet anywhere between &lt;body&gt; and &lt;/body&gt; where you want your Contact Form to be displayed on the page
           </div>
         </div>
         <div

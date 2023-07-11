@@ -3,6 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {screen} from '@testing-library/react'
 import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
 import {account} from 'fixtures/account'
@@ -28,6 +29,13 @@ describe('ContactFormPublish', () => {
             </CurrentContactFormContext.Provider>
         )
     }
+
+    it('wording check', () => {
+        renderView({state: defaultState})
+        screen.getByText('Display the contact form anywhere on your website.')
+        screen.getByText('Shareable link')
+        screen.getByText('Manually embed with code')
+    })
 
     describe('Code snippet', () => {
         it('should provide correct manual embed instructions', () => {
