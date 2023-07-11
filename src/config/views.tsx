@@ -148,6 +148,10 @@ export const views = fromJS([
                 },
             },
             {
+                name: ViewField.TicketId,
+                title: 'ID',
+            },
+            {
                 name: ViewField.Status,
                 title: 'Status',
                 filter: {
@@ -227,10 +231,6 @@ export const views = fromJS([
                         snooze_datetime: 'desc',
                     },
                 },
-            },
-            {
-                name: ViewField.TicketId,
-                title: 'Ticket ID',
             },
         ],
         cell: (fieldName: ViewField, item: Map<any, any>) => {
@@ -384,16 +384,15 @@ export const views = fromJS([
                 search: query,
                 fields: [
                     ViewField.Details,
-                    ViewField.Channel,
-                    ViewField.Assignee,
-                    ViewField.Status,
                     ViewField.Customer,
+                    ViewField.Assignee,
+                    ViewField.TicketId,
+                    ViewField.Status,
+                    ViewField.Channel,
                     ViewField.Created,
-                    ViewField.Updated,
-                    ViewField.LastMessage,
                 ],
                 type: ViewType.TicketList,
-                order_by: 'updated_datetime',
+                order_by: 'created_datetime',
             })
 
             if (filters) {
