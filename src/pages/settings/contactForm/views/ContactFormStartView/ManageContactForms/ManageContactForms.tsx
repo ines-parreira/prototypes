@@ -12,14 +12,12 @@ import {
     CONTACT_FORM_CUSTOMIZATION_PATH,
 } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {ContactForm} from 'models/contactForm/types'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import css from './ManageContactForms.less'
+import {ContactFormTableRow} from './ContactFormTableRow'
 
 export type Props = {
     contactForms: ContactForm[]
@@ -69,46 +67,28 @@ const ManageContactForms = ({
                     <TableWrapper>
                         <TableHead className={css.contactFormsTableHead}>
                             <HeaderCellProperty
-                                style={{width: '45%'}}
+                                style={{width: '35%'}}
                                 title="Form Name"
+                            />
+                            <HeaderCellProperty
+                                style={{width: '20%'}}
+                                title="Store"
                             />
                             <HeaderCellProperty title="Language" />
                             <HeaderCell />
                         </TableHead>
                         <TableBody>
-                            {contactForms.map((form) => {
-                                // TODO: use actual name
-                                const language = {
-                                    name: '',
-                                    code: form.default_locale,
-                                }
-                                return (
-                                    <TableBodyRow
-                                        key={form.id}
-                                        onClick={() =>
-                                            navigateToContactFormCustomization(
-                                                form.id
-                                            )
-                                        }
-                                    >
-                                        <BodyCell>
-                                            <b>{form.name}</b>
-                                        </BodyCell>
-                                        <BodyCell>
-                                            <LanguageList
-                                                id={form.id}
-                                                defaultLanguage={language}
-                                                languageList={[language]}
-                                            />
-                                        </BodyCell>
-                                        <BodyCell>
-                                            <i className="material-icons md-2">
-                                                keyboard_arrow_right
-                                            </i>
-                                        </BodyCell>
-                                    </TableBodyRow>
-                                )
-                            })}
+                            {contactForms.map((form) => (
+                                <ContactFormTableRow
+                                    key={form.id}
+                                    form={form}
+                                    onClick={() => {
+                                        navigateToContactFormCustomization(
+                                            form.id
+                                        )
+                                    }}
+                                />
+                            ))}
                         </TableBody>
                     </TableWrapper>
                 </Container>

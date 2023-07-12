@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ContactFormTableRow /> should display the name, ecom platform logo and store name, language, and arrow 1`] = `
+<tr
+  class="row isClickable"
+>
+  <td
+    class="wrapper normal"
+  >
+    <div
+      class="cellContent"
+    >
+      <b>
+        Contact Form name
+      </b>
+    </div>
+  </td>
+  <td
+    class="wrapper normal"
+  >
+    <div
+      class="cellContent"
+    >
+      <div>
+        <img
+          alt="logo"
+          height="16"
+          src="/assets/img/integrations/shopify.png"
+          width="16"
+        />
+        <span
+          class="storeNameLabel"
+        >
+          storename
+        </span>
+      </div>
+    </div>
+  </td>
+  <td
+    class="wrapper normal"
+  >
+    <div
+      class="cellContent"
+    >
+      <div
+        class="language-bullet-list"
+      >
+        <div
+          class="language-bullet-item"
+          data-testid="locale-bullet-en-US"
+        >
+          <img
+            alt="en-US"
+            class="flag-emoji"
+            data-testid="flag-en-US"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </td>
+  <td
+    class="wrapper normal"
+  >
+    <div
+      class="cellContent"
+    >
+      <i
+        class="material-icons md-2"
+      >
+        keyboard_arrow_right
+      </i>
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<ContactFormTableRow /> should display the placeholder label when not connected to a shop 1`] = `
+<tr
+  class="row isClickable"
+>
+  <td
+    class="wrapper normal"
+  >
+    <div
+      class="cellContent"
+    >
+      <b>
+        Contact Form name
+      </b>
+    </div>
+  </td>
+  <td
+    class="wrapper normal"
+  >
+    <div
+      class="cellContent"
+    >
+      <div
+        class="noStore"
+      >
+        No store connected
+      </div>
+    </div>
+  </td>
+  <td
+    class="wrapper normal"
+  >
+    <div
+      class="cellContent"
+    >
+      <div
+        class="language-bullet-list"
+      >
+        <div
+          class="language-bullet-item"
+          data-testid="locale-bullet-en-US"
+        >
+          <img
+            alt="en-US"
+            class="flag-emoji"
+            data-testid="flag-en-US"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </td>
+  <td
+    class="wrapper normal"
+  >
+    <div
+      class="cellContent"
+    >
+      <i
+        class="material-icons md-2"
+      >
+        keyboard_arrow_right
+      </i>
+    </div>
+  </td>
+</tr>
+`;
