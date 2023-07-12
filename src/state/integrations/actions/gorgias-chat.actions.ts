@@ -39,6 +39,7 @@ export async function updateApplicationTexts(
         {
             texts: texts.texts,
             sspTexts: texts.sspTexts,
+            meta: texts.meta,
         }
     )
 }

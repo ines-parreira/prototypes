@@ -35,6 +35,11 @@ export default {
             maxLength: 85,
         },
     },
+    contactFormConfirmationEmail: {
+        'meta.contactFormEmailIntro': {maxLength: 20},
+        'meta.contactFormEmailMessage': {maxLength: 200},
+        'meta.contactFormEmailOutro': {maxLength: 25},
+    },
     dynamicWaitTime: {
         'texts.waitTimeShortNoEmail': {maxLength: 170},
         'texts.waitTimeShortEmailCaptured': {

@@ -364,6 +364,12 @@ export function getTranslations() {
             yourOrders: 'Your orders',
             yourPhoneNumber: 'Your phone number',
         },
+        meta: {
+            contactFormEmailIntro: 'Hello',
+            contactFormEmailMessage:
+                'Thanks for reaching out, our team will get back to you soon regarding the following request:',
+            contactFormEmailOutro: 'The {chatTitle} team',
+        },
     }
 }
 
@@ -374,6 +380,9 @@ export function getTexts() {
         },
         sspTexts: {
             sendUsAMessage: 'Custom message',
+        },
+        meta: {
+            contactFormEmailIntro: 'Hello',
         },
     }
 }

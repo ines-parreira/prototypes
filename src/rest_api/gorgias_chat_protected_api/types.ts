@@ -3,11 +3,13 @@ import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
 export type Translations = {
     texts: Record<string, string>
     sspTexts: Record<string, string>
+    meta: Record<string, string>
 }
 
 export type Texts = {
     texts: Record<string, string>
     sspTexts: Record<string, string>
+    meta: Record<string, string>
 }
 
 export type InstallationStatus = {

@@ -53,6 +53,9 @@ import formProps from './translations-available-keys'
 
 const generalKeys = Object.keys(formProps.general)
 const contactFormKeys = Object.keys(formProps.contactForm)
+const contactFormComfirmationEmailKeys = Object.keys(
+    formProps.contactFormConfirmationEmail
+)
 const dynamicWaitTimeKeys = Object.keys(formProps.dynamicWaitTime)
 const emailCaptureKeys = Object.keys(formProps.emailCapture)
 const autoResponderKeys = Object.keys(formProps.autoResponder)
@@ -149,11 +152,13 @@ function GorgiasTranslateText({
     const [translations, setTranslations] = useState<Texts>({
         texts: {},
         sspTexts: {},
+        meta: {},
     })
 
     const [initialTexts, setInitialTexts] = useState<Texts>({
         texts: {},
         sspTexts: {},
+        meta: {},
     })
     const [texts, setTexts] = useState<Texts>(initialTexts)
 
@@ -218,6 +223,7 @@ function GorgiasTranslateText({
                 setInitialTexts({
                     texts: {...texts.texts},
                     sspTexts: {...texts.sspTexts},
+                    meta: {...texts.meta},
                 })
                 setHasChanges(false)
                 dispatchNotification('Your changes are now live')
@@ -273,6 +279,7 @@ function GorgiasTranslateText({
                     setInitialTexts({
                         texts: {...data.texts},
                         sspTexts: {...data.sspTexts},
+                        meta: {...data.meta},
                     })
                     setTexts(data)
                     setTextsLoadingState(LoadingState.LOADED)
@@ -393,6 +400,18 @@ function GorgiasTranslateText({
                             translations={translations}
                             saveValue={saveKeyValue}
                             formPropsValues={formProps.contactForm}
+                            trackInputMethod={trackInput}
+                        />
+                        <GorgiasTranslateInputGroup
+                            title={`Offline Capture - Confirmation email`}
+                            keys={contactFormComfirmationEmailKeys}
+                            filtersForKeys={{}}
+                            texts={texts}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={
+                                formProps.contactFormConfirmationEmail
+                            }
                             trackInputMethod={trackInput}
                         />
 

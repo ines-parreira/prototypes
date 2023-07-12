@@ -43,6 +43,7 @@ describe('gorgias-chat.actions', () => {
             const okApiResponse: Translations = {
                 texts: {text: 'value '},
                 sspTexts: {text: 'value '},
+                meta: {text: 'value '},
             }
             const lang = 'Es-es'
             let mockServer: MockAdapter
@@ -100,6 +101,7 @@ describe('gorgias-chat.actions', () => {
             const okApiResponse: Texts = {
                 texts: {text: 'value '},
                 sspTexts: {text: 'value '},
+                meta: {text: 'value '},
             }
             const applicationId = '1'
             let mockServer: MockAdapter
@@ -152,6 +154,7 @@ describe('gorgias-chat.actions', () => {
             const data: Texts = {
                 texts: {texKey: 'TextValue'},
                 sspTexts: {key: 'value'},
+                meta: {key: 'value'},
             }
             let mockServer: MockAdapter
 
@@ -187,6 +190,7 @@ describe('gorgias-chat.actions', () => {
             const data: Texts = {
                 texts: {texKey: 'TextValue'},
                 sspTexts: {key: 'value'},
+                meta: {key: 'value'},
             }
             let mockServer: MockAdapter
 
