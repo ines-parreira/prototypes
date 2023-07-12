@@ -8,6 +8,7 @@ import {
     InputGroup,
     InputGroupAddon,
 } from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Label from 'pages/common/forms/Label/Label'
 import useClipboard from 'pages/common/hooks/useClipboard'
@@ -15,10 +16,9 @@ import ContactFormInstallationCard from 'pages/settings/contactForm/components/C
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import settingsCss from 'pages/settings/settings.less'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../store/middlewares/segmentTracker'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import ContactFormAutoEmbedInstallationCard from 'pages/settings/contactForm/components/ContactFormAutoEmbedInstallationCard'
 
 const ContactFormPublish = (): JSX.Element => {
     const contactForm = useCurrentContactForm()
@@ -27,6 +27,9 @@ const ContactFormPublish = (): JSX.Element => {
     const onCopyClick = () => {
         logEvent(SegmentEvent.HelpCenterContactFormCopyLink)
     }
+
+    const isAutoEmbedFlagActive: boolean =
+        useFlags()[FeatureFlagKey.ContactFormAutoEmbed] ?? false
 
     return (
         <Container fluid className={settingsCss.pageContainer}>
@@ -86,6 +89,12 @@ const ContactFormPublish = (): JSX.Element => {
                         ]}
                     />
                 </section>
+
+                {isAutoEmbedFlagActive ? (
+                    <section>
+                        <ContactFormAutoEmbedInstallationCard />
+                    </section>
+                ) : null}
             </div>
         </Container>
     )
