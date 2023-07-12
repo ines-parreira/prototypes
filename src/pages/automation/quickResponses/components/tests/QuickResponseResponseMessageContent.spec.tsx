@@ -102,4 +102,25 @@ describe('<QuickResponseResponseMessageContent />', () => {
             true
         )
     })
+
+    it('should trim empty spaces from the text content', () => {
+        const onChangeMock = jest.fn()
+        render(
+            <Provider store={mockStore()}>
+                <QuickResponseResponseMessageContent
+                    responseMessageContent={{
+                        html: `<div><strong>  Hello  </strong></div>`,
+                        text: '',
+                        attachments: fromJS([]),
+                    }}
+                    onChange={onChangeMock}
+                />
+            </Provider>
+        )
+        expect(onChangeMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                text: 'Hello',
+            })
+        )
+    })
 })

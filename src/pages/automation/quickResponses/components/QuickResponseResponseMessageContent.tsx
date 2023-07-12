@@ -48,7 +48,7 @@ const QuickResponseResponseMessageContent = ({
 
     const handleTextChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
-        const text = content.getPlainText()
+        const text = content.getPlainText().trim()
         const html = convertToHTML(content)
 
         onChange({
