@@ -1,24 +1,11 @@
-import React, {PropsWithChildren, useEffect} from 'react'
-import {
-    Background,
-    ReactFlow,
-    ReactFlowProvider,
-    useEdgesState,
-    useNodesState,
-    useReactFlow,
-    Node,
-    Controls,
-} from 'reactflow'
+import React, {PropsWithChildren} from 'react'
+import {Background, ReactFlow, ReactFlowProvider, Controls} from 'reactflow'
 
-import {
-    VisualBuilderGraph,
-    VisualBuilderNode,
-} from 'pages/automation/workflows/models/visualBuilderGraph.types'
+import {VisualBuilderGraph} from 'pages/automation/workflows/models/visualBuilderGraph.types'
 import {
     WorkflowEditorContext,
     createWorkflowEditorContextForPreview,
 } from 'pages/automation/workflows/hooks/useWorkflowEditor'
-import useAutoLayout from 'pages/automation/workflows/hooks/useAutoLayout'
 import {
     WorkflowChannelSupportContext,
     createWorkflowChannelSupportContextForPreview,
@@ -48,32 +35,6 @@ const edgeTypes = {
 function VisualBuilderTemplatePreview({
     visualBuilderGraph,
 }: VisualBuilderTemplatePreviewProps) {
-    const {getNodes} = useReactFlow()
-    const {minZoom, maxZoom} = useAutoLayout()
-    const [nodes, setNodes, onNodesChange] = useNodesState<
-        VisualBuilderNode['data']
-    >(visualBuilderGraph.nodes)
-    const [edges, setEdges, onEdgesChange] = useEdgesState(
-        visualBuilderGraph.edges
-    )
-    useEffect(() => {
-        const existingNodes = getNodes().reduce(
-            (acc, n) => ({
-                ...acc,
-                [n.id]: n,
-            }),
-            {} as Record<string, Node>
-        )
-        setNodes(
-            visualBuilderGraph.nodes.map((n) => ({
-                ...n,
-                position: existingNodes[n.id]?.position || n.position,
-                width: existingNodes[n.id]?.width || n.width,
-                height: existingNodes[n.id]?.height || n.height,
-            }))
-        )
-        setEdges(visualBuilderGraph.edges)
-    }, [visualBuilderGraph, setNodes, setEdges, getNodes])
     return (
         <ReactFlow
             proOptions={{
@@ -83,14 +44,12 @@ function VisualBuilderTemplatePreview({
             fitViewOptions={{
                 duration: 0,
             }}
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
+            nodes={visualBuilderGraph.nodes}
+            edges={visualBuilderGraph.edges}
             edgeTypes={edgeTypes}
             nodeTypes={nodeTypes}
-            minZoom={minZoom}
-            maxZoom={maxZoom}
+            minZoom={0.1}
+            maxZoom={1}
             nodesDraggable={false}
             nodesConnectable={false}
             zoomOnDoubleClick={false}

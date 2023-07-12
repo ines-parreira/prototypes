@@ -11,6 +11,7 @@ import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
 import {
     buildEndNode,
     buildMultipleChoicesNode,
+    computeNodesPositions,
     deleteBranch,
     greyOutBranch,
 } from './utils'
@@ -90,7 +91,9 @@ export function choicesReducer(
                 }
             })
         case 'INSERT_MULTIPLE_CHOICES_NODE':
-            return insertMultipleChoices(graph, action.beforeNodeId)
+            return computeNodesPositions(
+                insertMultipleChoices(graph, action.beforeNodeId)
+            )
         case 'DELETE_MULTIPLE_CHOICES_CHOICE': {
             const nextGraph = produce(graph, (draft) => {
                 const node = draft.nodes.find(
@@ -107,75 +110,81 @@ export function choicesReducer(
                     e.data?.event?.id === action.eventId
             )?.target
             if (childNodeId) return deleteBranch(nextGraph, childNodeId)
-            return nextGraph
+            return computeNodesPositions(nextGraph)
         }
         case 'ADD_MULTIPLE_CHOICES_CHOICE':
-            return produce(graph, (draft) => {
-                const node = draft.nodes.find(
-                    (n): n is MultipleChoicesNodeType =>
-                        n.id === action.multipleChoicesNodeId &&
-                        n.type === 'multiple_choices'
-                )
-                if (!node) return
-                const eventId = ulid()
-                node.data.choices.push({
-                    event_id: eventId,
-                    label_tkey: ulid(),
-                    label: '',
-                })
-                draft.nodes.push(buildEndNode())
-                draft.edges.push({
-                    ...buildEdgeCommonProperties(),
-                    source: action.multipleChoicesNodeId,
-                    target: draft.nodes[draft.nodes.length - 1].id,
-                    data: {
-                        event: {
-                            id: eventId,
-                            kind: 'choices',
-                        },
-                    },
-                })
-            })
-        case 'REORDER_CHOICES':
-            return produce(graph, (draft) => {
-                const node = draft.nodes.find(
-                    (n): n is MultipleChoicesNodeType =>
-                        n.id === action.multipleChoicesNodeId &&
-                        n.type === 'multiple_choices'
-                )
-                if (!node) return
-                const choiceByEventId = node.data.choices.reduce(
-                    (acc, choice) => {
-                        const {event_id} = choice
-                        return {...acc, [event_id]: choice}
-                    },
-                    {} as Record<
-                        string,
-                        MultipleChoicesNodeType['data']['choices'][number]
-                    >
-                )
-                node.data.choices = action.orderedEventIds.map(
-                    (eventId) => choiceByEventId[eventId]
-                )
-                // reorder edges so that the nodes are ordered in the visual builder
-                const outgoingEdgesSorted = graph.edges
-                    .filter((e) => e.source === action.multipleChoicesNodeId)
-                    .sort(
-                        (a, b) =>
-                            node.data.choices.findIndex(
-                                (c) => a.data?.event?.id === c.event_id
-                            ) -
-                            node.data.choices.findIndex(
-                                (c) => b.data?.event?.id === c.event_id
-                            )
+            return computeNodesPositions(
+                produce(graph, (draft) => {
+                    const node = draft.nodes.find(
+                        (n): n is MultipleChoicesNodeType =>
+                            n.id === action.multipleChoicesNodeId &&
+                            n.type === 'multiple_choices'
                     )
-                draft.edges = [
-                    ...graph.edges.filter(
-                        (e) => e.source !== action.multipleChoicesNodeId
-                    ),
-                    ...outgoingEdgesSorted,
-                ]
-            })
+                    if (!node) return
+                    const eventId = ulid()
+                    node.data.choices.push({
+                        event_id: eventId,
+                        label_tkey: ulid(),
+                        label: '',
+                    })
+                    draft.nodes.push(buildEndNode())
+                    draft.edges.push({
+                        ...buildEdgeCommonProperties(),
+                        source: action.multipleChoicesNodeId,
+                        target: draft.nodes[draft.nodes.length - 1].id,
+                        data: {
+                            event: {
+                                id: eventId,
+                                kind: 'choices',
+                            },
+                        },
+                    })
+                })
+            )
+        case 'REORDER_CHOICES':
+            return computeNodesPositions(
+                produce(graph, (draft) => {
+                    const node = draft.nodes.find(
+                        (n): n is MultipleChoicesNodeType =>
+                            n.id === action.multipleChoicesNodeId &&
+                            n.type === 'multiple_choices'
+                    )
+                    if (!node) return
+                    const choiceByEventId = node.data.choices.reduce(
+                        (acc, choice) => {
+                            const {event_id} = choice
+                            return {...acc, [event_id]: choice}
+                        },
+                        {} as Record<
+                            string,
+                            MultipleChoicesNodeType['data']['choices'][number]
+                        >
+                    )
+                    node.data.choices = action.orderedEventIds.map(
+                        (eventId) => choiceByEventId[eventId]
+                    )
+                    // reorder edges for the nodes to be ordered in the visual builder
+                    const outgoingEdgesSorted = graph.edges
+                        .filter(
+                            (e) => e.source === action.multipleChoicesNodeId
+                        )
+                        .sort(
+                            (a, b) =>
+                                node.data.choices.findIndex(
+                                    (c) => a.data?.event?.id === c.event_id
+                                ) -
+                                node.data.choices.findIndex(
+                                    (c) => b.data?.event?.id === c.event_id
+                                )
+                        )
+                    draft.edges = [
+                        ...graph.edges.filter(
+                            (e) => e.source !== action.multipleChoicesNodeId
+                        ),
+                        ...outgoingEdgesSorted,
+                    ]
+                })
+            )
         case 'SET_CHOICE_LABEL':
             return produce(graph, (draft) => {
                 const choice = draft.nodes

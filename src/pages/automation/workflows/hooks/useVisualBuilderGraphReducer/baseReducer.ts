@@ -17,6 +17,7 @@ import {
     buildEndNode,
     buildFileUploadNode,
     buildTextReplyNode,
+    computeNodesPositions,
     deleteBranch,
     greyOutBranch,
 } from './utils'
@@ -86,6 +87,10 @@ export type VisualBuilderBaseAction =
           nodeId: string
           isGreyedOut: boolean
       }
+    | {
+          type: 'SET_SHOULD_SHOW_ERRORS'
+          shouldShowErrors: boolean
+      }
 
 export function baseReducer(
     graph: VisualBuilderGraph,
@@ -93,7 +98,7 @@ export function baseReducer(
 ): VisualBuilderGraph {
     switch (action.type) {
         case 'RESET_GRAPH':
-            return action.graph
+            return computeNodesPositions(action.graph)
         case 'SET_NAME':
             return produce(graph, (draft) => {
                 draft.name = action.name
@@ -160,64 +165,80 @@ export function baseReducer(
                 }
             })
         case 'INSERT_AUTOMATED_MESSAGE_NODE':
-            return insertNodeBefore(
-                graph,
-                buildAutomatedMessageNode(),
-                action.beforeNodeId
+            return computeNodesPositions(
+                insertNodeBefore(
+                    graph,
+                    buildAutomatedMessageNode(),
+                    action.beforeNodeId
+                )
             )
         case 'INSERT_TEXT_REPLY_NODE':
-            return insertNodeBefore(
-                graph,
-                buildTextReplyNode(),
-                action.beforeNodeId
+            return computeNodesPositions(
+                insertNodeBefore(
+                    graph,
+                    buildTextReplyNode(),
+                    action.beforeNodeId
+                )
             )
         case 'INSERT_FILE_UPLOAD_NODE':
-            return insertNodeBefore(
-                graph,
-                buildFileUploadNode(),
-                action.beforeNodeId
+            return computeNodesPositions(
+                insertNodeBefore(
+                    graph,
+                    buildFileUploadNode(),
+                    action.beforeNodeId
+                )
             )
         case 'DELETE_NODE':
-            return produce(graph, (draft) => {
-                const nodeIndex = draft.nodes.findIndex(
-                    (n) => n.id === action.nodeId
-                )
-                if (nodeIndex === -1) return
-                draft.nodes.splice(nodeIndex, 1)
-                const incomingEdge = draft.edges.find(
-                    (e) => e.target === action.nodeId
-                )
-                const outgoingEdges = draft.edges.filter(
-                    (e) => e.source === action.nodeId
-                )
-                if (incomingEdge && outgoingEdges.length === 1) {
-                    incomingEdge.target = outgoingEdges[0].target
-                    // preserve edge ordering
-                    draft.edges = [
-                        ...draft.edges.filter(
-                            (e) => e.source !== action.nodeId
-                        ),
-                    ]
-                }
-            })
+            return computeNodesPositions(
+                produce(graph, (draft) => {
+                    const nodeIndex = draft.nodes.findIndex(
+                        (n) => n.id === action.nodeId
+                    )
+                    if (nodeIndex === -1) return
+                    draft.nodes.splice(nodeIndex, 1)
+                    const incomingEdge = draft.edges.find(
+                        (e) => e.target === action.nodeId
+                    )
+                    const outgoingEdges = draft.edges.filter(
+                        (e) => e.source === action.nodeId
+                    )
+                    if (incomingEdge && outgoingEdges.length === 1) {
+                        incomingEdge.target = outgoingEdges[0].target
+                        // preserve edge ordering
+                        draft.edges = [
+                            ...draft.edges.filter(
+                                (e) => e.source !== action.nodeId
+                            ),
+                        ]
+                    }
+                })
+            )
 
         case 'DELETE_BRANCH': {
             const nextGraph = deleteBranch(graph, action.nodeId, {
                 keepIncomingEdge: true,
             })
-            return produce(nextGraph, (draft) => {
-                const incomingEdge = draft.edges.find(
-                    (e) => e.target === action.nodeId
-                )
-                if (!incomingEdge) return
-                const endNode = buildEndNode()
-                draft.nodes.push(endNode)
-                incomingEdge.target = endNode.id
-            })
+            return computeNodesPositions(
+                produce(nextGraph, (draft) => {
+                    const incomingEdge = draft.edges.find(
+                        (e) => e.target === action.nodeId
+                    )
+                    if (!incomingEdge) return
+                    const endNode = buildEndNode()
+                    draft.nodes.push(endNode)
+                    incomingEdge.target = endNode.id
+                })
+            )
         }
         case 'GREY_OUT_BRANCH': {
             return greyOutBranch(graph, action.nodeId, action.isGreyedOut)
         }
+        case 'SET_SHOULD_SHOW_ERRORS':
+            return produce(graph, (draft) => {
+                draft.nodes.forEach((node) => {
+                    node.data.shouldShowErrors = action.shouldShowErrors
+                })
+            })
     }
 }
 

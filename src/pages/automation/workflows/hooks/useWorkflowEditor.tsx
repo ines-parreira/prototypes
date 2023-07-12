@@ -22,6 +22,7 @@ import {
     VisualBuilderGraphAction,
     useVisualBuilderGraphReducer,
 } from './useVisualBuilderGraphReducer'
+import {computeNodesPositions} from './useVisualBuilderGraphReducer/utils'
 
 type WorkflowEditorContext = {
     hookError: Maybe<string>
@@ -97,13 +98,17 @@ export function useWorkflowEditor(
     )
     const [visualBuilderGraph, setVisualBuilderGraph] =
         useState<VisualBuilderGraph>(
-            transformWorkflowConfigurationIntoVisualBuilderGraph(
-                workflowFactoryInstance.current
+            computeNodesPositions(
+                transformWorkflowConfigurationIntoVisualBuilderGraph(
+                    workflowFactoryInstance.current
+                )
             )
         )
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
-        transformWorkflowConfigurationIntoVisualBuilderGraph(
-            workflowFactoryInstance.current
+        computeNodesPositions(
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                workflowFactoryInstance.current
+            )
         )
     )
     const [hookError, setHookError] = useState<string | null>(null)

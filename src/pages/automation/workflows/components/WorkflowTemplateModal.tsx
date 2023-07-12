@@ -9,6 +9,7 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import {WorkflowTemplate} from '../models/workflowConfiguration.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import VisualBuilderTemplatePreview from '../editor/visualBuilder/components/VisualBuilderTemplatePreview'
+import {computeNodesPositions} from '../hooks/useVisualBuilderGraphReducer/utils'
 
 import css from './WorkflowTemplateModal.less'
 
@@ -26,8 +27,9 @@ export const WorkflowTemplateModal = ({
     template,
 }: Props) => {
     const workflow = template.getConfiguration('template', 0)
-    const visualBuilderGraph =
+    const visualBuilderGraph = computeNodesPositions(
         transformWorkflowConfigurationIntoVisualBuilderGraph(workflow)
+    )
     return (
         <Modal isOpen={isOpen} onClose={onClose} classNameDialog={css.dialog}>
             <ModalHeader title={template.name} />

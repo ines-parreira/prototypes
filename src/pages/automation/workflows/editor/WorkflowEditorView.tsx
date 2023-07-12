@@ -81,12 +81,7 @@ function WorkflowEditorViewWrapped({
     const isDirty = workflowEditorContext.isDirty
     const isFetchPending = workflowEditorContext.isFetchPending
     const isSavePending = workflowEditorContext.isSavePending
-    const [lastSaveAttempt, setLastSaveAttempt] = useState<Date | undefined>(
-        undefined
-    )
-    const workflowNameisErrored =
-        workflowEditorContext.configuration.name.trim().length === 0 ||
-        workflowEditorContext.configuration.name.length > 100
+    const [workflowNameisErrored, setWorkflowNameIsErrored] = useState(false)
 
     // handlers
     const handleDiscard = () => {
@@ -98,7 +93,15 @@ function WorkflowEditorViewWrapped({
     const handleSave = async () => {
         const configurationError = workflowEditorContext.handleValidate()
         if (configurationError) {
-            setLastSaveAttempt(new Date())
+            setWorkflowNameIsErrored(
+                workflowEditorContext.visualBuilderGraph.name.trim().length ===
+                    0 ||
+                    workflowEditorContext.visualBuilderGraph.name.length > 100
+            )
+            workflowEditorContext.dispatch({
+                type: 'SET_SHOULD_SHOW_ERRORS',
+                shouldShowErrors: true,
+            })
             notifyMerchant({
                 message: configurationError,
                 status: NotificationStatus.Error,
@@ -195,9 +198,7 @@ function WorkflowEditorViewWrapped({
                                         .name
                                 }
                                 isDisabled={isFetchPending || isSavePending}
-                                hasError={
-                                    lastSaveAttempt && workflowNameisErrored
-                                }
+                                hasError={workflowNameisErrored}
                                 onKeyDown={(event) => {
                                     if (event.key === 'Enter') {
                                         inputRef.current?.blur()
@@ -254,7 +255,7 @@ function WorkflowEditorViewWrapped({
                     </div>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>
-                    <WorkflowVisualBuilder lastSaveAttempt={lastSaveAttempt} />
+                    <WorkflowVisualBuilder />
                 </Container>
                 <UnsavedChangesPrompt
                     onSave={handleSave}
