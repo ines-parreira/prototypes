@@ -3,6 +3,7 @@ import {render, fireEvent} from '@testing-library/react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 
+import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import DropdownInputRow from '../DropdownInputRow'
 
 const commonProps = {
@@ -16,6 +17,7 @@ const commonProps = {
 describe('<DropdownInputRow/>', () => {
     it('should render correctly', () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: 'Test value',
             onChange: jest.fn(),
             onRemove: jest.fn(),
@@ -32,6 +34,7 @@ describe('<DropdownInputRow/>', () => {
 
     it('should render correctly when validation fails', () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: 'Test value',
             error: 'Unfortunately there is an error',
             onChange: jest.fn(),
@@ -49,6 +52,7 @@ describe('<DropdownInputRow/>', () => {
 
     it('should trigger an onChange event when changing the value', async () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: 'Test value',
             onChange: jest.fn(),
             onRemove: jest.fn(),
@@ -69,6 +73,7 @@ describe('<DropdownInputRow/>', () => {
 
     it('should trigger an onRemove event when the remove button is clicked', async () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: 'Test value',
             onChange: jest.fn(),
             onRemove: jest.fn(),

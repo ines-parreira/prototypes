@@ -1,4 +1,12 @@
-import React, {useCallback, useMemo, useRef, useState, useEffect} from 'react'
+import React, {
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+    useEffect,
+    RefObject,
+} from 'react'
+import {Link} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -21,6 +29,9 @@ import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import Label from 'pages/tickets/detail/components/TicketFields/components/Label'
 import StealthInput from 'pages/tickets/detail/components/TicketFields/components//StealthInput'
 import Tooltip from 'pages/common/components/Tooltip'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {hasRole} from 'utils'
+import {UserRole} from 'config/types/user'
 
 import {useA11yDropdown} from './hooks/useA11yDropdown'
 import {useSearch} from './hooks/useSearch'
@@ -185,6 +196,7 @@ export default function DropdownField({
                     hasError={hasError}
                 />
             </Label>
+            {!choices.length && <EmptyHelper target={inputRef} id={id} />}
             <Dropdown
                 isOpen={isActive}
                 onToggle={(isActiveNext) => {
@@ -329,4 +341,43 @@ export default function DropdownField({
 
 export function CheckIcon() {
     return <span className={`material-icons ${css.checkIcon}`}>check</span>
+}
+
+type EmptyHelperProps = {
+    target: RefObject<HTMLInputElement>
+    id: number
+}
+
+export function EmptyHelper({target, id}: EmptyHelperProps) {
+    const currentUser = useAppSelector(getCurrentUser)
+    const isAdmin = hasRole(currentUser, UserRole.Admin)
+
+    return (
+        <Tooltip
+            target={target}
+            placement="top-start"
+            autohide={false}
+            arrowClassName={css.emptyHelperArrow}
+            modifiers={{
+                preventOverflow: {boundariesElement: 'viewport'},
+            }}
+        >
+            {isAdmin ? (
+                <>
+                    This field does not have any values yet.
+                    <br />
+                    <Link
+                        to={`/app/settings/ticket-fields/${id}/edit`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Go to Settings
+                    </Link>{' '}
+                    to set up the field.
+                </>
+            ) : (
+                'This field does not have any values yet. Contact your Admin to set up this field.'
+            )}
+        </Tooltip>
+    )
 }

@@ -11,7 +11,7 @@ exports[`<EditFieldForm/> should create custom field if the save button is click
   "post": [],
   "put": [
     {
-      "data": "{"object_type":"Ticket","label":"Updated name","required":false,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Some placeholder"}}}",
+      "data": "{"object_type":"Ticket","label":"Updated name","description":"This is an input field","required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Some placeholder"}}}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -106,7 +106,9 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
       name="description"
       placeholder="e.g. Reasons why customers reach out to us"
       rows="1"
-    />
+    >
+      This is an input field
+    </textarea>
     <div
       class="caption"
       id="textarea-3-caption"

@@ -34,7 +34,11 @@ export default function Row({
 
     return (
         <TableBodyRowDraggable
-            className={classnames('draggable', css.row)}
+            className={classnames(
+                'draggable',
+                css.row,
+                canReorder && css.canReorder
+            )}
             dragItem={{
                 id: ticketField.id,
                 position,
@@ -52,8 +56,13 @@ export default function Row({
             >
                 <Link to={link}>
                     <div>
-                        <span className={classnames('mr-2', css.label)}>
+                        <strong className={classnames('mr-4', css.label)}>
                             {ticketField.label}
+                        </strong>
+                        <span className="d-inline-flex text-faded">
+                            <span className={css.description}>
+                                {ticketField.description}
+                            </span>
                         </span>
                     </div>
                 </Link>

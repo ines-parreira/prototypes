@@ -11,8 +11,10 @@ exports[`custom field resources createCustomField should resolve with a new Cust
       "placeholder": "Some placeholder",
     },
   },
+  "description": "This is an input field",
   "id": 123,
   "label": "Input field",
+  "managed_type": null,
   "object_type": "Ticket",
   "priority": 1,
   "required": false,
@@ -30,7 +32,7 @@ exports[`custom field resources createCustomField should resolve with a new Cust
   "patch": [],
   "post": [
     {
-      "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
+      "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -68,8 +70,10 @@ exports[`custom field resources getCustomField should resolve with an existing C
       "placeholder": "Some placeholder",
     },
   },
+  "description": "This is an input field",
   "id": 123,
   "label": "Input field",
+  "managed_type": null,
   "object_type": "Ticket",
   "priority": 1,
   "required": false,
@@ -126,8 +130,10 @@ exports[`custom field resources getCustomFields should resolve with a list of pa
           "placeholder": "Some placeholder",
         },
       },
+      "description": "This is an input field",
       "id": 123,
       "label": "Input field",
+      "managed_type": null,
       "object_type": "Ticket",
       "priority": 1,
       "required": false,
@@ -188,8 +194,10 @@ exports[`custom field resources updateCustomField should resolve with an updated
       "placeholder": "Some placeholder",
     },
   },
+  "description": "This is an input field",
   "id": 123,
   "label": "Input field",
+  "managed_type": null,
   "object_type": "Ticket",
   "priority": 1,
   "required": false,
@@ -208,7 +216,7 @@ exports[`custom field resources updateCustomField should resolve with an updated
   "post": [],
   "put": [
     {
-      "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
+      "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -247,8 +255,10 @@ exports[`custom field resources updateCustomFields should resolve with a list of
           "placeholder": "Some placeholder",
         },
       },
+      "description": "This is an input field",
       "id": 123,
       "label": "Input field",
+      "managed_type": null,
       "object_type": "Ticket",
       "priority": 1,
       "required": false,
@@ -306,8 +316,10 @@ exports[`custom field resources updatePartialCustomField should resolve with an 
       "placeholder": "Some placeholder",
     },
   },
+  "description": "This is an input field",
   "id": 123,
   "label": "Input field",
+  "managed_type": null,
   "object_type": "Ticket",
   "priority": 1,
   "required": false,
@@ -326,7 +338,7 @@ exports[`custom field resources updatePartialCustomField should resolve with an 
   "post": [],
   "put": [
     {
-      "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
+      "data": "{"object_type":"Ticket","label":"Test field","priority":123,"required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

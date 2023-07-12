@@ -122,7 +122,9 @@ exports[`<EditTicketField/> should render 2`] = `
             name="description"
             placeholder="e.g. Reasons why customers reach out to us"
             rows="1"
-          />
+          >
+            This is an input field
+          </textarea>
           <div
             class="caption"
             id="textarea-3-caption"

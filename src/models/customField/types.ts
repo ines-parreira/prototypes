@@ -45,12 +45,15 @@ interface CustomTypeDefinitionNumber {
     input_settings: CustomFieldInputSettingsNumber
 }
 
+export type CustomFieldManagedType = 'contact_reason' | 'product' | 'resolution'
+
 export interface CustomFieldInput {
     object_type: 'Ticket' | 'Customer'
     label: string
     description?: string
     priority?: number
     required: boolean
+    managed_type: CustomFieldManagedType | null
     definition: CustomFieldDefinition
 }
 

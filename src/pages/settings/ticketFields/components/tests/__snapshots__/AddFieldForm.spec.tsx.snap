@@ -10,7 +10,7 @@ exports[`<AddFieldForm/> should create custom field if the save button is clicke
   "patch": [],
   "post": [
     {
-      "data": "{"object_type":"Ticket","label":"Test name","required":false,"definition":{"data_type":"text","input_settings":{"input_type":"dropdown","choices":[]}}}",
+      "data": "{"object_type":"Ticket","label":"Test name","required":false,"managed_type":null,"definition":{"data_type":"text","input_settings":{"input_type":"dropdown","choices":[]}}}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

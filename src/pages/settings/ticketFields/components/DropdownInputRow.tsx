@@ -5,10 +5,23 @@ import IconButton from 'pages/common/components/button/IconButton'
 import TextInput from 'pages/common/forms/input/TextInput'
 import Caption from 'pages/common/forms/Caption/Caption'
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import {
+    CustomField,
+    CustomFieldInput,
+    CustomFieldManagedType,
+} from 'models/customField/types'
 
 import css from './DropdownInput.less'
 
+const defaultPlaceholder = 'e.g. Shipping issue::Delay'
+const placeholders: Record<CustomFieldManagedType, string> = {
+    contact_reason: defaultPlaceholder,
+    product: 'e.g. Men::Tops::Polo shirt',
+    resolution: 'e.g. Order actions::Refund::Partial refund',
+}
+
 interface DropdownInputRowProps {
+    field: CustomField | CustomFieldInput
     value: string
     error?: string
     onChange: (index: number, value: string) => void
@@ -22,6 +35,7 @@ interface DropdownInputRowProps {
 }
 
 export function DropdownInputRow({
+    field,
     value,
     position,
     id,
@@ -108,7 +122,11 @@ export function DropdownInputRow({
                 <TextInput
                     id={id}
                     value={value}
-                    placeholder="e.g. Shipping issue::Delay"
+                    placeholder={
+                        field.managed_type
+                            ? placeholders[field.managed_type]
+                            : defaultPlaceholder
+                    }
                     onChange={(val) => onChange(position, val)}
                     hasError={!!error}
                     data-testid={id}

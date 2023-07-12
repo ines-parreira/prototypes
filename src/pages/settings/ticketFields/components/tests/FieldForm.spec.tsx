@@ -14,6 +14,7 @@ import {
     ticketInputFieldDefinition,
     customFieldInputDefinition,
     ticketFieldDefinitions,
+    managedTicketInputFieldDefinition,
 } from 'fixtures/customField'
 import {CustomField, CustomFieldInput} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
@@ -30,7 +31,7 @@ describe('<FieldForm/>', () => {
         queryClient.clear()
     })
 
-    it.each(ticketFieldDefinitions)(
+    it.each([...ticketFieldDefinitions, managedTicketInputFieldDefinition])(
         'should render correctly',
         (customField: CustomField) => {
             const props = {

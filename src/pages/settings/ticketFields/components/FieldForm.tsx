@@ -64,6 +64,7 @@ export default function FieldForm(props: FieldFormProps) {
             'label',
             'description',
             'required',
+            'managed_type',
             'definition',
         ])
     )
@@ -149,6 +150,7 @@ export default function FieldForm(props: FieldFormProps) {
                 onChange={(val) => setValue('label', val)}
                 className={css.formRow}
                 isRequired
+                isDisabled={!!form.managed_type}
             />
             <TextArea
                 name="description"
@@ -209,6 +211,7 @@ export default function FieldForm(props: FieldFormProps) {
                 form.definition.input_settings.input_type === 'dropdown' && (
                     <div className={css.formRow}>
                         <DropdownInput
+                            field={props.field}
                             value={form.definition.input_settings.choices}
                             onChange={handleChoiceChange}
                         />

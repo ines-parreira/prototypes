@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ArchiveConfirmationModal/> should render 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Archive ticket field
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              <p>
+                Archiving 
+                <b>
+                  Foo
+                </b>
+                 will make it unavailable in new tickets. Tickets that already have it will keep the values associated to them.
+              </p>
+              <p>
+                Are you sure you want to archive this field?
+              </p>
+            </div>
+            <div
+              class="actions modal-footer"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper ml-3 confirmBtn fill primary medium"
+                type="button"
+              >
+                Archive
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;

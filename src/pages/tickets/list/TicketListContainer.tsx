@@ -36,7 +36,7 @@ import {
     isTicketDraftEmpty,
     TicketDraft,
 } from 'hooks/useTicketDraft'
-import {useTitle} from 'hooks/useTitle'
+import useTitle from 'hooks/useTitle'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'

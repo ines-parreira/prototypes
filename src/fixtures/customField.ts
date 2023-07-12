@@ -5,6 +5,7 @@ export const customFieldInputDefinition: CustomFieldInput = {
     label: 'Test field',
     priority: 123,
     required: false,
+    managed_type: null,
     definition: {
         data_type: 'text',
         input_settings: {
@@ -23,6 +24,7 @@ const fieldBaseDefinition = {
 const ticketFieldBaseDefinition = {
     ...fieldBaseDefinition,
     required: false,
+    managed_type: null,
     object_type: 'Ticket',
 } as const
 
@@ -31,6 +33,7 @@ export const ticketInputFieldDefinition: CustomField = {
     id: 123,
     priority: 1,
     label: 'Input field',
+    description: 'This is an input field',
     definition: {
         data_type: 'text',
         input_settings: {
@@ -39,11 +42,13 @@ export const ticketInputFieldDefinition: CustomField = {
         },
     },
 }
+
 export const ticketNumberFieldDefinition: CustomField = {
     ...ticketFieldBaseDefinition,
     id: 123,
     priority: 1,
     label: 'Number field',
+    description: 'This is a number field',
     definition: {
         data_type: 'number',
         input_settings: {
@@ -59,6 +64,7 @@ export const ticketDropdownFieldDefinition: CustomField = {
     id: 2,
     priority: 2,
     label: 'Dropdown field',
+    description: 'This is a dropdown field',
     definition: {
         data_type: 'text',
         input_settings: {
@@ -77,6 +83,7 @@ export const ticketBooleanDefinition: CustomField = {
     id: 2,
     priority: 2,
     label: 'Yes/No field',
+    description: 'This is a boolean field',
     definition: {
         data_type: 'boolean',
         input_settings: {
@@ -92,3 +99,19 @@ export const ticketFieldDefinitions: CustomField[] = [
     ticketBooleanDefinition,
     ticketNumberFieldDefinition,
 ]
+
+export const managedTicketInputFieldDefinition: CustomField = {
+    ...ticketFieldBaseDefinition,
+    managed_type: 'contact_reason',
+    id: 123,
+    priority: 1,
+    label: 'Contact reason',
+    description: 'This is a managed input field',
+    definition: {
+        data_type: 'text',
+        input_settings: {
+            input_type: 'input',
+            placeholder: 'Some placeholder',
+        },
+    },
+}

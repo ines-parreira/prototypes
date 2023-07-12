@@ -7,6 +7,7 @@ import uniqueId from 'lodash/uniqueId'
 import {renderWithDnD} from 'utils/testing'
 
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
+import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import DropdownInput from '../DropdownInput'
 
 let idCount = 1
@@ -23,6 +24,7 @@ describe('<DropdownInput/>', () => {
 
     it('should render correctly', () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: [
                 'Option 1',
                 'Option 2',
@@ -46,6 +48,7 @@ describe('<DropdownInput/>', () => {
 
     it('should show an error for too much nesting', () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: [
                 'Option 1',
                 'Option 2',
@@ -64,6 +67,7 @@ describe('<DropdownInput/>', () => {
 
     it('should show an error for duplicate values', () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 1', 'Option 3'],
             onChange: jest.fn(),
         }
@@ -78,6 +82,7 @@ describe('<DropdownInput/>', () => {
 
     it('should trigger an onChange event when changing a value', async () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 3'],
             onChange: jest.fn(),
         }
@@ -100,6 +105,7 @@ describe('<DropdownInput/>', () => {
 
     it('should trigger an onChange event when removing a value', async () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 3'],
             onChange: jest.fn(),
         }
@@ -118,6 +124,7 @@ describe('<DropdownInput/>', () => {
 
     it('should trigger an onChange event when adding a value', async () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 3'],
             onChange: jest.fn(),
         }
@@ -141,6 +148,7 @@ describe('<DropdownInput/>', () => {
 
     it('should trigger an onChange event when re-ordering values with drag and drop', async () => {
         const props = {
+            field: ticketDropdownFieldDefinition,
             value: ['Option 1', 'Option 2', 'Option 3'],
             onChange: jest.fn(),
         }

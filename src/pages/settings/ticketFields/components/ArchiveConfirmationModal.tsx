@@ -23,13 +23,12 @@ export default function ArchiveConfirmationModal({
             onConfirm={onConfirm}
             onClose={onClose}
         >
-            Archiving <b>{ticketFieldLabel}</b> will make it unavailable in new
-            tickets. Tickets that already have it will keep the values
-            associated to them. You won't be able to filter your reports and
-            views by this field anymore.
-            <br />
-            <br />
-            Are you sure you want to archive this field?
+            <p>
+                Archiving <b>{ticketFieldLabel}</b> will make it unavailable in
+                new tickets. Tickets that already have it will keep the values
+                associated to them.
+            </p>
+            <p>Are you sure you want to archive this field?</p>
         </ConfirmationModal>
     )
 }

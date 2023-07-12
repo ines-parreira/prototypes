@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {useTitle} from 'hooks/useTitle'
+import useTitle from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {notify} from 'state/notifications/actions'

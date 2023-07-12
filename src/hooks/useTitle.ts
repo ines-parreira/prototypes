@@ -6,7 +6,7 @@ const originalTitle = (document && document.title) || 'Gorgias'
 
 let globalTimer: number
 
-export function useTitle(title?: string) {
+function useTitle(title?: string) {
     useEffect(() => {
         // In case useTitle is called empty, we want the timeout from the
         // previous hook call to run in order to reset the title

@@ -18,6 +18,7 @@ export default function AddFieldForm(props: AddFieldFormProps) {
         object_type: props.objectType,
         label: '',
         required: false,
+        managed_type: null,
         definition: {
             data_type: 'text',
             input_settings: {

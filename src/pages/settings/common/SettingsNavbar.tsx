@@ -18,7 +18,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Navbar from 'pages/common/components/Navbar'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
@@ -104,11 +103,6 @@ const CATEGORIES: Category[] = [
                 requiredRole: ADMIN_ROLE,
                 to: 'ticket-fields',
                 text: 'Ticket Fields',
-                extra: (
-                    <Badge type={ColorType.Blue} className={css.badge}>
-                        BETA
-                    </Badge>
-                ),
             },
             {
                 requiredRole: AGENT_ROLE,

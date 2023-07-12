@@ -6,13 +6,18 @@ import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
 import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import Label from 'pages/common/forms/Label/Label'
-import {CustomFieldValue} from 'models/customField/types'
+import {
+    CustomField,
+    CustomFieldInput,
+    CustomFieldValue,
+} from 'models/customField/types'
 import DropdownCSVImport from './DropdownCSVImport'
 import DropdownInputRow from './DropdownInputRow'
 
 import css from './DropdownInput.less'
 
 interface DropdownInputProps {
+    field: CustomField | CustomFieldInput
     value: CustomFieldValue[]
     onChange: (value: string[]) => void
 }
@@ -50,7 +55,7 @@ function validate(
     return undefined
 }
 
-export function DropdownInput({value, onChange}: DropdownInputProps) {
+export function DropdownInput({field, value, onChange}: DropdownInputProps) {
     const [isImportOpen, setImportOpen] = useState(false)
 
     // Generate an internal ID for all values to handle drag and drop
@@ -164,6 +169,7 @@ export function DropdownInput({value, onChange}: DropdownInputProps) {
             {values.map((value, index: number) => (
                 <DropdownInputRow
                     key={value.id}
+                    field={field}
                     value={value.value}
                     error={value.error}
                     onChange={setValue}
