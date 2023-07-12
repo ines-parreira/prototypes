@@ -1,5 +1,6 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const webpack = require('webpack')
 
 const srcDir = path.join(__dirname, '../src')
 
@@ -117,6 +118,11 @@ module.exports = {
         config.plugins.push(
             new MiniCssExtractPlugin({
                 filename: styleBundleFile,
+            })
+        )
+        config.plugins.push(
+            new webpack.ProvidePlugin({
+                process: require.resolve('process/browser.js'),
             })
         )
 
