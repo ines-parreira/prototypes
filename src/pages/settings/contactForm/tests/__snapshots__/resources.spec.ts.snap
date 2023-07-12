@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createContactForm rejects if the server returns an error 2`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": "{"name":"test","default_locale":"en-US","email_integration":{"email":"a@a.com","id":1}}",
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "params": {},
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/help-center/contact-forms",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+}
+`;
+
+exports[`createContactForm resolves with a created contact form on success 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": "{"name":"test","default_locale":"en-US","email_integration":{"email":"a@a.com","id":1}}",
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "params": {},
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/help-center/contact-forms",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+}
+`;
+
+exports[`getContactForms rejects if the server returns an error 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {},
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/help-center/contact-forms",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+}
+`;
+
+exports[`getContactForms resolves with a list of contact forms on success 1`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {},
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/help-center/contact-forms",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+}
+`;

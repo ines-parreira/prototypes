@@ -18,14 +18,22 @@ import {ContactForm} from 'models/contactForm/types'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import css from './ManageContactForms.less'
 
 export type Props = {
     contactForms: ContactForm[]
     isLoading: boolean
+    fetchMore: () => Promise<any>
+    hasMore: boolean
 }
 
-const ManageContactForms = ({isLoading, contactForms = []}: Props) => {
+const ManageContactForms = ({
+    isLoading,
+    contactForms = [],
+    fetchMore,
+    hasMore,
+}: Props) => {
     const history = useHistory()
     const navigateToCreateContactForm = () =>
         history.push(CONTACT_FORM_CREATE_PATH)
@@ -34,7 +42,7 @@ const ManageContactForms = ({isLoading, contactForms = []}: Props) => {
             insertContactFormIdParam(CONTACT_FORM_CUSTOMIZATION_PATH, id)
         )
 
-    if (!isLoading && !contactForms.length) {
+    if (!isLoading && contactForms.length === 0) {
         return (
             <Container fluid className={settingsCss.pageContainer}>
                 <p>You have no contact forms at the moment.</p>
@@ -51,51 +59,61 @@ const ManageContactForms = ({isLoading, contactForms = []}: Props) => {
     }
 
     return (
-        <Container fluid className={contactFormCss.px0}>
-            <TableWrapper>
-                <TableHead className={css.contactFormsTableHead}>
-                    <HeaderCellProperty
-                        style={{width: '45%'}}
-                        title="Form Name"
-                    />
-                    <HeaderCellProperty title="Language" />
-                    <HeaderCell />
-                </TableHead>
-                <TableBody>
-                    {contactForms.map((form) => {
-                        // TODO: use actual name
-                        const language = {
-                            name: '',
-                            code: form.default_locale,
-                        }
-                        return (
-                            <TableBodyRow
-                                key={form.id}
-                                onClick={() =>
-                                    navigateToContactFormCustomization(form.id)
+        <div className={css.infiniteScrollWrapper}>
+            <InfiniteScroll
+                onLoad={fetchMore}
+                shouldLoadMore={!isLoading && hasMore}
+                className={css.infiniteScroll}
+            >
+                <Container fluid className={contactFormCss.px0}>
+                    <TableWrapper>
+                        <TableHead className={css.contactFormsTableHead}>
+                            <HeaderCellProperty
+                                style={{width: '45%'}}
+                                title="Form Name"
+                            />
+                            <HeaderCellProperty title="Language" />
+                            <HeaderCell />
+                        </TableHead>
+                        <TableBody>
+                            {contactForms.map((form) => {
+                                // TODO: use actual name
+                                const language = {
+                                    name: '',
+                                    code: form.default_locale,
                                 }
-                            >
-                                <BodyCell>
-                                    <b>{form.name}</b>
-                                </BodyCell>
-                                <BodyCell>
-                                    <LanguageList
-                                        id={form.id}
-                                        defaultLanguage={language}
-                                        languageList={[language]}
-                                    />
-                                </BodyCell>
-                                <BodyCell>
-                                    <i className="material-icons md-2">
-                                        keyboard_arrow_right
-                                    </i>
-                                </BodyCell>
-                            </TableBodyRow>
-                        )
-                    })}
-                </TableBody>
-            </TableWrapper>
-        </Container>
+                                return (
+                                    <TableBodyRow
+                                        key={form.id}
+                                        onClick={() =>
+                                            navigateToContactFormCustomization(
+                                                form.id
+                                            )
+                                        }
+                                    >
+                                        <BodyCell>
+                                            <b>{form.name}</b>
+                                        </BodyCell>
+                                        <BodyCell>
+                                            <LanguageList
+                                                id={form.id}
+                                                defaultLanguage={language}
+                                                languageList={[language]}
+                                            />
+                                        </BodyCell>
+                                        <BodyCell>
+                                            <i className="material-icons md-2">
+                                                keyboard_arrow_right
+                                            </i>
+                                        </BodyCell>
+                                    </TableBodyRow>
+                                )
+                            })}
+                        </TableBody>
+                    </TableWrapper>
+                </Container>
+            </InfiniteScroll>
+        </div>
     )
 }
 

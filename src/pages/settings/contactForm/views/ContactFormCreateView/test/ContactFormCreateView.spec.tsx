@@ -4,6 +4,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {account} from 'fixtures/account'
 import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
@@ -11,25 +12,35 @@ import {renderWithRouter} from 'utils/testing'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {createTestQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
+import {buildSDKMocks} from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import {mockResourceServerReplies} from '../../../tests/resource-mocks'
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
+const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
+    typeof useHelpCenterApi
+>
 const mockCheckContactFormName = jest.fn().mockResolvedValue(true)
-const mockCreateContactForm = jest.fn().mockResolvedValue(ContactFormFixture)
+
 jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
     return {
         useContactFormApi: () => ({
             isReady: true,
             isLoading: false,
             checkContactFormName: mockCheckContactFormName,
-            createContactForm: mockCreateContactForm,
         }),
     }
 })
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 
+const testQueryClient = createTestQueryClient()
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<ContactFormCreateView />', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+
     const defaultState: Partial<RootState> = {
         integrations: fromJS(integrationsState),
         currentAccount: fromJS(account),
@@ -37,13 +48,22 @@ describe('<ContactFormCreateView />', () => {
 
     const renderView = ({state}: {state: Partial<RootState>}) => {
         return renderWithRouter(
-            <Provider store={mockStore(state)}>
-                <ContactFormCreateView />,
-            </Provider>
+            <QueryClientProvider client={testQueryClient}>
+                <Provider store={mockStore(state)}>
+                    <ContactFormCreateView />,
+                </Provider>
+            </QueryClientProvider>
         )
     }
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        testQueryClient.clear()
+        sdkMocks = await buildSDKMocks()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: sdkMocks.client,
+            isReady: true,
+        })
+
         jest.clearAllMocks()
         jest.mocked(useSupportedLocales).mockReturnValue(
             getLocalesResponseFixture
@@ -101,7 +121,13 @@ describe('<ContactFormCreateView />', () => {
             screen.getByText(/Name should be at least 2 characters long/i)
         })
 
-        it('should call API on submit', async () => {
+        it('should call API on submit to create a contact form', async () => {
+            mockResourceServerReplies(sdkMocks.mockedServer, {
+                createContactForm: 'success',
+            })
+
+            const spy = jest.spyOn(sdkMocks.client, 'createContactForm')
+
             const TEST_NAME = 'Test name'
             renderView({state: defaultState})
 
@@ -119,15 +145,24 @@ describe('<ContactFormCreateView />', () => {
                 expect(submitButton.className).not.toMatch(/disabled/i)
 
                 fireEvent.click(submitButton)
+            })
 
-                expect(mockCreateContactForm).toHaveBeenLastCalledWith({
-                    email_integration: {
-                        email: 'unverified@gorgias.io',
-                        id: 13,
-                    },
-                    default_locale: 'en-US',
-                    name: TEST_NAME,
-                })
+            await waitFor(() => {
+                expect(spy.mock.calls).toMatchInlineSnapshot(`
+                    [
+                      [
+                        null,
+                        {
+                          "default_locale": "en-US",
+                          "email_integration": {
+                            "email": "unverified@gorgias.io",
+                            "id": 13,
+                          },
+                          "name": "Test name",
+                        },
+                      ],
+                    ]
+                `)
             })
         })
     })
