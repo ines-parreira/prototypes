@@ -919,7 +919,6 @@ export const HelpCenterArticlesView: React.FC = () => {
                         (canSaveArticle || isEditorCodeViewActive)
                     }
                     title={<span>Unsaved changes</span>}
-                    style={{width: '100%', maxWidth: 400}}
                     saveText="Save"
                     discardText="Don't save"
                     editText="Back to editing"

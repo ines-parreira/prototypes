@@ -7,7 +7,7 @@ import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import SubjectLines from 'pages/settings/helpCenter/components/SubjectLines/SubjectLines'
 import settingsCss from 'pages/settings/settings.less'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
+import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import {
     ContactForm,
     UpdateContactFormDto,

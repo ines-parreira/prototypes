@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CloseTabModal /> matches snapshot 1`] = `
+exports[`<PendingChangesModal /> matches snapshot 1`] = `
 <body
   class="modal-open"
 >
@@ -20,20 +20,20 @@ exports[`<CloseTabModal /> matches snapshot 1`] = `
         <div
           class="modal-dialog centered"
           role="document"
-          style="width: 100%; max-width: 400px;"
+          style="width: 100%; max-width: 600px;"
         >
           <div
             class="modal-content"
           >
             <div
-              class="modal-header"
+              class="header modal-header"
             >
               <h5
                 class="modal-title"
               >
-                <span>
-                  Unsaved changes
-                </span>
+                <b>
+                  Save changes?
+                </b>
               </h5>
               <button
                 aria-label="Close"
@@ -48,9 +48,9 @@ exports[`<CloseTabModal /> matches snapshot 1`] = `
               </button>
             </div>
             <div
-              class="modal-body"
+              class="body modal-body"
             >
-              Are you sure?
+              Your changes to this page will be lost if you don't save them.
             </div>
             <div
               class="actions modal-footer"
@@ -60,10 +60,10 @@ exports[`<CloseTabModal /> matches snapshot 1`] = `
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper fill secondary medium"
+                  class="wrapper discardBtn ghost primary medium"
                   type="button"
                 >
-                  Back to editing
+                  Discard Changes
                 </button>
                 <div>
                   <button
@@ -71,14 +71,14 @@ exports[`<CloseTabModal /> matches snapshot 1`] = `
                     class="wrapper fill secondary medium"
                     type="button"
                   >
-                    Discard
+                    Back To Editing
                   </button>
                   <button
                     aria-disabled="false"
                     class="wrapper ml-3 confirmBtn fill primary medium"
                     type="button"
                   >
-                    Save
+                    Save Changes
                   </button>
                 </div>
               </div>

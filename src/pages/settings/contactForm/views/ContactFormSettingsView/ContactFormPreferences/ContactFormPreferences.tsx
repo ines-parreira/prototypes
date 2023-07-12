@@ -18,7 +18,7 @@ import {
 import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
 import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
+import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'

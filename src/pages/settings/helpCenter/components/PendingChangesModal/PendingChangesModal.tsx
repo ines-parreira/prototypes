@@ -1,10 +1,9 @@
 import {UnregisterCallback} from 'history'
 import React, {useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {HELP_CENTER_CLOSE_TAB_MODAL_MESSAGE} from '../../constants'
 import {CloseModal} from '../articles/CloseModal'
 
-type ClosePromptProps = {
+type PendingChangesModalProps = {
     when: boolean
     message?: string
     show?: boolean
@@ -13,14 +12,14 @@ type ClosePromptProps = {
     onSave: () => Promise<void>
 }
 
-const ClosePrompt = ({
+const PendingChangesModal = ({
     when,
-    message = HELP_CENTER_CLOSE_TAB_MODAL_MESSAGE,
+    message = `Your changes to this page will be lost if you don't save them.`,
     show = false,
     onContinueEditing,
     onDiscard,
     onSave,
-}: ClosePromptProps) => {
+}: PendingChangesModalProps) => {
     const history = useHistory()
 
     const [showPrompt, setShowPrompt] = useState(show)
@@ -58,11 +57,10 @@ const ClosePrompt = ({
     return (
         <CloseModal
             isOpen={showPrompt || show}
-            style={{width: '100%', maxWidth: 400}}
-            title={<span>Unsaved changes</span>}
-            saveText="Save"
-            discardText="Discard"
-            editText="Back to editing"
+            title={<b>Save changes?</b>}
+            saveText="Save Changes"
+            discardText="Discard Changes"
+            editText="Back To Editing"
             onDiscard={() => {
                 onDiscard?.()
                 onConfirm()
@@ -81,4 +79,4 @@ const ClosePrompt = ({
     )
 }
 
-export default ClosePrompt
+export default PendingChangesModal

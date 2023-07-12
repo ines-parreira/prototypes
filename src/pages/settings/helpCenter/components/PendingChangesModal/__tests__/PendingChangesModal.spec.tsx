@@ -1,7 +1,7 @@
 import React from 'react'
 import {act, fireEvent, render} from '@testing-library/react'
 
-import CloseTabModal from '../PendingChangesModal'
+import PendingChangesModal from '../PendingChangesModal'
 
 jest.mock('react-router-dom', () => ({
     useHistory: () => ({
@@ -10,7 +10,7 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-describe('<CloseTabModal />', () => {
+describe('<PendingChangesModal />', () => {
     const handleOnSave = jest.fn()
     const handleOnEdit = jest.fn()
     const handleOnDiscard = jest.fn()
@@ -21,9 +21,8 @@ describe('<CloseTabModal />', () => {
 
     it('matches snapshot', () => {
         const {container} = render(
-            <CloseTabModal
+            <PendingChangesModal
                 when={true}
-                message="Are you sure?"
                 show
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
@@ -39,9 +38,8 @@ describe('<CloseTabModal />', () => {
 
     it('calls the onSave callback', () => {
         const {getByRole} = render(
-            <CloseTabModal
+            <PendingChangesModal
                 when={true}
-                message="Are you sure?"
                 show
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
@@ -58,9 +56,8 @@ describe('<CloseTabModal />', () => {
 
     it('calls the onContinueEditing callback', () => {
         const {getByRole} = render(
-            <CloseTabModal
+            <PendingChangesModal
                 when={true}
-                message="Are you sure?"
                 show
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
@@ -77,9 +74,8 @@ describe('<CloseTabModal />', () => {
 
     it('calls the onDiscard callback', () => {
         const {getByRole} = render(
-            <CloseTabModal
+            <PendingChangesModal
                 when={true}
-                message="Are you sure?"
                 show
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}

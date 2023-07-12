@@ -145,7 +145,7 @@ describe('<HelpCenterPageWrapper />', () => {
         const spanishBtn = screen.getByText(/spanish/i)
         fireEvent.click(spanishBtn)
 
-        screen.getByText(/unsaved changes/i)
+        screen.getByText(/discard changes/i)
     })
 
     it('should trigger the onSave callback', () => {

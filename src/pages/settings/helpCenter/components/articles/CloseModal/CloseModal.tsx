@@ -10,7 +10,6 @@ import css from './CloseModal.less'
 export type ConfirmationModalProps = {
     children: React.ReactNode
     isOpen: boolean
-    style?: React.CSSProperties
     title: React.ReactNode
     saveText: string
     discardText: string
@@ -23,7 +22,6 @@ export type ConfirmationModalProps = {
 export const CloseModal = ({
     children,
     isOpen,
-    style,
     title,
     saveText,
     discardText,
@@ -38,15 +36,22 @@ export const CloseModal = ({
             isOpen={isOpen}
             header={title}
             role="dialog"
+            headerClassName={css.header}
             footerClassName={css.actions}
+            bodyClassName={css.body}
             footer={
                 <div className={css.footerWrapper}>
-                    <Button intent="secondary" onClick={onContinueEditing}>
-                        {editText}
+                    <Button
+                        className={css.discardBtn}
+                        fillStyle="ghost"
+                        // intent="secondary"
+                        onClick={onDiscard}
+                    >
+                        {discardText}
                     </Button>
                     <div>
-                        <Button intent="secondary" onClick={onDiscard}>
-                            {discardText}
+                        <Button intent="secondary" onClick={onContinueEditing}>
+                            {editText}
                         </Button>
                         {onSave && (
                             <Button
@@ -59,7 +64,7 @@ export const CloseModal = ({
                     </div>
                 </div>
             }
-            style={style}
+            style={{width: '100%', maxWidth: 600}}
             onClose={onContinueEditing}
         >
             {children}

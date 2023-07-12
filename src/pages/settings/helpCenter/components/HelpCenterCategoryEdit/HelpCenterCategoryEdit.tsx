@@ -819,7 +819,6 @@ export const HelpCenterCategoryEdit = ({
             <CloseModal
                 isOpen={hasPendingChanges && isAttemptingToClose}
                 title={<span>Unsaved changes</span>}
-                style={{width: '100%', maxWidth: 400}}
                 saveText="Save"
                 editText="Back to editing"
                 discardText="Don't save"
