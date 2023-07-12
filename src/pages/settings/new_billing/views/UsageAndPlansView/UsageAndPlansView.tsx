@@ -3,9 +3,10 @@ import {Link, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import classNames from 'classnames'
 import {
-    getCurrentAccountMeta,
     getCurrentSubscription,
+    hasCreditCard as getHasCreditCard,
     isTrialing,
+    shouldPayWithShopify as getShouldPayWithShopify,
 } from 'state/currentAccount/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -87,8 +88,8 @@ const UsageAndPlansView = ({
         return diff <= 3 && diff >= 0
     }, [trialingEnd])
 
-    const currentAccount = useAppSelector(getCurrentAccountMeta)
-    const hasCreditCard = currentAccount.get('hasCreditCard')
+    const hasCreditCard = useAppSelector(getHasCreditCard)
+    const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
     useEffect(() => {
         if (isTrialingSubscription) {
@@ -126,9 +127,13 @@ const UsageAndPlansView = ({
                     })
                 )
             } else if (showTrialBanner) {
+                const cta = shouldPayWithShopify
+                    ? `<a href="/integrations/shopify/billing/activate/" target="_blank" rel="noopener noreferrer"> activate Billing with Shopify</a>`
+                    : `<a href=${BILLING_PAYMENT_CARD_PATH}>add a payment method</a>`
+
                 void dispatch(
                     notify({
-                        message: `Your free trial is ending on ${trialPeriodEnd}. Please <a href="${BILLING_PAYMENT_CARD_PATH}">add a payment method</a> to continue using Gorgias.`,
+                        message: `Your free trial is ending on ${trialPeriodEnd}. Please ${cta} to continue using Gorgias.`,
                         allowHTML: true,
                         status: NotificationStatus.Warning,
                         style: NotificationStyle.Banner,
@@ -141,6 +146,7 @@ const UsageAndPlansView = ({
         automationProduct,
         dispatch,
         hasCreditCard,
+        shouldPayWithShopify,
         helpdeskProduct?.name,
         history,
         isTrialingSubscription,

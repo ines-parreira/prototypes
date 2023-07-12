@@ -102,7 +102,7 @@ describe('AutomationPlanSubscriptionDescription', () => {
             `You're on a Starter plan. Upgrade your Helpdesk subscription to unlock Automation.`
         )
         const starterDescription = screen.getByText(
-            'Please upgrade your Helpdesk plan to Basic, Pro, Advanced or Enteprise in order to subscribe to Automation.'
+            'Please upgrade your Helpdesk plan to Basic, Pro, Advanced or Enterprise in order to subscribe to Automation.'
         )
 
         expect(errorAlert).toBeInTheDocument()

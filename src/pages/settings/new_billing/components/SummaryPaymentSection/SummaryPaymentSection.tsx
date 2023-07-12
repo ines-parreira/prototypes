@@ -113,7 +113,11 @@ const SummaryPaymentSection = ({
                         showIcon: true,
                         allowHTML: true,
                         actionHTML: (
-                            <Link to="/integrations/shopify/billing/activate/">
+                            <Link
+                                to="/integrations/shopify/billing/activate/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 Reactivate billing with Shopify
                             </Link>
                         ),
@@ -130,7 +134,11 @@ const SummaryPaymentSection = ({
                         showIcon: true,
                         allowHTML: true,
                         actionHTML: (
-                            <Link to="/integrations/shopify/billing/activate/">
+                            <Link
+                                to="/integrations/shopify/billing/activate/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 Activate Billing with Shopify
                             </Link>
                         ),
@@ -205,7 +213,11 @@ const SummaryPaymentSection = ({
                             </i>
                             Payment with Shopify is canceled.
                         </div>
-                        <Link to="/integrations/shopify/billing/activate/">
+                        <Link
+                            to="/integrations/shopify/billing/activate/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             Reactivate billing with shopify
                         </Link>
                     </div>
@@ -236,7 +248,11 @@ const SummaryPaymentSection = ({
                             </i>
                             Payment with Shopify is inactive.
                         </div>
-                        <Link to="/integrations/shopify/billing/activate/">
+                        <Link
+                            to="/integrations/shopify/billing/activate/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             Activate Billing with Shopify
                         </Link>
                     </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
@@ -26,7 +26,17 @@ const SummaryFooter = ({
     hideSubscribeButton = false,
     handleConfirmTerms,
 }: SummaryFooterProps) => {
-    const [isTermsChecked, setIsTermsChecked] = React.useState(false)
+    const [isTermsChecked, setIsTermsChecked] = useState(false)
+    const [isSubscriptionUpdating, setIsSubscriptionUpdating] = useState(false)
+
+    const updateSubscription = () => {
+        setIsSubscriptionUpdating(true)
+        try {
+            void handleSubscribe?.()
+        } finally {
+            setIsSubscriptionUpdating(false)
+        }
+    }
 
     return (
         <div
@@ -91,10 +101,7 @@ const SummaryFooter = ({
                         </div>
                     )}
                     {anyDowngradedPlanSelected && !anyNewProductSelected && (
-                        <div
-                            className={css.donwngradeText}
-                            data-testid="downgradeText"
-                        >
+                        <div data-testid="downgradeText">
                             Changes to your subscription will apply starting on{' '}
                             <strong>{periodEnd}</strong>.
                         </div>
@@ -111,7 +118,8 @@ const SummaryFooter = ({
                         }
                         className={css.button}
                         id="update-subscription"
-                        onClick={handleSubscribe}
+                        onClick={updateSubscription}
+                        isLoading={isSubscriptionUpdating}
                     >
                         Update Subscription
                     </Button>

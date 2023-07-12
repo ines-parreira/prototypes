@@ -205,7 +205,7 @@ const AutomationPlanSubscriptionDescription = ({
                         </Alert>
                         <div className={css.starterDescription}>
                             Please upgrade your Helpdesk plan to Basic, Pro,
-                            Advanced or Enteprise in order to subscribe to
+                            Advanced or Enterprise in order to subscribe to
                             Automation.
                         </div>
                     </>
