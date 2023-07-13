@@ -63,6 +63,7 @@ export enum HelpdeskMessageMember {
     PeriodStart = 'HelpdeskMessage.periodStart',
     PeriodEnd = 'HelpdeskMessage.periodEnd',
     Channel = 'HelpdeskMessage.channel',
+    SenderId = 'HelpdeskMessage.senderId',
 }
 
 export enum TicketMessagesDimension {

@@ -32,7 +32,7 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     periodEnd: HelpdeskMessageMember.PeriodEnd,
     channels: TicketMember.FirstMessageChannel,
     integrations: TicketMember.Integration,
-    agents: TicketMember.AssigneeUserId,
+    agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
 }
 
