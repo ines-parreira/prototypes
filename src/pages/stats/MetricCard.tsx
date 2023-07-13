@@ -41,7 +41,7 @@ export default function MetricCard({
 
             {tip &&
                 (!data || isLoading ? (
-                    <Skeleton height={132} className={css.tooltip} />
+                    <Skeleton height={132} className={css.tooltip} inline />
                 ) : (
                     <div className={css.tooltip}>{tip}</div>
                 ))}
