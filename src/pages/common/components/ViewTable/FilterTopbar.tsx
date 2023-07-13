@@ -35,6 +35,7 @@ import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import Tooltip from 'pages/common/components/Tooltip'
 import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
 import history from 'pages/history'
 import withCancellableRequest, {
@@ -116,6 +117,8 @@ export const FilterTopbar = ({
     )
     const searchRank = useContext(SearchRankScenarioContext)
     const orderBy = activeView.get('order_by') as string
+    const isActiveViewValid =
+        (activeView.get('name') as string).trim().length > 0
     const fetchParams = useMemo(
         () =>
             orderBy
@@ -380,36 +383,55 @@ export const FilterTopbar = ({
                                                 onDisplayConfirmation,
                                                 elementRef,
                                             }) => (
-                                                <Button
-                                                    id={uid}
-                                                    isLoading={isSubmitting}
-                                                    isDisabled={
-                                                        !areFiltersValid
-                                                    }
-                                                    onClick={
-                                                        onDisplayConfirmation
-                                                    }
-                                                    onClickCapture={
-                                                        handleClickValidation
-                                                    }
-                                                    ref={elementRef}
-                                                >
-                                                    Update View
-                                                </Button>
+                                                <>
+                                                    <Button
+                                                        id={uid}
+                                                        isLoading={isSubmitting}
+                                                        isDisabled={
+                                                            !areFiltersValid ||
+                                                            !isActiveViewValid
+                                                        }
+                                                        onClick={
+                                                            onDisplayConfirmation
+                                                        }
+                                                        onClickCapture={
+                                                            handleClickValidation
+                                                        }
+                                                        ref={elementRef}
+                                                    >
+                                                        Update view
+                                                    </Button>
+                                                    {!isActiveViewValid && (
+                                                        <Tooltip target={uid}>
+                                                            You must give a name
+                                                            to your view before
+                                                            saving it.
+                                                        </Tooltip>
+                                                    )}
+                                                </>
                                             )}
                                         </ConfirmationPopover>
                                         <IconButton
+                                            id="arrow-save-view-button"
                                             onClick={() =>
                                                 toggleDropdownOpen(
                                                     !isDropdownOpen
                                                 )
                                             }
                                             isDisabled={
-                                                isSubmitting || !areFiltersValid
+                                                isSubmitting ||
+                                                !areFiltersValid ||
+                                                !isActiveViewValid
                                             }
                                         >
                                             arrow_drop_down
                                         </IconButton>
+                                        {!isActiveViewValid && (
+                                            <Tooltip target="arrow-save-view-button">
+                                                You must give a name to your
+                                                view before saving it.
+                                            </Tooltip>
+                                        )}
                                     </Group>
                                     <DropdownToggle tag="span" />
                                     <DropdownMenu right>
@@ -429,7 +451,9 @@ export const FilterTopbar = ({
                                 <Button
                                     isLoading={isSubmitting}
                                     isDisabled={
-                                        isSubmitting || !areFiltersValid
+                                        isSubmitting ||
+                                        !areFiltersValid ||
+                                        !isActiveViewValid
                                     }
                                     onClick={createView}
                                     type="submit"

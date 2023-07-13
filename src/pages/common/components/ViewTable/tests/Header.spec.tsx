@@ -305,5 +305,37 @@ describe('ViewTable::Header', () => {
                 )
             })
         })
+
+        describe('tooltip for missing view name', () => {
+            it('should display a tooltip when the name of the active view is empty', () => {
+                const {rerender} = render(
+                    <HeaderContainer
+                        {...minProps}
+                        activeView={editModeActiveView}
+                    />
+                )
+
+                rerender(
+                    <HeaderContainer
+                        {...minProps}
+                        activeView={editModeActiveView.merge({
+                            name: '',
+                        })}
+                    />
+                )
+
+                expect(
+                    screen.getByText(/Please add a name to your view/i)
+                ).toBeInTheDocument()
+            })
+
+            it('should not display a tooltip when the name of the view is filled', () => {
+                render(<HeaderContainer {...minProps} />)
+
+                expect(
+                    screen.queryByText(/Please add a name to your view/i)
+                ).not.toBeInTheDocument()
+            })
+        })
     })
 })

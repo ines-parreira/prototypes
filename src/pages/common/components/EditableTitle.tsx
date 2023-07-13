@@ -1,6 +1,13 @@
-import React, {Component, createRef, FocusEvent, KeyboardEvent} from 'react'
+import React, {
+    ComponentProps,
+    FocusEvent,
+    KeyboardEvent,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import classnames from 'classnames'
-import _noop from 'lodash/noop'
+import {useEffectOnce} from 'react-use'
 
 import TextInput from 'pages/common/forms/input/TextInput'
 import css from './EditableTitle.less'
@@ -15,112 +22,104 @@ type Props = {
     disabled?: boolean
     forceEditMode?: boolean
     onChange?: (value?: string) => void
-}
+} & ComponentProps<typeof TextInput>
 
-type State = {
-    editMode: boolean
-    value: string
-}
-export default class EditableTitle extends Component<Props, State> {
-    static defaultProps: Pick<Props, 'className' | 'update'> = {
-        className: '',
-        update: _noop,
-    }
-    ref = createRef<HTMLInputElement>()
+const EditableTitle = ({
+    className,
+    title,
+    placeholder,
+    update,
+    focus,
+    select,
+    disabled,
+    forceEditMode,
+    onChange,
+    isRequired,
+    ...props
+}: Props) => {
+    const ref = useRef<HTMLInputElement>(null)
 
-    constructor(props: Props) {
-        super(props)
-        this.state = {
-            value: props.title,
-            editMode: false,
-        }
-    }
+    const [value, setValue] = useState(title)
+    const [editMode, setEditMode] = useState(false)
 
-    componentDidMount() {
+    useEffectOnce(() => {
         setTimeout(() => {
-            if (this.props.select) {
-                this._select()
+            if (select) {
+                handleSelect()
             }
         }, 1)
-    }
+    })
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (this.state.value !== nextProps.title) {
-            this.setState({value: nextProps.title})
+    useEffect(() => {
+        if (value !== title) {
+            setValue(title)
 
             setTimeout(() => {
-                if (nextProps.select) {
-                    this._select()
+                if (select) {
+                    handleSelect()
                 } else {
-                    this._blur()
+                    blur()
                 }
             }, 1)
         }
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [title])
 
-    _select = () => this.ref?.current?.select()
+    const handleSelect = () => ref?.current?.select()
 
-    _blur = () => this.ref?.current?.blur()
+    const blur = () => ref?.current?.blur()
 
-    _onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault()
         }
     }
 
-    _onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' || e.key === 'Escape') {
             e.preventDefault()
 
-            this.setState({
-                editMode: false,
-            })
+            setEditMode(false)
 
             if (e.key === 'Enter') {
-                this._blur()
+                blur()
             }
         }
     }
 
-    _onChange = (value: string) => {
-        this.setState({value})
-
-        if (this.props.onChange) {
-            this.props.onChange(value)
-        }
+    const handleOnChange = (value: string) => {
+        setValue(value)
+        onChange?.(value)
     }
 
-    _onBlur = ({target: {value}}: FocusEvent<HTMLInputElement>) => {
-        this.setState({editMode: false})
-        this.props.update(value)
+    const onBlur = ({target: {value}}: FocusEvent<HTMLInputElement>) => {
+        setEditMode(false)
+        update(value)
     }
 
-    render() {
-        const {className, placeholder} = this.props
-
-        return (
-            <TextInput
-                className={classnames(css.component, {
-                    [css['edit-mode']]:
-                        this.state.editMode || this.props.forceEditMode,
-                    [css.isDisabled]: this.props.disabled,
-                })}
-                ref={this.ref}
-                tabIndex={1}
-                isDisabled={this.props.disabled}
-                inputClassName={classnames(className, css.input, {
-                    [css['edit-mode']]:
-                        this.state.editMode || this.props.forceEditMode,
-                })}
-                placeholder={placeholder}
-                autoFocus={this.props.focus}
-                value={this.state.value}
-                onChange={this._onChange}
-                onFocus={() => this.setState({editMode: true})}
-                onBlur={this._onBlur}
-                onKeyUp={this._onKeyUp}
-                onKeyDown={this._onKeyDown}
-            />
-        )
-    }
+    return (
+        <TextInput
+            className={classnames(css.component, {
+                [css['edit-mode']]: editMode || forceEditMode,
+                [css.isDisabled]: disabled,
+            })}
+            ref={ref}
+            tabIndex={1}
+            isDisabled={disabled}
+            inputClassName={classnames(className, css.input, {
+                [css['edit-mode']]: editMode || forceEditMode,
+            })}
+            placeholder={placeholder}
+            autoFocus={focus}
+            value={value}
+            onChange={handleOnChange}
+            onBlur={onBlur}
+            onKeyUp={onKeyUp}
+            onKeyDown={onKeyDown}
+            hasError={isRequired && !value.trim().length}
+            {...props}
+        />
+    )
 }
+
+export default EditableTitle

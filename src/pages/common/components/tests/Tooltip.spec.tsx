@@ -1,9 +1,14 @@
 import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
-import {UncontrolledTooltip, UncontrolledTooltipProps} from 'reactstrap'
+import {
+    Tooltip as ControlledTooltip,
+    UncontrolledTooltip,
+    UncontrolledTooltipProps,
+} from 'reactstrap'
 import * as reactstrap from 'reactstrap'
 
-import * as mobileUtils from '../../utils/mobile'
+import * as mobileUtils from 'pages/common/utils/mobile'
+
 import Tooltip from '../Tooltip'
 
 jest.mock('popper.js', () => {
@@ -116,6 +121,42 @@ describe('<Tooltip />', () => {
                 </Tooltip>
             )
             expect(container.firstChild).toMatchSnapshot()
+        })
+    })
+
+    describe('ControlledTooltip', () => {
+        const tooltipContent = 'Controlled tooltip'
+        beforeEach(() => {
+            jest.spyOn(reactstrap, 'Tooltip').mockImplementation(() => {
+                return (
+                    <div>{tooltipContent}</div>
+                ) as unknown as ControlledTooltip
+            })
+        })
+
+        it('should render the controlled tooltip if isOpen prop is provided', () => {
+            jest.useFakeTimers()
+            const {queryByText} = render(
+                <Tooltip target="target" isOpen>
+                    <span>This is a tooltip.</span>
+                </Tooltip>
+            )
+            jest.runAllTimers()
+
+            expect(queryByText(tooltipContent)).toBeInTheDocument()
+        })
+
+        it('should not render the controlled tooltip if isOpen prop is not provided', () => {
+            jest.useFakeTimers()
+            const {queryByText} = render(
+                <Tooltip target="target">
+                    <span>This is a tooltip.</span>
+                </Tooltip>
+            )
+            fireEvent.mouseOver(screen.getByTitle('target'))
+            jest.runAllTimers()
+
+            expect(queryByText(tooltipContent)).not.toBeInTheDocument()
         })
     })
 })

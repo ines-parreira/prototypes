@@ -132,8 +132,8 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
         >
           <input
             class="input title withEmojiPicker input edit-mode"
-            id="input-text-14"
-            name="input-text-14"
+            id="tooltip-title"
+            name="tooltip-title"
             placeholder="View name"
             tabindex="1"
             type="text"
@@ -178,8 +178,8 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
         >
           <input
             class="input title withEmojiPicker input edit-mode"
-            id="input-text-15"
-            name="input-text-15"
+            id="tooltip-title"
+            name="tooltip-title"
             placeholder="View name"
             tabindex="1"
             type="text"
@@ -224,8 +224,8 @@ exports[`ViewTable::Header emoji picker .render() should render emoji if decorat
         >
           <input
             class="input title withEmojiPicker input edit-mode"
-            id="input-text-13"
-            name="input-text-13"
+            id="tooltip-title"
+            name="tooltip-title"
             placeholder="View name"
             tabindex="1"
             type="text"
@@ -753,8 +753,8 @@ exports[`ViewTable::Header should render when view is in edit mode 1`] = `
         >
           <input
             class="input title withEmojiPicker input edit-mode"
-            id="input-text-4"
-            name="input-text-4"
+            id="tooltip-title"
+            name="tooltip-title"
             placeholder="View name"
             tabindex="1"
             type="text"

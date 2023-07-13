@@ -98,12 +98,6 @@ export class HeaderContainer extends React.Component<Props, State> {
         )
     }
 
-    _toggleDeleteConfirmation = () => {
-        this.setState({
-            askDeleteConfirmation: !this.state.askDeleteConfirmation,
-        })
-    }
-
     _selectEmoji = (emoji: string) => {
         const {updateView, activeView} = this.props
         updateView(
@@ -165,6 +159,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                     return (
                                         <div className={css.titleWrapper}>
                                             <EditableTitle
+                                                id="tooltip-title"
                                                 className={classnames(
                                                     css.title,
                                                     {
@@ -189,8 +184,22 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                         )
                                                     }
                                                 }}
+                                                isRequired
                                                 forceEditMode
                                             />
+                                            <Tooltip
+                                                isOpen={
+                                                    activeView.get(
+                                                        'name',
+                                                        ''
+                                                    ) === ''
+                                                }
+                                                placement="bottom"
+                                                target="tooltip-title"
+                                            >
+                                                Please add a name to your view
+                                                before saving it.
+                                            </Tooltip>
                                             {showEmojiPicker && (
                                                 <EmojiSelect
                                                     className={classnames(

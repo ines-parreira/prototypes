@@ -538,11 +538,12 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
               id="confirm-1"
               type="button"
             >
-              Update View
+              Update view
             </button>
             <button
               aria-disabled="false"
               class="wrapper wrapper fill primary medium right"
+              id="arrow-save-view-button"
               type="button"
             >
               <i

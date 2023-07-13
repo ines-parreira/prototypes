@@ -1,6 +1,10 @@
 import classnames from 'classnames'
 import React, {ReactNode, useMemo} from 'react'
-import {UncontrolledTooltip, UncontrolledTooltipProps} from 'reactstrap'
+import {
+    Tooltip as ControlledTooltip,
+    UncontrolledTooltip,
+    TooltipProps,
+} from 'reactstrap'
 
 import {isTouchDevice} from '../utils/mobile'
 
@@ -16,7 +20,7 @@ type Props = {
     boundariesElement?: string | Element
     arrowClassName?: string
     trigger?: Trigger[]
-} & RemoveIndex<UncontrolledTooltipProps>
+} & RemoveIndex<TooltipProps>
 
 export default function Tooltip({
     children,
@@ -25,6 +29,7 @@ export default function Tooltip({
     autohide = true,
     disabled = false,
     trigger,
+    isOpen,
     ...rest
 }: Props) {
     const tooltipDelay = useMemo(() => {
@@ -43,7 +48,7 @@ export default function Tooltip({
         return null
     }
 
-    return (
+    return typeof isOpen === 'undefined' ? (
         <UncontrolledTooltip
             className={classnames(css.tooltip, className, {
                 [css.noPointerEvents]: autohide,
@@ -55,5 +60,18 @@ export default function Tooltip({
         >
             {children}
         </UncontrolledTooltip>
+    ) : (
+        <ControlledTooltip
+            className={classnames(css.tooltip, className, {
+                [css.noPointerEvents]: autohide,
+            })}
+            {...rest}
+            autohide={autohide}
+            delay={tooltipDelay}
+            trigger={trigger ? trigger.join(' ') : trigger}
+            isOpen={isOpen}
+        >
+            {children}
+        </ControlledTooltip>
     )
 }
