@@ -111,7 +111,7 @@ export default function AppDetail() {
                     <Breadcrumb>
                         <BreadcrumbItem>
                             <Link to="/app/settings/integrations">
-                                All Apps
+                                All apps
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem>{appItem.title}</BreadcrumbItem>

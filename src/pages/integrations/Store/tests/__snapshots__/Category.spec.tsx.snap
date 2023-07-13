@@ -7,7 +7,7 @@ exports[`<Category /> should render correctly 1`] = `
   <h2
     class="title"
   >
-    Quality Assurance
+    Quality assurance
   </h2>
 </div>
 `;

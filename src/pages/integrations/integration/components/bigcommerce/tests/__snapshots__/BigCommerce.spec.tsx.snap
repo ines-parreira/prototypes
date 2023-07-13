@@ -20,7 +20,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            All Apps
+            All apps
           </a>
         </li>
         <li
@@ -275,7 +275,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            All Apps
+            All apps
           </a>
         </li>
         <li
@@ -422,7 +422,7 @@ exports[`<BigCommerce/> List should render 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            All Apps
+            All apps
           </a>
         </li>
         <li

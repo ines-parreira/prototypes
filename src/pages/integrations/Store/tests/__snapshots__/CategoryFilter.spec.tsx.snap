@@ -15,7 +15,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
           class="link active"
           to="?"
         >
-          All Categories
+          All categories
         </a>
       </li>
       <li
@@ -65,7 +65,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
           class="link"
           to="?category=Social%20Media"
         >
-          Social Media
+          Social media
         </a>
       </li>
       <li
@@ -95,7 +95,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
           class="link"
           to="?category=Shipping%20%26%20Fulfillment"
         >
-          Shipping & Fulfillment
+          Shipping & fulfillment
         </a>
       </li>
       <li
@@ -105,7 +105,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
           class="link"
           to="?category=Returns%20%26%20Exchanges"
         >
-          Returns & Exchanges
+          Returns & exchanges
         </a>
       </li>
       <li
@@ -115,7 +115,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
           class="link"
           to="?category=Loyalty%20%26%20Retention"
         >
-          Loyalty & Retention
+          Loyalty & retention
         </a>
       </li>
       <li
@@ -145,7 +145,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
           class="link"
           to="?category=BI%20%26%20Analytics"
         >
-          BI & Analytics
+          BI & analytics
         </a>
       </li>
       <li
@@ -155,7 +155,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
           class="link"
           to="?category=Data%20Management"
         >
-          Data Management
+          Data management
         </a>
       </li>
       <li
@@ -165,7 +165,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
           class="link"
           to="?category=Quality%20Assurance"
         >
-          Quality Assurance
+          Quality assurance
         </a>
       </li>
     </ul>

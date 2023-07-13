@@ -76,7 +76,7 @@ export function addRequiredPlanToIntegrations(
 }
 
 export default function All() {
-    useTitle('All Apps')
+    useTitle('All apps')
     const dispatch = useAppDispatch()
 
     const integrations = useAppSelector(getIntegrations)
@@ -184,7 +184,7 @@ export default function All() {
 
     return (
         <main className="full-width">
-            <PageHeader title="All Apps">
+            <PageHeader title="All apps">
                 <Search />
             </PageHeader>
             <div className={css.container}>

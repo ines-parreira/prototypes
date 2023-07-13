@@ -83,7 +83,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                 <Link
                   to="/app/settings/integrations"
                 >
-                  All Apps
+                  All apps
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -130,7 +130,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                         <a
                           to="/app/settings/integrations"
                         >
-                          All Apps
+                          All apps
                         </a>
                       </Link>
                     </li>
@@ -447,7 +447,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 <Link
                   to="/app/settings/integrations"
                 >
-                  All Apps
+                  All apps
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -494,7 +494,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                         <a
                           to="/app/settings/integrations"
                         >
-                          All Apps
+                          All apps
                         </a>
                       </Link>
                     </li>
@@ -1476,7 +1476,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                 <Link
                   to="/app/settings/integrations"
                 >
-                  All Apps
+                  All apps
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -1523,7 +1523,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                         <a
                           to="/app/settings/integrations"
                         >
-                          All Apps
+                          All apps
                         </a>
                       </Link>
                     </li>
@@ -1993,7 +1993,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                 <Link
                   to="/app/settings/integrations"
                 >
-                  All Apps
+                  All apps
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -2040,7 +2040,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                         <a
                           to="/app/settings/integrations"
                         >
-                          All Apps
+                          All apps
                         </a>
                       </Link>
                     </li>
@@ -2656,7 +2656,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                 <Link
                   to="/app/settings/integrations"
                 >
-                  All Apps
+                  All apps
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -2703,7 +2703,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                         <a
                           to="/app/settings/integrations"
                         >
-                          All Apps
+                          All apps
                         </a>
                       </Link>
                     </li>

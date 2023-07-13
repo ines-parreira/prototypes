@@ -21,7 +21,7 @@ export const CATEGORY_DATA: {
         title: 'SMS',
     },
     [Category.SOCIAL]: {
-        title: 'Social Media',
+        title: 'Social media',
     },
     [Category.ECOMMERCE]: {
         title: 'Ecommerce',
@@ -30,13 +30,13 @@ export const CATEGORY_DATA: {
         title: 'Subscriptions',
     },
     [Category.SHIPPING]: {
-        title: 'Shipping & Fulfillment',
+        title: 'Shipping & fulfillment',
     },
     [Category.RETURNS]: {
-        title: 'Returns & Exchanges',
+        title: 'Returns & exchanges',
     },
     [Category.LOYALTY]: {
-        title: 'Loyalty & Retention',
+        title: 'Loyalty & retention',
     },
     [Category.REVIEWS]: {
         title: 'Reviews & UGC',
@@ -45,13 +45,13 @@ export const CATEGORY_DATA: {
         title: 'Marketing',
     },
     [Category.ANALYTICS]: {
-        title: 'BI & Analytics',
+        title: 'BI & analytics',
     },
     [Category.DATA]: {
-        title: 'Data Management',
+        title: 'Data management',
     },
     [Category.QUALITY]: {
-        title: 'Quality Assurance',
+        title: 'Quality assurance',
     },
 }
 

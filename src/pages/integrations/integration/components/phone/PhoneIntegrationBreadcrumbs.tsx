@@ -43,7 +43,7 @@ export default function PhoneIntegrationBreadcrumbs({
         <Breadcrumb>
             {type === IntegrationType.WhatsApp && (
                 <BreadcrumbItem>
-                    <Link to={`/app/settings/integrations`}>All Apps</Link>
+                    <Link to={`/app/settings/integrations`}>All apps</Link>
                 </BreadcrumbItem>
             )}
             {integration && (
@@ -67,7 +67,7 @@ export default function PhoneIntegrationBreadcrumbs({
                     <BreadcrumbItem>
                         {type === IntegrationType.WhatsApp
                             ? 'Connect WhatsApp'
-                            : `Add ${name} Integration`}
+                            : `Add ${name} integration`}
                     </BreadcrumbItem>
                 </>
             )}

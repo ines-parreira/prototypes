@@ -32,7 +32,7 @@ export default function CategoryFilter() {
                                 [css.active]: !activeCategory,
                             })}
                         >
-                            All Categories
+                            All categories
                         </Link>
                     </li>
                     <li className={`${css.delimiter} ${css.item}`}>

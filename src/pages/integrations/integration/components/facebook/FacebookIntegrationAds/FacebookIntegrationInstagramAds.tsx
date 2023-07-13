@@ -68,7 +68,7 @@ class FacebookIntegrationInstagramAds extends Component<Props> {
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    All Apps
+                                    All apps
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

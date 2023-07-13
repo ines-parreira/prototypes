@@ -29,7 +29,7 @@ type Item = IntegrationListItem | AppListItem
 export const LOCAL_STORAGE_KEY = `integrations_connected_warning_discarded`
 
 export default function Mine() {
-    useTitle('My Apps')
+    useTitle('My apps')
     const dispatch = useAppDispatch()
 
     const installedIntegrations = useAppSelector(getIntegrationsList).filter(
@@ -72,7 +72,7 @@ export default function Mine() {
 
     return (
         <main className="full-width">
-            <PageHeader title="My Apps" />
+            <PageHeader title="My apps" />
             <div className={css.container}>
                 {!isAlertDiscarded && (
                     <Alert

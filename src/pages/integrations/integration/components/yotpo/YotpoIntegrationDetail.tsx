@@ -144,7 +144,7 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    All Apps
+                                    All apps
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

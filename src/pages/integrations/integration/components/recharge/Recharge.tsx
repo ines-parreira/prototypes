@@ -93,7 +93,7 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
                     <Breadcrumb>
                         <BreadcrumbItem>
                             <Link to="/app/settings/integrations">
-                                All Apps
+                                All apps
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active={!isIntegration}>
