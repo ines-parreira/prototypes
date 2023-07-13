@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {SyntheticEvent, useCallback, useEffect, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
@@ -28,6 +28,11 @@ function PhoneTicketSubmitButtons({
     const {isValid, onSubmit} = useSubmit(source, ticketId, agentId)
     const isDisabled = !device || !!call || !isValid
 
+    const handleSubmit = (event: SyntheticEvent) => {
+        event.preventDefault()
+        onSubmit()
+    }
+
     return (
         <div
             className={classnames(
@@ -40,7 +45,7 @@ function PhoneTicketSubmitButtons({
                 type="submit"
                 intent="primary"
                 isDisabled={isDisabled}
-                onClick={onSubmit}
+                onClick={handleSubmit}
             >
                 Call
             </Button>
