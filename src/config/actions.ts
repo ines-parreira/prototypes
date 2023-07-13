@@ -75,6 +75,11 @@ export const actions = [
         objectType: 'order',
     },
     {
+        name: BigCommerceActionType.RefundOrder,
+        label: 'Refund Order',
+        objectType: 'order',
+    },
+    {
         name: 'rechargeCancelSubscription',
         label: 'Cancel subscription',
         objectType: 'subscription',
