@@ -117,6 +117,10 @@ describe('whatsAppUtils', () => {
             const messages = [
                 {
                     channel: TicketChannel.WhatsApp,
+                    created_datetime: '2023-01-05T23:00',
+                },
+                {
+                    channel: TicketChannel.WhatsApp,
                     created_datetime: '2023-01-09T23:00',
                 },
             ] as TicketMessage[]

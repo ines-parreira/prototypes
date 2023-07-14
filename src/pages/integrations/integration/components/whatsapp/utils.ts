@@ -1,4 +1,5 @@
 import slackMessageParser, {Node, NodeType} from 'slack-message-parser'
+import {findLast} from 'lodash'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {TicketMessage} from 'models/ticket/types'
@@ -86,10 +87,10 @@ export const createApplyExternalTemplateAction = (
 export const isWhatsAppWindowOpen = (
     customerMessages: TicketMessage[]
 ): boolean => {
-    const lastCustomerWhatsAppMessage =
-        customerMessages?.find(
-            (message) => message.channel === TicketChannel.WhatsApp
-        ) ?? null
+    const lastCustomerWhatsAppMessage = findLast(
+        customerMessages,
+        ((message) => message.channel === TicketChannel.WhatsApp) ?? null
+    )
 
     if (!lastCustomerWhatsAppMessage) return false
 
