@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {Dispatch, useRef, useState} from 'react'
 import {useDebounce} from 'react-use'
 import classNames from 'classnames'
 import TextArea from 'pages/common/forms/TextArea'
@@ -13,19 +13,21 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import Button from 'pages/common/components/button/Button'
 import cssRefundOrderModal from '../RefundOrderModal.less'
+import {
+    BIGCOMMERCE_REFUND_ACTION_TYPE,
+    BigCommerceRefundActionType,
+} from '../reducer'
 import css from './RefundOrderFooter.less'
 
 type Props = {
-    setRefundReason: (refundReason: string) => void
     newOrderStatus: Maybe<string>
-    setNewOrderStatus: (newOrderStatus: Maybe<string>) => void
+    dispatchRefundOrderState: Dispatch<BIGCOMMERCE_REFUND_ACTION_TYPE>
     isLoading: boolean
 }
 
 export function RefundOrderFooter({
-    setRefundReason,
     newOrderStatus,
-    setNewOrderStatus,
+    dispatchRefundOrderState,
     isLoading,
 }: Props) {
     const [reasonForRefund, setReasonForRefund] = useState('')
@@ -37,7 +39,10 @@ export function RefundOrderFooter({
 
     useDebounce(
         () => {
-            setRefundReason(reasonForRefund)
+            dispatchRefundOrderState({
+                type: BigCommerceRefundActionType.SetRefundReason,
+                refundReason: reasonForRefund,
+            })
         },
         300,
         [reasonForRefund]
@@ -101,7 +106,10 @@ export function RefundOrderFooter({
                                             value: orderStatus,
                                         }}
                                         onClick={() => {
-                                            setNewOrderStatus(orderStatus)
+                                            dispatchRefundOrderState({
+                                                type: BigCommerceRefundActionType.SetNewOrderStatus,
+                                                newOrderStatus: orderStatus,
+                                            })
                                         }}
                                         shouldCloseOnSelect
                                     >
@@ -123,7 +131,10 @@ export function RefundOrderFooter({
                                     <Button
                                         fillStyle="ghost"
                                         onClick={() => {
-                                            setNewOrderStatus(null)
+                                            dispatchRefundOrderState({
+                                                type: BigCommerceRefundActionType.SetNewOrderStatus,
+                                                newOrderStatus: null,
+                                            })
                                             context!.onBlur()
                                         }}
                                     >

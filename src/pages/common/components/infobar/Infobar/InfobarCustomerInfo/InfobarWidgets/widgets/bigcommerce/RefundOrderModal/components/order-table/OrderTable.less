@@ -1,0 +1,136 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
+:local {
+    .productsTable {
+        thead {
+            th {
+                text-transform: uppercase;
+                font-weight: 600;
+                font-size: 11px;
+                line-height: 13px;
+                letter-spacing: 0.05em;
+                color: var(--neutral-grey-5);
+                border-bottom: 0;
+                box-shadow: inset 0px -1px 0px var(--neutral-grey-2);
+                padding-top: 0;
+
+                &:first-of-type {
+                    padding-left: 0;
+                }
+
+                &:last-of-type {
+                    padding-right: 0;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    font-weight: 500;
+                    font-size: 14px;
+                    color: var(--neutral-grey-6);
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    vertical-align: middle;
+                    min-height: 66px;
+
+                    border-bottom: 0;
+
+                    &:first-of-type {
+                        padding-left: 0;
+                    }
+
+                    &:last-of-type {
+                        padding-right: 0;
+                    }
+                }
+
+                border-top: 1px dashed var(--neutral-grey-3);
+
+                &.isGrouped {
+                    border-top: none;
+                }
+
+                &:last-of-type {
+                    border-bottom: 1px solid var(--neutral-grey-3);
+                }
+            }
+        }
+
+        th,
+        td {
+            font-family: 'Inter', sans-serif;
+        }
+    }
+
+    .totalsTable {
+        thead {
+            th {
+                text-transform: uppercase;
+                font-weight: 600;
+                font-size: 11px;
+                line-height: 13px;
+                letter-spacing: 0.05em;
+                color: var(--neutral-grey-5);
+                border-bottom: 0;
+                box-shadow: inset 0px -1px 0px var(--neutral-grey-2);
+
+                &:first-of-type {
+                    padding-left: 0;
+                }
+
+                &:last-of-type {
+                    padding-right: 0;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    font-weight: 500;
+                    font-size: 14px;
+                    color: var(--neutral-grey-6);
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    vertical-align: middle;
+                    min-height: 66px;
+
+                    border-bottom: 0;
+
+                    &:first-of-type {
+                        padding-left: 0;
+                    }
+
+                    &:last-of-type {
+                        padding-right: 0;
+                    }
+                }
+
+                &:last-of-type {
+                    border-bottom: 1px solid var(--neutral-grey-3);
+                }
+
+                &.noBorder {
+                    border-bottom: none;
+                }
+
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+
+        th,
+        td {
+            font-family: 'Inter', sans-serif;
+        }
+    }
+
+    .spinner {
+        margin-left: auto;
+        width: 20px;
+    }
+}

@@ -876,7 +876,8 @@ export async function getBigCommerceOrderRefundData({
             if (
                 !('data' in response.data) ||
                 !response.data?.data?.order?.id ||
-                !response.data?.data?.order_level_refund_data
+                !response.data?.data?.order_level_refund_data ||
+                !response.data?.data?.individual_items_level_refund_data
             ) {
                 throw new BigCommerceGeneralError(
                     BigCommerceGeneralErrorMessage.defaultError

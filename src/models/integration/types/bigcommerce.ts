@@ -205,6 +205,33 @@ export type BigCommerceProduct = {
     availability: 'available' | 'disabled'
 }
 
+export type BigCommerceOrderProduct = {
+    id: number
+    product_id: number
+    variant_id: number
+    name: string
+    sku: string
+    quantity: number
+    product_options: Array<{
+        id: number
+        display_value: string
+    }>
+    wrapping_name: string
+    base_wrapping_cost: string
+    base_price: string
+    base_total: string
+    applied_discounts: Array<{
+        amount: string
+    }>
+}
+
+export type BigCommerceOrderShipping = {
+    id: number
+    base_cost: string // Cost before discounts
+    cost_ex_tax: string // Cost after discounts
+    handling_cost_ex_tax: string
+}
+
 export interface BigCommerceProductModifiersBase<
     ValueData extends Record<string, unknown> | null
     // Type extends
@@ -390,21 +417,21 @@ export enum OrderStatusIDType {
 }
 
 export const OrderStatusList = [
-    'Incomplete',
     'Pending',
-    'Shipped',
+    'Awaiting Payment',
+    'Awaiting Fulfillment',
+    'Awaiting Shipment',
+    'Awaiting Pickup',
     'Partially Shipped',
-    'Refunded',
+    'Completed',
+    'Shipped',
     'Cancelled',
     'Declined',
-    'Awaiting Payment',
-    'Awaiting Pickup',
-    'Awaiting Shipment',
-    'Completed',
-    'Awaiting Fulfillment',
-    'Manual Verification Required',
+    'Refunded',
     'Disputed',
+    'Manual Verification Required',
     'Partially Refunded',
+    'Incomplete',
 ]
 
 export enum OrderPaymentMethodType {
@@ -417,6 +444,8 @@ export enum OrderPaymentMethodType {
 export type BigCommerceOrder = {
     id: number
     currency_code: string
+    bc_products: Array<BigCommerceOrderProduct>
+    bc_shipping: Array<BigCommerceOrderShipping>
 }
 
 // Errors
@@ -595,7 +624,7 @@ export type BigCommerceAddressResponse =
 export enum BigCommerceRefundType {
     IndividualItems = 'Individual items',
     EntireOrder = 'Entire order',
-    CustomAmount = 'Custom amount',
+    ManualAmount = 'Manual amount',
 }
 
 export type OrderLevelRefundData = {
@@ -604,9 +633,41 @@ export type OrderLevelRefundData = {
     available_amount: number
 }
 
+type BaseQuantityRefundData = {
+    initial_quantity: number
+    refunded_quantity: number
+    available_quantity: number
+}
+
+type BaseAmountRefundData = {
+    initial_amount: number
+    refunded_amount: number
+    available_amount: number
+}
+
+export type ProductItemRefundData = BaseQuantityRefundData & {
+    product_data: BigCommerceOrderProduct
+}
+
+export type GiftWrappingItemRefundData = BaseQuantityRefundData
+
+export type ShippingItemRefundData = BaseAmountRefundData & {
+    shipping_data: BigCommerceOrderShipping
+}
+
+export type HandlingItemRefundData = BaseAmountRefundData
+
+export type IndividualItemsLevelRefundData = {
+    PRODUCT: Record<string, ProductItemRefundData>
+    GIFT_WRAPPING: Record<string, GiftWrappingItemRefundData>
+    SHIPPING: Record<string, ShippingItemRefundData>
+    HANDLING: Record<string, HandlingItemRefundData>
+}
+
 export type CalculateOrderRefundDataResponse = {
     order: Maybe<BigCommerceOrder>
     order_level_refund_data: Maybe<OrderLevelRefundData>
+    individual_items_level_refund_data: Maybe<IndividualItemsLevelRefundData>
 }
 
 export type CalculateOrderRefundDataErrorResponse = {
@@ -620,13 +681,15 @@ export type CalculateOrderRefundDataNestedResponse =
     | {data?: CalculateOrderRefundDataResponse}
     | CalculateOrderRefundDataErrorResponse
 
+export type BigCommerceRefundItemsPayloadComponent = {
+    item_type: BigCommerceRefundableItemType
+    item_id: number
+    quantity?: Maybe<number>
+    amount?: Maybe<number>
+}
+
 export type BigCommerceRefundItemsPayload = {
-    items: Array<{
-        item_type: BigCommerceRefundableItemType
-        item_id: number
-        quantity?: Maybe<number>
-        amount?: Maybe<number>
-    }>
+    items: Array<BigCommerceRefundItemsPayloadComponent>
 }
 
 export enum BigCommerceRefundableItemType {
@@ -673,4 +736,16 @@ export type BigCommerceRefundOrderPayload = {
     items: BigCommerceRefundItemsPayload['items']
     reason?: Maybe<string>
     payments: BigCommerceRefundMethod
+}
+
+export type BigCommerceRefundOrderState = {
+    refundData: CalculateOrderRefundDataResponse
+    refundType: BigCommerceRefundType
+    refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>
+    productImageURLs: Record<string, Maybe<string>>
+    totalAmountToRefund: number
+    availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>
+    selectedPaymentOption: Maybe<BigCommerceRefundMethod>
+    refundReason: string
+    newOrderStatus: Maybe<string>
 }

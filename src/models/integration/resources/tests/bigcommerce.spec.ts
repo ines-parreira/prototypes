@@ -6,7 +6,7 @@ import {
 } from 'models/integration/resources/bigcommerce'
 import {
     bigCommerceAvailablePaymentOptionsDataResponseFixture,
-    bigCommerceCalculateOrderRefundDataResponseFixture,
+    bigCommerceCalculateOrderRefundDataResponseApiFixture,
     bigCommerceCustomerFixture,
 } from 'fixtures/bigcommerce'
 import {
@@ -26,8 +26,9 @@ describe('bigcommerce integration resource', () => {
     const customer = bigCommerceCustomerFixture()
     const orderId = 121
     const nestedCalculateOrderRefundDataResponse = {
-        data: bigCommerceCalculateOrderRefundDataResponseFixture,
+        data: bigCommerceCalculateOrderRefundDataResponseApiFixture,
     }
+
     const bigCommerceAvailablePaymentOptionsDataResponse =
         bigCommerceAvailablePaymentOptionsDataResponseFixture
 
@@ -44,7 +45,7 @@ describe('bigcommerce integration resource', () => {
                     orderId,
                 })
             ).resolves.toEqual(
-                bigCommerceCalculateOrderRefundDataResponseFixture
+                bigCommerceCalculateOrderRefundDataResponseApiFixture
             )
         })
 

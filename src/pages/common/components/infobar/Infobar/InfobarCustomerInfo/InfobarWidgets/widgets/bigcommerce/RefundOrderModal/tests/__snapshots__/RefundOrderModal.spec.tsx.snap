@@ -4,8 +4,8 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
 <body>
   <div />
   <div
-    aria-describedby="modal-3-desc"
-    aria-labelledby="modal-3-title"
+    aria-describedby="modal-6-desc"
+    aria-labelledby="modal-6-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -22,7 +22,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
           <div>
             <div
               class="title"
-              id="modal-3-title"
+              id="modal-6-title"
             >
               Refund Order #123
             </div>
@@ -40,39 +40,64 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
           class="formBody"
         >
           <div
+            class="flex"
+          >
+            <div
+              aria-checked="true"
+              aria-label="Entire order"
+              class="wrapper selected previewRadioButtonWrapper"
+              role="radio"
+              tabindex="0"
+            >
+              <div>
+                <label
+                  class="label label"
+                  for="Entire order"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="Entire order"
+                    role="checkbox"
+                    tabindex="-1"
+                    type="radio"
+                  />
+                  Entire order
+                </label>
+              </div>
+            </div>
+            <div
+              aria-checked="false"
+              aria-label="Manual amount"
+              class="wrapper previewRadioButtonWrapper"
+              role="radio"
+              tabindex="0"
+            >
+              <div>
+                <label
+                  class="label label"
+                  for="Manual amount"
+                >
+                  <input
+                    class="input"
+                    id="Manual amount"
+                    role="checkbox"
+                    tabindex="-1"
+                    type="radio"
+                  />
+                  Manual amount
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
             class="modalSection"
           >
             <p
               class="modalSectionHeader"
             >
-              Refund
+              Refundable items
             </p>
-            <span
-              class="customAmountRefundInputFieldWrapper wrapper group horizontal"
-            >
-              <span
-                class="prefix"
-              >
-                €
-              </span>
-              <input
-                class="input isAlignedRight"
-                max="Infinity"
-                min="0"
-                required=""
-                step="0.01"
-                type="number"
-                value="0.00"
-              />
-              <span
-                class="suffix"
-              >
-                 
-              </span>
-            </span>
-            <p
-              class="caption"
-            />
           </div>
           <div
             class="modalSection"
@@ -85,7 +110,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             <p
               class=""
             >
-              Select an amount to refund.
+              Select items to refund.
             </p>
           </div>
           <div
@@ -182,8 +207,8 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
     id="floating-ui-1"
   />
   <div
-    aria-describedby="modal-5-desc"
-    aria-labelledby="modal-5-title"
+    aria-describedby="modal-8-desc"
+    aria-labelledby="modal-8-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -200,7 +225,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
           <div>
             <div
               class="title"
-              id="modal-5-title"
+              id="modal-8-title"
             >
               Error
             </div>
@@ -216,7 +241,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
         </div>
         <div
           class="wrapper"
-          id="modal-5-desc"
+          id="modal-8-desc"
         >
           An unexpected error occurred. Please try again later.
         </div>
@@ -247,9 +272,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
 
 exports[`RefundOrderModal should render Refund Order - OK 1`] = `
 <body>
-  <div>
-    
-  </div>
+  <div />
   <div
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"
@@ -287,41 +310,534 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
           class="formBody"
         >
           <div
+            class="flex"
+          >
+            <div
+              aria-checked="true"
+              aria-label="Entire order"
+              class="wrapper selected previewRadioButtonWrapper"
+              role="radio"
+              tabindex="0"
+            >
+              <div>
+                <label
+                  class="label label"
+                  for="Entire order"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="Entire order"
+                    role="checkbox"
+                    tabindex="-1"
+                    type="radio"
+                  />
+                  Entire order
+                </label>
+              </div>
+            </div>
+            <div
+              aria-checked="false"
+              aria-label="Manual amount"
+              class="wrapper previewRadioButtonWrapper"
+              role="radio"
+              tabindex="0"
+            >
+              <div>
+                <label
+                  class="label label"
+                  for="Manual amount"
+                >
+                  <input
+                    class="input"
+                    id="Manual amount"
+                    role="checkbox"
+                    tabindex="-1"
+                    type="radio"
+                  />
+                  Manual amount
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
             class="modalSection"
           >
             <p
               class="modalSectionHeader"
             >
-              Refund
+              Refundable items
             </p>
-            <span
-              class="customAmountRefundInputFieldWrapper wrapper group horizontal"
+            <table
+              class="productsTable table table-hover"
             >
-              <span
-                class="prefix"
-              >
-                €
-              </span>
-              <input
-                class="input isAlignedRight"
-                max="Infinity"
-                min="0"
-                required=""
-                step="0.01"
-                type="number"
-                value="0.00"
-              />
-              <span
-                class="suffix"
-              >
-                 
-              </span>
-            </span>
-            <p
-              class="caption"
+              <thead>
+                <tr>
+                  <th>
+                    Product
+                  </th>
+                  <th
+                    class="text-right"
+                  >
+                    Price
+                  </th>
+                  <th>
+                    Qty
+                  </th>
+                  <th
+                    class="text-right"
+                  >
+                    Total
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    class="descriptionColLarge"
+                  >
+                    <div
+                      class="imgContainer"
+                    >
+                      <img
+                        alt="test 102"
+                        class="img"
+                        src="test-file-stub"
+                      />
+                    </div>
+                    <div
+                      class="legend"
+                    >
+                      <div>
+                        <a
+                          class="title"
+                          href="https://store-pk360c6rooa.mybigcommerce.com/manage/products/edit/245/"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          test 102
+                        </a>
+                      </div>
+                      <ul
+                        class="modifiersList"
+                      >
+                        <li
+                          class=""
+                        >
+                          blue
+                        </li>
+                        <li
+                          class=""
+                        >
+                          Yes
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td
+                    class="numberColLarge"
+                  >
+                    <div
+                      class=""
+                    >
+                      <span>
+                        €78.00
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="quantityColSmall"
+                    >
+                      <span>
+                        2
+                      </span>
+                    </div>
+                    <div
+                      class="refundedQuantityDescription"
+                    >
+                      <span>
+                        3/5 refunded
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="numberColSmall"
+                    >
+                      <span>
+                        €156.00
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="isGrouped"
+                >
+                  <td
+                    class="descriptionColLarge"
+                  >
+                    <div
+                      class="imgContainer"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        redeem
+                      </i>
+                    </div>
+                    <div
+                      class="legend"
+                    >
+                      <div>
+                        <a
+                          class="title"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <i
+                            class="material-icons"
+                          >
+                            subdirectory_arrow_right
+                          </i>
+                          
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="numberColLarge"
+                  >
+                    <div
+                      class=""
+                    >
+                      <span>
+                        €7.00
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="quantityColSmall"
+                    >
+                      <span>
+                        4
+                      </span>
+                    </div>
+                    <div
+                      class="refundedQuantityDescription"
+                    >
+                      <span>
+                        1/5 refunded
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="numberColSmall"
+                    >
+                      <span>
+                        €28.00
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="descriptionColLarge"
+                  >
+                    <div
+                      class="imgContainer"
+                    >
+                      <img
+                        alt="test 102"
+                        class="img"
+                        src="test-file-stub"
+                      />
+                    </div>
+                    <div
+                      class="legend isDisabled"
+                    >
+                      <div>
+                        <a
+                          class="title isDisabled"
+                          href="https://store-pk360c6rooa.mybigcommerce.com/manage/products/edit/245/"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          test 102
+                        </a>
+                      </div>
+                      <ul
+                        class="modifiersList"
+                      >
+                        <li
+                          class="isDisabled"
+                        >
+                          blue
+                        </li>
+                        <li
+                          class="isDisabled"
+                        >
+                          Yes
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td
+                    class="numberColLarge"
+                  >
+                    <div
+                      class="isDisabled"
+                    >
+                      <span>
+                        €78.00
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="quantityColSmall isDisabled"
+                    >
+                      <span>
+                        0
+                      </span>
+                    </div>
+                    <div
+                      class="refundedQuantityDescription"
+                    >
+                      <span>
+                        5/5 refunded
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="numberColSmall isDisabled"
+                    >
+                      <span>
+                        €0.00
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              class="totalsTable table table-hover"
             >
-              Available for refund: €1,230,000.89
-            </p>
+              <tbody>
+                <tr>
+                  <td>
+                    <span>
+                      Subtotal
+                    </span>
+                  </td>
+                  <td
+                    class="numberColSmall"
+                    colspan="3"
+                  >
+                    <span>
+                      €184.00
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="descriptionColThin"
+                  >
+                    <span
+                      class=""
+                    >
+                      Shipping
+                    </span>
+                  </td>
+                  <td
+                    class="numberColLarge"
+                  >
+                    <div
+                      class=""
+                    >
+                      <span>
+                        €9.11
+                      </span>
+                      <div
+                        class="refundedQuantityDescription"
+                      >
+                        <span>
+                          €5.89
+                        </span>
+                        /
+                        <span>
+                          €15.00
+                        </span>
+                         refunded
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="quantityColSmall"
+                    >
+                      <div
+                        class="isDisabled"
+                      >
+                        <label
+                          class="label label"
+                          for="checkbox-3"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-3"
+                            name="checkbox-3"
+                            type="checkbox"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="numberColSmall isDisabled"
+                    >
+                      <span>
+                        €0.00
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="descriptionColThin"
+                  >
+                    <span
+                      class=""
+                    >
+                      Handling
+                    </span>
+                  </td>
+                  <td
+                    class="numberColLarge"
+                  >
+                    <div
+                      class=""
+                    >
+                      <span>
+                        €6.10
+                      </span>
+                      <div
+                        class="refundedQuantityDescription"
+                      >
+                        <span>
+                          €3.90
+                        </span>
+                        /
+                        <span>
+                          €10.00
+                        </span>
+                         refunded
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="quantityColSmall"
+                    >
+                      <div
+                        class="isDisabled"
+                      >
+                        <label
+                          class="label label"
+                          for="checkbox-4"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-4"
+                            name="checkbox-4"
+                            type="checkbox"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="numberColSmall isDisabled"
+                    >
+                      <span>
+                        €0.00
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>
+                      Taxes
+                    </span>
+                  </td>
+                  <td
+                    class="numberColSmall"
+                    colspan="3"
+                  >
+                    —
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table
+              class="totalsTable table table-hover"
+            >
+              <tbody>
+                <tr>
+                  <td>
+                    <span>
+                      Refund total
+                    </span>
+                  </td>
+                  <td
+                    class="numberColSmall"
+                    colspan="3"
+                  >
+                    <span>
+                      €184.00
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span>
+                      Previously refunded
+                    </span>
+                  </td>
+                  <td
+                    class="numberColSmall"
+                    colspan="3"
+                  >
+                    <span>
+                      €4,567.00
+                    </span>
+                  </td>
+                </tr>
+                <tr
+                  class="noBorder"
+                >
+                  <td>
+                    <span>
+                      Available for refund
+                    </span>
+                  </td>
+                  <td
+                    class="numberColSmall"
+                    colspan="3"
+                  >
+                    <span>
+                      €1,230,000.89
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div
             class="modalSection"
@@ -334,7 +850,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             <p
               class=""
             >
-              Select an amount to refund.
+              Select items to refund.
             </p>
           </div>
           <div
@@ -430,6 +946,67 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
     data-floating-ui-portal=""
     id="floating-ui-0"
   />
+  <div
+    aria-describedby="modal-5-desc"
+    aria-labelledby="modal-5-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog small"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-5-title"
+            >
+              Error
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-5-desc"
+        >
+          An unexpected error occurred. Please try again later.
+        </div>
+        <div
+          class="wrapper wrapper"
+        >
+          <div
+            class="actions"
+          >
+            <div
+              class="childWrapper"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 `;
 
@@ -437,8 +1014,8 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
 <body>
   <div />
   <div
-    aria-describedby="modal-6-desc"
-    aria-labelledby="modal-6-title"
+    aria-describedby="modal-9-desc"
+    aria-labelledby="modal-9-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -455,7 +1032,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
           <div>
             <div
               class="title"
-              id="modal-6-title"
+              id="modal-9-title"
             >
               Refund Order #123
             </div>
@@ -473,39 +1050,64 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
           class="formBody"
         >
           <div
+            class="flex"
+          >
+            <div
+              aria-checked="true"
+              aria-label="Entire order"
+              class="wrapper selected previewRadioButtonWrapper"
+              role="radio"
+              tabindex="0"
+            >
+              <div>
+                <label
+                  class="label label"
+                  for="Entire order"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="Entire order"
+                    role="checkbox"
+                    tabindex="-1"
+                    type="radio"
+                  />
+                  Entire order
+                </label>
+              </div>
+            </div>
+            <div
+              aria-checked="false"
+              aria-label="Manual amount"
+              class="wrapper previewRadioButtonWrapper"
+              role="radio"
+              tabindex="0"
+            >
+              <div>
+                <label
+                  class="label label"
+                  for="Manual amount"
+                >
+                  <input
+                    class="input"
+                    id="Manual amount"
+                    role="checkbox"
+                    tabindex="-1"
+                    type="radio"
+                  />
+                  Manual amount
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
             class="modalSection"
           >
             <p
               class="modalSectionHeader"
             >
-              Refund
+              Refundable items
             </p>
-            <span
-              class="customAmountRefundInputFieldWrapper wrapper group horizontal"
-            >
-              <span
-                class="prefix"
-              >
-                €
-              </span>
-              <input
-                class="input isAlignedRight"
-                max="Infinity"
-                min="0"
-                required=""
-                step="0.01"
-                type="number"
-                value="0.00"
-              />
-              <span
-                class="suffix"
-              >
-                 
-              </span>
-            </span>
-            <p
-              class="caption"
-            />
           </div>
           <div
             class="modalSection"
@@ -518,7 +1120,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             <p
               class=""
             >
-              Select an amount to refund.
+              Select items to refund.
             </p>
           </div>
           <div
@@ -615,8 +1217,8 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
     id="floating-ui-2"
   />
   <div
-    aria-describedby="modal-8-desc"
-    aria-labelledby="modal-8-title"
+    aria-describedby="modal-11-desc"
+    aria-labelledby="modal-11-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -633,7 +1235,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
           <div>
             <div
               class="title"
-              id="modal-8-title"
+              id="modal-11-title"
             >
               Error
             </div>
@@ -649,7 +1251,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
         </div>
         <div
           class="wrapper"
-          id="modal-8-desc"
+          id="modal-11-desc"
         >
           The operation cannot be completed. You have too many queued requests at the moment. Please wait a moment and try again.
         </div>

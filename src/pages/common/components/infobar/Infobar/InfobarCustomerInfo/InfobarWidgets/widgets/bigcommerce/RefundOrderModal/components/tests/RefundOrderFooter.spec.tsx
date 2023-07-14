@@ -3,13 +3,13 @@ import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
 import {act} from '@testing-library/react-hooks'
 import {RefundOrderFooter} from '../RefundOrderFooter'
+import {BigCommerceRefundActionType} from '../../reducer'
 
 type Props = ComponentProps<typeof RefundOrderFooter>
 
 const initialProps: Props = {
-    setRefundReason: jest.fn(),
     newOrderStatus: null,
-    setNewOrderStatus: jest.fn(),
+    dispatchRefundOrderState: jest.fn(),
     isLoading: false,
 }
 
@@ -38,14 +38,12 @@ describe('RefundOrderFooter', () => {
         const refundReason = 'Test refund'
         const newOrderStatus = 'Partially Shipped'
 
-        const setRefundReasonMock = jest.fn()
-        const setNewOrderStatusMock = jest.fn()
+        const dispatchRefundOrderStateMock = jest.fn()
 
         render(
             <RefundOrderFooter
                 {...initialProps}
-                setRefundReason={setRefundReasonMock}
-                setNewOrderStatus={setNewOrderStatusMock}
+                dispatchRefundOrderState={dispatchRefundOrderStateMock}
             />
         )
 
@@ -56,9 +54,14 @@ describe('RefundOrderFooter', () => {
         userEvent.click(screen.getByRole('listbox'))
         userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
 
-        expect(setRefundReasonMock).toHaveBeenCalledTimes(1)
-        expect(setRefundReasonMock).toHaveBeenCalledWith(refundReason)
-        expect(setNewOrderStatusMock).toHaveBeenCalledTimes(1)
-        expect(setNewOrderStatusMock).toHaveBeenCalledWith(newOrderStatus)
+        expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(2)
+        expect(dispatchRefundOrderStateMock).toHaveBeenNthCalledWith(1, {
+            type: BigCommerceRefundActionType.SetRefundReason,
+            refundReason: refundReason,
+        })
+        expect(dispatchRefundOrderStateMock).toHaveBeenNthCalledWith(2, {
+            type: BigCommerceRefundActionType.SetNewOrderStatus,
+            newOrderStatus: newOrderStatus,
+        })
     })
 })

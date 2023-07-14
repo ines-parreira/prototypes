@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {Dispatch} from 'react'
 import classnames from 'classnames'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import Spinner from 'pages/common/components/Spinner'
 import {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceRefundMethod,
@@ -8,13 +9,15 @@ import {
 } from 'models/integration/types'
 import css from '../RefundOrderModal.less'
 import {buildPaymentOptionLabel} from '../utils'
+import {
+    BIGCOMMERCE_REFUND_ACTION_TYPE,
+    BigCommerceRefundActionType,
+} from '../reducer'
 
 type Props = {
     availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>
     selectedPaymentOption: Maybe<BigCommerceRefundMethod>
-    setSelectedPaymentOption: (
-        selectedPaymentOption: Maybe<BigCommerceRefundMethod>
-    ) => void
+    dispatchRefundOrderState: Dispatch<BIGCOMMERCE_REFUND_ACTION_TYPE>
     refundType: BigCommerceRefundType
     isLoading: boolean
     currencyCode: Maybe<string>
@@ -23,7 +26,7 @@ type Props = {
 export function RefundMethodPickerSection({
     availablePaymentOptionsData,
     selectedPaymentOption,
-    setSelectedPaymentOption,
+    dispatchRefundOrderState,
     refundType,
     isLoading,
     currencyCode,
@@ -31,9 +34,14 @@ export function RefundMethodPickerSection({
     return (
         <div className={css.modalSection}>
             <p className={css.modalSectionHeader}>Refund method</p>
+            {isLoading && (
+                <div className={css.spinnerWrapper}>
+                    <Spinner color="gloom" className={css.spinner} />
+                </div>
+            )}
             {!availablePaymentOptionsData && (
                 <p className={classnames({[css.disabled]: isLoading})}>
-                    {refundType === BigCommerceRefundType.CustomAmount
+                    {refundType === BigCommerceRefundType.ManualAmount
                         ? 'Select an amount to refund.'
                         : 'Select items to refund.'}
                 </p>
@@ -64,7 +72,10 @@ export function RefundMethodPickerSection({
                                     selectedPaymentOption === paymentOption
                                 }
                                 onClick={() => {
-                                    setSelectedPaymentOption(paymentOption)
+                                    dispatchRefundOrderState({
+                                        type: BigCommerceRefundActionType.SetSelectedPaymentOption,
+                                        selectedPaymentOption: paymentOption,
+                                    })
                                 }}
                             />
                         )

@@ -48,6 +48,16 @@
         width: 170px;
     }
 
+    .descriptionColLarge {
+        .descriptionCol();
+        width: 250px;
+    }
+
+    .descriptionColThin {
+        align-items: center;
+        width: 250px;
+    }
+
     .errorRow {
         color: var(--feedback-error);
         width: 450px;
@@ -64,12 +74,32 @@
         }
     }
 
+    .numberColSmall {
+        .numberCol();
+        min-width: 80px;
+    }
+
+    .numberColLarge {
+        .numberCol();
+        min-width: 130px;
+    }
+
     .centered {
         text-align: center;
     }
 
     .quantityCol {
         width: 90px;
+    }
+
+    .quantityColSmall {
+        width: 70px;
+    }
+
+    .refundedQuantityDescription {
+        .caption-regular();
+        font-size: 10px;
+        color: var(--neutral-grey-4);
     }
 
     .times {
@@ -103,6 +133,10 @@
             .body-regular();
             color: var(--neutral-grey-5);
         }
+
+        .isDisabled {
+            color: var(--neutral-grey-4);
+        }
     }
 
     .modifierButton {
@@ -118,5 +152,9 @@
         i {
             margin-right: @layout-spacing-xxs;
         }
+    }
+
+    .isDisabled {
+        color: var(--neutral-grey-4);
     }
 }

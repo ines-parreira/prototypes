@@ -8,12 +8,8 @@
         overflow-x: hidden;
     }
 
-    .checkboxWrapper {
-        padding: 16px;
-        box-sizing: border-box;
-        border: 1px solid var(--neutral-grey-3);
-        border-radius: 4px;
-        margin-top: @layout-spacing-s;
+    .flex {
+        display: flex;
     }
 
     .modalSection {
@@ -52,10 +48,13 @@
     }
 
     .spinnerWrapper {
+        padding-bottom: 10px;
+    }
+
+    .spinner {
         position: absolute;
-        height: 15%;
         width: 100%;
-        top: 40%;
+        height: 50px;
         left: 0;
     }
 
@@ -66,8 +65,11 @@
 
     .previewRadioButtonWrapper {
         width: 100%;
-        margin-right: @layout-spacing-s;
         margin-bottom: @layout-spacing-s;
+
+        &:first-of-type {
+            margin-right: @layout-spacing-s;
+        }
     }
 
     .textAreaWrapper {

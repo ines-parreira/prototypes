@@ -14,8 +14,8 @@ import {
     BigCommerceBillingAddress,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomProduct,
-    CalculateOrderRefundDataResponse,
     BigCommerceAvailablePaymentOptionsData,
+    CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 
 export const bigCommerceCustomerFixture = () => ({
@@ -731,7 +731,7 @@ export const bigCommerceOrderFixture = {
             cost_price_ex_tax: '0.0000',
             quantity_refunded: 0,
             wrapping_cost_tax: '0.0000',
-            base_wrapping_cost: '0.0000',
+            base_wrapping_cost: '7.0000',
             bin_picking_number: '',
             cost_price_inc_tax: '0.0000',
             fulfillment_source: '',
@@ -870,7 +870,7 @@ export const bigCommerceOrderFixture = {
             handling_cost_tax: '0.0000',
             base_handling_cost: '0.0000',
             shipping_zone_name: 'Romania',
-            handling_cost_ex_tax: '0.0000',
+            handling_cost_ex_tax: '10.0000',
             handling_cost_inc_tax: '0.0000',
             handling_cost_tax_class_id: 0,
         },
@@ -966,13 +966,51 @@ export const bigCommerceCustomProductFixture: BigCommerceCustomProduct = {
     image_url: '',
 }
 
-export const bigCommerceCalculateOrderRefundDataResponseFixture: CalculateOrderRefundDataResponse =
+export const bigCommerceCalculateOrderRefundDataResponseApiFixture: CalculateOrderRefundDataResponse =
     {
         order: bigCommerceOrderFixture,
         order_level_refund_data: {
             total_amount: 217.2,
             refunded_amount: 10,
             available_amount: 216.2,
+        },
+        individual_items_level_refund_data: {
+            PRODUCT: {
+                '2259792': {
+                    initial_quantity: 5,
+                    refunded_quantity: 3,
+                    available_quantity: 2,
+                    product_data: bigCommerceOrderFixture.bc_products[0],
+                },
+                '2259793': {
+                    initial_quantity: 5,
+                    refunded_quantity: 5,
+                    available_quantity: 0,
+                    product_data: bigCommerceOrderFixture.bc_products[1],
+                },
+            },
+            GIFT_WRAPPING: {
+                '2259792': {
+                    initial_quantity: 5,
+                    refunded_quantity: 1,
+                    available_quantity: 4,
+                },
+            },
+            SHIPPING: {
+                '114594': {
+                    initial_amount: 15.0,
+                    refunded_amount: 5.89,
+                    available_amount: 9.11,
+                    shipping_data: bigCommerceOrderFixture.bc_shipping[0],
+                },
+            },
+            HANDLING: {
+                '114594': {
+                    initial_amount: 10.0,
+                    refunded_amount: 3.9,
+                    available_amount: 6.1,
+                },
+            },
         },
     }
 

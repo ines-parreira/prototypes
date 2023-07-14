@@ -3,16 +3,13 @@ import React, {
     useContext,
     useEffect,
     useMemo,
+    useReducer,
     useState,
 } from 'react'
 import {
     BigCommerceActionType,
-    BigCommerceAvailablePaymentOptionsData,
     BigCommerceIntegration,
-    BigCommerceRefundItemsPayload,
-    BigCommerceRefundMethod,
     BigCommerceRefundType,
-    CalculateOrderRefundDataResponse,
     IntegrationType,
 } from 'models/integration/types'
 import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
@@ -24,6 +21,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import Button from 'pages/common/components/button/Button'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import GeneralErrorPopupModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal'
@@ -31,10 +29,9 @@ import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import Spinner from 'pages/common/components/Spinner'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {defaultBigCommerceRefundType} from './consts'
-import {CustomAmountRefundOrderModal} from './components/CustomAmountRefundOrderModal'
+import {ManualAmountRefundOrderModal} from './components/ManualAmountRefundOrderModal'
+import {EntireOrderRefundOrderModal} from './components/EntireOrderRefundOrderModal'
 import {RefundMethodPickerSection} from './components/RefundMethodPickerSection'
 import {RefundOrderFooter} from './components/RefundOrderFooter'
 import css from './RefundOrderModal.less'
@@ -45,6 +42,11 @@ import {
     formatAmount,
     onReset,
 } from './utils'
+import {
+    initialBigCommerceRefundOrderState,
+    bigcommerceRefundOrderReducer,
+    BigCommerceRefundActionType,
+} from './reducer'
 
 type Props = {
     integration: BigCommerceIntegration
@@ -65,32 +67,44 @@ export function RefundOrderModal({
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
-    const [refundType, setRefundType] = useState(defaultBigCommerceRefundType)
-    const [refundData, setRefundData] =
-        useState<CalculateOrderRefundDataResponse>({
-            order: null,
-            order_level_refund_data: null,
-        })
-    const [totalAmountToRefund, setTotalAmountToRefund] = useState(0)
-    const [refundItemsPayload, setRefundItemsPayload] =
-        useState<Maybe<BigCommerceRefundItemsPayload>>(null)
-    const [availablePaymentOptionsData, setAvailablePaymentOptionsData] =
-        useState<Maybe<BigCommerceAvailablePaymentOptionsData>>(null)
-    const [selectedPaymentOption, setSelectedPaymentOption] =
-        useState<Maybe<BigCommerceRefundMethod>>(null)
-    const [refundReason, setRefundReason] = useState('')
-    const [newOrderStatus, setNewOrderStatus] = useState<Maybe<string>>(null)
+    const [refundOrderState, dispatchRefundOrderState] = useReducer(
+        bigcommerceRefundOrderReducer,
+        initialBigCommerceRefundOrderState
+    )
+
+    const checkRefundItemsPayloadValidity = useCallback(() => {
+        if (!refundOrderState.refundItemsPayload) {
+            // Initial state
+            return true
+        }
+        return refundOrderState.refundItemsPayload?.items?.length
+            ? refundOrderState.refundItemsPayload.items.every(
+                  (item) =>
+                      (item?.amount && item.amount > 0) ||
+                      (item?.quantity && item.quantity > 0)
+              )
+            : false
+    }, [refundOrderState.refundItemsPayload])
+
+    const checkRefundModalValidity = useCallback(() => {
+        return (
+            checkRefundItemsPayloadValidity() &&
+            refundOrderState.availablePaymentOptionsData &&
+            refundOrderState.selectedPaymentOption &&
+            refundOrderState.availablePaymentOptionsData?.refund_methods?.find(
+                (paymentOption) =>
+                    paymentOption === refundOrderState.selectedPaymentOption
+            )
+        )
+    }, [
+        refundOrderState.availablePaymentOptionsData,
+        refundOrderState.selectedPaymentOption,
+        checkRefundItemsPayloadValidity,
+    ])
 
     const handleReset = useCallback(() => {
         onReset({
-            setRefundType,
-            setRefundData,
-            setTotalAmountToRefund,
-            setRefundItemsPayload,
-            setAvailablePaymentOptionsData,
-            setSelectedPaymentOption,
-            setRefundReason,
-            setNewOrderStatus,
+            dispatchRefundOrderState,
         })
     }, [])
 
@@ -105,7 +119,7 @@ export function RefundOrderModal({
             integrationId: integration.id,
             customerId,
             orderId,
-            setRefundData,
+            dispatchRefundOrderState,
             setIsLoading,
             setErrorMessage,
         }).catch(console.error)
@@ -116,49 +130,56 @@ export function RefundOrderModal({
             handleReset()
             shortcutManager.unpause()
         }
-        // Single run on mount
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [integration.id, customerId, orderId, handleReset])
 
     useEffect(() => {
-        if (refundItemsPayload && checkRefundItemsPayloadValidity()) {
+        if (
+            refundOrderState.refundItemsPayload &&
+            checkRefundItemsPayloadValidity()
+        ) {
             calculateAvailablePaymentOptionsData({
                 integrationId: integration.id,
                 customerId,
                 orderId,
-                refundItemsPayload,
-                setAvailablePaymentOptionsData,
+                refundItemsPayload: refundOrderState.refundItemsPayload,
+                dispatchRefundOrderState,
                 setIsLoading,
                 setErrorMessage,
             }).catch(console.error)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [refundItemsPayload])
+    }, [
+        integration.id,
+        customerId,
+        orderId,
+        refundOrderState.refundItemsPayload,
+        checkRefundItemsPayloadValidity,
+    ])
 
     useEffect(() => {
-        checkRefundModalValidity()
-            ? setTotalAmountToRefund(
-                  availablePaymentOptionsData?.total_refund_amount || 0
-              )
-            : setTotalAmountToRefund(0)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [refundItemsPayload, availablePaymentOptionsData, selectedPaymentOption])
+        dispatchRefundOrderState({
+            type: BigCommerceRefundActionType.SetTotalAmountToRefund,
+            totalAmountToRefund: checkRefundModalValidity()
+                ? refundOrderState.availablePaymentOptionsData
+                      ?.total_refund_amount || 0
+                : 0,
+        })
+    }, [refundOrderState.availablePaymentOptionsData, checkRefundModalValidity])
 
     const handleRefundOrder = () => {
         if (
             !data?.actionName ||
-            !refundItemsPayload ||
-            !selectedPaymentOption?.length ||
-            totalAmountToRefund <= 0 ||
+            !refundOrderState.refundItemsPayload ||
+            !refundOrderState.selectedPaymentOption?.length ||
+            refundOrderState.totalAmountToRefund <= 0 ||
             !checkRefundModalValidity()
         ) {
             return
         }
 
         logEvent(SegmentEvent.BigCommerceRefundOrderSubmitRefund, {
-            refundedAmount: totalAmountToRefund,
-            type: refundType,
-            method: selectedPaymentOption.map(
+            refundedAmount: refundOrderState.totalAmountToRefund,
+            type: refundOrderState.refundType,
+            method: refundOrderState.selectedPaymentOption.map(
                 (option) => option.provider_description
             ),
         })
@@ -169,44 +190,15 @@ export function RefundOrderModal({
             integration,
             customerId?.toString(),
             orderId,
-            refundType,
-            refundItemsPayload,
-            selectedPaymentOption,
-            refundReason,
-            newOrderStatus
+            refundOrderState.refundType,
+            refundOrderState.refundItemsPayload,
+            refundOrderState.selectedPaymentOption,
+            refundOrderState.refundReason,
+            refundOrderState.newOrderStatus
         )
 
         handleCancel('refund-order')
     }
-
-    const checkRefundItemsPayloadValidity = useCallback(() => {
-        if (!refundItemsPayload) {
-            // Initial state
-            return true
-        }
-        return refundItemsPayload?.items?.length
-            ? refundItemsPayload.items.every(
-                  (item) =>
-                      (item?.amount && item.amount > 0) ||
-                      (item?.quantity && item.quantity > 0)
-              )
-            : false
-    }, [refundItemsPayload])
-
-    const checkRefundModalValidity = useCallback(() => {
-        return (
-            checkRefundItemsPayloadValidity() &&
-            availablePaymentOptionsData &&
-            selectedPaymentOption &&
-            availablePaymentOptionsData?.refund_methods?.find(
-                (paymentOption) => paymentOption === selectedPaymentOption
-            )
-        )
-    }, [
-        availablePaymentOptionsData,
-        selectedPaymentOption,
-        checkRefundItemsPayloadValidity,
-    ])
 
     return (
         <GroupContext.Provider value={null}>
@@ -223,39 +215,89 @@ export function RefundOrderModal({
                         forceCloseButton
                     />
                     <div className={css.formBody}>
-                        {isLoading && (
-                            <Spinner
-                                color="gloom"
-                                className={css.spinnerWrapper}
-                            />
-                        )}
-                        {refundType === BigCommerceRefundType.CustomAmount && (
-                            <CustomAmountRefundOrderModal
-                                refundData={refundData}
-                                refundItemsPayload={refundItemsPayload}
-                                setRefundItemsPayload={setRefundItemsPayload}
-                                setSelectedPaymentOption={
-                                    setSelectedPaymentOption
+                        <div className={css.flex}>
+                            {[
+                                BigCommerceRefundType.EntireOrder,
+                                BigCommerceRefundType.ManualAmount,
+                            ].map((refund) => {
+                                return (
+                                    <PreviewRadioButton
+                                        role="checkbox"
+                                        className={
+                                            css.previewRadioButtonWrapper
+                                        }
+                                        key={refund}
+                                        value={refund}
+                                        label={refund}
+                                        isSelected={
+                                            refundOrderState.refundType ===
+                                            refund
+                                        }
+                                        isDisabled={
+                                            isLoading &&
+                                            !refundOrderState.refundData.order
+                                        }
+                                        onClick={() => {
+                                            dispatchRefundOrderState({
+                                                type: BigCommerceRefundActionType.SetRefundType,
+                                                refundType: refund,
+                                            })
+                                        }}
+                                    />
+                                )
+                            })}
+                        </div>
+                        {refundOrderState.refundType ===
+                            BigCommerceRefundType.ManualAmount && (
+                            <ManualAmountRefundOrderModal
+                                refundData={refundOrderState.refundData}
+                                refundItemsPayload={
+                                    refundOrderState.refundItemsPayload
+                                }
+                                dispatchRefundOrderState={
+                                    dispatchRefundOrderState
                                 }
                                 currencyCode={currencyCode}
                                 isLoading={isLoading}
                                 hasError={!checkRefundItemsPayloadValidity()}
                             />
                         )}
+                        {refundOrderState.refundType ===
+                            BigCommerceRefundType.EntireOrder && (
+                            <EntireOrderRefundOrderModal
+                                refundData={refundOrderState.refundData}
+                                refundItemsPayload={
+                                    refundOrderState.refundItemsPayload
+                                }
+                                availablePaymentOptionsData={
+                                    refundOrderState.availablePaymentOptionsData
+                                }
+                                productImageURLs={
+                                    refundOrderState.productImageURLs
+                                }
+                                dispatchRefundOrderState={
+                                    dispatchRefundOrderState
+                                }
+                                storeHash={integration.meta.store_hash}
+                                currencyCode={currencyCode}
+                                isLoading={isLoading}
+                            />
+                        )}
                         <RefundMethodPickerSection
                             availablePaymentOptionsData={
-                                availablePaymentOptionsData
+                                refundOrderState.availablePaymentOptionsData
                             }
-                            selectedPaymentOption={selectedPaymentOption}
-                            setSelectedPaymentOption={setSelectedPaymentOption}
-                            refundType={refundType}
+                            selectedPaymentOption={
+                                refundOrderState.selectedPaymentOption
+                            }
+                            refundType={refundOrderState.refundType}
+                            dispatchRefundOrderState={dispatchRefundOrderState}
                             isLoading={isLoading}
                             currencyCode={currencyCode}
                         />
                         <RefundOrderFooter
-                            setRefundReason={setRefundReason}
-                            newOrderStatus={newOrderStatus}
-                            setNewOrderStatus={setNewOrderStatus}
+                            newOrderStatus={refundOrderState.newOrderStatus}
+                            dispatchRefundOrderState={dispatchRefundOrderState}
                             isLoading={isLoading}
                         />
                     </div>
@@ -273,13 +315,13 @@ export function RefundOrderModal({
                             onClick={handleRefundOrder}
                             isDisabled={
                                 isLoading ||
-                                totalAmountToRefund <= 0 ||
+                                refundOrderState.totalAmountToRefund <= 0 ||
                                 !checkRefundModalValidity()
                             }
                         >
                             {`Refund ${formatAmount(
                                 currencyCode,
-                                totalAmountToRefund
+                                refundOrderState.totalAmountToRefund
                             )}`}
                         </Button>
                     </ModalFooter>

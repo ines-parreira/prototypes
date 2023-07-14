@@ -112,10 +112,43 @@ exports[`RefundMethodPickerSection snapshot renders the initial disabled state 1
     >
       Refund method
     </p>
+    <div
+      class="spinnerWrapper"
+    >
+      <svg
+        class="spinner gloom spinner"
+        preserveAspectRatio="xMidYMid meet"
+        role="status"
+        viewBox="0 0 20 20"
+        width="100%"
+      >
+        <circle
+          class="dot"
+          cx="10"
+          cy="10"
+          fill="none"
+          r="6"
+          stroke-width="2"
+        />
+        <circle
+          class="circle"
+          cx="10"
+          cy="10"
+          fill="none"
+          r="6"
+          stroke-width="2"
+        />
+        <span
+          class="sr-only"
+        >
+          Loading...
+        </span>
+      </svg>
+    </div>
     <p
       class="disabled"
     >
-      Select an amount to refund.
+      Select items to refund.
     </p>
   </div>
 </div>

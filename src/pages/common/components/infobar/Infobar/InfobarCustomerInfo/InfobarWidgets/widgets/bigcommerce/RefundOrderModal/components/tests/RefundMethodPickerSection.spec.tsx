@@ -5,13 +5,14 @@ import {BigCommerceRefundType} from 'models/integration/types'
 import {bigCommerceAvailablePaymentOptionsDataResponseFixture} from 'fixtures/bigcommerce'
 import {RefundMethodPickerSection} from '../RefundMethodPickerSection'
 import {defaultBigCommerceRefundType} from '../../consts'
+import {BigCommerceRefundActionType} from '../../reducer'
 
 type Props = ComponentProps<typeof RefundMethodPickerSection>
 
 const initialDisabledProps: Props = {
     availablePaymentOptionsData: null,
     selectedPaymentOption: null,
-    setSelectedPaymentOption: jest.fn(),
+    dispatchRefundOrderState: jest.fn(),
     refundType: defaultBigCommerceRefundType,
     isLoading: true,
     currencyCode: null,
@@ -20,7 +21,7 @@ const initialDisabledProps: Props = {
 const initialProps: Props = {
     availablePaymentOptionsData: null,
     selectedPaymentOption: null,
-    setSelectedPaymentOption: jest.fn(),
+    dispatchRefundOrderState: jest.fn(),
     refundType: BigCommerceRefundType.EntireOrder,
     isLoading: false,
     currencyCode: 'EUR',
@@ -30,8 +31,8 @@ const refundMethodsProps: Props = {
     availablePaymentOptionsData:
         bigCommerceAvailablePaymentOptionsDataResponseFixture,
     selectedPaymentOption: null,
-    setSelectedPaymentOption: jest.fn(),
-    refundType: BigCommerceRefundType.CustomAmount,
+    dispatchRefundOrderState: jest.fn(),
+    refundType: BigCommerceRefundType.ManualAmount,
     isLoading: false,
     currencyCode: 'EUR',
 }
@@ -72,22 +73,24 @@ describe('RefundMethodPickerSection', () => {
     })
 
     it('should test updating the selected refund method', () => {
-        const setSelectedPaymentOptionMock = jest.fn()
+        const dispatchRefundOrderStateMock = jest.fn()
 
         render(
             <RefundMethodPickerSection
                 {...refundMethodsProps}
-                setSelectedPaymentOption={setSelectedPaymentOptionMock}
+                dispatchRefundOrderState={dispatchRefundOrderStateMock}
             />
         )
 
         // Select second option
         userEvent.click(screen.getAllByRole('checkbox')[1])
 
-        expect(setSelectedPaymentOptionMock).toHaveBeenCalledTimes(1)
-        expect(setSelectedPaymentOptionMock).toHaveBeenCalledWith(
-            bigCommerceAvailablePaymentOptionsDataResponseFixture
-                .refund_methods[1]
-        )
+        expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(1)
+        expect(dispatchRefundOrderStateMock).toHaveBeenCalledWith({
+            type: BigCommerceRefundActionType.SetSelectedPaymentOption,
+            selectedPaymentOption:
+                bigCommerceAvailablePaymentOptionsDataResponseFixture
+                    .refund_methods[1],
+        })
     })
 })

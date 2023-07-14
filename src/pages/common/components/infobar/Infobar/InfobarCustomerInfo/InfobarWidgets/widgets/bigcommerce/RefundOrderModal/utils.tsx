@@ -1,17 +1,21 @@
+import React, {Dispatch, Fragment, ReactNode} from 'react'
 import _debounce from 'lodash/debounce'
-import {Map as ImmutableMap} from 'immutable'
-import React, {ReactNode, Fragment} from 'react'
+import {List as ImmutableList, Map as ImmutableMap} from 'immutable'
+
 import {
     BigCommerceActionType,
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
     BigCommerceIntegration,
+    BigCommerceOrderProduct,
+    BigCommerceRefundableItemType,
     BigCommerceRefundItemsPayload,
     BigCommerceRefundMethod,
     BigCommerceRefundMethodComponent,
     BigCommerceRefundType,
-    CalculateOrderRefundDataResponse,
+    GiftWrappingItemRefundData,
+    ProductItemRefundData,
 } from 'models/integration/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
@@ -21,50 +25,76 @@ import {
 import {StoreDispatch} from 'state/types'
 import {ActionDataPayload} from 'state/infobar/utils'
 import {executeAction} from 'state/infobar/actions'
-import {defaultBigCommerceRefundType} from './consts'
+import {fetchIntegrationProducts} from 'state/integrations/helpers'
+import {
+    BIGCOMMERCE_REFUND_ACTION_TYPE,
+    BigCommerceRefundActionType,
+} from './reducer'
 
 export const onReset = _debounce(
     ({
-        setRefundType,
-        setRefundData,
-        setTotalAmountToRefund,
-        setRefundItemsPayload,
-        setAvailablePaymentOptionsData,
-        setSelectedPaymentOption,
-        setRefundReason,
-        setNewOrderStatus,
+        dispatchRefundOrderState,
     }: {
-        setRefundType: (refundType: BigCommerceRefundType) => void
-        setRefundData: (refundData: CalculateOrderRefundDataResponse) => void
-        setTotalAmountToRefund: (totalAmountToRefund: number) => void
-        setRefundItemsPayload: (
-            refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>
-        ) => void
-        setAvailablePaymentOptionsData: (
-            availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>
-        ) => void
-        setSelectedPaymentOption: (
-            selectedPaymentOption: Maybe<BigCommerceRefundMethod>
-        ) => void
-        setRefundReason: (refundReason: string) => void
-        setNewOrderStatus: (newOrderStatus: Maybe<string>) => void
+        dispatchRefundOrderState: Dispatch<BIGCOMMERCE_REFUND_ACTION_TYPE>
     }) => {
-        setRefundType(defaultBigCommerceRefundType)
-        setRefundData({
-            order: null,
-            order_level_refund_data: null,
-        })
-        setTotalAmountToRefund(0)
-        setRefundItemsPayload(null)
-        setAvailablePaymentOptionsData(null)
-        setSelectedPaymentOption(null)
-        setRefundReason('')
-        setNewOrderStatus(null)
+        dispatchRefundOrderState({type: BigCommerceRefundActionType.ResetState})
 
         logEvent(SegmentEvent.BigCommerceRefundOrderResetModal)
     },
     250
 )
+
+/**
+ * Fetch image URLs for given products
+ */
+export const fetchProductImageURLs = async ({
+    integrationId,
+    productRefundData,
+}: {
+    integrationId: number
+    productRefundData: Record<string, ProductItemRefundData>
+}): Promise<Record<string, Maybe<string>>> => {
+    const productImageURLs: Record<string, Maybe<string>> = {}
+    const productsIds: number[] = []
+
+    Object.values(productRefundData).forEach(
+        (refundData: ProductItemRefundData) => {
+            productsIds.push(refundData.product_data.product_id)
+        }
+    )
+
+    const integrationProducts = await fetchIntegrationProducts(
+        integrationId,
+        productsIds
+    )
+
+    Object.entries(productRefundData).forEach(
+        ([refundedProductId, refundData]: [string, ProductItemRefundData]) => {
+            const productId = refundData.product_data.product_id
+            const variantId = refundData.product_data.variant_id
+
+            const productWithVariants = integrationProducts.find(
+                (product: ImmutableMap<string, any>) =>
+                    product.get('id') === productId
+            )
+
+            const product =
+                productWithVariants && productWithVariants.get('variants')
+                    ? (
+                          productWithVariants.get('variants') as ImmutableList<
+                              ImmutableMap<string, any>
+                          >
+                      ).find((variant) => variant?.get('id') === variantId)
+                    : null
+
+            productImageURLs[refundedProductId] =
+                product?.get('image_url') ||
+                productWithVariants?.get('image_url')
+        }
+    )
+
+    return productImageURLs
+}
 
 /**
  * Calculate refund of given order & initialize the modal.
@@ -73,14 +103,14 @@ export const calculateOrderRefund = async ({
     integrationId,
     customerId,
     orderId,
-    setRefundData,
+    dispatchRefundOrderState,
     setIsLoading,
     setErrorMessage,
 }: {
     integrationId: number
     customerId: number
     orderId: number
-    setRefundData: (refundData: CalculateOrderRefundDataResponse) => void
+    dispatchRefundOrderState: Dispatch<BIGCOMMERCE_REFUND_ACTION_TYPE>
     setIsLoading: (isLoading: boolean) => void
     setErrorMessage: (errorMessage: string) => void
 }) => {
@@ -92,8 +122,21 @@ export const calculateOrderRefund = async ({
             customerId,
             orderId,
         })
+        let productImageURLs: Record<string, Maybe<string>> = {}
 
-        setRefundData(data)
+        if (data.individual_items_level_refund_data?.PRODUCT) {
+            productImageURLs = await fetchProductImageURLs({
+                integrationId,
+                productRefundData:
+                    data.individual_items_level_refund_data.PRODUCT,
+            })
+        }
+
+        dispatchRefundOrderState({
+            type: BigCommerceRefundActionType.SetInitialRefundData,
+            refundData: data,
+            productImageURLs: productImageURLs,
+        })
 
         logEvent(SegmentEvent.BigCommerceRefundOrderOpen)
     } catch (error) {
@@ -116,7 +159,7 @@ export const calculateAvailablePaymentOptionsData = async ({
     customerId,
     orderId,
     refundItemsPayload,
-    setAvailablePaymentOptionsData,
+    dispatchRefundOrderState,
     setIsLoading,
     setErrorMessage,
 }: {
@@ -124,9 +167,7 @@ export const calculateAvailablePaymentOptionsData = async ({
     customerId: number
     orderId: number
     refundItemsPayload: BigCommerceRefundItemsPayload
-    setAvailablePaymentOptionsData: (
-        availablePaymentOptionsData: BigCommerceAvailablePaymentOptionsData
-    ) => void
+    dispatchRefundOrderState: Dispatch<BIGCOMMERCE_REFUND_ACTION_TYPE>
     setIsLoading: (isLoading: boolean) => void
     setErrorMessage: (errorMessage: string) => void
 }) => {
@@ -141,7 +182,10 @@ export const calculateAvailablePaymentOptionsData = async ({
                 payload: refundItemsPayload,
             })
 
-        setAvailablePaymentOptionsData(data)
+        dispatchRefundOrderState({
+            type: BigCommerceRefundActionType.SetAvailablePaymentOptionsData,
+            availablePaymentOptionsData: data,
+        })
 
         logEvent(SegmentEvent.BigCommerceRefundOrderOpen)
     } catch (error) {
@@ -209,10 +253,10 @@ export function calculateTotalOrderAmount(
  * Check whether an order is fully refunded.
  * */
 export function isOrderFullyRefunded(order: ImmutableMap<any, any>): boolean {
-    return (
-        calculateTotalOrderAmount(order) ===
-        parseFloat(order.get('refunded_amount'))
-    )
+    const orderTotal = calculateTotalOrderAmount(order)
+    const refundedAmount = parseFloat(order.get('refunded_amount'))
+
+    return orderTotal === refundedAmount || orderTotal - refundedAmount < 0.01
 }
 
 export function formatAmount(
@@ -254,5 +298,99 @@ export function buildPaymentOptionLabel(
                 }
             )}
         </div>
+    )
+}
+
+export function formatPrice(price: string | number): number {
+    // BigCommerce error: "amount field can not have more than 2 decimal digits"
+    // return Math.round((parseFloat(price) + Number.EPSILON) * 100) / 100
+    return (
+        Math.round(
+            ((typeof price === 'string' ? parseFloat(price) : price) +
+                Number.EPSILON) *
+                100
+        ) / 100
+    )
+}
+
+export function calculateProductPrice(
+    product: BigCommerceOrderProduct
+): number {
+    let initialTotalPriceFloat: number = parseFloat(product.base_total)
+    product.applied_discounts.map((discount) => {
+        initialTotalPriceFloat -= parseFloat(discount.amount)
+    })
+    return initialTotalPriceFloat / product.quantity
+}
+
+export function calculateGiftWrappingPrice(
+    product: BigCommerceOrderProduct
+): number {
+    return parseFloat(product.base_wrapping_cost) / product.quantity
+}
+
+export function calculateOrderSubtotal(
+    refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>,
+    productRefundData: Record<string, ProductItemRefundData>,
+    giftWrappingRefundData: Record<string, GiftWrappingItemRefundData>,
+    includeShippingHandling = false
+): number {
+    if (!refundItemsPayload?.items?.length) {
+        return 0
+    }
+    let subtotal = 0
+
+    refundItemsPayload.items.map((item) => {
+        if (item.item_type === BigCommerceRefundableItemType.product) {
+            const productData = productRefundData[String(item.item_id)]
+            const productAvailableQuantity =
+                productData?.available_quantity || 0
+            const productPrice = productData
+                ? calculateProductPrice(productData.product_data)
+                : 0
+
+            subtotal += productPrice * productAvailableQuantity
+        } else if (
+            item.item_type === BigCommerceRefundableItemType.gift_wrapping
+        ) {
+            const productData = productRefundData[String(item.item_id)]
+            const giftWrappingData =
+                giftWrappingRefundData[String(item.item_id)]
+            const giftWrappingAvailableQuantity =
+                giftWrappingData?.available_quantity || 0
+            const giftWrappingPrice = productData
+                ? calculateGiftWrappingPrice(productData.product_data)
+                : 0
+
+            subtotal += giftWrappingPrice * giftWrappingAvailableQuantity
+        } else if (
+            includeShippingHandling &&
+            item.item_type === BigCommerceRefundableItemType.shipping
+        ) {
+            subtotal += item?.amount || 0
+        } else if (
+            includeShippingHandling &&
+            item.item_type === BigCommerceRefundableItemType.handling
+        ) {
+            subtotal += item?.amount || 0
+        }
+    })
+
+    return subtotal
+}
+
+export function calculateOrderTotal(
+    refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>,
+    productRefundData: Record<string, ProductItemRefundData>,
+    giftWrappingRefundData: Record<string, GiftWrappingItemRefundData>,
+    availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>
+): number {
+    return (
+        calculateOrderSubtotal(
+            refundItemsPayload,
+            productRefundData,
+            giftWrappingRefundData,
+            true
+        ) + (availablePaymentOptionsData?.total_refund_tax_amount || 0)
     )
 }

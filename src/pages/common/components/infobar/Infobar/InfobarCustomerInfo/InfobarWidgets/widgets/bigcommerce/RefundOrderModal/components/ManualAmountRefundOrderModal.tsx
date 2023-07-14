@@ -1,37 +1,35 @@
-import React, {useState} from 'react'
-import classnames from 'classnames'
+import React, {Dispatch, useEffect, useState} from 'react'
 import {useDebounce} from 'react-use'
+import classnames from 'classnames'
+
 import {
     BigCommerceRefundableItemType,
-    BigCommerceRefundItemsPayload,
-    BigCommerceRefundMethod,
     CalculateOrderRefundDataResponse,
+    BigCommerceRefundItemsPayload,
 } from 'models/integration/types'
 import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import cssRefundOrderModal from '../RefundOrderModal.less'
+import {
+    BIGCOMMERCE_REFUND_ACTION_TYPE,
+    BigCommerceRefundActionType,
+} from '../reducer'
 import {formatAmount} from '../utils'
-import css from './CustomAmountRefundOrderModal.less'
+import cssRefundOrderModal from '../RefundOrderModal.less'
+import css from './ManualAmountRefundOrderModal.less'
 
 type Props = {
     refundData: CalculateOrderRefundDataResponse
     refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>
-    setRefundItemsPayload: (
-        refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>
-    ) => void
-    setSelectedPaymentOption: (
-        selectedPaymentOption: Maybe<BigCommerceRefundMethod>
-    ) => void
+    dispatchRefundOrderState: Dispatch<BIGCOMMERCE_REFUND_ACTION_TYPE>
     currencyCode: Maybe<string>
     isLoading: boolean
     hasError: boolean
 }
 
-export function CustomAmountRefundOrderModal({
+export function ManualAmountRefundOrderModal({
     refundData,
     refundItemsPayload,
-    setRefundItemsPayload,
-    setSelectedPaymentOption,
+    dispatchRefundOrderState,
     currencyCode,
     isLoading,
     hasError,
@@ -73,21 +71,31 @@ export function CustomAmountRefundOrderModal({
                 return
             }
 
-            setRefundItemsPayload({
-                items: [
-                    {
-                        item_type: BigCommerceRefundableItemType.order,
-                        item_id: refundData.order.id,
-                        amount: amountToRefund,
-                    },
-                ],
+            dispatchRefundOrderState({
+                type: BigCommerceRefundActionType.ManualAmount,
+                refundOrderItemPayload: {
+                    item_type: BigCommerceRefundableItemType.order,
+                    item_id: refundData.order.id,
+                    amount: amountToRefund,
+                },
             })
         } else {
             // Invalid amount
-            setRefundItemsPayload({items: []})
-            setSelectedPaymentOption(null)
+            dispatchRefundOrderState({
+                type: BigCommerceRefundActionType.SetRefundItemsPayloadEmptyList,
+            })
+            dispatchRefundOrderState({
+                type: BigCommerceRefundActionType.SetSelectedPaymentOption,
+                selectedPaymentOption: null,
+            })
         }
     }
+
+    useEffect(() => {
+        dispatchRefundOrderState({
+            type: BigCommerceRefundActionType.ResetRefundMethodState,
+        })
+    }, [dispatchRefundOrderState])
 
     useDebounce(
         () => {
@@ -105,7 +113,7 @@ export function CustomAmountRefundOrderModal({
         <div className={cssRefundOrderModal.modalSection}>
             <p className={cssRefundOrderModal.modalSectionHeader}>Refund</p>
             <NumberInput
-                className={classnames(css.customAmountRefundInputFieldWrapper, {
+                className={classnames(css.manualAmountRefundInputFieldWrapper, {
                     [cssRefundOrderModal.disabled]: isLoading,
                 })}
                 isRequired

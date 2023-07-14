@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CustomAmountRefundOrderModal should test behavior when the order is fully refunded - zero available amount left for refund 1`] = `
+exports[`ManualAmountRefundOrderModal should test behavior when the order is fully refunded - zero available amount left for refund 1`] = `
 <div>
   <div
     class="modalSection"
@@ -11,7 +11,7 @@ exports[`CustomAmountRefundOrderModal should test behavior when the order is ful
       Refund
     </p>
     <span
-      class="customAmountRefundInputFieldWrapper wrapper group horizontal"
+      class="manualAmountRefundInputFieldWrapper wrapper group horizontal"
     >
       <span
         class="prefix"
@@ -40,7 +40,7 @@ exports[`CustomAmountRefundOrderModal should test behavior when the order is ful
 </div>
 `;
 
-exports[`CustomAmountRefundOrderModal should test behavior when the order is fully refunded - zero available amount left for refund 2`] = `
+exports[`ManualAmountRefundOrderModal should test behavior when the order is fully refunded - zero available amount left for refund 2`] = `
 <div>
   <div
     class="modalSection"
@@ -51,7 +51,7 @@ exports[`CustomAmountRefundOrderModal should test behavior when the order is ful
       Refund
     </p>
     <span
-      class="customAmountRefundInputFieldWrapper wrapper hasError group horizontal"
+      class="manualAmountRefundInputFieldWrapper wrapper hasError group horizontal"
     >
       <span
         class="prefix"
@@ -82,7 +82,7 @@ exports[`CustomAmountRefundOrderModal should test behavior when the order is ful
 </div>
 `;
 
-exports[`CustomAmountRefundOrderModal snapshot renders the initial disabled state 1`] = `
+exports[`ManualAmountRefundOrderModal snapshot renders the initial disabled state 1`] = `
 <div>
   <div
     class="modalSection"
@@ -93,7 +93,7 @@ exports[`CustomAmountRefundOrderModal snapshot renders the initial disabled stat
       Refund
     </p>
     <span
-      class="customAmountRefundInputFieldWrapper disabled wrapper isDisabled group horizontal"
+      class="manualAmountRefundInputFieldWrapper disabled wrapper isDisabled group horizontal"
     >
       <span
         class="prefix"
@@ -123,7 +123,7 @@ exports[`CustomAmountRefundOrderModal snapshot renders the initial disabled stat
 </div>
 `;
 
-exports[`CustomAmountRefundOrderModal snapshot renders the initial state 1`] = `
+exports[`ManualAmountRefundOrderModal snapshot renders the initial state 1`] = `
 <div>
   <div
     class="modalSection"
@@ -134,7 +134,7 @@ exports[`CustomAmountRefundOrderModal snapshot renders the initial state 1`] = `
       Refund
     </p>
     <span
-      class="customAmountRefundInputFieldWrapper wrapper group horizontal"
+      class="manualAmountRefundInputFieldWrapper wrapper group horizontal"
     >
       <span
         class="prefix"
