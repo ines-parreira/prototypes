@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent, screen} from '@testing-library/react'
+import {render, fireEvent, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
@@ -10,6 +10,7 @@ import {
     basicMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
 import SummaryFooter, {SummaryFooterProps} from '../SummaryFooter'
+import {BILLING_BASE_PATH} from '../../../constants'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
@@ -25,6 +26,19 @@ const store = mockedStore({
         products,
     }),
 })
+
+const mockHistoryPush = jest.fn()
+
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useHistory: () => ({
+                push: mockHistoryPush,
+            }),
+        } as Record<string, unknown>)
+)
 
 describe('SummaryFooter', () => {
     const mockHandleSubscribe = jest.fn()
@@ -85,7 +99,7 @@ describe('SummaryFooter', () => {
         expect(button).toBeEnabled()
     })
 
-    it('calls handleSubscribe when the update subscription button is clicked', () => {
+    it('calls handleSubscribe when the update subscription button is clicked', async () => {
         render(
             <Provider store={store}>
                 <SummaryFooter {...props} anyNewProductSelected={false} />
@@ -93,6 +107,10 @@ describe('SummaryFooter', () => {
         )
         const button = screen.getByText('Update Subscription')
         fireEvent.click(button)
+
         expect(mockHandleSubscribe).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+        })
     })
 })

@@ -28,9 +28,16 @@ export type ProductCardProps = {
     product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
     usage?: CurrentUsagePerProduct | null
     banner?: string
+    isDisabled: boolean
 }
 
-const ProductCard = ({type, product, usage, banner = ''}: ProductCardProps) => {
+const ProductCard = ({
+    type,
+    product,
+    usage,
+    banner = '',
+    isDisabled,
+}: ProductCardProps) => {
     const cheapestPrices = useAppSelector(getCheapestProductPrices)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const history = useHistory()
@@ -103,6 +110,7 @@ const ProductCard = ({type, product, usage, banner = ''}: ProductCardProps) => {
                 </div>
                 <Button
                     intent="primary"
+                    isDisabled={isDisabled}
                     onClick={() =>
                         history.push(`${BILLING_PROCESS_PATH}/${type}`)
                     }
@@ -111,7 +119,7 @@ const ProductCard = ({type, product, usage, banner = ''}: ProductCardProps) => {
                 </Button>
             </div>
         )
-    }, [cheapestPrices, type, currency, interval, history])
+    }, [cheapestPrices, type, currency, interval, history, isDisabled])
 
     const updateContainer = useMemo(
         () => (

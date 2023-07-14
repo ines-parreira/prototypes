@@ -1,8 +1,11 @@
 import React, {useState} from 'react'
 import classNames from 'classnames'
 
+import {useHistory} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 
+import {reportError} from 'utils/errors'
+import {BILLING_BASE_PATH} from '../../constants'
 import css from './SummaryFooter.less'
 
 export type SummaryFooterProps = {
@@ -10,7 +13,7 @@ export type SummaryFooterProps = {
     anyProductChanged: boolean
     anyNewProductSelected: boolean
     anyDowngradedPlanSelected: boolean
-    handleSubscribe?: () => void
+    handleSubscribe?: () => Promise<[void, void]>
     periodEnd: string
     hideSubscribeButton?: boolean
     handleConfirmTerms?: (termsChecked: boolean) => void
@@ -28,13 +31,17 @@ const SummaryFooter = ({
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const [isSubscriptionUpdating, setIsSubscriptionUpdating] = useState(false)
+    const history = useHistory()
 
-    const updateSubscription = () => {
+    const updateSubscription = async () => {
         setIsSubscriptionUpdating(true)
         try {
-            void handleSubscribe?.()
+            await handleSubscribe?.()
+        } catch (error) {
+            reportError(error)
         } finally {
             setIsSubscriptionUpdating(false)
+            history.push(BILLING_BASE_PATH)
         }
     }
 

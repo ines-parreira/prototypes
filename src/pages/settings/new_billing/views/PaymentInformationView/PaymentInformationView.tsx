@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,32 +9,48 @@ import {
     getContact,
     getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
-import {PlanInterval} from 'models/billing/types'
+import {
+    AutomationPrice,
+    HelpdeskPrice,
+    PlanInterval,
+    ProductType,
+} from 'models/billing/types'
 import {BillingContact} from 'state/billing/types'
 import {countries} from 'config/countries'
 import Loader from 'pages/common/components/Loader/Loader'
 import Tooltip from 'pages/common/components/Tooltip'
+import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'
 import {
     BILLING_INFORMATION_PATH,
     BILLING_PAYMENT_FREQUENCY_PATH,
 } from '../../constants'
+import {isAAOLegacyPrice} from '../../../../../models/billing/utils'
 import css from './PaymentInformationView.less'
 
 type PaymentInformationViewProps = {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    helpdeskProduct?: HelpdeskPrice
+    automationProduct?: AutomationPrice
 }
 
 const PaymentInformationView = ({
     setIsModalOpen,
+    helpdeskProduct,
+    automationProduct,
 }: PaymentInformationViewProps) => {
     const dispatch = useAppDispatch()
 
     const interval =
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
+    const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
+    const isAAOLegacy =
+        !!automationProduct &&
+        isAAOLegacyPrice(automationProduct, ProductType.Automation)
 
     const contact = useAppSelector(getContact)?.toJS() as BillingContact
     const card = useAppSelector(creditCard)
+    const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
     const hasAddress = !!contact?.shipping
     const address = contact?.shipping?.address
@@ -81,6 +97,55 @@ const PaymentInformationView = ({
         void getBillingShippingContact()
     }, [dispatch, contact?.email])
 
+    const changeFrequency = useMemo(() => {
+        let toolTipContent
+
+        if (interval === PlanInterval.Month) {
+            if (isSubscribedToHelpdeskStarter) {
+                toolTipContent =
+                    'To change billing frequency, upgrade your Helpdesk plan to Basic or higher'
+            } else if (isAAOLegacy) {
+                toolTipContent =
+                    'To change billing frequency, update Automation to a non-legacy plan'
+            } else {
+                return (
+                    <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>
+                        Change Frequency
+                    </Link>
+                )
+            }
+        } else {
+            toolTipContent = (
+                <>
+                    To switch from yearly to monthly billing, please{' '}
+                    <span
+                        className={css.link}
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        get in touch
+                    </span>{' '}
+                    with our Billing team.
+                </>
+            )
+        }
+
+        return (
+            <>
+                <div className={css.disabledText} id="change-frequency">
+                    Change Frequency
+                </div>
+                <Tooltip
+                    target="change-frequency"
+                    placement="bottom-start"
+                    className={css.tooltip}
+                    autohide={false}
+                >
+                    {toolTipContent}
+                </Tooltip>
+            </>
+        )
+    }, [interval, isAAOLegacy, isSubscribedToHelpdeskStarter, setIsModalOpen])
+
     return (
         <div className={css.container}>
             <div>
@@ -104,73 +169,48 @@ const PaymentInformationView = ({
                     <div className={css.description}>
                         All plans are billed <strong>{interval}ly</strong>
                     </div>
-                    {interval === PlanInterval.Month ? (
-                        <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>
-                            Change Frequency
-                        </Link>
-                    ) : (
-                        <>
-                            <div
-                                className={css.disabledLink}
-                                id="changeFrequency"
-                            >
-                                Change Frequency
-                            </div>
-                            <Tooltip
-                                target="changeFrequency"
-                                placement="bottom-start"
-                                className={css.tooltip}
-                                autohide={false}
-                            >
-                                To switch from yearly to monthly billing, please{' '}
-                                <span
-                                    className={css.link}
-                                    onClick={() => setIsModalOpen(true)}
-                                >
-                                    get in touch
-                                </span>{' '}
-                                with our Billing team.
-                            </Tooltip>
-                        </>
-                    )}
+                    {changeFrequency}
                 </div>
             </div>
-            <div>
-                <div className={css.title}>
-                    <i className="material-icons">person_pin_circle</i>
-                    Billing address
+            {!shouldPayWithShopify && (
+                <div>
+                    <div className={css.title}>
+                        <i className="material-icons">person_pin_circle</i>
+                        Billing address
+                    </div>
+                    <div className={css.card}>
+                        {isBillingAddressFetched ? (
+                            <Loader minHeight="auto" />
+                        ) : (
+                            <>
+                                <div className={css.description}>
+                                    <strong>Billing email:</strong>{' '}
+                                    {contact?.email}
+                                    {!hasAddress ? (
+                                        <div>
+                                            <strong>No billing address</strong>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <strong>Company name:</strong>{' '}
+                                            {contact?.shipping.name}
+                                            <br />
+                                            <strong>Phone number:</strong>{' '}
+                                            {contact?.shipping.phone}
+                                            <br />
+                                            <strong>Address:</strong>{' '}
+                                            {displayedAddress} - {country}
+                                        </div>
+                                    )}
+                                </div>
+                                <Link to={BILLING_INFORMATION_PATH}>
+                                    {hasAddress ? 'Update' : 'Add'} address
+                                </Link>
+                            </>
+                        )}
+                    </div>
                 </div>
-                <div className={css.card}>
-                    {isBillingAddressFetched ? (
-                        <Loader minHeight="auto" />
-                    ) : (
-                        <>
-                            <div className={css.description}>
-                                <strong>Billing email:</strong> {contact?.email}
-                                {!hasAddress ? (
-                                    <div>
-                                        <strong>No billing address</strong>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <strong>Company name:</strong>{' '}
-                                        {contact?.shipping.name}
-                                        <br />
-                                        <strong>Phone number:</strong>{' '}
-                                        {contact?.shipping.phone}
-                                        <br />
-                                        <strong>Address:</strong>{' '}
-                                        {displayedAddress} - {country}
-                                    </div>
-                                )}
-                            </div>
-                            <Link to={BILLING_INFORMATION_PATH}>
-                                {hasAddress ? 'Update' : 'Add'} address
-                            </Link>
-                        </>
-                    )}
-                </div>
-            </div>
+            )}
         </div>
     )
 }

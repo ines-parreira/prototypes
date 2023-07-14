@@ -2,8 +2,6 @@ import {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
 
-import history from 'pages/history'
-import {BILLING_BASE_PATH} from 'pages/settings/new_billing/constants'
 import {Subscription} from '../billing/types'
 import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../notifications/actions'
@@ -126,27 +124,17 @@ export function updateSubscription(subscription: Subscription) {
 
 export function updateSubscriptionsForPlans(
     subscription: Subscription,
-    notifications: Notification[],
-    errorNotification: Notification
+    notifications: Notification[]
 ) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
-            .put<Record<string, string>>(
-                '/api/billing/subscription/',
-                subscription
-            )
-            .then((json) => json?.data)
-            .then(
-                () => {
-                    notifications.forEach((notification) => {
-                        void dispatch(notify(notification))
-                    })
-                    history.push(BILLING_BASE_PATH)
-                },
-                () => {
-                    return dispatch(notify(errorNotification))
-                }
-            )
+    return async (dispatch: StoreDispatch): Promise<void> => {
+        await client.put<Record<string, string>>(
+            '/api/billing/subscription/',
+            subscription
+        )
+
+        notifications.forEach((notification) => {
+            void dispatch(notify(notification))
+        })
     }
 }
 

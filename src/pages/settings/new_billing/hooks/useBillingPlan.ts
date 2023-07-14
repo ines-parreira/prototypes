@@ -32,7 +32,6 @@ import {
 import {updateSubscriptionsForPlans} from 'state/currentAccount/actions'
 import {isStarterTierPrice} from 'models/billing/utils'
 import {
-    BILLING_BASE_PATH,
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
     ENTERPRISE_PRICE_ID,
@@ -49,7 +48,6 @@ import {
 export type BillingPlansProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     dispatchBillingError: () => void
-    billingErrorNotification: Notification
     selectedProduct?: ProductType
     filterByInterval?: boolean
 }
@@ -57,7 +55,6 @@ export type BillingPlansProps = {
 export const useBillingPlans = ({
     contactBilling,
     dispatchBillingError,
-    billingErrorNotification,
     selectedProduct,
     filterByInterval = false,
 }: BillingPlansProps) => {
@@ -315,9 +312,9 @@ export const useBillingPlans = ({
                         id: 'billing-voice-sms-request',
                     })
                 )
-                history.push(BILLING_BASE_PATH)
             } catch (error) {
                 dispatchBillingError()
+                throw error
             }
         }
     }, [
@@ -329,46 +326,50 @@ export const useBillingPlans = ({
         selectedPlans,
         smsProduct?.internal_id,
         voiceProduct?.internal_id,
-        history,
         isFreeTrial,
         helpdeskProduct?.name,
     ])
 
     const handleHelpdeskAndAutomationPlansChange = useCallback(async () => {
-        const plansToBeUpdatedAutomatically: string[] = []
+        const plansToBeUpdated: string[] = []
         const notifications: Notification[] = []
 
-        // handle subscribe for Helpdesk plan
-        if (selectedPlans[ProductType.Helpdesk].isSelected) {
-            if (
-                selectedPlans[ProductType.Helpdesk].plan?.price_id !==
-                helpdeskProduct?.price_id
-            ) {
-                // Set the notification
-                const notification = setHelpdeskNotification({
-                    oldProduct: helpdeskProduct,
-                    newProduct: selectedPlans[ProductType.Helpdesk].plan,
-                    periodEnd,
-                    onClick: () => {
-                        history.push('/app/settings')
-                    },
-                })
+        const isNewHelpdeskProduct =
+            selectedPlans[ProductType.Helpdesk].plan?.price_id !==
+            helpdeskProduct?.price_id
 
-                // Add the notification
-                notifications.push(notification)
-            }
-            // Add the plan to be handled automatically
-            plansToBeUpdatedAutomatically.push(
-                selectedPlans[ProductType.Helpdesk].plan?.price_id ?? ''
-            )
+        const isNewAutomationProduct =
+            selectedPlans[ProductType.Automation].plan?.price_id !==
+            automationProduct?.price_id
+
+        // If helpdesk and automation prices haven't changed, do not update stripe
+        if (!isNewHelpdeskProduct && !isNewAutomationProduct) {
+            return
         }
+
+        // handle subscribe for Helpdesk plan
+        if (isNewHelpdeskProduct) {
+            // Set the notification
+            const notification = setHelpdeskNotification({
+                oldProduct: helpdeskProduct,
+                newProduct: selectedPlans[ProductType.Helpdesk].plan,
+                periodEnd,
+                onClick: () => {
+                    history.push('/app/settings')
+                },
+            })
+
+            // Add the notification
+            notifications.push(notification)
+        }
+
+        plansToBeUpdated.push(
+            selectedPlans[ProductType.Helpdesk].plan?.price_id ?? ''
+        )
 
         // handle subscribe for Automation plan
         if (selectedPlans[ProductType.Automation].isSelected) {
-            if (
-                selectedPlans[ProductType.Automation].plan?.price_id !==
-                automationProduct?.price_id
-            ) {
+            if (isNewAutomationProduct) {
                 const notification = setAutomationNotification({
                     oldProduct: automationProduct,
                     newProduct: selectedPlans[ProductType.Automation].plan,
@@ -383,14 +384,13 @@ export const useBillingPlans = ({
                 notifications.push(notification)
             }
 
-            // Add the plan to be handled automatically
-            plansToBeUpdatedAutomatically.push(
+            plansToBeUpdated.push(
                 selectedPlans[ProductType.Automation].plan?.price_id ?? ''
             )
         }
 
         // update subscription for Helpdesk and Automation plans
-        if (plansToBeUpdatedAutomatically.length > 0) {
+        if (plansToBeUpdated.length > 0) {
             // Automation has been removed while in free trial
             if (notifications.length === 0) {
                 notifications.push({
@@ -407,15 +407,14 @@ export const useBillingPlans = ({
                 await dispatch(
                     updateSubscriptionsForPlans(
                         {
-                            prices: plansToBeUpdatedAutomatically,
+                            prices: plansToBeUpdated,
                         },
-                        notifications,
-                        billingErrorNotification
+                        notifications
                     )
                 )
-                history.push(BILLING_BASE_PATH)
             } catch (error) {
                 dispatchBillingError()
+                throw error
             }
         }
     }, [
@@ -426,16 +425,14 @@ export const useBillingPlans = ({
         history,
         interval,
         dispatch,
-        billingErrorNotification,
         dispatchBillingError,
     ])
 
     const handleSubscribe = useCallback(() => {
-        // handle Helpdesk and Automation plans
-        void handleHelpdeskAndAutomationPlansChange()
-
-        // handle SMS and Voice plans
-        void handleSMSAndVoicePlansChange()
+        return Promise.all([
+            handleHelpdeskAndAutomationPlansChange(),
+            handleSMSAndVoicePlansChange(),
+        ])
     }, [handleHelpdeskAndAutomationPlansChange, handleSMSAndVoicePlansChange])
 
     return {

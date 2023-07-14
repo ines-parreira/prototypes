@@ -4,7 +4,6 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {NotificationStatus} from 'state/notifications/types'
 import {
     HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPrice,
@@ -45,20 +44,6 @@ describe('UsageAndPlansView', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
                 <BillingProcessView
-                    billingErrorNotification={{
-                        message: `We couldn't update your subscription. Please try again.`,
-                        buttons: [
-                            {
-                                primary: false,
-                                name: 'Contact Billing',
-                                onClick: () => jest.fn(),
-                            },
-                        ],
-                        noAutoDismiss: true,
-                        showDismissButton: true,
-                        status: NotificationStatus.Error,
-                        id: 'billing-error',
-                    }}
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}
                     setDefaultMessage={jest.fn()}

@@ -36,6 +36,7 @@ describe('ProductCard', () => {
                 <ProductCard
                     type={ProductType.Helpdesk}
                     product={basicMonthlyHelpdeskPrice}
+                    isDisabled={false}
                 />
             </Provider>
         )
@@ -48,6 +49,7 @@ describe('ProductCard', () => {
                 <ProductCard
                     type={ProductType.Automation}
                     product={basicYearlyAutomationPrice}
+                    isDisabled={false}
                 />
             </Provider>
         )
@@ -58,11 +60,24 @@ describe('ProductCard', () => {
     it('should render an inactive ProductCard component', () => {
         render(
             <Provider store={store}>
-                <ProductCard type={ProductType.Automation} />
+                <ProductCard type={ProductType.Automation} isDisabled={false} />
             </Provider>
         )
 
         expect(screen.getByText('Inactive')).toBeInTheDocument()
         expect(screen.getByText('Subscribe')).toBeInTheDocument()
+    })
+
+    it('should render a disabled ProductCard component', () => {
+        render(
+            <Provider store={store}>
+                <ProductCard type={ProductType.Automation} isDisabled={true} />
+            </Provider>
+        )
+
+        expect(screen.getByRole('button')).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 })

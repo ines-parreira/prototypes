@@ -9,7 +9,6 @@ import {PlanInterval, ProductType} from 'models/billing/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCreditCard} from 'state/billing/actions'
 import {TicketPurpose} from 'state/billing/types'
-import {Notification} from 'state/notifications/types'
 import Card from '../../components/Card/Card'
 import BackLink from '../../components/BackLink/BackLink'
 import BillingFrequency from '../../components/BillingFrequency/BillingFrequency'
@@ -25,13 +24,11 @@ import css from './BillingFrequencyView.less'
 type BillingFrequencyViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     dispatchBillingError: () => void
-    billingErrorNotification: Notification
     periodEnd: string
 }
 
 const BillingFrequencyView = ({
     contactBilling,
-    billingErrorNotification,
     dispatchBillingError,
     periodEnd,
 }: BillingFrequencyViewProps) => {
@@ -56,7 +53,6 @@ const BillingFrequencyView = ({
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
-        billingErrorNotification,
     })
 
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)

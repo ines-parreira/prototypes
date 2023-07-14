@@ -2,6 +2,7 @@ import React, {useEffect, useMemo} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import classNames from 'classnames'
+import Tooltip from 'pages/common/components/Tooltip'
 import {
     getCurrentSubscription,
     hasCreditCard as getHasCreditCard,
@@ -60,6 +61,7 @@ const UsageAndPlansView = ({
     const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
 
     const isIntervalMonthly = interval === INTERVAL.Month
+    const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
 
     const isTrialingSubscription = useAppSelector(isTrialing)
     const trialingStart = moment(
@@ -188,7 +190,27 @@ const UsageAndPlansView = ({
                     <span>
                         Billed {isIntervalMonthly ? <>monthly</> : <>yearly</>}
                     </span>
-                    <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
+                    {isSubscribedToHelpdeskStarter ? (
+                        <div>
+                            <span
+                                className={css.disabledText}
+                                id="update-billing-frequency"
+                            >
+                                Update
+                            </span>
+                            <Tooltip
+                                target="update-billing-frequency"
+                                placement="top"
+                                className={css.tooltip}
+                                autohide={false}
+                            >
+                                To change billing frequency, upgrade your
+                                Helpdesk plan to Basic or higher
+                            </Tooltip>
+                        </div>
+                    ) : (
+                        <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
+                    )}
                 </div>
             </div>
             <BillingScheduledDowngrades />
@@ -197,23 +219,27 @@ const UsageAndPlansView = ({
                     type={ProductType.Helpdesk}
                     product={helpdeskProduct}
                     usage={currentUsage?.helpdesk}
+                    isDisabled={isSubscribedToHelpdeskStarter}
                 />
                 <ProductCard
                     type={ProductType.Automation}
                     product={automationProduct}
                     usage={currentUsage?.automation}
+                    isDisabled={isSubscribedToHelpdeskStarter}
                 />
                 <ProductCard
                     type={ProductType.Voice}
                     product={voiceProduct}
                     usage={currentUsage?.voice}
                     banner={voiceBanner}
+                    isDisabled={isSubscribedToHelpdeskStarter}
                 />
                 <ProductCard
                     type={ProductType.SMS}
                     product={smsProduct}
                     usage={currentUsage?.sms}
                     banner={smsBanner}
+                    isDisabled={isSubscribedToHelpdeskStarter}
                 />
             </div>
             <div className={css.unsubscribe}>

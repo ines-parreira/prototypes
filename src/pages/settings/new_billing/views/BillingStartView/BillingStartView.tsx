@@ -14,6 +14,7 @@ import {
 } from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
+    getCurrentAutomationProduct,
     getCurrentHelpdeskProduct,
     getCurrentProductsUsage,
 } from 'state/billing/selectors'
@@ -56,6 +57,7 @@ const BillingStartView = () => {
     const currentUsage = useAppSelector(getCurrentProductsUsage)
     const isTrialingSubscription = useAppSelector(isTrialing)
     const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
+    const automationProduct = useAppSelector(getCurrentAutomationProduct)
 
     const hasAccessToNewBilling: boolean | undefined =
         useFlags()[FeatureFlagKey.NewBillingInterface]
@@ -262,6 +264,8 @@ const BillingStartView = () => {
                         <Route exact path={BILLING_PAYMENT_PATH}>
                             <PaymentInformationView
                                 setIsModalOpen={setIsModalOpen}
+                                helpdeskProduct={helpdeskProduct}
+                                automationProduct={automationProduct}
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>
@@ -276,9 +280,6 @@ const BillingStartView = () => {
                                 setDefaultMessage={setDefaultMessage}
                                 dispatchBillingError={dispatchBillingError}
                                 isTrialing={isTrialingSubscription}
-                                billingErrorNotification={
-                                    billingErrorNotification
-                                }
                                 periodEnd={periodEnd}
                             />
                         </Route>
@@ -289,9 +290,6 @@ const BillingStartView = () => {
                             <BillingFrequencyView
                                 contactBilling={contactBilling}
                                 dispatchBillingError={dispatchBillingError}
-                                billingErrorNotification={
-                                    billingErrorNotification
-                                }
                                 periodEnd={periodEnd}
                             />
                         </Route>
