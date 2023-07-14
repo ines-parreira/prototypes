@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
 import {formatPercentage} from 'pages/common/utils/numbers'
@@ -22,10 +22,26 @@ type Props = {
     isLoading?: boolean
 }
 
+const highlighted = [
+    CampaignTableKeys.TicketsCreated,
+    CampaignTableKeys.TicketsCreationRate,
+    CampaignTableKeys.TicketsConverted,
+    CampaignTableKeys.TicketConversionRate,
+    CampaignTableKeys.RevenueGeneratedTickets,
+    CampaignTableKeys.DiscountCodeUsed,
+    CampaignTableKeys.RevenueGeneratedDiscountCode,
+]
+
 export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
+    const bodyCellProps = useMemo(() => {
+        return {
+            isHighlighted: highlighted.includes(column.key),
+        }
+    }, [column])
+
     if (isLoading) {
         return (
-            <BodyCell>
+            <BodyCell {...bodyCellProps}>
                 <div style={{width: '100%'}}>
                     <Skeleton count={1} width="100%" />
                 </div>
@@ -37,7 +53,7 @@ export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
         if (cell.chatIntegration) {
             const url = `/app/settings/channels/gorgias_chat/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
             return (
-                <BodyCell className={css.campaignName}>
+                <BodyCell {...bodyCellProps} className={css.campaignName}>
                     <Link to={url}>{data}</Link>
                 </BodyCell>
             )
@@ -46,7 +62,7 @@ export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
 
     if (column.format === CampaignTableValueFormat.Currency) {
         return (
-            <BodyCell>
+            <BodyCell {...bodyCellProps}>
                 <MoneyAmount
                     renderIfZero
                     amount={data}
@@ -58,12 +74,12 @@ export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
     }
 
     if (column.format === CampaignTableValueFormat.Percentage) {
-        return <BodyCell>{formatPercentage(data)}</BodyCell>
+        return <BodyCell {...bodyCellProps}>{formatPercentage(data)}</BodyCell>
     }
 
     if (column.format === CampaignTableValueFormat.Number) {
-        return <BodyCell>{formatNumber(data)}</BodyCell>
+        return <BodyCell {...bodyCellProps}>{formatNumber(data)}</BodyCell>
     }
 
-    return <BodyCell>{data}</BodyCell>
+    return <BodyCell {...bodyCellProps}>{data}</BodyCell>
 }

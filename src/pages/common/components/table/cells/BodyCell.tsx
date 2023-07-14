@@ -7,6 +7,7 @@ import BodyCellContent from './BodyCellContent'
 type Props = Omit<HTMLProps<HTMLTableDataCellElement>, 'size'> & {
     children?: ReactNode
     className?: string
+    isHighlighted?: boolean
     innerClassName?: string
     width?: number | string
     size?: 'normal' | 'small' | 'smallest'
@@ -17,6 +18,7 @@ const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
         {
             children,
             className,
+            isHighlighted = false,
             width,
             innerClassName,
             size = 'normal',
@@ -28,7 +30,9 @@ const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
             <td
                 {...otherProps}
                 ref={ref}
-                className={classNames(css.wrapper, className, css[size])}
+                className={classNames(css.wrapper, className, css[size], {
+                    [css.highlight]: isHighlighted,
+                })}
             >
                 <BodyCellContent className={innerClassName} width={width}>
                     {children}
