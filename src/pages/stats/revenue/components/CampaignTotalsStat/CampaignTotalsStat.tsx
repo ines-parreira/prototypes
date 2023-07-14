@@ -12,17 +12,15 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 
+import css from './CampaignTotalsStat.less'
+
+const FIRST_ROW_SIZE = 6
 const GRID_SIZE = 4
 const SKELETON_HEIGHT = 100
 
 const METRICS = {
-    [CampaignsTotalsMetricNames.gmv]: {
-        title: 'Total store revenue',
-        hint: `Sum of the order amount for all your store sales
-        during the selected period (including taxes, fees, and refunds).`,
-    },
     [CampaignsTotalsMetricNames.influencedRevenueUplift]: {
-        title: 'Revenue uplift',
+        title: 'Total store revenue share influenced by campaigns',
         hint: `Evolution rate of your total store revenue thanks to the campaigns,
         calculated as: (Campaign revenue)/(Total store revenue - Campaign Revenue).`,
     },
@@ -80,18 +78,27 @@ export const CampaignTotalsStat = () => {
 
     return (
         <React.Fragment>
-            <DashboardGridCell size={GRID_SIZE}>
+            <DashboardGridCell size={FIRST_ROW_SIZE}>
                 {statsVisible && (
                     <MetricCard
                         title={METRICS.revenue.title}
                         hint={METRICS.revenue.hint}
                     >
-                        <BigNumberMetric>{data?.revenue}</BigNumberMetric>
+                        <div className={css.wrapper}>
+                            <BigNumberMetric className={css.metric}>
+                                {data?.revenue}
+                            </BigNumberMetric>
+                            {data?.gmv && (
+                                <span
+                                    className={css.subText}
+                                >{`from total store revenue: ${data.gmv}`}</span>
+                            )}
+                        </div>
                     </MetricCard>
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
             </DashboardGridCell>
-            <DashboardGridCell size={GRID_SIZE}>
+            <DashboardGridCell size={FIRST_ROW_SIZE}>
                 {statsVisible && (
                     <MetricCard
                         title={METRICS.influencedRevenueUplift.title}
@@ -100,17 +107,6 @@ export const CampaignTotalsStat = () => {
                         <BigNumberMetric>
                             {data?.influencedRevenueUplift}
                         </BigNumberMetric>
-                    </MetricCard>
-                )}
-                {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
-            </DashboardGridCell>
-            <DashboardGridCell size={GRID_SIZE}>
-                {statsVisible && (
-                    <MetricCard
-                        title={METRICS.gmv.title}
-                        hint={METRICS.gmv.hint}
-                    >
-                        <BigNumberMetric>{data?.gmv}</BigNumberMetric>
                     </MetricCard>
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
