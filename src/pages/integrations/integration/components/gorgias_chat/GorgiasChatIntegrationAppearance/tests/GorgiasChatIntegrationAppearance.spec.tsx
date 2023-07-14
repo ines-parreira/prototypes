@@ -446,6 +446,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "shop_type": "shopify",
                       "shop_integration_id": 2,
                       "preferences": Immutable.Map {
+                        "email_capture_enabled": true,
                         "email_capture_enforcement": "optional",
                         "auto_responder": Immutable.Map {
                           "enabled": true,

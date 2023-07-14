@@ -61,6 +61,9 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     const minProps: ComponentProps<
         typeof GorgiasChatIntegrationPreferencesComponent
     > = {
+        currentUser: fromJS({
+            name: 'John Doe',
+        }),
         integration: fromJS({}),
         emailIntegrations: [],
         updateOrCreateIntegration: jest.fn(),
@@ -187,6 +190,116 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         })
     })
 
+    describe('_setEmailCaptureEnabled()', () => {
+        it(
+            'should set passed value in the state and set the preview to "email capture" because the email capture' +
+                ' was enabled',
+            () => {
+                const emailCaptureEnabled = false
+                const integration: Map<any, any> = fromJS({
+                    id: 1,
+                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                    meta: {
+                        preferences: {
+                            auto_responder: {
+                                enabled: true,
+                                reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+                            },
+                            email_capture_enabled: emailCaptureEnabled,
+                            email_capture_enforcement:
+                                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                        },
+                        shop_integration_id: 1,
+                        language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                    },
+                })
+
+                const component =
+                    shallow<GorgiasChatIntegrationPreferencesComponent>(
+                        <GorgiasChatIntegrationPreferencesComponent
+                            currentUser={minProps.currentUser}
+                            updateOrCreateIntegration={jest.fn()}
+                            integration={integration}
+                            displayControlTicketVolume={true}
+                        />
+                    )
+
+                const prevState = component.state()
+                expect(prevState.emailCaptureEnabled).toEqual(
+                    emailCaptureEnabled
+                )
+                expect(prevState.preview).toEqual(
+                    PREVIEW_LIVE_CHAT_AVAILABILITY
+                )
+
+                const expectedState = (fromJS(prevState) as Map<any, any>)
+                    .set('emailCaptureEnabled', !emailCaptureEnabled)
+                    .set('preview', PREVIEW_EMAIL_CAPTURE)
+                    .toJS()
+
+                component
+                    .instance()
+                    ._setEmailCaptureEnabled(!emailCaptureEnabled)
+
+                expect(component.state()).toEqual(expectedState)
+            }
+        )
+
+        it(
+            'should set passed value in the state because the email capture' +
+                ' was disabled',
+            () => {
+                const emailCaptureEnabled = false
+                const integration: Map<any, any> = fromJS({
+                    id: 1,
+                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                    meta: {
+                        preferences: {
+                            auto_responder: {
+                                enabled: true,
+                                reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+                            },
+                            email_capture_enabled: emailCaptureEnabled,
+                            email_capture_enforcement:
+                                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                        },
+                        shop_integration_id: 1,
+                        language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                    },
+                })
+
+                const component =
+                    shallow<GorgiasChatIntegrationPreferencesComponent>(
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    )
+
+                component.setState({preview: PREVIEW_LIVE_CHAT_AVAILABILITY})
+
+                const prevState = component.state()
+                expect(prevState.emailCaptureEnabled).toEqual(
+                    emailCaptureEnabled
+                )
+                expect(prevState.preview).toEqual(
+                    PREVIEW_LIVE_CHAT_AVAILABILITY
+                )
+
+                const expectedState = (fromJS(prevState) as Map<any, any>)
+                    .set('emailCaptureEnabled', !emailCaptureEnabled)
+                    .set('preview', PREVIEW_EMAIL_CAPTURE)
+                    .toJS()
+
+                component
+                    .instance()
+                    ._setEmailCaptureEnabled(!emailCaptureEnabled)
+
+                expect(component.state()).toEqual(expectedState)
+            }
+        )
+    })
+
     describe('_setEmailCaptureEnforcement()', () => {
         it('should set passed value in the state and set the preview to "email capture"', () => {
             const integration: Map<any, any> = fromJS({
@@ -243,7 +356,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('_setAutoResponderEnabled()', () => {
         it(
             'should set passed value in the state and set the preview to "auto responder" because the auto responder' +
-                'was enabled',
+                ' was enabled',
             () => {
                 const autoResponderEnabled = false
                 const integration: Map<any, any> = fromJS({
@@ -266,6 +379,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 const component =
                     shallow<GorgiasChatIntegrationPreferencesComponent>(
                         <GorgiasChatIntegrationPreferencesComponent
+                            currentUser={minProps.currentUser}
                             updateOrCreateIntegration={jest.fn()}
                             integration={integration}
                             displayControlTicketVolume={true}
@@ -295,7 +409,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
         it(
             'should set passed value in the state and set the preview to "email capture" because the auto responder' +
-                'was disabled',
+                ' was disabled',
             () => {
                 const autoResponderEnabled = true
                 const integration: Map<any, any> = fromJS({

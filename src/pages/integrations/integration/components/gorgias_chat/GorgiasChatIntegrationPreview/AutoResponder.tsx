@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
 import {
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -15,37 +16,53 @@ type Props = {
     chatTitle?: string
     language?: string
     autoResponderReply?: string
+    isEmailCaptureEnabled?: boolean
 }
 
 export default class AutoResponder extends Component<Props> {
-    render() {
-        const {conversationColor, chatTitle, language, autoResponderReply} =
-            this.props
-
+    _getMessage = () => {
+        const {
+            autoResponderReply,
+            language,
+            isEmailCaptureEnabled = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
+        } = this.props
         const widgetTranslatedTexts =
             GORGIAS_CHAT_WIDGET_TEXTS[
                 language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
             ]
+        const emailCaptureBaseText = isEmailCaptureEnabled
+            ? widgetTranslatedTexts.emailCaptureTriggerTextBase
+            : widgetTranslatedTexts.thanksForReachingOut
 
-        const translatedReply =
-            autoResponderReply === GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
-                ? widgetTranslatedTexts['waitTimeMediumReply'].replace(
-                      '{waitTime}',
-                      '5'
-                  )
-                : `${widgetTranslatedTexts.emailCaptureTriggerTextBase} ${
-                      autoResponderReply ===
-                      CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES
-                          ? widgetTranslatedTexts.emailCaptureTriggerTypicalReplyMinutes
-                          : widgetTranslatedTexts.emailCaptureTriggerTypicalReplyHours
-                  }`
+        return autoResponderReply === GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
+            ? widgetTranslatedTexts['waitTimeMediumReply'].replace(
+                  '{waitTime}',
+                  '5'
+              )
+            : `${emailCaptureBaseText} ${
+                  autoResponderReply === CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES
+                      ? widgetTranslatedTexts.emailCaptureTriggerTypicalReplyMinutes
+                      : widgetTranslatedTexts.emailCaptureTriggerTypicalReplyHours
+              }`
+    }
+
+    render() {
+        const {
+            conversationColor,
+            chatTitle,
+            language,
+            isEmailCaptureEnabled = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
+        } = this.props
+        const message = this._getMessage()
 
         return (
-            <BotMessages chatTitle={chatTitle} messages={[translatedReply]}>
-                <EmailCaptureMessage
-                    conversationColor={conversationColor}
-                    language={language}
-                />
+            <BotMessages chatTitle={chatTitle} messages={[message]}>
+                {isEmailCaptureEnabled && (
+                    <EmailCaptureMessage
+                        conversationColor={conversationColor}
+                        language={language}
+                    />
+                )}
             </BotMessages>
         )
     }

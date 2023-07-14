@@ -62,6 +62,8 @@ export const GORGIAS_CHAT_DEFAULT_FONTS = [
     'Verdana',
 ]
 
+// Email capture
+export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT = true
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL = 'optional'
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS_DEPRECATED =
     'required-outside-business-hours'

@@ -34,6 +34,7 @@ import {TagLabel} from 'pages/common/utils/labels'
 import {isRevenueAddonSubscriber} from '../GorgiasChatIntegrationCampaigns/utils/isRevenueAddonSubscriber'
 
 import {
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
@@ -66,6 +67,7 @@ import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerIn
 import ConversationTimestamp from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import DisabledEmailCaptureMessagePreview from '../GorgiasChatIntegrationPreview/DisabledEmailCaptureMessage'
 import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
 import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
@@ -98,6 +100,7 @@ export const PREVIEW_CONTROL_TICKET_VOLUME = 'control-ticket-volume'
 const SHOW_CHAT_CONVERSATIONS_SECTION = false
 
 type Props = {
+    currentUser: Map<any, any>
     flags?: LDFlagSet
     integration: Map<any, any>
     displayControlTicketVolume: boolean
@@ -106,6 +109,7 @@ type Props = {
 type State = {
     autoResponderEnabled: boolean
     autoResponderReply: string
+    emailCaptureEnabled: boolean
     emailCaptureEnforcement: string
     hide: boolean
     hideOnMobile: boolean
@@ -135,6 +139,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     state: State = {
         autoResponderEnabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
         autoResponderReply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+        emailCaptureEnabled: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
         emailCaptureEnforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
         linkedEmailIntegration: null,
         hide: false,
@@ -185,7 +190,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             'auto_responder',
                             'reply',
                         ]) || GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-                    emailCaptureEnforcement: emailCaptureEnforcement,
+                    emailCaptureEnabled: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'email_capture_enabled',
+                    ]),
+                    emailCaptureEnforcement,
                     hide: !!integration.get('deactivated_datetime'),
                     hideOnMobile: integration.getIn([
                         'meta',
@@ -274,6 +284,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             this._initState(this.props.integration)
             void this.fetchSelfServiceConfiguration(this.props.integration)
         }
+    }
+
+    _setEmailCaptureEnabled = (value: boolean) => {
+        this.setState({
+            emailCaptureEnabled: value,
+            preview: PREVIEW_EMAIL_CAPTURE,
+        })
     }
 
     _setEmailCaptureEnforcement = (value: string) => {
@@ -382,6 +399,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 enabled: this.state.autoResponderEnabled,
                 reply: this.state.autoResponderReply,
             },
+            email_capture_enabled: this.state.emailCaptureEnabled,
             email_capture_enforcement: this.state.emailCaptureEnforcement,
             linked_email_integration: this.state.linkedEmailIntegration,
             hide_on_mobile: this.state.hideOnMobile,
@@ -418,6 +436,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const {
             autoResponderEnabled,
             autoResponderReply,
+            emailCaptureEnabled,
             emailCaptureEnforcement,
             hide,
             hideOnMobile,
@@ -436,6 +455,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         } = this.state
 
         const {
+            currentUser,
             integration,
             emailIntegrations: integrations,
             displayControlTicketVolume,
@@ -484,6 +504,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 
         const showCustomerInitialMessages =
             preview === PREVIEW_AUTO_RESPONDER ||
+            (preview === PREVIEW_EMAIL_CAPTURE && !emailCaptureEnabled) ||
             (preview === PREVIEW_EMAIL_CAPTURE &&
                 emailCaptureEnforcement !==
                     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED) ||
@@ -502,6 +523,16 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     language={language}
                 />
             )
+        } else if (preview === PREVIEW_EMAIL_CAPTURE && !emailCaptureEnabled) {
+            previewChildren = autoResponderEnabled ? (
+                <DisabledEmailCaptureMessagePreview
+                    key="disabled-email-capture"
+                    avatar={avatar}
+                    chatTitle={chatTitle}
+                    currentUser={currentUser}
+                    language={language}
+                />
+            ) : null
         } else if (
             preview === PREVIEW_EMAIL_CAPTURE &&
             emailCaptureEnforcement ===
@@ -543,6 +574,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     chatTitle={chatTitle}
                     language={language}
                     autoResponderReply={autoResponderReply}
+                    isEmailCaptureEnabled={emailCaptureEnabled}
                 />
             )
         }
@@ -1023,7 +1055,21 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         customers will send a message if they
                                         must provide an email.
                                     </p>
+
+                                    <div className="mb-4 d-flex align-items-center">
+                                        <ToggleInput
+                                            isToggled={emailCaptureEnabled}
+                                            name="disable-email-capture-toggle"
+                                            onClick={
+                                                this._setEmailCaptureEnabled
+                                            }
+                                        >
+                                            <b>Enable email capture</b>
+                                        </ToggleInput>
+                                    </div>
+
                                     <RadioFieldSet
+                                        isDisabled={!emailCaptureEnabled}
                                         options={emailCaptureOptions}
                                         selectedValue={emailCaptureEnforcement}
                                         onChange={

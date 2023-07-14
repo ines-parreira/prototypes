@@ -24,6 +24,7 @@ import {
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
@@ -396,6 +397,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     ? storeIntegration.get('id')
                     : null,
                 preferences: {
+                    email_capture_enabled:
+                        GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
                     email_capture_enforcement:
                         GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     auto_responder: {
@@ -513,6 +516,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         'auto_responder',
         'reply',
     ])
+    const emailCaptureEnabled = integration.getIn([
+        'meta',
+        'preferences',
+        'email_capture_enabled',
+    ])
 
     const launcherCustomizationRef = useRef<HTMLDivElement>(null)
     const [isChatOpenInPreview, setIsChatOpenInPreview] = useState(true)
@@ -577,6 +585,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 autoResponderReply={
                                     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
                                 }
+                                isEmailCaptureEnabled={emailCaptureEnabled}
                             />
                         ) : (
                             <>

@@ -14,6 +14,7 @@ type Props = {
     autoResponderReply?: string
     avatar?: GorgiasChatAvatarSettings
     currentUser?: Map<any, any>
+    isEmailCaptureEnabled?: boolean
 }
 
 const AutoResponderMessages: React.FC<Props> = ({
@@ -23,6 +24,7 @@ const AutoResponderMessages: React.FC<Props> = ({
     chatTitle,
     language,
     autoResponderReply,
+    isEmailCaptureEnabled,
 }) => (
     <>
         <CustomerInitialMessages
@@ -34,6 +36,7 @@ const AutoResponderMessages: React.FC<Props> = ({
             chatTitle={chatTitle}
             language={language}
             autoResponderReply={autoResponderReply}
+            isEmailCaptureEnabled={isEmailCaptureEnabled}
         />
         {currentUser && (
             <AgentMessages

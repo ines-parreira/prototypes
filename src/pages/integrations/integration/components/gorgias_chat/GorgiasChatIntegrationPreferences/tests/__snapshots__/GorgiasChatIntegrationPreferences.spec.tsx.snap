@@ -9,6 +9,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
   "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
+  "emailCaptureEnabled": true,
   "emailCaptureEnforcement": "optional",
   "hide": false,
   "hideOnMobile": false,
@@ -32,6 +33,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
   "avatarType": "team-members",
   "controlTicketVolume": true,
   "displayCampaignsHiddenChat": false,
+  "emailCaptureEnabled": true,
   "emailCaptureEnforcement": "optional",
   "hide": false,
   "hideOnMobile": false,
@@ -55,6 +57,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
   "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
+  "emailCaptureEnabled": true,
   "emailCaptureEnforcement": "optional",
   "hide": false,
   "hideOnMobile": false,
@@ -78,6 +81,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
   "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": true,
+  "emailCaptureEnabled": true,
   "emailCaptureEnforcement": "optional",
   "hide": false,
   "hideOnMobile": false,
@@ -101,6 +105,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
+  "emailCaptureEnabled": true,
   "emailCaptureEnforcement": "optional",
   "hide": false,
   "hideOnMobile": false,
@@ -124,6 +129,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
+  "emailCaptureEnabled": true,
   "emailCaptureEnforcement": "optional",
   "hide": false,
   "hideOnMobile": false,
@@ -150,6 +156,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
           "preferences": Immutable.Map {
             "email_capture_enforcement": "optional",
             "hide_on_mobile": false,
+            "email_capture_enabled": true,
             "hide_outside_business_hours": false,
             "control_ticket_volume": false,
             "linked_email_integration": null,
@@ -185,6 +192,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
           "preferences": Immutable.Map {
             "email_capture_enforcement": "optional",
             "hide_on_mobile": false,
+            "email_capture_enabled": true,
             "hide_outside_business_hours": false,
             "control_ticket_volume": false,
             "linked_email_integration": null,
@@ -225,6 +233,7 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initial
   "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
+  "emailCaptureEnabled": true,
   "emailCaptureEnforcement": "always-required",
   "hide": false,
   "hideOnMobile": false,
@@ -252,6 +261,7 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initia
   "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
+  "emailCaptureEnabled": true,
   "emailCaptureEnforcement": "always-required",
   "hide": false,
   "hideOnMobile": false,
@@ -397,6 +407,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               <AutoResponder
                 autoResponderReply="reply-dynamic"
                 conversationColor="#08d123"
+                isEmailCaptureEnabled={true}
                 language="en-US"
               />
             </ChatIntegrationPreviewProvider>
@@ -638,7 +649,21 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             >
               Collecting customer emails helps grow your email list and send follow-up messages. However, only around 30% of customers will send a message if they must provide an email.
             </p>
+            <div
+              className="mb-4 d-flex align-items-center"
+            >
+              <ToggleInput
+                isToggled={true}
+                name="disable-email-capture-toggle"
+                onClick={[Function]}
+              >
+                <b>
+                  Enable email capture
+                </b>
+              </ToggleInput>
+            </div>
             <RadioFieldSet
+              isDisabled={false}
               onChange={[Function]}
               options={
                 [
@@ -940,6 +965,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               <AutoResponder
                 autoResponderReply="reply-dynamic"
                 conversationColor="#08d123"
+                isEmailCaptureEnabled={true}
                 language="en-US"
               />
             </ChatIntegrationPreviewProvider>
@@ -1181,7 +1207,21 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             >
               Collecting customer emails helps grow your email list and send follow-up messages. However, only around 30% of customers will send a message if they must provide an email.
             </p>
+            <div
+              className="mb-4 d-flex align-items-center"
+            >
+              <ToggleInput
+                isToggled={true}
+                name="disable-email-capture-toggle"
+                onClick={[Function]}
+              >
+                <b>
+                  Enable email capture
+                </b>
+              </ToggleInput>
+            </div>
             <RadioFieldSet
+              isDisabled={false}
               onChange={[Function]}
               options={
                 [

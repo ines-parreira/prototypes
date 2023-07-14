@@ -53,7 +53,9 @@
         "usualReplyTimeHours": "Typically replies in a few hours",
         "usualReplyTimeMinutes": "Typically replies in a few minutes",
         "backLabelBackAt": "Back online at {time}",
+        "thanksForReachingOut": "Thanks for reaching out!",
         "waitTimeMediumReply": "Thanks for reaching out! Leave us your email and an agent will get back to you in about {waitTime} minutes.",
+        "waitTimeShortEmailCaptured": "Thanks for reaching out! An agent will get back to you soon.",
         "chatWithUs": "Chat with us"
     },
     "fr-FR": {
@@ -109,7 +111,9 @@
         "usualReplyTimeHours": "Répond habituellement en quelques heures",
         "usualReplyTimeMinutes": "Répond habituellement en quelques minutes",
         "backLabelBackAt": "De retour en ligne à {time}",
+        "thanksForReachingOut": "Merci de nous avoir contactés !",
         "waitTimeMediumReply": "Merci de nous avoir contactés ! Laissez-nous votre e-mail et nous vous répondrons dans environ {waitTime} minutes.",
+        "waitTimeShortEmailCaptured": "Merci de nous avoir contactés ! Nous allons vous répondre dans quelques instants. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire.",
         "chatWithUs": "Discutez avec nous"
     },
     "fr": {
@@ -165,7 +169,9 @@
         "usualReplyTimeHours": "Répond habituellement en quelques heures",
         "usualReplyTimeMinutes": "Répond habituellement en quelques minutes",
         "backLabelBackAt": "De retour en ligne à {time}",
+        "thanksForReachingOut": "Merci de nous avoir contactés !",
         "waitTimeMediumReply": "Merci de nous avoir contactés ! Laissez-nous votre e-mail et nous vous répondrons dans environ {waitTime} minutes.",
+        "waitTimeShortEmailCaptured": "Merci de nous avoir contactés ! Nous allons vous répondre dans quelques instants. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire.",
         "chatWithUs": "Discutez avec nous"
     },
     "fr-CA": {
@@ -221,7 +227,9 @@
         "usualReplyTimeHours": "Nous répondons généralement en quelques heures",
         "usualReplyTimeMinutes": "Nous répondons généralement en quelques minutes",
         "backLabelBackAt": "Retour en ligne à {time}",
+        "thanksForReachingOut": "Merci de nous avoir contactés!",
         "waitTimeMediumReply": "Merci de nous avoir contactés! Laissez-nous votre adresse électronique et un agent vous répondra dans environ {waitTime} minutes. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire",
+        "waitTimeShortEmailCaptured": "Merci de nous avoir contactés! Un agent vous répondra dans quelques instants. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire.",
         "chatWithUs": "Discutez avec nous"
     },
     "es": {
@@ -277,7 +285,9 @@
         "usualReplyTimeHours": "Normalmente responde en unas horas",
         "usualReplyTimeMinutes": "Normalmente responde en unos minutos",
         "backLabelBackAt": "De nuevo en línea en {time}",
+        "thanksForReachingOut": "Gracias por contactar con nosotros!",
         "waitTimeMediumReply": "Merci de nous avoir contactés! Laissez-nous votre adresse électronique et un agent vous répondra dans environ {waitTime} minutes. N'hésitez pas à ajouter toutes les précisions que vous jugez nécessaire",
+        "waitTimeShortEmailCaptured": "Gracias por contactar con nosotros. Un agente se pondrá en contacto contigo en breve.",
         "chatWithUs": "Chatea con nosotros"
     },
     "da": {
@@ -333,7 +343,9 @@
         "usualReplyTimeHours": "Svarer typisk inden for få timer",
         "usualReplyTimeMinutes": "Svarer typisk inden for få minutter",
         "backLabelBackAt": "Online igen klokken {time}",
+        "thanksForReachingOut": "Tak fordi du har kontaktet os!",
         "waitTimeMediumReply": "Tak fordi du har kontaktet os! Giv os din e-mail, og en agent vil vende tilbage til dig om ca. {waitTime} minutter.",
+        "waitTimeShortEmailCaptured": "Tak fordi du har kontaktet os! En agent vil vende tilbage til dig snart.",
         "chatWithUs": "Chat med os"
     },
     "sv": {
@@ -389,7 +401,9 @@
         "usualReplyTimeHours": "Svarar vanligtvis inom ett par timmar",
         "usualReplyTimeMinutes": "Svarar vanligtvis inom ett par minuter",
         "backLabelBackAt": "Tillbaka online {time}",
+        "thanksForReachingOut": "Tack för att du tar kontakt!",
         "waitTimeMediumReply": "Tack för att du tar kontakt! Lämna din e-postadress så återkommer en av våra medarbetare till dig om cirka {waitTime} minuter.",
+        "waitTimeShortEmailCaptured": "Tack för att du tar kontakt! En av våra medarbetare återkommer till dig snart.",
         "chatWithUs": "Chatta med oss"
     },
     "nl": {
@@ -445,7 +459,9 @@
         "usualReplyTimeHours": "Reageert normaal gesproken binnen een paar uur",
         "usualReplyTimeMinutes": "Reageert normaal gesproken binnen een paar minuten",
         "backLabelBackAt": "Weer online om {time}",
+        "thanksForReachingOut": "Fijn dat u contact met ons opneemt!",
         "waitTimeMediumReply": "Fijn dat u contact met ons opneemt! Laat uw e-mailadres achter, een medewerker is binnen ongeveer {waitTime} minuten beschikbaar.",
+        "waitTimeShortEmailCaptured": "Fijn dat u contact met ons opneemt! Een medewerker zal u zo snel mogelijk antwoorden.",
         "chatWithUs": "Chat met ons"
     },
     "it": {
@@ -501,7 +517,9 @@
         "usualReplyTimeHours": "In genere risponde in poche ore",
         "usualReplyTimeMinutes": "In genere risponde in pochi minuti",
         "backLabelBackAt": "Di nuovo online alle {time}",
+        "thanksForReachingOut": "Grazie per averci contattato!",
         "waitTimeMediumReply": "Grazie per averci contattato! Lasciaci la tua email e un operatore comunicherà con te  tra circa {waitTime} minuti.",
+        "waitTimeShortEmailCaptured": "Grazie per averci contattato! Un operatore comunicherà presto con te.",
         "chatWithUs": "Chatta con noi"
     },
     "de": {
@@ -557,7 +575,9 @@
         "usualReplyTimeHours": "Antwortet normalerweise innerhalb einiger Stunden",
         "usualReplyTimeMinutes": "Antwortet normalerweise innerhalb von Minuten",
         "backLabelBackAt": "Wieder online um {time}",
+        "thanksForReachingOut": "Danke, dass Sie uns kontaktiert haben!",
         "waitTimeMediumReply": "Danke, dass Sie uns kontaktiert haben! Wenn Sie uns Ihre E-Mail-Adresse hinterlassen, wird sich ein Mitarbeiter in ungefähr {waitTime} Minuten bei Ihnen melden.",
+        "waitTimeShortEmailCaptured": "Danke, dass Sie uns kontaktiert haben! Ein Mitarbeiter wird sich in Kürze bei Ihnen melden.",
         "chatWithUs": "Chatten Sie mit uns"
     },
     "no": {
@@ -613,7 +633,9 @@
         "usualReplyTimeHours": "Svarer typisk i løpet av noen få timer",
         "usualReplyTimeMinutes": "Svarer typisk i løpet av få minutter",
         "backLabelBackAt": "Tilbake på nett {time}",
+        "thanksForReachingOut": "Takk for at du tok kontakt!",
         "waitTimeMediumReply": "Takk for at du tok kontakt! Legg igjen e-posten din, og en agent vil komme tilbake til deg om cirka {waitTime} minutter.",
+        "waitTimeShortEmailCaptured": "Takk for at du tok kontakt! En agent kommer snart tilbake til deg.",
         "chatWithUs": "Chatt med oss"
     },
     "cz": {
@@ -669,7 +691,9 @@
         "usualReplyTimeHours": "Obyčejně odpoví za několik hodin",
         "usualReplyTimeMinutes": "Obyčeně odpoví za několik minut",
         "backLabelBackAt": "Zpátky on-line v {time}",
+        "thanksForReachingOut": "Děkujeme, že jste se ozvali!",
         "waitTimeMediumReply": "Děkujeme, že jste se ozvali! Zanechte nám svůj e-mail a agent se s vámi spojí přibližně za {waitTime} minut.",
+        "waitTimeShortEmailCaptured": "Děkujeme, že jste se ozvali! Agent se s vámi brzy spojí.",
         "chatWithUs": "Chatujte s námi"
     }
 }
