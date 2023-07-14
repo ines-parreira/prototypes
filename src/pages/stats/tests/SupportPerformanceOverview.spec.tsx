@@ -166,6 +166,38 @@ describe('<SupportPerformanceOverview />', () => {
             prevValue: 100,
         },
     }
+    const customerSatisfactionMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            interpretAs: 'more-is-better',
+            value: 95,
+            prevValue: 100,
+        },
+    }
+    const firstResponseTimeMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            interpretAs: 'less-is-better',
+            value: 96,
+            prevValue: 100,
+        },
+    }
+    const resolutionTimeMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            interpretAs: 'less-is-better',
+            value: 97,
+            prevValue: 100,
+        },
+    }
+    const messagesPerTicketMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            interpretAs: 'less-is-better',
+            value: 98,
+            prevValue: 100,
+        },
+    }
 
     const defaultTimeSeries = {
         data: [
@@ -180,10 +212,16 @@ describe('<SupportPerformanceOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        useCustomerSatisfactionTrendMock.mockReturnValue(defaultMetricTrend)
-        useFirstResponseTimeTrendMock.mockReturnValue(defaultMetricTrend)
-        useResolutionTimeTrendMock.mockReturnValue(defaultMetricTrend)
-        useMessagesPerTicketTrendMock.mockReturnValue(defaultMetricTrend)
+        useCustomerSatisfactionTrendMock.mockReturnValue(
+            customerSatisfactionMetricTrend
+        )
+        useFirstResponseTimeTrendMock.mockReturnValue(
+            firstResponseTimeMetricTrend
+        )
+        useResolutionTimeTrendMock.mockReturnValue(resolutionTimeMetricTrend)
+        useMessagesPerTicketTrendMock.mockReturnValue(
+            messagesPerTicketMetricTrend
+        )
         useOpenTicketsTrendMock.mockReturnValue(openTicketsMetricTrend)
         useClosedTicketsTrendMock.mockReturnValue(closedTicketsMetricTrend)
         useTicketsCreatedTrendMock.mockReturnValue(createdTicketsMetricTrend)
@@ -228,6 +266,32 @@ describe('<SupportPerformanceOverview />', () => {
 
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it.each([
+        customerSatisfactionMetricTrend,
+        firstResponseTimeMetricTrend,
+        resolutionTimeMetricTrend,
+        messagesPerTicketMetricTrend,
+    ])(
+        'should render customer experience section with a badge tooltip #$#',
+        (customerMetricTrend) => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            expect(trendBadgeMock.mock.calls).toContainEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        interpretAs: customerMetricTrend.data.interpretAs,
+                        tooltip: 'Compared to: Feb 2nd, 2021 - Feb 2nd, 2021',
+                        value: customerMetricTrend.data.value,
+                    }),
+                ])
+            )
+        }
+    )
 
     it.each([
         openTicketsMetricTrend,

@@ -990,7 +990,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="wrapper heading-page-semibold"
                 >
-                  456
+                  95
                   <img
                     alt="Blue star"
                     class="customerSatisfactionStar"
@@ -1049,7 +1049,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="wrapper heading-page-semibold"
                 >
-                  7m 36s
+                  1m 36s
                 </div>
                 <div
                   class="tooltip"
@@ -1103,7 +1103,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="wrapper heading-page-semibold"
                 >
-                  7m 36s
+                  1m 37s
                 </div>
                 <div
                   class="tooltip"
@@ -1157,7 +1157,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="wrapper heading-page-semibold"
                 >
-                  456
+                  98
                 </div>
                 <div
                   class="tooltip"

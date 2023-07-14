@@ -431,6 +431,7 @@ export default function SupportPerformanceOverview() {
                                     format={'percent'}
                                     interpretAs="more-is-better"
                                     isLoading={!customerSatisfactionTrend.data}
+                                    tooltip={periodComparisonTooltipText}
                                     value={
                                         customerSatisfactionTrend.data?.value
                                     }
@@ -477,6 +478,7 @@ export default function SupportPerformanceOverview() {
                                     format="percent"
                                     interpretAs="less-is-better"
                                     isLoading={!firstResponseTimeTrend.data}
+                                    tooltip={periodComparisonTooltipText}
                                     value={firstResponseTimeTrend.data?.value}
                                     prevValue={
                                         firstResponseTimeTrend.data?.prevValue
@@ -513,6 +515,7 @@ export default function SupportPerformanceOverview() {
                                     format="percent"
                                     interpretAs="less-is-better"
                                     isLoading={!resolutionTimeTrend.data}
+                                    tooltip={periodComparisonTooltipText}
                                     value={resolutionTimeTrend.data?.value}
                                     prevValue={
                                         resolutionTimeTrend.data?.prevValue
@@ -549,6 +552,7 @@ export default function SupportPerformanceOverview() {
                                     format="percent"
                                     interpretAs="less-is-better"
                                     isLoading={!messagesPerTicketTrend.data}
+                                    tooltip={periodComparisonTooltipText}
                                     value={messagesPerTicketTrend.data?.value}
                                     prevValue={
                                         messagesPerTicketTrend.data?.prevValue
