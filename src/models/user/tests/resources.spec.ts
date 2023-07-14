@@ -10,13 +10,11 @@ const mockedServer = new MockAdapter(client)
 describe('user resources', () => {
     const mockedData: UserSetting = {
         data: {
-            1: {
-                display_order: 1,
-                hide: false,
-            },
+            available: true,
+            show_macros: true,
         },
         id: 2,
-        type: UserSettingType.TicketViews,
+        type: UserSettingType.Preferences,
     }
 
     beforeEach(() => {

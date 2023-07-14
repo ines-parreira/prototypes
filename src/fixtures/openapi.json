@@ -3220,7 +3220,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "description": "Type of the `UserSetting`. Possible values are: preferences, ticket-views, user-views",
+                    "description": "Type of the `UserSetting`.",
                     "example": "preferences",
                     "type": "string"
                 },

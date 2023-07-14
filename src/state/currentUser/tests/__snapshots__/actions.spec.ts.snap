@@ -96,15 +96,13 @@ exports[`current user actions submitSettingSuccess should dispatch the next sett
     "isUpdate": true,
     "resp": {
       "data": {
-        "1": {
-          "display_order": 2,
-          "hide": false,
-        },
+        "available": true,
+        "show_macros": true,
       },
       "id": 1,
-      "type": "ticket-views",
+      "type": "preferences",
     },
-    "settingType": "ticket-views",
+    "settingType": "preferences",
     "type": "SUBMIT_SETTING_SUCCESS",
   },
 ]

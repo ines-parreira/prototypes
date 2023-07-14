@@ -90,7 +90,6 @@ export type EditableUserProfile = {
 
 export enum UserSettingType {
     Preferences = 'preferences',
-    TicketViews = 'ticket-views',
     ViewsOrdering = 'views-ordering',
     CutomerViews = 'customer-views',
     NotificationPreferences = 'notification-preferences',
@@ -101,11 +100,6 @@ export type UserSetting =
           id: number
           type: UserSettingType.Preferences
           data: UserPreferences
-      }
-    | {
-          id: number
-          type: UserSettingType.TicketViews
-          data: UserTicketSettings
       }
     | {
           id: number

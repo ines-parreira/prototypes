@@ -3,7 +3,7 @@
 exports[`user resources createUserSetting should resolve on success 1`] = `
 {
   "config": {
-    "data": "{"data":{"1":{"display_order":1,"hide":false}},"type":"ticket-views"}",
+    "data": "{"data":{"available":true,"show_macros":true},"type":"preferences"}",
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "Content-Type": "application/json;charset=utf-8",
@@ -27,13 +27,11 @@ exports[`user resources createUserSetting should resolve on success 1`] = `
   },
   "data": {
     "data": {
-      "1": {
-        "display_order": 1,
-        "hide": false,
-      },
+      "available": true,
+      "show_macros": true,
     },
     "id": 2,
-    "type": "ticket-views",
+    "type": "preferences",
   },
   "headers": undefined,
   "request": {
@@ -46,7 +44,7 @@ exports[`user resources createUserSetting should resolve on success 1`] = `
 exports[`user resources updateUserSetting should resolve on success 1`] = `
 {
   "config": {
-    "data": "{"data":{"1":{"display_order":1,"hide":false}},"id":2,"type":"ticket-views"}",
+    "data": "{"data":{"available":true,"show_macros":true},"id":2,"type":"preferences"}",
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "Content-Type": "application/json;charset=utf-8",
@@ -70,13 +68,11 @@ exports[`user resources updateUserSetting should resolve on success 1`] = `
   },
   "data": {
     "data": {
-      "1": {
-        "display_order": 1,
-        "hide": false,
-      },
+      "available": true,
+      "show_macros": true,
     },
     "id": 2,
-    "type": "ticket-views",
+    "type": "preferences",
   },
   "headers": undefined,
   "request": {
@@ -97,7 +93,7 @@ exports[`user resources updateUserSetting should resolve on success 2`] = `
   "post": [],
   "put": [
     {
-      "data": "{"data":{"1":{"display_order":1,"hide":false}},"id":2,"type":"ticket-views"}",
+      "data": "{"data":{"available":true,"show_macros":true},"id":2,"type":"preferences"}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

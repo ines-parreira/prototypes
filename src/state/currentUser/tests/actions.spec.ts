@@ -178,14 +178,12 @@ describe('current user actions', () => {
             })
             const req = {
                 data: {
-                    1: {
-                        hide: false,
-                        display_order: 2,
-                    },
+                    available: true,
+                    show_macros: true,
                 },
                 id: 1,
-                type: UserSettingType.TicketViews,
-            } as unknown as UserSetting
+                type: UserSettingType.Preferences,
+            } as UserSetting
             store.dispatch(actions.submitSettingSuccess(req, true))
             expect(store.getActions()).toMatchSnapshot()
         })

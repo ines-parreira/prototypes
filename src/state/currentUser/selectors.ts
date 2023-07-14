@@ -64,7 +64,7 @@ export const makeGetSettingsByType = () =>
         _getSettingsByType
     )
 
-// used to get ticket-views and customer-views user preferences
+// used to get user preferences
 export const getSettingsByType = (type: string) =>
     createImmutableSelector(typeSafeGetViews, getSettings, (views, settings) =>
         _getSettingsByType(views, settings, type)
