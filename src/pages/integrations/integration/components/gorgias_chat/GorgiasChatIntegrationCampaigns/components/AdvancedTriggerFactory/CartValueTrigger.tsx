@@ -79,6 +79,8 @@ export const CartValueTrigger = ({
                     className={css.fullWidth}
                     prefix="$"
                     value={innerValue}
+                    type="number"
+                    min={0}
                     onChange={handleChangeValue}
                     onBlur={handleBlurValue}
                 />
