@@ -82,6 +82,21 @@
             td {
                 width: 90px;
 
+                &.withShadow {
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: -1px;
+                        width: 30px;
+                        box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.15);
+
+                        transform: translateX(100%);
+                        pointer-events: none;
+                    }
+                }
+
                 &:first-child {
                     position: sticky;
                     left: 0;

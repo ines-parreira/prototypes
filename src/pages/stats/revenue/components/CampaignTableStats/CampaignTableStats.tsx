@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {UIEventHandler, useCallback, useState} from 'react'
 import useMeasure from 'react-use/lib/useMeasure'
 import {Link} from 'react-router-dom'
 
@@ -46,6 +46,7 @@ export const CampaignTableStats = ({
     onClickPrevPage,
 }: Props) => {
     const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [isTableScrolled, setIsTableScrolled] = useState(false)
     const [orderKey, setOrderKey] = useState<CampaignTableKeys>(
         CampaignTableKeys.TotalRevenue
     )
@@ -104,11 +105,12 @@ export const CampaignTableStats = ({
                     column={column}
                     cell={cell}
                     data={getDataFromTableCell(cell, column.key)}
+                    isTableScrolled={isTableScrolled}
                     isLoading={isLoading}
                 />
             )
         },
-        [isLoading]
+        [isLoading, isTableScrolled]
     )
 
     const renderRows = useCallback(
@@ -156,12 +158,20 @@ export const CampaignTableStats = ({
             : paginatedRows.map(renderRows)
     }, [chatIntegrationId, isLoading, paginatedRows, renderRows])
 
+    const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
+        if (event.currentTarget.scrollLeft > 0) {
+            setIsTableScrolled(true)
+        } else {
+            setIsTableScrolled(false)
+        }
+    }
+
     return (
         <div className={css.wrapper}>
             <div className={css.header}>
                 <p className={css.title}>Campaigns performance</p>
             </div>
-            <div ref={ref} className={css.container}>
+            <div ref={ref} className={css.container} onScroll={handleScroll}>
                 <TableWrapper className={css.table} style={{width}}>
                     <TableHead className={css.header}>
                         {CAMPAIGN_TABLE_CELLS.map(renderHeaderCells)}

@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
+import classNames from 'classnames'
 
 import {formatPercentage} from 'pages/common/utils/numbers'
 
@@ -18,6 +19,7 @@ import css from '../../CampaignTableStats.less'
 type Props = {
     column: CampaignTableColumn
     cell: CampaignTableContentCell
+    isTableScrolled?: boolean
     data: any
     isLoading?: boolean
 }
@@ -32,7 +34,13 @@ const highlighted = [
     CampaignTableKeys.RevenueGeneratedDiscountCode,
 ]
 
-export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
+export const CampaignTableCell = ({
+    column,
+    cell,
+    data,
+    isTableScrolled = false,
+    isLoading,
+}: Props) => {
     const bodyCellProps = useMemo(() => {
         return {
             isHighlighted: highlighted.includes(column.key),
@@ -53,7 +61,12 @@ export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
         if (cell.chatIntegration) {
             const url = `/app/settings/channels/gorgias_chat/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
             return (
-                <BodyCell {...bodyCellProps} className={css.campaignName}>
+                <BodyCell
+                    {...bodyCellProps}
+                    className={classNames(css.campaignName, {
+                        [css.withShadow]: isTableScrolled,
+                    })}
+                >
                     <Link to={url}>{data}</Link>
                 </BodyCell>
             )
