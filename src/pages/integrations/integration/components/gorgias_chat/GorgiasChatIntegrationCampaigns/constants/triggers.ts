@@ -27,84 +27,6 @@ export const BETA_TRIGGERS = [
 
 export const TRIGGER_LIST = [
     // --------------------
-    // Customer
-    // --------------------
-    {
-        key: CampaignTriggerKey.CustomerTags,
-        label: 'Shopify customer tags',
-        group: 'Customer',
-        defaults: {
-            value: '',
-            operator: ShopifyTagsOperators.ContainsAny,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-            shopify_history: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.CountryCode,
-        label: 'Customer country',
-        group: 'Customer',
-        defaults: {
-            value: '',
-            operator: CountryOperators.In,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-            shopify_history: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.OrdersCount,
-        label: 'Number of orders placed',
-        group: 'Customer',
-        defaults: {
-            value: '',
-            operator: OrdersCountOperators.Equal,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-            shopify_history: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.AmountSpent,
-        label: 'Total spent',
-        group: 'Customer',
-        defaults: {
-            value: '',
-            operator: OrdersCountOperators.Equal,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-            shopify_history: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.OrderedProducts,
-        label: 'Products purchased',
-        group: 'Customer',
-        defaults: {
-            value: [],
-            operator: OrderedProductsOperators.ContainsAny,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-            shopify_history: true,
-        },
-    },
-    // --------------------
     // Behavior
     // --------------------
     {
@@ -206,6 +128,84 @@ export const TRIGGER_LIST = [
             revenue: true,
             shopify: true,
             headless: false,
+        },
+    },
+    // --------------------
+    // Customer
+    // --------------------
+    {
+        key: CampaignTriggerKey.CustomerTags,
+        label: 'Shopify customer tags',
+        group: 'Customer',
+        defaults: {
+            value: '',
+            operator: ShopifyTagsOperators.ContainsAny,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.CountryCode,
+        label: 'Customer country',
+        group: 'Customer',
+        defaults: {
+            value: '',
+            operator: CountryOperators.In,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.OrdersCount,
+        label: 'Number of orders placed',
+        group: 'Customer',
+        defaults: {
+            value: '',
+            operator: OrdersCountOperators.Equal,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.AmountSpent,
+        label: 'Total spent',
+        group: 'Customer',
+        defaults: {
+            value: '',
+            operator: OrdersCountOperators.Equal,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.OrderedProducts,
+        label: 'Products purchased',
+        group: 'Customer',
+        defaults: {
+            value: [],
+            operator: OrderedProductsOperators.ContainsAny,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
         },
     },
     // --------------------
