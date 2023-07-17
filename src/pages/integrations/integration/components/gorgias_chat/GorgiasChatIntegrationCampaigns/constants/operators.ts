@@ -126,24 +126,12 @@ export const ORDERS_COUNT_OPERATORS = [
         value: OrdersCountOperators.GreaterThan,
     },
     {
-        label: 'is greater or equal to',
-        value: OrdersCountOperators.GreaterOrEqual,
-    },
-    {
         label: 'is less than',
         value: OrdersCountOperators.LessThan,
     },
     {
-        label: 'is less or equal to',
-        value: OrdersCountOperators.LessOrEqual,
-    },
-    {
         label: 'equals',
         value: OrdersCountOperators.Equal,
-    },
-    {
-        label: 'not equals',
-        value: OrdersCountOperators.NotEqual,
     },
 ]
 
@@ -153,24 +141,12 @@ export const AMOUNT_SPENT_OPERATORS = [
         value: AmountSpentOperators.GreaterThan,
     },
     {
-        label: 'is greater or equal to',
-        value: AmountSpentOperators.GreaterOrEqual,
-    },
-    {
         label: 'is less than',
         value: AmountSpentOperators.LessThan,
     },
     {
-        label: 'is less or equal to',
-        value: AmountSpentOperators.LessOrEqual,
-    },
-    {
         label: 'equals',
         value: AmountSpentOperators.Equal,
-    },
-    {
-        label: 'not equals',
-        value: AmountSpentOperators.NotEqual,
     },
 ]
 

@@ -1,13 +1,10 @@
 export enum AmountSpentOperators {
     GreaterThan = 'gt',
-    GreaterOrEqual = 'gte',
     LessThan = 'lt',
-    LessOrEqual = 'lte',
     Equal = 'eq',
-    NotEqual = 'neq',
 }
 
-const AMOUNT_SPENT_OPERATORS = ['gt', 'gte', 'lt', 'lte', 'eq', 'neq']
+const AMOUNT_SPENT_OPERATORS = ['gt', 'lt', 'eq']
 
 export function isAmountSpentOperators(
     operator: string

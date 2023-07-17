@@ -1,13 +1,10 @@
 export enum OrdersCountOperators {
     GreaterThan = 'gt',
-    GreaterOrEqual = 'gte',
     LessThan = 'lt',
-    LessOrEqual = 'lte',
     Equal = 'eq',
-    NotEqual = 'neq',
 }
 
-const ORDERS_COUNT_OPERATORS = ['gt', 'gte', 'lt', 'lte', 'eq', 'neq']
+const ORDERS_COUNT_OPERATORS = ['gt', 'lt', 'eq']
 
 export function isOrdersCountOperators(
     operator: string
