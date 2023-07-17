@@ -27,6 +27,10 @@ type WorkflowApi = {
     isFetchPending: boolean
     isUpdatePending: boolean
     fetchWorkflowConfigurations: () => Promise<WorkflowConfigurationShallow[]>
+    fetchWorkflowEntrypoints: (
+        ids: WorkflowConfiguration['id'][],
+        channelLanguage: string
+    ) => Promise<Record<WorkflowConfiguration['id'], {label: string}>>
     fetchWorkflowConfiguration: (
         id: string
     ) => Promise<Maybe<WorkflowConfiguration>>
@@ -70,6 +74,27 @@ export default function useWorkflowApi(): WorkflowApi {
                 return res.data
             })
     }, [])
+    const fetchWorkflowEntrypoints: (
+        ids: WorkflowConfiguration['id'][],
+        channelLanguage: string
+    ) => Promise<Record<WorkflowConfiguration['id'], {label: string}>> =
+        useCallback((ids, channelLanguage) => {
+            setIsFetchPending(true)
+            return apiClient
+                .get<Record<WorkflowConfiguration['id'], {label: string}>>(
+                    `/entrypoints`,
+                    {
+                        params: {
+                            ids,
+                            language: channelLanguage,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setIsFetchPending(false)
+                    return res.data
+                })
+        }, [])
     const fetchWorkflowConfiguration = useCallback((id: string) => {
         setIsFetchPending(true)
         return apiClient
@@ -182,6 +207,7 @@ export default function useWorkflowApi(): WorkflowApi {
         isUpdatePending,
         workflowConfigurationFactory,
         fetchWorkflowConfigurations,
+        fetchWorkflowEntrypoints,
         fetchWorkflowConfiguration,
         upsertWorkflowConfiguration,
         deleteWorkflowConfiguration,

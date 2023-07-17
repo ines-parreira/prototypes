@@ -33,7 +33,9 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
         useSelfServicePreviewContext()
     const {decoration, meta} = integration
 
-    const workflowsEntrypoints = useWorkflowsEntrypoints()
+    const workflowsEntrypoints = useWorkflowsEntrypoints(
+        props.integration.meta.language ?? 'en-US'
+    )
     const isInitialEntry = history.length === 1
 
     const quickResponses =

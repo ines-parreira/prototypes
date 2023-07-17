@@ -19,7 +19,9 @@ const SelfServiceStandaloneContactFormPreview = (props: Props) => {
         <StandaloneContactFormPreview name={contactForm.name}>
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>
-                    <SelfServiceStandaloneContactFormHomePage />
+                    <SelfServiceStandaloneContactFormHomePage
+                        locale={props.contactForm.default_locale}
+                    />
                 </Route>
             </React.Fragment>
         </StandaloneContactFormPreview>

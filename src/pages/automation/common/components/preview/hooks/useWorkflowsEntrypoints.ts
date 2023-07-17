@@ -1,70 +1,59 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
-import _keyBy from 'lodash/keyBy'
+import {useEffect, useState} from 'react'
+import _mapValues from 'lodash/mapValues'
 
 import useWorkflowApi from 'pages/automation/workflows/hooks/useWorkflowApi'
-import {WorkflowConfigurationShallow} from 'pages/automation/workflows/models/workflowConfiguration.types'
 
 import {useSelfServicePreviewContext} from '../SelfServicePreviewContext'
 
-const useWorkflowsEntrypoints: () => {
+const useWorkflowsEntrypoints: (channelLanguage: string) => {
     workflow_id: string
     label: string
-}[] = () => {
-    const {selfServiceConfiguration, workflowsEntrypoints} =
+}[] = (channelLanguage) => {
+    const {workflowsEntrypoints: channelAutomationSettingsEntrypoints} =
         useSelfServicePreviewContext()
-    const {fetchWorkflowConfigurations} = useWorkflowApi()
+    const {fetchWorkflowEntrypoints} = useWorkflowApi()
 
-    const [workflowConfigurationById, setWorkflowConfigurationById] = useState<
-        Record<string, WorkflowConfigurationShallow>
-    >({})
-    const loadWorkflowsConfigurations = useCallback(() => {
-        return fetchWorkflowConfigurations().then((confs) =>
-            setWorkflowConfigurationById(
-                confs.reduce(
-                    (acc, conf) => ({
-                        ...acc,
-                        [conf.id]: conf,
-                    }),
-                    {} as Record<string, WorkflowConfigurationShallow>
-                )
-            )
-        )
-    }, [fetchWorkflowConfigurations])
+    const [entrypoints, setEntrypoints] = useState<
+        {
+            workflow_id: string
+            label: string
+        }[]
+    >([])
     useEffect(() => {
-        void loadWorkflowsConfigurations()
-    }, [loadWorkflowsConfigurations])
-
-    return useMemo(() => {
-        const allWorkflowsEntrypoints =
-            selfServiceConfiguration?.workflows_entrypoints ?? []
-
-        if (!workflowsEntrypoints) {
-            return []
-        }
-
-        const allWorkflowsEntrypointsByWorkflowId = _keyBy(
-            allWorkflowsEntrypoints,
-            'workflow_id'
-        )
-
-        return workflowsEntrypoints
-            .filter(
-                (entrypoint) =>
-                    entrypoint.workflow_id in
-                        allWorkflowsEntrypointsByWorkflowId &&
-                    entrypoint.enabled
+        async function f() {
+            const enabledWorkflowIdsInChannel =
+                channelAutomationSettingsEntrypoints
+                    ?.filter(({enabled}) => enabled)
+                    .map(({workflow_id}) => workflow_id)
+            if (
+                !enabledWorkflowIdsInChannel ||
+                enabledWorkflowIdsInChannel.length === 0
             )
-            .map((entrypoint) => ({
-                workflow_id: entrypoint.workflow_id,
-                label:
-                    workflowConfigurationById[entrypoint.workflow_id]
-                        ?.entrypoint?.label ?? '',
-            }))
+                return
+            const entrypoints = await fetchWorkflowEntrypoints(
+                enabledWorkflowIdsInChannel,
+                channelLanguage
+            )
+            const entrypointLabelByWorkflowId: Record<string, string> =
+                _mapValues(entrypoints, 'label')
+            setEntrypoints(
+                enabledWorkflowIdsInChannel
+                    .map((workflow_id) => ({
+                        workflow_id,
+                        label: entrypointLabelByWorkflowId[workflow_id],
+                    }))
+                    // Filter out workflows that do not support the channel language
+                    .filter(({label}) => label)
+            )
+        }
+        void f()
     }, [
-        workflowsEntrypoints,
-        selfServiceConfiguration?.workflows_entrypoints,
-        workflowConfigurationById,
+        channelAutomationSettingsEntrypoints,
+        channelLanguage,
+        fetchWorkflowEntrypoints,
     ])
+
+    return entrypoints
 }
 
 export default useWorkflowsEntrypoints

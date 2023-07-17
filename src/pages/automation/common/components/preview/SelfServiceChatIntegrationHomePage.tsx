@@ -35,7 +35,9 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         isArticleRecommendationEnabled,
     } = useSelfServicePreviewContext()
     const currentUser = useAppSelector(getCurrentUser)
-    const workflowsEntrypoints = useWorkflowsEntrypoints()
+    const workflowsEntrypoints = useWorkflowsEntrypoints(
+        integration.meta.language ?? 'en-US'
+    )
 
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']

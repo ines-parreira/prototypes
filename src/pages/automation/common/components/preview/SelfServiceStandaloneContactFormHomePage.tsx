@@ -15,10 +15,14 @@ const WorkflowItem = ({label}: {label: string}) => (
     </div>
 )
 
-const SelfServiceStandaloneContactFormHomePage = () => {
+const SelfServiceStandaloneContactFormHomePage = ({
+    locale,
+}: {
+    locale: string
+}) => {
     const history = useHistory()
 
-    const workflowsEntrypoints = useWorkflowsEntrypoints()
+    const workflowsEntrypoints = useWorkflowsEntrypoints(locale)
 
     const isInitialEntry = history.length === 1
 

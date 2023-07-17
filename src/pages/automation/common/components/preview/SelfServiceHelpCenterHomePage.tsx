@@ -56,7 +56,9 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
     const history = useHistory()
     const {selfServiceConfiguration, hoveredOrderManagementFlow} =
         useSelfServicePreviewContext()
-    const workflowsEntrypoints = useWorkflowsEntrypoints()
+    const workflowsEntrypoints = useWorkflowsEntrypoints(
+        helpCenter.default_locale
+    )
 
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
     const isInitialEntry = history.length === 1
