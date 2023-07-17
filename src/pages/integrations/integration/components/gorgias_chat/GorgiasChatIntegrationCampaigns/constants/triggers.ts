@@ -168,7 +168,7 @@ export const TRIGGER_LIST = [
         label: 'Number of orders placed',
         group: 'Customer',
         defaults: {
-            value: '',
+            value: 0,
             operator: OrdersCountOperators.Equal,
         },
         requirements: {
@@ -183,7 +183,7 @@ export const TRIGGER_LIST = [
         label: 'Total spent',
         group: 'Customer',
         defaults: {
-            value: '',
+            value: 0,
             operator: OrdersCountOperators.Equal,
         },
         requirements: {
