@@ -1,8 +1,11 @@
-@import '~css/new/colorTokens';
-
 :local {
     .container {
-        background: fade(@classic-main-primary, 10%);
+        background: hsla(
+            var(--main-primary-h),
+            var(--main-primary-s),
+            var(--main-primary-l),
+            0.1
+        );
         border-radius: 9px;
         padding: 2px;
         height: 18px;

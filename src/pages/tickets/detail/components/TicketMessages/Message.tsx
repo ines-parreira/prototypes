@@ -4,7 +4,8 @@ import React, {useState} from 'react'
 import {hasFailedAction, isFailed, isPending} from 'models/ticket/predicates'
 import {TicketMessage} from 'models/ticket/types'
 
-import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
+import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
+
 import Actions from './Actions'
 import Attachments from './Attachments'
 import Body from './Body'
@@ -37,9 +38,7 @@ export default function Message(props: Props) {
         >
             {props.showSourceDetails && (
                 <SourceDetailsHeader
-                    className={classNames(css.sourceDetails, {
-                        internal: !message.public,
-                    })}
+                    className={css.sourceDetails}
                     contentClassName={css.sourceDetailsContent}
                     message={message}
                     timezone={props.timezone}

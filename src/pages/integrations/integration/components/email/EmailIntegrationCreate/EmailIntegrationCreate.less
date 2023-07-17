@@ -1,5 +1,3 @@
-@import '~css/new/colors';
-
 :local .form {
     max-width: 400px !important;
 }
@@ -21,8 +19,16 @@
         }
 
         &:hover {
-            background-color: darken(@google, 5%) !important;
-            border-color: darken(@google, 5%) !important;
+            background-color: hsl(
+                var(--google-h),
+                var(--google-s),
+                calc(var(--google-l) - 5%)
+            ) !important;
+            border-color: hsl(
+                var(--google-h),
+                var(--google-s),
+                calc(var(--google-l) - 5%)
+            ) !important;
         }
     }
 
@@ -35,8 +41,16 @@
         }
 
         &:hover {
-            background-color: darken(@office356, 5%) !important;
-            border-color: darken(@office356, 5%) !important;
+            background-color: hsl(
+                var(--office365-h),
+                var(--office365-s),
+                calc(var(--office365-l) - 5%)
+            ) !important;
+            border-color: hsl(
+                var(--office365-h),
+                var(--office365-s),
+                calc(var(--office365-l) - 5%)
+            ) !important;
         }
     }
 

@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 @status: 'info', 'success', 'warning', 'error';
 
 :local {
@@ -81,20 +79,20 @@
     }
 
     /* Success */
-    @successBackgroundColor: @classic-feedback-success-0;
-    @successBorderColor: @classic-feedback-success-1;
+    @successBackgroundColor: var(--feedback-success-0);
+    @successBorderColor: var(--feedback-success-1);
 
     /* Error */
-    @errorBackgroundColor: @classic-feedback-error-0;
-    @errorBorderColor: @classic-feedback-error-1;
+    @errorBackgroundColor: var(--feedback-error-0);
+    @errorBorderColor: var(--feedback-error-1);
 
     /* Info */
-    @infoBackgroundColor: @classic-main-primary-0;
-    @infoBorderColor: @classic-main-primary-1;
+    @infoBackgroundColor: var(--main-primary-0);
+    @infoBorderColor: var(--main-primary-1);
 
     /* Warning */
-    @warningBackgroundColor: @classic-feedback-warning-0;
-    @warningBorderColor: @classic-feedback-warning-1;
+    @warningBackgroundColor: var(--feedback-warning-0);
+    @warningBorderColor: var(--feedback-warning-1);
 
     .color-variant(@i:1) when (@i <= length(@status)) {
         @statusValue: extract(@status, @i);
@@ -105,11 +103,6 @@
         .@{class} {
             background: @@backgroundColor;
             border-bottom: 1px solid @@borderColor;
-
-            &:focus,
-            &:hover {
-                background: lighten(@@backgroundColor, 0.3%);
-            }
         }
 
         .color-variant(@i + 1);

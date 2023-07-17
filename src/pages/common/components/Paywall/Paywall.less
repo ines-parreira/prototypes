@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 :local {
@@ -78,8 +77,6 @@
                             top: -250px;
                             z-index: -1;
                         }
-
-                        .circle-variant();
                     }
                 }
                 .content {
@@ -143,9 +140,10 @@
                                     color: var(--main-primary);
                                     transition: color 200ms;
                                     &:hover {
-                                        color: darken(
-                                            @classic-main-primary,
-                                            10%
+                                        color: hsl(
+                                            var(--main-primary-h),
+                                            var(--main-primary-s),
+                                            calc(var(--main-primary-l) - 10%)
                                         );
                                     }
                                 }
@@ -160,25 +158,84 @@
             }
         }
     }
+
+    .svg {
+        fill: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        @media @desktops {
+            .circle-variant();
+        }
+    }
 }
 
 @medium-and-large-screens: ~'only screen and (min-width: 992px) and (max-width: 1500px)';
 @paywall-type: 'default', 'basic', 'pro', 'advanced', 'enterprise';
 
-@defaultContainerShadow: 0px 16px 64px fade(@classic-neutral-grey-5, 20%);
-@defaultImageShadow: 0px 16px 64px fade(@classic-neutral-grey-5, 20%);
+@defaultContainerShadow: 0px 16px 64px
+    hsla(
+        var(--neutral-grey-5-h),
+        var(--neutral-grey-5-s),
+        var(--neutral-grey-5-l),
+        0.2
+    );
+@defaultImageShadow: 0px 16px 64px
+    hsla(
+        var(--neutral-grey-5-h),
+        var(--neutral-grey-5-s),
+        var(--neutral-grey-5-l),
+        0.2
+    );
 
-@basicContainerShadow: 0px 16px 64px fade(@classic-main-primary-3, 16%);
-@basicImageShadow: 0px 4px 24px fade(@classic-main-primary, 8%);
+@basicContainerShadow: 0px 16px 64px
+    hsla(
+        var(--main-primary-3-h),
+        var(--main-primary-3-s),
+        var(--main-primary-3-l),
+        0.16
+    );
+@basicImageShadow: 0px 4px 24px
+    hsla(
+        var(--main-primary-h),
+        var(--main-primary-s),
+        var(--main-primary-l),
+        0.08
+    );
 
-@proContainerShadow: 0px 16px 64px fade(@classic-main-primary-3, 16%);
-@proImageShadow: 0px 4px 24px fade(@classic-main-primary, 8%);
+@proContainerShadow: 0px 16px 64px
+    hsla(
+        var(--main-primary-3-h),
+        var(--main-primary-3-s),
+        var(--main-primary-3-l),
+        0.16
+    );
+@proImageShadow: 0px 4px 24px
+    hsla(
+        var(--main-primary-h),
+        var(--main-primary-s),
+        var(--main-primary-l),
+        0.08
+    );
 
 @advancedContainerShadow: 0px 16px 64px rgba(32, 192, 140, 0.16);
 @advancedImageShadow: 0px 4px 24px rgba(36, 214, 157, 0.08);
 
-@enterpriseContainerShadow: 0px 16px 64px fade(@classic-feedback-warning, 16%);
-@enterpriseImageShadow: 0px 4px 24px fade(@classic-feedback-warning, 8%);
+@enterpriseContainerShadow: 0px 16px 64px
+    hsla(
+        var(--feedback-warning-h),
+        var(--feedback-warning-s),
+        var(--feedback-warning-l),
+        0.16
+    );
+@enterpriseImageShadow: 0px 4px 24px
+    hsla(
+        var(--feedback-warning-h),
+        var(--feedback-warning-s),
+        var(--feedback-warning-l),
+        0.08
+    );
 
 .shadow-variant(@i:1) when (@i <= length(@paywall-type)) {
     @variantValue: extract(@paywall-type, @i);
@@ -208,26 +265,19 @@
     .shadow-variant(@i + 1);
 }
 
-@defaultPaywallCircleColor: @classic-neutral-grey-1;
-@basicPaywallCircleColor: @classic-main-primary-0;
-@proPaywallCircleColor: @classic-main-primary-0;
-@advancedPaywallCircleColor: @classic-feedback-success-0;
-@enterprisePaywallCircleColor: @classic-feedback-warning-0;
+@defaultPaywallCircleColor: var(--neutral-grey-1);
+@basicPaywallCircleColor: var(--main-primary-0);
+@proPaywallCircleColor: var(--main-primary-0);
+@advancedPaywallCircleColor: var(--feedback-success-0);
+@enterprisePaywallCircleColor: var(--feedback-warning-0);
 
 .circle-variant(@i:1) when (@i <= length(@paywall-type)) {
     @variantValue: extract(@paywall-type, @i);
     @circleColor: '@{variantValue}PaywallCircleColor';
     @class: ~'@{variantValue}';
-    @circle: replace(
-        'data:image/svg+xml;utf8,<svg width="824" height="900" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h374c248.528 0 450 201.472 450 450S622.528 900 374 900H0V0Z" fill="@{@{circleColor}}"/></svg>',
-        '#',
-        '%23'
-    );
 
     &.@{class} {
-        &::before {
-            content: url(@circle);
-        }
+        fill: @@circleColor;
     }
 
     .circle-variant(@i + 1);

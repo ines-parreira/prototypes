@@ -10,7 +10,13 @@
 .dropdown-menu {
     padding-left: 4px;
     padding-right: 4px;
-    box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
+    box-shadow: 0 2px 3px
+        hsla(
+            var(--neutral-grey-6-h),
+            var(--neutral-grey-6-s),
+            calc(var(--neutral-grey-6-l) + 12%),
+            0.2
+        );
     border-color: var(--neutral-grey-3);
     color: var(--neutral-grey-6);
 

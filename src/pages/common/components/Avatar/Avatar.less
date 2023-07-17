@@ -1,5 +1,3 @@
-@import '~css/new/colors';
-
 :local .component {
     position: relative;
     background: var(--purple);
@@ -27,7 +25,11 @@
         display: flex;
         justify-content: center;
 
-        color: lighten(@purple, 20%);
+        color: hsl(
+            var(--purple-h),
+            var(--purple-s),
+            calc(var(--purple-l) + 20%)
+        );
         font-size: 19px;
         font-weight: 600;
         text-align: center;

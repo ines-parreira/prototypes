@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import (reference) '~css/typography';
 
 :local {
@@ -23,7 +22,13 @@
 
         &:focus {
             border-color: var(--main-primary);
-            box-shadow: 0 0 0 2px fade(@classic-main-primary, 20%);
+            box-shadow: 0 0 0 2px
+                hsla(
+                    var(--main-primary-h),
+                    var(--main-primary-s),
+                    var(--main-primary-l),
+                    0.2
+                );
         }
 
         &:focus-visible {
@@ -40,7 +45,13 @@
 
         &:focus {
             border-color: var(--feedback-error);
-            box-shadow: 0 0 0 2px fade(@classic-feedback-error, 20%);
+            box-shadow: 0 0 0 2px
+                hsla(
+                    var(--feedback-error-h),
+                    var(--feedback-error-s),
+                    var(--feedback-error-l),
+                    0.2
+                );
         }
     }
 

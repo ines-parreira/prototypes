@@ -1,8 +1,11 @@
-@import '~css/new/colorTokens';
 @import '~css/new/layout.less';
 
 :local .from {
-    color: darken(@classic-neutral-grey-4, 8%);
+    color: hsl(
+        var(--neutral-grey-4-h),
+        var(--neutral-grey-4-s),
+        calc(var(--neutral-grey-4-l) - 8%)
+    );
     font-size: 1rem;
     display: flex;
     min-width: 0;
@@ -35,7 +38,11 @@
 
     a {
         font-weight: 600;
-        color: darken(@classic-neutral-grey-4, 8%);
+        color: hsl(
+            var(--neutral-grey-4-h),
+            var(--neutral-grey-4-s),
+            calc(var(--neutral-grey-4-l) - 8%)
+        );
         text-decoration: underline !important;
     }
 

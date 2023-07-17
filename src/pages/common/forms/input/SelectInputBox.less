@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import (reference) '~css/typography';
 
 :local {
@@ -28,7 +27,13 @@
 
         &.isFocused:not(.isNested) {
             border-color: var(--main-primary);
-            box-shadow: 0 0 0 2px fadeout(@classic-main-primary, 80%);
+            box-shadow: 0 0 0 2px
+                hsla(
+                    var(--main-primary-h),
+                    var(--main-primary-s),
+                    var(--main-primary-l),
+                    0.2
+                );
         }
 
         &.isDisabled {

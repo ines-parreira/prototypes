@@ -22,8 +22,19 @@ exports[`<FeaturePaywall /> should ask to upgrade custom price when missing feat
       <div
         class="align-items-center mx-0 row"
       >
+        <svg
+          class="svg enterprise"
+          height="auto"
+          viewBox="0 0 824 900"
+          width="824"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
+          />
+        </svg>
         <div
-          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview enterprise col-12 col-lg-6 col-xl-6"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
           <div
             class=""
@@ -193,8 +204,19 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy price into new price 1`
       <div
         class="align-items-center mx-0 row"
       >
+        <svg
+          class="svg basic"
+          height="auto"
+          viewBox="0 0 824 900"
+          width="824"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
+          />
+        </svg>
         <div
-          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview basic col-12 col-lg-6 col-xl-6"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
           <div
             class=""
@@ -368,8 +390,19 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
       <div
         class="align-items-center mx-0 row"
       >
+        <svg
+          class="svg pro"
+          height="auto"
+          viewBox="0 0 824 900"
+          width="824"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
+          />
+        </svg>
         <div
-          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview pro col-12 col-lg-6 col-xl-6"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
         >
           <div
             class=""

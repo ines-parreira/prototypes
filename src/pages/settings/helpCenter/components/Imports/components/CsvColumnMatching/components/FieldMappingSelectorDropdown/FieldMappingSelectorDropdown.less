@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 @select-padding: 14px;
 
 :local {
@@ -22,7 +20,13 @@
     }
 
     .dropdown {
-        box-shadow: 0 0 5px fade(@classic-neutral-grey-6, 10%);
+        box-shadow: 0 0 5px
+            hsla(
+                var(--neutral-grey-6-h),
+                var(--neutral-grey-6-s),
+                var(--neutral-grey-6-l),
+                0.1
+            );
         height: auto;
         margin-bottom: 1px;
         margin-left: -1px;

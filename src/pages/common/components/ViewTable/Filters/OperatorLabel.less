@@ -1,11 +1,13 @@
-@import '~css/new/colorTokens';
-
 :local {
     .operatorLabel {
         &:global(.OperatorLabel.btn-frozen) {
             background-color: var(--feedback-warning);
             border: 1px solid
-                darken(desaturate(@classic-feedback-warning, 16%), 4%);
+                hsl(
+                    var(--feedback-warning-h),
+                    calc(var(--feedback-warning-s) - 16%),
+                    calc(var(--feedback-warning-l) - 4%)
+                );
         }
     }
 }

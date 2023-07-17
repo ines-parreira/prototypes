@@ -1,5 +1,3 @@
-@import '~css/new/colors';
-
 :local {
     .createIntegrationButton {
         background-color: var(--twitterBlue) !important;
@@ -12,7 +10,11 @@
         &:hover,
         &:active,
         &:focus {
-            background-color: darken(@twitterBlue, 5%) !important;
+            background-color: hsl(
+                var(--twitterBlue-h),
+                var(--twitterBlue-s),
+                calc(var(--twitterBlue-l) - 5%)
+            ) !important;
         }
 
         .twitterLogo {

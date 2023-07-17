@@ -1,5 +1,3 @@
-@import '~css/new/colors';
-
 :local {
     .facebookButton {
         border-width: 0;
@@ -14,7 +12,11 @@
             &:hover,
             &:active,
             &:focus {
-                background-color: darken(@facebookBlue, 5%);
+                background-color: hsl(
+                    var(--facebookBlue-h),
+                    var(--facebookBlue-s),
+                    calc(var(--facebookBlue) + 5%)
+                );
             }
         }
 

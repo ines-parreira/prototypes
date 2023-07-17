@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local .component {
     display: flex;
     flex-direction: column;
@@ -50,7 +48,13 @@
 
     &:hover {
         top: -1px;
-        box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
+        box-shadow: 0 2px 3px
+            hsla(
+                var(--neutral-grey-6-h),
+                var(--neutral-grey-6-s),
+                var(--neutral-grey-6-l),
+                0.2
+            );
         color: var(--neutral-grey-6);
     }
 

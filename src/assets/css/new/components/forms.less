@@ -2,7 +2,13 @@
     border: 1px solid var(--neutral-grey-3);
     border-radius: 3px;
     &:focus {
-        box-shadow: 0 0 0 0.2rem fade(@classic-main-primary, 10%);
+        box-shadow: 0 0 0 0.2rem
+            hsla(
+                var(--main-primary-h),
+                var(--main-primary-s),
+                var(--main-primary-l),
+                0.1
+            );
     }
 }
 

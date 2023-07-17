@@ -49,9 +49,20 @@
         var(--neutral-grey-0);
         var(--neutral-grey-6);
         var(--neutral-grey-6);
-        fade(@classic-neutral-grey-6, 80%);
+        hsla(var(--neutral-grey-6-h),
+        var(--neutral-grey-6-s),
+        var(--neutral-grey-6-l), 0.8);
         var(--neutral-grey-6);
-        darken(@classic-neutral-grey-6, 5%); darken(@classic-neutral-grey-6, 10%)
+        hsl(
+            var(--neutral-grey-6-h),
+            var(--neutral-grey-6-s),
+            calc(var(--neutral-grey-6-l) - 5%)
+        );
+        hsl(
+            var(--neutral-grey-6-h),
+            var(--neutral-grey-6-s),
+            calc(var(--neutral-grey-6-l) - 10%)
+        )
     );
 }
 
@@ -140,27 +151,27 @@
 
 // badge
 .badge-primary {
-    .badge-variant(@classic-main-primary);
+    .badge-variant(--main-primary);
 }
 
 .badge-secondary {
-    .badge-variant(@classic-neutral-grey-4);
+    .badge-variant(--neutral-grey-4);
 }
 
 .badge-success {
-    .badge-variant(@classic-feedback-success);
+    .badge-variant(--feedback-success);
 }
 
 .badge-info {
-    .badge-variant(@classic-neutral-grey-6);
+    .badge-variant(--neutral-grey-6);
 }
 
 .badge-warning {
-    .badge-variant(@classic-feedback-warning);
+    .badge-variant(--feedback-warning);
 }
 
 .badge-danger {
-    .badge-variant(@classic-feedback-error);
+    .badge-variant(--feedback-error);
 }
 
 // disabled buttons

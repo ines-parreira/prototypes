@@ -1,12 +1,15 @@
-@import '~css/new/colorTokens';
-
 :local {
     .upgradeLink {
         font-weight: 600;
 
         .upgradeButton {
             color: var(--main-secondary);
-            border-color: fade(@classic-main-secondary, 50%);
+            border-color: hsla(
+                var(--main-secondary-h),
+                var(--main-secondary-s),
+                var(--main-secondary-l),
+                0.5
+            );
 
             &.sm {
                 line-height: inherit;
@@ -51,7 +54,12 @@
 
                 &:hover {
                     background-color: var(--neutral-grey-0) !important;
-                    border-color: fade(@classic-main-secondary, 50%) !important;
+                    border-color: hsla(
+                        var(--main-secondary-h),
+                        var(--main-secondary-s),
+                        var(--main-secondary-l),
+                        0.5
+                    ) !important;
                     color: var(--main-secondary);
 
                     .upgradeIcon {

@@ -4,7 +4,11 @@
 }
 
 .alert-warning {
-    background-color: lighten(@internalYellow, 3%);
+    background-color: hsl(
+        var(--internalYellow-h),
+        var(--internalYellow-s),
+        calc(var(--internalYellow-l) + 3%)
+    );
     border-color: var(--internalYellow);
 
     color: var(--main-secondary);

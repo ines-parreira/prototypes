@@ -1,61 +1,98 @@
 @import './colorTokens';
 
-/*---  Colors  ---*/
-@black: #1b1c1d;
-@purple: #8088d6;
-@navy: #143498;
-@internalYellow: #fff2e5;
-@ultraLightRed: lighten(@classic-feedback-error-1, 19%);
-@facebookBlue: #1877f2;
-@rechargeBlue: #3901f1;
-@twitterBlue: #1d9bf0;
-@office356: #dc3e15;
-@google: #4285f4;
-@TEMP_neutral5: #161616;
-
 :root {
     /*---  Colors  ---*/
     --black: #1b1c1d;
+    --black-h: 210;
+    --black-s: 4%;
+    --black-l: 11%;
     --indigo: #152065;
     --green: #24d69e;
     --purple: #8088d6;
+    --purple-h: 234;
+    --purple-s: 51%;
+    --purple-l: 67%;
     --violet: #a541ab;
+    --violet-h: 297;
+    --violet-s: 45%;
+    --violet-l: 46%;
     --yellow: #fbbd08;
     --navy: #143498;
 
-    --highlightYellow: lighten(@classic-feedback-warning-1, 12%);
+    --highlightYellow: hsl(
+        var(--feedback-warning-1-h),
+        var(--feedback-warning-1-s),
+        calc(var(--feedback-warning-1-l) + 12%)
+    );
     --internalYellow: #fff2e5;
+    --internalYellow-h: 30;
+    --internalYellow-s: 100%;
+    --internalYellow-l: 95%;
 
     /**
     * Ultra Light Colors
     * Used for label backgrounds
     */
-    --ultraLightRed: lighten(@classic-feedback-error-1, 19%);
-    --ultraLightBlue: lighten(@classic-main-primary-1, 15%);
-    --ultraLightOrange: lighten(@classic-feedback-warning-1, 13%);
-    --ultraLightPurple: lighten(@purple, 30%);
+    --ultraLightRed: hsl(
+        var(--feedback-error-1-h) var(--feedback-error-1-s)
+            calc(var(--feedback-error-1-l) + 19%)
+    );
+    --ultraLightBlue: hsl(
+        var(--main-primary-1-h) var(--main-primary-1-s)
+            calc(var(--main-primary-1-l) + 15%)
+    );
+    --ultraLightOrange: hsl(
+        var(--feedback-warning-1-h) var(--feedback-warning-1-s)
+            calc(var(--feedback-warning-1-l) + 13%)
+    );
+    --ultraLightPurple: hsl(
+        var(--purple-h),
+        var(--purple-s),
+        calc(var(--purple-l) + 30%)
+    );
 
     // Third-party services colors
     --chatPurple: #8088d6;
     --facebookBlue: #1877f2;
+    --facebookBlue-h: 214;
+    --facebookBlue-s: 89%;
+    --facebookBlue-l: 52%;
     --httpMagenta: #e91e63;
+    --httpMagenta-h: 340;
+    --httpMagenta-s: 82%;
+    --httpMagenta-l: 52%;
     --magentoOrange: #ec6737;
     --rechargeBlue: #3901f1;
+    --rechargeBlue-h: 254;
+    --rechargeBlue-s: 99%;
+    --rechargeBlue-l: 47%;
     --shopifyGreen: #95bf46;
     --smileYellow: #fbc335;
     --yotpoBlue: #4a8df9;
+    --yotpoBlue-h: 217;
+    --yotpoBlue-s: 94%;
+    --yotpoBlue-l: 63%;
     --twitterBlue: #1d9bf0;
+    --twitterBlue-h: 204;
+    --twitterBlue-s: 88%;
+    --twitterBlue-l: 53%;
     --klaviyoGreen: #45b670;
     --bigcommercePurple: #282432;
     --bigcommerceLightPurple: fade(#4e70ff, 50%);
     --customerExternalDataGray: #7aa6b7;
     --office365: #dc3e15;
+    --office365-h: 12;
+    --office365-s: 83%;
+    --office365-l: 47%;
     --google: #4285f4;
+    --google-h: 217;
+    --google-s: 89%;
+    --google-l: 61%;
 
     /**
     * Temporary values for rebranding
     */
-    --TEMP_neutral5: #161616;
+    --TEMP_neutral5: hsl(0, 0%, 9%);
     --TEMP_shopifyBadgeColor: #5abf2a;
     --TEMP_shopifyBadgeBG: #e5ffde;
     --TEMP_modern-main-secondary: #f58d86;

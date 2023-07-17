@@ -1,16 +1,24 @@
-@import '~css/new/colorTokens';
-
 :local {
     .container {
         border-radius: 9px;
         padding: 2px;
         height: 18px;
         &:global(.primary) {
-            background: fade(@classic-main-primary, 10%);
+            background: hsla(
+                var(--main-primary-h),
+                var(--main-primary-s),
+                var(--main-primary-l),
+                0.1
+            );
             color: var(--yotpoBlue);
         }
         &:global(.secondary) {
-            background-color: fade(@classic-neutral-grey-4, 10%);
+            background-color: hsla(
+                var(--neutral-grey-4-h),
+                var(--neutral-grey-4-s),
+                var(--neutral-grey-4-l),
+                0.1
+            );
             color: var(--neutral-grey-4);
         }
     }

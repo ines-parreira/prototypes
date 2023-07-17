@@ -20,7 +20,8 @@
     &.active,
     .show > &.dropdown-toggle {
         background-color: @activeBg !important;
-        box-shadow: inset 1px 1px 2px fade(@black, 5%) !important;
+        box-shadow: inset 1px 1px 2px
+            hsla(var(--black-h), var(--black-s), var(--black-l), 0.05) !important;
         border-color: @activeBorder !important;
     }
 
@@ -66,14 +67,23 @@
     }
 }
 
-.badge-variant(@background; @color: @classic-neutral-grey-0) {
+.badge-variant(@background; @color: var(--neutral-grey-0)) {
+    --background: @background;
+    @background-h: var(~'@{background}-h');
+    @background-s: var(~'@{background}-s');
+    @background-l: var(~'@{background}-l');
+
     color: @color;
-    background-color: @background;
+    background-color: var(@background);
 
     &[href] {
         &:focus,
         &:hover {
-            background-color: darken(@background, 10%);
+            background-color: hsl(
+                @background-h,
+                @background-s,
+                calc(@background-l - 10%)
+            );
         }
     }
 }

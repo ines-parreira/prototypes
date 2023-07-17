@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local .field {
     position: relative;
     width: 100%;
@@ -38,7 +36,12 @@
         border-radius: 4px;
 
         &.item--focused {
-            background: fade(@classic-neutral-grey-3, 70%);
+            background: hsla(
+                var(--neutral-grey-3-h),
+                var(--neutral-grey-3-s),
+                var(--neutral-grey-3-l),
+                0.7
+            );
         }
 
         .item-remove-button {
@@ -61,7 +64,13 @@
         border-radius: 3px;
         overflow: hidden;
         background: var(--neutral-grey-0);
-        box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
+        box-shadow: 0 2px 3px
+            hsla(
+                var(--neutral-grey-6-h),
+                var(--neutral-grey-6-s),
+                var(--neutral-grey-6-l),
+                0.2
+            );
         border: 1px solid var(--neutral-grey-3);
         padding: 8px;
 

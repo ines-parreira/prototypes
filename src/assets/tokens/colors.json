@@ -35,7 +35,8 @@
             },
             "Primary": {"value": "#4a8df9"},
             "Secondary": {"value": "#ef6c0e"},
-            "Tertiary": {"value": "#8088d6"}
+            "Tertiary": {"value": "#8088d6"},
+            "Latte": {"value": "#fff9f4"}
         },
         "Neutral": {
             "Grey_0": {"value": "#ffffff"},

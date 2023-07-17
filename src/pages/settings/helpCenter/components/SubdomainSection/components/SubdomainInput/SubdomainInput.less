@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .input {
         //TODO(@irinel-gorgias) remove this once we get rid of the <DEPRECATED_InputField>
@@ -10,7 +8,13 @@
         &.error {
             input {
                 border-color: var(--feedback-error);
-                box-shadow: 0 0 0 0.2rem fade(@classic-feedback-error, 10%);
+                box-shadow: 0 0 0 0.2rem
+                    hsla(
+                        var(--feedback-error-h),
+                        var(--feedback-error-s),
+                        var(--feedback-error-l),
+                        0.1
+                    );
             }
         }
     }

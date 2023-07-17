@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .mention,
     .mention:visited {
@@ -32,7 +30,13 @@
         background: var(--neutral-grey-0);
         border: 1px solid var(--neutral-grey-3);
         border-radius: 2px;
-        box-shadow: 0 2px 3px 0 fade(@classic-neutral-grey-6, 20%);
+        box-shadow: 0 2px 3px 0
+            hsla(
+                var(--neutral-grey-6-h),
+                var(--neutral-grey-6-s),
+                var(--neutral-grey-6-l),
+                0.2
+            );
         transform: scale(0.8);
         transform-origin: 1em 0%;
         transition: all 0.1s ease-out;
