@@ -1,4 +1,4 @@
-import React, {KeyboardEvent} from 'react'
+import React, {createRef, KeyboardEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
@@ -43,6 +43,8 @@ type State = {
 }
 
 export class HeaderContainer extends React.Component<Props, State> {
+    editableTitleRef = createRef<HTMLInputElement>()
+
     state = {
         askDeleteConfirmation: false,
     }
@@ -159,7 +161,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                     return (
                                         <div className={css.titleWrapper}>
                                             <EditableTitle
-                                                id="tooltip-title"
+                                                ref={this.editableTitleRef}
                                                 className={classnames(
                                                     css.title,
                                                     {
@@ -195,7 +197,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                     ) === ''
                                                 }
                                                 placement="bottom"
-                                                target="tooltip-title"
+                                                target={this.editableTitleRef}
                                             >
                                                 Please add a name to your view
                                                 before saving it.
@@ -309,8 +311,6 @@ export class HeaderContainer extends React.Component<Props, State> {
                                         close
                                     </i>
                                     <Tooltip
-                                        //$TsFixMe: remove ignore once Tooltip is properly migrated
-                                        //@ts-ignore
                                         placement="top"
                                         target="leave-search-mode"
                                     >

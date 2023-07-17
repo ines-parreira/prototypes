@@ -2,8 +2,10 @@ import React, {
     ComponentProps,
     FocusEvent,
     KeyboardEvent,
+    Ref,
+    forwardRef,
     useEffect,
-    useRef,
+    useImperativeHandle,
     useState,
 } from 'react'
 import classnames from 'classnames'
@@ -24,20 +26,26 @@ type Props = {
     onChange?: (value?: string) => void
 } & ComponentProps<typeof TextInput>
 
-const EditableTitle = ({
-    className,
-    title,
-    placeholder,
-    update,
-    focus,
-    select,
-    disabled,
-    forceEditMode,
-    onChange,
-    isRequired,
-    ...props
-}: Props) => {
-    const ref = useRef<HTMLInputElement>(null)
+const EditableTitle = (
+    {
+        className,
+        title,
+        placeholder,
+        update,
+        focus,
+        select,
+        disabled,
+        forceEditMode,
+        onChange,
+        isRequired,
+        ...props
+    }: Props,
+    ref: Ref<HTMLInputElement> | null | undefined
+) => {
+    const [inputElement, setInputElement] = useState<HTMLInputElement | null>(
+        null
+    )
+    useImperativeHandle(ref, () => inputElement!)
 
     const [value, setValue] = useState(title)
     const [editMode, setEditMode] = useState(false)
@@ -65,9 +73,9 @@ const EditableTitle = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title])
 
-    const handleSelect = () => ref?.current?.select()
+    const handleSelect = () => inputElement?.select()
 
-    const blur = () => ref?.current?.blur()
+    const blur = () => inputElement?.blur()
 
     const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -103,7 +111,7 @@ const EditableTitle = ({
                 [css['edit-mode']]: editMode || forceEditMode,
                 [css.isDisabled]: disabled,
             })}
-            ref={ref}
+            ref={setInputElement}
             tabIndex={1}
             isDisabled={disabled}
             inputClassName={classnames(className, css.input, {
@@ -122,4 +130,4 @@ const EditableTitle = ({
     )
 }
 
-export default EditableTitle
+export default forwardRef(EditableTitle)

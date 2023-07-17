@@ -12,6 +12,8 @@ import {getLDClient} from 'utils/launchDarkly'
 
 import {HeaderContainer} from '../Header'
 
+jest.mock('lodash/uniqueId', () => () => '42')
+
 jest.mock('state/views/actions.ts', () => {
     const _identity: <T>(arg: T) => T = jest.requireActual('lodash/identity')
     return {
