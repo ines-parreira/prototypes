@@ -1,6 +1,7 @@
 import {Edge, Node} from 'reactflow'
 
 import {
+    LanguageCode,
     MessageContent,
     WorkflowConfiguration,
     WorkflowTransition,
@@ -10,7 +11,6 @@ export type TriggerButtonNodeType = Node<
     {
         label: string
         label_tkey: string
-        shouldShowErrors?: boolean
         isGreyedOut?: boolean | null
     },
     'trigger_button'
@@ -28,7 +28,6 @@ export type MultipleChoicesNodeType = Node<
             label: string
             label_tkey?: string
         }>
-        shouldShowErrors?: boolean | null
         isGreyedOut?: boolean | null
     },
     'multiple_choices'
@@ -46,7 +45,6 @@ export type AutomatedMessageNodeType = Node<
             wfConfigurationMessagesStepId: string
         }
         content: MessageContent
-        shouldShowErrors?: boolean | null
         isGreyedOut?: boolean | null
     },
     'automated_message'
@@ -59,7 +57,6 @@ export type TextReplyNodeType = Node<
             wfConfigurationTextInputStepId: string
         }
         content: MessageContent
-        shouldShowErrors?: boolean | null
         isGreyedOut?: boolean | null
     },
     'text_reply'
@@ -72,7 +69,6 @@ export type FileUploadNodeType = Node<
             wfConfigurationAttachmentsInputStepId: string
         }
         content: MessageContent
-        shouldShowErrors?: boolean | null
         isGreyedOut?: boolean | null
     },
     'file_upload'
@@ -87,7 +83,6 @@ export type EndNodeType = Node<
         ticketTags?: string[] | null
         ticketAssigneeUserId?: number | null
         ticketAssigneeTeamId?: number | null
-        shouldShowErrors?: boolean | null
         isGreyedOut?: boolean | null
     },
     'end'
@@ -107,6 +102,7 @@ export type VisualBuilderEdge = Edge<{
 
 export type VisualBuilderGraph = {
     name: string
+    available_languages?: LanguageCode[]
     nodes: VisualBuilderNode[]
     edges: VisualBuilderEdge[]
     wfConfigurationOriginal: WorkflowConfiguration

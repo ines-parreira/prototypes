@@ -82,6 +82,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
 ): VisualBuilderGraph {
     const triggerButtonNode: TriggerButtonNodeType = {
         ...buildNodeCommonProperties(),
+        id: 'trigger_button',
         type: 'trigger_button',
         data: {
             label: c.entrypoint?.label ?? '',
@@ -101,6 +102,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             // group message step followed by a choice step into a multiple_choices node
             const n: MultipleChoicesNodeType = {
                 ...buildNodeCommonProperties(),
+                id: step.id,
                 type: 'multiple_choices',
                 data: {
                     content: injectTkeysInContentIfNotExist(
@@ -125,6 +127,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             // group message step followed by a text-input step into a text_reply node
             const n: TextReplyNodeType = {
                 ...buildNodeCommonProperties(),
+                id: step.id,
                 type: 'text_reply',
                 data: {
                     content: injectTkeysInContentIfNotExist(
@@ -146,6 +149,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             // group message step followed by an attachments-input step into a file_upload node
             const n: FileUploadNodeType = {
                 ...buildNodeCommonProperties(),
+                id: step.id,
                 type: 'file_upload',
                 data: {
                     content: injectTkeysInContentIfNotExist(
@@ -163,6 +167,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             // single message step will become an automated_answer node
             const n: AutomatedMessageNodeType = {
                 ...buildNodeCommonProperties(),
+                id: step.id,
                 type: 'automated_message',
                 data: {
                     content: injectTkeysInContentIfNotExist(
@@ -179,6 +184,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             // workflow_call step is always an end_node for now
             const n: EndNodeType = {
                 ...buildNodeCommonProperties(),
+                id: step.id,
                 type: 'end',
                 data: {
                     wfConfigurationRef: {
@@ -192,6 +198,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         } else if (step.kind === 'handover') {
             const n: EndNodeType = {
                 ...buildNodeCommonProperties(),
+                id: step.id,
                 type: 'end',
                 data: {
                     wfConfigurationRef: {
@@ -213,6 +220,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             const n = nodes[nodes.length - 1]
             edges.push({
                 ...buildEdgeCommonProperties(),
+                id: `${nodeIdByStepId[previousStep.id]}-${n.id}`,
                 source: nodeIdByStepId[previousStep.id],
                 target: n.id,
                 ...(incomingTransition?.event?.id
@@ -223,6 +231,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             const n = nodes[nodes.length - 1]
             edges.push({
                 ...buildEdgeCommonProperties(),
+                id: `${triggerButtonNode.id}-${n.id}`,
                 source: triggerButtonNode.id,
                 target: n.id,
                 ...(incomingTransition?.event?.id
@@ -231,5 +240,11 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             })
         }
     })
-    return {name: c.name, nodes, edges, wfConfigurationOriginal: c}
+    return {
+        name: c.name,
+        available_languages: c.available_languages,
+        nodes,
+        edges,
+        wfConfigurationOriginal: c,
+    }
 }

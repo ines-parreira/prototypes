@@ -76,6 +76,21 @@ export type WorkflowTransition = {
     }>
 }
 
+export const supportedLanguages = [
+    {code: 'en-US', label: 'English'} as const,
+    {code: 'fr-FR', label: 'French (FR)'} as const,
+    {code: 'fr-CA', label: 'French (CA)'} as const,
+    {code: 'es-ES', label: 'Spanish'} as const,
+    {code: 'de-DE', label: 'German'} as const,
+    {code: 'nl-NL', label: 'Dutch'} as const,
+    {code: 'cs-CZ', label: 'Czech'} as const,
+    {code: 'da-DK', label: 'Danish'} as const,
+    {code: 'no-NO', label: 'Norwegian'} as const,
+    {code: 'it-IT', label: 'Italian'} as const,
+    {code: 'sv-SE', label: 'Swedish'} as const,
+] as const
+export type LanguageCode = typeof supportedLanguages[number]['code']
+
 export type WorkflowConfiguration = {
     id: string
     internal_id: string
@@ -89,6 +104,7 @@ export type WorkflowConfiguration = {
     }
     steps: WorkflowStep[]
     transitions: WorkflowTransition[]
+    available_languages?: LanguageCode[]
 }
 
 export type WorkflowConfigurationShallow = Omit<

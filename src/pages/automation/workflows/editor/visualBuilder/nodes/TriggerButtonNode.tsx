@@ -10,10 +10,10 @@ import {TriggerButtonNodeType} from '../../../models/visualBuilderGraph.types'
 import css from './Node.less'
 
 function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
-    const {shouldShowErrors} = node.data
     const label = node.data.label
     const isErrored = label.length === 0
-    const {visualBuilderNodeIdEditing} = useWorkflowEditorContext()
+    const {visualBuilderNodeIdEditing, shouldShowErrors} =
+        useWorkflowEditorContext()
     const isSelected = visualBuilderNodeIdEditing === node.id
 
     return (

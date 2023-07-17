@@ -1,12 +1,7 @@
-import React, {
-    PropsWithChildren,
-    ReactNode,
-    useCallback,
-    useRef,
-    useState,
-} from 'react'
+import React, {PropsWithChildren, ReactNode, useCallback, useRef} from 'react'
 import {Container} from 'reactstrap'
 import {useEffectOnce} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
@@ -16,7 +11,9 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {withSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
 import useSearch from 'hooks/useSearch'
 import {Notification, NotificationStatus} from 'state/notifications/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 
+import {supportedLanguages} from '../models/workflowConfiguration.types'
 import {WORKFLOW_TEMPLATES} from '../constants'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 import {
@@ -27,6 +24,7 @@ import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../hooks/useWorkflowChannelSupport'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
+import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
@@ -54,6 +52,8 @@ function WorkflowEditorViewWrapped({
     shopName,
     shopType,
 }: WorkflowEditorViewProps) {
+    const isMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.FlowsMultiLanguages]
     const {template: templateSlug} = useSearch<{template: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
     const {appendWorkflowInStore} = useStoreWorkflows(
@@ -81,7 +81,9 @@ function WorkflowEditorViewWrapped({
     const isDirty = workflowEditorContext.isDirty
     const isFetchPending = workflowEditorContext.isFetchPending
     const isSavePending = workflowEditorContext.isSavePending
-    const [workflowNameisErrored, setWorkflowNameIsErrored] = useState(false)
+    const workflowNameIsErrored =
+        workflowEditorContext.visualBuilderGraph.name.trim().length === 0 ||
+        workflowEditorContext.visualBuilderGraph.name.length > 100
 
     // handlers
     const handleDiscard = () => {
@@ -93,15 +95,7 @@ function WorkflowEditorViewWrapped({
     const handleSave = async () => {
         const configurationError = workflowEditorContext.handleValidate()
         if (configurationError) {
-            setWorkflowNameIsErrored(
-                workflowEditorContext.visualBuilderGraph.name.trim().length ===
-                    0 ||
-                    workflowEditorContext.visualBuilderGraph.name.length > 100
-            )
-            workflowEditorContext.dispatch({
-                type: 'SET_SHOULD_SHOW_ERRORS',
-                shouldShowErrors: true,
-            })
+            workflowEditorContext.setShouldShowErrors(true)
             notifyMerchant({
                 message: configurationError,
                 status: NotificationStatus.Error,
@@ -197,8 +191,11 @@ function WorkflowEditorViewWrapped({
                                     workflowEditorContext.visualBuilderGraph
                                         .name
                                 }
-                                isDisabled={isFetchPending || isSavePending}
-                                hasError={workflowNameisErrored}
+                                isDisabled={isFetchPending}
+                                hasError={
+                                    workflowEditorContext.shouldShowErrors &&
+                                    workflowNameIsErrored
+                                }
                                 onKeyDown={(event) => {
                                     if (event.key === 'Enter') {
                                         inputRef.current?.blur()
@@ -212,46 +209,81 @@ function WorkflowEditorViewWrapped({
                     }
                 >
                     <div className={css.headerRight}>
-                        {isNewWorkflow ? (
-                            <>
-                                <Button
-                                    onClick={handleCancel}
-                                    isLoading={isFetchPending}
-                                    intent="secondary"
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
-                                    onClick={handleSave}
-                                    isLoading={isFetchPending || isSavePending}
-                                    isDisabled={!isDirty}
-                                >
-                                    Create flow
-                                </Button>
-                            </>
-                        ) : (
-                            <>
-                                <ButtonWithConfirmation
-                                    confirmationButtonLabel="Discard Changes"
-                                    confirmationTitle="Discard changes?"
-                                    confirmationText="Your changes will be lost and this action cannot be undone"
-                                    isDisabled={
-                                        !isDirty ||
-                                        isFetchPending ||
-                                        isSavePending
+                        <>
+                            {isMultiLanguagesEnabled && (
+                                <WorkflowLanguageSelect
+                                    available={
+                                        workflowEditorContext.visualBuilderGraph
+                                            .available_languages || ['en-US']
                                     }
-                                    onClick={handleDiscard}
-                                >
-                                    Discard Changes
-                                </ButtonWithConfirmation>
-                                <Button
-                                    onClick={handleSave}
-                                    isLoading={isFetchPending || isSavePending}
-                                >
-                                    Save & Close
-                                </Button>
-                            </>
-                        )}
+                                    selected={
+                                        workflowEditorContext.currentLanguage
+                                    }
+                                    onSelect={(lang) => {
+                                        workflowEditorContext.switchLanguage(
+                                            lang
+                                        )
+                                    }}
+                                    onDelete={(lang) => {
+                                        workflowEditorContext.deleteTranslation(
+                                            lang
+                                        )
+                                        notifyMerchant({
+                                            message: `${
+                                                supportedLanguages.find(
+                                                    ({code}) => code === lang
+                                                )?.label ?? ''
+                                            } language was successfully deleted`,
+                                            status: NotificationStatus.Success,
+                                        })
+                                    }}
+                                />
+                            )}
+                            {isNewWorkflow ? (
+                                <>
+                                    <Button
+                                        onClick={handleCancel}
+                                        isLoading={isFetchPending}
+                                        intent="secondary"
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        onClick={handleSave}
+                                        isLoading={
+                                            isFetchPending || isSavePending
+                                        }
+                                        isDisabled={!isDirty}
+                                    >
+                                        Create flow
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <ButtonWithConfirmation
+                                        confirmationButtonLabel="Discard Changes"
+                                        confirmationTitle="Discard changes?"
+                                        confirmationText="Your changes will be lost and this action cannot be undone"
+                                        isDisabled={
+                                            !isDirty ||
+                                            isFetchPending ||
+                                            isSavePending
+                                        }
+                                        onClick={handleDiscard}
+                                    >
+                                        Discard Changes
+                                    </ButtonWithConfirmation>
+                                    <Button
+                                        onClick={handleSave}
+                                        isLoading={
+                                            isFetchPending || isSavePending
+                                        }
+                                    >
+                                        Save & Close
+                                    </Button>
+                                </>
+                            )}
+                        </>
                     </div>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>

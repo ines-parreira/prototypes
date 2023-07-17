@@ -30,6 +30,19 @@ type WorkflowApi = {
     fetchWorkflowConfiguration: (
         id: string
     ) => Promise<Maybe<WorkflowConfiguration>>
+    fetchWorkflowTranslations: (
+        internalId: string,
+        language: string
+    ) => Promise<Record<string, string>>
+    upsertWorkflowTranslations: (
+        internalId: string,
+        language: string,
+        translations: Record<string, string>
+    ) => Promise<void>
+    deleteWorkflowTranslations: (
+        internalId: string,
+        language: string
+    ) => Promise<void>
     upsertWorkflowConfiguration: (
         data: WorkflowConfiguration
     ) => Promise<WorkflowConfiguration>
@@ -119,6 +132,51 @@ export default function useWorkflowApi(): WorkflowApi {
         },
         [fetchWorkflowConfiguration, upsertWorkflowConfiguration]
     )
+    const fetchWorkflowTranslations = useCallback(
+        (internalId: string, language: string) => {
+            setIsFetchPending(true)
+            return apiClient
+                .get<Record<string, string>>(
+                    `/configurations/${internalId}/translations/${language}`
+                )
+                .then((res) => {
+                    setIsFetchPending(false)
+                    return res.data
+                })
+        },
+        []
+    )
+    const upsertWorkflowTranslations = useCallback(
+        (
+            internalId: string,
+            language: string,
+            translations: Record<string, string>
+        ) => {
+            setIsUpdatePending(true)
+            return apiClient
+                .put<void>(
+                    `/configurations/${internalId}/translations/${language}`,
+                    translations
+                )
+                .then(() => {
+                    setIsUpdatePending(false)
+                })
+        },
+        []
+    )
+    const deleteWorkflowTranslations = useCallback(
+        (internalId: string, language: string) => {
+            setIsUpdatePending(true)
+            return apiClient
+                .delete<void>(
+                    `/configurations/${internalId}/translations/${language}`
+                )
+                .then(() => {
+                    setIsUpdatePending(false)
+                })
+        },
+        []
+    )
     return {
         isFetchPending,
         isUpdatePending,
@@ -128,6 +186,9 @@ export default function useWorkflowApi(): WorkflowApi {
         upsertWorkflowConfiguration,
         deleteWorkflowConfiguration,
         duplicateWorkflowConfiguration,
+        fetchWorkflowTranslations,
+        upsertWorkflowTranslations,
+        deleteWorkflowTranslations,
     }
 }
 
@@ -143,6 +204,7 @@ export const workflowConfigurationFactory = (
         is_draft: false,
         name: '',
         initial_step_id: workflowCallStepId,
+        available_languages: ['en-US'],
         entrypoint: {
             label: '',
             label_tkey: ulid(),

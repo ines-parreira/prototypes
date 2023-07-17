@@ -138,6 +138,7 @@ export const WORKFLOW_TEMPLATES: Record<
                     label: 'What shoe is right for me?',
                     label_tkey: ulid(),
                 },
+                available_languages: ['en-US'],
                 steps: [
                     genMessagesStep(
                         stepFirstId,

@@ -87,10 +87,6 @@ export type VisualBuilderBaseAction =
           nodeId: string
           isGreyedOut: boolean
       }
-    | {
-          type: 'SET_SHOULD_SHOW_ERRORS'
-          shouldShowErrors: boolean
-      }
 
 export function baseReducer(
     graph: VisualBuilderGraph,
@@ -233,12 +229,6 @@ export function baseReducer(
         case 'GREY_OUT_BRANCH': {
             return greyOutBranch(graph, action.nodeId, action.isGreyedOut)
         }
-        case 'SET_SHOULD_SHOW_ERRORS':
-            return produce(graph, (draft) => {
-                draft.nodes.forEach((node) => {
-                    node.data.shouldShowErrors = action.shouldShowErrors
-                })
-            })
     }
 }
 

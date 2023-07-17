@@ -7,22 +7,29 @@ import React, {
     useRef,
     useMemo,
 } from 'react'
-import _isEqual from 'lodash/isEqual'
-import _omit from 'lodash/omit'
 
-import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
+import {
+    LanguageCode,
+    WorkflowConfiguration,
+} from '../models/workflowConfiguration.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../models/visualBuilderGraph.types'
-import {transformVisualBuilderGraphIntoWfConfiguration} from '../models/visualBuilderGraph.model'
+import {
+    areGraphsEqual,
+    transformVisualBuilderGraphIntoWfConfiguration,
+} from '../models/visualBuilderGraph.model'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
     useVisualBuilderGraphReducer,
 } from './useVisualBuilderGraphReducer'
 import {computeNodesPositions} from './useVisualBuilderGraphReducer/utils'
+import useWorkflowTranslations, {
+    emptyTranslatedTexts,
+} from './useWorkflowTranslations'
 
 type WorkflowEditorContext = {
     hookError: Maybe<string>
@@ -39,6 +46,12 @@ type WorkflowEditorContext = {
     setVisualBuilderNodeIdEditing: React.Dispatch<
         React.SetStateAction<VisualBuilderNode['id'] | null>
     >
+    currentLanguage: LanguageCode
+    switchLanguage: (nextLanguage: LanguageCode) => void
+    translateKey: (tkey: string, languageCode: LanguageCode) => string
+    deleteTranslation: (lang: LanguageCode) => void
+    shouldShowErrors: boolean
+    setShouldShowErrors: (b: boolean) => void
 }
 
 export const WorkflowEditorContext = createContext<
@@ -89,6 +102,7 @@ export function useWorkflowEditor(
     } = useWorkflowApi()
     const [isFetchPending, setIsFetchPending] = useState(!isNew)
     const [isSavePending, setIsSavePending] = useState(false)
+    const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
         useState<VisualBuilderNode['id'] | null>(null)
     const [remoteConfiguration, setRemoteConfiguration] =
@@ -112,6 +126,24 @@ export function useWorkflowEditor(
         )
     )
     const [hookError, setHookError] = useState<string | null>(null)
+    const {
+        areTranslationsDirty,
+        translateWithSavedTranslations,
+        saveTranslations,
+        deleteTranslation,
+        getLangsOfIncompleteTranslations,
+        discardTranslations,
+        translateKey,
+        currentLanguage,
+        switchLanguage,
+        setCurrentLanguage,
+    } = useWorkflowTranslations(
+        visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
+        visualBuilderGraphDirty.available_languages ?? ['en-US'],
+        isNew,
+        visualBuilderGraphDirty.wfConfigurationOriginal.internal_id !==
+            workflowFactoryInstance.current.internal_id
+    )
 
     useEffect(() => {
         async function fetch() {
@@ -128,50 +160,73 @@ export function useWorkflowEditor(
                         ),
                     })
                 }
+                setCurrentLanguage(fetched?.available_languages?.[0] ?? 'en-US')
                 setIsFetchPending(false)
             }
         }
 
         void fetch()
-    }, [workflowId, isNew, fetchWorkflowConfiguration, dispatch])
+    }, [
+        workflowId,
+        isNew,
+        fetchWorkflowConfiguration,
+        setCurrentLanguage,
+        dispatch,
+    ])
 
     useEffect(() => {
         if (!remoteConfiguration) return
         setVisualBuilderGraph(
-            transformWorkflowConfigurationIntoVisualBuilderGraph(
-                remoteConfiguration
+            computeNodesPositions(
+                transformWorkflowConfigurationIntoVisualBuilderGraph(
+                    remoteConfiguration
+                )
             )
         )
     }, [remoteConfiguration, dispatch])
 
-    const isDirty = useMemo(
+    const isVisualBuilderGraphDirty = useMemo(
         () =>
-            !_isEqual(
-                _omit(
-                    transformVisualBuilderGraphIntoWfConfiguration(
-                        visualBuilderGraphDirty
-                    ),
-                    ['transitions']
-                ),
-                _omit(
-                    transformVisualBuilderGraphIntoWfConfiguration(
-                        visualBuilderGraph
-                    ),
-                    ['transitions']
-                )
+            !areGraphsEqual(
+                translateWithSavedTranslations(visualBuilderGraph),
+                visualBuilderGraphDirty
             ),
-        [visualBuilderGraph, visualBuilderGraphDirty]
+        [
+            visualBuilderGraph,
+            visualBuilderGraphDirty,
+            translateWithSavedTranslations,
+        ]
     )
+    const isDirty = isVisualBuilderGraphDirty || areTranslationsDirty
 
-    const handleValidate = useCallback(
-        () =>
-            validate(
-                transformVisualBuilderGraphIntoWfConfiguration(
-                    visualBuilderGraphDirty
-                )
-            ),
-        [visualBuilderGraphDirty]
-    )
+    const handleValidate = useCallback(() => {
+        const configurationDirty =
+            transformVisualBuilderGraphIntoWfConfiguration(
+                visualBuilderGraphDirty
+            )
+        const error = validate(configurationDirty)
+        if (error) return error
+        const incompleteLangs = getLangsOfIncompleteTranslations(
+            visualBuilderGraphDirty
+        )
+        if (incompleteLangs.length > 0) {
+            const nextGraph = switchLanguage(
+                visualBuilderGraphDirty,
+                incompleteLangs[0]
+            )
+            dispatch({
+                type: 'RESET_GRAPH',
+                graph: nextGraph,
+            })
+            return 'Complete steps in all available languages in order to create a flow'
+        }
+        return null
+    }, [
+        visualBuilderGraphDirty,
+        getLangsOfIncompleteTranslations,
+        switchLanguage,
+        dispatch,
+    ])
 
     const handleSave = useCallback(async () => {
         const configurationDirty =
@@ -184,29 +239,52 @@ export function useWorkflowEditor(
         if (!isDirty) return
         setIsSavePending(true)
         try {
-            await upsertWorkflowConfiguration(configurationDirty)
+            // why saving order differ depending on isNew?
+            // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
+            if (isNew) {
+                await upsertWorkflowConfiguration(
+                    emptyTranslatedTexts(configurationDirty)
+                )
+                await saveTranslations(visualBuilderGraphDirty)
+            } else {
+                await saveTranslations(visualBuilderGraphDirty)
+                await upsertWorkflowConfiguration(
+                    emptyTranslatedTexts(configurationDirty)
+                )
+            }
         } catch (e) {
             setIsSavePending(false)
             throw e
         }
         setRemoteConfiguration(configurationDirty)
         setIsSavePending(false)
-    }, [isDirty, upsertWorkflowConfiguration, visualBuilderGraphDirty])
+    }, [
+        isDirty,
+        upsertWorkflowConfiguration,
+        visualBuilderGraphDirty,
+        saveTranslations,
+        isNew,
+    ])
 
     const handleDiscard = useCallback(() => {
-        dispatch({
-            type: 'RESET_GRAPH',
-            graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
+        const nextGraph = computeNodesPositions(
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
                 remoteConfiguration ??
                     workflowConfigurationFactory(currentAccountId, workflowId)
-            ),
+            )
+        )
+        dispatch({
+            type: 'RESET_GRAPH',
+            graph: nextGraph,
         })
+        discardTranslations()
     }, [
         remoteConfiguration,
         workflowConfigurationFactory,
         currentAccountId,
         workflowId,
         dispatch,
+        discardTranslations,
     ])
 
     return {
@@ -215,13 +293,43 @@ export function useWorkflowEditor(
         visualBuilderGraph: visualBuilderGraphDirty,
         isFetchPending,
         isSavePending,
-        isDirty,
+        isDirty: isVisualBuilderGraphDirty,
         handleValidate,
         handleSave,
         handleDiscard,
         dispatch,
         visualBuilderNodeIdEditing,
         setVisualBuilderNodeIdEditing,
+        translateKey,
+        currentLanguage,
+        switchLanguage: useCallback(
+            (nextLanguage: LanguageCode) => {
+                const nextVisualBuilderGraph = switchLanguage(
+                    visualBuilderGraphDirty,
+                    nextLanguage
+                )
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph: nextVisualBuilderGraph,
+                })
+            },
+            [visualBuilderGraphDirty, switchLanguage, dispatch]
+        ),
+        deleteTranslation: useCallback(
+            (lang: LanguageCode) => {
+                const nextVisualBuilderGraph = deleteTranslation(
+                    visualBuilderGraphDirty,
+                    lang
+                )
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph: nextVisualBuilderGraph,
+                })
+            },
+            [deleteTranslation, visualBuilderGraphDirty, dispatch]
+        ),
+        shouldShowErrors,
+        setShouldShowErrors,
     }
 }
 
@@ -264,5 +372,17 @@ export function createWorkflowEditorContextForPreview(
         dispatch: () => null,
         visualBuilderNodeIdEditing: null,
         setVisualBuilderNodeIdEditing: () => null,
+        translateKey: () => '',
+        currentLanguage: 'en-US',
+        switchLanguage: () => {
+            // noop
+        },
+        deleteTranslation: () => {
+            // noop
+        },
+        shouldShowErrors: false,
+        setShouldShowErrors: () => {
+            // noop
+        },
     }
 }

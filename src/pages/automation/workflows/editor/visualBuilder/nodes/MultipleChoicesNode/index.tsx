@@ -14,9 +14,10 @@ import EdgeBlock from '../../components/EdgeBlock'
 import css from '../Node.less'
 
 function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
-    const {content, choices, shouldShowErrors, isGreyedOut} = node.data
+    const {content, choices, isGreyedOut} = node.data
     const isErrored = content.text.length === 0 || choices.find((c) => !c.label)
-    const {visualBuilderNodeIdEditing} = useWorkflowEditorContext()
+    const {visualBuilderNodeIdEditing, shouldShowErrors} =
+        useWorkflowEditorContext()
     const isSelected = visualBuilderNodeIdEditing === node.id
 
     return (

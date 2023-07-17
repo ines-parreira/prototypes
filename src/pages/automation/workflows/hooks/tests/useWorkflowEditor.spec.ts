@@ -15,6 +15,8 @@ const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
     fetchWorkflowConfiguration: (workflowId: string) => {
         return Promise.resolve(mockStore?.[workflowId])
     },
+    fetchWorkflowTranslations: () => Promise.resolve({}),
+    upsertWorkflowTranslations: () => Promise.resolve(),
     workflowConfigurationFactory,
 } as const
 

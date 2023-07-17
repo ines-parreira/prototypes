@@ -46,4 +46,5 @@ export enum FeatureFlagKey {
     HelpCenterAndContactFormFlows = 'help-center-and-contact-form-flows',
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
+    FlowsMultiLanguages = 'flows-multi-languages',
 }

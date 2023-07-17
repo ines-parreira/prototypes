@@ -74,13 +74,15 @@ export function deleteBranch(
     return nextGraph
 }
 
-export const buildAutomatedMessageNode: () => AutomatedMessageNodeType =
-    () => ({
+export const buildAutomatedMessageNode: () => AutomatedMessageNodeType = () => {
+    const id = ulid()
+    return {
         ...buildNodeCommonProperties(),
+        id,
         type: 'automated_message',
         data: {
             wfConfigurationRef: {
-                wfConfigurationMessagesStepId: ulid(),
+                wfConfigurationMessagesStepId: id,
             },
             content: {
                 html: '',
@@ -89,81 +91,98 @@ export const buildAutomatedMessageNode: () => AutomatedMessageNodeType =
                 text_tkey: ulid(),
             },
         },
-    })
+    }
+}
 
-export const buildTextReplyNode: () => TextReplyNodeType = () => ({
-    ...buildNodeCommonProperties(),
-    type: 'text_reply',
-    data: {
-        wfConfigurationRef: {
-            wfConfigurationMessagesStepId: ulid(),
-            wfConfigurationTextInputStepId: ulid(),
-        },
-        content: {
-            html: '',
-            html_tkey: ulid(),
-            text: '',
-            text_tkey: ulid(),
-        },
-    },
-})
-
-export const buildFileUploadNode: () => FileUploadNodeType = () => ({
-    ...buildNodeCommonProperties(),
-    type: 'file_upload',
-    data: {
-        wfConfigurationRef: {
-            wfConfigurationMessagesStepId: ulid(),
-            wfConfigurationAttachmentsInputStepId: ulid(),
-        },
-        content: {
-            html: '',
-            html_tkey: ulid(),
-            text: '',
-            text_tkey: ulid(),
-        },
-    },
-})
-
-export const buildMultipleChoicesNode: () => MultipleChoicesNodeType = () => ({
-    ...buildNodeCommonProperties(),
-    type: 'multiple_choices',
-    data: {
-        wfConfigurationRef: {
-            wfConfigurationMessagesStepId: ulid(),
-            wfConfigurationChoicesStepId: ulid(),
-        },
-        content: {
-            html: '',
-            html_tkey: ulid(),
-            text: '',
-            text_tkey: ulid(),
-        },
-        choices: [
-            {
-                event_id: ulid(),
-                label: '',
-                label_tkey: ulid(),
+export const buildTextReplyNode: () => TextReplyNodeType = () => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'text_reply',
+        data: {
+            wfConfigurationRef: {
+                wfConfigurationMessagesStepId: id,
+                wfConfigurationTextInputStepId: ulid(),
             },
-            {
-                event_id: ulid(),
-                label: '',
-                label_tkey: ulid(),
+            content: {
+                html: '',
+                html_tkey: ulid(),
+                text: '',
+                text_tkey: ulid(),
             },
-        ],
-    },
-})
-
-export const buildEndNode: () => EndNodeType = () => ({
-    ...buildNodeCommonProperties(),
-    type: 'end',
-    data: {
-        wfConfigurationRef: {
-            wfConfigurationWorkflowCallOrHandoverStepId: ulid(),
         },
-        withWasThisHelpfulPrompt: true,
-    },
-})
+    }
+}
+
+export const buildFileUploadNode: () => FileUploadNodeType = () => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'file_upload',
+        data: {
+            wfConfigurationRef: {
+                wfConfigurationMessagesStepId: id,
+                wfConfigurationAttachmentsInputStepId: ulid(),
+            },
+            content: {
+                html: '',
+                html_tkey: ulid(),
+                text: '',
+                text_tkey: ulid(),
+            },
+        },
+    }
+}
+
+export const buildMultipleChoicesNode: () => MultipleChoicesNodeType = () => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'multiple_choices',
+        data: {
+            wfConfigurationRef: {
+                wfConfigurationMessagesStepId: id,
+                wfConfigurationChoicesStepId: ulid(),
+            },
+            content: {
+                html: '',
+                html_tkey: ulid(),
+                text: '',
+                text_tkey: ulid(),
+            },
+            choices: [
+                {
+                    event_id: ulid(),
+                    label: '',
+                    label_tkey: ulid(),
+                },
+                {
+                    event_id: ulid(),
+                    label: '',
+                    label_tkey: ulid(),
+                },
+            ],
+        },
+    }
+}
+
+export const buildEndNode: () => EndNodeType = () => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'end',
+        data: {
+            wfConfigurationRef: {
+                wfConfigurationWorkflowCallOrHandoverStepId: id,
+            },
+            withWasThisHelpfulPrompt: true,
+        },
+    }
+}
 
 const nodeWidth = 300
 const nodeHeight = 98

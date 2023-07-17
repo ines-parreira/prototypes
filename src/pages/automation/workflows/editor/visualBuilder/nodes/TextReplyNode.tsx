@@ -15,9 +15,10 @@ import css from './Node.less'
 
 function TextReplyNode(node: NodeProps<TextReplyNodeType['data']>) {
     const {content} = node.data
-    const {shouldShowErrors, isGreyedOut} = node.data
+    const {isGreyedOut} = node.data
     const isErrored = content.text.length === 0
-    const {visualBuilderNodeIdEditing} = useWorkflowEditorContext()
+    const {visualBuilderNodeIdEditing, shouldShowErrors} =
+        useWorkflowEditorContext()
     const isSelected = visualBuilderNodeIdEditing === node.id
 
     return (

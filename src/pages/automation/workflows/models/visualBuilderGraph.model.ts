@@ -1,6 +1,8 @@
 import {Edge, Node} from 'reactflow'
 import {ulid} from 'ulidx'
 import _cloneDeep from 'lodash/cloneDeep'
+import _omit from 'lodash/omit'
+import _isEqual from 'lodash/isEqual'
 
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 import {
@@ -33,6 +35,38 @@ export const buildNodeCommonProperties: () => Pick<Node, 'id' | 'position'> =
         id: ulid(),
         position: {x: 0, y: 0},
     })
+
+export function areGraphsEqual(
+    g1: VisualBuilderGraph,
+    g2: VisualBuilderGraph
+): boolean {
+    const essentialGraph = (g: VisualBuilderGraph) =>
+        _omit(
+            {
+                ...g,
+                nodes: g.nodes
+                    .map(({id, type, data}) => ({
+                        id,
+                        type,
+                        data: _omit(data, ['isGreyedOut']),
+                    }))
+                    .sort((a, b) => a.id.localeCompare(b.id)),
+                edges: g.edges
+                    .map(({source, target, data}) => ({
+                        source,
+                        target,
+                        data,
+                    }))
+                    .sort((a, b) =>
+                        `${a.source}${a.target}`.localeCompare(
+                            `${b.source}${b.target}`
+                        )
+                    ),
+            },
+            ['wfConfigurationOriginal']
+        )
+    return _isEqual(essentialGraph(g1), essentialGraph(g2))
+}
 
 export function walkVisualBuilderGraph(
     g: VisualBuilderGraph,
@@ -72,6 +106,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
         g.wfConfigurationOriginal
     )
     c.name = g.name
+    c.available_languages = g.available_languages
     c.steps = []
     c.transitions = []
     const stepIdByNodeId: Record<string, string> = {}

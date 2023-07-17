@@ -1,6 +1,5 @@
 import React, {
     ComponentProps,
-    MutableRefObject,
     ReactNode,
     SyntheticEvent,
     useCallback,
@@ -26,7 +25,7 @@ type Props = {
     children: (props: {
         uid: string
         onDisplayConfirmation: (event?: SyntheticEvent) => void
-        elementRef: MutableRefObject<any>
+        elementRef: (element: HTMLElement | null) => void
     }) => ReactNode
     content?: ReactNode
     id?: string
@@ -37,6 +36,7 @@ type Props = {
     confirmLabel?: string
     cancelLabel?: string
     showCancelButton?: boolean
+    containerElement?: HTMLElement | null
 } & Omit<ComponentProps<typeof Popover>, 'target'>
 
 export default function ConfirmationPopover({
@@ -53,21 +53,25 @@ export default function ConfirmationPopover({
     confirmLabel = 'Confirm',
     cancelLabel = 'Cancel',
     showCancelButton,
+    containerElement,
     ...other
 }: Props) {
     const isMounted = useMountedState()
     const randomId = useId()
     const uid = id || `confirm-${randomId}`
     const [isOpened, setIsOpened] = useState(false)
-    const elementRef = useRef<HTMLElement | null>(null)
+    const [element, setElement] = useState<HTMLElement | null>(null)
+    const onElementChange = useCallback((element: HTMLElement | null) => {
+        setElement(element)
+    }, [])
     const hideTimeoutRef = useRef<number | null>(null)
     const container = useMemo(
         () =>
-            buttonProps?.type === 'submit'
-                ? elementRef.current?.parentElement || undefined
-                : undefined,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [elementRef.current]
+            containerElement ??
+            (buttonProps?.type === 'submit'
+                ? element?.parentElement || undefined
+                : undefined),
+        [buttonProps?.type, containerElement, element]
     )
 
     useEffect(
@@ -108,7 +112,7 @@ export default function ConfirmationPopover({
             {children({
                 uid,
                 onDisplayConfirmation: handleDisplayConfirmation,
-                elementRef,
+                elementRef: onElementChange,
             })}
 
             {isMounted() && (
