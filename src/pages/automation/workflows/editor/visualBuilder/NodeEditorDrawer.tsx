@@ -1,8 +1,11 @@
 import React, {useEffect, useRef} from 'react'
 import {useKey, usePrevious} from 'react-use'
 import classNames from 'classnames'
+import Tooltip from 'pages/common/components/Tooltip'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
+import useId from 'hooks/useId'
+import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {VisualBuilderNode} from '../../models/visualBuilderGraph.types'
 
 import css from './NodeEditorDrawer.less'
@@ -23,6 +26,8 @@ export default function NodeEditorDrawer({
     nodeInEdition,
     onClose,
 }: NodeEditorDrawerProps) {
+    const closeButtonId = `close-button-${useId()}`
+
     const memoizedNodeInEditionRef = useRef(nodeInEdition)
     const prevNodeInEdition = usePrevious(nodeInEdition)
 
@@ -62,6 +67,7 @@ export default function NodeEditorDrawer({
                 <div className={css.headerTop}>
                     <Drawer.HeaderActions>
                         <IconButton
+                            id={closeButtonId}
                             onClick={() => onClose()}
                             fillStyle="ghost"
                             intent="secondary"
@@ -71,6 +77,17 @@ export default function NodeEditorDrawer({
                         >
                             keyboard_tab
                         </IconButton>
+                        {nodeInEdition && (
+                            <Tooltip
+                                placement="bottom-end"
+                                target={closeButtonId}
+                            >
+                                <div className={css.closeButtonTooltip}>
+                                    <span>Close side panel</span>
+                                    <ShortcutIcon type="dark">esc</ShortcutIcon>
+                                </div>
+                            </Tooltip>
+                        )}
                     </Drawer.HeaderActions>
                 </div>
             </Drawer.Header>
