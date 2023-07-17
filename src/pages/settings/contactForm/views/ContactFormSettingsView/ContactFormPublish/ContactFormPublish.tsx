@@ -12,13 +12,16 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Label from 'pages/common/forms/Label/Label'
 import useClipboard from 'pages/common/hooks/useClipboard'
-import ContactFormInstallationCard from 'pages/settings/contactForm/components/ContactFormInstallationCard'
+import ContactFormManualEmbedCard from 'pages/settings/contactForm/components/ContactFormManualEmbedCard'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import settingsCss from 'pages/settings/settings.less'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import ContactFormAutoEmbedInstallationCard from 'pages/settings/contactForm/components/ContactFormAutoEmbedInstallationCard'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 
 const ContactFormPublish = (): JSX.Element => {
     const contactForm = useCurrentContactForm()
@@ -28,7 +31,7 @@ const ContactFormPublish = (): JSX.Element => {
         logEvent(SegmentEvent.HelpCenterContactFormCopyLink)
     }
 
-    const isAutoEmbedFlagActive: boolean =
+    const isAutoEmbedFlagActive =
         useFlags()[FeatureFlagKey.ContactFormAutoEmbed] ?? false
 
     return (
@@ -77,16 +80,9 @@ const ContactFormPublish = (): JSX.Element => {
                 </section>
 
                 <section>
-                    <ContactFormInstallationCard
-                        title="Manually embed with code"
-                        code={contactForm.code_snippet_template}
-                        alert={`Make sure to insert the code on <b>all pages</b> you wish to display the contact form.`}
-                        description={`Use HTML to manually display the contact form on specific pages of your website. <br /> Note: You must have access to your site theme.`}
-                        instructions={[
-                            'Edit the source code of your website',
-                            'Add the code snippet anywhere between <body> and </body> where you want your Contact Form to be displayed on the page',
-                            'Save the file and commit changes',
-                        ]}
+                    <ContactFormManualEmbedCard
+                        codeSnippet={contactForm.code_snippet_template}
+                        shopName={contactForm.shop_name}
                     />
                 </section>
 

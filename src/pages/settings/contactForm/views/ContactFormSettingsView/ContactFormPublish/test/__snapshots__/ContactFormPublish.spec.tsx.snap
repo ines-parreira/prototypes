@@ -2,11 +2,11 @@
 
 exports[`ContactFormPublish Code snippet should provide correct manual embed instructions 1`] = `
 <div
-  class="card card"
+  class="instructionsCard card"
   data-is-open="true"
 >
   <div
-    class="cardHeader card-header"
+    class="instructionsCardHeader card-header"
   >
     <div>
       <h3
@@ -34,10 +34,10 @@ exports[`ContactFormPublish Code snippet should provide correct manual embed ins
     class="collapse show"
   >
     <div
-      class="cardBody card-body"
+      class="instructionsCardBody card-body"
     >
       <div
-        class="wrapper mbM"
+        class="instructions mbM"
       >
         <div
           class="instruction"

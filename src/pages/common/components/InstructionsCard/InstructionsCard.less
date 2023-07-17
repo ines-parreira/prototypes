@@ -1,25 +1,41 @@
+@import '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+
 :local {
-    .card {
+    .mbM {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .mbXs {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .instructionsCard {
         border: var(--neutral-grey-3) 1px solid;
+
         &[data-is-open='true'] {
             border-color: var(--main-primary);
         }
     }
 
-    .cardHeader {
+    .instructionsCardHeader {
         padding: 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         background-color: transparent;
         border-bottom: none;
+
         h3 {
+            .body-semibold();
             font-size: 16px;
             line-height: 24px;
         }
+
         p {
             margin: 0;
         }
+
         button,
         button:hover,
         button:focus:not(:focus-visible),
@@ -28,20 +44,22 @@
             background-color: transparent;
             outline: none;
         }
+
         button:focus-visible {
             outline: 2px solid var(--neutral-grey-6);
         }
+
         i {
             color: var(--neutral-grey-4);
             font-size: 25px;
         }
     }
 
-    .cardBody {
+    .instructionsCardBody {
         padding: 0 20px 20px 20px;
     }
 
-    .wrapper {
+    .instructions {
         > div:not(:last-child),
         > h4 {
             margin-bottom: 24px;
@@ -63,6 +81,34 @@
             text-align: center;
             font-size: 14px;
             padding: 2px;
+        }
+    }
+
+    .tabNavigation {
+        display: flex;
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .tabNavigationItem {
+        .component-button-medium();
+        padding: @layout-spacing-s;
+        color: var(--neutral-grey-5);
+        cursor: pointer;
+        position: relative;
+
+        &.isActive {
+            color: var(--neutral-grey-6);
+
+            &::after {
+                content: '';
+                display: block;
+                height: 2px;
+                border-radius: 50%;
+                background-color: var(--main-primary);
+                width: calc(~'100% - 32px');
+                bottom: -1px;
+                position: absolute;
+            }
         }
     }
 }

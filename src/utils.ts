@@ -38,7 +38,7 @@ import {ACTION_TEMPLATES} from './config'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 import {Notification, NotificationStatus} from './state/notifications/types'
 import {ViewsState} from './state/views/types'
-import {Attachment, Schemas} from './types'
+import {Attachment, NonEmptyArray, Schemas} from './types'
 import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {RootState} from './state/types'
@@ -1103,6 +1103,14 @@ export function objKeys<T>(value: T): (keyof T)[] {
  */
 export function notEmpty<T>(elem: T | null | undefined): elem is T {
     return elem !== null && elem !== undefined
+}
+
+/**
+ * Type guard that checks if the array is not empty
+ */
+export function isNotEmptyArray<T>(arr: T[]): arr is NonEmptyArray<T> {
+    const truthyElements = arr.filter(notEmpty)
+    return truthyElements.length > 0
 }
 
 /**

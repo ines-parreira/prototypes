@@ -106,3 +106,5 @@ export type InitialRootState = {
     teams: Map<any, any>
     views: Map<any, any>
 }
+
+export type NonEmptyArray<T> = [T, ...T[]]

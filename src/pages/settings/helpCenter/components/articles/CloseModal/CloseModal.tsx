@@ -44,7 +44,6 @@ export const CloseModal = ({
                     <Button
                         className={css.discardBtn}
                         fillStyle="ghost"
-                        // intent="secondary"
                         onClick={onDiscard}
                     >
                         {discardText}
