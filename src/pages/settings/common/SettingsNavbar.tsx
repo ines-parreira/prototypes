@@ -176,12 +176,7 @@ const CATEGORIES: Category[] = [
             {
                 requiredRole: ADMIN_ROLE,
                 to: 'billing',
-                text: 'Billing & usage',
-            },
-            {
-                requiredRole: ADMIN_ROLE,
-                to: 'new-billing',
-                text: 'New Billing & Usage',
+                text: 'Billing & Usage',
             },
         ],
     },
@@ -219,8 +214,6 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
 
     const categoriesInUse = React.useMemo<Category[]>(() => {
         return flatMap(CATEGORIES, (category) => {
@@ -235,20 +228,9 @@ const SettingsNavbar = () => {
                 ]
             }
 
-            if (!hasAccessToNewBilling && category.name === 'Account') {
-                return [
-                    {
-                        ...category,
-                        links: category.links.filter(
-                            ({text}) => text !== 'New Billing & Usage'
-                        ),
-                    },
-                ]
-            }
-
             return [category]
         })
-    }, [isDecoupleContactFormEnabled, hasAccessToNewBilling])
+    }, [isDecoupleContactFormEnabled])
 
     return (
         <Navbar activeContent="settings">

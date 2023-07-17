@@ -15,7 +15,7 @@ exports[`UsageAndPlansView should render 1`] = `
          
         <a
           class="trialEndedAnchor"
-          to="/app/settings/new-billing/payment"
+          to="/app/settings/billing/payment"
         >
           add a payment method
         </a>
@@ -30,7 +30,7 @@ exports[`UsageAndPlansView should render 1`] = `
           yearly
         </span>
         <a
-          to="/app/settings/new-billing/payment/frequency"
+          to="/app/settings/billing/payment/frequency"
         >
           Update
         </a>

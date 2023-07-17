@@ -3,6 +3,7 @@ import {act, fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {phoneNumbers, capabilities} from 'fixtures/phoneNumber'
 import {fetchPhoneCapabilities} from 'models/phoneNumber/resources'
@@ -10,6 +11,7 @@ import {assumeMock} from 'utils/testing'
 import * as apiCalls from 'models/phoneNumber/resources'
 import * as notificationActions from 'state/notifications/actions'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -31,6 +33,10 @@ describe('<PhoneNumberCreateForm/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         assumeMock(fetchPhoneCapabilities).mockResolvedValue(capabilities)
+        resetLDMocks()
+        mockFlags({
+            [FeatureFlagKey.NewBillingInterface]: false,
+        })
     })
 
     describe('render()', () => {

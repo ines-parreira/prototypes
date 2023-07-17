@@ -2,12 +2,14 @@ import React, {ComponentProps, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'
 import {logEvent, SegmentEventToSend} from 'store/middlewares/segmentTracker'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from './UpgradeButton.less'
 
 type Props = {
@@ -40,6 +42,13 @@ const UpgradeButton = ({
         [hasIcon, label, position]
     )
 
+    const hasAccessToNewBilling: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewBillingInterface]
+
+    const pathname = hasAccessToNewBilling
+        ? '/app/settings/billing'
+        : '/app/settings/billing/plans'
+
     return (
         <div className={className}>
             <div
@@ -65,7 +74,7 @@ const UpgradeButton = ({
                     </Button>
                 ) : (
                     // TODO[COR-1569]: There should be a single source of truth for the state
-                    <Link to={{pathname: '/app/settings/billing/plans', state}}>
+                    <Link to={{pathname, state}}>
                         <Button
                             {...other}
                             onClick={() =>

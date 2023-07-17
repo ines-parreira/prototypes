@@ -20,21 +20,21 @@ exports[`BillingStartView should render a BillingStartView component and load th
       <a
         class="link"
         data-active-class-name="active"
-        href="/app/settings/new-billing"
+        href="/app/settings/billing"
       >
         Usage & Plans
       </a>
       <a
         class="link"
         data-active-class-name="active"
-        href="/app/settings/new-billing/payment"
+        href="/app/settings/billing/payment"
       >
         Payment Information
       </a>
       <a
         class="link"
         data-active-class-name="active"
-        href="/app/settings/new-billing/payment-history"
+        href="/app/settings/billing/payment-history"
       >
         Payment History
       </a>
@@ -55,7 +55,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
              
             <a
               class="trialEndedAnchor"
-              to="/app/settings/new-billing/payment"
+              to="/app/settings/billing/payment"
             >
               add a payment method
             </a>
@@ -70,7 +70,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
               yearly
             </span>
             <a
-              to="/app/settings/new-billing/payment/frequency"
+              to="/app/settings/billing/payment/frequency"
             >
               Update
             </a>

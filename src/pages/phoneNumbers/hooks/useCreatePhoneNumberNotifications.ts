@@ -1,17 +1,23 @@
 import {AxiosError} from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {errorToChildren} from 'utils'
-import {
-    CustomNotifications,
-    UPGRADE_MESSAGE_NOTIFICATION_SETTINGS,
-} from '../constants'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {CustomNotifications} from '../constants'
 
 export default function useCreatePhoneNumberNotifications() {
     const dispatch = useAppDispatch()
 
+    const hasAccessToNewBilling: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewBillingInterface]
+
     const showCreatePhoneNumberErrorNotification = ({error}: {error: any}) => {
+        const upgradePlanPath = hasAccessToNewBilling
+            ? '/app/settings/billing'
+            : '/app/settings/billing/plans'
+
         const {response} = error as AxiosError<{
             error: {msg: string; data: {use_custom: string | null}}
         }>
@@ -19,7 +25,21 @@ export default function useCreatePhoneNumberNotifications() {
         if (customNotificationName === CustomNotifications.UPGRADE_MESSAGE) {
             void dispatch(
                 notify({
-                    ...UPGRADE_MESSAGE_NOTIFICATION_SETTINGS,
+                    message: `
+                        <div>
+                            If you're on a Trial or Starter plan, upgrade your
+                            account
+                            <a href='${upgradePlanPath}'>here</a>. If
+                            you have a Basic+ plan, select an Add-on plan to use
+                            the integration
+                            <a
+                                href='https://gorgias.typeform.com/to/gH7HYEHu?utm_source=in_product&utm_campaign=phone_vetting#email=xxxxx&domain=xxxxx&plan=xxxxx'
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >here</a>.
+                        </div>
+                    `,
+                    allowHTML: true,
                     title: 'Cannot add phone number.',
                     status: NotificationStatus.Error,
                 })

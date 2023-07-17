@@ -1,8 +1,10 @@
 import React, {ComponentProps, ReactNode} from 'react'
 import {fireEvent, render, RenderResult} from '@testing-library/react'
 
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {testimonial as testimonialFixture} from 'fixtures/paywall'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import Paywall, {PaywallTheme, UpgradeType} from '../Paywall'
 
 jest.mock('react-images', () => {
@@ -44,6 +46,10 @@ describe('<Paywall />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        resetLDMocks()
+        mockFlags({
+            [FeatureFlagKey.NewBillingInterface]: false,
+        })
     })
 
     it('should render with minimal props', () => {

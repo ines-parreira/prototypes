@@ -653,6 +653,8 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             ),
         } as PaywallConfig,
     }
+    const hasAccessToNewBilling: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewBillingInterface]
 
     return (
         <Switch>
@@ -754,11 +756,14 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             <Route path={`${path}/teams`} render={TeamsSettingsRoutes} />
             <Route path={`${path}/users`} render={UsersSettingsRoutes} />
             <Route path={`${path}/revenue`} render={RevenueSettingsRoutes} />
-            <Route path={`${path}/billing`} render={BillingSettingsRoutes} />
             {/* TODO(@Irinel) remove this when new billing is fully released */}
             <Route
-                path={`${path}/new-billing`}
-                render={NewBillingSettingsRoutes}
+                path={`${path}/billing`}
+                render={
+                    hasAccessToNewBilling
+                        ? NewBillingSettingsRoutes
+                        : BillingSettingsRoutes
+                }
             />
             <Route
                 path={`${path}/manage-tags`}

@@ -1,6 +1,6 @@
 import {ProductType} from 'models/billing/types'
 
-export const BILLING_BASE_PATH = '/app/settings/new-billing'
+export const BILLING_BASE_PATH = '/app/settings/billing'
 export const BILLING_PROCESS_PATH = `${BILLING_BASE_PATH}/process`
 export const BILLING_PAYMENT_PATH = `${BILLING_BASE_PATH}/payment`
 export const BILLING_PAYMENT_CARD_PATH = `${BILLING_PAYMENT_PATH}/card`
