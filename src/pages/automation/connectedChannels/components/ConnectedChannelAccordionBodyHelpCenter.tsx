@@ -105,6 +105,8 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                 <ConnectedChannelWorkflowsFeature
                     channelType={TicketChannel.HelpCenter}
                     channelId={`contact-form-${channel.value.id}`}
+                    integrationId={channel.value.id}
+                    channelLanguages={channel.value.supported_locales}
                     maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
                     entrypoints={workflowsEntrypoints}
                     limitTooltipMessage="You have reached the maximum number of enabled flows in this channel. Disable another flow in order to enable this flow."

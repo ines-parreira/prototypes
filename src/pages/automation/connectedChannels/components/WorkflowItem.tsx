@@ -18,7 +18,8 @@ type Props = {
     isToggleable: boolean
     index: number
     onToggle: (index: number, isEnabled: boolean) => void
-    tooltipMessage: ReactNode
+    toggleTooltipMessage: ReactNode
+    warningTooltipMessage: ReactNode
 }
 
 const WorkflowItem = ({
@@ -31,9 +32,11 @@ const WorkflowItem = ({
     isToggleable,
     index,
     onToggle,
-    tooltipMessage,
+    toggleTooltipMessage,
+    warningTooltipMessage,
 }: Props) => {
     const toggleInputId = `workflow-item-${useId()}`
+    const warningIconId = `workflow-item-warning-icon-${useId()}`
 
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {type: dndType, position: index},
@@ -66,14 +69,35 @@ const WorkflowItem = ({
             >
                 {name}
             </ToggleInput>
-            {!isToggleable && (
+            {warningTooltipMessage && (
+                <>
+                    <i
+                        id={warningIconId}
+                        className={classnames(
+                            'material-icons',
+                            css.warningIcon
+                        )}
+                    >
+                        error
+                    </i>
+                    <Tooltip
+                        placement="top-start"
+                        target={warningIconId}
+                        trigger={['hover']}
+                        autohide={false}
+                    >
+                        {warningTooltipMessage}
+                    </Tooltip>
+                </>
+            )}
+            {!isToggleable && toggleTooltipMessage && (
                 <Tooltip
                     placement="top-start"
                     target={`${toggleInputId} + div`}
                     trigger={['hover']}
                     autohide={false}
                 >
-                    {tooltipMessage}
+                    {toggleTooltipMessage}
                 </Tooltip>
             )}
         </div>

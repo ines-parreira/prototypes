@@ -48,6 +48,8 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
         <ConnectedChannelWorkflowsFeature
             channelType={TicketChannel.ContactForm}
             channelId={`contact-form-${channel.value.id}`}
+            integrationId={channel.value.id}
+            channelLanguages={[channel.value.default_locale]}
             entrypoints={workflowsEntrypoints}
             maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
             limitTooltipMessage="You have reached the maximum number of enabled flows in this channel. Disable another flow in order to enable this flow."

@@ -7,6 +7,7 @@ import useApplicationsAutomationSettings from 'pages/automation/common/hooks/use
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {ChannelLanguage} from 'pages/automation/common/types'
 import {TicketChannel} from 'business/types/ticket'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
@@ -96,6 +97,10 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
             <ConnectedChannelWorkflowsFeature
                 channelType={TicketChannel.Chat}
                 channelId={`chat-${applicationId}`}
+                integrationId={channel.value.id}
+                channelLanguages={[
+                    (channel.value.meta.language as ChannelLanguage) ?? 'en-US',
+                ]}
                 entrypoints={workflows.entrypoints || []}
                 maxActiveWorkflows={maxActiveWorkflows}
                 limitTooltipMessage={

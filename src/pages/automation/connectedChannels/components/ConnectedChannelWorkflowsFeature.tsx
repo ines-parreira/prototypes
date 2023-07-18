@@ -11,6 +11,8 @@ import {
     useWorkflowChannelSupportContext,
 } from 'pages/automation/workflows/hooks/useWorkflowChannelSupport'
 import {SelfServiceChannelType} from 'pages/automation/common/hooks/useSelfServiceChannels'
+import useLanguagesMismatchWarnings from 'pages/automation/workflows/hooks/useLanguagesMismatchWarnings'
+import {ChannelLanguage} from 'pages/automation/common/types'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import WorkflowItem from './WorkflowItem'
@@ -25,6 +27,8 @@ type Entrypoint = {
 type Props = {
     channelType: SelfServiceChannelType
     channelId: string
+    integrationId: number
+    channelLanguages: ChannelLanguage[]
     entrypoints: Entrypoint[]
     limitTooltipMessage: ReactNode
     maxActiveWorkflows: number
@@ -34,6 +38,8 @@ type Props = {
 const ConnectedChannelWorkflowsFeature = ({
     channelType,
     channelId,
+    integrationId,
+    channelLanguages,
     entrypoints: entrypointsProp,
     onChange,
     maxActiveWorkflows,
@@ -112,6 +118,12 @@ const ConnectedChannelWorkflowsFeature = ({
         onChange(nextEntrypoints)
     }
 
+    const {getLanguagesMismatchWarning} = useLanguagesMismatchWarnings(
+        channelType,
+        integrationId,
+        channelLanguages
+    )
+
     const isLimitReached = enabledEntrypointsCount >= maxActiveWorkflows
 
     return (
@@ -139,12 +151,24 @@ const ConnectedChannelWorkflowsFeature = ({
                     )
                 )
 
-                const tooltipMessage =
+                const languagesMismatchWarning = getLanguagesMismatchWarning(
+                    entrypoint.workflow_id
+                )
+
+                const toggleTooltipMessage =
                     onlySupportedChannels.length > 0
                         ? `This flow contains actions currently only supported in ${onlySupportedChannels
                               .map(getChannelName)
                               .join(' and ')}.`
-                        : limitTooltipMessage
+                        : isLimitReached
+                        ? limitTooltipMessage
+                        : languagesMismatchWarning?.type === 'error'
+                        ? languagesMismatchWarning.message
+                        : null
+                const warningtooltipMessage =
+                    isLimitReached && !entrypoint.enabled
+                        ? null
+                        : languagesMismatchWarning?.message
                 return (
                     <WorkflowItem
                         key={entrypoint.workflow_id}
@@ -157,11 +181,13 @@ const ConnectedChannelWorkflowsFeature = ({
                         isToggleable={
                             entrypoint.enabled ||
                             (!isLimitReached &&
+                                languagesMismatchWarning?.type !== 'error' &&
                                 !(onlySupportedChannels.length > 0))
                         }
                         index={index}
                         onToggle={handleToggle}
-                        tooltipMessage={tooltipMessage}
+                        toggleTooltipMessage={toggleTooltipMessage}
+                        warningTooltipMessage={warningtooltipMessage}
                     />
                 )
             })}
