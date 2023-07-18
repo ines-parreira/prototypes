@@ -1,9 +1,9 @@
 import {Map} from 'immutable'
 import _trim from 'lodash/trim'
 
-import {TicketChannel} from 'business/types/ticket'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {isImmutable, toImmutable} from 'utils'
+import {normalizeAddress} from 'state/ticket/utils'
 
 /**
  * Return name of customer
@@ -44,23 +44,24 @@ export const getDisplayName = (
 export const mergeChannels = (
     ...channelsLists: Array<Array<CustomerChannel>>
 ): Array<CustomerChannel> => {
-    const results: {[key: string]: CustomerChannel} = {}
+    const results: CustomerChannel[] = []
 
     channelsLists
         .filter((channels) => !!channels)
         .forEach((channels) => {
             channels.forEach((channel) => {
-                const address =
-                    channel.type === TicketChannel.Email
-                        ? channel.address.toLowerCase()
-                        : channel.address
-                const result = results[address]
+                const address = normalizeAddress(channel.address, channel.type)
+                const result = results.find(
+                    (result) =>
+                        normalizeAddress(result.address, result.type) ===
+                            address && result.type === channel.type
+                )
 
-                if (!result || result.address !== address) {
-                    results[address] = channel
+                if (!result) {
+                    results.push(channel)
                 }
             })
         })
 
-    return Object.keys(results).map((address) => results[address])
+    return results
 }

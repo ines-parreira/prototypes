@@ -1149,7 +1149,9 @@ export function isReceiver(receiver: unknown): receiver is Receiver {
 
 export function normalizeAddress(
     address: string,
-    sourceType: TicketMessageSourceType = TicketMessageSourceType.Email
+    sourceType:
+        | TicketMessageSourceType
+        | TicketChannel = TicketMessageSourceType.Email
 ): string {
     if (isPhoneBasedSource(sourceType)) {
         const parsedNumber = parsePhoneNumber(address)
