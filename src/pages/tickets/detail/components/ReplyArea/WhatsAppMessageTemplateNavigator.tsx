@@ -15,6 +15,8 @@ import {SourceAddress} from 'models/ticket/types'
 import {getNewPhoneNumberByNumber} from 'state/entities/phoneNumbers/selectors'
 import {makeGetNewMessageSourceProperty} from 'state/newMessage/selectors'
 import {useWhatsAppEditor} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
+import {getIntegrations} from 'state/integrations/selectors'
+import {isWhatsAppIntegration} from 'models/integration/types'
 
 import css from './WhatsAppMessageTemplateNavigator.less'
 
@@ -27,6 +29,12 @@ export default function WhatsAppMessageTemplateNavigator() {
     )?.toJS?.() as SourceAddress
     const phoneNumber = useAppSelector(
         getNewPhoneNumberByNumber(fromPhoneNumber?.address)
+    )
+    const integrations = useAppSelector(getIntegrations)
+    const currentIntegration = integrations?.find(
+        (integration) =>
+            isWhatsAppIntegration(integration) &&
+            integration.meta.routing?.phone_number === fromPhoneNumber?.address
     )
 
     const {searchFilter, selectNewTemplate} = useWhatsAppEditor()
@@ -46,9 +54,6 @@ export default function WhatsAppMessageTemplateNavigator() {
         }
     }, [data?.data])
 
-    // TODO check if template can ever be disabled
-    const isDisabled = false
-
     if (isLoading) {
         return (
             <div className={css.container}>
@@ -60,11 +65,29 @@ export default function WhatsAppMessageTemplateNavigator() {
     if (!templates.length) {
         return (
             <div className={classNames(css.container, css.noResults)}>
-                <p>No templates found</p>
-                <p>
-                    You may want to try using a different template name or check
-                    for typos.
-                </p>
+                {searchFilter.language.length || searchFilter.name ? (
+                    <>
+                        <p>No templates found</p>
+                        <p>
+                            You may want to try using a different template name
+                            or check for typos.
+                        </p>
+                    </>
+                ) : (
+                    <p>
+                        {currentIntegration?.name ?? 'This integration'} has no
+                        approved, supported message templates. To create new
+                        message templates, please visit the{' '}
+                        <a
+                            href="https://business.facebook.com/wa/manage/message-templates/"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            WhatsApp Business Manager
+                        </a>
+                        .
+                    </p>
+                )}
             </div>
         )
     }
@@ -72,7 +95,6 @@ export default function WhatsAppMessageTemplateNavigator() {
     return (
         <div className={css.container}>
             {/* TODO handle onLoad */}
-            {/* eslint-disable-next-line prettier/prettier */}
             <InfiniteScroll
                 className={css.list}
                 shouldLoadMore={false}
@@ -87,8 +109,6 @@ export default function WhatsAppMessageTemplateNavigator() {
                             [css.disabled]: false,
                         })}
                         onClick={() => {
-                            if (isDisabled) return
-
                             selectNewTemplate(template)
                         }}
                         onMouseEnter={() => setCurrentTemplate(template)}
