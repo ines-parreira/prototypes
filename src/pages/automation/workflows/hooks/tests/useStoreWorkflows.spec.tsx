@@ -40,6 +40,7 @@ const mockWorkflowConfiguration: WorkflowConfiguration = {
     initial_step_id: 's1',
     steps: [] as WorkflowStepMessages[],
     transitions: [] as WorkflowTransition[],
+    available_languages: [],
 }
 
 const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
@@ -84,6 +85,7 @@ const entrypointsFixtures = [
 const entrypointsWithNameFixtures = entrypointsFixtures.map((entrypoint) => ({
     ...entrypoint,
     name: '',
+    available_languages: [],
 }))
 
 describe('useStoreWorkflows', () => {

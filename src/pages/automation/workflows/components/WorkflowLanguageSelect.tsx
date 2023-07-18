@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 import {ReactCountryFlag} from 'react-country-flag'
 
@@ -6,13 +6,16 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Button from 'pages/common/components/button/Button'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
 import {
     LanguageCode,
     supportedLanguages,
 } from '../models/workflowConfiguration.types'
-
 import css from './WorkflowLanguageSelect.less'
 
 type Props = {
@@ -31,12 +34,6 @@ export default function WorkflowLanguageSelect({
 }: Props) {
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
-    const [floatingElement, setFloatingElement] = useState<HTMLElement | null>(
-        null
-    )
-    const onFloatingRefChange = useCallback((node: HTMLElement | null) => {
-        setFloatingElement(node)
-    }, [])
     const sortedLanguages = useMemo(
         () => [
             ...supportedLanguages.filter(({code}) => available.includes(code)),
@@ -44,6 +41,10 @@ export default function WorkflowLanguageSelect({
         ],
         [available]
     )
+    const [
+        languagePendingDeletionConfirmation,
+        setLanguagePendingDeletionConfirmation,
+    ] = useState<LanguageCode | undefined>(undefined)
 
     return (
         <>
@@ -67,7 +68,6 @@ export default function WorkflowLanguageSelect({
                 </i>
             </div>
             <Dropdown
-                ref={onFloatingRefChange}
                 isOpen={isSelectOpen}
                 onToggle={setIsSelectOpen}
                 target={targetRef}
@@ -98,49 +98,20 @@ export default function WorkflowLanguageSelect({
                                     selected !== code) && (
                                     <div className={css.actions}>
                                         {available.includes(code) ? (
-                                            <ConfirmationPopover
-                                                buttonProps={{
-                                                    intent: 'destructive',
-                                                }}
-                                                title={`Delete ${label}?`}
-                                                content="Deleting will erase all content in this language, including saved and published content.
-                                                This action cannot be undone."
-                                                onConfirm={() => {
-                                                    onDelete(code)
+                                            <Button
+                                                fillStyle="ghost"
+                                                intent="destructive"
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
                                                     setIsSelectOpen(false)
+                                                    setLanguagePendingDeletionConfirmation(
+                                                        code
+                                                    )
                                                 }}
-                                                onCancel={() => {
-                                                    setIsSelectOpen(false)
-                                                }}
-                                                confirmLabel="Delete"
-                                                cancelButtonProps={{
-                                                    intent: 'secondary',
-                                                    value: 'Keep',
-                                                }}
-                                                showCancelButton
-                                                containerElement={
-                                                    floatingElement?.parentElement ??
-                                                    undefined
-                                                }
+                                                size="small"
                                             >
-                                                {({
-                                                    uid,
-                                                    onDisplayConfirmation,
-                                                }) => (
-                                                    <Button
-                                                        id={uid}
-                                                        fillStyle="ghost"
-                                                        intent="destructive"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            onDisplayConfirmation()
-                                                        }}
-                                                        size="small"
-                                                    >
-                                                        Delete
-                                                    </Button>
-                                                )}
-                                            </ConfirmationPopover>
+                                                Delete
+                                            </Button>
                                         ) : (
                                             <Button
                                                 fillStyle="ghost"
@@ -161,6 +132,45 @@ export default function WorkflowLanguageSelect({
                     ))}
                 </DropdownBody>
             </Dropdown>
+            <Modal
+                isOpen={!!languagePendingDeletionConfirmation}
+                onClose={() => {
+                    setLanguagePendingDeletionConfirmation(undefined)
+                }}
+            >
+                <ModalHeader
+                    title={`Delete ${
+                        supportedLanguages.find(
+                            ({code}) =>
+                                code === languagePendingDeletionConfirmation
+                        )?.label ?? ''
+                    }?`}
+                />
+                <ModalBody className={css.modalBody}>
+                    Deleting will erase all content in this language. This
+                    action cannot be undone after saving this flow.
+                </ModalBody>
+                <ModalActionsFooter>
+                    <Button
+                        intent="destructive"
+                        onClick={() => {
+                            if (languagePendingDeletionConfirmation)
+                                onDelete(languagePendingDeletionConfirmation)
+                            setLanguagePendingDeletionConfirmation(undefined)
+                        }}
+                    >
+                        Delete
+                    </Button>
+                    <Button
+                        intent="secondary"
+                        onClick={() => {
+                            setLanguagePendingDeletionConfirmation(undefined)
+                        }}
+                    >
+                        Keep
+                    </Button>
+                </ModalActionsFooter>
+            </Modal>
         </>
     )
 }

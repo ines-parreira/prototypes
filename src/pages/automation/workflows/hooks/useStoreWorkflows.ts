@@ -2,11 +2,18 @@ import {useCallback, useEffect, useState} from 'react'
 
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {NotificationStatus} from 'state/notifications/types'
-import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
+import {
+    LanguageCode,
+    WorkflowConfigurationShallow,
+} from '../models/workflowConfiguration.types'
 import useWorkflowApi from './useWorkflowApi'
 
 export type UseWorkflowsEntrypointsReturnType = {
-    storeWorkflows: Array<{workflow_id: string; name: string}>
+    storeWorkflows: Array<{
+        workflow_id: string
+        name: string
+        available_languages: LanguageCode[]
+    }>
     isFetchPending: boolean
     isUpdatePending: boolean
     removeWorkflowFromStore: (workflowId: string) => Promise<void>
@@ -128,6 +135,9 @@ export default function useStoreWorkflows(
         selfServiceConfiguration?.workflows_entrypoints?.map((e) => ({
             ...e,
             name: workflowConfigurationById[e.workflow_id]?.name ?? '',
+            available_languages:
+                workflowConfigurationById[e.workflow_id]?.available_languages ??
+                [],
         })) ?? []
     return {
         storeWorkflows,
