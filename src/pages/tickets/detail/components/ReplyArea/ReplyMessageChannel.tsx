@@ -32,7 +32,6 @@ const changeReceiversAllowedSourceTypes = [
     TicketMessageSourceType.Email,
     TicketMessageSourceType.Phone,
     TicketMessageSourceType.Sms,
-    TicketMessageSourceType.WhatsAppMessage,
 ]
 
 type Props = {
