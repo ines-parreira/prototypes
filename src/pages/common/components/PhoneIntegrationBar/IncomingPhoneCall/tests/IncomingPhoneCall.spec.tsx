@@ -36,7 +36,9 @@ describe('<IncomingPhoneCall/>', () => {
         jest.resetAllMocks()
         mockedServer.reset()
         history = {
-            location: {},
+            location: {
+                pathname: '/app',
+            },
             push: jest.fn(),
             listen: jest.fn(),
         } as unknown as History
@@ -104,5 +106,19 @@ describe('<IncomingPhoneCall/>', () => {
 
         fireEvent.click(getByTestId('incoming-phone-call'))
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
+    })
+
+    it('should not open ticket page if current page is WhatsApp migration', () => {
+        history.location.pathname =
+            '/app/settings/integrations/whatsapp/migration'
+
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
+            wrapper,
+        })
+
+        fireEvent.click(getByTestId('incoming-phone-call'))
+        expect(history.push).not.toHaveBeenCalled()
     })
 })

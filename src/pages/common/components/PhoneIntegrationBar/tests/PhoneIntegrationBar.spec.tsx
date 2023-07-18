@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
+import {waitFor} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -13,6 +13,7 @@ import {SET_TWILIO_DEVICE} from 'state/twilio/constants'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState} from 'state/twilio/reducers'
 import client from 'models/api/resources'
+import {renderWithRouter} from 'utils/testing'
 import PhoneIntegrationBar from '../PhoneIntegrationBar'
 
 jest.mock('@twilio/voice-sdk')
@@ -44,7 +45,7 @@ describe('<PhoneIntegrationBar/>', () => {
             token: fakeToken,
         })
 
-        const {container} = render(
+        const {container} = renderWithRouter(
             <Provider store={store}>
                 <PhoneIntegrationBar />
             </Provider>
@@ -71,7 +72,7 @@ describe('<PhoneIntegrationBar/>', () => {
         store = mockStore({
             twilio: {...initialState, device, call, isRinging: true},
         })
-        const {findByTestId} = render(
+        const {findByTestId} = renderWithRouter(
             <Provider store={store}>
                 <PhoneIntegrationBar />
             </Provider>
@@ -87,7 +88,7 @@ describe('<PhoneIntegrationBar/>', () => {
             twilio: {...initialState, device, call, isDialing: true},
         })
 
-        const {findByTestId} = render(
+        const {findByTestId} = renderWithRouter(
             <Provider store={store}>
                 <PhoneIntegrationBar />
             </Provider>
@@ -104,7 +105,7 @@ describe('<PhoneIntegrationBar/>', () => {
             twilio: {...initialState, device, call, isRinging: false},
         })
 
-        const {findByTestId} = render(
+        const {findByTestId} = renderWithRouter(
             <Provider store={store}>
                 <PhoneIntegrationBar />
             </Provider>

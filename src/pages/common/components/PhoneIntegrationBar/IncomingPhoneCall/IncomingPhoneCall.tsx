@@ -1,6 +1,6 @@
 import React, {SyntheticEvent, useCallback} from 'react'
 import {Call} from '@twilio/voice-sdk'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import {declineCall} from 'hooks/integrations/phone/api'
@@ -17,13 +17,17 @@ type Props = {
 
 export default function IncomingPhoneCall({call}: Props): JSX.Element {
     const history = useHistory()
+    const location = useLocation()
     const {ticketId} = useConnectionParameters(call)
 
     const openTicket = useCallback(() => {
-        if (ticketId) {
+        const isWhatsAppMigrationPage = location.pathname.startsWith(
+            '/app/settings/integrations/whatsapp/migration'
+        )
+        if (ticketId && !isWhatsAppMigrationPage) {
             history.push(`/app/ticket/${ticketId}`)
         }
-    }, [history, ticketId])
+    }, [history, ticketId, location])
 
     const {integrationId, customerName, customerPhoneNumber} =
         useConnectionParameters(call)
