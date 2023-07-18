@@ -134,8 +134,8 @@ export default class DonutKeyMetricStat extends Component<Props> {
         width: number,
         innerRadius: number,
         outerRadius: number,
-        reverse = false,
-        single = false
+        reverse: boolean,
+        single: boolean
     ) => {
         const activeAngle = (data / total) * 360
         const endAngle = startAngle + activeAngle
@@ -257,7 +257,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
         )},${this._toFixed(y)}`
     }
 
-    _toFixed = (number: number, decimalPlaces = 2) => {
-        return (Math.floor(number * 100) / 100).toFixed(decimalPlaces || 2)
+    _toFixed = (number: number) => {
+        return (Math.floor(number * 100) / 100).toFixed(2)
     }
 }
