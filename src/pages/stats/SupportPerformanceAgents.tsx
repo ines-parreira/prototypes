@@ -1,6 +1,23 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import {
+    getStatsFilters,
+    getMessagingIntegrationsStatsFilter,
+    getStatsMessagingIntegrations,
+} from 'state/stats/selectors'
+import {StatsFilters} from 'models/stat/types'
+import {TicketChannel} from 'business/types/ticket'
+import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
+
+import AgentsStatsFilter from './AgentsStatsFilter'
+import ChannelsStatsFilter from './ChannelsStatsFilter'
+import IntegrationsStatsFilter from './IntegrationsStatsFilter'
+import PeriodStatsFilter from './PeriodStatsFilter'
+import TagsStatsFilter from './TagsStatsFilter'
 import DashboardSection from './DashboardSection'
 import StatsPage from './StatsPage'
 import {LEARN_MORE_URL} from './SupportPerformanceOverview'
@@ -9,8 +26,28 @@ export const AGENTS_PAGE_TITLE = 'Agents'
 export const AGENT_PERFORMANCE_SECTION_TITLE = 'Agent Performance'
 export const AGENT_PERFORMANCE_LEGACY_PATH =
     '/app/stats/support-performance-agents-legacy'
+
 export default function SupportPerformanceAgents() {
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
+    const hasFilterByTags: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsFilterByTags]
+
+    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const statsFilters = useAppSelector(getStatsFilters)
+    const integrationsStatsFilter = useAppSelector(
+        getMessagingIntegrationsStatsFilter
+    )
+
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, agents, period, tags} = statsFilters
+        return {
+            channels,
+            agents,
+            period,
+            integrations: integrationsStatsFilter,
+            tags,
+        }
+    }, [integrationsStatsFilter, statsFilters])
 
     return (
         <div className="full-width">
@@ -35,7 +72,41 @@ export default function SupportPerformanceAgents() {
                     onClose={() => setIsVersionBannerVisible(false)}
                 />
             ) : null}
-            <StatsPage title={AGENTS_PAGE_TITLE} filters={<></>}>
+            <StatsPage
+                title={AGENTS_PAGE_TITLE}
+                filters={
+                    <>
+                        <IntegrationsStatsFilter
+                            value={pageStatsFilters.integrations}
+                            integrations={messagingIntegrations}
+                            isMultiple
+                            variant="ghost"
+                        />
+                        <ChannelsStatsFilter
+                            value={pageStatsFilters.channels}
+                            channels={Object.values(TicketChannel)}
+                            variant="ghost"
+                        />
+                        <AgentsStatsFilter
+                            value={pageStatsFilters.agents}
+                            variant="ghost"
+                        />
+                        {hasFilterByTags && (
+                            <TagsStatsFilter
+                                value={pageStatsFilters.tags}
+                                variant="ghost"
+                            />
+                        )}
+                        <PeriodStatsFilter
+                            initialSettings={{
+                                maxSpan: 365,
+                            }}
+                            value={pageStatsFilters.period}
+                            variant="ghost"
+                        />
+                    </>
+                }
+            >
                 <DashboardSection title={AGENT_PERFORMANCE_SECTION_TITLE}>
                     <>...</>
                 </DashboardSection>

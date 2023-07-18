@@ -37,6 +37,11 @@ export const FONT_ICONS = {
     [IntegrationType.GorgiasChat]: 'chat',
 }
 
+export const integrationsStatsFilterLabels = {
+    plural: 'integrations',
+    singular: 'integration',
+}
+
 type Props = {
     value: StatsFilters['integrations']
     integrations: Integration[]
@@ -79,8 +84,7 @@ export default function IntegrationsStatsFilter({
 
     return (
         <Component
-            plural="integrations"
-            singular="integration"
+            {...integrationsStatsFilterLabels}
             isMultiple={isMultiple}
             isRequired={isRequired}
             onChange={handleFilterChange}

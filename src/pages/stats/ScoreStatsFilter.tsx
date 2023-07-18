@@ -13,6 +13,11 @@ type Props = {
     isDescending?: boolean
 }
 
+export const scoreStatsFilterLabels = {
+    plural: 'scores',
+    singular: 'score',
+}
+
 export function ScoreStatsFilter({
     value = [],
     minValue,
@@ -49,8 +54,7 @@ export function ScoreStatsFilter({
 
     return (
         <SelectFilter
-            plural="scores"
-            singular="score"
+            {...scoreStatsFilterLabels}
             onChange={handleFilterChange}
             value={value}
         >

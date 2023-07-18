@@ -15,6 +15,11 @@ type Props = {
     variant?: 'fill' | 'ghost'
 }
 
+export const channelsStatsFilterLabels = {
+    plural: 'channels',
+    singular: 'channel',
+}
+
 export default function ChannelsStatsFilter({
     value = [],
     channels,
@@ -35,8 +40,7 @@ export default function ChannelsStatsFilter({
 
     return (
         <Component
-            plural="channels"
-            singular="channel"
+            {...channelsStatsFilterLabels}
             onChange={handleFilterChange}
             value={value}
         >

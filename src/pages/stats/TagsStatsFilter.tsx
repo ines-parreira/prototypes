@@ -34,6 +34,11 @@ type Props = {
     variant?: 'fill' | 'ghost'
 }
 
+export const tagsStatsFilterLabels = {
+    plural: 'tags',
+    singular: 'tag',
+}
+
 export default function TagsStatsFilter({value = [], variant = 'fill'}: Props) {
     const dispatch = useAppDispatch()
     const tags = useAppSelector((state: RootState) => state.entities.tags)
@@ -115,8 +120,7 @@ export default function TagsStatsFilter({value = [], variant = 'fill'}: Props) {
 
     return (
         <Component
-            plural="tags"
-            singular="tag"
+            {...tagsStatsFilterLabels}
             onChange={handleFilterChange}
             value={value}
             onSearch={handleTagsSearch}

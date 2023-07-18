@@ -17,6 +17,11 @@ type Props = {
     variant?: 'fill' | 'ghost'
 }
 
+export const agentsStatsFilterLabels = {
+    plural: 'agents',
+    singular: 'agent',
+}
+
 export default function AgentsStatsFilter({
     value = [],
     variant = 'fill',
@@ -36,8 +41,7 @@ export default function AgentsStatsFilter({
 
     return (
         <Component
-            plural="agents"
-            singular="agent"
+            {...agentsStatsFilterLabels}
             onChange={handleFilterChange}
             value={value}
         >

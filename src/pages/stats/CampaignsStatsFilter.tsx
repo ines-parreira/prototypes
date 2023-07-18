@@ -15,6 +15,11 @@ type Props = {
     selectedIntegrations: StatsFilters['integrations']
 }
 
+export const campaignsStatsFilterLabels = {
+    plural: 'campaigns',
+    singular: 'campaign',
+}
+
 export default function CampaignsStatsFilter({
     value = [],
     selectedIntegrations,
@@ -54,8 +59,7 @@ export default function CampaignsStatsFilter({
 
     return (
         <SelectFilter
-            plural="campaigns"
-            singular="campaign"
+            {...campaignsStatsFilterLabels}
             onChange={handleFilterChange}
             value={value}
         >

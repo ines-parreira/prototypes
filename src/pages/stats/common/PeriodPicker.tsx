@@ -41,6 +41,8 @@ type Props = {
     toggleProps?: Partial<ComponentProps<typeof Button>>
 }
 
+export const CALENDAR_ICON = 'calendar_today'
+
 export const PeriodPickerContainer = ({
     endDatetime,
     formatMaxSpan,
@@ -258,7 +260,7 @@ export const PeriodPickerContainer = ({
                                 isDisabled={isDisabled}
                                 {...toggleProps}
                             >
-                                <ButtonIconLabel icon="calendar_today">
+                                <ButtonIconLabel icon={CALENDAR_ICON}>
                                     <ButtonIconLabel
                                         icon="arrow_drop_down"
                                         position="right"
