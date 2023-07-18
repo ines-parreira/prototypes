@@ -75,7 +75,6 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
     )
     return (
         <div className={css.container}>
-            <Label className={css.title}>End flow</Label>
             <div className={css.formField}>
                 <Label className={css.label}>Action</Label>
                 <EndNodeTypeSelect
@@ -103,14 +102,14 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
             </div>
             <div className={css.formField} ref={onDropdownContainerRefChange}>
                 {nodeInEdition.data.withWasThisHelpfulPrompt ? (
-                    <>
+                    <div className={css.withDescription}>
                         <WasThisHelpfulCard />
-                        <div className={css.helperText}>
+                        <div className={css.description}>
                             Customers will be asked for feedback and a ticket is
                             created in the channel if customers select "No, I
                             need more help"
                         </div>
-                    </>
+                    </div>
                 ) : (
                     <>
                         <Label className={css.label}>

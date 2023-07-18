@@ -3,6 +3,9 @@ import React from 'react'
 import Label from 'pages/common/forms/Label/Label'
 import {MultipleChoicesNodeType} from 'pages/automation/workflows/models/visualBuilderGraph.types'
 import {MessageContent} from 'pages/automation/workflows/models/workflowConfiguration.types'
+import {useTranslationsPreviewContext} from 'pages/automation/workflows/hooks/useTranslationsPreviewContext'
+import TranslationPreviewHeader from 'pages/automation/workflows/components/translations/TranslationPreviewHeader'
+import TranslationsPreviewField from 'pages/automation/workflows/components/translations/TranslationPreviewField'
 
 import {useWorkflowEditorContext} from '../../../hooks/useWorkflowEditor'
 import ReplyButtonList from '../nodes/MultipleChoicesNode/ReplyButtonList'
@@ -17,6 +20,7 @@ export default function MultipleChoicesEditor({
     onClose: () => void
 }) {
     const {dispatch} = useWorkflowEditorContext()
+    const {previewLanguage} = useTranslationsPreviewContext()
     const handleUpdateContent = (content: MessageContent) => {
         dispatch({
             type: 'SET_MULTIPLE_CHOICES_CONTENT',
@@ -28,7 +32,6 @@ export default function MultipleChoicesEditor({
 
     return (
         <div className={css.container}>
-            <Label className={css.title}>Multiple choice</Label>
             <div className={css.formField}>
                 <Label className={css.label} isRequired={true}>
                     Question
@@ -66,6 +69,26 @@ export default function MultipleChoicesEditor({
                     }}
                 />
             </div>
+            {previewLanguage && (
+                <>
+                    <TranslationPreviewHeader />
+                    <div className={css.formField}>
+                        <Label className={css.labelDisabled}>Question</Label>
+                        <TranslationsPreviewField
+                            tkey={nodeInEdition.data.content.text_tkey ?? ''}
+                        />
+                    </div>
+                    <div className={css.formField}>
+                        <Label className={css.labelDisabled}>Options</Label>
+                        {choices.map((choice) => (
+                            <TranslationsPreviewField
+                                key={choice.event_id}
+                                tkey={choice.label_tkey ?? ''}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     )
 }

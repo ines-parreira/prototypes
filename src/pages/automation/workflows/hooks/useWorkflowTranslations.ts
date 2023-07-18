@@ -164,7 +164,7 @@ export default function useWorkflowTranslations(
 
     const translateKey = useCallback(
         (tkey: string, languageCode: LanguageCode) =>
-            translationsByLangDirty[languageCode][tkey] ?? '',
+            translationsByLangDirty[languageCode]?.[tkey] ?? '',
         [translationsByLangDirty]
     )
 

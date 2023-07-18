@@ -3,12 +3,13 @@
 @import '~css/typography.less';
 
 :local {
-    .title {
-        .heading-subsection-semibold();
-    }
-
     .label {
         .body-semibold();
+    }
+
+    .labelDisabled {
+        .body-semibold();
+        color: var(--neutral-grey-4);
     }
 
     .textInput {
@@ -19,16 +20,20 @@
         margin-bottom: @layout-spacing-s;
     }
 
+    .withDescription {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
     .description {
         .caption-regular();
         color: var(--neutral-grey-5);
-        margin-top: @layout-spacing-xxs;
     }
 
     .container {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
     }
 
     .formField {
@@ -36,10 +41,8 @@
         flex-direction: column;
         gap: @layout-spacing-xs;
     }
-
-    .helperText {
-        .caption-regular();
-        color: var(--neutral-grey-5);
+    .formField:not(:first-child) {
+        margin-top: @layout-spacing-s;
     }
 
     .assignee :global(.dropdown-toggle) {

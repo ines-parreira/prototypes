@@ -70,6 +70,15 @@ export default function ReplyButtonList({
         })
     }
 
+    const handleChangeChoiceLabel = (event_id: string, label: string) => {
+        setChoicesDirty((choicesDirty) =>
+            choicesDirty.map((choice) =>
+                choice.event_id === event_id ? {...choice, label} : choice
+            )
+        )
+        onChangeChoiceLabel(event_id, label)
+    }
+
     return (
         <div className={css.container} key="ReplyButtonList">
             {choicesDirty.map(({event_id, label}, index) => (
@@ -82,7 +91,7 @@ export default function ReplyButtonList({
                     label={label}
                     placeholder={`Option ${index + 1}`}
                     onChangeLabel={(nextLabel) => {
-                        onChangeChoiceLabel(event_id, nextLabel)
+                        handleChangeChoiceLabel(event_id, nextLabel)
                     }}
                     disabledTooltip={
                         choicesDirty.length === 1

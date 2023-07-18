@@ -1,4 +1,4 @@
-import React, {RefObject, useEffect, useState} from 'react'
+import React, {RefObject} from 'react'
 import classNames from 'classnames'
 
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
@@ -44,13 +44,6 @@ export default function ReplyButtonItem({
         [dndType],
         {onHover: onMove, onDrop, onCancel}
     )
-    // don't bind the label from the reducer directly to the text input
-    // to avoid cursor problems (change propagation is "too slow" for React to track the cursor position correctly while typing)
-    const [textInputValue, setTextInputValue] = useState(label)
-
-    useEffect(() => {
-        onChangeLabel(textInputValue)
-    }, [onChangeLabel, textInputValue])
 
     return (
         <div
@@ -66,8 +59,8 @@ export default function ReplyButtonItem({
                 drag_indicator
             </i>
             <TextInput
-                value={textInputValue}
-                onChange={setTextInputValue}
+                value={label}
+                onChange={onChangeLabel}
                 className={css.textInput}
                 maxLength={choiceTextLimit}
                 placeholder={placeholder}

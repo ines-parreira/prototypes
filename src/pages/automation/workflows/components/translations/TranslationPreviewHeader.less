@@ -1,0 +1,49 @@
+@import '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: row;
+        margin-top: 48px;
+    }
+
+    .label {
+        .body-semibold();
+    }
+
+    .select {
+        height: 32px;
+        border-radius: 4px;
+        background-color: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3);
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        gap: 8px;
+        cursor: pointer;
+        .arrowDown {
+            color: var(--neutral-grey-4);
+            font-size: 20px;
+        }
+    }
+
+    .select,
+    .dropdownBody {
+        width: 160px;
+    }
+
+    .selectOption {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .countryFlag {
+        font-size: 20px !important;
+        line-height: 20px !important;
+    }
+
+    .grow {
+        flex-grow: 1;
+    }
+}
