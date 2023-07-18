@@ -351,10 +351,8 @@ export default function SupportPerformanceOverview() {
                     dismissible={false}
                     message={
                         <span>
-                            Welcome to the new Statistics Overview beta! The
-                            metrics are computed in a new way to represent your
-                            performance more accurately.{' '}
-                            <a href={LEARN_MORE_URL}>Learn more.</a>
+                            Welcome to the new Statistics Overview! Learn more
+                            about it <a href={LEARN_MORE_URL}>here</a>.
                         </span>
                     }
                     onClose={() => setIsVersionBannerVisible(false)}

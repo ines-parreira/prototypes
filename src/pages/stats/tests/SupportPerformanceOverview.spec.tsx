@@ -10,7 +10,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
 import {TipQualifier} from 'services/performanceTipService'
 import {tags} from 'fixtures/tag'
-
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'

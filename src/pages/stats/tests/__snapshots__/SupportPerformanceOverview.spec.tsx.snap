@@ -15,13 +15,13 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
       >
         <span>
           <span>
-            Welcome to the new Statistics Overview beta! The metrics are computed in a new way to represent your performance more accurately.
-             
+            Welcome to the new Statistics Overview! Learn more about it 
             <a
               href="https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6"
             >
-              Learn more.
+              here
             </a>
+            .
           </span>
         </span>
         <a
