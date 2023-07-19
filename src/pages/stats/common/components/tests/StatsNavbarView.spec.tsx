@@ -34,10 +34,7 @@ describe('StatsNavbarView', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render the new badge when having access to the beta', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsBetaTesters]: true,
-        }))
+    it('should render the new badge', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
@@ -46,10 +43,7 @@ describe('StatsNavbarView', () => {
         expect(screen.getByText('new')).toBeInTheDocument()
     })
 
-    it('should render the link to busiest times of days when having access to the beta', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsBetaTesters]: true,
-        }))
+    it('should render the link to busiest times of days', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />

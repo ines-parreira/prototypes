@@ -67,6 +67,18 @@ exports[`StatsNavbarView should render 1`] = `
             href="/app/stats/support-performance-overview"
           >
             Overview
+            <div
+              class="badge badge"
+            >
+              new
+            </div>
+          </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/stats/busiest-times-of-days"
+          >
+            Busiest times of days
           </a>
           <a
             class="link"
@@ -229,6 +241,18 @@ exports[`StatsNavbarView should render 1`] = `
           href="/app/stats/support-performance-overview"
         >
           Overview
+          <div
+            class="badge badge"
+          >
+            new
+          </div>
+        </a>
+        <a
+          class="link"
+          data-active-class-name="active"
+          href="/app/stats/busiest-times-of-days"
+        >
+          Busiest times of days
         </a>
         <a
           class="link"

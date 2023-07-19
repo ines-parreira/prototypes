@@ -5,6 +5,40 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
   class="full-width"
 >
   <div
+    class="bannerNotification info"
+  >
+    <div
+      class="messageContainer"
+    >
+      <span
+        class="messageText"
+      >
+        <span>
+          This is the old Statistics Overview, which uses our old method of computing metrics and may not fully represent your performance.
+        </span>
+        <a
+          to="/app/stats/support-performance-overview"
+        >
+          <i
+            class="material-icons"
+          >
+            refresh
+          </i>
+           Switch To New Version
+        </a>
+      </span>
+    </div>
+    <span
+      class="closeIconContainer"
+    >
+      <img
+        alt="close-icon"
+        class="closeIcon"
+        src="test-file-stub"
+      />
+    </span>
+  </div>
+  <div
     class="full-width wrapper"
   >
     <div

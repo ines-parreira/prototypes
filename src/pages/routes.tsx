@@ -457,8 +457,6 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
-    const hasAnalyticsBeta: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
     const hasAnalyticsNewAgentPerformance: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
 
@@ -509,32 +507,26 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                     exact
                     path={`${path}/support-performance-overview`}
                     render={appRender({
-                        content: hasAnalyticsBeta
-                            ? SupportPerformanceOverview
-                            : DEPRECATED_SupportPerformanceOverview,
+                        content: SupportPerformanceOverview,
                         navbar: StatsNavbarContainer,
                     })}
                 />
-                {hasAnalyticsBeta && (
-                    <Route
-                        exact
-                        path={`${path}/support-performance-overview-legacy`}
-                        render={appRender({
-                            content: DEPRECATED_SupportPerformanceOverview,
-                            navbar: StatsNavbarContainer,
-                        })}
-                    />
-                )}
-                {hasAnalyticsBeta && (
-                    <Route
-                        exact
-                        path={`${path}/busiest-times-of-days`}
-                        render={appRender({
-                            content: SupportPerformanceBusiestTimesOfDays,
-                            navbar: StatsNavbarContainer,
-                        })}
-                    />
-                )}
+                <Route
+                    exact
+                    path={`${path}/support-performance-overview-legacy`}
+                    render={appRender({
+                        content: DEPRECATED_SupportPerformanceOverview,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/busiest-times-of-days`}
+                    render={appRender({
+                        content: SupportPerformanceBusiestTimesOfDays,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
                 <Route
                     exact
                     path={`${path}/ticket-fields`}

@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 
@@ -14,7 +13,6 @@ import {
     StatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     FIRST_RESPONSE_TIME,
     MEDIAN_FIRST_RESPONSE_TIME,
@@ -50,8 +48,6 @@ import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
 
 export default function DEPRECATED_SupportPerformanceOverview() {
-    const hasAnalyticsBeta: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
@@ -220,7 +216,7 @@ export default function DEPRECATED_SupportPerformanceOverview() {
 
     return (
         <div className="full-width">
-            {hasAnalyticsBeta && isVersionBannerVisible ? (
+            {isVersionBannerVisible ? (
                 <BannerNotification
                     actionHTML={
                         <Link to="/app/stats/support-performance-overview">

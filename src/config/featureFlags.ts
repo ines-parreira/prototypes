@@ -1,6 +1,5 @@
 export enum FeatureFlagKey {
     AgentsAvailabilityStatus = 'agents-availability-status',
-    AnalyticsBetaTesters = 'analytics-beta-testers',
     AnalyticsFilterByTags = 'analytics-filter-by-tags',
     AnalyticsNewAgentPerformance = 'analytics-new-agent-performance',
     AnalyticsPerformanceTips = 'analytics-performance-tips',

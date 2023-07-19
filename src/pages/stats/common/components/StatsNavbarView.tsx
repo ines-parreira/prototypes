@@ -19,8 +19,6 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
 }
 
 export default function StatsNavbarView() {
-    const hasAnalyticsBeta: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
     const hasAnalyticsNewAgentPerformance: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
 
@@ -65,24 +63,20 @@ export default function StatsNavbarView() {
                         to="/app/stats/support-performance-overview"
                     >
                         Overview
-                        {hasAnalyticsBeta && (
-                            <Badge
-                                type={ColorType.Blue}
-                                className={cssNavbar.badge}
-                            >
-                                new
-                            </Badge>
-                        )}
+                        <Badge
+                            type={ColorType.Blue}
+                            className={cssNavbar.badge}
+                        >
+                            new
+                        </Badge>
                     </NavbarLink>
 
-                    {hasAnalyticsBeta && (
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/busiest-times-of-days"
-                        >
-                            Busiest times of days
-                        </NavbarLink>
-                    )}
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/busiest-times-of-days"
+                    >
+                        Busiest times of days
+                    </NavbarLink>
 
                     <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
