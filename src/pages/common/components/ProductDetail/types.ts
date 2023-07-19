@@ -31,6 +31,7 @@ export type ProductDetail = {
     image?: string
     icon?: string
     description: string
+    benefits?: string[]
     categories?: Array<string | {label: string; type: ColorType}>
     company?: {
         name: string

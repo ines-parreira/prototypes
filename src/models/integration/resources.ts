@@ -39,6 +39,7 @@ export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
     grantedScopes: data.granted_scopes,
     description: data.headline,
     longDescription: data.description,
+    benefits: data.benefits,
     image: data.app_icon,
     connectUrl: data.app_url,
     categories: data.categories,

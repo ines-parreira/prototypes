@@ -182,6 +182,7 @@ export type IntegrationConfig = {
     requiredFeature?: AccountFeature
     image?: string
     longDescription: string
+    benefits: string[]
     company: {
         name: string
         url: string
@@ -210,6 +211,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Connect your support email addresses and respond to your customers from Gorgias.',
         longDescription: '',
+        benefits: [],
         categories: [],
         company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
         screenshots: [],
@@ -223,6 +225,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Make and receive phone calls from Gorgias with easy access to customer data and conversation history.',
         requiredFeature: AccountFeature.PhoneNumber,
+        benefits: [],
         categories: [Category.PHONE],
         privacyPolicy: 'https://www.gorgias.com/privacy/privacy',
         longDescription:
@@ -246,6 +249,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Send and receive text messages in Gorgias for seamless conversations with customers on the go.',
         requiredFeature: AccountFeature.PhoneNumber,
+        benefits: [],
         categories: [Category.PHONE],
         privacyPolicy: 'https://www.gorgias.com/privacy/privacy',
         longDescription:
@@ -268,6 +272,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         type: IntegrationType.WhatsApp,
         title: 'WhatsApp',
         description: 'Chat with customers using a WhatsApp Business account.',
+        benefits: [],
         categories: [Category.FEATURED, Category.SOCIAL],
         privacyPolicy: 'https://www.whatsapp.com/legal/privacy-policy/?lang=en',
         longDescription:
@@ -292,6 +297,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         title: 'Chat',
         description: 'Add a chat on your website.',
         longDescription: '',
+        benefits: [],
         categories: [Category.CHAT],
         company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
         screenshots: [],
@@ -305,6 +311,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Create tickets from Facebook posts, comments and recommendations, Instagram comments and mentions and Messenger conversations.',
         image: '/img/integrations/facebook.svg',
+        benefits: [],
         categories: [Category.SOCIAL],
         longDescription:
             '<p><strong>The most efficient way to provide personalized Facebook support for your customers.</strong></p><p>Gorgias makes it easy to engage with messages, comments, mentions, or ad comments directly from your helpdesk, with detailed ecommerce information and powerful automation tools.</p><p><strong>When you integrate your Facebook page with Gorgias, you’ll be able to:&nbsp;</strong></p><ul role="list"><li>Automatically create tickets based on page comments, ad comments, mentions, and Messenger notifications</li><li>Reply to all Facebook tickets with a public comment or private message</li><li>React to Facebook comments</li><li>Answer questions quickly, thanks to contextual customer information next to every ticket</li><li>Automate answers to common questions with Gorgias’ powerful automation tools<br></li></ul>',
@@ -327,6 +334,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Provide phone support & create tickets when customers call you.',
         image: '/img/integrations/aircall.png',
+        benefits: [],
         categories: [Category.PHONE],
         longDescription:
             '<p>Aircall allows you to receive and place phone calls. In a few clicks, the <a href="http://aircall.io">Aircall</a> +&nbsp;Gorgias integration ensures all relevant call information will be fully synced to a Gorgias ticket. This includes customer information, a link to voice recordings and voicemails, and the agent assigned to the call.<br></p><p><strong>This integration allows you to:&nbsp;</strong></p><ul role="list"><li>Sync call logs to Gorgias</li><li>Automatically assign calls to agents</li><li>See a customer’s Shopify and BigCommerce information when receiving a call</li></ul>',
@@ -348,6 +356,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description: 'Connect any application to Gorgias.',
         image: '/img/integrations/http.png',
         longDescription: '',
+        benefits: [],
         categories: [],
         company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
         screenshots: [],
@@ -361,6 +370,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros.',
         image: '/img/integrations/shopify.png',
+        benefits: [],
         categories: [Category.ECOMMERCE],
         longDescription: `
             <p>Instantly connect to Shopify in under a minute to have customer and order history at your agents’ fingertips. Here are the things you can do with Shopify integration:</p>
@@ -409,6 +419,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display customer BigCommerce profile & orders next to their ticket.',
         image: '/img/integrations/bigcommerce.svg',
+        benefits: [],
         categories: [Category.FEATURED, Category.ECOMMERCE],
         longDescription:
             "<p>BigCommerce is an ecommerce platform that provides 'software as a service' services to retailers. The company’s platform includes online store creation, search engine optimization, hosting, marketing and security.</p><p>With Gorgias, you can:</p><ul><li>View BigCommerce customer and order information in a customer's ticket.</li><li>Easily access links to customer and order profile.</li></ul>",
@@ -431,6 +442,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Create tickets when customers interact with you via replies or mentions on Twitter.',
         image: '/img/integrations/twitter.png',
         requiredFeature: AccountFeature.TwitterIntegration,
+        benefits: [],
         categories: [Category.SOCIAL],
         longDescription:
             '<p>Give your support team the power to interact with customers on Twitter, without having to log into another platform or share credentials with your social media manager. View past Twitter conversations, gain cross-channel message context, and customize your replies to provide exceptional customer support. </p><p><strong>Features of this integration:&nbsp;</strong></p><ul role="list"><li>Create tickets in Gorgias when someone <strong>replies to a tweet</strong> from your brand.</li><li>Create tickets in Gorgias when someone <strong>mentions your brand</strong> in a tweet.</li><li>Tweet back right from the ticket in Gorgias.</li><li>View media attached to tweets, including images, videos, and gifs.</li><li>Open the tweet in Twitter with a single click.</li></ul><p>This integration is currently only available for Advanced and Enterprise plans.</p>',
@@ -454,6 +466,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Display customer profiles & orders next to tickets. Edit orders with macros.',
         image: '/img/integrations/magento.png',
         requiredFeature: AccountFeature.MagentoIntegration,
+        benefits: [],
         categories: [Category.ECOMMERCE],
         longDescription:
             '<p>Securely connect with Magento to have your customers’ order history at your agents’ fingertips.<br>Magento is an ecommerce platform built on open source technology which provides online merchants with a flexible shopping cart system, as well as control over the look, content and functionality of their online store.</p><p>The Gorgias plugin for Magento is currently compatible with <strong>Magento 2.2</strong>, <strong>2.3</strong> and <strong>2.4</strong> for all Magento versions:</p><ul><li>Open Source (CE);</li><li>Commerce using on prem (EE);</li><li>Commerce on Cloud (ECE).</li></ul><h5 class="mt-4">Integration benefits</h5><ul><li>Display customer profiles next to tickets;</li><li>Display orders, shipments and credit memos;</li><li>Insert Magento 2 variables in macros;</li><li>Use Magento 2 variables as filters in rules.</li></ul>',
@@ -475,6 +488,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display subscription info. Refund charges & skip monthly payments.',
         image: '/img/integrations/recharge.svg',
+        benefits: [],
         categories: [Category.SUBSCRIPTIONS],
         longDescription:
             '<p>Recharge connects the world through seamless payments and empowers thousands of merchants to grow their subscription business. Connect Gorgias and Recharge for a simple way to manage customer subscriptions and customer service from one convenient location. </p><p><strong>With this integration, you’ll be able to:&nbsp;</strong></p><ul role="list"><li>Display Recharge subscriptions next to support tickets in Gorgias, to gather full customer context before replying to questions</li><li>Cancel subscriptions, re-activate subscriptions, or refund a charge (either partially or totally)&nbsp;right from the Gorgias helpdesk</li><li>Embed Recharge data in your Macro replies to automate the most common support questions</li></ul>',
@@ -498,6 +512,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display customer points and activity. Insert point balance or referral url in macros.',
         image: '/img/integrations/smile.svg',
+        benefits: [],
         categories: [Category.LOYALTY],
         longDescription:
             '<p>Smile.io creates and manages reward programs (loyalty points, referrals and VIP programs) to build a fruitful relationship with both your new customers and the most loyal ones.</p><p>&zwj;</p><p>Here’s what you can do with the Smile integration:</p><ul role="list"><li>Display Smile customer profile next to Gorgias tickets</li><li>Insert point balance of referral URL in Macros</li><li>Triage tickets based on VIP tier</li></ul><p>For each customer, the following Smile data is available in Gorgias: point balance, referral URL, VIP tier, state.<br></p>',
@@ -520,6 +535,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
         image: '/img/integrations/yotpo.png',
         requiredFeature: AccountFeature.YotpoIntegration,
+        benefits: [],
         categories: [
             Category.FEATURED,
             Category.SMS,
@@ -545,6 +561,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     {
         type: IntegrationType.Klaviyo,
         title: 'Klaviyo - 🗄 DEPRECATED',
+        benefits: [],
         categories: [Category.LOYALTY],
         company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
         screenshots: [],

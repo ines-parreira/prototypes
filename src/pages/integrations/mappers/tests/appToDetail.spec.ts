@@ -8,6 +8,10 @@ describe(`InfoCard`, () => {
             {
               "alloyIntegrationId": undefined,
               "appId": "someid",
+              "benefits": [
+                "foo",
+                "bar",
+              ],
               "categories": [
                 "Ecommerce",
                 "Reviews & UGC",

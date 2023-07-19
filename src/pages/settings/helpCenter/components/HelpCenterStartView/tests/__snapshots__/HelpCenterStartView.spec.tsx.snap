@@ -61,9 +61,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
       <section
         class="longDescription"
       >
-        <h2
-          class="categoryTitle"
-        >
+        <h2>
           About
         </h2>
         <div>

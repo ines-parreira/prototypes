@@ -9,7 +9,7 @@ import {ProductDetail} from './types'
 import css from './Detail.less'
 
 export default function Detail(props: ProductDetail) {
-    const {screenshots = [], longDescription, infocard} = props
+    const {screenshots = [], longDescription, benefits, infocard} = props
 
     return (
         <>
@@ -24,8 +24,23 @@ export default function Detail(props: ProductDetail) {
             )}
             <main className={css.main}>
                 <section className={css.longDescription}>
-                    <h2 className={css.categoryTitle}>About</h2>
+                    <h2>About</h2>
                     <div dangerouslySetInnerHTML={{__html: longDescription}} />
+                    {benefits && benefits.length > 0 && (
+                        <>
+                            <h2>Benefits</h2>
+                            <ul>
+                                {benefits.map((benefit, index) => (
+                                    <li
+                                        key={index}
+                                        dangerouslySetInnerHTML={{
+                                            __html: benefit,
+                                        }}
+                                    />
+                                ))}
+                            </ul>
+                        </>
+                    )}
                     {screenshots && screenshots.length > 0 && (
                         <Slides screenshots={screenshots} />
                     )}

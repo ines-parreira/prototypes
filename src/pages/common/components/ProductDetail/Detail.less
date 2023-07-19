@@ -1,3 +1,4 @@
+@import '~css/new/layout';
 @import '~css/new/mixins';
 
 :local {
@@ -53,6 +54,15 @@
         max-width: 680px;
         h2 {
             font-size: 1.143rem; // ~16px
+        }
+        h2 ~ h2 {
+            margin-top: @layout-spacing-m;
+        }
+        ul {
+            padding-left: @layout-spacing-m;
+        }
+        & > ul > li {
+            margin-bottom: @layout-spacing-s;
         }
     }
     .screenshotList {

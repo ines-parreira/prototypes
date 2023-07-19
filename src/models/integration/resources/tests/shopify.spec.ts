@@ -1,8 +1,8 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {ShopifyTags} from 'models/integration/types'
-import {fetchShopTags} from 'models/integration/resources/shopify'
 import client from '../../../api/resources'
+import {fetchShopTags} from '../shopify'
 
 const mockedServer = new MockAdapter(client)
 

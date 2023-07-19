@@ -52,6 +52,7 @@ export type AppData = AppListData & {
     granted_scopes?: string[]
     is_unapproved: boolean
     description: string
+    benefits: string[]
     app_url: string
     company: string
     company_url: string
