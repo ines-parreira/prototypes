@@ -14,10 +14,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     getNewMessageActions,
-    getNewMessageChannel,
     getNewMessageExternalTemplateAction,
+    getNewMessageSource,
 } from 'state/newMessage/selectors'
-import {TicketChannel} from 'business/types/ticket'
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {setNewMessageActions, setResponseText} from 'state/newMessage/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {mergeActionsJS} from 'state/ticket/utils'
@@ -94,7 +94,8 @@ export const WhatsAppEditorProvider = ({
     const [selectedTemplateType, setSelectedTemplateType] =
         useState<TemplateTypeFilterOption>(TemplateTypeFilterOption.Templates)
 
-    const channel = useAppSelector(getNewMessageChannel)
+    const newMessageSource = useAppSelector(getNewMessageSource)
+    const newMessageSourceType = newMessageSource.get('type')
 
     const whatsAppMessageTemplatesEnabled =
         useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
@@ -152,7 +153,7 @@ export const WhatsAppEditorProvider = ({
 
     const showWhatsAppTemplateEditor =
         whatsAppMessageTemplatesEnabled &&
-        channel === TicketChannel.WhatsApp &&
+        newMessageSourceType === TicketMessageSourceType.WhatsAppMessage &&
         selectedTemplateType === TemplateTypeFilterOption.Templates
 
     return (
