@@ -2,8 +2,16 @@ import {fromJS, List} from 'immutable'
 import {size} from 'lodash'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
-
-import {RootState} from '../../types'
+import {integrationsState} from 'fixtures/integrations'
+import {
+    Integration,
+    EmailIntegration,
+    ShopifyIntegration,
+    PhoneIntegration,
+    IntegrationType,
+    isPhoneIntegration,
+} from 'models/integration/types'
+import {RootState} from 'state/types'
 
 import {
     getBaseEmailIntegration,
@@ -27,7 +35,6 @@ import {
     getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutChat,
     getShopifyIntegrationsWithoutFacebook,
-    hasAtLeastOneEmailIntegration,
     getMessagingIntegrations,
     DEPRECATED_getPhoneIntegrations,
     getActiveIntegrations,
@@ -35,15 +42,6 @@ import {
     getIsChatIntegrationStatusLoading,
     getIsChatIntegrationStatusError,
 } from '../selectors'
-import {integrationsState} from '../../../fixtures/integrations'
-import {
-    Integration,
-    EmailIntegration,
-    ShopifyIntegration,
-    PhoneIntegration,
-    IntegrationType,
-    isPhoneIntegration,
-} from '../../../models/integration/types'
 
 const state = {
     integrations: fromJS(integrationsState),
@@ -236,7 +234,7 @@ describe('integrations selectors', () => {
                         },
                     },
                     {
-                        id: 3,
+                        id: 4,
                         type: 'whatsapp',
                         name: 'John Doe',
                         meta: {
@@ -245,27 +243,48 @@ describe('integrations selectors', () => {
                             },
                         },
                     },
+                    {
+                        id: 5,
+                        type: 'email',
+                        deactivated_datetime:
+                            '2023-07-18T17:20:05.655015+00:00',
+                        name: 'Deactivated Integration',
+                        meta: {address: 'deactivated@email.com'},
+                    },
                 ],
             }),
             entities: {
                 newPhoneNumbers: {
                     1: {
-                        phone_number: '+123456789',
+                        phone_number: '+1234567890',
                     },
                 },
             },
         } as unknown as RootState
 
-        it('should get email integrations as channels when source type is email', () => {
+        it('should get active email integrations as channels when source type is email', () => {
             expect(
                 getChannelsForSourceType(TicketMessageSourceType.Email)(state)
             ).toEqual(
                 fromJS([
                     {
                         id: 1,
-                        type: 'email',
-                        name: 'John Doe',
-                        address: 'support@mycompany.com',
+                        type: state.integrations.getIn([
+                            'integrations',
+                            '0',
+                            'type',
+                        ]),
+                        name: state.integrations.getIn([
+                            'integrations',
+                            '0',
+                            'name',
+                        ]),
+                        address: state.integrations.getIn([
+                            'integrations',
+                            '0',
+                            'meta',
+                            'address',
+                        ]),
                         preferred: undefined,
                         signature: undefined,
                         verified: false,
@@ -281,10 +300,22 @@ describe('integrations selectors', () => {
             ).toEqual(
                 fromJS([
                     {
-                        id: 2,
-                        type: 'phone',
-                        name: 'John Doe',
-                        address: '+123456789',
+                        id: state.integrations.getIn([
+                            'integrations',
+                            '1',
+                            'id',
+                        ]),
+                        type: state.integrations.getIn([
+                            'integrations',
+                            '1',
+                            'type',
+                        ]),
+                        name: state.integrations.getIn([
+                            'integrations',
+                            '1',
+                            'name',
+                        ]),
+                        address: state.entities.newPhoneNumbers[1].phone_number,
                     },
                 ])
             )
@@ -296,10 +327,22 @@ describe('integrations selectors', () => {
             ).toEqual(
                 fromJS([
                     {
-                        id: 3,
-                        type: 'sms',
-                        name: 'John Doe',
-                        address: '+123456789',
+                        id: state.integrations.getIn([
+                            'integrations',
+                            '2',
+                            'id',
+                        ]),
+                        type: state.integrations.getIn([
+                            'integrations',
+                            '2',
+                            'type',
+                        ]),
+                        name: state.integrations.getIn([
+                            'integrations',
+                            '2',
+                            'name',
+                        ]),
+                        address: state.entities.newPhoneNumbers[1].phone_number,
                     },
                 ])
             )
@@ -313,10 +356,28 @@ describe('integrations selectors', () => {
             ).toEqual(
                 fromJS([
                     {
-                        id: 3,
-                        type: 'whatsapp',
-                        name: 'John Doe',
-                        address: '+123456789',
+                        id: state.integrations.getIn([
+                            'integrations',
+                            '3',
+                            'id',
+                        ]),
+                        type: state.integrations.getIn([
+                            'integrations',
+                            '3',
+                            'type',
+                        ]),
+                        name: state.integrations.getIn([
+                            'integrations',
+                            '3',
+                            'name',
+                        ]),
+                        address: state.integrations.getIn([
+                            'integrations',
+                            '3',
+                            'meta',
+                            'routing',
+                            'phone_number',
+                        ]),
                     },
                 ])
             )
@@ -742,88 +803,6 @@ describe('integrations selectors', () => {
                 forwardingEmailAddress
             )
         })
-    })
-
-    describe('isImportAllowed()', () => {
-        const testadress = {address: 'testaddress@email.com'}
-
-        it.each([
-            [
-                [
-                    {
-                        type: IntegrationType.Email,
-                        meta: {verified: true, ...testadress},
-                    },
-                ],
-                true,
-            ],
-            [
-                [
-                    {
-                        type: IntegrationType.Gmail,
-                        meta: testadress,
-                    },
-                ],
-                true,
-            ],
-            [
-                [
-                    {
-                        type: IntegrationType.Outlook,
-                        meta: testadress,
-                    },
-                ],
-                true,
-            ],
-            [
-                [
-                    {
-                        type: IntegrationType.Email,
-                        meta: {verified: false, ...testadress},
-                    },
-                ],
-                false,
-            ],
-            [
-                [
-                    {
-                        type: IntegrationType.Email,
-                        meta: {
-                            verified: true,
-                            address: `testadress@${
-                                window.GORGIAS_STATE?.integrations
-                                    ?.authentication?.email
-                                    ?.forwarding_email_address || ''
-                            }`,
-                        },
-                    },
-                ],
-                false,
-            ],
-            [
-                [
-                    {
-                        type: IntegrationType.Gmail,
-                        deactivated_datetime: 'sometime',
-                        meta: testadress,
-                    },
-                ],
-                false,
-            ],
-        ])(
-            'hasAtLeastOneEmailIntegration',
-            (integrationsJSON, expectedResult) => {
-                const state = {
-                    integrations: fromJS({
-                        integrations: integrationsJSON,
-                    }),
-                } as RootState
-
-                expect(hasAtLeastOneEmailIntegration(state)).toBe(
-                    expectedResult
-                )
-            }
-        )
     })
 
     it('should get active integrations', () => {

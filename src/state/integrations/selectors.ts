@@ -391,7 +391,7 @@ export const getChannelsForSourceType =
             case TicketMessageSourceType.WhatsAppMessage:
                 return getWhatsAppChannels(state)
             default:
-                return getEmailChannels(state)
+                return getActiveEmailChannels(state)
         }
     }
 
@@ -562,17 +562,6 @@ export const getChatIntegrationCampaignById = (
                 (campaign: Map<any, any>) => campaign.get('id') === campaignId
             ) || fromJS({})) as Map<any, any>
     )
-
-export const hasAtLeastOneEmailIntegration = (state: RootState) =>
-    getEmailIntegrations(state).filter((integration: Map<any, any>) => {
-        const isBaseIntegration = isBaseEmailIntegration(integration.toJS())
-        const isDeactivated = !!integration.get('deactivated_datetime')
-        const isNotVerified =
-            integration.get('type') === IntegrationType.Email &&
-            !integration.getIn(['meta', 'verified'])
-
-        return !isBaseIntegration && !isDeactivated && !isNotVerified
-    }).size > 0
 
 export const getEmailForwardingActivated = (id: number) =>
     createSelector(
