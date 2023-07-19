@@ -8,13 +8,13 @@ import {
 import {FallbackWorker, fallbackWorkerAdapter} from '../fallbackWorkerAdapter'
 
 jest.mock('socket.io-client', () => {
-    return () => {
+    return jest.fn(() => {
         return {
             connect: jest.fn(),
             send: jest.fn(),
             on: jest.fn(),
         }
-    }
+    })
 })
 
 jest.useFakeTimers()
@@ -171,6 +171,13 @@ describe('FallbackWorker', () => {
             expect(fallbackWorker.socket?.on).toHaveBeenCalledWith(
                 'disconnect',
                 fallbackWorker._onSocketDisconnect
+            )
+            expect(io).toHaveBeenNthCalledWith(
+                1,
+                window.WS_URL,
+                expect.objectContaining({
+                    path: '/socket.io/v4/',
+                })
             )
         })
 

@@ -169,7 +169,10 @@ export class WebsocketSharedWorker {
     onClientConnected = (message: WSMessage, messagePort: MessagePort) => {
         if (!this.socket) {
             this.wsUrl = message.wsUrl!
-            this.socket = io(this.wsUrl, {transports: ['websocket']})
+            this.socket = io(this.wsUrl, {
+                transports: ['websocket'],
+                path: '/socket.io/v4/',
+            })
 
             this.socket.on('json', this._onSocketJson)
             this.socket.on('connect', this._onSocketConnect)

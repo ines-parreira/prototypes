@@ -15,13 +15,13 @@ import {
 import {WebsocketSharedWorker} from '../sharedWorker'
 
 jest.mock('socket.io-client', () => {
-    return () => {
+    return jest.fn(() => {
         return {
             connect: jest.fn(),
             send: jest.fn(),
             on: jest.fn(),
         }
-    }
+    })
 })
 
 jest.useFakeTimers()
@@ -313,6 +313,14 @@ describe('WebsocketSharedWorker', () => {
                 event: SocketEvent.ClientConnected,
                 clientId: message.clientId,
             })
+
+            expect(io).toHaveBeenNthCalledWith(
+                1,
+                message.wsUrl,
+                expect.objectContaining({
+                    path: '/socket.io/v4/',
+                })
+            )
         })
 
         it('should send a `WS_CONNECTED` event on the message port because the worker has a socket', () => {

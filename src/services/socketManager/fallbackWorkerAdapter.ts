@@ -84,7 +84,10 @@ export class FallbackWorker {
 
     onConnect = () => {
         if (!this.socket) {
-            this.socket = io(window.WS_URL, {transports: ['websocket']})
+            this.socket = io(window.WS_URL, {
+                transports: ['websocket'],
+                path: '/socket.io/v4/',
+            })
 
             this.socket.on('json', this._onSocketJson)
             this.socket.on('connect', this._onSocketConnect)
