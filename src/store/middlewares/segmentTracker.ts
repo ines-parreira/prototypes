@@ -282,6 +282,7 @@ export enum SegmentEvent {
     RecentItemAccessed = 'recent-item-accessed',
     DraftTicket = 'draft-ticket',
     InfobarFieldCopied = 'infobar-field-copied',
+    TicketExport = 'ticket-export',
 }
 
 export enum StatViewLinkClickedStat {

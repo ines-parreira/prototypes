@@ -27,6 +27,7 @@ import {
 } from 'state/views/actions'
 import * as viewSelectors from 'state/views/selectors'
 import * as utils from 'utils'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {FilterTopbar} from '../FilterTopbar'
 
@@ -35,6 +36,7 @@ const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 jest.spyOn(viewsActions, 'activeViewIdSet')
 jest.mock('state/entities/views/actions')
 jest.mock('state/views/actions')
+jest.mock('store/middlewares/segmentTracker')
 
 const createViewWithFilters = (filters: string) =>
     fromJS({
@@ -87,6 +89,7 @@ jest.mock('../../ViewSharing/ViewSharingButton', () => () => (
 ))
 
 const globalDataNow = jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 beforeEach(() => {
     jest.clearAllMocks()
@@ -629,5 +632,21 @@ describe('<FilterTopbar />', () => {
                 getByTitle('Export all view tickets') as HTMLButtonElement
             ).toHaveAttribute('aria-disabled', 'false')
         })
+    })
+    it('should send event to segment on export tickets button click', () => {
+        const {getByTitle} = render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} isUpdate={true} />
+            </Provider>
+        )
+
+        fireEvent.click(getByTitle('Export all view tickets'))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.TicketExport,
+            expect.objectContaining({
+                type: 'views-export-button',
+            })
+        )
     })
 })

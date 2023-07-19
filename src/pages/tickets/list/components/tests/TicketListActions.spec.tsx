@@ -9,22 +9,24 @@ import {
 } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {AGENT_ROLE, LITE_AGENT_ROLE} from 'config/user'
+import * as viewsActions from 'state/views/actions'
+import * as ticketsActions from 'state/tickets/actions'
+import {JobType} from 'models/job/types'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import history from 'pages/history'
+import {ticket} from 'fixtures/ticket'
+import {makeExecuteKeyboardAction} from 'utils/testing'
+import {user} from 'fixtures/users'
+import {UserRole} from 'config/types/user'
 import {TicketListActionsContainer} from '../TicketListActions'
-import {AGENT_ROLE, LITE_AGENT_ROLE} from '../../../../../config/user'
-import * as viewsActions from '../../../../../state/views/actions'
-import * as ticketsActions from '../../../../../state/tickets/actions'
-import {JobType} from '../../../../../models/job/types'
-import shortcutManager from '../../../../../services/shortcutManager/shortcutManager'
-import history from '../../../../history'
-import {ticket} from '../../../../../fixtures/ticket'
-import {makeExecuteKeyboardAction} from '../../../../../utils/testing'
-import {user} from '../../../../../fixtures/users'
-import {UserRole} from '../../../../../config/types/user'
 
-jest.mock('../../../../../services/shortcutManager/shortcutManager')
-jest.mock('../../../../../state/views/actions')
-jest.mock('../../../../../state/tickets/actions')
-jest.mock('../../../../history')
+jest.mock('services/shortcutManager/shortcutManager')
+jest.mock('state/views/actions')
+jest.mock('state/tickets/actions')
+jest.mock('pages/history')
+jest.mock('store/middlewares/segmentTracker')
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
@@ -36,6 +38,7 @@ const shortcutEventMock = {
 } as unknown as jest.Mocked<Event>
 const historyMock = history as jest.Mocked<typeof history>
 const fieldEnumSearchCancellableMock = jest.fn()
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('TicketListActions component', () => {
     const minProps: ComponentProps<typeof TicketListActionsContainer> = {
@@ -232,6 +235,29 @@ describe('TicketListActions component', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should send event to segment on click export tickets button', () => {
+        const {getByText} = render(
+            <TicketListActionsContainer
+                {...minProps}
+                selectedItemsIds={fromJS([])}
+                currentUser={fromJS({
+                    id: 1,
+                    name: 'Peter Parker',
+                    role: {id: 1, name: AGENT_ROLE},
+                })}
+            />
+        )
+
+        fireEvent.click(getByText(/Export tickets/))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.TicketExport,
+            expect.objectContaining({
+                type: 'bulk-action-export',
+            })
+        )
     })
 
     it('should bind keyboard shortcuts on mount', () => {

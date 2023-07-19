@@ -284,6 +284,9 @@ export const FilterTopbar = ({
 
     const [{loading: isLaunchingJob}, createExportTicketJob] =
         useAsyncFn(async () => {
+            logEvent(SegmentEvent.TicketExport, {
+                type: 'views-export-button',
+            })
             await dispatch(createJob(activeView, JobType.ExportTicket, {}))
         }, [dispatch, activeView])
 

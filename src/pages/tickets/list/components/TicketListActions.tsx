@@ -46,6 +46,7 @@ import {JobType} from 'models/job/types'
 import {getTickets} from 'state/tickets/selectors'
 import {UserRole} from 'config/types/user'
 import TextInput from 'pages/common/forms/input/TextInput'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 
 import css from './TicketListActions.less'
 
@@ -252,6 +253,9 @@ export const TicketListActionsContainer = ({
     }
 
     const bulkExport = () => {
+        logEvent(SegmentEvent.TicketExport, {
+            type: 'bulk-action-export',
+        })
         void createJob(JobType.ExportTicket, {})
     }
 
