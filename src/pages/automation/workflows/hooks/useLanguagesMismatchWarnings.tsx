@@ -117,14 +117,12 @@ export default function useLanguagesMismatchWarnings(
                     type: 'warning',
                     message: (
                         <>
-                            Currently, this channel doesn't support multiple
-                            languages. So this flow will be shown in{' '}
-                            {getChannelLanguageLabel(channelLanguages[0])} only,
-                            which is{' '}
+                            This channel does not currently support multiple
+                            languages. This flow will be displayed only in the{' '}
                             <Link to={channelLanguageSettingsLink}>
-                                this channel's selected language
+                                channel's selected language
                             </Link>
-                            .
+                            : {getChannelLanguageLabel(channelLanguages[0])}.
                         </>
                     ),
                 }

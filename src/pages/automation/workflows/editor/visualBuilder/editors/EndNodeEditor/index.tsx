@@ -107,7 +107,8 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                         <div className={css.description}>
                             Customers will be asked for feedback and a ticket is
                             created in the channel if customers select "No, I
-                            need more help"
+                            need more help". Feedback will always be requested
+                            in the channel language.
                         </div>
                     </div>
                 ) : (

@@ -105,6 +105,9 @@ export default function ReplyButtonList({
             ))}
             <div>
                 <Button
+                    onKeyDown={(e) => {
+                        e.preventDefault()
+                    }}
                     intent="primary"
                     onClick={() => onAddChoice()}
                     isDisabled={choicesDirty.length >= 6}
