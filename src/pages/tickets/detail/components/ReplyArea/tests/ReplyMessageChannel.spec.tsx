@@ -147,7 +147,7 @@ describe('ReplyMessageChannel component', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should render option "Make outbound call" for existing phone ticket', () => {
+    it('should render "Call" option for existing phone ticket', () => {
         const {getByText} = render(
             <ReplyMessageChannelContainer
                 {...minProps}
@@ -160,10 +160,10 @@ describe('ReplyMessageChannel component', () => {
                 hasPhoneIntegration
             />
         )
-        expect(getByText(/make outbound call/i)).toBeVisible()
+        expect(getByText('Call')).toBeVisible()
     })
 
-    it('should render option "Make outbound call" for new ticket', () => {
+    it('should render "Call" option for new ticket', () => {
         const {getByText} = render(
             <ReplyMessageChannelContainer
                 {...minProps}
@@ -173,7 +173,7 @@ describe('ReplyMessageChannel component', () => {
                 hasPhoneIntegration
             />
         )
-        expect(getByText(/make outbound call/i)).toBeVisible()
+        expect(getByText('Call')).toBeVisible()
     })
 
     it('should render option for sending WhatsApp templates for new ticket', () => {

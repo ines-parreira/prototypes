@@ -96,7 +96,12 @@ export class ReplyMessageChannelContainer extends Component<Props> {
     }
 
     canChangeReceivers = () => {
-        return changeReceiversAllowedSourceTypes.includes(this.props.sourceType)
+        const isTicketExisting = !!this.props.ticket.get('id')
+
+        return (
+            changeReceiversAllowedSourceTypes.includes(this.props.sourceType) ||
+            !isTicketExisting
+        )
     }
 
     /**
@@ -239,7 +244,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.InternalNote
                                         }
                                     />
-                                    Leave internal note
+                                    Internal note
                                 </DropdownItem>
                             )}
                             {suggestEmail && (
@@ -254,7 +259,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                     <SourceIcon
                                         type={TicketMessageSourceType.Email}
                                     />
-                                    Reply via email
+                                    Email
                                 </DropdownItem>
                             )}
                             {suggestForwardByEmail && (
@@ -271,7 +276,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.EmailForward
                                         }
                                     />
-                                    Forward to email
+                                    Forward
                                 </DropdownItem>
                             )}
                             {suggestChat && (
@@ -286,7 +291,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                     <SourceIcon
                                         type={TicketMessageSourceType.Chat}
                                     />
-                                    Reply via chat
+                                    Chat
                                 </DropdownItem>
                             )}
                             {suggestFacebookComment && (
@@ -303,7 +308,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.FacebookComment
                                         }
                                     />
-                                    Reply via Facebook comment
+                                    Facebook
                                 </DropdownItem>
                             )}
                             {suggestFacebookMentionComment && (
@@ -320,7 +325,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.FacebookMentionComment
                                         }
                                     />
-                                    Reply via Facebook mention comment
+                                    Facebook
                                 </DropdownItem>
                             )}
                             {suggestFacebookReviewComment && (
@@ -337,7 +342,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.FacebookReviewComment
                                         }
                                     />
-                                    Reply via Facebook recommendations
+                                    Facebook Recommendations
                                 </DropdownItem>
                             )}
                             {suggestFacebookMessenger && (
@@ -354,7 +359,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.FacebookMessenger
                                         }
                                     />
-                                    Reply via Messenger
+                                    Messenger
                                 </DropdownItem>
                             )}
                             {suggestInstagramDM && (
@@ -371,7 +376,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.InstagramDirectMessage
                                         }
                                     />
-                                    Reply via Instagram direct message
+                                    Instagram DM
                                 </DropdownItem>
                             )}
                             {suggestInstagram && (
@@ -388,7 +393,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.InstagramComment
                                         }
                                     />
-                                    Reply via Instagram
+                                    Instagram
                                 </DropdownItem>
                             )}
                             {suggestInstagramAd && (
@@ -405,7 +410,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.InstagramAdComment
                                         }
                                     />
-                                    Reply via Instagram
+                                    Instagram
                                 </DropdownItem>
                             )}
                             {suggestInstagramMention && (
@@ -422,7 +427,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.InstagramMentionComment
                                         }
                                     />
-                                    Reply via Instagram mention
+                                    Instagram
                                 </DropdownItem>
                             )}
                             {suggestYotpoReview && (
@@ -505,7 +510,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                     <SourceIcon
                                         type={TicketMessageSourceType.Phone}
                                     />
-                                    Make outbound call
+                                    Call
                                 </DropdownItem>
                             )}
                             {suggestSms && (
@@ -520,7 +525,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                     <SourceIcon
                                         type={TicketMessageSourceType.Sms}
                                     />
-                                    Send SMS
+                                    SMS
                                 </DropdownItem>
                             )}
                             {suggestWhatsApp && (
@@ -537,7 +542,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.WhatsAppMessage
                                         }
                                     />
-                                    Reply via WhatsApp
+                                    WhatsApp
                                 </DropdownItem>
                             )}
                         </DropdownMenu>
