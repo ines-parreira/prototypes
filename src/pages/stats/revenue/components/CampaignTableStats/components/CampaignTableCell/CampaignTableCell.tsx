@@ -14,6 +14,9 @@ import {CampaignTableContentCell} from 'pages/stats/revenue/types/CampaignTableC
 import {CampaignTableValueFormat} from 'pages/stats/revenue/types/enums/CampaignTableValueFormat.enum'
 
 import {formatNumber} from 'pages/stats/common/utils'
+
+import {TicketsCreatedCell} from '../TicketsCreatedCell'
+
 import css from '../../CampaignTableStats.less'
 
 type Props = {
@@ -55,6 +58,10 @@ export const CampaignTableCell = ({
                 </div>
             </BodyCell>
         )
+    }
+
+    if (column.key === CampaignTableKeys.TicketsCreated) {
+        return <TicketsCreatedCell {...bodyCellProps} cell={cell} data={data} />
     }
 
     if (column.key === CampaignTableKeys.CampaignName) {
