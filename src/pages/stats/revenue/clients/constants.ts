@@ -42,7 +42,6 @@ export enum OrderConversionDimension {
 
 export enum OrderConversionMeasure {
     gmv = `OrderConversion.gmv`,
-    influencedRevenueUplift = `OrderConversion.influencedRevenueUplift`,
     ticketSales = `OrderConversion.ticketSales`,
     ticketSalesCount = `OrderConversion.ticketSalesCount`,
     discountSales = `OrderConversion.discountSales`,

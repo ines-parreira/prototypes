@@ -76,7 +76,7 @@ describe('renderTooltipLabelAsPercentage', () => {
 
 describe('renderTickLabelAsPercentage', () => {
     it.each([
-        [50, '+50%'],
+        [50, '50%'],
         [-50, '-50%'],
         [0, '0%'],
         ['rainbow', 'rainbow'],

@@ -18,7 +18,7 @@ import {ReportingGranularity} from 'models/reporting/types'
 import {TicketChannel} from 'business/types/ticket'
 import {useTicketsPerformanceChart} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceChart'
 
-export type GetRevenueUpliftChartQuery = {
+export type GetCampaignsAndChatChartQuery = {
     isFetching: boolean
     isError: boolean
     data?: CampaignChatPerformanceData
@@ -32,7 +32,7 @@ export const useGetCampaignsAndChatChart = (
     integrationId: number | null,
     timezone: string,
     timeGranularity = ReportingGranularity.Day
-): GetRevenueUpliftChartQuery => {
+): GetCampaignsAndChatChartQuery => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
             shopName: namespacedShopName,

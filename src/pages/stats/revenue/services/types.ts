@@ -68,7 +68,7 @@ export type OrdersTotals = {
 }
 
 export type CalculatedTotals = {
-    [CampaignsTotalsMetricNames.influencedRevenueUplift]: string
+    [CampaignsTotalsMetricNames.influencedRevenueShare]: string
 }
 
 export type StoreTotal = {

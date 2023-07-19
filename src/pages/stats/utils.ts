@@ -42,8 +42,7 @@ export const renderTooltipLabelAsPercentage = (
 
 export const renderTickLabelAsPercentage = (value: string | number) => {
     if (typeof value === 'number') {
-        const sign = value <= 0 ? '' : '+'
-        return sign + formatPercentage(value)
+        return formatPercentage(value)
     }
     return value
 }

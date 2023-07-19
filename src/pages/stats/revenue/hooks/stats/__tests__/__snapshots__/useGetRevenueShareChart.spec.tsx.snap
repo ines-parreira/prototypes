@@ -112,7 +112,7 @@ exports[`useGetTotalsStat should return prepared data for totals section 2`] = `
   "data": [
     {
       "x": "Feb 28th",
-      "y": 50,
+      "y": 33.33,
     },
   ],
   "isError": false,

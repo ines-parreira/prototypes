@@ -6,12 +6,12 @@ import {
 } from 'pages/stats/revenue/clients/types'
 import {
     getRevenueGraphData,
-    getRevenueUpliftGraphData,
+    getRevenueShareGraphData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     getDataFromResult,
     transformToRevenueByDate,
-    transformToRevenueUpliftOverTime,
+    transformToRevenueShareOverTime,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {RevenueGraphDataPoint} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
@@ -21,20 +21,20 @@ const OVERRIDES = {
     select: getDataFromResult,
 }
 
-export type GetRevenueUpliftChartQuery = {
+export type GetRevenueShareChartQuery = {
     isFetching: boolean
     isError: boolean
     data?: RevenueGraphDataPoint[]
 }
 
-export const useGetRevenueUpliftChart = (
+export const useGetRevenueShareChart = (
     namespacedShopName: string,
     campaignIds: string[],
     startDate: string,
     endDate: string,
     timezone: string,
     timeGranularity = ReportingGranularity.Day
-): GetRevenueUpliftChartQuery => {
+): GetRevenueShareChartQuery => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
             shopName: namespacedShopName,
@@ -54,14 +54,14 @@ export const useGetRevenueUpliftChart = (
         ]
     )
 
-    const revenueUpliftChartQuery = useMemo(
-        () => getRevenueUpliftGraphData(attrs),
+    const revenueShareChartQuery = useMemo(
+        () => getRevenueShareGraphData(attrs),
         [attrs]
     )
     const revenueQuery = useMemo(() => getRevenueGraphData(attrs), [attrs])
 
-    const revenueUpliftChart = usePostReporting<[CubeData], CubeData>(
-        revenueUpliftChartQuery,
+    const revenueShareChart = usePostReporting<[CubeData], CubeData>(
+        revenueShareChartQuery,
         OVERRIDES
     )
     const revenue = usePostReporting<[CubeData], CubeData>(
@@ -72,19 +72,19 @@ export const useGetRevenueUpliftChart = (
     const data = useMemo(() => {
         const revenueData = transformToRevenueByDate(revenue.data)
 
-        const data = revenueUpliftChart.data || []
+        const data = revenueShareChart.data || []
         return data.map((dataPoint: CubeMetric) =>
-            transformToRevenueUpliftOverTime(
+            transformToRevenueShareOverTime(
                 dataPoint,
                 revenueData,
                 timeGranularity
             )
         )
-    }, [revenueUpliftChart.data, revenue.data, timeGranularity])
+    }, [revenueShareChart.data, revenue.data, timeGranularity])
 
     return {
-        isFetching: revenueUpliftChart.isFetching,
-        isError: revenueUpliftChart.isError,
+        isFetching: revenueShareChart.isFetching,
+        isError: revenueShareChart.isError,
         data: data,
     }
 }

@@ -67,13 +67,11 @@ const _getStatDataOrDefault = (data: StatData | undefined): StatData => {
     return data || []
 }
 
-const _gmvUplift = (gmv: number, campaignSales: number): number => {
-    const initialGMV = gmv - campaignSales
-
-    return initialGMV > 0 ? (campaignSales / initialGMV) * 100 : 0
+const _influencedGmvShare = (gmv: number, campaignSales: number): number => {
+    return gmv > 0 ? (campaignSales / gmv) * 100 : 0
 }
 
-const _getGmvUpliftFromMetrics = (
+const _getInfluencedGmvShareFromMetrics = (
     orderData: CubeMetric | undefined,
     totalData: CubeMetric | undefined
 ): number => {
@@ -86,7 +84,7 @@ const _getGmvUpliftFromMetrics = (
     )
     const totalSales = getMetricValue(totalMetric, OrderConversionMeasure.gmv)
 
-    return _toFixed(_gmvUplift(totalSales, campaignSales))
+    return _toFixed(_influencedGmvShare(totalSales, campaignSales))
 }
 
 const _calculateTraffic = (
@@ -169,11 +167,14 @@ export const transformToCampaignCalculatedTotals = (
     orderData: CubeMetric | undefined,
     totalData: CubeMetric | undefined
 ): CalculatedTotals => {
-    const gmvUplift = _getGmvUpliftFromMetrics(orderData, totalData)
+    const influencedGmvShare = _getInfluencedGmvShareFromMetrics(
+        orderData,
+        totalData
+    )
 
     return {
-        [CampaignsTotalsMetricNames.influencedRevenueUplift]:
-            formatPercentage(gmvUplift),
+        [CampaignsTotalsMetricNames.influencedRevenueShare]:
+            formatPercentage(influencedGmvShare),
     }
 }
 
@@ -213,7 +214,7 @@ export const transformToRevenueByDate = (
     )
 }
 
-export const transformToRevenueUpliftOverTime = (
+export const transformToRevenueShareOverTime = (
     dataPoint: CubeMetric,
     revenueData: RevenueByDate,
     granularityValue: ReportingGranularity
@@ -228,15 +229,17 @@ export const transformToRevenueUpliftOverTime = (
         OrderConversionMeasure.campaignSales
     )
 
-    const gmvUplift = _toFixed(_gmvUplift(totalSales, campaignSales))
+    const influencedGmvShare = _toFixed(
+        _influencedGmvShare(totalSales, campaignSales)
+    )
 
     return _transformToGraphOverTime(
         {
             ...dataPoint,
-            [OrderConversionMeasure.influencedRevenueUplift]:
-                gmvUplift.toString(),
+            [CampaignsTotalsMetricNames.influencedRevenueShare]:
+                influencedGmvShare.toString(),
         },
-        OrderConversionMeasure.influencedRevenueUplift,
+        CampaignsTotalsMetricNames.influencedRevenueShare,
         `${OrderConversionDimension.createdDatatime}.${granularityValue}`,
         GRAPH_LABEL_DATE_FORMAT
     )

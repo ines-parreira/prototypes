@@ -19,10 +19,10 @@ const GRID_SIZE = 4
 const SKELETON_HEIGHT = 100
 
 const METRICS = {
-    [CampaignsTotalsMetricNames.influencedRevenueUplift]: {
+    [CampaignsTotalsMetricNames.influencedRevenueShare]: {
         title: 'Total store revenue share influenced by campaigns',
-        hint: `Evolution rate of your total store revenue thanks to the campaigns,
-        calculated as: (Campaign revenue)/(Total store revenue - Campaign Revenue).`,
+        hint: `Impact of campaigns on your store revenue, calculated as:
+        Campaign revenue / Total store revenue`,
     },
     [CampaignsTotalsMetricNames.revenue]: {
         title: 'Campaign revenue',
@@ -101,11 +101,11 @@ export const CampaignTotalsStat = () => {
             <DashboardGridCell size={FIRST_ROW_SIZE}>
                 {statsVisible && (
                     <MetricCard
-                        title={METRICS.influencedRevenueUplift.title}
-                        hint={METRICS.influencedRevenueUplift.hint}
+                        title={METRICS.influencedRevenueShare.title}
+                        hint={METRICS.influencedRevenueShare.hint}
                     >
                         <BigNumberMetric>
-                            {data?.influencedRevenueUplift}
+                            {data?.influencedRevenueShare}
                         </BigNumberMetric>
                     </MetricCard>
                 )}

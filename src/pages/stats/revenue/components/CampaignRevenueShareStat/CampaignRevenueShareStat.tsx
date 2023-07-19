@@ -5,7 +5,7 @@ import LineChart from 'pages/stats/LineChart'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
-import {useGetRevenueUpliftChart} from 'pages/stats/revenue/hooks/stats/useGetRevenueUpliftChart'
+import {useGetRevenueShareChart} from 'pages/stats/revenue/hooks/stats/useGetRevenueShareChart'
 import {
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,
@@ -14,12 +14,12 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 
-const title = 'Revenue uplift'
-const yAxisLabel = 'Total store revenue growth rate'
-const hint = `Evolution rate of your total store revenue thanks to the campaigns,
-    calculated as: (Campaign revenue)/(Total store revenue - Campaign Revenue)`
+const title = 'Total store revenue share influenced by campaigns'
+const yAxisLabel = 'Revenue share influenced by campaigns'
+const hint = `Impact of campaigns on your store revenue, by day, calculated as:
+Campaign revenue / Total store revenue`
 
-export const CampaignRevenueUpliftStat = () => {
+export const CampaignRevenueShareStat = () => {
     const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
         useCampaignStatsFilters()
     const namespacedShopName =
@@ -28,7 +28,7 @@ export const CampaignRevenueUpliftStat = () => {
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
 
-    const {isFetching, isError, data} = useGetRevenueUpliftChart(
+    const {isFetching, isError, data} = useGetRevenueShareChart(
         namespacedShopName,
         selectedCampaigns,
         selectedPeriod.start_datetime,
@@ -45,7 +45,7 @@ export const CampaignRevenueUpliftStat = () => {
                     <LineChart
                         data={[
                             {
-                                label: 'Revenue uplift',
+                                label: yAxisLabel,
                                 values: data || [],
                             },
                         ]}

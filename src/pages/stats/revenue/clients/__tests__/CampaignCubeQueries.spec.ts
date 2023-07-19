@@ -6,7 +6,7 @@ import {
     getCampaignOrderTotalsData,
     getCampaignsPerformanceGraphData,
     getRevenueGraphData,
-    getRevenueUpliftGraphData,
+    getRevenueShareGraphData,
     getStoreRevenueTotalData,
     getTrafficData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
@@ -32,7 +32,7 @@ describe('Getting Cube queries', () => {
         [getCampaignOrderPerformanceData],
         [getCampaignEventsOrdersPerformanceData],
         [getTrafficData],
-        [getRevenueUpliftGraphData],
+        [getRevenueShareGraphData],
         [getCampaignsPerformanceGraphData],
         [getRevenueGraphData],
     ])('%p should call load', (cubeFn) => {

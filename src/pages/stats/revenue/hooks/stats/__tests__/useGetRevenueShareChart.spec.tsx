@@ -7,7 +7,7 @@ import {
 import {assumeMock} from 'utils/testing'
 import {usePostReporting} from 'models/reporting/queries'
 import {getDataFromResult} from 'pages/stats/revenue/services/CampaignMetricsHelper'
-import {useGetRevenueUpliftChart} from 'pages/stats/revenue/hooks/stats/useGetRevenueUpliftChart'
+import {useGetRevenueShareChart} from 'pages/stats/revenue/hooks/stats/useGetRevenueShareChart'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -26,7 +26,7 @@ describe('useGetTotalsStat', () => {
         'America/Los_Angeles',
     ]
 
-    const revenueUpliftData = [
+    const revenueShareData = [
         {
             [OrderConversionMeasure.campaignSales]: '1000',
             [OrderConversionDimension.createdDatatime]:
@@ -57,7 +57,7 @@ describe('useGetTotalsStat', () => {
             isFetching: true,
         })
 
-        const {result} = renderHook(() => useGetRevenueUpliftChart(...hookArgs))
+        const {result} = renderHook(() => useGetRevenueShareChart(...hookArgs))
 
         expect(result.current.isFetching).toBe(true)
     })
@@ -68,7 +68,7 @@ describe('useGetTotalsStat', () => {
             isError: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() => useGetRevenueUpliftChart(...hookArgs))
+        const {result} = renderHook(() => useGetRevenueShareChart(...hookArgs))
 
         expect(result.current.isError).toBe(true)
     })
@@ -77,7 +77,7 @@ describe('useGetTotalsStat', () => {
         // arrange
         usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
-            data: revenueUpliftData,
+            data: revenueShareData,
         } as UseQueryResult)
 
         usePostReportingMock.mockReturnValueOnce({
@@ -86,7 +86,7 @@ describe('useGetTotalsStat', () => {
         } as UseQueryResult)
 
         // act
-        const {result} = renderHook(() => useGetRevenueUpliftChart(...hookArgs))
+        const {result} = renderHook(() => useGetRevenueShareChart(...hookArgs))
 
         // assert
         expect(usePostReportingMock.mock.calls).toMatchSnapshot()

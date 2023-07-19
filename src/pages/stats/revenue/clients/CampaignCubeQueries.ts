@@ -217,7 +217,6 @@ export const getCampaignOrderTotalsData = ({
         {
             dimensions: [],
             measures: [
-                OrderConversionMeasure.influencedRevenueUplift,
                 OrderConversionMeasure.campaignSales,
                 OrderConversionMeasure.campaignSalesCount,
             ],
@@ -284,7 +283,7 @@ export const getRevenueGraphData = ({
     ]
 }
 
-export const getRevenueUpliftGraphData = ({
+export const getRevenueShareGraphData = ({
     shopName,
     campaignIds,
     startDate,

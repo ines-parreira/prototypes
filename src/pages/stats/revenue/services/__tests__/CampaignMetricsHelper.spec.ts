@@ -12,7 +12,7 @@ import {
     transformToCampaignsPerformanceTable,
     transformToChatConversionRateOverTime,
     transformToRevenueByDate,
-    transformToRevenueUpliftOverTime,
+    transformToRevenueShareOverTime,
     transformToStoreTotal,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {Stat} from 'models/stat/types'
@@ -208,7 +208,7 @@ describe('Campaign metrics helper tests', () => {
                 totalCubeData
             )
             expect(result).toStrictEqual({
-                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '300%',
+                [CampaignsTotalsMetricNames.influencedRevenueShare]: '75%',
             })
         })
 
@@ -218,7 +218,7 @@ describe('Campaign metrics helper tests', () => {
                 cubeDataMissing
             )
             expect(result).toStrictEqual({
-                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
+                [CampaignsTotalsMetricNames.influencedRevenueShare]: '0%',
             })
         })
 
@@ -228,7 +228,7 @@ describe('Campaign metrics helper tests', () => {
                 undefined
             )
             expect(result).toStrictEqual({
-                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
+                [CampaignsTotalsMetricNames.influencedRevenueShare]: '0%',
             })
         })
     })
@@ -290,7 +290,7 @@ describe('Campaign metrics helper tests', () => {
         })
     })
 
-    describe('transformToRevenueUpliftOverTime', () => {
+    describe('transformToRevenueShareOverTime', () => {
         const revenueByDate: RevenueByDate = {
             '2023-02-28T00:00:00.000': 4567.89,
         }
@@ -303,19 +303,19 @@ describe('Campaign metrics helper tests', () => {
         }
 
         it('should return correct data', () => {
-            const result = transformToRevenueUpliftOverTime(
+            const result = transformToRevenueShareOverTime(
                 revenueDataPoint,
                 revenueByDate,
                 ReportingGranularity.Day
             )
             expect(result).toStrictEqual({
                 x: 'Feb 28th',
-                y: 37.04,
+                y: 27.03,
             })
         })
 
         it('should return defaults if no revenue data', () => {
-            const result = transformToRevenueUpliftOverTime(
+            const result = transformToRevenueShareOverTime(
                 revenueDataPoint,
                 {},
                 ReportingGranularity.Day

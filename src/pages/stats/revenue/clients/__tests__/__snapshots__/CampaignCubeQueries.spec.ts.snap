@@ -178,7 +178,6 @@ exports[`Getting Cube queries [Function getCampaignOrderTotalsData] should call 
       },
     ],
     "measures": [
-      "OrderConversion.influencedRevenueUplift",
       "OrderConversion.campaignSales",
       "OrderConversion.campaignSalesCount",
     ],
@@ -286,7 +285,7 @@ exports[`Getting Cube queries [Function getRevenueGraphData] should call load 1`
 ]
 `;
 
-exports[`Getting Cube queries [Function getRevenueUpliftGraphData] should call load 1`] = `
+exports[`Getting Cube queries [Function getRevenueShareGraphData] should call load 1`] = `
 [
   {
     "dimensions": [],
