@@ -42,8 +42,8 @@ exports[`time series useTicketsClosedTimeSeries should create reporting filters 
         ],
       },
       {
-        "member": "TicketTags.tags",
-        "operator": "contains",
+        "member": "Ticket.tags",
+        "operator": "equals",
         "values": [
           "1",
           "2",
@@ -133,8 +133,8 @@ exports[`time series useTicketsCreatedTimeSeries should create reporting filters
         ],
       },
       {
-        "member": "TicketTags.tags",
-        "operator": "contains",
+        "member": "Ticket.tags",
+        "operator": "equals",
         "values": [
           "1",
           "2",

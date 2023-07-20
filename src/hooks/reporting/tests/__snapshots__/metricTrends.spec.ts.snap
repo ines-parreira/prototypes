@@ -55,8 +55,8 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
       ],
     },
     {
-      "member": "TicketTags.tags",
-      "operator": "contains",
+      "member": "Ticket.tags",
+      "operator": "equals",
       "values": [
         "1",
         "2",
@@ -128,8 +128,8 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
       ],
     },
     {
-      "member": "TicketTags.tags",
-      "operator": "contains",
+      "member": "Ticket.tags",
+      "operator": "equals",
       "values": [
         "1",
         "2",
@@ -209,8 +209,8 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
       ],
     },
     {
-      "member": "TicketTags.tags",
-      "operator": "contains",
+      "member": "Ticket.tags",
+      "operator": "equals",
       "values": [
         "1",
         "2",
@@ -282,8 +282,8 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
       ],
     },
     {
-      "member": "TicketTags.tags",
-      "operator": "contains",
+      "member": "Ticket.tags",
+      "operator": "equals",
       "values": [
         "1",
         "2",
@@ -356,8 +356,8 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "TicketTags.tags",
-      "operator": "contains",
+      "member": "Ticket.tags",
+      "operator": "equals",
       "values": [
         "1",
         "2",
@@ -438,8 +438,8 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "TicketTags.tags",
-      "operator": "contains",
+      "member": "Ticket.tags",
+      "operator": "equals",
       "values": [
         "1",
         "2",

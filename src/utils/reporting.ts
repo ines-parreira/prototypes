@@ -79,7 +79,7 @@ export const statsFiltersToReportingFilters = (
     if (tags?.length && members.tags) {
         filters.push({
             member: members.tags,
-            operator: ReportingFilterOperator.Contains,
+            operator: ReportingFilterOperator.Equals,
             values: tags.map((tag) => tag.toString()),
         })
     }
