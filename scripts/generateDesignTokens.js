@@ -68,26 +68,6 @@ StyleDictionaryPackage.registerFormat({
     },
 })
 
-StyleDictionaryPackage.registerFormat({
-    name: 'less/variables/colors',
-    formatter: function ({dictionary}) {
-        const props = formatter(dictionary)
-        return (
-            header +
-            Object.entries(props)
-                .map(([theme, prop]) => {
-                    return Object.entries(prop)
-                        .map(
-                            ([name, value]) =>
-                                `@${theme}-${name}: ${value.hex};\n`
-                        )
-                        .join('')
-                })
-                .join('\n')
-        )
-    },
-})
-
 StyleDictionaryPackage.registerTransform({
     name: 'name/cti/kebab',
     type: 'name',
@@ -144,16 +124,6 @@ const StyleDictionary = StyleDictionaryPackage.extend({
             files: [
                 {
                     destination: 'colorTokens.less',
-                    format: 'less/variables/colors',
-                    filter: (token) => {
-                        return (
-                            path.parse(token.filePath).name ===
-                            tokenTypes.colors
-                        )
-                    },
-                },
-                {
-                    destination: 'customProperties.less',
                     format: 'less/colors',
                     filter: (token) => {
                         return (
