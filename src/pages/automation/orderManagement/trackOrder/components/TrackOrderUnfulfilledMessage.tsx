@@ -56,9 +56,10 @@ export default function TrackOrderUnfulfilledMessage({
         <>
             <div className={css.title}>Response for unfulfilled orders</div>
             <div className={css.description}>
-                Show a custom message when your customers track an order that
-                hasn’t been fulfilled yet. Useful to remind them about regular
-                shipping timelines or inform them about shipment delays.
+                Display a custom message when customers track orders that have
+                not been packed and shipped. This is useful for reminding
+                customers of expected shipping timelines or to inform them about
+                possible delays.
             </div>
             <ToolbarProvider shopifyIntegrations={fromJS([storeIntegration])}>
                 <RichField
