@@ -1,4 +1,5 @@
 import {act, renderHook} from '@testing-library/react-hooks'
+import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {useWorkflowEditor} from '../useWorkflowEditor'
 import {WorkflowConfiguration} from '../../models/workflowConfiguration.types'
 import useWorkflowApi from '../useWorkflowApi'
@@ -7,22 +8,36 @@ const mockStore: Record<string, WorkflowConfiguration> = {}
 
 const {workflowConfigurationFactory} = jest.requireActual('../useWorkflowApi')
 
-const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
-    upsertWorkflowConfiguration: (data: WorkflowConfiguration) => {
-        mockStore[data.id] = data
-        return Promise.resolve(data)
-    },
-    fetchWorkflowConfiguration: (workflowId: string) => {
-        return Promise.resolve(mockStore?.[workflowId])
-    },
-    fetchWorkflowTranslations: () => Promise.resolve({}),
-    upsertWorkflowTranslations: () => Promise.resolve(),
-    workflowConfigurationFactory,
-} as const
-
+jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration')
 jest.mock('../useWorkflowApi')
 
 function updateMock(overrides: Partial<ReturnType<typeof useWorkflowApi>>) {
+    const mockSelfServiceConfiguration: ReturnType<
+        typeof useSelfServiceConfiguration
+    > = {
+        isFetchPending: false,
+        isUpdatePending: false,
+        storeIntegration: undefined,
+        selfServiceConfiguration: undefined,
+        handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
+    } as const
+    ;(
+        useSelfServiceConfiguration as jest.MockedFn<
+            typeof useSelfServiceConfiguration
+        >
+    ).mockReturnValue(mockSelfServiceConfiguration)
+    const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
+        upsertWorkflowConfiguration: (data: WorkflowConfiguration) => {
+            mockStore[data.id] = data
+            return Promise.resolve(data)
+        },
+        fetchWorkflowConfiguration: (workflowId: string) => {
+            return Promise.resolve(mockStore?.[workflowId])
+        },
+        fetchWorkflowTranslations: () => Promise.resolve({}),
+        upsertWorkflowTranslations: () => Promise.resolve(),
+        workflowConfigurationFactory,
+    } as const
     ;(useWorkflowApi as jest.MockedFn<typeof useWorkflowApi>).mockReturnValue({
         ...mockWorkflowApi,
         ...overrides,
@@ -35,7 +50,9 @@ describe('useWorkflowEditor', () => {
         updateMock({})
     })
     it('generates an empty workflow configuration when is new', () => {
-        const {result} = renderHook(() => useWorkflowEditor(1, 'a', true))
+        const {result} = renderHook(() =>
+            useWorkflowEditor(1, 'a', true, '', '')
+        )
         expect(result.current.configuration.name).toEqual('')
     })
 
@@ -44,7 +61,7 @@ describe('useWorkflowEditor', () => {
             fetchWorkflowConfiguration: () => Promise.resolve(null),
         })
         const {result, waitForNextUpdate} = renderHook(() =>
-            useWorkflowEditor(1, 'a', false)
+            useWorkflowEditor(1, 'a', false, '', '')
         )
         await waitForNextUpdate()
         expect(result.current.hookError).toBeDefined()
@@ -97,7 +114,7 @@ describe('useWorkflowEditor', () => {
                 } as WorkflowConfiguration),
         })
         const {result, waitForNextUpdate, rerender} = renderHook(() =>
-            useWorkflowEditor(1, 'a', false)
+            useWorkflowEditor(1, 'a', false, '', '')
         )
         expect(result.current.isFetchPending).toBe(true)
         // wait for asynchronous effect to update the local configuration
