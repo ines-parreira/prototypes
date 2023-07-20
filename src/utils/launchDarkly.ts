@@ -16,7 +16,11 @@ export function initLaunchDarkly(
     currentHelpdeskProductId?: string,
     currentAutomationProductId?: string
 ): LDClient.LDClient {
-    if (user && account && currentHelpdeskProductId) {
+    if (user && account) {
+        const helpdeskMap = currentHelpdeskProductId
+            ? {helpdeskPriceId: currentHelpdeskProductId}
+            : ({} as Record<string, never>)
+
         const automationMap = currentAutomationProductId
             ? {automationPriceId: currentAutomationProductId}
             : ({} as Record<string, never>)
@@ -24,8 +28,8 @@ export function initLaunchDarkly(
         LDUser = {
             key: account.id.toString(),
             custom: {
+                ...helpdeskMap,
                 ...automationMap,
-                helpdeskPriceId: currentHelpdeskProductId,
                 userId: user.id.toString(),
                 domain: account.domain,
                 cluster: window.GORGIAS_CLUSTER,

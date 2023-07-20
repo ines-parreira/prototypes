@@ -355,7 +355,7 @@ export const useBillingPlans = ({
                 newProduct: selectedPlans[ProductType.Helpdesk].plan,
                 periodEnd,
                 onClick: () => {
-                    history.push('/app/settings')
+                    history.push('/app/home')
                 },
             })
 

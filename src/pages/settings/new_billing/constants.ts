@@ -14,7 +14,7 @@ export const INTERVAL = {
 }
 
 export const BILLABLE_TICKETS_URL =
-    'https://docs.gorgias.com/en-US/billable-tickets-199385'
+    'https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#automation-add-on-tickets'
 export const PRICING_DETAILS_URL = 'https://www.gorgias.com/pricing'
 export const BILLING_SALES_TAX_URL =
     'https://www.gorgias.com/pricing/billing-sales-tax'
