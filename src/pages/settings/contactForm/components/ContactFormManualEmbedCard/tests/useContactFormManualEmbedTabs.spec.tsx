@@ -5,10 +5,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {useContactFormManualEmbedInstructionsCardState} from '../useContactFormManualEmbedTabs'
 import {FeatureFlagKey} from '../../../../../../config/featureFlags'
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
-
 jest.mock('hooks/useAppSelector')
 
 jest.mock('state/integrations/selectors', () => ({

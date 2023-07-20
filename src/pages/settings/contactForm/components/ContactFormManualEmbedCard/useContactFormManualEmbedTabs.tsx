@@ -4,11 +4,11 @@ import {
     InstructionTab,
     InstructionTabs,
 } from 'pages/common/components/InstructionsCard'
+import {isNotEmptyArray} from 'utils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
-import {isNotEmptyArray} from 'utils'
 
 enum InstructionsCardStateKeyEnum {
     ANY_OTHER_WEBSITE = 'any-other-website',

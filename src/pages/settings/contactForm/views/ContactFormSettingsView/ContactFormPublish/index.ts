@@ -1,1 +1,1 @@
-export {default} from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ContactFormPublish'
+export {default} from './ContactFormPublish'

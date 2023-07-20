@@ -14,3 +14,11 @@ export function insertContactFormIdParam(
 
     return path.replace(ID_PARAM_REG_EXP, contactFormId.toString())
 }
+
+export function linkToContactFormPreferences(contactFormId: number): string {
+    return `/app/settings/contact-form/${contactFormId}/preferences`
+}
+
+export function linkToShopifyIntegration(integrationId: number): string {
+    return `/app/settings/integrations/shopify/${integrationId}`
+}

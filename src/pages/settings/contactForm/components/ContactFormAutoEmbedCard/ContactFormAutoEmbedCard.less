@@ -1,0 +1,43 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .card {
+        padding: 20px;
+        margin-top: @layout-spacing-s;
+        margin-bottom: @layout-spacing-s;
+
+        display: flex;
+        border-radius: 4px;
+        column-gap: @layout-spacing-s;
+        align-items: center;
+        border: var(--neutral-grey-3) 1px solid;
+
+        color: var(--cf-auto-embed-card-text-color, var(--neutral-grey-6));
+
+        &[data-is-open='true'] {
+            border-color: var(--main-primary);
+        }
+    }
+
+    .disabled {
+        --cf-auto-embed-card-text-color: var(--neutral-grey-4);
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    .title {
+        .body-semibold();
+        margin-bottom: @layout-spacing-xs;
+        font-size: 16px;
+        color: var(--cf-auto-embed-card-text-color, var(--neutral-grey-6));
+    }
+
+    .badge {
+        display: inline-block;
+        margin-left: @layout-spacing-xs;
+        transform: translateY(-2px);
+    }
+}

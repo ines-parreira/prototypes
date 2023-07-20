@@ -12,7 +12,7 @@ import {renderWithRouter} from 'utils/testing'
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ContactFormPublish'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {testId} from 'pages/settings/contactForm/components/ContactFormAutoEmbedInstallationCard/ContactFormAutoEmbedInstallationCard'
+import {CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID} from 'pages/settings/contactForm/components/ContactFormAutoEmbedCard/ContactFormAutoEmbedCard'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -56,7 +56,9 @@ describe('ContactFormPublish', () => {
 
             renderView({state: defaultState})
 
-            expect(screen.queryByTestId(testId)).toBeNull()
+            expect(
+                screen.queryByTestId(CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID)
+            ).toBeNull()
         })
 
         it('should display the right component if active', () => {
@@ -66,7 +68,7 @@ describe('ContactFormPublish', () => {
 
             renderView({state: defaultState})
 
-            screen.getByTestId(testId)
+            screen.getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID)
         })
     })
 })
