@@ -1,6 +1,7 @@
 import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {AgentsTable} from 'pages/stats/AgentsTable'
 
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {
@@ -108,7 +109,7 @@ export default function SupportPerformanceAgents() {
                 }
             >
                 <DashboardSection title={AGENT_PERFORMANCE_SECTION_TITLE}>
-                    <>...</>
+                    <AgentsTable />
                 </DashboardSection>
             </StatsPage>
         </div>
