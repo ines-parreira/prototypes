@@ -11,10 +11,9 @@ import installDevTools from 'immutable-devtools'
 import {Store} from 'redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {getLDClient, LDUser} from 'utils/launchDarkly'
 import {appQueryClient} from 'init'
-
 import {RootState} from 'state/types'
+import {getLDClient, LDUser} from 'utils/launchDarkly'
 
 import history from './history'
 import Routes from './routes'
