@@ -108,7 +108,6 @@ const baseIntegration: FacebookIntegration = {
     decoration: null,
     deleted_datetime: null,
     description: null,
-    http: null,
     locked_datetime: null,
     mappings: null,
     name: '',

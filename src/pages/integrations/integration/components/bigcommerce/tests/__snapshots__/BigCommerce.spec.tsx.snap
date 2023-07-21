@@ -103,27 +103,29 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
   <main
     class="main"
   >
-    <section
-      class="longDescription"
-    >
-      <h2>
-        About
-      </h2>
-      <div>
-        <p>
-          BigCommerce is an ecommerce platform that provides 'software as a service' services to retailers. The company’s platform includes online store creation, search engine optimization, hosting, marketing and security.
-        </p>
-        <p>
-          With Gorgias, you can:
-        </p>
-        <ul>
-          <li>
-            View BigCommerce customer and order information in a customer's ticket.
-          </li>
-          <li>
-            Easily access links to customer and order profile.
-          </li>
-        </ul>
+    <section>
+      <div
+        class="longDescription"
+      >
+        <h2>
+          About
+        </h2>
+        <div>
+          <p>
+            BigCommerce is an ecommerce platform that provides 'software as a service' services to retailers. The company’s platform includes online store creation, search engine optimization, hosting, marketing and security.
+          </p>
+          <p>
+            With Gorgias, you can:
+          </p>
+          <ul>
+            <li>
+              View BigCommerce customer and order information in a customer's ticket.
+            </li>
+            <li>
+              Easily access links to customer and order profile.
+            </li>
+          </ul>
+        </div>
       </div>
       <ul
         class="screenshotList"
@@ -234,7 +236,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           <li>
             <a
               class="actionLink"
-              href="https://docs.gorgias.com/bigcommerce-105241"
+              href="https://www.bigcommerce.com/privacy/"
               rel="noopener noreferrer"
               target="_blank"
             >

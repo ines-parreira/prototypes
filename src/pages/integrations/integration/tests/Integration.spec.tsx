@@ -71,21 +71,7 @@ jest.mock(
     () => () => <div>FacebookIntegrationCustomerChat</div>
 )
 
-jest.mock('../components/http/HTTPIntegrationList', () => () => (
-    <div>HTTPIntegrationList</div>
-))
-jest.mock(
-    '../components/http/HTTPIntegrationOverview/HTTPIntegrationOverview',
-    () => () => <div>HTTPIntegrationOverview</div>
-)
-jest.mock(
-    '../components/http/HTTPIntegrationEvents/HTTPIntegrationEvents',
-    () => () => <div>HTTPIntegrationEvents</div>
-)
-jest.mock(
-    '../components/http/HTTPIntegrationEvent/HTTPIntegrationEvent',
-    () => () => <div>HTTPIntegrationEvent</div>
-)
+jest.mock('../components/http/HTTP', () => () => <div>HTTPIntegration</div>)
 
 jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationAppearance',
@@ -300,7 +286,6 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.Email],
         [IntegrationType.Facebook],
         [IntegrationType.GorgiasChat],
-        [IntegrationType.Http],
         [IntegrationType.Klaviyo],
         [IntegrationType.Recharge],
         [IntegrationType.Shopify],
@@ -449,40 +434,6 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookAds}`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        })
-    })
-
-    describe(`${IntegrationType.Http}`, () => {
-        it('should render the list of events page for a specific integration', () => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail
-                        {...minProps}
-                        integrations={fromJS({integration: {id: 1}})}
-                    />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('should render the page of an event for a specific integration', () => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail
-                        {...minProps}
-                        integrations={fromJS({integration: {id: 1}})}
-                    />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}/1`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()

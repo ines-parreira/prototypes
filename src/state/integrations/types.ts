@@ -1,6 +1,7 @@
 import {Map} from 'immutable'
 
 import {IntegrationConfig} from 'config'
+import {IntegrationBase} from '../../models/integration/types/base'
 import {
     EmailDomain,
     Integration,
@@ -22,7 +23,7 @@ export type IntegrationsState = {
             integration?: boolean
             integrations?: boolean
             emailDomain?: boolean
-            updateIntegration?: boolean
+            updateIntegration?: IntegrationBase['id']
             testing?: boolean
             delete?: boolean
             chatStatus?: {

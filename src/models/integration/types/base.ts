@@ -1,16 +1,12 @@
-import {ContentType, HttpMethod} from 'models/api/types'
-import {EventType} from 'models/event/types'
-
 export type IntegrationBase = {
     created_datetime: string
     deactivated_datetime: Maybe<string>
     decoration: Maybe<IntegrationDecoration>
     deleted_datetime: Maybe<string>
     description: Maybe<string>
-    http: Maybe<HttpIntegrationMeta>
     id: number
     locked_datetime: Maybe<string>
-    mappings: Maybe<{id: number}[]>
+    mappings?: Maybe<{id: number}[]>
     name: string
     updated_datetime: string
     uri: string
@@ -27,21 +23,4 @@ export type IntegrationDecoration = {
     main_color: string
     offline_introduction_text: string
     main_font_family: string
-}
-
-type HttpIntegrationMeta = {
-    execution_order: number
-    form: Maybe<unknown>
-    headers: {
-        'Content-Type'?: ContentType
-        'content-type'?: ContentType
-    }
-    id: number
-    method: HttpMethod
-    request_content_type: ContentType
-    response_content_type: ContentType
-    triggers: {
-        [key in typeof EventType[keyof typeof EventType]]?: boolean
-    }
-    url: string
 }

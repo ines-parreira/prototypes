@@ -54,7 +54,10 @@ export default function AlloyConnectButton({
 
     // Check if the integration is currently being updated
     const loading = useAppSelector(getIntegrationsLoading)
-    const isLoading = loading?.updateIntegration || loading?.delete
+    const isLoading =
+        (loading?.updateIntegration &&
+            loading.updateIntegration === alloyIntegration?.id) ||
+        loading?.delete
 
     // Setup Alloy embedded SDK
     useEffect(() => {

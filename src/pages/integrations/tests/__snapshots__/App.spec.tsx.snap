@@ -125,59 +125,61 @@ exports[`App should render 2`] = `
   <main
     class="main"
   >
-    <section
-      class="longDescription"
-    >
-      <h2>
-        About
-      </h2>
-      <div>
-        <p>
-          My company is an interactive video platform, helping users create meaningful and personal conversations at scale.
-        </p>
-        
+    <section>
+      <div
+        class="longDescription"
+      >
+        <h2>
+          About
+        </h2>
+        <div>
+          <p>
+            My company is an interactive video platform, helping users create meaningful and personal conversations at scale.
+          </p>
+          
 
-        <p>
-          With the my company app, users can sync their videos and monitor every viewer interaction, while managing leads and audience choices through easy-to-view columns.
-        </p>
-        
+          <p>
+            With the my company app, users can sync their videos and monitor every viewer interaction, while managing leads and audience choices through easy-to-view columns.
+          </p>
+          
 
-        <p>
-          With all of your audience interactions in one place, collecting your insights is a breeze.
-        </p>
-        
+          <p>
+            With all of your audience interactions in one place, collecting your insights is a breeze.
+          </p>
+          
 
-        <p>
-          It also has a list:
-        </p>
-        
+          <p>
+            It also has a list:
+          </p>
+          
 
+          <ul>
+            
+
+            <li>
+              In which noting that really matters is said but at least you see it!
+            </li>
+            
+
+            <li>
+              Isn’t it nice?
+            </li>
+            
+
+          </ul>
+        </div>
+        <h2>
+          Benefits
+        </h2>
         <ul>
-          
-
           <li>
-            In which noting that really matters is said but at least you see it!
+            foo
           </li>
-          
-
           <li>
-            Isn’t it nice?
+            bar
           </li>
-          
-
         </ul>
       </div>
-      <h2>
-        Benefits
-      </h2>
-      <ul>
-        <li>
-          foo
-        </li>
-        <li>
-          bar
-        </li>
-      </ul>
       <ul
         class="screenshotList"
       >
@@ -285,6 +287,31 @@ exports[`App should render 2`] = `
                 attach_money
               </i>
               See pricing details
+            </a>
+          </li>
+        </ul>
+        <h2
+          class="categoryTitle cardTitle"
+        >
+          Resources
+        </h2>
+        <ul
+          class="cardList"
+        >
+          
+          <li>
+            <a
+              class="actionLink"
+              href="https://www.mycompany.com/privacy-policy"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                privacy_tip
+              </i>
+              Privacy Policy
             </a>
           </li>
         </ul>

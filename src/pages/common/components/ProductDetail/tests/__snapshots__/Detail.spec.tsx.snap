@@ -73,16 +73,18 @@ exports[`Detail should render 1`] = `
   <main
     class="main"
   >
-    <section
-      class="longDescription"
-    >
-      <h2>
-        About
-      </h2>
-      <div>
-        <p>
-          Some long long description with HTML markup
-        </p>
+    <section>
+      <div
+        class="longDescription"
+      >
+        <h2>
+          About
+        </h2>
+        <div>
+          <p>
+            Some long long description with HTML markup
+          </p>
+        </div>
       </div>
       <ul
         class="screenshotList"

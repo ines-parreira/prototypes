@@ -31,7 +31,6 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
         name: 'My Phone Integration',
         decoration: null,
         description: '',
-        http: null,
         mappings: null,
         uri: '',
         created_datetime: '1970-01-01T18:00:00',

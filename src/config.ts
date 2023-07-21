@@ -352,17 +352,28 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     },
     {
         type: IntegrationType.Http,
-        title: 'HTTP integration',
-        description: 'Connect any application to Gorgias.',
+        title: 'HTTP Integration',
+        description:
+            'Connect Gorgias to the rest of your tech stack by fetching or sending data using an HTTP integration.',
         image: '/img/integrations/http.png',
-        longDescription: '',
-        benefits: [],
+        longDescription:
+            '<p>HTTP integrations allow you to set up connections between Gorgias and any 3rd party service with a public API.  HTTP integrations are not a replacement for proper apps. Instead, they allow you to enhance current helpdesk functionality and available 3rd party apps.</p><p>If you’re a developer creating a public app, you may want to add an HTTP integration to your app but you will also need to complete <a href="https://developers.gorgias.com/docs/overview" target="_blank" rel="noopener noreferrer">all other required steps</a> to publish your app on the Gorgias App Store.</p>',
+        benefits: [
+            'Fetch customer data from a public API endpoint and display it next to a ticket;',
+            'Send data from a Gorgias ticket to a public endpoint, such as a CDP, CRM, or a Google Sheet;',
+            'Subscribe to Gorgias webhooks to trigger an API call on your end;',
+            'Initiate actions in an automation tool like Zapier using the available triggers.',
+        ],
         categories: [],
         company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
-        screenshots: [],
+        screenshots: [
+            '/img/integrations/screenshots/http-1.jpg',
+            '/img/integrations/screenshots/http-2.jpg',
+        ],
         pricingPlan: PricingPlan.FREE,
         privacyPolicy: '',
-        setupGuide: '',
+        setupGuide: 'https://docs.gorgias.com/http-integrations-81822',
+        supportEmail: 'support@gorgias.com',
     },
     {
         type: IntegrationType.Shopify,

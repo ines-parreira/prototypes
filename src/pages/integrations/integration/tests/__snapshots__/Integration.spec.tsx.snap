@@ -30,125 +30,6 @@ exports[`<IntegrationDetail /> facebook should render the customer chat tab for
 </div>
 `;
 
-exports[`<IntegrationDetail /> http should render the list of events page for a specific integration 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            data-exact="true"
-            href="/app/settings/integrations/http"
-          >
-            HTTP integration
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        />
-      </ol>
-    </nav>
-  </div>
-  <nav
-    class="navbar navbar"
-  >
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/integrations/http/1"
-    >
-      Settings
-    </a>
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/integrations/http/1/events"
-    >
-      Logs
-    </a>
-  </nav>
-  <div>
-    HTTPIntegrationEvents
-  </div>
-</div>
-`;
-
-exports[`<IntegrationDetail /> http should render the page of an event for a specific integration 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            data-exact="true"
-            href="/app/settings/integrations/http"
-          >
-            HTTP integration
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        />
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          #
-          1
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <nav
-    class="navbar navbar"
-  >
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/integrations/http/1"
-    >
-      Settings
-    </a>
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/integrations/http/1/events"
-    >
-      Logs
-    </a>
-  </nav>
-  <div>
-    HTTPIntegrationEvent
-  </div>
-</div>
-`;
-
 exports[`<IntegrationDetail /> phone should render the voicemail tab of a specific integration 1`] = `
 <div>
   VoiceIntegration
@@ -247,7 +128,7 @@ exports[`<IntegrationDetail /> should render the list or detail page of integrat
 
 exports[`<IntegrationDetail /> should render the list or detail page of integrations for http 1`] = `
 <div>
-  HTTPIntegrationList
+  HTTPIntegration
 </div>
 `;
 
@@ -369,63 +250,6 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
 exports[`<IntegrationDetail /> should render the page of a specific integration for gorgias_chat 1`] = `
 <div>
   GorgiasChatIntegrationCampaigns
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the page of a specific integration for http 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            data-exact="true"
-            href="/app/settings/integrations/http"
-          >
-            HTTP integration
-          </a>
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        />
-      </ol>
-    </nav>
-  </div>
-  <nav
-    class="navbar navbar"
-  >
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/integrations/http/1"
-    >
-      Settings
-    </a>
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/integrations/http/1/events"
-    >
-      Logs
-    </a>
-  </nav>
-  <div>
-    HTTPIntegrationOverview
-  </div>
 </div>
 `;
 

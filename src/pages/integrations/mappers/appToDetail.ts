@@ -23,7 +23,7 @@ export function mapAppToDetail(
             },
             resources: {
                 documentationLink: config.setupGuide,
-                privacyPolicyLink: config.setupGuide,
+                privacyPolicyLink: config.privacyPolicy,
             },
             support: {
                 email: config.supportEmail,

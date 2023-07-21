@@ -152,7 +152,6 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
         "decoration": null,
         "deleted_datetime": null,
         "description": null,
-        "http": null,
         "id": 1,
         "locked_datetime": null,
         "mappings": null,
@@ -472,7 +471,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -857,7 +855,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -1255,7 +1252,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -1693,7 +1689,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -2091,7 +2086,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -2511,7 +2505,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -2936,7 +2929,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -3361,7 +3353,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -3786,7 +3777,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -4211,7 +4201,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -4631,7 +4620,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -5051,7 +5039,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -5471,7 +5458,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -5896,7 +5882,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -6312,7 +6297,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -6737,7 +6721,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -7162,7 +7145,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -7587,7 +7569,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -8012,7 +7993,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -8437,7 +8417,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -8862,7 +8841,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -9287,7 +9265,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -9712,7 +9689,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -10137,7 +10113,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -10562,7 +10537,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -10987,7 +10961,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -11412,7 +11385,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -11837,7 +11809,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -12262,7 +12233,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -12687,7 +12657,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -13139,7 +13108,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -13564,7 +13532,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -13989,7 +13956,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {
@@ -14414,7 +14380,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "category": null,
           "picture": null,
         },
-        "http": null,
         "deactivated_datetime": null,
         "name": "My facebook page",
         "user": Immutable.Map {

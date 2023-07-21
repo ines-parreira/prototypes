@@ -1,6 +1,23 @@
 import {fromJS, Map} from 'immutable'
+import {IntegrationBase} from 'models/integration/types/base'
 
 import {IntegrationType} from '../models/integration/types'
+
+export const integrationBase: IntegrationBase = {
+    id: 5,
+    name: 'foo',
+    description: null,
+    created_datetime: '2017-02-07T06:21:05.654940+00:00',
+    updated_datetime: '2017-02-07T06:21:05.655015+00:00',
+    locked_datetime: null,
+    deactivated_datetime: null,
+    deleted_datetime: null,
+    uri: '/api/integrations/5/',
+    decoration: null,
+    user: {
+        id: 1,
+    },
+}
 
 export const integrationsState = {
     authentication: {
@@ -73,7 +90,6 @@ export const integrationsState = {
                 verified: true,
             },
             facebook: null,
-            http: null,
             deactivated_datetime: null,
             name: 'Acme Billing',
             user: {
@@ -105,7 +121,6 @@ export const integrationsState = {
                 verified: true,
             },
             facebook: null,
-            http: null,
             deactivated_datetime: '2017-02-07T06:21:05.655015+00:00',
             name: 'Deactivated gmail',
             user: {
@@ -218,7 +233,6 @@ export const integrationsState = {
                 verified: true,
             },
             facebook: null,
-            http: null,
             deactivated_datetime: null,
             name: 'Acme Support',
             user: {
@@ -243,7 +257,6 @@ export const integrationsState = {
                 verified: true,
             },
             facebook: null,
-            http: null,
             deactivated_datetime: null,
             name: 'Acme Contact',
             user: {
@@ -268,7 +281,6 @@ export const integrationsState = {
                 verified: false,
             },
             facebook: null,
-            http: null,
             deactivated_datetime: null,
             name: 'Acme Unverified',
             user: {
@@ -297,7 +309,6 @@ export const integrationsState = {
                 },
             },
             facebook: null,
-            http: null,
             deactivated_datetime: null,
             name: 'Sendgrid Integration',
             user: {
@@ -336,7 +347,6 @@ export const integrationsState = {
                     voice_message_type: 'text_to_speech',
                 },
             },
-            http: null,
             deactivated_datetime: null,
             name: 'Acme Phone',
             uri: '/api/integrations/6/',
@@ -356,7 +366,6 @@ export const integrationsState = {
                 },
             },
             facebook: null,
-            http: null,
             deactivated_datetime: null,
             name: 'Chitty chatty',
             user: {
@@ -377,7 +386,6 @@ export const integrationsState = {
                 store_hash: 'xb107iaz1n',
                 currency: 'USD',
             },
-            http: null,
             deactivated_datetime: null,
             name: 'gorgiastest.mybigcommerce.com',
             uri: '/api/integrations/515/',
@@ -407,7 +415,6 @@ export const integrationsState = {
             },
         },
         facebook: null,
-        http: null,
         deactivated_datetime: null,
         name: 'Acme Billing',
         user: {
@@ -478,7 +485,6 @@ export const integrationsStateWithShopify = fromJS({
                 need_scope_update: false,
             },
             facebook: null,
-            http: null,
             deactivated_datetime: null,
             name: 'My Shop',
             uri: '/api/integrations/1/',

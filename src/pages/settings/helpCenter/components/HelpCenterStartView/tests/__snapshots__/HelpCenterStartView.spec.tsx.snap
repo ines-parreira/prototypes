@@ -58,48 +58,50 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
     <main
       class="main"
     >
-      <section
-        class="longDescription"
-      >
-        <h2>
-          About
-        </h2>
-        <div>
-          <p>
-            With the Gorgias native Help Center, you can set up help articles on your website for free. This is a great way to allow your customers to self serve and get instant answers before reaching out to your Support team. You can add images, videos, and GIFs to help your customers learn about your products and services in-depth!
-          </p>
+      <section>
+        <div
+          class="longDescription"
+        >
           <h2>
-            Highlights
+            About
           </h2>
-          <p />
-          <ul>
-            <li>
-              Multilingual, customizable settings to match with your brand;
-            </li>
-            <li>
-              Contact cards (including contact form) to direct inquiries to one central location;
-            </li>
-            <li>
-              Google Analytics to get insights about your customers behavior;
-            </li>
-            <li>
-              Internal knowledge base to transfer knowledge with your team.
-            </li>
-          </ul>
-          <p />
-          <p />
-          <h2>
-            For Automation Add-on subscribers only:
-          </h2>
-          <ul>
-            <li>
-              Self-Service flows available in the Help Center to deflect even more tickets;
-            </li>
-            <li>
-              Articles recommendations in chat.
-            </li>
-          </ul>
-          <p />
+          <div>
+            <p>
+              With the Gorgias native Help Center, you can set up help articles on your website for free. This is a great way to allow your customers to self serve and get instant answers before reaching out to your Support team. You can add images, videos, and GIFs to help your customers learn about your products and services in-depth!
+            </p>
+            <h2>
+              Highlights
+            </h2>
+            <p />
+            <ul>
+              <li>
+                Multilingual, customizable settings to match with your brand;
+              </li>
+              <li>
+                Contact cards (including contact form) to direct inquiries to one central location;
+              </li>
+              <li>
+                Google Analytics to get insights about your customers behavior;
+              </li>
+              <li>
+                Internal knowledge base to transfer knowledge with your team.
+              </li>
+            </ul>
+            <p />
+            <p />
+            <h2>
+              For Automation Add-on subscribers only:
+            </h2>
+            <ul>
+              <li>
+                Self-Service flows available in the Help Center to deflect even more tickets;
+              </li>
+              <li>
+                Articles recommendations in chat.
+              </li>
+            </ul>
+            <p />
+          </div>
         </div>
         <ul
           class="screenshotList"

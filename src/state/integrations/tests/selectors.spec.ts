@@ -41,6 +41,7 @@ import {
     getChannelsForSourceType,
     getIsChatIntegrationStatusLoading,
     getIsChatIntegrationStatusError,
+    getIntegrationByIdAndType,
 } from '../selectors'
 
 const state = {
@@ -889,6 +890,19 @@ describe('integrations selectors', () => {
 
             const res = getIsChatIntegrationStatusError(1)(state)
             expect(res).toEqual(true)
+        })
+    })
+
+    describe('getIntegrationByIdAndType()', () => {
+        it('should return the integration with the given id and type', () => {
+            expect(
+                getIntegrationByIdAndType(4, IntegrationType.Http)(state)
+            ).toEqual(
+                expect.objectContaining({
+                    id: 4,
+                    type: IntegrationType.Http,
+                })
+            )
         })
     })
 })

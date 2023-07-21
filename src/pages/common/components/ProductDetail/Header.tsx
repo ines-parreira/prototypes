@@ -53,7 +53,11 @@ export default function Header(props: ProductDetail) {
                             </Badge>
                         ))}
                     {company && (
-                        <span className={css.by}>
+                        <span
+                            className={classNames({
+                                [css.by]: categories.length > 0,
+                            })}
+                        >
                             by{' '}
                             <a
                                 href={company.url}

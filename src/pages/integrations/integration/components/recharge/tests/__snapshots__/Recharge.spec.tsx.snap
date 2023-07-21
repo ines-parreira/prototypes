@@ -98,34 +98,36 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
   <main
     class="main"
   >
-    <section
-      class="longDescription"
-    >
-      <h2>
-        About
-      </h2>
-      <div>
-        <p>
-          Recharge connects the world through seamless payments and empowers thousands of merchants to grow their subscription business. Connect Gorgias and Recharge for a simple way to manage customer subscriptions and customer service from one convenient location. 
-        </p>
-        <p>
-          <strong>
-            With this integration, you’ll be able to: 
-          </strong>
-        </p>
-        <ul
-          role="list"
-        >
-          <li>
-            Display Recharge subscriptions next to support tickets in Gorgias, to gather full customer context before replying to questions
-          </li>
-          <li>
-            Cancel subscriptions, re-activate subscriptions, or refund a charge (either partially or totally) right from the Gorgias helpdesk
-          </li>
-          <li>
-            Embed Recharge data in your Macro replies to automate the most common support questions
-          </li>
-        </ul>
+    <section>
+      <div
+        class="longDescription"
+      >
+        <h2>
+          About
+        </h2>
+        <div>
+          <p>
+            Recharge connects the world through seamless payments and empowers thousands of merchants to grow their subscription business. Connect Gorgias and Recharge for a simple way to manage customer subscriptions and customer service from one convenient location. 
+          </p>
+          <p>
+            <strong>
+              With this integration, you’ll be able to: 
+            </strong>
+          </p>
+          <ul
+            role="list"
+          >
+            <li>
+              Display Recharge subscriptions next to support tickets in Gorgias, to gather full customer context before replying to questions
+            </li>
+            <li>
+              Cancel subscriptions, re-activate subscriptions, or refund a charge (either partially or totally) right from the Gorgias helpdesk
+            </li>
+            <li>
+              Embed Recharge data in your Macro replies to automate the most common support questions
+            </li>
+          </ul>
+        </div>
       </div>
       <ul
         class="screenshotList"
@@ -235,7 +237,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           <li>
             <a
               class="actionLink"
-              href="https://docs.gorgias.com/subscription-integrations/recharge"
+              href="https://rechargepayments.com/privacy-policy/"
               rel="noopener noreferrer"
               target="_blank"
             >

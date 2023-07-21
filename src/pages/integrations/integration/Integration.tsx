@@ -63,8 +63,6 @@ import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChat
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
 
-import HTTPIntegrationList from './components/http/HTTPIntegrationList'
-
 import Magento2 from './components/magento2/Magento2'
 
 import Shopify from './components/shopify/Shopify'
@@ -92,10 +90,7 @@ import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLay
 import EmailDomainVerificationContainer from './components/email/EmailDomainVerification/EmailDomainVerificationContainer'
 import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
 
-import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
-import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPIntegrationEvents'
-import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPIntegrationEvent'
-import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
+import HTTP from './components/http/HTTP'
 
 import VoiceIntegration from './components/voice/VoiceIntegration'
 import SmsIntegration from './components/sms/SmsIntegration'
@@ -367,54 +362,7 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Http:
-            if (!!integrationId) {
-                if (extra === Tab.HttpEvents) {
-                    if (subId) {
-                        return (
-                            <HTTPIntegrationLayout
-                                integration={integration}
-                                isUpdate={isUpdate}
-                            >
-                                <HTTPIntegrationEvent
-                                    integrationId={parseInt(integrationId)}
-                                    eventId={parseInt(subId)}
-                                />
-                            </HTTPIntegrationLayout>
-                        )
-                    }
-
-                    return (
-                        <HTTPIntegrationLayout
-                            integration={integration}
-                            isUpdate={isUpdate}
-                        >
-                            <HTTPIntegrationEvents
-                                integrationId={integrationId}
-                            />
-                        </HTTPIntegrationLayout>
-                    )
-                }
-
-                return (
-                    <HTTPIntegrationLayout
-                        integration={integration}
-                        isUpdate={isUpdate}
-                    >
-                        <HTTPIntegrationOverview
-                            integration={integration}
-                            isUpdate={isUpdate}
-                            loading={loading}
-                        />
-                    </HTTPIntegrationLayout>
-                )
-            }
-
-            return (
-                <HTTPIntegrationList
-                    integrations={integrationsProp}
-                    loading={loading}
-                />
-            )
+            return <HTTP />
 
         case IntegrationType.GorgiasChat:
             if (!!integrationId) {

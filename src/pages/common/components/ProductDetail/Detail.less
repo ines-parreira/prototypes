@@ -1,5 +1,6 @@
 @import '~css/new/layout';
 @import '~css/new/mixins';
+@import '~css/new/layout';
 
 :local {
     .hero {
@@ -8,37 +9,45 @@
         padding: 1.7rem; // ~24px
         background-color: var(--neutral-grey-1);
     }
+
     .heroImage {
         max-height: 5.7rem; // ~80px
-        padding-right: 1.7rem; // ~24px
+        padding-right: @layout-spacing-m;
     }
+
     .heroIcon {
-        margin-right: 1.7rem; // ~24px
-        padding: 1.143rem; // ~16px
+        margin-right: @layout-spacing-m;
+        padding: @layout-spacing-s;
         font-size: 3.714rem !important; // ~52px
         color: var(--neutral-grey-0);
         background-color: var(--main-primary);
         border-radius: 4px;
     }
+
     .heroHeading {
-        margin-bottom: 0.286rem; // ~4px
+        margin-bottom: @layout-spacing-xxs;
     }
+
     .heroDescription {
-        margin-top: -1px; // make sure it aligns smootly with image
-        margin-bottom: 0.571rem; // ~8px
+        margin-top: -1px; // make sure it aligns smoothly with image
+        margin-bottom: @layout-spacing-xs;
     }
+
     .heroMeta {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: 0.5rem;
     }
+
     .badge {
         margin: 0 !important;
     }
+
     .by {
-        margin-left: 0.286rem; // ~4px
+        margin-left: @layout-spacing-xxs;
     }
+
     .main {
         display: flex;
         flex-direction: column-reverse;
@@ -46,8 +55,9 @@
             flex-direction: row;
         }
         align-items: flex-start;
-        padding: 1.143rem 1.7rem 2.286rem; // ~16px ~24px ~32px
+        padding: @layout-spacing-s @layout-spacing-m @layout-spacing-l;
     }
+
     .longDescription {
         margin: 0;
         flex: 1 1 66%;
@@ -65,71 +75,79 @@
             margin-bottom: @layout-spacing-s;
         }
     }
+
     .screenshotList {
         margin: 0;
         padding: 0;
         list-style-type: none;
     }
+
     .screenshotListItem {
-        margin-top: 2.286rem;
+        margin-top: @layout-spacing-l;
         max-width: 680px;
         max-height: 680px;
         width: 100%;
     }
+
     .screenshot {
         max-height: 100%;
         max-width: 100%;
         border-radius: 4px;
-        box-shadow: 1px 1px 8px
-            hsl(
-                var(--neutral-grey-6-h),
-                var(--neutral-grey-6-s),
-                calc(var(--neutral-grey-6-l) + 75%)
-            );
+        box-shadow: 1px 1px 8px var(--neutral-grey-3);
         cursor: pointer;
     }
+
     .categoryTitle {
         font-size: 1.143rem; // ~16px
     }
+
     .infoCard {
-        margin-bottom: 1.7rem; // ~24px
+        margin-bottom: @layout-spacing-m;
         width: 440px;
         max-width: 100%;
         @media @large-desktops {
-            margin-left: 2.286rem; // ~32px
+            margin-left: @layout-spacing-l;
             flex: 1 0 33%;
             width: auto;
             max-width: 440px;
         }
     }
+
     .cardTitle {
-        margin-top: 1.7rem; // ~24px
+        margin-top: @layout-spacing-m;
     }
+
     .cardList {
         margin: 0;
         padding: 0;
         list-style-type: none;
     }
+
     .rounderWrapper {
         border-radius: 5px 5px 0 0;
         overflow: hidden;
     }
+
     .actionWrapper {
         display: flex;
         flex-direction: column;
         align-items: stretch;
     }
+
     .actionLink {
         display: block;
-        padding: 0.286rem 0; // ~4px 0
+        padding: @layout-spacing-xxs 0;
     }
+
     .actionIcon {
-        margin-right: 0.286rem; // ~4px
+        margin-right: @layout-spacing-xxs;
         font-size: 1.1em !important;
     }
+
     .actionIconBigger {
         font-size: 1.2em !important;
     }
+
     .modal {
         margin: 0;
         width: 100vw;
@@ -148,11 +166,13 @@
             }
         }
     }
+
     .closeModalButton {
         position: fixed;
-        top: 1.7rem; // ~24px
-        right: 1.7rem; // ~24px
+        top: @layout-spacing-m;
+        right: @layout-spacing-m;
     }
+
     .pictureContainer {
         max-height: 90vh;
         display: flex !important;
@@ -161,10 +181,12 @@
         overflow-y: auto;
         outline: none;
     }
+
     .sliderPicture {
         max-width: 100%;
         border-radius: 4px;
     }
+
     .slideArrow {
         width: auto !important;
         height: auto !important;
@@ -172,9 +194,11 @@
             content: '' !important;
         }
     }
+
     .slidePrev {
         left: -45px !important;
     }
+
     .slideNext {
         right: -45px !important;
     }

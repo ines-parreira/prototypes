@@ -139,7 +139,6 @@ export const bigCommerceIntegrationFixture = (): BigCommerceIntegration => ({
     deleted_datetime: null,
     mappings: [],
     meta: bigCommerceIntegrationMetaFixture(),
-    http: null,
     deactivated_datetime: null,
     name: 'My Shop',
     uri: '/api/integrations/1/',

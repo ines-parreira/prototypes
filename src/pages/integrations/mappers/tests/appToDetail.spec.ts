@@ -37,7 +37,7 @@ describe(`InfoCard`, () => {
                 },
                 "resources": {
                   "documentationLink": "",
-                  "privacyPolicyLink": "",
+                  "privacyPolicyLink": "https://www.mycompany.com/privacy-policy",
                 },
                 "support": {
                   "email": "support@gotolstoy.com",

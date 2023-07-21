@@ -1,2 +1,0 @@
-import HTTPIntegrationEventParams from './HTTPIntegrationEventParams'
-export default HTTPIntegrationEventParams

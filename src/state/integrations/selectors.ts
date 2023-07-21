@@ -117,6 +117,18 @@ export const getIntegrationById = (id: number) =>
         )
     })
 
+export const getIntegrationByIdAndType = <T extends Integration>(
+    id: number,
+    type: IntegrationType
+) =>
+    createSelector(getIntegrations, (integrations) => {
+        return integrations.find(
+            (integration): integration is T =>
+                integration.id.toString() === (id || '').toString() &&
+                integration.type === type
+        )
+    })
+
 export const getIntegrationsByType = <T extends Integration>(
     type: IntegrationType | string
 ) =>
