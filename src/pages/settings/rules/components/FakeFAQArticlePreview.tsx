@@ -32,20 +32,3 @@ export const FakeFAQArticlePreview: React.FC = () => (
         />
     </>
 )
-
-export const FakeFAQArticleAnswerPreview: React.FC = () => (
-    <div className={classnames(css.container, css.FAQArticlePreview)}>
-        <p className={css.previewTitle}>We found an answer!</p>
-        <div className={css.previewAnswer}>
-            <p>
-                Our delivery times vary depending on where you’re based and
-                whether it’s peak season, but it can take 5 to 10 business days
-                with regular delivery and up to 5 days with express shipping.
-            </p>
-            <p>
-                This information was pulled from the articles below from our
-                Help Center.
-            </p>
-        </div>
-    </div>
-)

@@ -120,9 +120,10 @@ export const AutoReplyFAQEditor = ({
     return (
         <div className={classnames(css.container, css.autoReplyFAQ)}>
             <p>
-                Use ChatGPT to auto-generate answers based on Help Center
-                articles, and send them as instant responses to incoming email
-                tickets.
+                This rule detects customer questions in incoming emails, replies
+                with relevant articles from your help center, and closes the
+                ticket. If customers reply, the ticket will reopen so you never
+                miss a response.
             </p>
             {helpCenters.length > 1 && isHelpCenterAvailable && (
                 <Alert type={AlertType.Warning} icon>

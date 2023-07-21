@@ -11,7 +11,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
       class="container autoReplyFAQ"
     >
       <p>
-        Use ChatGPT to auto-generate answers based on Help Center articles, and send them as instant responses to incoming email tickets.
+        This rule detects customer questions in incoming emails, replies with relevant articles from your help center, and closes the ticket. If customers reply, the ticket will reopen so you never miss a response.
       </p>
       <div
         class="alert error"
@@ -992,25 +992,6 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div
-            class="container FAQArticlePreview"
-          >
-            <p
-              class="previewTitle"
-            >
-              We found an answer!
-            </p>
-            <div
-              class="previewAnswer"
-            >
-              <p>
-                Our delivery times vary depending on where you’re based and whether it’s peak season, but it can take 5 to 10 business days with regular delivery and up to 5 days with express shipping.
-              </p>
-              <p>
-                This information was pulled from the articles below from our Help Center.
-              </p>
             </div>
           </div>
           <div
