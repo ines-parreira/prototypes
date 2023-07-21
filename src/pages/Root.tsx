@@ -1,7 +1,7 @@
 import {createDragDropManager} from 'dnd-core'
 import {LDClient} from 'launchdarkly-js-client-sdk'
 import {LDProvider} from 'launchdarkly-react-client-sdk'
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
 import {DndProvider} from 'react-dnd'
@@ -11,6 +11,7 @@ import installDevTools from 'immutable-devtools'
 import {Store} from 'redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 
+import {useEffectOnce} from 'react-use'
 import {appQueryClient} from 'init'
 import {RootState} from 'state/types'
 import {getLDClient, LDUser} from 'utils/launchDarkly'
@@ -22,52 +23,43 @@ type Props = {
     store: Store<RootState>
 }
 
-type State = {
-    LDClient?: LDClient
-}
-
 if (process.env.NODE_ENV !== 'production') {
     installDevTools(Immutable)
 }
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
-class Root extends Component<Props, State> {
-    state: State = {}
+const Root = ({store}: Props) => {
+    const [LDClient, setLDClient] = useState<LDClient>()
 
-    componentDidMount() {
+    useEffectOnce(() => {
         const LDClient = getLDClient()
 
         void LDClient.waitUntilGoalsReady().then(() => {
-            this.setState({LDClient})
+            setLDClient(LDClient)
         })
-    }
+    })
 
-    render() {
-        const {store} = this.props
-        const {LDClient} = this.state
-
-        return (
-            <QueryClientProvider client={appQueryClient}>
-                <Provider store={store}>
-                    <DndProvider manager={manager}>
-                        <LDProvider
-                            clientSideID={window.GORGIAS_LAUNCHDARKLY_CLIENT_ID}
-                            ldClient={LDClient}
-                            reactOptions={{
-                                useCamelCaseFlagKeys: false,
-                            }}
-                            user={LDUser}
-                        >
-                            <Router history={history}>
-                                <Routes />
-                            </Router>
-                        </LDProvider>
-                    </DndProvider>
-                </Provider>
-            </QueryClientProvider>
-        )
-    }
+    return (
+        <QueryClientProvider client={appQueryClient}>
+            <Provider store={store}>
+                <DndProvider manager={manager}>
+                    <LDProvider
+                        clientSideID={window.GORGIAS_LAUNCHDARKLY_CLIENT_ID}
+                        ldClient={LDClient}
+                        reactOptions={{
+                            useCamelCaseFlagKeys: false,
+                        }}
+                        user={LDUser}
+                    >
+                        <Router history={history}>
+                            <Routes />
+                        </Router>
+                    </LDProvider>
+                </DndProvider>
+            </Provider>
+        </QueryClientProvider>
+    )
 }
 
 export default Root

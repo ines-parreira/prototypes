@@ -3,6 +3,11 @@ import {fromJS, Map, List} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import randomstring from 'randomstring'
 
+import {
+    mockDevelopmentEnvironment,
+    mockProductionEnvironment,
+    mockStagingEnvironment,
+} from 'utils/testing'
 import * as utils from '../utils'
 import schemasJSON from '../fixtures/openapi.json'
 import {
@@ -1060,6 +1065,26 @@ describe('global utils', () => {
             const event = new MouseEvent('mousemove')
 
             expect(utils.isTouchEvent(event)).toEqual(false)
+        })
+    })
+
+    describe('hasModernTheme()', () => {
+        it('should return false for production environment', () => {
+            mockProductionEnvironment()
+
+            expect(utils.hasModernTheme()).toEqual(false)
+        })
+
+        it('should return true for staging environment', () => {
+            mockStagingEnvironment()
+
+            expect(utils.hasModernTheme()).toEqual(true)
+        })
+
+        it('should return true for development environment', () => {
+            mockDevelopmentEnvironment()
+
+            expect(utils.hasModernTheme()).toEqual(true)
         })
     })
 })

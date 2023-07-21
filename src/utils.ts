@@ -43,7 +43,7 @@ import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
-import {isProduction} from './utils/environment'
+import {isDevelopment, isProduction, isStaging} from './utils/environment'
 import {linkify} from './utils/editor'
 import client from './models/api/resources'
 import {GorgiasApiResponseDataError} from './models/api/types'
@@ -1240,4 +1240,8 @@ export function isTouchEvent(
     event: MouseEvent | TouchEvent | MouseEventReact | TouchEventReact
 ): event is TouchEvent | TouchEventReact {
     return 'touches' in event
+}
+
+export function hasModernTheme() {
+    return isStaging() || isDevelopment()
 }
