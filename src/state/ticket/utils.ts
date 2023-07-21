@@ -19,7 +19,6 @@ import {SOURCE_VALUE_PROP} from 'config'
 import {INTEGRATION_TYPE_WITH_VARIABLES} from 'config/integrations'
 import * as ticketConfig from 'config/ticket'
 import {PHONE_EVENTS} from 'constants/event'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {MacroActionName} from 'models/macroAction/types'
 import {TicketEvent, TicketMessage} from 'models/ticket/types'
 import {renderTemplate} from 'pages/common/utils/template'
@@ -799,7 +798,11 @@ export function getNewMessageSender(
     // exist anymore.
     if (
         lastMessage.get('from_agent', false) &&
-        newMessageSourceType === 'email'
+        [
+            TicketMessageSourceType.Email,
+            TicketMessageSourceType.WhatsAppMessage,
+            TicketMessageSourceType.Sms,
+        ].includes(newMessageSourceType)
     ) {
         const address = lastMessage.getIn(['source', 'from', 'address']) as
             | string
@@ -811,10 +814,7 @@ export function getNewMessageSender(
 
         return (
             (channels as List<Map<any, any>>).find(
-                (channel) =>
-                    !!channel &&
-                    channel.get('address') === address &&
-                    EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
+                (channel) => !!channel && channel.get('address') === address
             ) || preferredChannel
         )
     }

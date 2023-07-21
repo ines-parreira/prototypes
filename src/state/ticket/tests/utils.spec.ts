@@ -66,6 +66,8 @@ import {
     standaloneContactFormViaApiNoSelectedEmail,
     helpCenterContactFormViaApiUnavailableEmail,
     standaloneContactFormViaApiUnavailableEmail,
+    whatsAppTicket,
+    smsTicket,
 } from './fixtures'
 
 jest.mock('../../../config/ticket', () => {
@@ -803,6 +805,80 @@ describe('ticket utils', () => {
                     integrations
                 )
             ).toEqualImmutable(expected)
+        })
+
+        it('should return `from` field from last message from agent (WhatsApp)', () => {
+            const from = whatsAppTicket.getIn([
+                'messages',
+                0,
+                'source',
+                'from',
+            ]) as Map<any, any>
+            const channels = [
+                {
+                    address: '+15550233522',
+                    id: 7,
+                    type: 'whatsapp',
+                },
+                {
+                    address: from.get('address'),
+                    id: 3,
+                    type: 'whatsapp',
+                },
+                {
+                    address: '+15550233511',
+                    id: 5,
+                    type: 'whatsapp',
+                },
+            ]
+            const expected = channels.find(
+                (channel) => channel.address === from.get('address')
+            )
+            expect(
+                getNewMessageSender(
+                    whatsAppTicket,
+                    TicketMessageSourceType.WhatsAppMessage,
+                    fromJS(channels) as List<any>,
+                    integrations
+                ).toJS()
+            ).toEqual(expected)
+        })
+
+        it('should return `from` field from last message from agent (SMS)', () => {
+            const from = smsTicket.getIn([
+                'messages',
+                0,
+                'source',
+                'from',
+            ]) as Map<any, any>
+            const channels = [
+                {
+                    address: '+15550233522',
+                    id: 7,
+                    type: 'sms',
+                },
+                {
+                    address: from.get('address'),
+                    id: 3,
+                    type: 'sms',
+                },
+                {
+                    address: '+15550233511',
+                    id: 5,
+                    type: 'sms',
+                },
+            ]
+            const expected = channels.find(
+                (channel) => channel.address === from.get('address')
+            )
+            expect(
+                getNewMessageSender(
+                    smsTicket,
+                    TicketMessageSourceType.Sms,
+                    fromJS(channels) as List<any>,
+                    integrations
+                ).toJS()
+            ).toEqual(expected)
         })
 
         it('should return `from` field from associated email of integration (chat ticket)', () => {

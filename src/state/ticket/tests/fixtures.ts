@@ -779,3 +779,55 @@ export const standaloneContactFormViaApiNoSelectedEmail = fromJS({
         },
     ],
 }) as Map<any, any>
+
+export const whatsAppTicket = fromJS({
+    messages: [
+        {
+            source: {
+                type: 'whatsapp-message',
+                to: [
+                    {
+                        name: 'WhatsApp User',
+                        address: '+11111111111',
+                    },
+                ],
+                from: {
+                    name: 'WhatsApp Test Dev',
+                    address: '+15550233587',
+                },
+                extra: {
+                    include_thread: false,
+                },
+            },
+            id: 5808,
+            from_agent: true,
+            channel: 'whatsapp',
+        },
+    ],
+}) as Map<any, any>
+
+export const smsTicket = fromJS({
+    messages: [
+        {
+            source: {
+                type: 'sms',
+                to: [
+                    {
+                        name: 'SMS User',
+                        address: '+11111111111',
+                    },
+                ],
+                from: {
+                    name: 'SMS Test Dev',
+                    address: '+15550233587',
+                },
+                extra: {
+                    include_thread: false,
+                },
+            },
+            id: 5808,
+            from_agent: true,
+            channel: 'sms',
+        },
+    ],
+}) as Map<any, any>
