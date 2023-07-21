@@ -25,6 +25,9 @@ export default function PhoneEventDetailsCallRecording({
     const callRecordingURL = callRecording
         ? callRecording.getIn(['file', 'url'])
         : null
+    const publicURL = callRecording
+        ? callRecording.getIn(['file', 'public'], true)
+        : true
 
     const integrationID = eventData.getIn(['integration', 'id']) as string
     const callSid = eventData.getIn([
@@ -54,10 +57,19 @@ export default function PhoneEventDetailsCallRecording({
                         <div className="mb-3">
                             <b>Recording:</b>
                         </div>
-                        <DownloadableDeletableRecording
-                            downloadRecordingURL={callRecordingURL}
-                            deleteRecordingURL={deleteRecordingURL}
-                        />
+                        {publicURL ? (
+                            <DownloadableDeletableRecording
+                                downloadRecordingURL={callRecordingURL}
+                                deleteRecordingURL={deleteRecordingURL}
+                            />
+                        ) : (
+                            <span className="ml-2">
+                                <span className="material-icons mr-1">
+                                    warning
+                                </span>
+                                The call recording is not available.
+                            </span>
+                        )}
                     </div>
                 </>
             )}

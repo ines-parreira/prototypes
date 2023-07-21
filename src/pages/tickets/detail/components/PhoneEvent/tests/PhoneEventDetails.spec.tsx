@@ -264,6 +264,44 @@ describe('<PhoneEventDetails/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
+        it('should render call recording event with warning when recording is not available', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.CallRecording,
+                data: {
+                    recording: {
+                        file: {
+                            url: 'https://uploads.gorgi.us/development/some-file.mp3',
+                            name: 'phone-123ABC.mp3',
+                            size: 17763,
+                            content_type: 'audio/mpeg',
+                            public: false,
+                        },
+                        original: {
+                            sid: '123ABC',
+                            url: 'https://api.twilio.com/2010-04-01/Accounts/123/Recordings/ABC',
+                            track: 'both',
+                            status: 'completed',
+                            call_sid: 'CAb8068b6d8cdc2112e42957f61d90f737',
+                            duration: '5',
+                            error_code: '0',
+                            start_time: 'Tue, 27 Jul 2021 11:15:46 +0000',
+                            account_sid: 'ABCCBA',
+                        },
+                    },
+                },
+            })
+            const {container, getByText} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(
+                getByText('The call recording is not available.')
+            ).toBeInTheDocument()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
         it('should render details for answered phone call event', () => {
             const event = fromJS({
                 type: PhoneIntegrationEvent.PhoneCallAnswered,

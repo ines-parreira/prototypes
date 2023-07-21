@@ -140,6 +140,52 @@ exports[`<PhoneEventDetails/> render() should render call recording event with m
 </div>
 `;
 
+exports[`<PhoneEventDetails/> render() should render call recording event with warning when recording is not available 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Phone number
+        :
+      </b>
+       
+    </div>
+    <div>
+      <b>
+        Duration:
+      </b>
+       
+      5s
+    </div>
+    <div
+      class="d-flex flex-column"
+    >
+      <div
+        class="mb-3"
+      >
+        <b>
+          Recording:
+        </b>
+      </div>
+      <span
+        class="ml-2"
+      >
+        <span
+          class="material-icons mr-1"
+        >
+          warning
+        </span>
+        The call recording is not available.
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<PhoneEventDetails/> render() should render completed call event details 1`] = `
 <div
   class="eventDetails"
