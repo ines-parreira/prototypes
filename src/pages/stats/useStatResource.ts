@@ -17,6 +17,9 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 
+export const DEFAULT_ERROR_MESSAGE =
+    'Failed to retrieve statistic. Please retry in a few seconds.'
+
 type Params = {
     statName: string
     resourceName: string
@@ -77,7 +80,7 @@ export default function useStatResource<T>({
                                     error?: {msg: string}
                                 }>
                             ).response?.data?.error?.msg ||
-                            'Failed to retrieve statistic. Please retry in a few seconds.',
+                            DEFAULT_ERROR_MESSAGE,
                     }
                     const errorDetails = errorToChildren(error)
                     if (errorDetails) {

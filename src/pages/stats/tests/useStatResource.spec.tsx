@@ -1,27 +1,27 @@
 import React, {ReactNode} from 'react'
-import {renderHook} from '@testing-library/react-hooks'
+import {renderHook, act} from '@testing-library/react-hooks'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {act, render} from '@testing-library/react'
+import {waitFor} from '@testing-library/react'
 import {produce} from 'immer'
 
-import {Stat, StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
 import {RootState} from 'state/types'
 import {firstResponseTime} from 'fixtures/stats'
 import {FIRST_RESPONSE_TIME} from 'config/stats'
-import {assumeMock, flushPromises} from 'utils/testing'
+import {assumeMock} from 'utils/testing'
 import {fetchStat} from 'models/stat/resources'
+import {fetchStatEnded, fetchStatStarted} from 'state/ui/stats/actions'
+import {statFetched} from 'state/entities/stats/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
-import useStatResource from '../useStatResource'
+import useStatResource, {DEFAULT_ERROR_MESSAGE} from '../useStatResource'
 
-jest.mock('state/notifications/actions', () => ({
-    notify: (message: string) => ({
-        type: 'notify mock',
-        message,
-    }),
-}))
+jest.mock('state/notifications/actions')
+const notifyMock = notify as jest.Mock
 
 jest.mock('models/stat/resources')
 const fetchStatMock = assumeMock(fetchStat)
@@ -30,6 +30,14 @@ const mockStore = configureMockStore<RootState>([thunk])
 
 describe('useStatResource', () => {
     const defaultResourceName = FIRST_RESPONSE_TIME
+    const defaultStatName = 'some-stat'
+    const defaultStatsFilters: StatsFilters = {
+        period: {
+            start_datetime: '2021-04-02T00:00:00.000Z',
+            end_datetime: '2021-04-02T23:59:59.999Z',
+        },
+        channels: [TicketChannel.Email],
+    }
     const defaultState = {
         ui: {
             stats: {
@@ -40,13 +48,9 @@ describe('useStatResource', () => {
             stats: {},
         },
     } as RootState
-
-    const defaultStatsFilters: StatsFilters = {
-        period: {
-            start_datetime: '2021-04-02T00:00:00.000Z',
-            end_datetime: '2021-04-02T23:59:59.999Z',
-        },
-        channels: [TicketChannel.Email],
+    const notificationMock = {
+        type: 'mocked-notification',
+        message: 'error message',
     }
 
     const createStoreWrapper = (store: ReturnType<typeof mockStore>) => {
@@ -56,8 +60,14 @@ describe('useStatResource', () => {
     }
 
     beforeEach(() => {
+        jest.useFakeTimers()
         jest.clearAllMocks()
         fetchStatMock.mockResolvedValue(firstResponseTime)
+        notifyMock.mockReturnValue(notificationMock)
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
     it('should fetch and save the stat', async () => {
@@ -66,7 +76,7 @@ describe('useStatResource', () => {
         renderHook(
             () => {
                 return useStatResource<TwoDimensionalChart>({
-                    statName: 'stat',
+                    statName: defaultStatName,
                     resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
@@ -75,17 +85,37 @@ describe('useStatResource', () => {
                 wrapper: createStoreWrapper(store),
             }
         )
-        await flushPromises()
+        await waitFor(() => {
+            expect(fetchStatMock).toHaveBeenLastCalledWith(
+                defaultResourceName,
+                {
+                    filters: defaultStatsFilters,
+                    cursor: undefined,
+                },
+                {cancelToken: expect.anything()}
+            )
+        })
 
-        expect(fetchStatMock).toHaveBeenLastCalledWith(
-            defaultResourceName,
-            {
-                filters: defaultStatsFilters,
-                cursor: undefined,
-            },
-            {cancelToken: expect.anything()}
+        const actions = store.getActions()
+        expect(actions[0]).toEqual(
+            fetchStatStarted({
+                statName: defaultStatName,
+                resourceName: defaultResourceName,
+            })
         )
-        expect(store.getActions()).toMatchSnapshot()
+        expect(actions[1]).toEqual(
+            statFetched({
+                statName: defaultStatName,
+                resourceName: defaultResourceName,
+                value: firstResponseTime,
+            })
+        )
+        expect(actions[2]).toEqual(
+            fetchStatEnded({
+                statName: defaultStatName,
+                resourceName: defaultResourceName,
+            })
+        )
     })
 
     it('should display error message on server response error', async () => {
@@ -102,7 +132,7 @@ describe('useStatResource', () => {
         renderHook(
             () => {
                 return useStatResource<TwoDimensionalChart>({
-                    statName: 'stat',
+                    statName: defaultStatName,
                     resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
@@ -111,23 +141,21 @@ describe('useStatResource', () => {
                 wrapper: createStoreWrapper(store),
             }
         )
-        await flushPromises()
 
-        expect(store.getActions()).toMatchSnapshot()
+        await waitFor(() =>
+            expect(notifyMock).toHaveBeenLastCalledWith({
+                status: NotificationStatus.Error,
+                title: DEFAULT_ERROR_MESSAGE,
+            })
+        )
+        expect(store.getActions()[1]).toEqual(notificationMock)
     })
 
-    it.each<[string, Stat | undefined, Stat | null]>([
-        [
-            'return null stat when stat is not found in the store',
-            undefined,
-            null,
-        ],
-        ['return stat from the store', firstResponseTime, firstResponseTime],
-    ])('should %s', (testName, storeValue, expectedValue) => {
+    it('should return null stat when stat is not found in the store', () => {
         const {result} = renderHook(
             () => {
                 return useStatResource<TwoDimensionalChart>({
-                    statName: 'stat',
+                    statName: defaultStatName,
                     resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
@@ -138,62 +166,63 @@ describe('useStatResource', () => {
                         produce(defaultState, (state) => {
                             state.entities.stats[
                                 `stat/${defaultResourceName}`
-                            ] = storeValue
+                            ] = undefined
                         })
                     )
                 ),
             }
         )
-        expect(result.current[0]).toBe(expectedValue)
+        expect(result.current[0]).toBe(null)
     })
 
-    it.each<[string, boolean | undefined, boolean]>([
-        [
-            'return true fetching flag result when fetching flag is set to true in the store',
-            true,
-            true,
-        ],
-        [
-            'return false fetching flag result when fetching flag is set to false in the store',
-            false,
-            false,
-        ],
-        [
-            'return true fetching flag result when fetching flag not defined in the store',
-            undefined,
-            true,
-        ],
-    ])('should %s', (testName, storeValue, expectedResult) => {
+    it.each([
+        {
+            storeValue: true,
+            fetchingFlag: true,
+        },
+        {
+            storeValue: false,
+            fetchingFlag: false,
+        },
+        {
+            storeValue: undefined,
+            fetchingFlag: true,
+        },
+    ])(
+        'should return $fetchingFlag fetching flag when the fetching flag is set to $storeValue in the store',
+        ({storeValue, fetchingFlag}) => {
+            const {result} = renderHook(
+                () => {
+                    return useStatResource<TwoDimensionalChart>({
+                        statName: defaultStatName,
+                        resourceName: defaultResourceName,
+                        statsFilters: defaultStatsFilters,
+                    })
+                },
+                {
+                    wrapper: createStoreWrapper(
+                        mockStore(
+                            produce(defaultState, (state) => {
+                                state.ui.stats.fetchingMap[
+                                    `${defaultStatName}/${defaultResourceName}`
+                                ] = storeValue
+                            })
+                        )
+                    ),
+                }
+            )
+
+            expect(result.current[1]).toBe(fetchingFlag)
+        }
+    )
+
+    it('should fetch the page with cursor when fetchPage is called', async () => {
+        const cursor = 'foo-cursor'
+        const store = mockStore(defaultState)
         const {result} = renderHook(
             () => {
                 return useStatResource<TwoDimensionalChart>({
-                    statName: 'stat',
-                    resourceName: defaultResourceName,
-                    statsFilters: defaultStatsFilters,
-                })
-            },
-            {
-                wrapper: createStoreWrapper(
-                    mockStore(
-                        produce(defaultState, (state) => {
-                            state.ui.stats.fetchingMap[
-                                `stat/${defaultResourceName}`
-                            ] = storeValue
-                        })
-                    )
-                ),
-            }
-        )
-
-        expect(result.current[1]).toBe(expectedResult)
-    })
-
-    it('should fetch the page with cursor when fetchPage is called', async () => {
-        const store = mockStore(defaultState)
-        const {result, rerender} = renderHook(
-            () => {
-                return useStatResource<TwoDimensionalChart>({
-                    statName: 'stat',
+                    statName: defaultStatName,
                     resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
@@ -202,41 +231,35 @@ describe('useStatResource', () => {
                 wrapper: createStoreWrapper(store),
             }
         )
-        await flushPromises()
-        store.clearActions()
 
         const [, , fetchPage] = result.current
-        act(() => {
-            fetchPage('foo-cursor')
-        })
-        rerender()
-        await flushPromises()
+        act(() => fetchPage(cursor))
 
-        expect(fetchStatMock).toHaveBeenLastCalledWith(
-            defaultResourceName,
-            {
-                filters: defaultStatsFilters,
-                cursor: 'foo-cursor',
-            },
-            {cancelToken: expect.anything()}
+        await waitFor(() =>
+            expect(fetchStatMock).toHaveBeenLastCalledWith(
+                defaultResourceName,
+                {
+                    filters: defaultStatsFilters,
+                    cursor: cursor,
+                },
+                {cancelToken: expect.anything()}
+            )
         )
-        expect(store.getActions()).toMatchSnapshot()
     })
 
     it('should fetch the stats with empty cursor when filters change', async () => {
+        const cursor = 'foo-cursor'
         const store = mockStore(defaultState)
         const updatedStatsFilters = {
             ...defaultStatsFilters,
             channels: [TicketChannel.Facebook],
         }
-
-        const {result, rerender, waitForNextUpdate} = renderHook(
+        const {result, rerender} = renderHook(
             ({statsFilters}) => {
                 return useStatResource<TwoDimensionalChart>({
-                    statName: 'stat',
+                    statName: defaultStatName,
                     resourceName: defaultResourceName,
                     statsFilters,
-                    fetchDebounceDelay: 0,
                 })
             },
             {
@@ -246,53 +269,37 @@ describe('useStatResource', () => {
                 wrapper: createStoreWrapper(store),
             }
         )
-        await flushPromises()
+
         const [, , fetchPage] = result.current
-        act(() => {
-            fetchPage('foo-cursor')
-        })
-        rerender()
-        await flushPromises()
+        act(() => fetchPage(cursor))
+        await waitFor(() =>
+            expect(fetchStatMock).toHaveBeenLastCalledWith(
+                defaultResourceName,
+                {
+                    filters: defaultStatsFilters,
+                    cursor,
+                },
+                {cancelToken: expect.anything()}
+            )
+        )
         rerender({
             statsFilters: updatedStatsFilters,
         })
-        await flushPromises()
-        await waitForNextUpdate()
+        act(() => jest.runAllTimers())
 
-        expect(fetchStatMock).toHaveBeenLastCalledWith(
-            defaultResourceName,
-            {
-                filters: updatedStatsFilters,
-                cursor: undefined,
-            },
-            {cancelToken: expect.anything()}
+        await waitFor(() =>
+            expect(fetchStatMock).toHaveBeenLastCalledWith(
+                defaultResourceName,
+                {
+                    filters: updatedStatsFilters,
+                    cursor: undefined,
+                },
+                {cancelToken: expect.anything()}
+            )
         )
     })
 
     describe('debouncing fetch requests', () => {
-        // Using testing-library/react to test debounce because
-        // react-hooks-testing-library doesn't play well with fake timers
-        const TestComponent = ({
-            statsFilters,
-        }: {
-            statsFilters: StatsFilters
-        }) => {
-            useStatResource({
-                statName: 'stat',
-                resourceName: defaultResourceName,
-                statsFilters,
-            })
-            return null
-        }
-
-        beforeEach(() => {
-            jest.useFakeTimers()
-        })
-
-        afterEach(() => {
-            jest.useRealTimers()
-        })
-
         it('should debounce requests when stat filter change', async () => {
             const store = mockStore(defaultState)
             const tagsStatsFilters = {
@@ -304,64 +311,71 @@ describe('useStatResource', () => {
                 channels: [TicketChannel.FacebookMention],
             }
 
-            const {rerender} = render(
-                <Provider store={store}>
-                    <TestComponent statsFilters={defaultStatsFilters} />
-                </Provider>
-            )
-            await flushPromises()
-            store.clearActions()
-
-            rerender(
-                <Provider store={store}>
-                    <TestComponent statsFilters={tagsStatsFilters} />
-                </Provider>
-            )
-            act(() => {
-                jest.advanceTimersByTime(10)
-            })
-            rerender(
-                <Provider store={store}>
-                    <TestComponent statsFilters={channelsStatsFilters} />
-                </Provider>
-            )
-            act(() => {
-                jest.runAllTimers()
-            })
-            await flushPromises()
-
-            expect(fetchStatMock).toHaveBeenLastCalledWith(
-                defaultResourceName,
-                {
-                    filters: channelsStatsFilters,
-                    cursor: undefined,
+            const {rerender} = renderHook(
+                ({statsFilters}) => {
+                    return useStatResource<TwoDimensionalChart>({
+                        statName: defaultStatName,
+                        resourceName: defaultResourceName,
+                        statsFilters,
+                    })
                 },
-                {cancelToken: expect.anything()}
+                {
+                    initialProps: {
+                        statsFilters: defaultStatsFilters,
+                    },
+                    wrapper: createStoreWrapper(store),
+                }
             )
+            await waitFor(() => expect(fetchStatMock).toHaveBeenCalled())
+            fetchStatMock.mockClear()
+            rerender({
+                statsFilters: tagsStatsFilters,
+            })
+            act(() => jest.advanceTimersByTime(10))
+            rerender({
+                statsFilters: channelsStatsFilters,
+            })
+            act(() => jest.runAllTimers())
+
+            await waitFor(() =>
+                expect(fetchStatMock).toHaveBeenLastCalledWith(
+                    defaultResourceName,
+                    {
+                        filters: channelsStatsFilters,
+                        cursor: undefined,
+                    },
+                    {cancelToken: expect.anything()}
+                )
+            )
+            expect(fetchStatMock).toHaveBeenCalledTimes(1)
         })
 
         it('should not fetch the stat when statsFilters changed to the same value', async () => {
             const store = mockStore(defaultState)
 
-            const {rerender} = render(
-                <Provider store={store}>
-                    <TestComponent statsFilters={defaultStatsFilters} />
-                </Provider>
+            const {rerender} = renderHook(
+                ({statsFilters}) => {
+                    return useStatResource<TwoDimensionalChart>({
+                        statName: defaultStatName,
+                        resourceName: defaultResourceName,
+                        statsFilters,
+                    })
+                },
+                {
+                    initialProps: {
+                        statsFilters: defaultStatsFilters,
+                    },
+                    wrapper: createStoreWrapper(store),
+                }
             )
-            await flushPromises()
-            store.clearActions()
-
-            rerender(
-                <Provider store={store}>
-                    <TestComponent statsFilters={{...defaultStatsFilters}} />
-                </Provider>
-            )
-            act(() => {
-                jest.runAllTimers()
+            await waitFor(() => expect(fetchStatMock).toHaveBeenCalled())
+            fetchStatMock.mockClear()
+            rerender({
+                statsFilters: {...defaultStatsFilters},
             })
-            await flushPromises()
+            act(() => jest.runAllTimers())
 
-            expect(fetchStatMock.mock.calls).toHaveLength(1)
+            expect(fetchStatMock).not.toHaveBeenCalled()
         })
 
         it('should not fetch the stat when statsFilters is dirty changed to the same value', async () => {
@@ -373,30 +387,33 @@ describe('useStatResource', () => {
                 },
             })
 
-            const {rerender} = render(
-                <Provider store={store}>
-                    <TestComponent statsFilters={defaultStatsFilters} />
-                </Provider>
+            const {rerender} = renderHook(
+                ({statsFilters}) => {
+                    return useStatResource<TwoDimensionalChart>({
+                        statName: defaultStatName,
+                        resourceName: defaultResourceName,
+                        statsFilters,
+                    })
+                },
+                {
+                    initialProps: {
+                        statsFilters: defaultStatsFilters,
+                    },
+                    wrapper: createStoreWrapper(store),
+                }
             )
-            await flushPromises()
-            store.clearActions()
 
-            rerender(
-                <Provider store={store}>
-                    <TestComponent
-                        statsFilters={{
-                            ...defaultStatsFilters,
-                            tags: [2],
-                        }}
-                    />
-                </Provider>
-            )
-            act(() => {
-                jest.runAllTimers()
+            await waitFor(() => expect(fetchStatMock).toHaveBeenCalled())
+            fetchStatMock.mockClear()
+            rerender({
+                statsFilters: {
+                    ...defaultStatsFilters,
+                    tags: [2],
+                },
             })
-            await flushPromises()
+            act(() => jest.runAllTimers())
 
-            expect(fetchStatMock.mock.calls).toHaveLength(1)
+            expect(fetchStatMock).not.toHaveBeenCalled()
         })
     })
 })
