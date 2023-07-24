@@ -1,3 +1,4 @@
+import {OrderDirection} from 'models/api/types'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -19,6 +20,7 @@ export enum TicketMeasure {
 export enum TicketDimension {
     CreatedDatetime = 'Ticket.createdDatetime',
     ClosedDatetime = 'Ticket.closedDatetime',
+    AssigneeUserId = 'Ticket.assigneeUserId',
     FirstMessageChannel = 'TicketMessages.firstMessageChannel',
 }
 
@@ -134,7 +136,7 @@ export enum ReportingGranularity {
 
 export type ReportingOrder = [
     ReportingDimension | ReportingMeasure,
-    'asc' | 'desc'
+    OrderDirection
 ]
 
 export type ReportingTimeDimension = {

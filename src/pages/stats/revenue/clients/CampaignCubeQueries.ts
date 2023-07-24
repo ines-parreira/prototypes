@@ -1,3 +1,4 @@
+import {OrderDirection} from 'models/api/types'
 import {
     CubeFilter,
     CubeFilterParams,
@@ -272,7 +273,9 @@ export const getRevenueGraphData = ({
             ],
             timezone: timezone,
             measures: [OrderConversionMeasure.gmv],
-            order: [[OrderConversionDimension.createdDatatime, 'asc']],
+            order: [
+                [OrderConversionDimension.createdDatatime, OrderDirection.Asc],
+            ],
             filters: _getDefaultFilters({
                 startDate,
                 endDate,
@@ -303,7 +306,9 @@ export const getRevenueShareGraphData = ({
             ],
             timezone: timezone,
             measures: [OrderConversionMeasure.campaignSales],
-            order: [[OrderConversionDimension.createdDatatime, 'asc']],
+            order: [
+                [OrderConversionDimension.createdDatatime, OrderDirection.Asc],
+            ],
             filters: _getDefaultFilters({
                 startDate,
                 endDate,
@@ -338,7 +343,12 @@ export const getCampaignsPerformanceGraphData = ({
                 CampaignOrderEventsMeasure.campaignCTR,
                 CampaignOrderEventsMeasure.totalConversionRate,
             ],
-            order: [[CampaignOrderEventsDimension.createdDatatime, 'asc']],
+            order: [
+                [
+                    CampaignOrderEventsDimension.createdDatatime,
+                    OrderDirection.Asc,
+                ],
+            ],
             filters: _getDefaultFilters({
                 startDate,
                 endDate,

@@ -1,4 +1,5 @@
 import React from 'react'
+import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {User} from 'config/types/user'
 import {HeaderCell} from 'pages/stats/HeaderCell'
 import {TableColumn, TableColumnsOrder} from 'pages/stats/TableConfig'
@@ -13,6 +14,8 @@ const getCell = (
     column: TableColumn
 ): React.FunctionComponent<{agentId: number}> => {
     switch (column) {
+        case TableColumn.FirstResponseTime:
+            return FirstResponseTimeCellContent
         default:
             return AgentPlaceholderCell
     }
@@ -25,14 +28,12 @@ export const AgentsTable = () => {
         <div>
             <TableWrapper>
                 <TableHead>
-                    <tr>
-                        {TableColumnsOrder.map((column) => (
-                            <HeaderCell
-                                key={`header-cell-${column}`}
-                                column={column}
-                            />
-                        ))}
-                    </tr>
+                    {TableColumnsOrder.map((column) => (
+                        <HeaderCell
+                            key={`header-cell-${column}`}
+                            column={column}
+                        />
+                    ))}
                 </TableHead>
                 <TableBody>
                     {agents.map((agent) => (

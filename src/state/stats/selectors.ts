@@ -52,3 +52,18 @@ export const getStatsStoreIntegrations = makeGetPlainJS<Integration[]>(
 
 export const getStoreIntegrationsStatsFilter =
     makeIntegrationsStatsFilterSelector(getStatsStoreIntegrations)
+
+export const getPageStatsFilters = createSelector(
+    getStatsFilters,
+    getMessagingIntegrationsStatsFilter,
+    (statsFilters, integrationsStatsFilter) => {
+        const {channels, agents, period, tags} = statsFilters
+        return {
+            channels,
+            agents,
+            period,
+            integrations: integrationsStatsFilter,
+            tags,
+        }
+    }
+)

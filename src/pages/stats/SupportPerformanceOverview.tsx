@@ -4,6 +4,7 @@ import React, {useMemo, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
+import {OrderDirection} from 'models/api/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getPreviousPeriod} from 'hooks/reporting/createUseMetricTrend'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
@@ -213,7 +214,7 @@ export default function SupportPerformanceOverview() {
         [
             {
                 measures: [TicketMeasure.TicketCount],
-                order: [[TicketMeasure.TicketCount, 'desc']],
+                order: [[TicketMeasure.TicketCount, OrderDirection.Desc]],
                 dimensions: [TicketDimension.FirstMessageChannel],
                 segments: [TicketSegment.WorkloadTickets],
                 filters: [
@@ -256,7 +257,7 @@ export default function SupportPerformanceOverview() {
         [
             {
                 measures: [TicketMeasure.TicketCount],
-                order: [[TicketMeasure.TicketCount, 'desc']],
+                order: [[TicketMeasure.TicketCount, OrderDirection.Desc]],
                 dimensions: [TicketDimension.FirstMessageChannel],
                 segments: [TicketSegment.WorkloadTickets],
                 filters: [

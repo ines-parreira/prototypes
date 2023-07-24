@@ -1,4 +1,5 @@
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {OrderDirection} from 'models/api/types'
 import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
@@ -39,7 +40,7 @@ export function useTicketsCreatedTimeSeries(
             },
         ],
         timezone,
-        order: [[TicketDimension.CreatedDatetime, 'asc']],
+        order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
         filters: [
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
@@ -78,7 +79,7 @@ export function useTicketsClosedTimeSeries(
         ],
         timezone,
         dimensions: [],
-        order: [[TicketDimension.ClosedDatetime, 'asc']],
+        order: [[TicketDimension.ClosedDatetime, OrderDirection.Asc]],
         segments: [TicketSegment.ClosedTickets],
         filters: [
             ...statsFiltersToReportingFilters(
