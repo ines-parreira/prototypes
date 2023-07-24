@@ -170,20 +170,23 @@ export const useBillingPlans = ({
             (automationProduct?.price_id !==
                 selectedPlans[ProductType.Automation].plan?.price_id &&
                 selectedPlans[ProductType.Automation].isSelected) ||
-            (automationProduct?.price_id ===
-                selectedPlans[ProductType.Automation].plan?.price_id &&
+            (!!automationProduct?.price_id &&
+                automationProduct.price_id ===
+                    selectedPlans[ProductType.Automation].plan?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected) ||
             (voiceProduct?.price_id !==
                 selectedPlans[ProductType.Voice].plan?.price_id &&
                 selectedPlans[ProductType.Voice].isSelected) ||
-            (voiceProduct?.price_id ===
-                selectedPlans[ProductType.Voice].plan?.price_id &&
+            (!!voiceProduct?.price_id &&
+                voiceProduct.price_id ===
+                    selectedPlans[ProductType.Voice].plan?.price_id &&
                 !selectedPlans[ProductType.Voice].isSelected) ||
             (smsProduct?.price_id !==
                 selectedPlans[ProductType.SMS].plan?.price_id &&
                 selectedPlans[ProductType.SMS].isSelected) ||
-            (smsProduct?.price_id ===
-                selectedPlans[ProductType.SMS].plan?.price_id &&
+            (!!smsProduct?.price_id &&
+                smsProduct.price_id ===
+                    selectedPlans[ProductType.SMS].plan?.price_id &&
                 !selectedPlans[ProductType.SMS].isSelected),
         [
             helpdeskProduct,
@@ -340,7 +343,9 @@ export const useBillingPlans = ({
 
         const isNewAutomationProduct =
             selectedPlans[ProductType.Automation].plan?.price_id !==
-            automationProduct?.price_id
+                automationProduct?.price_id ||
+            (automationProduct?.price_id &&
+                !selectedPlans[ProductType.Automation].isSelected)
 
         // If helpdesk and automation prices haven't changed, do not update stripe
         if (!isNewHelpdeskProduct && !isNewAutomationProduct) {
@@ -357,10 +362,11 @@ export const useBillingPlans = ({
                 onClick: () => {
                     history.push('/app/home')
                 },
+                isFreeTrial,
             })
 
             // Add the notification
-            notifications.push(notification)
+            !!notification && notifications.push(notification)
         }
 
         plansToBeUpdated.push(
@@ -378,10 +384,11 @@ export const useBillingPlans = ({
                         history.push('/app/settings')
                     },
                     interval,
+                    isFreeTrial,
                 })
 
                 // Add the notification
-                notifications.push(notification)
+                !!notification && notifications.push(notification)
             }
 
             plansToBeUpdated.push(
@@ -392,7 +399,7 @@ export const useBillingPlans = ({
         // update subscription for Helpdesk and Automation plans
         if (plansToBeUpdated.length > 0) {
             // Automation has been removed while in free trial
-            if (notifications.length === 0) {
+            if (notifications.length === 0 && !!automationProduct) {
                 notifications.push({
                     message:
                         'You have removed Automation from your subscription',
@@ -426,6 +433,7 @@ export const useBillingPlans = ({
         interval,
         dispatch,
         dispatchBillingError,
+        isFreeTrial,
     ])
 
     const handleSubscribe = useCallback(() => {

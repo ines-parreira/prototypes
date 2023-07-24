@@ -22,12 +22,13 @@ describe('setHelpdeskNotification', () => {
             newProduct,
             periodEnd,
             onClick,
+            isFreeTrial: false,
         })
 
-        expect(notification.message).toContain(
+        expect(notification?.message).toContain(
             'Success! Helpdesk was upgraded to <strong>New Helpdesk Plan</strong>'
         )
-        expect(notification.buttons?.[0].name).toBe('Helpdesk Settings')
+        expect(notification?.buttons?.[0].name).toBe('Helpdesk Settings')
     })
 
     it('renders downgrade message when new product amount is smaller', () => {
@@ -44,12 +45,13 @@ describe('setHelpdeskNotification', () => {
             newProduct,
             periodEnd,
             onClick,
+            isFreeTrial: false,
         })
 
-        expect(notification.message).toContain(
+        expect(notification?.message).toContain(
             'Your subscription will change to <strong>New Helpdesk Plan</strong> on <strong>2023-06-30</strong>.'
         )
-        expect(notification.buttons?.length).toBe(0)
+        expect(notification?.buttons?.length).toBe(0)
     })
 })
 
@@ -69,12 +71,13 @@ describe('setAutomationNotification', () => {
             periodEnd,
             interval,
             onClick,
+            isFreeTrial: false,
         })
 
-        expect(notification.message).toContain(
+        expect(notification?.message).toContain(
             'Woohoo! You now have access to <strong>Automation!</strong>'
         )
-        expect(notification.buttons?.[0].name).toBe('Set Up Automation')
+        expect(notification?.buttons?.[0].name).toBe('Set Up Automation')
     })
 
     it('renders upgrade message when new product amount is greater', () => {
@@ -94,12 +97,13 @@ describe('setAutomationNotification', () => {
             interval,
             periodEnd,
             onClick,
+            isFreeTrial: false,
         })
 
-        expect(notification.message).toContain(
+        expect(notification?.message).toContain(
             `Success! You now have <strong>${newProduct.num_quota_tickets} automated interactions per month</strong>`
         )
-        expect(notification.buttons?.[0].name).toBe('Automation Settings')
+        expect(notification?.buttons?.[0].name).toBe('Automation Settings')
     })
 
     it('renders downgrade message when new product amount is less', () => {
@@ -119,11 +123,12 @@ describe('setAutomationNotification', () => {
             periodEnd,
             interval,
             onClick,
+            isFreeTrial: false,
         })
 
-        expect(notification.message).toContain(
+        expect(notification?.message).toContain(
             `Your Automation subscription will change to <strong>${newProduct.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`
         )
-        expect(notification.buttons?.length).toBe(0)
+        expect(notification?.buttons?.length).toBe(0)
     })
 })

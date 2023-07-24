@@ -14,30 +14,35 @@ import {
     HelpdeskPrice,
     PlanInterval,
     ProductType,
+    SMSOrVoicePrice,
 } from 'models/billing/types'
-import {BillingContact} from 'state/billing/types'
+import {BillingContact, TicketPurpose} from 'state/billing/types'
 import {countries} from 'config/countries'
 import Loader from 'pages/common/components/Loader/Loader'
 import Tooltip from 'pages/common/components/Tooltip'
 import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
+import {isAAOLegacyPrice} from 'models/billing/utils'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'
 import {
     BILLING_INFORMATION_PATH,
     BILLING_PAYMENT_FREQUENCY_PATH,
 } from '../../constants'
-import {isAAOLegacyPrice} from '../../../../../models/billing/utils'
 import css from './PaymentInformationView.less'
 
 type PaymentInformationViewProps = {
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    contactBilling: (ticketPurpose: TicketPurpose) => void
     helpdeskProduct?: HelpdeskPrice
     automationProduct?: AutomationPrice
+    voiceProduct?: SMSOrVoicePrice
+    smsProduct?: SMSOrVoicePrice
 }
 
 const PaymentInformationView = ({
-    setIsModalOpen,
+    contactBilling,
     helpdeskProduct,
     automationProduct,
+    voiceProduct,
+    smsProduct,
 }: PaymentInformationViewProps) => {
     const dispatch = useAppDispatch()
 
@@ -47,6 +52,7 @@ const PaymentInformationView = ({
     const isAAOLegacy =
         !!automationProduct &&
         isAAOLegacyPrice(automationProduct, ProductType.Automation)
+    const isSubscribedToVoiceOrSms = !!voiceProduct || !!smsProduct || true
 
     const contact = useAppSelector(getContact)?.toJS() as BillingContact
     const card = useAppSelector(creditCard)
@@ -107,6 +113,21 @@ const PaymentInformationView = ({
             } else if (isAAOLegacy) {
                 toolTipContent =
                     'To change billing frequency, update Automation to a non-legacy plan'
+            } else if (isSubscribedToVoiceOrSms) {
+                toolTipContent = (
+                    <>
+                        To switch from monthly to yearly,{' '}
+                        <span
+                            className={css.link}
+                            onClick={() =>
+                                contactBilling(TicketPurpose.MONTHLY_TO_YEARLY)
+                            }
+                        >
+                            get in touch
+                        </span>{' '}
+                        with our team.
+                    </>
+                )
             } else {
                 return (
                     <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>
@@ -120,7 +141,7 @@ const PaymentInformationView = ({
                     To switch from yearly to monthly billing, please{' '}
                     <span
                         className={css.link}
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
                     >
                         get in touch
                     </span>{' '}
@@ -144,7 +165,13 @@ const PaymentInformationView = ({
                 </Tooltip>
             </>
         )
-    }, [interval, isAAOLegacy, isSubscribedToHelpdeskStarter, setIsModalOpen])
+    }, [
+        interval,
+        isSubscribedToHelpdeskStarter,
+        isAAOLegacy,
+        isSubscribedToVoiceOrSms,
+        contactBilling,
+    ])
 
     return (
         <div className={css.container}>

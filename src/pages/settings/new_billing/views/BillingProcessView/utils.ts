@@ -16,6 +16,7 @@ export type setNotificationProps = {
     periodEnd: string
     interval?: PlanInterval
     onClick: () => void
+    isFreeTrial: boolean
 }
 
 export const setHelpdeskNotification = ({
@@ -23,11 +24,15 @@ export const setHelpdeskNotification = ({
     newProduct,
     periodEnd,
     onClick,
-}: setNotificationProps): Notification => {
+    isFreeTrial,
+}: setNotificationProps): Notification | null => {
     // Set the notification message
     let message = ''
     let buttonLabel = ''
     if ((oldProduct?.amount || 0) > (newProduct?.amount || 0)) {
+        if (isFreeTrial) {
+            return null
+        }
         // Downgrade Helpdesk subscription
         message = `Your subscription will change to <strong>${
             newProduct?.name ?? ''
@@ -67,7 +72,8 @@ export const setAutomationNotification = ({
     periodEnd,
     interval = PlanInterval.Month,
     onClick,
-}: setNotificationProps): Notification => {
+    isFreeTrial,
+}: setNotificationProps): Notification | null => {
     // Set the notification message
     let message = ''
     let buttonLabel = ''
@@ -80,6 +86,9 @@ export const setAutomationNotification = ({
         // Downgrade Automation subscription
         oldProduct.amount > (newProduct?.amount ?? 0)
     ) {
+        if (isFreeTrial) {
+            return null
+        }
         message = `Your Automation subscription will change to <strong>${
             newProduct?.num_quota_tickets ?? 0
         } ${

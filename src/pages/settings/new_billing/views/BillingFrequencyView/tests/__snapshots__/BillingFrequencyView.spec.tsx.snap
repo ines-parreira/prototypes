@@ -209,12 +209,6 @@ exports[`UsageAndPlansView should render 1`] = `
             class="container disabled"
           >
             <div
-              class="legalText"
-              data-testid="legalText"
-            >
-              You agree to be charged in accordance with the subscription plan until you cancel your subscription. Previous charges won't be refunded when you cancel unless it is legally required. Your payment data is encrypted and secure. All amounts shown are in USD.
-            </div>
-            <div
               class="button"
             >
               <button

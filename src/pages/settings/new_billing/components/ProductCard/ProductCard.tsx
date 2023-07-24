@@ -15,9 +15,10 @@ import {
     getCheapestProductPrices,
     getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
-import {CurrentUsagePerProduct} from 'state/billing/types'
+import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
 
-import Alert from 'pages/common/components/Alert/Alert'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {isAAOLegacyPrice, isTrialVoiceOrSMSPrice} from 'models/billing/utils'
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
@@ -27,7 +28,7 @@ export type ProductCardProps = {
     type: ProductType
     product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
     usage?: CurrentUsagePerProduct | null
-    banner?: string
+    banner?: BillingBanner
     isDisabled: boolean
 }
 
@@ -35,7 +36,7 @@ const ProductCard = ({
     type,
     product,
     usage,
-    banner = '',
+    banner,
     isDisabled,
 }: ProductCardProps) => {
     const cheapestPrices = useAppSelector(getCheapestProductPrices)
@@ -45,6 +46,7 @@ const ProductCard = ({
     const {className, canduOverageStatus} = useMemo(() => {
         if (
             !usage ||
+            !product?.num_quota_tickets ||
             usage.data.num_tickets < 0.8 * (product?.num_quota_tickets || 0)
         ) {
             return {
@@ -87,27 +89,41 @@ const ProductCard = ({
         if (!isActive) {
             return <Badge text="Inactive" type={BadgeType.Info} />
         }
+
+        if (product && isTrialVoiceOrSMSPrice(product, type)) {
+            return (
+                <>
+                    <strong>
+                        ${(product?.extra_ticket_cost ?? 0).toFixed(2)}
+                    </strong>{' '}
+                    {PRODUCT_INFO[type].perTicket}
+                </>
+            )
+        }
+
         return (
             <>
                 {type === ProductType.Helpdesk && <>{planName} - </>}
                 <b>{formatAmount(price ?? 0, currency)}</b>/{interval}
             </>
         )
-    }, [interval, isActive, planName, price, currency, type])
+    }, [isActive, product, type, planName, price, currency, interval])
 
     const subscribeContainer = useMemo(() => {
         return (
             <div className={css.subscribeContainer}>
-                <div>
-                    Starting at{' '}
-                    <b>
-                        {formatAmount(
-                            (cheapestPrices[type]?.amount ?? 0) / 100,
-                            currency
-                        )}
-                    </b>
-                    /{interval}
-                </div>
+                {interval && (
+                    <div>
+                        Starting at{' '}
+                        <b>
+                            {formatAmount(
+                                (cheapestPrices[type]?.amount ?? 0) / 100,
+                                currency
+                            )}
+                        </b>
+                        /{interval}
+                    </div>
+                )}
                 <Button
                     intent="primary"
                     isDisabled={isDisabled}
@@ -133,14 +149,25 @@ const ProductCard = ({
         [history, type]
     )
 
-    const counter = useMemo(
-        () => (
+    const counter = useMemo(() => {
+        if (product && isAAOLegacyPrice(product, type)) {
+            return null
+        }
+
+        return (
             <div className={classNames(css.counter)}>
-                <div className={className}>
-                    {usage ? formatNumTickets(usage.data.num_tickets) : 0} of{' '}
-                    {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
-                    {PRODUCT_INFO[type].counter} used
-                </div>
+                {product && isTrialVoiceOrSMSPrice(product, type) ? (
+                    <div className={className}>
+                        {usage ? formatNumTickets(usage.data.num_tickets) : 0}{' '}
+                        {PRODUCT_INFO[type].counter} used
+                    </div>
+                ) : (
+                    <div className={className}>
+                        {usage ? formatNumTickets(usage.data.num_tickets) : 0}{' '}
+                        of {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
+                        {PRODUCT_INFO[type].counter} used
+                    </div>
+                )}
                 <i className="material-icons" id={`info_${type}`}>
                     info_outlined
                 </i>
@@ -160,10 +187,8 @@ const ProductCard = ({
                     </a>
                 </Tooltip>
             </div>
-        ),
-
-        [product, type, usage, className]
-    )
+        )
+    }, [product, type, usage, className])
 
     return (
         <div className={css.container}>
@@ -190,17 +215,20 @@ const ProductCard = ({
                     {banner && (
                         <Alert
                             icon
+                            type={banner.type}
                             customActions={
-                                <a
-                                    href={PRODUCT_INFO[type].bannerLink}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Set up {PRODUCT_INFO[type].title}
-                                </a>
+                                banner.type === AlertType.Info && (
+                                    <a
+                                        href={PRODUCT_INFO[type].bannerLink}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Set up {PRODUCT_INFO[type].title}
+                                    </a>
+                                )
                             }
                         >
-                            {banner}
+                            {banner.description}
                         </Alert>
                     )}
                 </div>

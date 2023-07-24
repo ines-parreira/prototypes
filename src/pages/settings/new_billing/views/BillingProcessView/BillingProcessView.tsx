@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {Link, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
 
 import {
@@ -13,7 +13,6 @@ import {fetchCreditCard} from 'state/billing/actions'
 import Button from 'pages/common/components/button/Button'
 import {TicketPurpose} from 'state/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
-import Tooltip from 'pages/common/components/Tooltip'
 import Card from '../../components/Card'
 import BackLink from '../../components/BackLink'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
@@ -22,9 +21,7 @@ import SummaryTotal from '../../components/SummaryTotal'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection'
 import SummaryFooter from '../../components/SummaryFooter'
 import {
-    BILLING_PAYMENT_FREQUENCY_PATH,
     ENTERPRISE_PRICE_ID,
-    INTERVAL,
     PRICING_DETAILS_URL,
     PRODUCT_INFO,
 } from '../../constants'
@@ -107,9 +104,6 @@ const BillingProcessView = ({
         filterByInterval: true,
     })
 
-    const isIntervalMonthly = interval === INTERVAL.Month
-    const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
-
     const voiceOrSMSChanged =
         (selectedPlans[ProductType.Voice].isSelected &&
             voiceProduct?.price_id !==
@@ -177,33 +171,6 @@ const BillingProcessView = ({
         <div className={css.container}>
             <div className={css.header}>
                 <BackLink />
-
-                <div className={css.generalInfoItem}>
-                    <span>
-                        Billed {isIntervalMonthly ? 'monthly' : 'yearly'}
-                    </span>
-                    {isSubscribedToHelpdeskStarter ? (
-                        <div>
-                            <span
-                                className={css.disabledText}
-                                id="update-billing-frequency"
-                            >
-                                Update
-                            </span>
-                            <Tooltip
-                                target="update-billing-frequency"
-                                placement="top"
-                                className={css.tooltip}
-                                autohide={false}
-                            >
-                                To change billing frequency, upgrade your
-                                Helpdesk plan to Basic or higher
-                            </Tooltip>
-                        </div>
-                    ) : (
-                        <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
-                    )}
-                </div>
             </div>
             {voiceOrSMSChanged && (
                 <Alert className={css.alert} icon>

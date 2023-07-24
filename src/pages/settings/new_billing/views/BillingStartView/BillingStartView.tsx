@@ -6,7 +6,7 @@ import moment from 'moment'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {TicketPurpose} from 'state/billing/types'
+import {BillingBanner, TicketPurpose} from 'state/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCurrentAccountState,
@@ -17,6 +17,9 @@ import {
     getCurrentAutomationProduct,
     getCurrentHelpdeskProduct,
     getCurrentProductsUsage,
+    getCurrentSMSProduct,
+    getCurrentVoiceProduct,
+    getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
 import {
     Notification,
@@ -27,6 +30,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {fetchCurrentProductsUsage} from 'state/billing/actions'
 import Loader from 'pages/common/components/Loader/Loader'
+import {AlertType} from 'pages/common/components/Alert/Alert'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -58,6 +62,9 @@ const BillingStartView = () => {
     const isTrialingSubscription = useAppSelector(isTrialing)
     const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
     const automationProduct = useAppSelector(getCurrentAutomationProduct)
+    const voiceProduct = useAppSelector(getCurrentVoiceProduct)
+    const smsProduct = useAppSelector(getCurrentSMSProduct)
+    const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
 
     const hasAccessToNewBilling: boolean | undefined =
         useFlags()[FeatureFlagKey.NewBillingInterface]
@@ -81,8 +88,9 @@ const BillingStartView = () => {
             ).format(DATE_FORMAT),
         [currentUsage]
     )
-    const [voiceBanner, setVoiceBanner] = useState('')
-    const [smsBanner, setSMSBanner] = useState('')
+    const [helpdeskBanner, setHelpdeskBanner] = useState<BillingBanner>()
+    const [voiceBanner, setVoiceBanner] = useState<BillingBanner>()
+    const [smsBanner, setSMSBanner] = useState<BillingBanner>()
 
     const contactBilling = useCallback(
         (ticketPurpose: TicketPurpose) => {
@@ -137,6 +145,12 @@ const BillingStartView = () => {
                         `Request:`,
                         message,
                     ].join('\n')
+                case TicketPurpose.MONTHLY_TO_YEARLY:
+                    return [
+                        `Billing request: Subscription change from Monthly to Yearly with Voice/SMS`,
+                        `Request:`,
+                        message,
+                    ].join('\n')
                 case TicketPurpose.CONTACT_US:
                 default:
                     return [
@@ -163,6 +177,17 @@ const BillingStartView = () => {
     }, [currentUsage, dispatch])
 
     useEffect(() => {
+        if (isCurrentHelpdeskLegacy) {
+            setHelpdeskBanner({
+                description: (
+                    <>
+                        You are subscribed to a legacy plan that expires on{' '}
+                        <b>{periodEnd}</b> and you'll need to update your plan.
+                    </>
+                ),
+                type: AlertType.Error,
+            })
+        }
         if (currentUsage?.voice) {
             const subscriptionStartDate = moment(
                 currentUsage.voice.meta.subscription_start_datetime
@@ -172,7 +197,10 @@ const BillingStartView = () => {
                 now.diff(subscriptionStartDate, 'hours') < 24
 
             if (isSubscriptionNew) {
-                setVoiceBanner('Get started with your Voice plan')
+                setVoiceBanner({
+                    description: 'Get started with your Voice plan',
+                    type: AlertType.Info,
+                })
                 void dispatch(
                     notify({
                         message: `Your Voice subscription has been activated!`,
@@ -200,7 +228,10 @@ const BillingStartView = () => {
                 now.diff(subscriptionStartDate, 'hours') < 24
 
             if (isSubscriptionNew) {
-                setSMSBanner('Get started with your SMS plan')
+                setSMSBanner({
+                    description: 'Get started with your SMS plan',
+                    type: AlertType.Info,
+                })
                 void dispatch(
                     notify({
                         message: `Your SMS subscription has been activated!`,
@@ -219,7 +250,7 @@ const BillingStartView = () => {
                 )
             }
         }
-    }, [currentUsage, dispatch])
+    }, [currentUsage, dispatch, isCurrentHelpdeskLegacy, periodEnd])
 
     if (!hasAccessToNewBilling) {
         return null
@@ -254,18 +285,21 @@ const BillingStartView = () => {
                     <Switch>
                         <Route exact path={BILLING_BASE_PATH}>
                             <UsageAndPlansView
-                                setIsModalOpen={setIsModalOpen}
+                                contactBilling={contactBilling}
                                 periodEnd={periodEnd}
                                 currentUsage={currentUsage}
                                 voiceBanner={voiceBanner}
                                 smsBanner={smsBanner}
+                                helpdeskBanner={helpdeskBanner}
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENT_PATH}>
                             <PaymentInformationView
-                                setIsModalOpen={setIsModalOpen}
+                                contactBilling={contactBilling}
                                 helpdeskProduct={helpdeskProduct}
                                 automationProduct={automationProduct}
+                                voiceProduct={voiceProduct}
+                                smsProduct={smsProduct}
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>

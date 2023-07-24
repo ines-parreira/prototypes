@@ -69,7 +69,7 @@ exports[`UsageAndPlansView should render 1`] = `
           class="body"
         >
           <div
-            data-candu-id="billing-helpdesk-description-danger"
+            data-candu-id="billing-helpdesk-description-info"
           />
         </div>
         <div
@@ -79,14 +79,6 @@ exports[`UsageAndPlansView should render 1`] = `
             <div
               class="subscribeContainer"
             >
-              <div>
-                Starting at
-                 
-                <b>
-                  $0
-                </b>
-                /
-              </div>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
@@ -128,7 +120,7 @@ exports[`UsageAndPlansView should render 1`] = `
           class="body"
         >
           <div
-            data-candu-id="billing-automation-description-danger"
+            data-candu-id="billing-automation-description-info"
           />
         </div>
         <div
@@ -138,14 +130,6 @@ exports[`UsageAndPlansView should render 1`] = `
             <div
               class="subscribeContainer"
             >
-              <div>
-                Starting at
-                 
-                <b>
-                  $0
-                </b>
-                /
-              </div>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
@@ -197,14 +181,6 @@ exports[`UsageAndPlansView should render 1`] = `
             <div
               class="subscribeContainer"
             >
-              <div>
-                Starting at
-                 
-                <b>
-                  $0
-                </b>
-                /
-              </div>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
@@ -256,14 +232,6 @@ exports[`UsageAndPlansView should render 1`] = `
             <div
               class="subscribeContainer"
             >
-              <div>
-                Starting at
-                 
-                <b>
-                  $0
-                </b>
-                /
-              </div>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
@@ -279,7 +247,7 @@ exports[`UsageAndPlansView should render 1`] = `
     <div
       class="unsubscribe"
     >
-      If you have any questions or if you want to unsubscribe, please
+      If you have any questions regarding your subscription, please
        
       <span
         class="text-primary contactUs"

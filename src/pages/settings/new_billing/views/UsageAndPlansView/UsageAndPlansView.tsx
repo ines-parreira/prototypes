@@ -18,7 +18,11 @@ import {
     getCurrentVoiceProduct,
 } from 'state/billing/selectors'
 import {ProductType} from 'models/billing/types'
-import {CurrentProductsUsages} from 'state/billing/types'
+import {
+    BillingBanner,
+    CurrentProductsUsages,
+    TicketPurpose,
+} from 'state/billing/types'
 import BillingScheduledDowngrades from 'pages/settings/billing/BillingScheduledDowngrades'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
@@ -37,19 +41,21 @@ import ProductCard from '../../components/ProductCard'
 import css from './UsageAndPlansView.less'
 
 type UsageAndPlansViewProps = {
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    contactBilling: (ticketPurpose: TicketPurpose) => void
     periodEnd: string
     currentUsage: CurrentProductsUsages | null
-    voiceBanner?: string
-    smsBanner?: string
+    voiceBanner?: BillingBanner
+    smsBanner?: BillingBanner
+    helpdeskBanner?: BillingBanner
 }
 
 const UsageAndPlansView = ({
-    setIsModalOpen,
+    contactBilling,
     periodEnd,
     currentUsage,
     smsBanner,
     voiceBanner,
+    helpdeskBanner,
 }: UsageAndPlansViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -62,6 +68,7 @@ const UsageAndPlansView = ({
 
     const isIntervalMonthly = interval === INTERVAL.Month
     const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
+    const isSubscribedToVoiceOrSMS = !!voiceProduct || !!smsProduct
 
     const isTrialingSubscription = useAppSelector(isTrialing)
     const trialingStart = moment(
@@ -208,6 +215,35 @@ const UsageAndPlansView = ({
                                 Helpdesk plan to Basic or higher
                             </Tooltip>
                         </div>
+                    ) : isSubscribedToVoiceOrSMS &&
+                      interval === INTERVAL.Month ? (
+                        <div>
+                            <span
+                                className={css.disabledText}
+                                id="update-billing-frequency"
+                            >
+                                Update
+                            </span>
+                            <Tooltip
+                                target="update-billing-frequency"
+                                placement="top"
+                                className={css.tooltip}
+                                autohide={false}
+                            >
+                                To switch from monthly to yearly,{' '}
+                                <span
+                                    className={css.link}
+                                    onClick={() =>
+                                        contactBilling(
+                                            TicketPurpose.MONTHLY_TO_YEARLY
+                                        )
+                                    }
+                                >
+                                    get in touch
+                                </span>{' '}
+                                with our team.
+                            </Tooltip>
+                        </div>
                     ) : (
                         <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
                     )}
@@ -219,6 +255,7 @@ const UsageAndPlansView = ({
                     type={ProductType.Helpdesk}
                     product={helpdeskProduct}
                     usage={currentUsage?.helpdesk}
+                    banner={helpdeskBanner}
                     isDisabled={isSubscribedToHelpdeskStarter}
                 />
                 <ProductCard
@@ -243,10 +280,10 @@ const UsageAndPlansView = ({
                 />
             </div>
             <div className={css.unsubscribe}>
-                If you have any questions or if you want to unsubscribe, please{' '}
+                If you have any questions regarding your subscription, please{' '}
                 <span
                     className={classNames('text-primary', css.contactUs)}
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
                 >
                     contact us
                 </span>

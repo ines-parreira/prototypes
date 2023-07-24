@@ -1,6 +1,7 @@
 import {Map} from 'immutable'
 
 import {Product, ProductType} from 'models/billing/types'
+import {AlertType} from 'pages/common/components/Alert/Alert'
 
 export type BillingContactImmutable = Map<any, any>
 
@@ -111,6 +112,12 @@ export type BillingState = {
 export enum TicketPurpose {
     ENTERPRISE = 'enterprise',
     YEARLY_TO_MONTHLY = 'yearlyToMonthly',
+    MONTHLY_TO_YEARLY = 'monthlyToYearly',
     ERROR = 'error',
     CONTACT_US = 'contactUs',
+}
+
+export type BillingBanner = {
+    description: string | JSX.Element
+    type: AlertType
 }

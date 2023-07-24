@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {useHistory} from 'react-router-dom'
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
 
@@ -27,6 +28,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {isStarterTierPrice} from 'models/billing/utils'
 import {
+    BILLING_BASE_PATH,
     BILLING_SUPPORT_EMAIL,
     ENTERPRISE_PRICE_ID,
     ZAPIER_BILLING_HOOK,
@@ -98,6 +100,7 @@ const AutomationSubscriptionModal = ({
     fade = true,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const history = useHistory()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
     const helpdeskPriceIds = useAppSelector(getHelpdeskPrices).map(
@@ -146,6 +149,7 @@ const AutomationSubscriptionModal = ({
                     ...currentPriceIds,
                     selectedPrice.price_id,
                 ]).then(() => onSubscribe && onSubscribe())
+            history.push(BILLING_BASE_PATH)
         } else {
             helpdeskPrice?.addons &&
                 handleSubscriptionUpdate([

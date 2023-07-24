@@ -18,19 +18,6 @@ exports[`UsageAndPlansView should render 1`] = `
         </i>
         Back
       </div>
-      <div
-        class="generalInfoItem"
-      >
-        <span>
-          Billed 
-          monthly
-        </span>
-        <a
-          href="/app/settings/billing/payment/frequency"
-        >
-          Update
-        </a>
-      </div>
     </div>
     <div
       class="cards"

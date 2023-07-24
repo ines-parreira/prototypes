@@ -19,7 +19,7 @@ describe('UsageAndPlansView', () => {
         const {container} = render(
             <Provider store={store}>
                 <UsageAndPlansView
-                    setIsModalOpen={jest.fn()}
+                    contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={currentProductsUsage}
                 />

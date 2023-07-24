@@ -57,7 +57,7 @@ export const useCreditCard = () => {
     })
 
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
-    const [isContactFetched, setIsContactFetched] = useState(true)
+    const [isContactFetched, setIsContactFetched] = useState(false)
     const [isStripeLoaded, setIsStripeLoaded] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
