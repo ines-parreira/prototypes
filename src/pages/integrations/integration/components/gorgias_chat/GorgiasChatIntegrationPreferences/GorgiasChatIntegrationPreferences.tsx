@@ -541,7 +541,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             previewChildren = (
                 <OptionalEmailCapturePreview
                     key="optional-email-capture"
-                    conversationColor={conversationColor}
+                    mainColor={mainColor}
                     chatTitle={chatTitle}
                     language={language}
                 />
@@ -554,7 +554,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             previewChildren = (
                 <RequiredEmailCapturePreview
                     key="required-email-capture"
-                    conversationColor={conversationColor}
+                    mainColor={mainColor}
                     language={language}
                     name={chatTitle}
                 />
@@ -570,7 +570,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             previewChildren = (
                 <AutoResponderPreview
                     key="auto-responder"
-                    conversationColor={conversationColor}
+                    mainColor={mainColor}
                     chatTitle={chatTitle}
                     language={language}
                     autoResponderReply={autoResponderReply}

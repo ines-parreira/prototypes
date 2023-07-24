@@ -12,7 +12,7 @@ import BotMessages from './BotMessages'
 type Props = {
     name: Maybe<string>
     language: Maybe<string>
-    conversationColor: string
+    mainColor: string
 }
 
 export default class RequiredEmailCapture extends React.Component<Props> {
@@ -21,8 +21,8 @@ export default class RequiredEmailCapture extends React.Component<Props> {
     }
 
     render() {
-        const {conversationColor, name, language} = this.props
-        const contrastColor = getTextColorBasedOnBackground(conversationColor)
+        const {mainColor, name, language} = this.props
+        const contrastColor = getTextColorBasedOnBackground(mainColor)
 
         const translatedTexts =
             GORGIAS_CHAT_WIDGET_TEXTS[
@@ -51,9 +51,7 @@ export default class RequiredEmailCapture extends React.Component<Props> {
                                 type="email"
                                 readOnly
                             />
-                            <button
-                                style={{backgroundColor: conversationColor}}
-                            >
+                            <button style={{backgroundColor: mainColor}}>
                                 <i
                                     className="material-icons"
                                     style={{color: contrastColor}}

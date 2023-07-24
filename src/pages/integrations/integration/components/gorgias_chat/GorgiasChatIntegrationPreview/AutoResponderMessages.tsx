@@ -9,6 +9,7 @@ import CustomerInitialMessages from './CustomerInitialMessages'
 
 type Props = {
     conversationColor: string
+    mainColor: string
     chatTitle?: string
     language?: string
     autoResponderReply?: string
@@ -20,6 +21,7 @@ type Props = {
 const AutoResponderMessages: React.FC<Props> = ({
     currentUser,
     avatar,
+    mainColor,
     conversationColor,
     chatTitle,
     language,
@@ -32,7 +34,7 @@ const AutoResponderMessages: React.FC<Props> = ({
             messages={['Hi, could you give me an update on my order status?']}
         />
         <AutoResponder
-            conversationColor={conversationColor}
+            mainColor={mainColor}
             chatTitle={chatTitle}
             language={language}
             autoResponderReply={autoResponderReply}

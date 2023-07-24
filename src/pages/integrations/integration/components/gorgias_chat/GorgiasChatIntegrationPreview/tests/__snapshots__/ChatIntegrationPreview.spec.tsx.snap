@@ -51,8 +51,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     <AutoResponder
       autoResponderReply="reply-shortly"
       chatTitle="My little chat integration"
-      conversationColor="#456789"
       language="en-US"
+      mainColor="#123456"
     />
   </ChatIntegrationPreview>
 </ContextProvider>
@@ -249,8 +249,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <OptionalEmailCapture
       chatTitle="My little chat integration"
-      conversationColor="#456789"
       language="en-US"
+      mainColor="#123456"
     />
   </ChatIntegrationPreview>
 </ContextProvider>
@@ -305,8 +305,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     renderFooter={false}
   >
     <RequiredEmailCapture
-      conversationColor="#456789"
       language="en-US"
+      mainColor="#123456"
       name="My little chat integration"
     />
   </ChatIntegrationPreview>

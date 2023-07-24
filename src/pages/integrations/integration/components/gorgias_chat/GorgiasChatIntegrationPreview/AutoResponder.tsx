@@ -12,7 +12,7 @@ import BotMessages from './BotMessages'
 import EmailCaptureMessage from './EmailCaptureMessage'
 
 type Props = {
-    conversationColor: string
+    mainColor: string
     chatTitle?: string
     language?: string
     autoResponderReply?: string
@@ -48,7 +48,7 @@ export default class AutoResponder extends Component<Props> {
 
     render() {
         const {
-            conversationColor,
+            mainColor,
             chatTitle,
             language,
             isEmailCaptureEnabled = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
@@ -59,7 +59,7 @@ export default class AutoResponder extends Component<Props> {
             <BotMessages chatTitle={chatTitle} messages={[message]}>
                 {isEmailCaptureEnabled && (
                     <EmailCaptureMessage
-                        conversationColor={conversationColor}
+                        mainColor={mainColor}
                         language={language}
                     />
                 )}

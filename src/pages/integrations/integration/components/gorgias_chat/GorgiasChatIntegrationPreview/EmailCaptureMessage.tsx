@@ -10,20 +10,17 @@ import {getTextColorBasedOnBackground} from '../../gorgias_chat/GorgiasChatInteg
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    conversationColor: string
+    mainColor: string
     language?: string
 }
 
-const EmailCaptureMessage: React.FC<Props> = ({
-    conversationColor,
-    language,
-}) => {
+const EmailCaptureMessage: React.FC<Props> = ({mainColor, language}) => {
     const translatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
             language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
         ]
 
-    const contrastColor = getTextColorBasedOnBackground(conversationColor)
+    const contrastColor = getTextColorBasedOnBackground(mainColor)
 
     return (
         <div className={css.optionalEmailCapture}>
@@ -37,7 +34,7 @@ const EmailCaptureMessage: React.FC<Props> = ({
                     type="email"
                     readOnly
                 />
-                <button style={{backgroundColor: conversationColor}}>
+                <button style={{backgroundColor: mainColor}}>
                     <i
                         className="material-icons"
                         style={{color: contrastColor}}

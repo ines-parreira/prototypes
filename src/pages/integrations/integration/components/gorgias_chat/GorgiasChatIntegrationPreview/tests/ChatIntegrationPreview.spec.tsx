@@ -141,7 +141,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <OptionalEmailCapture
-                            conversationColor={conversationColor}
+                            mainColor={mainColor}
                             chatTitle="My little chat integration"
                             language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
                         />
@@ -157,7 +157,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} renderFooter={false}>
                         <RequiredEmailCapture
-                            conversationColor={conversationColor}
+                            mainColor={mainColor}
                             language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
                             name="My little chat integration"
                         />
@@ -185,7 +185,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} renderFooter={false}>
                         <AutoResponder
-                            conversationColor={conversationColor}
+                            mainColor={mainColor}
                             language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
                             chatTitle="My little chat integration"
                             autoResponderReply={

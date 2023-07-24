@@ -406,9 +406,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               />
               <AutoResponder
                 autoResponderReply="reply-dynamic"
-                conversationColor="#08d123"
                 isEmailCaptureEnabled={true}
                 language="en-US"
+                mainColor="#789c5d"
               />
             </ChatIntegrationPreviewProvider>
           </ChatIntegrationPreviewContent>
@@ -964,9 +964,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               />
               <AutoResponder
                 autoResponderReply="reply-dynamic"
-                conversationColor="#08d123"
                 isEmailCaptureEnabled={true}
                 language="en-US"
+                mainColor="#789c5d"
               />
             </ChatIntegrationPreviewProvider>
           </ChatIntegrationPreviewContent>

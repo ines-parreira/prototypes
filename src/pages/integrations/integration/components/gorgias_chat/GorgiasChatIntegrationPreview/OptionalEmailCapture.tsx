@@ -9,13 +9,13 @@ import EmailCaptureMessage from './EmailCaptureMessage'
 import BotMessages from './BotMessages'
 
 type Props = {
-    conversationColor: string
+    mainColor: string
     chatTitle: string
     language?: string
 }
 
 const OptionalEmailCapture: React.FC<Props> = ({
-    conversationColor,
+    mainColor,
     chatTitle,
     language,
 }) => {
@@ -29,10 +29,7 @@ const OptionalEmailCapture: React.FC<Props> = ({
             chatTitle={chatTitle}
             messages={[translatedTexts.emailCaptureOnlineTriggerText]}
         >
-            <EmailCaptureMessage
-                conversationColor={conversationColor}
-                language={language}
-            />
+            <EmailCaptureMessage mainColor={mainColor} language={language} />
         </BotMessages>
     )
 }
