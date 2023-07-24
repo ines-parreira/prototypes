@@ -34,15 +34,6 @@ describe('StatsNavbarView', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render the new badge', () => {
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <StatsNavbarView />
-            </Provider>
-        )
-        expect(screen.getByText('new')).toBeInTheDocument()
-    })
-
     it('should render the link to busiest times of days', () => {
         render(
             <Provider store={mockStore(defaultState)}>

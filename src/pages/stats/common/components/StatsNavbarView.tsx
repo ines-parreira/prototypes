@@ -63,12 +63,6 @@ export default function StatsNavbarView() {
                         to="/app/stats/support-performance-overview"
                     >
                         Overview
-                        <Badge
-                            type={ColorType.Blue}
-                            className={cssNavbar.badge}
-                        >
-                            new
-                        </Badge>
                     </NavbarLink>
 
                     <NavbarLink
