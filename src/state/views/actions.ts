@@ -4,7 +4,6 @@ import _chunk from 'lodash/chunk'
 import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
-import _noop from 'lodash/noop'
 import {isEmpty} from 'lodash'
 
 import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
@@ -429,9 +428,6 @@ export function fetchViewItems(
         )
 
         if (
-            launchDarklyClient.variation(
-                FeatureFlagKey.ElasticsearchTicketSearch
-            ) &&
             activeView.get('search') != null &&
             activeView.get('type') === ViewType.TicketList
         ) {
@@ -448,9 +444,6 @@ export function fetchViewItems(
                 cancelToken,
             })
         } else if (
-            launchDarklyClient.variation(
-                FeatureFlagKey.ElasticsearchCustomerSearch
-            ) &&
             activeView.get('search') != null &&
             activeViewType === ViewType.CustomerList
         ) {
@@ -507,28 +500,6 @@ export function fetchViewItems(
                     ? {...options, headers: {'x-gorgias-search-engine': 'ES'}}
                     : options
             )
-        }
-
-        // This is a "shadow" request to the new ES ticket search endpoint.
-        // It's a "fire and forget" request with a simplified payload to
-        // allow us to measure the performance of the endpoint.
-        if (
-            launchDarklyClient.variation(
-                FeatureFlagKey.ElasticsearchSearchLoadTest
-            ) &&
-            !launchDarklyClient.variation(
-                FeatureFlagKey.ElasticsearchTicketSearch
-            ) &&
-            activeView.get('search') != null &&
-            activeView.get('type') === ViewType.TicketList &&
-            !direction &&
-            !cursor
-        ) {
-            void searchTickets({
-                search: activeView.get('search') as string,
-                filters: activeView.get('filters') as string,
-                cancelToken,
-            }).catch(_noop)
         }
 
         searchRank?.endScenario()

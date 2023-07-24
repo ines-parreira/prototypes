@@ -3,20 +3,14 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
 
 import UserList from '../List'
-
-mockFlags({
-    [FeatureFlagKey.AgentsAvailabilityStatus]: true,
-})
 
 jest.mock('models/agents/resources', () => ({
     fetchAgents: jest.fn(() => () => ({})),

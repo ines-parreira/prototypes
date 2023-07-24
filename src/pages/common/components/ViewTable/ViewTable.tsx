@@ -7,7 +7,6 @@ import {parse, stringify} from 'qs'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {ViewVisibility} from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -330,14 +329,8 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     render() {
-        const {activeView, isSearch, isUpdate, type, className, flags} =
-            this.props
-        const isESCustomerSearchEnabled =
-            !!flags[FeatureFlagKey.ElasticsearchCustomerSearch]
-        const hasFilters =
-            type === 'ticket' ||
-            !isSearch ||
-            (isSearch && !isESCustomerSearchEnabled)
+        const {activeView, isSearch, isUpdate, type, className} = this.props
+        const hasFilters = type === 'ticket'
 
         if (activeView.isEmpty()) {
             return <Loader />

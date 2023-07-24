@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CursorDirection} from 'models/api/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -13,7 +12,6 @@ import {RoleLabel} from 'pages/common/utils/labels'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {deleteAgent} from 'state/agents/actions'
 import {toJS} from 'utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import {getAvailabilityStatus} from './utils'
 
@@ -37,8 +35,6 @@ const Row = ({
     refreshData,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const isAgentAvailabilityStatusEnabled =
-        useFlags()[FeatureFlagKey.AgentsAvailabilityStatus]
 
     const agent: User = agentMap.toJS()
 
@@ -70,7 +66,7 @@ const Row = ({
                         </p>
                     )}
                 </span>
-                {isAgentAvailabilityStatusEnabled && availabilityStatus && (
+                {availabilityStatus && (
                     <Status {...availabilityStatus} className={css.status} />
                 )}
                 <span className={css.role}>

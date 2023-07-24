@@ -5,7 +5,6 @@ import {Container} from 'reactstrap'
 import {List, Map} from 'immutable'
 import {useAsyncFn, useEffectOnce} from 'react-use'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {AgentsRelationshipsParam, FetchAgentsOptions} from 'models/agents/types'
@@ -25,7 +24,6 @@ import {getPaginatedAgents} from 'state/agents/selectors'
 import {getAccessSettings} from 'state/currentAccount/selectors'
 import {AccountSettingAccessSignupMode as SignupMode} from 'state/currentAccount/types'
 import {toImmutable} from 'utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 
 import {isStarterTierPrice} from 'models/billing/utils'
@@ -40,8 +38,6 @@ const UserList = () => {
 
     const [meta, setMeta] = useState<CursorMeta | null>(null)
     const [currentCursor, setCurrentCursor] = useState<string | null>(null)
-    const isAgentAvailabilityStatusEnabled =
-        useFlags()[FeatureFlagKey.AgentsAvailabilityStatus]
 
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getPaginatedAgents)
@@ -145,9 +141,7 @@ const UserList = () => {
                             User
                         </span>
                         <span className={cssRow.meta} />
-                        {isAgentAvailabilityStatusEnabled && (
-                            <span className={cssRow.status}>Status</span>
-                        )}
+                        <span className={cssRow.status}>Status</span>
                         <span className={cssRow.role}>Role</span>
                         <span className={cssRow.twoFa}>2FA enabled</span>
                         <span className={cssRow.delete} />

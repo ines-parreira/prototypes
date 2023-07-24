@@ -6,7 +6,6 @@ import {Location} from 'history'
 import _identity from 'lodash/identity'
 import {stringify} from 'qs'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {mockSearchRank} from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
 import {view as fixtureView} from 'fixtures/views'
@@ -718,19 +717,6 @@ describe('<ViewTable />', () => {
                 />
             )
             expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('should not render the view filters for ES customer search', () => {
-            const {queryByText} = render(
-                <ViewTableContainer
-                    {...minProps}
-                    isSearch
-                    flags={{
-                        [FeatureFlagKey.ElasticsearchCustomerSearch]: true,
-                    }}
-                />
-            )
-            expect(queryByText('FilterTopbar')).toBeNull()
         })
     })
 })

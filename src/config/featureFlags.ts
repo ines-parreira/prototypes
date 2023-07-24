@@ -1,5 +1,4 @@
 export enum FeatureFlagKey {
-    AgentsAvailabilityStatus = 'agents-availability-status',
     AnalyticsFilterByTags = 'analytics-filter-by-tags',
     AnalyticsNewAgentPerformance = 'analytics-new-agent-performance',
     AnalyticsPerformanceTips = 'analytics-performance-tips',
@@ -19,9 +18,6 @@ export enum FeatureFlagKey {
     EarlyAdopter = 'early-adopter',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
     EnforceTicketsOnES = 'enforce-tickets-on-es',
-    ElasticsearchCustomerSearch = 'elasticsearch-customer-search',
-    ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
-    ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     FlowsMultiLanguages = 'flows-multi-languages',
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     HelpCenterAndContactFormFlows = 'help-center-and-contact-form-flows',
