@@ -11,8 +11,8 @@ import {
 
 export enum TicketMeasure {
     SurveyScore = 'TicketSatisfactionSurvey.surveyScore',
-    FirstResponseTime = 'TicketMessages.firstResponseTime',
-    ResolutionTime = 'TicketMessages.resolutionTime',
+    FirstResponseTime = 'FirstTicketState.firstResponseTime',
+    ResolutionTime = 'FirstTicketState.resolutionTime',
     MessagesAverage = 'TicketMessages.messagesAverage',
     TicketCount = 'Ticket.ticketCount',
 }
@@ -21,7 +21,7 @@ export enum TicketDimension {
     CreatedDatetime = 'Ticket.createdDatetime',
     ClosedDatetime = 'Ticket.closedDatetime',
     AssigneeUserId = 'Ticket.assigneeUserId',
-    FirstMessageChannel = 'TicketMessages.firstMessageChannel',
+    FirstMessageChannel = 'FirstTicketState.messageChannel',
 }
 
 export enum TicketSegment {
@@ -34,15 +34,15 @@ export enum TicketSegment {
 export enum TicketMember {
     PeriodStart = 'Ticket.periodStart',
     PeriodEnd = 'Ticket.periodEnd',
-    FirstMessageChannel = 'TicketMessages.firstMessageChannel',
+    FirstMessageChannel = 'FirstTicketState.messageChannel',
     CreatedDatetime = 'Ticket.createdDatetime',
-    Integration = 'TicketMessages.integration',
+    Integration = 'FirstTicketState.messageIntegrationId',
     AssigneeUserId = 'Ticket.assigneeUserId',
     IsTrashed = 'Ticket.isTrashed',
     IsSpam = 'Ticket.isSpam',
     Status = 'Ticket.status',
-    FirstHelpdeskMessageDatetime = 'TicketMessages.firstHelpdeskMessageDatetime',
-    FirstHelpdeskMessageUserId = 'TicketMessages.firstHelpdeskMessageUserId',
+    FirstHelpdeskMessageDatetime = 'FirstTicketState.helpdeskMessageDatetime',
+    FirstHelpdeskMessageUserId = 'FirstTicketState.helpdeskMessageUserId',
     Tags = 'Ticket.tags',
 }
 

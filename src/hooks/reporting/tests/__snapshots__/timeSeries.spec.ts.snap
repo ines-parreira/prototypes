@@ -20,14 +20,14 @@ exports[`time series useTicketsClosedTimeSeries should create reporting filters 
         ],
       },
       {
-        "member": "TicketMessages.integration",
+        "member": "FirstTicketState.messageIntegrationId",
         "operator": "equals",
         "values": [
           "1",
         ],
       },
       {
-        "member": "TicketMessages.firstMessageChannel",
+        "member": "FirstTicketState.messageChannel",
         "operator": "equals",
         "values": [
           "email",
@@ -111,14 +111,14 @@ exports[`time series useTicketsCreatedTimeSeries should create reporting filters
         ],
       },
       {
-        "member": "TicketMessages.integration",
+        "member": "FirstTicketState.messageIntegrationId",
         "operator": "equals",
         "values": [
           "1",
         ],
       },
       {
-        "member": "TicketMessages.firstMessageChannel",
+        "member": "FirstTicketState.messageChannel",
         "operator": "equals",
         "values": [
           "email",
