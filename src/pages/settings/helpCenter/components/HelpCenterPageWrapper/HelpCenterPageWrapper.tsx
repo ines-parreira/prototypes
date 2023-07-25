@@ -182,7 +182,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                         }
                     >
                         <i className="material-icons">open_in_new</i>
-                        <span>Preview</span>
+                        <span>View Help Center</span>
                     </Button>
                 </div>
             </PageHeader>

@@ -74,7 +74,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               open_in_new
             </i>
             <span>
-              Preview
+              View Help Center
             </span>
           </button>
         </div>

@@ -189,7 +189,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                         onClick={onPreview}
                     >
                         <ButtonIconLabel icon="open_in_new">
-                            Preview
+                            View Contact Form
                         </ButtonIconLabel>
                     </Button>
                 </div>
