@@ -28,6 +28,7 @@ export enum EventsMeasure {
     lastCampaignDisplay = `CampaignEvents.lastCampaignDisplay`,
     clicks = `CampaignEvents.clicks`,
     clicksRate = `CampaignEvents.clicksRate`,
+    ticketsCreated = `CampaignEvents.ticketsCreated`,
 }
 
 export enum EventsSegment {

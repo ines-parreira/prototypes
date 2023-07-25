@@ -8,14 +8,9 @@ import {assumeMock} from 'utils/testing'
 import {usePostReporting} from 'models/reporting/queries'
 import {useGetTotalsStat} from 'pages/stats/revenue/hooks/stats/useGetTotalsStat'
 import {getMetricFromCubeData} from 'pages/stats/revenue/services/CampaignMetricsHelper'
-import {TicketPerformanceData} from 'pages/stats/revenue/services/types'
-import {useTicketsPerformanceStat} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
-
-jest.mock('pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat')
-const useTicketsPerformanceStatMock = assumeMock(useTicketsPerformanceStat)
 
 describe('useGetTotalsStat', () => {
     const defaultReporting = {
@@ -43,7 +38,7 @@ describe('useGetTotalsStat', () => {
 
     const campaignEventsTotalsData = {
         [CampaignOrderEventsMeasure.impressions]: '1000',
-        [CampaignOrderEventsMeasure.engagement]: '100',
+        [CampaignOrderEventsMeasure.engagement]: '500',
     }
 
     const campaignOrdersTotalsData = {
@@ -55,18 +50,8 @@ describe('useGetTotalsStat', () => {
         [OrderConversionMeasure.gmv]: '3000',
     }
 
-    const campaignTickets = {
-        isFetching: false,
-        isError: false,
-        data: [
-            ['campaign1', 130],
-            ['campaign2', 270],
-        ] as TicketPerformanceData,
-    }
-
     beforeEach(() => {
         jest.resetAllMocks()
-        useTicketsPerformanceStatMock.mockReturnValue(campaignTickets)
         usePostReportingMock.mockReturnValue(defaultReporting)
     })
 

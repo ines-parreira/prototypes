@@ -12,7 +12,6 @@ import {
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CampaignsPerformanceDataset} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
-import {useTicketsPerformanceStat} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat'
 
 const OVERRIDES = {
     select: getDataFromResult,
@@ -72,37 +71,28 @@ export const useGetTableStat = (
         trafficDataQuery,
         OVERRIDES
     )
-    const {
-        isFetching,
-        isError,
-        data: ticketsPerformance,
-    } = useTicketsPerformanceStat(campaignIds, startDate, endDate)
 
     const data = useMemo(() => {
         return transformToCampaignsPerformanceTable(
             eventsPerformance.data,
             ordersPerformance.data,
             eventsOrdersPerformance.data,
-            trafficData.data,
-            ticketsPerformance
+            trafficData.data
         )
     }, [
         eventsPerformance.data,
         ordersPerformance.data,
         eventsOrdersPerformance.data,
         trafficData.data,
-        ticketsPerformance,
     ])
 
     return {
         isFetching:
-            isFetching ||
             eventsPerformance.isFetching ||
             ordersPerformance.isFetching ||
             eventsOrdersPerformance.isFetching ||
             trafficData.isFetching,
         isError:
-            isError ||
             eventsPerformance.isError ||
             ordersPerformance.isError ||
             eventsOrdersPerformance.isError ||

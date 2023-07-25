@@ -32,6 +32,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
           "CampaignEvents.lastCampaignDisplay",
           "CampaignEvents.clicks",
           "CampaignEvents.clicksRate",
+          "CampaignEvents.ticketsCreated",
         ],
         "segments": [
           "CampaignEvents.campaignEventsOnly",
@@ -110,6 +111,8 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
         ],
         "measures": [
           "CampaignOrderEvents.engagement",
+          "CampaignOrderEvents.totalConversionRate",
+          "CampaignOrderEvents.campaignCTR",
         ],
         "timezone": "America/Los_Angeles",
       },
@@ -167,7 +170,7 @@ exports[`useGetTableStat should fill default values if data is missing 2`] = `
   "data": {
     "campaign1": {
       "campaignSalesCount": 0,
-      "clickThroughRate": 67.09401709401709,
+      "clickThroughRate": 0,
       "clicks": 24,
       "clicksConversionRate": 0,
       "clicksConverted": 0,
@@ -175,7 +178,7 @@ exports[`useGetTableStat should fill default values if data is missing 2`] = `
       "clicksRevenue": 0,
       "discountCodesRevenue": 0,
       "discountCodesUsed": 0,
-      "engagement": 157,
+      "engagement": 0,
       "impressions": 234,
       "ticketsConversionRate": 0,
       "ticketsConverted": 0,
@@ -188,7 +191,7 @@ exports[`useGetTableStat should fill default values if data is missing 2`] = `
     },
     "campaign2": {
       "campaignSalesCount": 0,
-      "clickThroughRate": 62.96296296296296,
+      "clickThroughRate": 0,
       "clicks": 57,
       "clicksConversionRate": 0,
       "clicksConverted": 0,
@@ -196,7 +199,7 @@ exports[`useGetTableStat should fill default values if data is missing 2`] = `
       "clicksRevenue": 0,
       "discountCodesRevenue": 0,
       "discountCodesUsed": 0,
-      "engagement": 357,
+      "engagement": 0,
       "impressions": 567,
       "ticketsConversionRate": 0,
       "ticketsConverted": 0,
@@ -245,6 +248,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
           "CampaignEvents.lastCampaignDisplay",
           "CampaignEvents.clicks",
           "CampaignEvents.clicksRate",
+          "CampaignEvents.ticketsCreated",
         ],
         "segments": [
           "CampaignEvents.campaignEventsOnly",
@@ -323,6 +327,8 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
         ],
         "measures": [
           "CampaignOrderEvents.engagement",
+          "CampaignOrderEvents.totalConversionRate",
+          "CampaignOrderEvents.campaignCTR",
         ],
         "timezone": "America/Los_Angeles",
       },
@@ -380,7 +386,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
   "data": {
     "campaign1": {
       "campaignSalesCount": 125,
-      "clickThroughRate": 219.6581196581197,
+      "clickThroughRate": 12.78,
       "clicks": 24,
       "clicksConversionRate": 487.5,
       "clicksConverted": 117,
@@ -395,13 +401,13 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
       "ticketsCreated": 157,
       "ticketsCreationRate": 67.09401709401709,
       "ticketsRevenue": 1234.47,
-      "totalConversionRate": 24.31906614785992,
+      "totalConversionRate": 7.49,
       "totalRevenue": 12345.67,
       "traffic": 5,
     },
     "campaign2": {
       "campaignSalesCount": 358,
-      "clickThroughRate": 302.29276895943565,
+      "clickThroughRate": 11.25,
       "clicks": 57,
       "clicksConversionRate": 435.08771929824564,
       "clicksConverted": 248,
@@ -416,7 +422,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
       "ticketsCreated": 357,
       "ticketsCreationRate": 62.96296296296296,
       "ticketsRevenue": 1234.47,
-      "totalConversionRate": 20.88681446907818,
+      "totalConversionRate": 9.87,
       "totalRevenue": 12345.67,
       "traffic": 3,
     },

@@ -3,7 +3,6 @@ import {
     getDataFromResult,
     getDataFromStatResult,
     getMetricFromCubeData,
-    reduceTicketPerformanceData,
     transformToCampaignCalculatedTotals,
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
@@ -25,10 +24,7 @@ import {
     OrderConversionMeasure,
 } from 'pages/stats/revenue/clients/constants'
 import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
-import {
-    RevenueByDate,
-    TicketPerformanceData,
-} from 'pages/stats/revenue/services/types'
+import {RevenueByDate} from 'pages/stats/revenue/services/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {CubeData} from 'pages/stats/revenue/clients/types'
 
@@ -105,21 +101,17 @@ describe('Campaign metrics helper tests', () => {
             [CampaignOrderEventsMeasure.impressions]: '12345678',
             [CampaignOrderEventsMeasure.engagement]: '2345678',
         }
-        const campaignTicketCount = 21
 
         it('should return correct data', () => {
-            const result = transformToCampaignEventsTotals(
-                cubeData,
-                campaignTicketCount
-            )
+            const result = transformToCampaignEventsTotals(cubeData)
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '12,345,678',
-                [CampaignsTotalsMetricNames.engagement]: '2,345,699',
+                [CampaignsTotalsMetricNames.engagement]: '2,345,678',
             })
         })
 
         it('should return the defaults for missing data', () => {
-            const result = transformToCampaignEventsTotals(cubeDataMissing, 0)
+            const result = transformToCampaignEventsTotals(cubeDataMissing)
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '0',
                 [CampaignsTotalsMetricNames.engagement]: '0',
@@ -127,34 +119,11 @@ describe('Campaign metrics helper tests', () => {
         })
 
         it('should return the defaults for wrong data', () => {
-            const result = transformToCampaignEventsTotals(undefined, 0)
+            const result = transformToCampaignEventsTotals(undefined)
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '0',
                 [CampaignsTotalsMetricNames.engagement]: '0',
             })
-        })
-    })
-
-    describe('reduceTicketPerformanceData', () => {
-        const ticketPerformanceData = [
-            ['campaign1', 2],
-            ['campaign2', 1],
-            ['campaign3', 6],
-        ] as TicketPerformanceData
-
-        it('should return correct data', () => {
-            const result = reduceTicketPerformanceData(ticketPerformanceData)
-            expect(result).toBe(9)
-        })
-
-        it('should return 0 for no data', () => {
-            const result = reduceTicketPerformanceData([])
-            expect(result).toBe(0)
-        })
-
-        it('should return 0 for missing data', () => {
-            const result = reduceTicketPerformanceData(undefined)
-            expect(result).toBe(0)
         })
     })
 
@@ -516,6 +485,7 @@ describe('Campaign metrics helper tests', () => {
                 [EventsMeasure.lastCampaignDisplay]: '2023-03-11T00:00:00.000',
                 [EventsMeasure.clicks]: '1000',
                 [EventsMeasure.clicksRate]: '10.20',
+                [EventsMeasure.ticketsCreated]: '300',
             },
             {
                 [EventsDimension.campaignId]: 'campaign2',
@@ -524,6 +494,7 @@ describe('Campaign metrics helper tests', () => {
                 [EventsMeasure.lastCampaignDisplay]: '2023-03-10T00:00:00.000',
                 [EventsMeasure.clicks]: '2000',
                 [EventsMeasure.clicksRate]: '21.34',
+                [EventsMeasure.ticketsCreated]: '400',
             },
         ]
 
@@ -570,21 +541,16 @@ describe('Campaign metrics helper tests', () => {
         const campaignEventsOrdersPerformanceData = [
             {
                 [CampaignOrderEventsDimension.campaignId]: 'campaign1',
-                [CampaignOrderEventsMeasure.engagement]: '357',
+                [CampaignOrderEventsMeasure.engagement]: '657',
                 [CampaignOrderEventsMeasure.campaignCTR]: '12.78',
                 [CampaignOrderEventsMeasure.totalConversionRate]: '7.49',
             },
             {
                 [CampaignOrderEventsDimension.campaignId]: 'campaign2',
-                [CampaignOrderEventsMeasure.engagement]: '1357',
+                [CampaignOrderEventsMeasure.engagement]: '1757',
                 [CampaignOrderEventsMeasure.campaignCTR]: '11.25',
                 [CampaignOrderEventsMeasure.totalConversionRate]: '9.87',
             },
-        ]
-
-        const campaignTicketsPerformanceData = [
-            ['campaign1', 300],
-            ['campaign2', 400],
         ]
 
         it('should transform data from metrics to table data', () => {
@@ -592,19 +558,20 @@ describe('Campaign metrics helper tests', () => {
                 campaignEventsPerformanceData,
                 campaignOrdersPerformanceData,
                 campaignEventsOrdersPerformanceData,
-                trafficData,
-                campaignTicketsPerformanceData as TicketPerformanceData
+                trafficData
             )
             expect(result).toMatchSnapshot()
         })
 
         it('should return defaults for missing data', () => {
             const result = transformToCampaignsPerformanceTable(
+                [
+                    {[EventsDimension.campaignId]: 'campaign1'},
+                    {[EventsDimension.campaignId]: 'campaign2'},
+                ],
                 [],
                 [],
-                [],
-                [],
-                campaignTicketsPerformanceData as TicketPerformanceData
+                []
             )
             expect(result).toMatchSnapshot()
         })
@@ -630,8 +597,7 @@ describe('Campaign metrics helper tests', () => {
                         [CampaignOrderEventsDimension.campaignId]: 'campaign1',
                     },
                 ],
-                [],
-                [['campaign1', 0]] as TicketPerformanceData
+                []
             )
             expect(result).toMatchSnapshot()
         })
@@ -671,8 +637,7 @@ describe('Campaign metrics helper tests', () => {
                     singleCampaignEventsPerformanceData,
                     {} as CubeData,
                     {} as CubeData,
-                    trafficData,
-                    {} as TicketPerformanceData
+                    trafficData
                 )
                 expect(result).toMatchSnapshot()
             })

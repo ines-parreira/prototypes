@@ -88,6 +88,7 @@ export const getCampaignEventsPerformanceData = ({
                 EventsMeasure.lastCampaignDisplay,
                 EventsMeasure.clicks,
                 EventsMeasure.clicksRate,
+                EventsMeasure.ticketsCreated,
             ],
             timezone: timezone,
             filters: _getDefaultFilters({
@@ -169,7 +170,11 @@ export const getCampaignEventsOrdersPerformanceData = ({
     return [
         {
             dimensions: [CampaignOrderEventsDimension.campaignId],
-            measures: [CampaignOrderEventsMeasure.engagement],
+            measures: [
+                CampaignOrderEventsMeasure.engagement,
+                CampaignOrderEventsMeasure.totalConversionRate,
+                CampaignOrderEventsMeasure.campaignCTR,
+            ],
             timezone: timezone,
             filters: _getDefaultFilters({
                 startDate,

@@ -12,14 +12,9 @@ import {assumeMock} from 'utils/testing'
 import {usePostReporting} from 'models/reporting/queries'
 import {useGetTableStat} from 'pages/stats/revenue/hooks/stats/useGetTableStat'
 import {getDataFromResult} from 'pages/stats/revenue/services/CampaignMetricsHelper'
-import {useTicketsPerformanceStat} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat'
-import {TicketPerformanceData} from 'pages/stats/revenue/services/types'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
-
-jest.mock('pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat')
-const useTicketsPerformanceStatMock = assumeMock(useTicketsPerformanceStat)
 
 describe('useGetTableStat', () => {
     const defaultReporting = {
@@ -43,6 +38,7 @@ describe('useGetTableStat', () => {
             [EventsMeasure.lastCampaignDisplay]: '2023-03-11T00:00:00.000',
             [EventsMeasure.clicks]: '24',
             [EventsMeasure.clicksRate]: '10.20',
+            [EventsMeasure.ticketsCreated]: '157',
         },
         {
             [EventsDimension.campaignId]: 'campaign2',
@@ -51,6 +47,7 @@ describe('useGetTableStat', () => {
             [EventsMeasure.lastCampaignDisplay]: '2023-03-12T00:00:00.000',
             [EventsMeasure.clicks]: '57',
             [EventsMeasure.clicksRate]: '21.34',
+            [EventsMeasure.ticketsCreated]: '357',
         },
     ]
 
@@ -97,32 +94,20 @@ describe('useGetTableStat', () => {
     const campaignEventsOrdersPerformanceData = [
         {
             [CampaignOrderEventsDimension.campaignId]: 'campaign1',
-            [CampaignOrderEventsMeasure.engagement]: '357',
+            [CampaignOrderEventsMeasure.engagement]: '514',
             [CampaignOrderEventsMeasure.campaignCTR]: '12.78',
             [CampaignOrderEventsMeasure.totalConversionRate]: '7.49',
         },
         {
             [CampaignOrderEventsDimension.campaignId]: 'campaign2',
-            [CampaignOrderEventsMeasure.engagement]: '1357',
+            [CampaignOrderEventsMeasure.engagement]: '1714',
             [CampaignOrderEventsMeasure.campaignCTR]: '11.25',
             [CampaignOrderEventsMeasure.totalConversionRate]: '9.87',
         },
     ]
 
-    const campaignTicketsPerformance = {
-        isFetching: false,
-        isError: false,
-        data: [
-            ['campaign1', 157],
-            ['campaign2', 357],
-        ] as TicketPerformanceData,
-    }
-
     beforeEach(() => {
         jest.resetAllMocks()
-        useTicketsPerformanceStatMock.mockReturnValue(
-            campaignTicketsPerformance
-        )
         usePostReportingMock.mockReturnValue(defaultReporting)
     })
 

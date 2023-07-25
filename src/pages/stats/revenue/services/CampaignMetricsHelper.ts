@@ -15,14 +15,12 @@ import {
     CampaignGraphData,
     CampaignPerformanceData,
     CampaignsPerformanceDataset,
-    CampaignStat,
     EventsTotals,
     OrdersTotals,
     RevenueByDate,
     RevenueGraphDataPoint,
     StatData,
     StoreTotal,
-    TicketPerformanceData,
 } from 'pages/stats/revenue/services/types'
 import {Stat} from 'models/stat/types'
 import {CubeData, CubeMetric} from 'pages/stats/revenue/clients/types'
@@ -60,10 +58,6 @@ const _getMetricOrDefault = (data: CubeMetric | undefined): CubeMetric => {
 }
 
 const _getCubeDataOrDefault = (data: CubeData | undefined): CubeData => {
-    return data || []
-}
-
-const _getStatDataOrDefault = (data: StatData | undefined): StatData => {
     return data || []
 }
 
@@ -115,8 +109,7 @@ const _calculateTraffic = (
 }
 
 export const transformToCampaignEventsTotals = (
-    data: CubeMetric | undefined,
-    campaignTicketsCount: number
+    data: CubeMetric | undefined
 ): EventsTotals => {
     const metric: CubeMetric = _getMetricOrDefault(data)
 
@@ -125,25 +118,9 @@ export const transformToCampaignEventsTotals = (
             getMetricValue(metric, CampaignOrderEventsMeasure.impressions)
         ),
         [CampaignsTotalsMetricNames.engagement]: formatNumber(
-            getMetricValue(metric, CampaignOrderEventsMeasure.engagement) +
-                campaignTicketsCount
+            getMetricValue(metric, CampaignOrderEventsMeasure.engagement)
         ),
     }
-}
-
-export const reduceTicketPerformanceData = (
-    data: TicketPerformanceData | undefined
-): number => {
-    return _reduce(
-        data || [],
-        (acc, dataPoint) => {
-            if (dataPoint.length > 1) {
-                return acc + dataPoint[1]
-            }
-            return acc
-        },
-        0
-    )
 }
 
 export const transformToCampaignOrdersTotals = (
@@ -351,8 +328,7 @@ export const transformToCampaignsPerformanceTable = (
     eventsData: CubeData | undefined,
     ordersData: CubeData | undefined,
     campaignsOrdersData: CubeData | undefined,
-    trafficData: CubeData | undefined,
-    ticketsData: TicketPerformanceData | undefined
+    trafficData: CubeData | undefined
 ): CampaignsPerformanceDataset => {
     const eventsDataset = _reduce(
         _getCubeDataOrDefault(eventsData),
@@ -375,13 +351,11 @@ export const transformToCampaignsPerformanceTable = (
         _campaignsOrdersPerformanceReducer,
         ordersDataset
     )
-    const ticketsDataset = _reduce(
-        _getStatDataOrDefault(ticketsData),
-        _ticketsPerformanceReducer,
-        campaignsOrdersDataset
-    )
 
-    return _mapValues({...ticketsDataset}, _processCampaignsPerformanceData)
+    return _mapValues(
+        {...campaignsOrdersDataset},
+        _processCampaignsPerformanceData
+    )
 }
 
 const _eventsPerformanceReducer = (
@@ -400,6 +374,7 @@ const _eventsPerformanceReducer = (
             impressions: _get(metric, EventsMeasure.impressions),
             clicks: _get(metric, EventsMeasure.clicks),
             clicksRate: _get(metric, EventsMeasure.clicksRate),
+            ticketsCreated: _get(metric, EventsMeasure.ticketsCreated),
         },
         ensureNumberValue
     )
@@ -463,6 +438,14 @@ const _campaignsOrdersPerformanceReducer = (
     const campaignOrderMetricValue = _mapValues(
         {
             engagement: _get(metric, CampaignOrderEventsMeasure.engagement),
+            totalConversionRate: _get(
+                metric,
+                CampaignOrderEventsMeasure.totalConversionRate
+            ),
+            clickThroughRate: _get(
+                metric,
+                CampaignOrderEventsMeasure.campaignCTR
+            ),
         },
         ensureNumberValue
     )
@@ -473,23 +456,6 @@ const _campaignsOrdersPerformanceReducer = (
     }
 
     return {...dataset, [campaignId]: value} as CampaignsPerformanceDataset
-}
-
-const _ticketsPerformanceReducer = (
-    dataset: CampaignsPerformanceDataset,
-    ticketData: CampaignStat
-) => {
-    if (!ticketData || ticketData.length !== 2) return dataset
-
-    const campaignId = ticketData[0]
-    const ticketsCreated = ticketData[1]
-
-    const value = {
-        ..._get(dataset, campaignId, {}),
-        ticketsCreated: ticketsCreated,
-    }
-
-    return {...dataset, [campaignId]: value}
 }
 
 const _processCampaignsPerformanceData = (
@@ -542,27 +508,17 @@ const _computeCompoundMetrics = (
     const ticketsCreated = _get(campaign, 'ticketsCreated') || 0
     const ticketsConverted = _get(campaign, 'ticketsConverted') || 0
 
-    const orders = _get(campaign, 'campaignSalesCount') || 0
-    const engagement = _get(campaign, 'engagement') || 0
-
     const clicksConversionRate = clicks ? clicksConverted / clicks : 0
     const ticketsCreationRate = impressions ? ticketsCreated / impressions : 0
     const ticketsConversionRate = ticketsCreated
         ? ticketsConverted / ticketsCreated
         : 0
 
-    const totalEngagement = engagement + ticketsCreated
-    const clickThroughRate = impressions ? totalEngagement / impressions : 0
-    const totalConversionRate = totalEngagement ? orders / totalEngagement : 0
-
     return {
         ...campaign,
         clicksConversionRate: clicksConversionRate * 100,
         ticketsCreationRate: ticketsCreationRate * 100,
         ticketsConversionRate: ticketsConversionRate * 100,
-        engagement: totalEngagement,
-        clickThroughRate: clickThroughRate * 100,
-        totalConversionRate: totalConversionRate * 100,
     }
 }
 

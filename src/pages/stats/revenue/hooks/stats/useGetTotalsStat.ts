@@ -7,7 +7,6 @@ import {
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     getMetricFromCubeData,
-    reduceTicketPerformanceData,
     transformToCampaignCalculatedTotals,
     transformToCampaignEventsTotals,
     transformToCampaignOrdersTotals,
@@ -15,7 +14,6 @@ import {
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CampaignsTotals} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
-import {useTicketsPerformanceStat} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat'
 
 const OVERRIDES = {
     select: getMetricFromCubeData,
@@ -46,12 +44,6 @@ export const useGetTotalsStat = (
         }),
         [namespacedShopName, campaignIds, startDate, endDate, timezone]
     )
-    const campaignsForTicketQuery = useMemo(() => {
-        if (campaignIds.length) {
-            return campaignIds
-        }
-        return allCampaignIds
-    }, [campaignIds, allCampaignIds])
 
     const campaignEventsTotalsQuery = useMemo(
         () => getCampaignEventsTotalsData(attrs),
@@ -78,21 +70,10 @@ export const useGetTotalsStat = (
         storeTotalQuery,
         OVERRIDES
     )
-    const {
-        isFetching,
-        isError,
-        data: ticketsPerformance,
-    } = useTicketsPerformanceStat(campaignsForTicketQuery, startDate, endDate)
 
     const data = useMemo(() => {
-        const totalCampaignTickets =
-            reduceTicketPerformanceData(ticketsPerformance)
-
         return {
-            ...transformToCampaignEventsTotals(
-                eventsTotals.data,
-                totalCampaignTickets
-            ),
+            ...transformToCampaignEventsTotals(eventsTotals.data),
             ...transformToCampaignOrdersTotals(orderTotals.data, currency),
             ...transformToStoreTotal(storeTotal.data, currency),
             ...transformToCampaignCalculatedTotals(
@@ -100,25 +81,15 @@ export const useGetTotalsStat = (
                 storeTotal.data
             ),
         }
-    }, [
-        eventsTotals.data,
-        orderTotals.data,
-        storeTotal.data,
-        ticketsPerformance,
-        currency,
-    ])
+    }, [eventsTotals.data, orderTotals.data, storeTotal.data, currency])
 
     return {
         isFetching:
-            isFetching ||
             eventsTotals.isFetching ||
             orderTotals.isFetching ||
             storeTotal.isFetching,
         isError:
-            isError ||
-            eventsTotals.isError ||
-            orderTotals.isError ||
-            storeTotal.isError,
+            eventsTotals.isError || orderTotals.isError || storeTotal.isError,
         data: data,
     }
 }

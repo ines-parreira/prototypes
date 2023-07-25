@@ -26,6 +26,8 @@ exports[`Getting Cube queries [Function getCampaignEventsOrdersPerformanceData] 
     ],
     "measures": [
       "CampaignOrderEvents.engagement",
+      "CampaignOrderEvents.totalConversionRate",
+      "CampaignOrderEvents.campaignCTR",
     ],
     "timezone": "America/San_Francisco",
   },
@@ -62,6 +64,7 @@ exports[`Getting Cube queries [Function getCampaignEventsPerformanceData] should
       "CampaignEvents.lastCampaignDisplay",
       "CampaignEvents.clicks",
       "CampaignEvents.clicksRate",
+      "CampaignEvents.ticketsCreated",
     ],
     "segments": [
       "CampaignEvents.campaignEventsOnly",
