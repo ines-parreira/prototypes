@@ -52,7 +52,7 @@ const PaymentInformationView = ({
     const isAAOLegacy =
         !!automationProduct &&
         isAAOLegacyPrice(automationProduct, ProductType.Automation)
-    const isSubscribedToVoiceOrSms = !!voiceProduct || !!smsProduct || true
+    const isSubscribedToVoiceOrSms = !!voiceProduct || !!smsProduct
 
     const contact = useAppSelector(getContact)?.toJS() as BillingContact
     const card = useAppSelector(creditCard)

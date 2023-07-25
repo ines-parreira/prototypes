@@ -13,13 +13,17 @@ import {
     fetchCreditCard,
     updateContact,
 } from 'state/billing/actions'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    isTrialing,
+} from 'state/currentAccount/selectors'
 import GorgiasApi from 'services/gorgiasApi'
 import {createStripeCardToken} from 'utils/stripe'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {loadScript} from 'utils'
 import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
+import {BILLING_PROCESS_PATH} from '../constants'
 
 export const useCreditCard = () => {
     const currentUser = useAppSelector(getCurrentUser)
@@ -27,6 +31,7 @@ export const useCreditCard = () => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const card = useAppSelector(creditCard)
+    const isTrialingSubscription = useAppSelector(isTrialing)
     const gorgiasApi = new GorgiasApi()
 
     const [fields, setFields] = useState<CreditCard>({
@@ -196,7 +201,11 @@ export const useCreditCard = () => {
                 })
             )
 
-            history.goBack()
+            if (isTrialingSubscription) {
+                history.push(`${BILLING_PROCESS_PATH}/helpdesk`)
+            } else {
+                history.goBack()
+            }
         } catch (exception) {
             const error = exception as ErrorResponse
             let errorMsg =
