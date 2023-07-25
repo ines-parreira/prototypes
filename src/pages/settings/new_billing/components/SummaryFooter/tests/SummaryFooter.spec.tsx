@@ -45,6 +45,7 @@ describe('SummaryFooter', () => {
 
     const props: SummaryFooterProps = {
         isPaymentEnabled: true,
+        isTrialing: false,
         anyProductChanged: true,
         anyNewProductSelected: true,
         anyDowngradedPlanSelected: true,

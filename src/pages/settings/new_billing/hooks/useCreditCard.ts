@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {useHistory} from 'react-router-dom'
 import {AnyAction} from 'redux'
 import useAppSelector from 'hooks/useAppSelector'
-import {BillingContact, CreditCard} from 'state/billing/types'
+import {BillingContact, CreditCard, ErrorResponse} from 'state/billing/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -20,19 +20,6 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {loadScript} from 'utils'
 import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
-
-interface ErrorResponse {
-    response?: {
-        data?: {
-            error?: {
-                msg: string
-            }
-        }
-    }
-    error?: {
-        message: string
-    }
-}
 
 export const useCreditCard = () => {
     const currentUser = useAppSelector(getCurrentUser)

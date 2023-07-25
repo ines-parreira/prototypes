@@ -23,14 +23,18 @@ import {
 import {getCurrentUser} from 'state/currentUser/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
-import {TicketPurpose} from 'state/billing/types'
+import {ErrorResponse, TicketPurpose} from 'state/billing/types'
 import {
     Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import {updateSubscriptionsForPlans} from 'state/currentAccount/actions'
+import {
+    setCurrentSubscription,
+    updateSubscriptionsForPlans,
+} from 'state/currentAccount/actions'
 import {isStarterTierPrice} from 'models/billing/utils'
+import GorgiasApi from 'services/gorgiasApi'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -334,6 +338,7 @@ export const useBillingPlans = ({
     ])
 
     const handleHelpdeskAndAutomationPlansChange = useCallback(async () => {
+        const gorgiasApi = new GorgiasApi()
         const plansToBeUpdated: string[] = []
         const notifications: Notification[] = []
 
@@ -411,14 +416,68 @@ export const useBillingPlans = ({
                 })
             }
             try {
-                await dispatch(
-                    updateSubscriptionsForPlans(
-                        {
-                            prices: plansToBeUpdated,
-                        },
-                        notifications
+                if (anyProductChanged) {
+                    await dispatch(
+                        updateSubscriptionsForPlans(
+                            {
+                                prices: plansToBeUpdated,
+                            },
+                            notifications
+                        )
                     )
-                )
+                }
+                if (isFreeTrial) {
+                    try {
+                        const response = await gorgiasApi.startSubscription()
+                        const subscription = response.get('subscription')
+                        dispatch(setCurrentSubscription(subscription))
+
+                        const payment: Map<any, any> | null =
+                            response.get('payment')
+                        if (payment!.get('confirmation_url')) {
+                            await dispatch(
+                                notify({
+                                    status: NotificationStatus.Info,
+                                    message:
+                                        'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
+                                        'You will be redirected in a few seconds to a secure page.',
+                                    dismissAfter: 5000,
+                                    dismissible: false,
+                                })
+                            )
+
+                            setTimeout(() => {
+                                history.push(payment!.get('confirmation_url'))
+                            }, 4500)
+                        } else if (payment!.get('error')) {
+                            void notify({
+                                status: NotificationStatus.Error,
+                                message: `${
+                                    payment!.get('error') as string
+                                } Please update your payment method and retry to pay your invoice.`,
+                            })
+                        } else {
+                            await dispatch(
+                                notify({
+                                    status: NotificationStatus.Success,
+                                    message: 'Your subscription has started!',
+                                })
+                            )
+                        }
+                    } catch (exception) {
+                        const error = exception as ErrorResponse
+                        const errorMsg =
+                            error.response && error.response.data?.error
+                                ? error.response.data.error.msg
+                                : 'Failed to update credit card. Please try again in a few seconds.'
+                        await dispatch(
+                            notify({
+                                status: NotificationStatus.Error,
+                                title: errorMsg,
+                            })
+                        )
+                    }
+                }
             } catch (error) {
                 dispatchBillingError()
                 throw error
@@ -431,9 +490,10 @@ export const useBillingPlans = ({
         periodEnd,
         history,
         interval,
+        anyProductChanged,
+        isFreeTrial,
         dispatch,
         dispatchBillingError,
-        isFreeTrial,
     ])
 
     const handleSubscribe = useCallback(() => {

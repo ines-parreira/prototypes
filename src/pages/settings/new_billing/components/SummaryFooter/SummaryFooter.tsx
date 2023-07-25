@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import classNames from 'classnames'
 
 import {useHistory} from 'react-router-dom'
@@ -10,6 +10,7 @@ import css from './SummaryFooter.less'
 
 export type SummaryFooterProps = {
     isPaymentEnabled: boolean
+    isTrialing: boolean
     anyProductChanged: boolean
     anyNewProductSelected: boolean
     anyDowngradedPlanSelected: boolean
@@ -21,6 +22,7 @@ export type SummaryFooterProps = {
 
 const SummaryFooter = ({
     isPaymentEnabled,
+    isTrialing,
     anyProductChanged,
     anyNewProductSelected,
     anyDowngradedPlanSelected,
@@ -38,12 +40,20 @@ const SummaryFooter = ({
         try {
             await handleSubscribe?.()
         } catch (error) {
-            reportError(error)
+            reportError(error as Error)
         } finally {
             setIsSubscriptionUpdating(false)
             history.push(BILLING_BASE_PATH)
         }
     }
+
+    const labelSubmitButton = useMemo(() => {
+        if (isTrialing && isPaymentEnabled) {
+            return 'Pay & Start Subscription'
+        }
+
+        return 'Update Subscription'
+    }, [isTrialing, isPaymentEnabled])
 
     return (
         <div
@@ -119,16 +129,18 @@ const SummaryFooter = ({
                 <div className={css.button}>
                     <Button
                         isDisabled={
-                            !isPaymentEnabled ||
-                            (!isTermsChecked && anyNewProductSelected) ||
-                            !anyProductChanged
+                            isTrialing
+                                ? !isPaymentEnabled
+                                : !isPaymentEnabled ||
+                                  (!isTermsChecked && anyNewProductSelected) ||
+                                  !anyProductChanged
                         }
                         className={css.button}
                         id="update-subscription"
                         onClick={updateSubscription}
                         isLoading={isSubscriptionUpdating}
                     >
-                        Update Subscription
+                        {labelSubmitButton}
                     </Button>
                 </div>
             )}

@@ -25,12 +25,14 @@ type BillingFrequencyViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     dispatchBillingError: () => void
     periodEnd: string
+    isTrialing: boolean
 }
 
 const BillingFrequencyView = ({
     contactBilling,
     dispatchBillingError,
     periodEnd,
+    isTrialing,
 }: BillingFrequencyViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -212,6 +214,7 @@ const BillingFrequencyView = ({
                     />
                     <SummaryFooter
                         isPaymentEnabled={isPaymentEnabled}
+                        isTrialing={isTrialing}
                         anyProductChanged={anyProductChanged}
                         anyNewProductSelected={false}
                         anyDowngradedPlanSelected={false}

@@ -44,6 +44,7 @@ describe('UsageAndPlansView', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
                 <BillingFrequencyView
+                    isTrialing={false}
                     periodEnd="2021-01-01"
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}

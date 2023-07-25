@@ -325,6 +325,7 @@ const BillingStartView = () => {
                                 contactBilling={contactBilling}
                                 dispatchBillingError={dispatchBillingError}
                                 periodEnd={periodEnd}
+                                isTrialing={isTrialingSubscription}
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENT_CARD_PATH}>

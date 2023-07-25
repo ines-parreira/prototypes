@@ -300,6 +300,7 @@ const BillingProcessView = ({
                         />
                         <SummaryFooter
                             isPaymentEnabled={isPaymentEnabled}
+                            isTrialing={isTrialing}
                             anyProductChanged={anyProductChanged}
                             anyNewProductSelected={anyNewProductSelected}
                             anyDowngradedPlanSelected={

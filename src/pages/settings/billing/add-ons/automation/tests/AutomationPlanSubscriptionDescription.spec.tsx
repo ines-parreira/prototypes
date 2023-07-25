@@ -29,6 +29,7 @@ describe('AutomationPlanSubscriptionDescription', () => {
     const defaultProps: AutomationPlanSubscriptionDescriptionProps = {
         automationPrices: mockAutomationPrices,
         isStarterPlan: false,
+        isTrialing: false,
         isEnterprisePlan: false,
         selectedPrice: mockAutomationPrices[0],
         setSelectedPrice: mockSetSelectedPrice,

@@ -24,6 +24,7 @@ import css from './AutomationPlanSubscriptionDescription.less'
 export type AutomationPlanSubscriptionDescriptionProps = {
     automationPrices: AutomationPrice[]
     isStarterPlan: boolean
+    isTrialing: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
     selectedPrice: AutomationPrice
@@ -34,6 +35,7 @@ export type AutomationPlanSubscriptionDescriptionProps = {
 const AutomationPlanSubscriptionDescription = ({
     automationPrices,
     isStarterPlan,
+    isTrialing,
     isEnterprisePlan,
     interval = PlanInterval.Month,
     selectedPrice,
@@ -225,6 +227,7 @@ const AutomationPlanSubscriptionDescription = ({
                 {!isEnterprisePlan && !isStarterPlan && isPaymentEnabled && (
                     <SummaryFooter
                         isPaymentEnabled={isPaymentEnabled}
+                        isTrialing={isTrialing}
                         anyDowngradedPlanSelected={false}
                         anyNewProductSelected={true}
                         anyProductChanged={true}

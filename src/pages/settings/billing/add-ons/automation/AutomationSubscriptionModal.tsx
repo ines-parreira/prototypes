@@ -34,7 +34,10 @@ import {
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    isTrialing,
+} from 'state/currentAccount/selectors'
 import AutomationPlanSubscriptionDescription from './AutomationPlanSubscriptionDescription'
 import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'
@@ -103,6 +106,7 @@ const AutomationSubscriptionModal = ({
     const history = useHistory()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const isTrialingSubscription = useAppSelector(isTrialing)
     const helpdeskPriceIds = useAppSelector(getHelpdeskPrices).map(
         (price) => price.price_id
     )
@@ -224,6 +228,7 @@ const AutomationSubscriptionModal = ({
                     ) : (
                         <AutomationPlanSubscriptionDescription
                             isStarterPlan={isStarterPlan}
+                            isTrialing={isTrialingSubscription}
                             isEnterprisePlan={isEnterprisePlan}
                             automationPrices={automationPrices}
                             interval={interval}
