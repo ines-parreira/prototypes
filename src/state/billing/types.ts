@@ -133,3 +133,7 @@ export interface ErrorResponse {
         message: string
     }
 }
+
+export enum BillingAction {
+    CANCEL = 'cancel',
+}

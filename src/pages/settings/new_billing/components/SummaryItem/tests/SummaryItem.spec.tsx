@@ -44,6 +44,7 @@ describe('SummaryItem', () => {
                     voice: {isSelected: false},
                     sms: {isSelected: false},
                 }}
+                product={undefined}
             />
         )
         expect(container.firstChild).toBeNull()

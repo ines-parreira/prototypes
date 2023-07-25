@@ -75,9 +75,10 @@ describe('ProductCard', () => {
             </Provider>
         )
 
-        expect(screen.getByRole('button')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {
+                name: 'Subscribe',
+            })
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 })

@@ -132,6 +132,13 @@ exports[`UsageAndPlansView should render 1`] = `
             >
               <button
                 aria-disabled="false"
+                class="wrapper cancelButton fill secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >

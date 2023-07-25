@@ -172,6 +172,13 @@ exports[`BillingStartView should render a BillingStartView component and load th
                 >
                   <button
                     aria-disabled="false"
+                    class="wrapper cancelButton fill secondary medium"
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    aria-disabled="false"
                     class="wrapper fill primary medium"
                     type="button"
                   >

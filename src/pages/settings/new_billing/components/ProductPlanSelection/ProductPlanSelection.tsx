@@ -222,7 +222,7 @@ const ProductPlanSelection = ({
                         <Badge text="Active" type={BadgeType.Success} />
                     )}
                 </div>
-                {!isActive &&
+                {(!isActive || type === ProductType.Automation) &&
                     (selectedPlans[type].isSelected ? (
                         <i
                             className={classNames(

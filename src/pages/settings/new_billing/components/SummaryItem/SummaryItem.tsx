@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react'
 
+import classNames from 'classnames'
 import {
     AutomationPrice,
     HelpdeskPrice,
@@ -39,10 +40,10 @@ const SummaryItem = ({
         )
         if (!selectedPlan.isSelected || !priceObject) {
             return {
-                price: 0,
+                price: (product?.amount ?? 0) / 100,
                 currency: null,
                 name: null,
-                tickets: 0,
+                tickets: product?.num_quota_tickets ?? 0,
             }
         }
         return {
@@ -51,7 +52,7 @@ const SummaryItem = ({
             name: priceObject.name,
             tickets: priceObject.num_quota_tickets ?? 0,
         }
-    }, [prices, selectedPlan])
+    }, [prices, selectedPlan, product])
 
     const oldPrice = useMemo(() => {
         if (!product || product.price_id === selectedPlan.plan?.price_id) {
@@ -85,21 +86,29 @@ const SummaryItem = ({
         )
     }, [interval, selectedPlan.plan, tickets, type])
 
-    if (!selectedPlan.isSelected) {
+    if (!selectedPlan.isSelected && !product) {
         return null
     }
 
     return (
         <div className={css.container}>
-            <div className={css.details}>
+            <div
+                className={classNames(css.details, {
+                    [css.strikeThrough]: !selectedPlan.isSelected,
+                })}
+            >
                 <div className={css.title}>{PRODUCT_INFO[type].title}</div>
                 <div className={css.description}>
                     {type === ProductType.Helpdesk && name ? `${name} - ` : ''}
                     {description}
                 </div>
             </div>
-            <div className={css.price}>
-                {!!oldPrice && !isFrequencyChanged && (
+            <div
+                className={classNames(css.price, {
+                    [css.strikeThrough]: !selectedPlan.isSelected,
+                })}
+            >
+                {!!oldPrice && selectedPlan.isSelected && !isFrequencyChanged && (
                     <div data-testid="oldPrice" className={css.oldPrice}>
                         {formatAmount(oldPrice, currency)}
                     </div>

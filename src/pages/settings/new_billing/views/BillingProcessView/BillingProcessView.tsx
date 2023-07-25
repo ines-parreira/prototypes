@@ -11,7 +11,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCreditCard} from 'state/billing/actions'
 import Button from 'pages/common/components/button/Button'
-import {TicketPurpose} from 'state/billing/types'
+import {BillingAction, TicketPurpose} from 'state/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Card from '../../components/Card'
 import BackLink from '../../components/BackLink'
@@ -32,6 +32,7 @@ import css from './BillingProcessView.less'
 
 type Params = {
     selectedProduct: ProductType
+    action: BillingAction
 }
 
 type BillingProcessViewProps = {
@@ -75,7 +76,7 @@ const BillingProcessView = ({
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
 
     // Selected product to Subscribe or Update
-    const {selectedProduct} = useParams<Params>()
+    const {selectedProduct, action} = useParams<Params>()
 
     const {
         selectedPlans,
@@ -128,6 +129,24 @@ const BillingProcessView = ({
             dispatch(dismissNotification('billing-error'))
         }
     }, [dispatch])
+
+    // cancel Automation
+    useEffect(() => {
+        if (
+            action === BillingAction.CANCEL &&
+            selectedProduct === ProductType.Automation
+        ) {
+            setSelectedPlans({
+                ...selectedPlans,
+                [ProductType.Automation]: {
+                    ...selectedPlans[ProductType.Automation],
+                    isSelected: false,
+                },
+            })
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [action, selectedProduct])
 
     const messageForEnterprise = useMemo(() => {
         let message =

@@ -124,6 +124,20 @@ const ProductCard = ({
                         /{interval}
                     </div>
                 )}
+
+                {type === ProductType.Automation && (
+                    <Button
+                        intent="secondary"
+                        className={css.cancelButton}
+                        onClick={() =>
+                            history.push(
+                                `${BILLING_PROCESS_PATH}/${type}/cancel`
+                            )
+                        }
+                    >
+                        Cancel
+                    </Button>
+                )}
                 <Button
                     intent="primary"
                     isDisabled={isDisabled}
@@ -139,12 +153,29 @@ const ProductCard = ({
 
     const updateContainer = useMemo(
         () => (
-            <Button
-                intent="secondary"
-                onClick={() => history.push(`${BILLING_PROCESS_PATH}/${type}`)}
-            >
-                Update Plan
-            </Button>
+            <>
+                {type === ProductType.Automation && (
+                    <Button
+                        intent="secondary"
+                        className={css.cancelButton}
+                        onClick={() =>
+                            history.push(
+                                `${BILLING_PROCESS_PATH}/${type}/cancel`
+                            )
+                        }
+                    >
+                        Cancel
+                    </Button>
+                )}
+                <Button
+                    intent="primary"
+                    onClick={() =>
+                        history.push(`${BILLING_PROCESS_PATH}/${type}`)
+                    }
+                >
+                    Update Plan
+                </Button>
+            </>
         ),
         [history, type]
     )

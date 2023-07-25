@@ -175,8 +175,6 @@ export const useBillingPlans = ({
                 selectedPlans[ProductType.Automation].plan?.price_id &&
                 selectedPlans[ProductType.Automation].isSelected) ||
             (!!automationProduct?.price_id &&
-                automationProduct.price_id ===
-                    selectedPlans[ProductType.Automation].plan?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected) ||
             (voiceProduct?.price_id !==
                 selectedPlans[ProductType.Voice].plan?.price_id &&
