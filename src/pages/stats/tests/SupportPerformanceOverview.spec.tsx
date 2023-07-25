@@ -31,6 +31,7 @@ import {
 } from 'hooks/reporting/metricTrends'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {assumeMock} from 'utils/testing'
+import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -90,6 +91,9 @@ const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('pages/stats/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
+
+jest.mock('services/reporting/supportPerformanceReportingService')
+const saveReportMock = assumeMock(saveReport)
 
 describe('<SupportPerformanceOverview />', () => {
     const defaultStatsFilters: StatsFilters = {
@@ -318,7 +322,7 @@ describe('<SupportPerformanceOverview />', () => {
         }
     )
 
-    it('should send event to segment on download data', () => {
+    it('should send event to segment and call saveReport on download data button click', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverview />
@@ -332,6 +336,7 @@ describe('<SupportPerformanceOverview />', () => {
                 name: 'all-metrics',
             })
         )
+        expect(saveReportMock).toHaveBeenCalled()
     })
 
     describe('Performance Tips', () => {
