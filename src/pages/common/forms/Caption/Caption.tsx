@@ -5,7 +5,7 @@ import css from './Caption.less'
 
 type Props = {
     children?: ReactNode
-    error?: string
+    error?: string | ReactNode
 } & HTMLAttributes<HTMLDivElement>
 
 const Caption = ({children, className, error, ...props}: Props) => (

@@ -12,6 +12,7 @@ export enum FeatureFlagKey {
     ChatRenameContactForm = 'chat-rename-contact-form',
     ChatSnippetV3Banner = 'chat-snippet-v3-banner',
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',
+    ChatShowOrHideOnSelectedUrls = 'chat-show-or-hide-on-selected-urls',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContinuousChatViewsPolling = 'continuous-chat-views-polling',
     DecoupleContactForm = 'decouple-contact-form',

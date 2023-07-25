@@ -22,6 +22,16 @@ export type GorgiasChatIntegration = IntegrationBase & {
     }
 }
 
+export type GorgiasChatInstallationVisibility = {
+    method: GorgiasChatInstallationVisibilityMethod
+    match_conditions?: GorgiasChatInstallationVisibilityMatchConditions
+    conditions?: GorgiasChatInstallationVisibilityCondition[]
+}
+
+export type GorgiasChatMetaInstallation = {
+    visibility: Maybe<GorgiasChatInstallationVisibility>
+}
+
 export type GorgiasChatIntegrationMeta = {
     app_id?: string
     campaigns?: Campaign[]
@@ -52,6 +62,7 @@ export type GorgiasChatIntegrationMeta = {
         step: GorgiasChatCreationWizardSteps
         status: GorgiasChatCreationWizardStatus
     }
+    installation?: GorgiasChatMetaInstallation
 }
 
 enum GorgiasChatEmailCaptureType {
@@ -150,6 +161,30 @@ export enum GorgiasChatCreationWizardSteps {
 export enum GorgiasChatCreationWizardInstallationMethod {
     Manual = 'manual',
     OneClick = '1-click',
+}
+
+export enum GorgiasChatInstallationVisibilityMethod {
+    ShowOnEveryPage = 'show-on-every-page',
+    ShowOnSpecificPages = 'show-on-specific-pages',
+    HideOnSpecificPages = 'hide-on-specific-pages',
+}
+
+export enum GorgiasChatInstallationVisibilityMatchConditions {
+    Every = 'every',
+    Some = 'some',
+}
+
+export enum GorgiasChatInstallationVisibilityConditionOperator {
+    Contain = 'contain',
+    NotContain = 'not-contain',
+    Equal = 'equal',
+    NotEqual = 'not-equal',
+}
+
+export type GorgiasChatInstallationVisibilityCondition = {
+    id: string
+    value: string
+    operator: GorgiasChatInstallationVisibilityConditionOperator
 }
 
 export enum GorgiasChatMinimumSnippetVersion {

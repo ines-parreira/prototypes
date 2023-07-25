@@ -5,14 +5,22 @@
     .container {
         border: 1px solid var(--neutral-grey-3);
         border-radius: 4px;
-    }
 
-    .header {
-        cursor: pointer;
-        display: flex;
-        padding: 20px;
-        column-gap: @layout-spacing-s;
-        align-items: center;
+        .header {
+            cursor: pointer;
+            display: flex;
+            padding: 20px;
+            column-gap: @layout-spacing-s;
+            align-items: center;
+
+            .toggleCollapseButton {
+                color: var(--neutral-grey-4);
+                font-size: @layout-spacing-m;
+                width: @layout-spacing-m;
+                height: @layout-spacing-m;
+                padding: 0;
+            }
+        }
     }
 
     .title {

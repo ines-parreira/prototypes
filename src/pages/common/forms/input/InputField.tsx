@@ -12,7 +12,7 @@ type Props = {
     caption?: ReactNode
     label?: ReactNode
     className?: string
-    error?: string
+    error?: string | ReactNode
 } & ComponentProps<typeof TextInput>
 
 type InputFieldContextState = {

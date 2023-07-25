@@ -1,0 +1,84 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .visibilityMethodDropdownPlaceholder {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+
+        margin-top: @layout-spacing-xs;
+
+        transition: opacity 0.2s ease-in-out;
+
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+        color: var(--neutral-grey-5);
+
+        text-transform: capitalize;
+
+        &.hide {
+            transition: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    .visibilityMethodDropdownPlaceholderIcon {
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .matchConditions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+
+        font-size: 12px;
+        color: var(--neutral-grey-5);
+        line-height: 16px;
+    }
+
+    .matchConditionsDropdown :global(.dropdown-toggle) {
+        border: 0;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--neutral-grey-5);
+    }
+
+    .visibilityControls {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        margin-top: @layout-spacing-m;
+    }
+
+    .conditions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .tip {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+
+        font-size: 12px;
+        line-height: 16px;
+
+        color: var(--neutral-grey-5);
+    }
+
+    .tipIcon {
+        font-size: 16px;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: @layout-spacing-s;
+    }
+}

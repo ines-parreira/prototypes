@@ -96,7 +96,11 @@ const GorgiasChatIntegrationManualInstallationCard = ({
                         .
                     </div>
                 </div>
-                <IconButton fillStyle="ghost" intent="secondary">
+                <IconButton
+                    className={css.toggleCollapseButton}
+                    fillStyle="ghost"
+                    intent="secondary"
+                >
                     {isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
                 </IconButton>
             </div>
