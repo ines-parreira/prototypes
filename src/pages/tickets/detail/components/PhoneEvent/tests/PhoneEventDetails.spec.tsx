@@ -78,6 +78,54 @@ describe('<PhoneEventDetails/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
+        it('should render voicemail event with warning when recording is not available', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.VoicemailRecording,
+                data: {
+                    call: {
+                        recording_url:
+                            'https://api.twilio.com/2010-04-01/Accounts/ACb44c.mp3',
+                        recording_duration: '6',
+                    },
+                    customer: {
+                        id: 6,
+                        name: null,
+                        phone_number: '+16624424075',
+                    },
+                    recording: {
+                        file: {
+                            url: 'https://api.twilio.com/2010-04-01/Accounts/ACb44c.mp3',
+                            name: 'phone-RE717480a3e40211d8bdf62a952d23c47b.mp3',
+                            size: null,
+                            public: false,
+                            content_type: 'application/octet-stream',
+                        },
+                        original: {
+                            sid: 'RE717480a3e40211d8bdf62a952d23c47b',
+                            url: 'https://api.twilio.com/2010-04-01/Accounts/ACb44c.mp3',
+                            status: 'completed',
+                            call_sid: 'CA5479a7d41118a92f8d7ffd4e6b151f0b',
+                            duration: '3',
+                            error_code: '0',
+                            start_time: 'Tue, 11 Jul 2023 14:31:46 +0000',
+                            account_sid: 'ACb44ce48d0a001e992e703911ee8feef0',
+                        },
+                        created_datetime: '2023-07-11T14:31:56.266177',
+                    },
+                },
+            })
+            const {container, getByText} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(
+                getByText('The voicemail recording is not available.')
+            ).toBeInTheDocument()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
         it('should render completed call event details', () => {
             const event = fromJS({
                 type: PhoneIntegrationEvent.CompletedPhoneCall,

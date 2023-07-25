@@ -32,6 +32,7 @@ export default function PhoneEventDetailsVoicemail({
         : twilioRecordingURL
         ? `${twilioRecordingURL}.mp3`
         : null
+    const publicURL = eventData.getIn(['recording', 'file', 'public'], true)
     const deletedBy = eventData.get('deleted_by') as string
 
     const integrationID = eventData.getIn(['integration', 'id']) as string
@@ -54,10 +55,19 @@ export default function PhoneEventDetailsVoicemail({
                         <div className="mb-3">
                             <b>Voicemail:</b>
                         </div>
-                        <DownloadableDeletableRecording
-                            downloadRecordingURL={fullRecordingURL}
-                            deleteRecordingURL={deleteRecordingURL}
-                        />
+                        {publicURL ? (
+                            <DownloadableDeletableRecording
+                                downloadRecordingURL={fullRecordingURL}
+                                deleteRecordingURL={deleteRecordingURL}
+                            />
+                        ) : (
+                            <span className="ml-2">
+                                <span className="material-icons mr-1">
+                                    warning
+                                </span>
+                                The voicemail recording is not available.
+                            </span>
+                        )}
                     </div>
                 </>
             )}

@@ -380,3 +380,50 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details wit
   </div>
 </div>
 `;
+
+exports[`<PhoneEventDetails/> render() should render voicemail event with warning when recording is not available 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Phone number
+        :
+      </b>
+       
+      +1 662 442 4075
+    </div>
+    <div>
+      <b>
+        Duration:
+      </b>
+       
+      6s
+    </div>
+    <div
+      class="d-flex flex-column"
+    >
+      <div
+        class="mb-3"
+      >
+        <b>
+          Voicemail:
+        </b>
+      </div>
+      <span
+        class="ml-2"
+      >
+        <span
+          class="material-icons mr-1"
+        >
+          warning
+        </span>
+        The voicemail recording is not available.
+      </span>
+    </div>
+  </div>
+</div>
+`;
