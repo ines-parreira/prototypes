@@ -1,67 +1,25 @@
 import notification, {PushNotification} from 'push.js'
-import {LDClient} from 'launchdarkly-js-client-sdk'
 import _throttle from 'lodash/throttle'
 import _isString from 'lodash/isString'
-import _noop from 'lodash/noop'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {store} from 'init'
 import history from 'pages/history'
 import {notificationSounds} from 'services'
 import {defaultSound} from 'services/NotificationSounds'
 import {getNotificationSettings} from 'state/currentUser/selectors'
 import {assetsUrl} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
 
 const icon = assetsUrl('/img/icons/logo.png')
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
-const sound = new Audio(require('assets/audio/classic.mp3'))
-sound.load()
-
 export class BrowserNotification {
-    isNotificationSoundsEnabled: boolean
-    ldClient: LDClient
-
-    constructor() {
-        this.isNotificationSoundsEnabled = false
-
-        this.ldClient = getLDClient()
-        if (this.ldClient != null) {
-            this.ldClient.on(
-                `change:${FeatureFlagKey.NotificationSounds}`,
-                this.updateIsNotificationSoundsEnabled
-            )
-        }
-    }
-
-    updateIsNotificationSoundsEnabled = (variation: boolean) => {
-        this.isNotificationSoundsEnabled = variation
-    }
-
     playSound = _throttle(
-        async () => {
-            await this.ldClient.waitForInitialization()
-
-            const isNotificationSoundsEnabled = this.ldClient.variation(
-                FeatureFlagKey.NotificationSounds
-            )
-
-            if (
-                !this.isNotificationSoundsEnabled &&
-                !isNotificationSoundsEnabled
-            ) {
-                sound.play().catch(_noop)
-                return
-            }
-
+        () => {
             const notificationSettings = getNotificationSettings(
                 store.getState()
             )
 
-            const settings = notificationSettings
-                ? notificationSettings.data.notification_sound
-                : defaultSound
+            const settings =
+                notificationSettings?.data?.notification_sound || defaultSound
 
             if (!settings.enabled) return
 
@@ -89,7 +47,7 @@ export class BrowserNotification {
             playSoundNotification === undefined ||
             !!playSoundNotification
         ) {
-            void this.playSound()
+            this.playSound()
         }
 
         void notification.create(

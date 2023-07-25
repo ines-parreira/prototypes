@@ -190,7 +190,6 @@ const CATEGORIES: Category[] = [
             },
             {
                 to: 'notifications',
-                requiredFeatureFlag: FeatureFlagKey.NotificationSounds,
                 text: 'Notifications',
             },
             {

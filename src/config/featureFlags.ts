@@ -29,7 +29,6 @@ export enum FeatureFlagKey {
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     NewBillingInterface = 'new-billing-interface',
     NewPhoneErrorHandling = 'new-phone-error-handling',
-    NotificationSounds = 'notification-sounds',
     RevenueAlphaTesters = 'revenue-alpha-testers',
     RevenueAttributionModel = 'revenue-attribution-model',
     RevenueAttributionModelHideDashboard = 'revenue-attribution-model-hide-dashboard',

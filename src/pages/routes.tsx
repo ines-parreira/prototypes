@@ -635,8 +635,6 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
 export function SettingsRoutes({match: {path}}: RouteComponentProps) {
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
-    const isNotificationSoundsEnabled: boolean =
-        useFlags()[FeatureFlagKey.NotificationSounds] || false
     const satisfactionPaywallConfig = {
         [AccountFeature.SatisfactionSurveys]: {
             ...defaultPaywallConfigs[AccountFeature.SatisfactionSurveys],
@@ -703,16 +701,14 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                     navbar: SettingsNavbar,
                 })}
             />
-            {isNotificationSoundsEnabled && (
-                <Route
-                    path={`${path}/notifications`}
-                    exact
-                    render={appRender({
-                        content: NotificationSettings,
-                        navbar: SettingsNavbar,
-                    })}
-                />
-            )}
+            <Route
+                path={`${path}/notifications`}
+                exact
+                render={appRender({
+                    content: NotificationSettings,
+                    navbar: SettingsNavbar,
+                })}
+            />
             <Route
                 path={`${path}/password-2fa`}
                 exact
