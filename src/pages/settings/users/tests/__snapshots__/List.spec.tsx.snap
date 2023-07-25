@@ -112,7 +112,7 @@ exports[`<List /> should render 1`] = `
           class="d-flex align-items-center"
         >
           <div
-            class="component avatar d-none d-md-block"
+            class="component square avatar d-none d-md-block"
             style="width: 36px; height: 36px;"
           >
             <div
@@ -199,7 +199,7 @@ exports[`<List /> should render 1`] = `
           class="d-flex align-items-center"
         >
           <div
-            class="component avatar d-none d-md-block"
+            class="component square avatar d-none d-md-block"
             style="width: 36px; height: 36px;"
           >
             <div

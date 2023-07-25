@@ -1218,11 +1218,12 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                   className="avatar"
                                   email=""
                                   name="Team 1"
+                                  shape="square"
                                   size={26}
                                   style={{}}
                                 >
                                   <div
-                                    className="component avatar"
+                                    className="component square avatar"
                                     style={
                                       {
                                         "height": "26px",
@@ -1290,11 +1291,12 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                   className="avatar"
                                   email=""
                                   name="Team 2"
+                                  shape="square"
                                   size={26}
                                   style={{}}
                                 >
                                   <div
-                                    className="component avatar"
+                                    className="component square avatar"
                                     style={
                                       {
                                         "height": "26px",
@@ -1411,12 +1413,13 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                   className="avatar"
                                   email=""
                                   name="User 1"
+                                  shape="square"
                                   size={26}
                                   style={{}}
                                   url=""
                                 >
                                   <div
-                                    className="component avatar"
+                                    className="component square avatar"
                                     style={
                                       {
                                         "height": "26px",
@@ -1484,12 +1487,13 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                   className="avatar"
                                   email=""
                                   name="User 2"
+                                  shape="square"
                                   size={26}
                                   style={{}}
                                   url=""
                                 >
                                   <div
-                                    className="component avatar"
+                                    className="component square avatar"
                                     style={
                                       {
                                         "height": "26px",

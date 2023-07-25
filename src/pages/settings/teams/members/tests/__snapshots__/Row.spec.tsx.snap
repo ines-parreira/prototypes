@@ -24,7 +24,7 @@ exports[`<Row /> should render 1`] = `
       </label>
     </div>
     <div
-      class="component avatar d-none d-md-block"
+      class="component square avatar d-none d-md-block"
       style="width: 36px; height: 36px;"
     >
       <div

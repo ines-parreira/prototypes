@@ -64,6 +64,7 @@ exports[`BuildFinalTicket component should display all fields because everything
               className="d-inline-block mr-2"
               email=""
               name="John Smith"
+              shape="square"
               size={26}
               style={{}}
             />
@@ -77,6 +78,7 @@ exports[`BuildFinalTicket component should display all fields because everything
               className="d-inline-block mr-2"
               email=""
               name="Jack Ryan"
+              shape="square"
               size={26}
               style={{}}
             />
@@ -107,6 +109,7 @@ exports[`BuildFinalTicket component should display the assignee field because th
               className="d-inline-block mr-2"
               email=""
               name="John Smith"
+              shape="square"
               size={26}
               style={{}}
             />
@@ -120,6 +123,7 @@ exports[`BuildFinalTicket component should display the assignee field because th
               className="d-inline-block mr-2"
               email=""
               name="Jack Ryan"
+              shape="square"
               size={26}
               style={{}}
             />

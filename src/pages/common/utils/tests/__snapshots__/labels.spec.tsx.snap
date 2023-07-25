@@ -5,7 +5,7 @@ exports[`components utils: labels <AgentLabel/> render() should not render the n
   class="AgentLabel"
 >
   <div
-    class="component hasImage avatar"
+    class="component hasImage square avatar"
     style="width: 26px; height: 26px;"
   >
     <div
@@ -48,7 +48,7 @@ exports[`components utils: labels <AgentLabel/> render() should render the avata
   class="AgentLabel"
 >
   <div
-    class="component hasImage avatar"
+    class="component hasImage square avatar"
     style="width: 26px; height: 26px;"
   >
     <div
@@ -80,7 +80,7 @@ exports[`components utils: labels <AgentLabel/> render() should render the avata
   class="AgentLabel"
 >
   <div
-    class="component avatar"
+    class="component square avatar"
     style="width: 26px; height: 26px;"
   >
     <div
@@ -129,7 +129,7 @@ exports[`components utils: labels <TeamLabel/> render() should render with defau
   class="TeamLabel"
 >
   <div
-    class="component avatar"
+    class="component square avatar"
     style="width: 26px; height: 26px;"
   >
     <div
@@ -156,7 +156,7 @@ exports[`components utils: labels <TeamLabel/> render() should render with defau
   class="TeamLabel"
 >
   <div
-    class="component avatar"
+    class="component square avatar"
     style="width: 26px; height: 26px;"
   >
     <div
@@ -305,7 +305,7 @@ exports[`components utils: labels RenderLabel distribution assignee label 1`] = 
   class="assigneeLabelContainer"
 >
   <div
-    class="component hasImage assigneeLabelAvatar"
+    class="component hasImage square assigneeLabelAvatar"
     style="width: 26px; height: 26px;"
   >
     <div
@@ -337,7 +337,7 @@ exports[`components utils: labels RenderLabel distribution assignee_team label 1
   class="assigneeLabelContainer"
 >
   <div
-    class="component assigneeLabelAvatar"
+    class="component square assigneeLabelAvatar"
     style="width: 26px; height: 26px;"
   >
     <div

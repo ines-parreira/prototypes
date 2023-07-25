@@ -55,7 +55,7 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
           class="TeamLabel"
         >
           <div
-            class="component avatar"
+            class="component square avatar"
             style="width:26px;height:26px"
           >
             <div
@@ -86,7 +86,7 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
           class="TeamLabel"
         >
           <div
-            class="component avatar"
+            class="component square avatar"
             style="width:26px;height:26px"
           >
             <div
@@ -131,7 +131,7 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
           class="AgentLabel"
         >
           <div
-            class="component avatar"
+            class="component square avatar"
             style="width:26px;height:26px"
           >
             <div
@@ -162,7 +162,7 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
           class="AgentLabel"
         >
           <div
-            class="component avatar"
+            class="component square avatar"
             style="width:26px;height:26px"
           >
             <div

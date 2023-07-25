@@ -60,7 +60,7 @@ exports[`<TeamList /> should render with data 1`] = `
               class="mr-1"
             >
               <div
-                class="component"
+                class="component square"
                 style="width: 30px; height: 30px;"
               >
                 <div
@@ -132,7 +132,7 @@ exports[`<TeamList /> should render with data 1`] = `
               class="mr-1"
             >
               <div
-                class="component"
+                class="component square"
                 style="width: 30px; height: 30px;"
               >
                 <div
@@ -202,7 +202,7 @@ exports[`<TeamList /> should render with data 1`] = `
               class="mr-1"
             >
               <div
-                class="component"
+                class="component square"
                 style="width: 30px; height: 30px;"
               >
                 <div

@@ -470,6 +470,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
         className="mr-3 rounded"
         email=""
         name="foo"
+        shape="square"
         size={50}
         style={{}}
       />
@@ -551,6 +552,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
         className="mr-3 rounded"
         email=""
         name="foo"
+        shape="square"
         size={50}
         style={{}}
       />
@@ -673,6 +675,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
         className="mr-3 rounded"
         email=""
         name="foo"
+        shape="square"
         size={50}
         style={{}}
       />
@@ -721,6 +724,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
         className="mr-3 rounded"
         email=""
         name="foo"
+        shape="square"
         size={50}
         style={{}}
       />
@@ -768,6 +772,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
         className="mr-3 rounded"
         email=""
         name="foo"
+        shape="square"
         size={50}
         style={{}}
       />
@@ -871,11 +876,12 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
           className="mr-3 rounded"
           email=""
           name="foo"
+          shape="square"
           size={50}
           style={{}}
         >
           <div
-            className="component mr-3 rounded"
+            className="component square mr-3 rounded"
             style={
               {
                 "height": "50px",

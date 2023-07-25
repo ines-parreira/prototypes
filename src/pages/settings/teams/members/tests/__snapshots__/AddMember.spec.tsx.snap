@@ -40,7 +40,7 @@ exports[`<AddMember /> should render 1`] = `
           class="AgentLabel"
         >
           <div
-            class="component avatar"
+            class="component square avatar"
             style="width: 26px; height: 26px;"
           >
             <div
@@ -122,7 +122,7 @@ exports[`<AddMember /> should render the dropdown on click 1`] = `
         class="AgentLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width: 26px; height: 26px;"
         >
           <div
@@ -203,7 +203,7 @@ exports[`<AddMember /> should render user with empty name 1`] = `
         class="AgentLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width: 26px; height: 26px;"
         >
           <div

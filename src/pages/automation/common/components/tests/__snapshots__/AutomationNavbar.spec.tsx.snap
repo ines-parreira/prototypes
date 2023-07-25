@@ -355,7 +355,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Alex Plugaru
         </div>
         <div
-          class="component hasImage"
+          class="component hasImage square"
           style="width: 36px; height: 36px;"
         >
           <div
@@ -679,7 +679,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Alex Plugaru
         </div>
         <div
-          class="component hasImage"
+          class="component hasImage square"
           style="width: 36px; height: 36px;"
         >
           <div
@@ -949,7 +949,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Alex Plugaru
         </div>
         <div
-          class="component hasImage"
+          class="component hasImage square"
           style="width: 36px; height: 36px;"
         >
           <div
@@ -1337,7 +1337,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Alex Plugaru
         </div>
         <div
-          class="component hasImage"
+          class="component hasImage square"
           style="width: 36px; height: 36px;"
         >
           <div
@@ -1661,7 +1661,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Alex Plugaru
         </div>
         <div
-          class="component hasImage"
+          class="component hasImage square"
           style="width: 36px; height: 36px;"
         >
           <div
@@ -1931,7 +1931,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Alex Plugaru
         </div>
         <div
-          class="component hasImage"
+          class="component hasImage square"
           style="width: 36px; height: 36px;"
         >
           <div
@@ -2115,7 +2115,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
           Alex Plugaru
         </div>
         <div
-          class="component hasImage"
+          class="component hasImage square"
           style="width: 36px; height: 36px;"
         >
           <div
@@ -2299,7 +2299,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
           Alex Plugaru
         </div>
         <div
-          class="component hasImage"
+          class="component hasImage square"
           style="width: 36px; height: 36px;"
         >
           <div

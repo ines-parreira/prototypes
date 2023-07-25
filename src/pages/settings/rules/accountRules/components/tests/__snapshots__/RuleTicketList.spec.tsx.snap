@@ -44,7 +44,7 @@ exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
               class="cellWrapper"
             >
               <div
-                class="component"
+                class="component square"
                 style="width: 30px; height: 30px;"
               >
                 <div
@@ -145,7 +145,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
               class="cellWrapper"
             >
               <div
-                class="component"
+                class="component square"
                 style="width: 30px; height: 30px;"
               >
                 <div

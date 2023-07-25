@@ -163,7 +163,7 @@ exports[`Body should display the Twitter quoted tweet card if there's matching m
                   class="mr-2"
                 >
                   <div
-                    class="component"
+                    class="component square"
                     style="width: 36px; height: 36px;"
                   >
                     <div

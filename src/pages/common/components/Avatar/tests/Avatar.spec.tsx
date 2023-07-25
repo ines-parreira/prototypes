@@ -65,4 +65,8 @@ describe('Avatar component', () => {
         })
         expect(component).toMatchSnapshot()
     })
+    it('should render image with round shape', () => {
+        const component = mount(<Avatar url="/marie/curie" shape="round" />)
+        expect(component).toMatchSnapshot()
+    })
 })

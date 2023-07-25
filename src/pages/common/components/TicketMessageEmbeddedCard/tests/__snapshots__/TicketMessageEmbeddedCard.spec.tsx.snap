@@ -40,6 +40,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
           <Avatar
             email="some_email@foo.com"
             name="some_sender_name"
+            shape="square"
             size={36}
             style={{}}
           />
@@ -182,6 +183,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Avatar
           email="some_email@foo.com"
           name="some_sender_name"
+          shape="square"
           size={36}
           style={{}}
         />
@@ -364,6 +366,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Avatar
           email="some_email@foo.com"
           name="some_sender_name"
+          shape="square"
           size={36}
           style={{}}
         />
@@ -588,6 +591,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Avatar
           email="some_email@foo.com"
           name="some_sender_name"
+          shape="square"
           size={36}
           style={{}}
         />
@@ -802,6 +806,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Avatar
           email="some_email@foo.com"
           name="some_sender_name"
+          shape="square"
           size={36}
           style={{}}
         />
@@ -984,6 +989,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Avatar
           email="some_email@foo.com"
           name="some_sender_name"
+          shape="square"
           size={36}
           style={{}}
         />
@@ -1166,6 +1172,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Avatar
           email="some_email@foo.com"
           name="some_sender_name"
+          shape="square"
           size={36}
           style={{}}
         />

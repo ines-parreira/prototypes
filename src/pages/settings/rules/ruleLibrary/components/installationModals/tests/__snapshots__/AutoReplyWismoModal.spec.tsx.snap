@@ -77,7 +77,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
           class="fakeMessage"
         >
           <div
-            class="component clientAvatar"
+            class="component square clientAvatar"
             style="width: 28px; height: 28px;"
           >
             <div
@@ -109,7 +109,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
         >
           <div>
             <div
-              class="component hasImage autoResponderAvatar"
+              class="component hasImage square autoResponderAvatar"
               style="width: 28px; height: 28px;"
             >
               <div
@@ -317,7 +317,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
           class="fakeMessage"
         >
           <div
-            class="component clientAvatar"
+            class="component square clientAvatar"
             style="width: 28px; height: 28px;"
           >
             <div
@@ -349,7 +349,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
         >
           <div>
             <div
-              class="component hasImage autoResponderAvatar"
+              class="component hasImage square autoResponderAvatar"
               style="width: 28px; height: 28px;"
             >
               <div

@@ -45,7 +45,7 @@ exports[`<SpotlightTicketRow/> should render a date from the current year withou
         class="assigneeLabelContainer"
       >
         <div
-          class="component assigneeLabelAvatar"
+          class="component square assigneeLabelAvatar"
           style="width: 24px; height: 24px;"
         >
           <div
@@ -121,7 +121,7 @@ exports[`<SpotlightTicketRow/> should render closed icon 1`] = `
         class="assigneeLabelContainer"
       >
         <div
-          class="component assigneeLabelAvatar"
+          class="component square assigneeLabelAvatar"
           style="width: 24px; height: 24px;"
         >
           <div
@@ -197,7 +197,7 @@ exports[`<SpotlightTicketRow/> should render current date as "today" 1`] = `
         class="assigneeLabelContainer"
       >
         <div
-          class="component assigneeLabelAvatar"
+          class="component square assigneeLabelAvatar"
           style="width: 24px; height: 24px;"
         >
           <div
@@ -293,7 +293,7 @@ exports[`<SpotlightTicketRow/> should render ticket information 1`] = `
         class="assigneeLabelContainer"
       >
         <div
-          class="component assigneeLabelAvatar"
+          class="component square assigneeLabelAvatar"
           style="width: 24px; height: 24px;"
         >
           <div
@@ -369,7 +369,7 @@ exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
         class="assigneeLabelContainer"
       >
         <div
-          class="component assigneeLabelAvatar"
+          class="component square assigneeLabelAvatar"
           style="width: 24px; height: 24px;"
         >
           <div
@@ -445,7 +445,7 @@ exports[`<SpotlightTicketRow/> should render without customer name and without e
         class="assigneeLabelContainer"
       >
         <div
-          class="component assigneeLabelAvatar"
+          class="component square assigneeLabelAvatar"
           style="width: 24px; height: 24px;"
         >
           <div

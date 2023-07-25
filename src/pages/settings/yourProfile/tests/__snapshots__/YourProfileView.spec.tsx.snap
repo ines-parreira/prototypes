@@ -2646,6 +2646,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             className="mb16"
             email=""
             name="Alex Plugaru"
+            shape="square"
             size={100}
             style={{}}
             url="https://config.gorgias.io/production/picture"

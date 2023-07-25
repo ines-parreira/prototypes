@@ -25,7 +25,7 @@ exports[`<PeopleSearchResults/> render() should render 1`] = `
         class="TeamLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -56,7 +56,7 @@ exports[`<PeopleSearchResults/> render() should render 1`] = `
         class="TeamLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -101,7 +101,7 @@ exports[`<PeopleSearchResults/> render() should render 1`] = `
         class="AgentLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -132,7 +132,7 @@ exports[`<PeopleSearchResults/> render() should render 1`] = `
         class="AgentLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -185,7 +185,7 @@ exports[`<PeopleSearchResults/> render() should render with custom children disp
         class="TeamLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -216,7 +216,7 @@ exports[`<PeopleSearchResults/> render() should render with custom children disp
         class="TeamLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -261,7 +261,7 @@ exports[`<PeopleSearchResults/> render() should render with custom children disp
         class="AgentLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -292,7 +292,7 @@ exports[`<PeopleSearchResults/> render() should render with custom children disp
         class="AgentLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -342,7 +342,7 @@ exports[`<PeopleSearchResults/> render() should render without teams 1`] = `
         class="AgentLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -373,7 +373,7 @@ exports[`<PeopleSearchResults/> render() should render without teams 1`] = `
         class="AgentLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -423,7 +423,7 @@ exports[`<PeopleSearchResults/> render() should render without users 1`] = `
         class="TeamLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div
@@ -454,7 +454,7 @@ exports[`<PeopleSearchResults/> render() should render without users 1`] = `
         class="TeamLabel"
       >
         <div
-          class="component avatar"
+          class="component square avatar"
           style="width:26px;height:26px"
         >
           <div

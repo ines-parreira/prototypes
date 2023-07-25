@@ -9,7 +9,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
       class="avatar"
     >
       <div
-        class="component hasImage"
+        class="component hasImage square"
         style="width: 36px; height: 36px;"
       >
         <div
@@ -201,7 +201,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
       class="avatar"
     >
       <div
-        class="component hasImage"
+        class="component hasImage square"
         style="width: 36px; height: 36px;"
       >
         <div

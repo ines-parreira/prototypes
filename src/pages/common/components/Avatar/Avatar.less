@@ -10,8 +10,13 @@
         display: none;
     }
 
-    &,
-    .gravatar {
+    &.round,
+    &.round .gravatar {
+        border-radius: 50% !important;
+    }
+
+    &.square,
+    &.square .gravatar {
         border-radius: 2px !important;
     }
 
@@ -42,12 +47,20 @@
 
     .badge {
         position: absolute;
-        bottom: -6px;
-        right: -7px;
         z-index: 2;
         width: 14px;
         height: 14px;
         border-radius: 50%;
         border: solid 2px var(--neutral-grey-6);
+    }
+
+    &.square .badge {
+        bottom: -6px;
+        right: -7px;
+    }
+
+    &.round .badge {
+        bottom: 0px;
+        right: 0px;
     }
 }

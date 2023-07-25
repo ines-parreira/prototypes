@@ -9,7 +9,7 @@ exports[`<Row /> should render 1`] = `
     class="d-flex align-items-center"
   >
     <div
-      class="component avatar d-none d-md-block"
+      class="component square avatar d-none d-md-block"
       style="width: 36px; height: 36px;"
     >
       <div
@@ -84,7 +84,7 @@ exports[`<Row /> should render 2FA information when enabled 1`] = `
     class="d-flex align-items-center"
   >
     <div
-      class="component avatar d-none d-md-block"
+      class="component square avatar d-none d-md-block"
       style="width: 36px; height: 36px;"
     >
       <div
@@ -159,7 +159,7 @@ exports[`<Row /> should render 2FA information when enabled and agent has 2FA di
     class="d-flex align-items-center"
   >
     <div
-      class="component avatar d-none d-md-block"
+      class="component square avatar d-none d-md-block"
       style="width: 36px; height: 36px;"
     >
       <div
@@ -234,7 +234,7 @@ exports[`<Row /> should render a user without a name 1`] = `
     class="d-flex align-items-center"
   >
     <div
-      class="component avatar d-none d-md-block"
+      class="component square avatar d-none d-md-block"
       style="width: 36px; height: 36px;"
     >
       <div

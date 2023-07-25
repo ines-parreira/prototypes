@@ -851,7 +851,7 @@ exports[`TicketListActions component should render agents options in assign agen
               class="AgentLabel"
             >
               <div
-                class="component avatar"
+                class="component square avatar"
                 style="width: 26px; height: 26px;"
               >
                 <div
@@ -882,7 +882,7 @@ exports[`TicketListActions component should render agents options in assign agen
               class="AgentLabel"
             >
               <div
-                class="component avatar"
+                class="component square avatar"
                 style="width: 26px; height: 26px;"
               >
                 <div
@@ -913,7 +913,7 @@ exports[`TicketListActions component should render agents options in assign agen
               class="AgentLabel"
             >
               <div
-                class="component avatar"
+                class="component square avatar"
                 style="width: 26px; height: 26px;"
               >
                 <div
@@ -2120,7 +2120,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
               class="TeamLabel"
             >
               <div
-                class="component avatar"
+                class="component square avatar"
                 style="width: 26px; height: 26px;"
               >
                 <div
@@ -2151,7 +2151,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
               class="TeamLabel"
             >
               <div
-                class="component avatar"
+                class="component square avatar"
                 style="width: 26px; height: 26px;"
               >
                 <div
@@ -2182,7 +2182,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
               class="TeamLabel"
             >
               <div
-                class="component avatar"
+                class="component square avatar"
                 style="width: 26px; height: 26px;"
               >
                 <div

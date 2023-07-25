@@ -18,6 +18,7 @@ type Props = {
     withTooltip?: boolean
     tooltipText?: string
     showFirstInitialOnly?: boolean
+    shape?: 'square' | 'round'
 }
 
 type State = {
@@ -28,11 +29,15 @@ export default class Avatar extends Component<Props, State> {
     component: Maybe<HTMLDivElement>
     isMounted: boolean
 
-    static defaultProps: Pick<Props, 'email' | 'name' | 'size' | 'style'> = {
+    static defaultProps: Pick<
+        Props,
+        'email' | 'name' | 'size' | 'style' | 'shape'
+    > = {
         email: '',
         name: '',
         size: 50,
         style: {},
+        shape: 'square',
     }
 
     constructor(props: Props) {
@@ -108,6 +113,7 @@ export default class Avatar extends Component<Props, State> {
             withTooltip = false,
             tooltipText = '',
             showFirstInitialOnly = false,
+            shape = 'square',
         } = this.props
 
         return (
@@ -117,6 +123,7 @@ export default class Avatar extends Component<Props, State> {
                     {
                         [css.hasImage]: !!this.state.imageUrl,
                     },
+                    css[shape],
                     className
                 )}
                 style={{
