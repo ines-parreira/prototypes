@@ -1,10 +1,9 @@
-import React, {Component} from 'react'
+import React, {MouseEvent, Component} from 'react'
 import {Link} from 'react-router-dom'
 import {Map, fromJS, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
-import {Breadcrumb, BreadcrumbItem, Container, Table} from 'reactstrap'
-import classnames from 'classnames'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import {removeLinksFromHtml} from 'utils/html'
 
@@ -14,19 +13,18 @@ import {
     updateCampaign,
 } from 'state/campaigns/actions'
 import Button from 'pages/common/components/button/Button'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import PageHeader from 'pages/common/components/PageHeader'
-import IconButton from 'pages/common/components/button/IconButton'
 import {IntegrationType} from 'models/integration/constants'
 import CampaignGenerator from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/CampaignGenerator'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
 import {CampaignChatHiddenWarning} from './components/CampaignChatHiddenWarning'
+import {CampaignsTable} from './components/CampaignsTable'
 
 import css from './GorgiasChatIntegrationCampaigns.less'
+import {ChatCampaign} from './types/Campaign'
 
 type Props = {
     integration: Map<any, any>
@@ -34,11 +32,11 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
-    toggleCampaign = (campaign: Map<any, any>) => {
+    toggleCampaign = (campaign: ChatCampaign) => {
         const {updateCampaign, integration} = this.props
-        let form = campaign
+        let form: Map<any, any> = fromJS(campaign)
 
-        if (campaign.get('deactivated_datetime')) {
+        if (campaign.deactivated_datetime) {
             form = form.set('deactivated_datetime', null)
         } else {
             form = form.set('deactivated_datetime', moment.utc())
@@ -47,27 +45,30 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
         void updateCampaign(form, integration)
     }
 
-    handleDuplicateCampaign = async (campaign: Map<any, any>) => {
+    handleDuplicateCampaign = async (
+        event: MouseEvent,
+        campaign: ChatCampaign
+    ) => {
+        event.stopPropagation()
+
         const {createCampaign, integration} = this.props
+
         await createCampaign(
             fromJS({
-                ...campaign.toJS(),
+                ...campaign,
                 id: '',
-                name: `${campaign.get('name') as string} (copy)`,
+                name: `${campaign.name} (copy)`,
                 deactivated_datetime: new Date().toISOString(),
                 message: {
-                    text: campaign.getIn(['message', 'text']) ?? '',
-                    html:
-                        removeLinksFromHtml(
-                            campaign.getIn(['message', 'html'])
-                        ) ?? '',
+                    text: campaign.message.text ?? '',
+                    html: removeLinksFromHtml(campaign.message.html) ?? '',
                 },
             }),
             integration
         )
     }
 
-    handleDeleteCampaign = async (campaign: Map<any, any>) => {
+    handleDeleteCampaign = async (campaign: ChatCampaign) => {
         const {deleteCampaign, integration} = this.props
         await deleteCampaign(fromJS(campaign), integration)
     }
@@ -133,121 +134,13 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                 </Container>
 
                 {!campaigns.isEmpty() && (
-                    <Table
-                        className={classnames(
-                            'table-integrations',
-                            'mt-3',
-                            css.campaignsTable
-                        )}
-                        hover
-                    >
-                        <tbody>
-                            {campaigns.map((campaign: Map<any, any>) => {
-                                const editLink =
-                                    `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
-                                    `${
-                                        integration.get('id') as number
-                                    }/campaigns/${campaign.get('id') as number}`
-
-                                return (
-                                    <tr key={campaign.get('id') as number}>
-                                        <td className="smallest align-middle">
-                                            <ToggleInput
-                                                isToggled={
-                                                    !campaign.get(
-                                                        'deactivated_datetime'
-                                                    )
-                                                }
-                                                onClick={() =>
-                                                    this.toggleCampaign(
-                                                        campaign
-                                                    )
-                                                }
-                                                aria-label={`Enable campaign ${
-                                                    campaign.get(
-                                                        'name'
-                                                    ) as string
-                                                }`}
-                                            />
-                                        </td>
-                                        <td className="link-full-td">
-                                            <Link to={editLink}>
-                                                <div>
-                                                    <b>
-                                                        {campaign.get('name')}
-                                                    </b>
-                                                </div>
-                                            </Link>
-                                        </td>
-                                        <td className="smallest align-middle">
-                                            <IconButton
-                                                className={classnames('mr-1')}
-                                                data-testid="duplicate-icon-button"
-                                                fillStyle="ghost"
-                                                intent="secondary"
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    void this.handleDuplicateCampaign(
-                                                        campaign
-                                                    )
-                                                }}
-                                                title="Duplicate campaign"
-                                            >
-                                                file_copy
-                                            </IconButton>
-                                            <ConfirmationPopover
-                                                buttonProps={{
-                                                    intent: 'destructive',
-                                                }}
-                                                id={`delete-campaign-${
-                                                    campaign.get('id') as string
-                                                }`}
-                                                content={
-                                                    <>
-                                                        You are about to delete{' '}
-                                                        <b>
-                                                            {
-                                                                campaign.get(
-                                                                    'name'
-                                                                ) as string
-                                                            }
-                                                        </b>{' '}
-                                                        campaign.
-                                                    </>
-                                                }
-                                                onConfirm={() => {
-                                                    return this.handleDeleteCampaign(
-                                                        campaign
-                                                    )
-                                                }}
-                                            >
-                                                {({
-                                                    uid,
-                                                    onDisplayConfirmation,
-                                                }) => (
-                                                    <IconButton
-                                                        className={classnames(
-                                                            'mr-1'
-                                                        )}
-                                                        onClick={
-                                                            onDisplayConfirmation
-                                                        }
-                                                        fillStyle="ghost"
-                                                        intent="destructive"
-                                                        title="Delete campaign"
-                                                        id={uid}
-                                                        data-testid="delete-icon-button"
-                                                    >
-                                                        delete
-                                                    </IconButton>
-                                                )}
-                                            </ConfirmationPopover>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
+                    <CampaignsTable
+                        data={campaigns.toJS() as ChatCampaign[]}
+                        integration={integration}
+                        onClickDelete={this.handleDeleteCampaign}
+                        onClickDuplicate={this.handleDuplicateCampaign}
+                        onToggleCampaign={this.toggleCampaign}
+                    />
                 )}
             </div>
         )

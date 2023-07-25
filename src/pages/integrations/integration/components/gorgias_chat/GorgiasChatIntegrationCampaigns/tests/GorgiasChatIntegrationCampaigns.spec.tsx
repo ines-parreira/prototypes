@@ -301,6 +301,10 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                                         id: '156a4d-fg68h40-sd6f4',
                                         name: 'Super campaign',
                                         deactivated_datetime: null,
+                                        message: {
+                                            text: 'Hello world',
+                                            html: '<p>Hello world</p>',
+                                        },
                                     },
                                 ],
                             },

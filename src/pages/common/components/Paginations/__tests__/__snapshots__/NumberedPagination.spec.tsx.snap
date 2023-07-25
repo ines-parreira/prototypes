@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NumberedPagination /> should render the component with default props 1`] = `
+<div>
+  <div>
+    <ul
+      class="container"
+    >
+      <li
+        aria-label="previous"
+        class="item arrow disabled"
+      >
+        <i
+          class="material-icons md-2"
+        >
+          keyboard_arrow_left
+        </i>
+      </li>
+      <li
+        aria-current="true"
+        aria-label="page-1"
+        class="item selected"
+      >
+        1
+      </li>
+      <li
+        aria-label="next"
+        class="item arrow disabled"
+      >
+        <i
+          class="material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

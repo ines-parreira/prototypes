@@ -1,0 +1,74 @@
+@import '~css/typography';
+
+:local {
+    .item {
+        .component-button-medium();
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 40px;
+        height: 32px;
+
+        border-radius: 4px;
+
+        color: var(--neutral-grey-5);
+
+        transition: all 0.2s ease-in-out;
+
+        cursor: pointer;
+        user-select: none;
+
+        & + * {
+            margin-left: 4px;
+        }
+
+        &:hover {
+            background-color: var(--neutral-grey-1);
+        }
+    }
+
+    .small {
+        .component-button-small();
+
+        width: 32px;
+        height: 24px;
+    }
+
+    .arrow {
+        width: 32px;
+        height: 32px;
+
+        &.small {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .selected {
+        background-color: var(--neutral-grey-3);
+        color: var(--neutral-grey-6);
+
+        &:hover {
+            background-color: var(--neutral-grey-3);
+        }
+    }
+
+    .ellipsis {
+        cursor: default;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    .disabled {
+        color: var(--neutral-grey-3);
+        cursor: default;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}

@@ -143,154 +143,297 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
       </span>
     </div>
     <table
-      class="table-integrations mt-3 campaignsTable table table-hover"
+      class="table table-integrations mt-3 campaignsTable"
     >
-      <tbody>
-        <tr>
+      <thead
+        class=""
+      >
+        <tr
+          class="headerRow"
+        >
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 88px;"
           >
-            <div>
-              <label
-                aria-checked="true"
-                aria-label="Enable campaign Super campaign"
-                class="label label"
-                for="toggle-button-9"
-                role="switch"
+            <div
+              class="content"
+            >
+              <div
+                class="cell"
               >
-                <input
-                  aria-label="Enable campaign Super campaign"
-                  checked=""
-                  class="input"
-                  disabled=""
-                  id="toggle-button-9"
-                  name="toggle-button-9"
-                  type="checkbox"
+                <span
+                  class="title"
                 />
-                <div
-                  class="slider"
-                />
-              </label>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
             </div>
           </td>
           <td
-            class="link-full-td"
+            class="wrapper normal"
           >
-            <a
-              to="/app/settings/channels/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+            <div
+              class="content"
             >
-              <div>
-                <b>
-                  Super campaign
-                </b>
+              <div
+                class="cell"
+              >
+                <span
+                  class="title"
+                >
+                  Campaign name
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
               </div>
-            </a>
+            </div>
           </td>
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 110px;"
           >
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost secondary medium"
-              data-testid="duplicate-icon-button"
-              title="Duplicate campaign"
-              type="button"
+            <div
+              class="content"
             >
-              <i
-                class="material-icons icon"
+              <div
+                class="cell"
               >
-                file_copy
-              </i>
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost destructive medium"
-              data-testid="delete-icon-button"
-              id="delete-campaign-156a4d-fg68h40-sd6f4"
-              title="Delete campaign"
-              type="button"
-            >
-              <i
-                class="material-icons icon"
-              >
-                delete
-              </i>
-            </button>
+                <span
+                  class="title"
+                />
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
           </td>
         </tr>
-        <tr>
+      </thead>
+      <tbody
+        class="tableBody"
+      >
+        <tr
+          class="row tableRow"
+        >
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 88px;"
           >
-            <div>
-              <label
-                aria-checked="false"
-                aria-label="Enable campaign Not so good campaign"
-                class="label label"
-                for="toggle-button-11"
-                role="switch"
-              >
-                <input
-                  aria-label="Enable campaign Not so good campaign"
-                  class="input"
-                  disabled=""
-                  id="toggle-button-11"
-                  name="toggle-button-11"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
+            <div
+              class="cellContent"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  aria-label="Enable campaign Super campaign"
+                  class="label label"
+                  for="toggle-button-9"
+                  role="switch"
+                >
+                  <input
+                    aria-label="Enable campaign Super campaign"
+                    checked=""
+                    class="input"
+                    disabled=""
+                    id="toggle-button-9"
+                    name="toggle-button-9"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
             </div>
           </td>
           <td
-            class="link-full-td"
+            class="wrapper normal"
           >
-            <a
-              to="/app/settings/channels/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+            <div
+              class="cellContent anchorCell"
             >
-              <div>
-                <b>
-                  Not so good campaign
-                </b>
-              </div>
-            </a>
+              <a
+                class="anchor"
+                to="/app/settings/channels/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+              >
+                <div>
+                  <b>
+                    Super campaign
+                  </b>
+                </div>
+              </a>
+            </div>
           </td>
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 110px;"
           >
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost secondary medium"
-              data-testid="duplicate-icon-button"
-              title="Duplicate campaign"
-              type="button"
+            <div
+              class="cellContent"
             >
-              <i
-                class="material-icons icon"
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                data-testid="duplicate-icon-button"
+                title="Duplicate campaign"
+                type="button"
               >
-                file_copy
-              </i>
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost destructive medium"
-              data-testid="delete-icon-button"
-              id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"
-              title="Delete campaign"
-              type="button"
+                <i
+                  class="material-icons icon"
+                >
+                  file_copy
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                data-testid="delete-icon-button"
+                id="delete-campaign-156a4d-fg68h40-sd6f4"
+                title="Delete campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr
+          class="row tableRow"
+        >
+          <td
+            class="wrapper normal"
+            style="width: 88px;"
+          >
+            <div
+              class="cellContent"
             >
-              <i
-                class="material-icons icon"
+              <div>
+                <label
+                  aria-checked="false"
+                  aria-label="Enable campaign Not so good campaign"
+                  class="label label"
+                  for="toggle-button-11"
+                  role="switch"
+                >
+                  <input
+                    aria-label="Enable campaign Not so good campaign"
+                    class="input"
+                    disabled=""
+                    id="toggle-button-11"
+                    name="toggle-button-11"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent anchorCell"
+            >
+              <a
+                class="anchor"
+                to="/app/settings/channels/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
               >
-                delete
-              </i>
-            </button>
+                <div>
+                  <b>
+                    Not so good campaign
+                  </b>
+                </div>
+              </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+            style="width: 110px;"
+          >
+            <div
+              class="cellContent"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                data-testid="duplicate-icon-button"
+                title="Duplicate campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  file_copy
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                data-testid="delete-icon-button"
+                id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"
+                title="Delete campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
+    <div
+      class="pagination"
+    >
+      <ul
+        class="container"
+      >
+        <li
+          aria-label="previous"
+          class="item arrow disabled"
+        >
+          <i
+            class="material-icons md-2"
+          >
+            keyboard_arrow_left
+          </i>
+        </li>
+        <li
+          aria-current="true"
+          aria-label="page-1"
+          class="item selected"
+        >
+          1
+        </li>
+        <li
+          aria-label="next"
+          class="item arrow disabled"
+        >
+          <i
+            class="material-icons md-2"
+          >
+            keyboard_arrow_right
+          </i>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -420,154 +563,297 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
       </span>
     </div>
     <table
-      class="table-integrations mt-3 campaignsTable table table-hover"
+      class="table table-integrations mt-3 campaignsTable"
     >
-      <tbody>
-        <tr>
+      <thead
+        class=""
+      >
+        <tr
+          class="headerRow"
+        >
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 88px;"
           >
-            <div>
-              <label
-                aria-checked="true"
-                aria-label="Enable campaign Super campaign"
-                class="label label"
-                for="toggle-button-5"
-                role="switch"
+            <div
+              class="content"
+            >
+              <div
+                class="cell"
               >
-                <input
-                  aria-label="Enable campaign Super campaign"
-                  checked=""
-                  class="input"
-                  disabled=""
-                  id="toggle-button-5"
-                  name="toggle-button-5"
-                  type="checkbox"
+                <span
+                  class="title"
                 />
-                <div
-                  class="slider"
-                />
-              </label>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
             </div>
           </td>
           <td
-            class="link-full-td"
+            class="wrapper normal"
           >
-            <a
-              to="/app/settings/channels/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+            <div
+              class="content"
             >
-              <div>
-                <b>
-                  Super campaign
-                </b>
+              <div
+                class="cell"
+              >
+                <span
+                  class="title"
+                >
+                  Campaign name
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
               </div>
-            </a>
+            </div>
           </td>
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 110px;"
           >
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost secondary medium"
-              data-testid="duplicate-icon-button"
-              title="Duplicate campaign"
-              type="button"
+            <div
+              class="content"
             >
-              <i
-                class="material-icons icon"
+              <div
+                class="cell"
               >
-                file_copy
-              </i>
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost destructive medium"
-              data-testid="delete-icon-button"
-              id="delete-campaign-156a4d-fg68h40-sd6f4"
-              title="Delete campaign"
-              type="button"
-            >
-              <i
-                class="material-icons icon"
-              >
-                delete
-              </i>
-            </button>
+                <span
+                  class="title"
+                />
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
           </td>
         </tr>
-        <tr>
+      </thead>
+      <tbody
+        class="tableBody"
+      >
+        <tr
+          class="row tableRow"
+        >
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 88px;"
           >
-            <div>
-              <label
-                aria-checked="false"
-                aria-label="Enable campaign Not so good campaign"
-                class="label label"
-                for="toggle-button-7"
-                role="switch"
-              >
-                <input
-                  aria-label="Enable campaign Not so good campaign"
-                  class="input"
-                  disabled=""
-                  id="toggle-button-7"
-                  name="toggle-button-7"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
+            <div
+              class="cellContent"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  aria-label="Enable campaign Super campaign"
+                  class="label label"
+                  for="toggle-button-5"
+                  role="switch"
+                >
+                  <input
+                    aria-label="Enable campaign Super campaign"
+                    checked=""
+                    class="input"
+                    disabled=""
+                    id="toggle-button-5"
+                    name="toggle-button-5"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
             </div>
           </td>
           <td
-            class="link-full-td"
+            class="wrapper normal"
           >
-            <a
-              to="/app/settings/channels/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+            <div
+              class="cellContent anchorCell"
             >
-              <div>
-                <b>
-                  Not so good campaign
-                </b>
-              </div>
-            </a>
+              <a
+                class="anchor"
+                to="/app/settings/channels/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+              >
+                <div>
+                  <b>
+                    Super campaign
+                  </b>
+                </div>
+              </a>
+            </div>
           </td>
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 110px;"
           >
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost secondary medium"
-              data-testid="duplicate-icon-button"
-              title="Duplicate campaign"
-              type="button"
+            <div
+              class="cellContent"
             >
-              <i
-                class="material-icons icon"
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                data-testid="duplicate-icon-button"
+                title="Duplicate campaign"
+                type="button"
               >
-                file_copy
-              </i>
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost destructive medium"
-              data-testid="delete-icon-button"
-              id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"
-              title="Delete campaign"
-              type="button"
+                <i
+                  class="material-icons icon"
+                >
+                  file_copy
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                data-testid="delete-icon-button"
+                id="delete-campaign-156a4d-fg68h40-sd6f4"
+                title="Delete campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr
+          class="row tableRow"
+        >
+          <td
+            class="wrapper normal"
+            style="width: 88px;"
+          >
+            <div
+              class="cellContent"
             >
-              <i
-                class="material-icons icon"
+              <div>
+                <label
+                  aria-checked="false"
+                  aria-label="Enable campaign Not so good campaign"
+                  class="label label"
+                  for="toggle-button-7"
+                  role="switch"
+                >
+                  <input
+                    aria-label="Enable campaign Not so good campaign"
+                    class="input"
+                    disabled=""
+                    id="toggle-button-7"
+                    name="toggle-button-7"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent anchorCell"
+            >
+              <a
+                class="anchor"
+                to="/app/settings/channels/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
               >
-                delete
-              </i>
-            </button>
+                <div>
+                  <b>
+                    Not so good campaign
+                  </b>
+                </div>
+              </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+            style="width: 110px;"
+          >
+            <div
+              class="cellContent"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                data-testid="duplicate-icon-button"
+                title="Duplicate campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  file_copy
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                data-testid="delete-icon-button"
+                id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"
+                title="Delete campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
+    <div
+      class="pagination"
+    >
+      <ul
+        class="container"
+      >
+        <li
+          aria-label="previous"
+          class="item arrow disabled"
+        >
+          <i
+            class="material-icons md-2"
+          >
+            keyboard_arrow_left
+          </i>
+        </li>
+        <li
+          aria-current="true"
+          aria-label="page-1"
+          class="item selected"
+        >
+          1
+        </li>
+        <li
+          aria-label="next"
+          class="item arrow disabled"
+        >
+          <i
+            class="material-icons md-2"
+          >
+            keyboard_arrow_right
+          </i>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -828,154 +1114,297 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       </span>
     </div>
     <table
-      class="table-integrations mt-3 campaignsTable table table-hover"
+      class="table table-integrations mt-3 campaignsTable"
     >
-      <tbody>
-        <tr>
+      <thead
+        class=""
+      >
+        <tr
+          class="headerRow"
+        >
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 88px;"
           >
-            <div>
-              <label
-                aria-checked="true"
-                aria-label="Enable campaign Super campaign"
-                class="label label"
-                for="toggle-button-1"
-                role="switch"
+            <div
+              class="content"
+            >
+              <div
+                class="cell"
               >
-                <input
-                  aria-label="Enable campaign Super campaign"
-                  checked=""
-                  class="input"
-                  disabled=""
-                  id="toggle-button-1"
-                  name="toggle-button-1"
-                  type="checkbox"
+                <span
+                  class="title"
                 />
-                <div
-                  class="slider"
-                />
-              </label>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
             </div>
           </td>
           <td
-            class="link-full-td"
+            class="wrapper normal"
           >
-            <a
-              to="/app/settings/channels/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+            <div
+              class="content"
             >
-              <div>
-                <b>
-                  Super campaign
-                </b>
+              <div
+                class="cell"
+              >
+                <span
+                  class="title"
+                >
+                  Campaign name
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
               </div>
-            </a>
+            </div>
           </td>
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 110px;"
           >
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost secondary medium"
-              data-testid="duplicate-icon-button"
-              title="Duplicate campaign"
-              type="button"
+            <div
+              class="content"
             >
-              <i
-                class="material-icons icon"
+              <div
+                class="cell"
               >
-                file_copy
-              </i>
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost destructive medium"
-              data-testid="delete-icon-button"
-              id="delete-campaign-156a4d-fg68h40-sd6f4"
-              title="Delete campaign"
-              type="button"
-            >
-              <i
-                class="material-icons icon"
-              >
-                delete
-              </i>
-            </button>
+                <span
+                  class="title"
+                />
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
           </td>
         </tr>
-        <tr>
+      </thead>
+      <tbody
+        class="tableBody"
+      >
+        <tr
+          class="row tableRow"
+        >
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 88px;"
           >
-            <div>
-              <label
-                aria-checked="false"
-                aria-label="Enable campaign Not so good campaign"
-                class="label label"
-                for="toggle-button-3"
-                role="switch"
-              >
-                <input
-                  aria-label="Enable campaign Not so good campaign"
-                  class="input"
-                  disabled=""
-                  id="toggle-button-3"
-                  name="toggle-button-3"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
+            <div
+              class="cellContent"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  aria-label="Enable campaign Super campaign"
+                  class="label label"
+                  for="toggle-button-1"
+                  role="switch"
+                >
+                  <input
+                    aria-label="Enable campaign Super campaign"
+                    checked=""
+                    class="input"
+                    disabled=""
+                    id="toggle-button-1"
+                    name="toggle-button-1"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
             </div>
           </td>
           <td
-            class="link-full-td"
+            class="wrapper normal"
           >
-            <a
-              to="/app/settings/channels/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+            <div
+              class="cellContent anchorCell"
             >
-              <div>
-                <b>
-                  Not so good campaign
-                </b>
-              </div>
-            </a>
+              <a
+                class="anchor"
+                to="/app/settings/channels/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+              >
+                <div>
+                  <b>
+                    Super campaign
+                  </b>
+                </div>
+              </a>
+            </div>
           </td>
           <td
-            class="smallest align-middle"
+            class="wrapper normal"
+            style="width: 110px;"
           >
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost secondary medium"
-              data-testid="duplicate-icon-button"
-              title="Duplicate campaign"
-              type="button"
+            <div
+              class="cellContent"
             >
-              <i
-                class="material-icons icon"
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                data-testid="duplicate-icon-button"
+                title="Duplicate campaign"
+                type="button"
               >
-                file_copy
-              </i>
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper mr-1 wrapper ghost ghost destructive medium"
-              data-testid="delete-icon-button"
-              id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"
-              title="Delete campaign"
-              type="button"
+                <i
+                  class="material-icons icon"
+                >
+                  file_copy
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                data-testid="delete-icon-button"
+                id="delete-campaign-156a4d-fg68h40-sd6f4"
+                title="Delete campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr
+          class="row tableRow"
+        >
+          <td
+            class="wrapper normal"
+            style="width: 88px;"
+          >
+            <div
+              class="cellContent"
             >
-              <i
-                class="material-icons icon"
+              <div>
+                <label
+                  aria-checked="false"
+                  aria-label="Enable campaign Not so good campaign"
+                  class="label label"
+                  for="toggle-button-3"
+                  role="switch"
+                >
+                  <input
+                    aria-label="Enable campaign Not so good campaign"
+                    class="input"
+                    disabled=""
+                    id="toggle-button-3"
+                    name="toggle-button-3"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent anchorCell"
+            >
+              <a
+                class="anchor"
+                to="/app/settings/channels/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
               >
-                delete
-              </i>
-            </button>
+                <div>
+                  <b>
+                    Not so good campaign
+                  </b>
+                </div>
+              </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+            style="width: 110px;"
+          >
+            <div
+              class="cellContent"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                data-testid="duplicate-icon-button"
+                title="Duplicate campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  file_copy
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                data-testid="delete-icon-button"
+                id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"
+                title="Delete campaign"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
+    <div
+      class="pagination"
+    >
+      <ul
+        class="container"
+      >
+        <li
+          aria-label="previous"
+          class="item arrow disabled"
+        >
+          <i
+            class="material-icons md-2"
+          >
+            keyboard_arrow_left
+          </i>
+        </li>
+        <li
+          aria-current="true"
+          aria-label="page-1"
+          class="item selected"
+        >
+          1
+        </li>
+        <li
+          aria-label="next"
+          class="item arrow disabled"
+        >
+          <i
+            class="material-icons md-2"
+          >
+            keyboard_arrow_right
+          </i>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
