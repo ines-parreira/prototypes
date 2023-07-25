@@ -254,15 +254,6 @@ describe('WebsocketSharedWorker', () => {
         )
     })
 
-    describe('_onSocketConnectError()', () => {
-        it('should disconnect', () => {
-            worker.socket = io()
-            worker.socket.disconnect = jest.fn()
-            worker._onSocketConnectError(new Error('foo'))
-            expect(worker.socket?.disconnect).toHaveBeenCalled()
-        })
-    })
-
     describe('_onSocketDisconnect()', () => {
         it('should delay a task to send the disconnected notification and try to reconnect', () => {
             const incrementalReconnectSpy = jest.spyOn(
@@ -298,7 +289,7 @@ describe('WebsocketSharedWorker', () => {
             expect(worker.wsUrl).toEqual(message.wsUrl)
             expect(worker.socket).not.toEqual(null)
 
-            expect(worker.socket?.on).toHaveBeenCalledTimes(4)
+            expect(worker.socket?.on).toHaveBeenCalledTimes(3)
             expect(worker.socket?.on).toHaveBeenCalledWith(
                 'json',
                 worker._onSocketJson
