@@ -455,7 +455,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                             {isCreatingMacro ? (
                                                 <form
                                                     id="macro_form"
-                                                    className="d-inline-block"
+                                                    className="d-inline-block float-right"
                                                     onSubmit={(e) =>
                                                         this._createMacro(e)
                                                     }
