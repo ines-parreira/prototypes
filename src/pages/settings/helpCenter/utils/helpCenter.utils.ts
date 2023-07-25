@@ -102,10 +102,12 @@ export const getAbsoluteUrl = (
         domain,
         locale,
         path,
+        queryString,
     }: {
         domain: string
         locale?: string
         path?: string
+        queryString?: string
     },
     trailingSlash = true
 ): string => {
@@ -124,6 +126,10 @@ export const getAbsoluteUrl = (
 
     if (trailingSlash && !url.endsWith('/')) {
         url += '/'
+    }
+
+    if (queryString) {
+        url += `?${queryString}`
     }
 
     return url

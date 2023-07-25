@@ -109,6 +109,12 @@ describe('getAbsoluteUrl()', () => {
             getAbsoluteUrl({domain: 'acme.gorgias.help', locale: 'fr-FR'})
         ).toEqual('http://acme.gorgias.help/fr-FR/')
     })
+
+    it(`returns a valid absolute URL for domain 'gorgias.com' wtih query param`, () => {
+        expect(
+            getAbsoluteUrl({domain: 'gorgias.com', queryString: 'hello=1'})
+        ).toEqual('http://gorgias.com/?hello=1')
+    })
 })
 
 describe('getHelpCenterDomain()', () => {

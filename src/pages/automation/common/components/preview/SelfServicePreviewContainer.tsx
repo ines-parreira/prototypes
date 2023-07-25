@@ -5,6 +5,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 
+import {PreviewChannelButton} from '../../../../settings/common/PreviewChannelButton/PreviewChannelButton'
 import SelfServicePreviewChannelSelect from './SelfServicePreviewChannelSelect'
 
 import css from './SelfServicePreviewContainer.less'
@@ -18,6 +19,7 @@ type Props<T extends SelfServiceChannel> = {
         action?: {message: string; href: string}
     }
     children: (channel: T) => void
+    previewUrl?: string
 }
 
 const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
@@ -26,6 +28,7 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
     channels,
     alert,
     children,
+    previewUrl,
 }: Props<T>) => {
     const history = useHistory()
 
@@ -69,6 +72,8 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
                               </Alert>
                           )}
                 </div>
+
+                {previewUrl ? <PreviewChannelButton url={previewUrl} /> : null}
             </div>
         </div>
     )

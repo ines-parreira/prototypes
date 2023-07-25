@@ -1,5 +1,4 @@
 import React, {ReactNode} from 'react'
-
 import css from './HelpCenterPreview.less'
 
 type Props = {

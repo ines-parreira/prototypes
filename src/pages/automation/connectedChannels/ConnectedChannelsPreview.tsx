@@ -12,6 +12,12 @@ import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplica
 import {TicketChannel} from 'business/types/ticket'
 import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
 import {getHelpCentersAutomationSettings} from 'state/entities/helpCenter/helpCentersAutomationSettings'
+import {
+    getAbsoluteUrl,
+    getHelpCenterDomain,
+} from '../../settings/helpCenter/utils/helpCenter.utils'
+import {PREVIEW_MODE_QUERY_PARAM} from '../../../constants/preview-mode'
+import {HELP_CENTER_DEFAULT_LOCALE} from '../../settings/helpCenter/constants'
 
 type Props = {
     channel?: SelfServiceChannel
@@ -81,8 +87,23 @@ const ConnectedChannelsPreview = ({
         }
     }
 
+    const previewUrl = useMemo(() => {
+        switch (channel?.type) {
+            case TicketChannel.ContactForm:
+                return `${channel.value.url_template}?${PREVIEW_MODE_QUERY_PARAM}=true`
+            case TicketChannel.HelpCenter:
+                return getAbsoluteUrl({
+                    domain: getHelpCenterDomain(channel.value),
+                    locale: HELP_CENTER_DEFAULT_LOCALE,
+                    queryString: `${PREVIEW_MODE_QUERY_PARAM}=true`,
+                })
+            default:
+                return undefined
+        }
+    }, [channel])
+
     return (
-        <SelfServicePreviewContainer channel={channel}>
+        <SelfServicePreviewContainer channel={channel} previewUrl={previewUrl}>
             {(channel) => (
                 <SelfServicePreviewContext.Provider
                     value={{
