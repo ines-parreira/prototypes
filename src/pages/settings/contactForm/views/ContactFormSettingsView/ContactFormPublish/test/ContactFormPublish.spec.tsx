@@ -12,7 +12,7 @@ import {renderWithRouter} from 'utils/testing'
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ContactFormPublish'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID} from 'pages/settings/contactForm/components/ContactFormAutoEmbedCard/ContactFormAutoEmbedCard'
+import {CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID} from 'pages/settings/contactForm/components/ContactFormAutoEmbedCard'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

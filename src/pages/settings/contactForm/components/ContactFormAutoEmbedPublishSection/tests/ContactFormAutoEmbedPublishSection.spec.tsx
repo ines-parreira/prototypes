@@ -13,6 +13,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import ContactFormAutoEmbedPublishSection, {
     ContactFormAutoEmbedPublishSectionProps,
 } from '../ContactFormAutoEmbedPublishSection'
+import {CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID} from '../../ContactFormAutoEmbedCard'
 import {renderWithRouter} from '../../../../../../utils/testing'
 
 const defaultProps: ContactFormAutoEmbedPublishSectionProps = {
@@ -131,7 +132,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
         screen.getByText(/recommended/i)
         screen.getByText(/Gorgias will automatically embed/i)
 
-        screen.getByRole('button', {name: /embed form/i})
+        screen.getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID)
     })
 
     it('Contact Form - connected to a shopify stores - update needed', () => {
@@ -155,7 +156,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
         screen.getByText(/recommended/i)
         screen.getByText(/Gorgias will automatically embed/i)
 
-        screen.getByRole('button', {name: /embed form/i})
+        screen.getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID)
     })
 
     it('Contact Form - connected to a non-shopify store', () => {

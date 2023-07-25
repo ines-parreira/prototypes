@@ -1,0 +1,64 @@
+@import '~css/new/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .hidden {
+        display: none;
+    }
+
+    .pageEmbedmentForm {
+        display: block;
+    }
+
+    .modalBodyHeading {
+        font-size: @heading-section-regular-font-size;
+        font-weight: @heading-section-semibold-font-weight;
+        line-height: @heading-section-semibold-line-height;
+        letter-spacing: @heading-section-semibold-letter-spacing;
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .modeSelectionGroup {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: @layout-spacing-s;
+    }
+
+    .tab {
+        .hidden();
+    }
+
+    .tabActive {
+        margin-top: @layout-spacing-s;
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: @layout-spacing-xs;
+    }
+
+    .inputField,
+    .selectInputBox {
+        max-width: 50%;
+    }
+
+    .dropdownItem {
+        line-height: 16px;
+        padding: @layout-spacing-xs;
+    }
+
+    .dropdownItemSlug {
+        .caption-regular();
+        color: var(--neutral-grey-4);
+    }
+
+    .pagePositionSelectionSection {
+        display: block;
+        margin-top: @layout-spacing-xl;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .pagePositionSelectionGroup {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: @layout-spacing-s;
+    }
+}

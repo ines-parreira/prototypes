@@ -1,0 +1,13 @@
+export const NEW_PAGE_EMBEDMENT_LABELS = {
+    PAGE_NAME_ALREADY_EXISTS: 'Page name already exists. Try a different one.',
+    SLUG_ALREADY_EXISTS:
+        'This slug already exists on your website. Try a new slug or select Embed to existing page above.',
+}
+
+export const MODAL_LABELS = {
+    TITLE: 'Embed Contact Form',
+    CANCEL: 'Cancel',
+    EMBED: 'Embed Form',
+    FORM_MODE_SELECTION_TITLE: 'Choose where to embed the form',
+    FORM_POSITION_SELECTION_TITLE: 'Select the position of the form',
+}

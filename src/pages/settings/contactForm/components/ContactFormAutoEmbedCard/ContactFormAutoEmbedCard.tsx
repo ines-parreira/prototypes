@@ -10,17 +10,21 @@ import {
     linkToShopifyIntegration,
 } from 'pages/settings/contactForm/utils/navigation'
 
-import css from './ContactFormAutoEmbedCard.less'
+import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
+import {
+    CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID,
+    CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
+    CONTACT_FORM_AUTO_EMBED_CARD_ID,
+} from './constants'
 
-export const CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID =
-    'contact-form-auto-embed-card'
-const CONTACT_FORM_AUTO_EMBED_CARD_ID = 'contact-form-auto-embed-card'
+import css from './ContactFormAutoEmbedCard.less'
 
 const CardContent = (props: {
     hasEmbeddedPages: boolean
     isDisabled: boolean
 }) => {
     const {hasEmbeddedPages, isDisabled} = props
+
     return (
         <div>
             <h3 className={css.title}>
@@ -61,6 +65,9 @@ const ContactFormAutoEmbedCard = ({
     hasEmbeddedPages,
     contactFormId,
 }: ContactFormAutoEmbedCardProps) => {
+    // Embed modal assistant state
+    const [isEmbedModalOpen, setIsEmbedModalOpen] = React.useState(false)
+
     const isConnectedToNonShopify = !isNotConnected && !shopifyIntegrationId
 
     if (isNotConnected) {
@@ -151,9 +158,7 @@ const ContactFormAutoEmbedCard = ({
 
         const openEmbedFormWizard = needScopeUpdate
             ? _noop
-            : () => {
-                  alert('Must open the embed form wizard')
-              }
+            : () => setIsEmbedModalOpen(true)
 
         return (
             <div
@@ -187,9 +192,16 @@ const ContactFormAutoEmbedCard = ({
                 <Button
                     isDisabled={needScopeUpdate}
                     onClick={openEmbedFormWizard}
+                    data-testid={
+                        CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                    }
                 >
                     Embed Form
                 </Button>
+                <ContactFormAutoEmbedModalAssistant
+                    isOpen={isEmbedModalOpen}
+                    onClose={() => setIsEmbedModalOpen(false)}
+                />
             </div>
         )
     }
