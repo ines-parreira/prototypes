@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
+import type {Macro} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
-import type {Macro} from '../../../../../../models/macro/types'
 
 import {PreviewPopover} from './PreviewPopover'
 

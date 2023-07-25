@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import _noop from 'lodash/noop'
 import {Popover, PopoverBody} from 'reactstrap'
 
-import {MacroAction} from '../../../../../../models/macroAction/types'
+import {MacroAction} from 'models/macroAction/types'
 
 import {ActionPreviews} from './ActionPreviews/ActionPreviews'
 import css from './PreviewPopover.less'
