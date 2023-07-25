@@ -137,6 +137,12 @@ export class WebsocketSharedWorker {
         }
     }
 
+    _onSocketConnectError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.error(error)
+        this.socket?.disconnect()
+    }
+
     _onSocketDisconnect = () => {
         // eslint-disable-next-line no-console
         console.log('WS disconnected!')
@@ -176,6 +182,7 @@ export class WebsocketSharedWorker {
 
             this.socket.on('json', this._onSocketJson)
             this.socket.on('connect', this._onSocketConnect)
+            this.socket.on('connect_error', this._onSocketConnectError)
             this.socket.on('disconnect', this._onSocketDisconnect)
         } else {
             messagePort.postMessage({
