@@ -76,7 +76,10 @@ const ConnectedChannelWorkflowsFeature = ({
                     entrypoint.workflow_id in allEntrypointsByWorkflowId
             )
             .concat(missingEntrypoints)
-    }, [entrypointsProp, allEntrypoints])
+            .filter(
+                (entrypoint) => entrypoint.workflow_id in configurationsById
+            )
+    }, [entrypointsProp, allEntrypoints, configurationsById])
     const enabledEntrypointsCount = useMemo(
         () => entrypoints.filter((entrypoint) => entrypoint.enabled).length,
         [entrypoints]

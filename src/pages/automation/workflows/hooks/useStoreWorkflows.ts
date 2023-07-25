@@ -132,13 +132,15 @@ export default function useStoreWorkflows(
     )
 
     const storeWorkflows =
-        selfServiceConfiguration?.workflows_entrypoints?.map((e) => ({
-            ...e,
-            name: workflowConfigurationById[e.workflow_id]?.name ?? '',
-            available_languages:
-                workflowConfigurationById[e.workflow_id]?.available_languages ??
-                [],
-        })) ?? []
+        selfServiceConfiguration?.workflows_entrypoints
+            ?.filter((e) => workflowConfigurationById[e.workflow_id])
+            .map((e) => ({
+                ...e,
+                name: workflowConfigurationById[e.workflow_id]?.name ?? '',
+                available_languages:
+                    workflowConfigurationById[e.workflow_id]
+                        ?.available_languages ?? [],
+            })) ?? []
     return {
         storeWorkflows,
         isFetchPending:

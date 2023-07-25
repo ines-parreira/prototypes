@@ -31,23 +31,29 @@ const mockSelfServiceConfiguration: ReturnType<
     handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
 } as const
 
-const mockWorkflowConfiguration: WorkflowConfiguration = {
-    id: 'a',
-    account_id: 1,
-    internal_id: 'int-a',
-    name: 'a',
-    is_draft: false,
-    initial_step_id: 's1',
-    steps: [] as WorkflowStepMessages[],
-    transitions: [] as WorkflowTransition[],
-    available_languages: [],
+function mockWorkflowConfiguration(uid: string): WorkflowConfiguration {
+    return {
+        id: uid,
+        account_id: 1,
+        internal_id: `int-${uid}`,
+        name: uid,
+        is_draft: false,
+        initial_step_id: 's1',
+        steps: [] as WorkflowStepMessages[],
+        transitions: [] as WorkflowTransition[],
+        available_languages: [],
+    }
 }
 
 const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
     isFetchPending: false,
     isUpdatePending: false,
     fetchWorkflowConfigurations: () => {
-        return Promise.resolve([mockWorkflowConfiguration])
+        return Promise.resolve([
+            mockWorkflowConfiguration('a'),
+            mockWorkflowConfiguration('b'),
+            mockWorkflowConfiguration('c'),
+        ])
     },
     deleteWorkflowConfiguration: jest.fn(() => Promise.resolve()),
 } as const
@@ -84,7 +90,7 @@ const entrypointsFixtures = [
 ]
 const entrypointsWithNameFixtures = entrypointsFixtures.map((entrypoint) => ({
     ...entrypoint,
-    name: '',
+    name: entrypoint.workflow_id,
     available_languages: [],
 }))
 
@@ -109,7 +115,7 @@ describe('useStoreWorkflows', () => {
         })
     })
 
-    it('hydrates storeWorkflows once configuration fetched', () => {
+    it('hydrates storeWorkflows once configuration fetched', async () => {
         const {result, rerender} = renderHook(
             () => useStoreWorkflows('', '', () => null),
             renderHookOptions
@@ -119,6 +125,9 @@ describe('useStoreWorkflows', () => {
                 workflows_entrypoints: entrypointsFixtures,
             } as SelfServiceConfiguration,
         })
+        await waitFor(() =>
+            expect(result.current.isFetchPending).toEqual(false)
+        )
         rerender()
         expect(result.current.storeWorkflows).toEqual(
             entrypointsWithNameFixtures
@@ -155,7 +164,9 @@ describe('useStoreWorkflows', () => {
             expect(result.current.isFetchPending).toEqual(false)
         )
         await act(() =>
-            result.current.removeWorkflowFromStore(mockWorkflowConfiguration.id)
+            result.current.removeWorkflowFromStore(
+                mockWorkflowConfiguration('a').id
+            )
         )
         expect(selfServiceConfiguration.workflows_entrypoints).toEqual(
             entrypointsFixtures.slice(1)
@@ -165,6 +176,6 @@ describe('useStoreWorkflows', () => {
         ).toHaveBeenCalledTimes(1)
         expect(
             mockWorkflowApi.deleteWorkflowConfiguration
-        ).toHaveBeenCalledWith(mockWorkflowConfiguration.internal_id)
+        ).toHaveBeenCalledWith(mockWorkflowConfiguration('a').internal_id)
     })
 })
