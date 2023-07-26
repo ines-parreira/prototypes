@@ -27,16 +27,8 @@ export default function StatsNavbarView() {
         setIsAutomationSubscriptionModal,
     ] = useState(false)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const hasAttributionModel = Boolean(
-        useFlags()[FeatureFlagKey.RevenueAttributionModel]
-    )
-    const hasAttributionModelDashboardHidden = Boolean(
-        useFlags()[FeatureFlagKey.RevenueAttributionModelHideDashboard]
-    )
-    const isRevenueSubscriber =
-        useIsRevenueBetaTester() &&
-        hasAttributionModel &&
-        !hasAttributionModelDashboardHidden
+
+    const isRevenueSubscriber = useIsRevenueBetaTester()
 
     return (
         <>

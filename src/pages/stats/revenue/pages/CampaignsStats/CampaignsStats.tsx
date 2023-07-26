@@ -1,7 +1,4 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -21,14 +18,11 @@ import {RevenueStatsContent} from '../../containers/RevenueStatsContent'
 
 const CampaignsStats = () => {
     const isRevenueSubscriber = useIsRevenueBetaTester()
-    const hasAttributionModel = Boolean(
-        useFlags()[FeatureFlagKey.RevenueAttributionModel]
-    )
 
     return (
         <CampaignStatsFilters>
             <StatsPage title="Campaigns" filters={<RevenueFilters />}>
-                {isRevenueSubscriber && hasAttributionModel ? (
+                {isRevenueSubscriber ? (
                     <RevenueStatsContent />
                 ) : (
                     <div>
