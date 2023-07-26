@@ -9,7 +9,10 @@ export enum TableColumn {
     RepliedTickets = 'replied_tickets',
 }
 
-export const TableColumnsOrder: TableColumn[] = [TableColumn.FirstResponseTime]
+export const TableColumnsOrder: TableColumn[] = [
+    TableColumn.AgentName,
+    TableColumn.FirstResponseTime,
+]
 
 export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.AgentName]: 'Agent',

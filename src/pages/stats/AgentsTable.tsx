@@ -1,14 +1,16 @@
 import React from 'react'
+
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
-import {User} from 'config/types/user'
+import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {HeaderCell} from 'pages/stats/HeaderCell'
 import {TableColumn, TableColumnsOrder} from 'pages/stats/TableConfig'
-import {AgentPlaceholderCell} from 'pages/stats/AgentPlaceholderCell'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
+import useAppSelector from 'hooks/useAppSelector'
+import {getAgentsJS} from 'state/agents/selectors'
 
 const getCell = (
     column: TableColumn
@@ -16,13 +18,15 @@ const getCell = (
     switch (column) {
         case TableColumn.FirstResponseTime:
             return FirstResponseTimeCellContent
+        case TableColumn.AgentName:
+            return AgentCellContent
         default:
-            return AgentPlaceholderCell
+            return AgentCellContent
     }
 }
 
 export const AgentsTable = () => {
-    const agents: Pick<User, 'id'>[] = []
+    const agents = useAppSelector(getAgentsJS)
 
     return (
         <div>

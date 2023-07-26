@@ -21,14 +21,20 @@ import {channelsStatsFilterLabels} from 'pages/stats/ChannelsStatsFilter'
 import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter'
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {assumeMock} from 'utils/testing'
 
 import SupportPerformanceAgents, {
     AGENTS_PAGE_TITLE,
     AGENT_PERFORMANCE_SECTION_TITLE,
     AGENT_PERFORMANCE_LEGACY_PATH,
 } from '../SupportPerformanceAgents'
+import {FirstResponseTimeCellContent} from '../FirstResponseTimeCellContent'
 
 jest.unmock('react-router-dom')
+jest.mock('pages/stats/FirstResponseTimeCellContent.tsx')
+const FirstResponseTimeCellContentMock = assumeMock(
+    FirstResponseTimeCellContent
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -68,6 +74,8 @@ describe('SupportPerformanceAgents', () => {
         integrationsStatsFilterLabels,
         tagsStatsFilterLabels,
     ]
+
+    FirstResponseTimeCellContentMock.mockImplementation(() => <div />)
 
     beforeEach(() => {
         jest.clearAllMocks()
