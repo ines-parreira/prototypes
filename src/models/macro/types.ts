@@ -2,17 +2,17 @@ import {MacroAction} from 'models/macroAction/types'
 import {ApiPaginationParams, OrderParams} from 'models/api/types'
 
 export type Macro = MacroDraft & {
+    id: number
     category: string | null
     created_datetime: string
     deactivated_datetime?: string
     deleted_datetime?: string
     external_id: string | null
-    id: number
+    relevance_rank?: number
+    score?: number
     updated_datetime: string
     uri: string
     usage: number
-    relevance_rank?: number
-    score?: number
 }
 
 export type MacroDraft = {

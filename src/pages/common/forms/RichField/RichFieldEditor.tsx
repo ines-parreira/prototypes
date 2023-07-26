@@ -262,7 +262,10 @@ export class RichFieldEditor extends Component<Props, State> {
         setTimeout(() => {
             if (this.editor) {
                 this.editor.focus()
-                scrollToReactNode(this.editor as any)
+                scrollToReactNode(this.editor as any, {
+                    block: 'start',
+                    scrollMode: 'always',
+                })
                 shortcutManager.denylist(['SpotlightModal'])
             }
         }, 0)

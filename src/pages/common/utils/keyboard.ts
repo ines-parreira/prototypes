@@ -1,23 +1,29 @@
 import {findDOMNode} from 'react-dom'
-import scrollIntoView from 'scroll-into-view-if-needed'
+import scrollIntoView, {
+    StandardBehaviorOptions,
+} from 'scroll-into-view-if-needed'
 import {Component} from 'react'
 
 /**
  * Scroll DOM node into view
  */
-function scrollToNode(node: HTMLElement) {
+function scrollToNode(node: HTMLElement, options?: StandardBehaviorOptions) {
     return scrollIntoView(node, {
         scrollMode: 'if-needed',
         block: 'nearest',
         inline: 'nearest',
+        ...options,
     })
 }
 
 /**
  * Scroll React component into view
  */
-export function scrollToReactNode(node: HTMLElement | Component) {
-    return scrollToNode(findDOMNode(node) as HTMLElement)
+export function scrollToReactNode(
+    node: HTMLElement | Component,
+    options?: StandardBehaviorOptions
+) {
+    return scrollToNode(findDOMNode(node) as HTMLElement, options)
 }
 
 export enum MoveIndexDirection {

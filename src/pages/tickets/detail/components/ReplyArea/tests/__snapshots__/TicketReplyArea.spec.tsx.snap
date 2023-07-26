@@ -1,121 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TicketReplyArea/> should block the reply area because the customer is required on ticket creation with an internal-note 1`] = `
-<TicketReplyArea
-  applyMacro={[MockFunction]}
-  cacheAdded={false}
-  currentMacro={{}}
-  currentTicket={
-    Immutable.Map {
-      "id": null,
-      "customer": null,
-    }
-  }
-  currentUser={Immutable.Map {}}
-  customers={{}}
-  fetchMacrosCancellable={[Function]}
-  filters={{}}
-  hasShownMacros={false}
-  initialMacrosLoaded={false}
-  isMacrosActive={false}
-  lastMessage={
-    Immutable.Map {
-      "id": 10,
-    }
-  }
-  loadMacros={[MockFunction]}
-  macros={[]}
-  newMessage={
-    Immutable.Map {
-      "contentState": null,
-      "newMessage": Immutable.Map {
-        "body_text": "Hello world",
-      },
-    }
-  }
-  newMessageType="internal-note"
-  notify={[Function]}
-  onChangeFilters={[MockFunction]}
-  onChangeMacrosActive={[MockFunction]}
-  onChangeQuery={[MockFunction]}
-  page={1}
-  preferences={Immutable.Map {}}
-  query=""
-  selectMacro={[MockFunction]}
-  ticket={Immutable.Map {}}
-  totalPages={1}
+<div
+  class="component"
 >
+  <input
+    data-testid="ticket-macro-search"
+  />
   <div
-    className="component"
+    class="content"
   >
-    <Component
-      filters={{}}
-      handleSearchKeyDown={[Function]}
-      macrosVisible={false}
-      onChangeFilters={[MockFunction]}
-      onChangeQuery={[MockFunction]}
-      onClearMacro={[Function]}
-      query=""
-      requireCustomerSelection={true}
-      setFocus={[Function]}
-      showMacros={[Function]}
-    >
-      <input
-        onFocus={[Function]}
-      />
-    </Component>
     <div
-      className="content"
+      class="replyAreaAlertMessage alert-warning"
     >
-      <div
-        className="replyAreaAlertMessage alert-warning"
-      >
-        <span>
-          To create a ticket with an internal note, please
-          <a
-            href="https://docs.gorgias.com/ticket/internal-notes#create_a_ticket_with_an_internal_note"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-             
-            set a customer
-             
-          </a>
-          first in the infobar
-        </span>
-      </div>
+      <span>
+        To create a ticket with an internal note, please
+        <a
+          href="https://docs.gorgias.com/ticket/internal-notes#create_a_ticket_with_an_internal_note"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+           
+          set a customer
+           
+        </a>
+        first in the infobar
+      </span>
     </div>
   </div>
-</TicketReplyArea>
+</div>
 `;
 
 exports[`<TicketReplyArea/> should render 1`] = `
 <div
-  className="component"
+  class="component"
 >
-  <Component
-    filters={{}}
-    handleSearchKeyDown={[Function]}
-    macrosVisible={false}
-    onChangeFilters={[MockFunction]}
-    onChangeQuery={[MockFunction]}
-    onClearMacro={[Function]}
-    query=""
-    requireCustomerSelection={false}
-    setFocus={[Function]}
-    showMacros={[Function]}
+  <input
+    data-testid="ticket-macro-search"
   />
   <div
-    className="content"
+    class="content"
   >
-    <TicketReplyMock
-      applyMacro={[Function]}
-      macros={Immutable.List []}
-      replyAreaHeader={false}
-      richAreaRef={[Function]}
-      shouldDisplayQuickReply={false}
-      ticket={Immutable.Map {}}
-    />
+    <div>
+      hello
+    </div>
   </div>
 </div>
 `;

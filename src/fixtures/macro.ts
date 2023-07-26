@@ -7,7 +7,7 @@ import {
     MacroActionName,
 } from '../models/macroAction/types'
 
-export const macros = [
+export const macros: Macro[] = [
     {
         id: 1,
         name: 'Waive Fee',

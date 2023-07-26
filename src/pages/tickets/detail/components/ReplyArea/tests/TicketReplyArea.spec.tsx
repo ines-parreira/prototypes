@@ -1,16 +1,17 @@
 import React, {ComponentProps} from 'react'
-import {shallow, mount} from 'enzyme'
 import {fromJS} from 'immutable'
-import {waitFor} from '@testing-library/react'
+import {fireEvent, getByTestId, render, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {ContentState} from 'draft-js'
+
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {macros} from 'fixtures/macro'
+
+import TicketMacrosSearch from '../TicketMacrosSearch'
 import TicketReply from '../TicketReply'
 import {TicketReplyArea} from '../TicketReplyArea'
-import TicketMacros from '../TicketMacros'
-import TicketMacrosSearch from '../TicketMacrosSearch'
-import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
 
 const mockedStore = configureMockStore([thunk])
 
@@ -60,8 +61,17 @@ jest.mock('../TicketMacros', () => ({onClearMacro}: TicketMacrosMockProps) => (
 jest.mock(
     '../TicketMacrosSearch',
     () =>
-        ({showMacros}: ComponentProps<typeof TicketMacrosSearch>) =>
-            <input onFocus={() => showMacros()} />
+        ({
+            showMacros,
+            handleSearchKeyDown,
+        }: ComponentProps<typeof TicketMacrosSearch>) =>
+            (
+                <input
+                    data-testid="ticket-macro-search"
+                    onKeyDown={handleSearchKeyDown}
+                    onFocus={() => showMacros()}
+                />
+            )
 )
 
 const minProps = {
@@ -105,59 +115,75 @@ describe('<TicketReplyArea/>', () => {
     })
 
     it('should render', () => {
-        const component = shallow(<TicketReplyArea {...minProps} />)
+        const {container} = render(<TicketReplyArea {...minProps} />)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it("should hide macros when newMessageType becomes 'internal-note'", () => {
-        const component = mount(
-            <TicketReplyArea {...minProps} hasShownMacros isMacrosActive />
+        const props = {...minProps, hasShownMacros: true, isMacrosActive: true}
+        const {queryByText, rerender} = render(<TicketReplyArea {...props} />)
+
+        expect(queryByText(/TicketMacros mock/i)).toBeInTheDocument()
+
+        rerender(
+            <TicketReplyArea
+                {...props}
+                newMessageType={TicketMessageSourceType.InternalNote}
+            />
         )
 
-        expect(component.find(TicketMacros)).toHaveLength(1)
-
-        component.setProps({
-            newMessageType: TicketMessageSourceType.InternalNote,
-        })
-        component.update()
         expect(minProps.onChangeMacrosActive).toHaveBeenCalledWith(false)
 
-        component.setProps({
-            isMacrosActive: false,
-        })
-        component.update()
-        expect(component.find(TicketMacros)).toHaveLength(0)
+        rerender(
+            <TicketReplyArea
+                {...props}
+                newMessageType={TicketMessageSourceType.InternalNote}
+                isMacrosActive={false}
+            />
+        )
+        expect(queryByText(/TicketMacros mock/i)).not.toBeInTheDocument()
     })
 
     it('should hide macros when editor has text', () => {
-        const component = mount(
-            <TicketReplyArea {...minProps} hasShownMacros isMacrosActive />
-        )
+        const props = {...minProps, hasShownMacros: true, isMacrosActive: true}
+        const {queryByText, rerender} = render(<TicketReplyArea {...props} />)
 
-        expect(component.find(TicketMacros)).toHaveLength(1)
-        component.setProps({
-            newMessage: fromJS({
-                state: {contentState: ContentState.createFromText('test')},
-                newMessage: {body_text: 'test'},
-            }),
-        })
-        component.update()
+        expect(queryByText(/TicketMacros mock/i)).toBeInTheDocument()
+
+        rerender(
+            <TicketReplyArea
+                {...props}
+                newMessage={fromJS({
+                    state: {contentState: ContentState.createFromText('test')},
+                    newMessage: {body_text: 'test'},
+                })}
+            />
+        )
         expect(minProps.onChangeMacrosActive).toHaveBeenCalledWith(false)
 
-        component.setProps({
-            isMacrosActive: false,
-        })
-        component.update()
-        expect(component.find(TicketMacros)).toHaveLength(0)
+        rerender(
+            <TicketReplyArea
+                {...props}
+                newMessage={fromJS({
+                    state: {contentState: ContentState.createFromText('test')},
+                    newMessage: {body_text: 'test'},
+                })}
+                isMacrosActive={false}
+            />
+        )
+        expect(queryByText(/'TicketMacros mock'/i)).not.toBeInTheDocument()
     })
 
     it("should not focus editor when newMessageType becomes 'internal-note'", () => {
-        const component = mount(<TicketReplyArea {...minProps} />)
+        const {rerender} = render(<TicketReplyArea {...minProps} />)
+        rerender(
+            <TicketReplyArea
+                {...minProps}
+                newMessageType={TicketMessageSourceType.InternalNote}
+            />
+        )
 
-        component.setProps({
-            newMessageType: TicketMessageSourceType.InternalNote,
-        })
         expect(
             (
                 TicketReply as unknown as {
@@ -173,45 +199,72 @@ describe('<TicketReplyArea/>', () => {
             newMessageType: TicketMessageSourceType.InternalNote,
             currentTicket: fromJS({id: null, customer: null}),
         }
-        const component = mount(<TicketReplyArea {...testProps} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<TicketReplyArea {...testProps} />)
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should apply macro on enter key down when there are macro search results', () => {
+        const {container} = render(
+            <TicketReplyArea
+                {...minProps}
+                macros={macros}
+                hasShownMacros
+                isMacrosActive
+            />
+        )
+        const input = getByTestId(container, 'ticket-macro-search')
+        fireEvent.keyDown(input, {key: 'Enter'})
+
+        expect(minProps.applyMacro).not.toHaveBeenCalled()
     })
 
     it('should not apply macro on enter key down when macro search results are empty', () => {
-        const component = mount(
+        const {container} = render(
             <TicketReplyArea {...minProps} hasShownMacros isMacrosActive />
         )
-        component.find('input').simulate('keyDown', {key: 'Enter'})
+        const input = getByTestId(container, 'ticket-macro-search')
+        fireEvent.keyDown(input, {key: 'Enter'})
+
         expect(minProps.applyMacro).not.toHaveBeenCalled()
     })
 
     describe('prefill macro alert', () => {
         it('should not prefill macro if rule suggestion is displayed', async () => {
+            const {rerender} = render(
+                <Provider store={mockedStore({})}>
+                    <TicketReplyArea
+                        {...minProps}
+                        inTicketSuggestionState="pending"
+                    />
+                </Provider>
+            )
+
             const macros = [
                 {
-                    id: 1,
-                    external_id: null,
-                    name: 'Macro 1',
-                    intent: null,
-                    language: 'en',
-                    usage: 0,
                     actions: [],
+                    category: null,
+                    created_datetime: '',
+                    external_id: null,
+                    id: 1,
+                    language: 'en',
+                    name: 'Macro 1',
                     relevance_rank: 1,
                     score: 0.99,
+                    updated_datetime: '',
+                    uri: '',
+                    usage: 0,
                 },
             ]
 
-            minProps.inTicketSuggestionState = 'pending'
-
-            const component = mount(
+            rerender(
                 <Provider store={mockedStore({})}>
-                    <TicketReplyArea {...minProps} />
+                    <TicketReplyArea
+                        {...minProps}
+                        inTicketSuggestionState="pending"
+                        macros={macros}
+                    />
                 </Provider>
             )
-            const ticketReplyArea = component.find('TicketReplyArea')
-            ticketReplyArea.setState({
-                searchResults: fromJS(macros),
-            })
 
             await waitFor(() => {
                 expect(minProps.applyMacro).not.toHaveBeenCalled()
