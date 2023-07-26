@@ -51,6 +51,10 @@ export const DynamicBadgeList: React.FC<Props> = ({
             return item.text.toLowerCase().includes(search.toLocaleLowerCase())
         })
 
+    const shouldDisplayButton = availableList.some(
+        (item) => !selectedIds.includes(item.id)
+    )
+
     const handleOnToggle = () => {
         if (isOpen) {
             setSearch('')
@@ -58,7 +62,7 @@ export const DynamicBadgeList: React.FC<Props> = ({
         setOpen(!isOpen)
     }
 
-    const buttonEl = filteredList.length > 0 && (
+    const buttonEl = shouldDisplayButton && (
         <Dropdown direction="down" isOpen={isOpen} toggle={handleOnToggle}>
             <DropdownToggle className={css['add-btn']} type="button">
                 <i className="material-icons" style={{fontSize: 16}}>
@@ -103,6 +107,9 @@ export const DynamicBadgeList: React.FC<Props> = ({
                         {item.label}
                     </DropdownItem>
                 ))}
+                {!filteredList.length && (
+                    <DropdownItem>No language found</DropdownItem>
+                )}
             </DropdownMenu>
         </Dropdown>
     )
