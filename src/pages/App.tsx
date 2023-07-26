@@ -74,7 +74,7 @@ class App extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        if (hasModernTheme()) {
+        if (hasModernTheme(this.props.currentAccount)) {
             this.setState({theme: 'modern'})
         }
     }

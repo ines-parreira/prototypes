@@ -1072,19 +1072,57 @@ describe('global utils', () => {
         it('should return false for production environment', () => {
             mockProductionEnvironment()
 
-            expect(utils.hasModernTheme()).toEqual(false)
+            expect(
+                utils.hasModernTheme(
+                    fromJS({
+                        domain: 'non-impacted',
+                    })
+                )
+            ).toEqual(false)
+        })
+
+        it('should return true for targeted helpdesk', () => {
+            expect(
+                utils.hasModernTheme(
+                    fromJS({
+                        domain: 'artemisathletix',
+                    })
+                )
+            ).toEqual(true)
+        })
+
+        it('should return true for gorgias helpdesk', () => {
+            expect(
+                utils.hasModernTheme(
+                    fromJS({
+                        domain: 'gorgias',
+                    })
+                )
+            ).toEqual(true)
         })
 
         it('should return true for staging environment', () => {
             mockStagingEnvironment()
 
-            expect(utils.hasModernTheme()).toEqual(true)
+            expect(
+                utils.hasModernTheme(
+                    fromJS({
+                        domain: 'a-random-domain',
+                    })
+                )
+            ).toEqual(true)
         })
 
         it('should return true for development environment', () => {
             mockDevelopmentEnvironment()
 
-            expect(utils.hasModernTheme()).toEqual(true)
+            expect(
+                utils.hasModernTheme(
+                    fromJS({
+                        domain: 'a-random-domain',
+                    })
+                )
+            ).toEqual(true)
         })
     })
 })

@@ -1242,6 +1242,12 @@ export function isTouchEvent(
     return 'touches' in event
 }
 
-export function hasModernTheme() {
-    return isStaging() || isDevelopment()
+export function hasModernTheme(currentAccount: Map<any, any>) {
+    return (
+        isStaging() ||
+        isDevelopment() ||
+        ['artemisathletix', 'sf-bicycle', 'sfbicycle', 'gorgias'].includes(
+            currentAccount.get('domain')
+        )
+    )
 }
