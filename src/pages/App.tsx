@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {ComponentType, ReactNode} from 'react'
+import React, {ComponentType, ReactNode, createRef} from 'react'
 import * as ReactDOM from 'react-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
@@ -13,7 +13,7 @@ import {Map} from 'immutable'
 import {Program} from 'estree'
 
 import 'assets/css/main.less'
-import {Theme, ThemeContext} from 'providers/ui/ThemeContext'
+import {Theme, AppUIContext} from 'providers/ui/AppUIContext'
 import {getAccessSettings} from 'state/currentAccount/selectors'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import pollingManager from 'services/pollingManager'
@@ -67,6 +67,8 @@ type State = {
 }
 
 class App extends React.Component<Props, State> {
+    appRef = createRef<HTMLDivElement>()
+
     state: State = {
         theme: 'classic',
     }
@@ -203,14 +205,18 @@ class App extends React.Component<Props, State> {
 
         return (
             <ErrorBoundary>
-                <ThemeContext.Provider
+                <AppUIContext.Provider
                     value={{
+                        appRef: this.appRef,
                         theme,
                     }}
                 >
-                    <ThemeContext.Consumer>
+                    <AppUIContext.Consumer>
                         {({theme}) => (
-                            <div className={classnames(css.page, theme)}>
+                            <div
+                                ref={this.appRef}
+                                className={classnames(css.page, theme)}
+                            >
                                 <BannerNotifications
                                     notifications={bannerNotifications}
                                 />
@@ -313,8 +319,8 @@ class App extends React.Component<Props, State> {
                                 )}
                             </div>
                         )}
-                    </ThemeContext.Consumer>
-                </ThemeContext.Provider>
+                    </AppUIContext.Consumer>
+                </AppUIContext.Provider>
             </ErrorBoundary>
         )
     }

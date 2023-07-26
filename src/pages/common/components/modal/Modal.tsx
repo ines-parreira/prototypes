@@ -6,6 +6,7 @@ import React, {
     ReactNode,
     RefObject,
     useCallback,
+    useContext,
     useImperativeHandle,
     useMemo,
     useRef,
@@ -17,6 +18,7 @@ import {useKey} from 'react-use'
 
 import useId from 'hooks/useId'
 
+import {AppUIContext} from 'providers/ui/AppUIContext'
 import css from './Modal.less'
 
 type Props = {
@@ -52,7 +54,7 @@ const Modal = (
         className,
         classNameDialog,
         classNameContent,
-        container = document.body,
+        container,
         id,
         isClosable = true,
         isOpen,
@@ -64,6 +66,16 @@ const Modal = (
 ) => {
     const ref = useRef<HTMLDivElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
+
+    const appUIContext = useContext(AppUIContext)
+    const containerNode = useMemo(
+        () => container ?? appUIContext.appRef?.current ?? document.body,
+        [appUIContext, container]
+    )
+    const containerNodeRef = useRef(containerNode)
+    if (containerNode) {
+        containerNodeRef.current = containerNode
+    }
 
     const [bounceModal, setBounceModal] = useState(false)
     const randomId = useId()
@@ -148,7 +160,7 @@ const Modal = (
         </ModalContext.Provider>
     )
 
-    return createPortal(modal, container)
+    return createPortal(modal, containerNodeRef.current)
 }
 
 export default forwardRef(Modal)

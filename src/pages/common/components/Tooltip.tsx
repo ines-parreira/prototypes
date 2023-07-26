@@ -1,11 +1,12 @@
 import classnames from 'classnames'
-import React, {ReactNode, useMemo} from 'react'
+import React, {ReactNode, useContext, useMemo} from 'react'
 import {
     Tooltip as ControlledTooltip,
     UncontrolledTooltip,
     TooltipProps,
 } from 'reactstrap'
 
+import {AppUIContext} from 'providers/ui/AppUIContext'
 import {isTouchDevice} from '../utils/mobile'
 
 import css from './Tooltip.less'
@@ -25,6 +26,7 @@ type Props = {
 export default function Tooltip({
     children,
     className,
+    container,
     delay,
     autohide = true,
     disabled = false,
@@ -32,6 +34,12 @@ export default function Tooltip({
     isOpen,
     ...rest
 }: Props) {
+    const appUIContext = useContext(AppUIContext)
+    const containerNode = useMemo(
+        () => container ?? appUIContext.appRef?.current,
+        [appUIContext, container]
+    )
+
     const tooltipDelay = useMemo(() => {
         if (delay) {
             return delay
@@ -53,6 +61,7 @@ export default function Tooltip({
             className={classnames(css.tooltip, className, {
                 [css.noPointerEvents]: autohide,
             })}
+            container={containerNode ?? undefined}
             {...rest}
             autohide={autohide}
             delay={tooltipDelay}
@@ -65,6 +74,7 @@ export default function Tooltip({
             className={classnames(css.tooltip, className, {
                 [css.noPointerEvents]: autohide,
             })}
+            container={containerNode ?? undefined}
             {...rest}
             autohide={autohide}
             delay={tooltipDelay}
