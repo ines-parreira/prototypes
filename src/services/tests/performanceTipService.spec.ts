@@ -10,7 +10,7 @@ import {
     TipQualifier,
     tips,
 } from 'services/performanceTipService'
-import {MetricName, MetricNameToLabelMap} from 'services/reporting/constants'
+import {MetricName} from 'services/reporting/constants'
 import {PlanName} from 'utils/paywalls'
 
 describe('PerformanceTipService', () => {
@@ -263,16 +263,4 @@ describe('PerformanceTipService', () => {
             )
         }
     )
-
-    it('should render metric name using a label', () => {
-        const metric = MetricName.ResolutionTime
-        const tip = getPerformanceTip(
-            metric,
-            MetricsBaselinesJSON[MetricName.ResolutionTime][plan][
-                MetricBaselineP60Index + 1
-            ],
-            plan
-        )
-        expect(tip.hint).toMatch(new RegExp(MetricNameToLabelMap[metric]))
-    })
 })

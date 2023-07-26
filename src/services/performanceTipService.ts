@@ -81,7 +81,7 @@ export const tips: Record<MetricName, Record<TipQualifier, string>> = {
         [TipQualifier.LightError]:
             'Audit CSAT scores under 4/5 and look for common themes',
         [TipQualifier.Neutral]:
-            'Spend more time resolving complex inquiries that actually need human attention',
+            'Focus on the complex inquiries that need human attention the most to improve CSAT',
         [TipQualifier.LightSuccess]:
             'Look for opportunities to improve the customer experience beyond the support agent level',
         [TipQualifier.Success]:
@@ -121,17 +121,17 @@ export const hintTemplates: Record<TipQualifier, string> = {
     [TipQualifier.Neutral]:
         'You’re on par with other merchants your size. Hit {TARGET} to start outperforming them.',
     [TipQualifier.LightSuccess]:
-        'You’re among our top performer merchants your size. Reach a {METRIC} of {TARGET} to be among the top 10%!',
+        'You’re among the top performing merchants your size. Hit {TARGET} to be among the top 10%!',
     [TipQualifier.Success]:
         'You’re among the top 10% of merchants your size. Keep up the good work!',
 }
 
 export const gradeLabels = {
-    [TipQualifier.Error]: 'Far below average',
-    [TipQualifier.LightError]: 'Below average',
+    [TipQualifier.Error]: 'Poor',
+    [TipQualifier.LightError]: 'Poor',
     [TipQualifier.Neutral]: 'Average',
-    [TipQualifier.LightSuccess]: 'Above average',
-    [TipQualifier.Success]: 'Far above average',
+    [TipQualifier.LightSuccess]: 'Good',
+    [TipQualifier.Success]: 'Excellent',
 }
 
 export interface Tip {
