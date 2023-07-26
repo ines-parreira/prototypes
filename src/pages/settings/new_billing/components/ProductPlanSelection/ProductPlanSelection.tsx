@@ -16,6 +16,7 @@ import {
     isAAOLegacyPrice,
 } from 'models/billing/utils'
 import Tooltip from 'pages/common/components/Tooltip'
+import Button from 'pages/common/components/button/Button'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
@@ -224,15 +225,25 @@ const ProductPlanSelection = ({
                 </div>
                 {(!isActive || type === ProductType.Automation) &&
                     (selectedPlans[type].isSelected ? (
-                        <i
-                            className={classNames(
-                                'material-icons',
-                                css.closeButton
-                            )}
-                            onClick={handleClose}
-                        >
-                            close
-                        </i>
+                        type === ProductType.Automation ? (
+                            <Button
+                                intent="secondary"
+                                className={css.cancelButton}
+                                onClick={handleClose}
+                            >
+                                Cancel Add-On
+                            </Button>
+                        ) : (
+                            <i
+                                className={classNames(
+                                    'material-icons',
+                                    css.closeButton
+                                )}
+                                onClick={handleClose}
+                            >
+                                close
+                            </i>
+                        )
                     ) : (
                         <div
                             className={classNames(css.addProduct, {

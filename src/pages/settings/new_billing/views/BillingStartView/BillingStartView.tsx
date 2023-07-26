@@ -306,10 +306,7 @@ const BillingStartView = () => {
                             <PaymentsHistoryView />
                         </Route>
                         <Route
-                            path={[
-                                `${BILLING_PROCESS_PATH}/:selectedProduct/:action`,
-                                `${BILLING_PROCESS_PATH}/:selectedProduct`,
-                            ]}
+                            path={`${BILLING_PROCESS_PATH}/:selectedProduct`}
                         >
                             <BillingProcessView
                                 setIsModalOpen={setIsModalOpen}
