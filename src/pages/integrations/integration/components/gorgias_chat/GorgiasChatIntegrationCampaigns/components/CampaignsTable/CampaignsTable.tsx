@@ -31,7 +31,7 @@ type Props = {
 export const CampaignsTable = ({
     data,
     integration,
-    perPage = 10,
+    perPage = 25,
     onClickDelete,
     onClickDuplicate,
     onToggleCampaign,
