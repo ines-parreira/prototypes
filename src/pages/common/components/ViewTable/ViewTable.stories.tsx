@@ -16,7 +16,13 @@ const storyConfig: Meta = {
     component: ViewTableContainer,
     decorators: [
         (story) => (
-            <Provider store={configureMockStore([thunk])({})}>
+            <Provider
+                store={configureMockStore([thunk])({
+                    views: fromJS({
+                        active: fromJS(fixtureView),
+                    }),
+                })}
+            >
                 <MemoryRouter>{story()}</MemoryRouter>
             </Provider>
         ),
@@ -67,6 +73,7 @@ const defaultProps = {
         ],
     }),
     fetchViewItems,
+    updateView,
     navigation: fromJS({}),
     match: {params: {}},
     location: {search: '', pathname: ''},
