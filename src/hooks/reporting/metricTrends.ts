@@ -146,20 +146,25 @@ export const useOpenTicketsTrend = createUseMetricTrend(
     })
 )
 
+export const closedTicketsQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+) => ({
+    measures: [TicketMeasure.TicketCount],
+    dimensions: [],
+    timezone,
+    segments: [TicketSegment.ClosedTickets],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(
+            TicketStatsFiltersMembers,
+            statsFilters
+        ),
+    ],
+})
+
 export const useClosedTicketsTrend = createUseMetricTrend(
-    (filters, timezone) => ({
-        measures: [TicketMeasure.TicketCount],
-        dimensions: [],
-        timezone,
-        segments: [TicketSegment.ClosedTickets],
-        filters: [
-            ...NotSpamNorTrashedTicketsFilter,
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                filters
-            ),
-        ],
-    })
+    closedTicketsQueryFactory
 )
 
 export const useTicketsCreatedTrend = createUseMetricTrend(

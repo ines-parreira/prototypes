@@ -13,6 +13,7 @@ export const TableColumnsOrder: TableColumn[] = [
     TableColumn.AgentName,
     TableColumn.FirstResponseTime,
     TableColumn.RepliedTickets,
+    TableColumn.ClosedTickets,
 ]
 
 export const TableLabels: Record<TableColumn, string> = {
