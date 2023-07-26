@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {act, fireEvent, render} from '@testing-library/react'
 
 import HeaderTitle from '../HeaderTitle'
 
@@ -16,7 +16,7 @@ describe('<HeaderTitle />', () => {
     })
 
     it('should render the description on learn button click', async () => {
-        const {getByText, findByTestId} = render(
+        const {getByRole, findByText, findByTestId} = render(
             <HeaderTitle
                 title="Foo"
                 description={<span data-testid="description">description</span>}
@@ -24,7 +24,13 @@ describe('<HeaderTitle />', () => {
             />
         )
 
-        fireEvent.click(getByText('Learn'))
+        act(() => {
+            fireEvent.click(getByRole('button'))
+        })
+        const popoverButton = await findByText(/Learn More/)
+        act(() => {
+            popoverButton && fireEvent.click(popoverButton)
+        })
 
         await findByTestId('description')
     })

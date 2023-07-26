@@ -177,9 +177,13 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                     <Button
                         aria-label="help center preview"
                         intent="secondary"
-                        onClick={() =>
-                            window.open(helpCenterUrl, '_blank')!.focus()
-                        }
+                        onClick={() => {
+                            const windowRef = window.open(
+                                helpCenterUrl,
+                                '_blank'
+                            )
+                            windowRef?.focus()
+                        }}
                     >
                         <i className="material-icons">open_in_new</i>
                         <span>View Help Center</span>

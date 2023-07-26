@@ -26,9 +26,12 @@ export default function HeaderTitle({title, description, helpUrl}: Props) {
                             color="secondary"
                             type="button"
                             onClick={() => {
-                                window
-                                    .open(helpUrl, '_blank', 'noopener')!
-                                    .focus()
+                                const windowRef = window.open(
+                                    helpUrl,
+                                    '_blank',
+                                    'noopener'
+                                )
+                                windowRef?.focus()
                             }}
                         >
                             Learn More{' '}
