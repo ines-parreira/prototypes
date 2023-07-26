@@ -233,7 +233,8 @@ describe('WebsocketSharedWorker', () => {
             'should post a `WS_CONNECTED` message to the tab, reset the `incrementalReconnectBackoff` and clear all ' +
                 'tasks',
             () => {
-                worker.incrementalReconnectTask = setTimeout(jest.fn(), 1000)
+                const incrementalReconnectTask = setTimeout(jest.fn(), 1000)
+                worker.incrementalReconnectTask = incrementalReconnectTask
                 worker.sendDisconnectedNotificationTask = setTimeout(
                     jest.fn(),
                     1000
@@ -244,7 +245,7 @@ describe('WebsocketSharedWorker', () => {
                 worker._onSocketConnect()
 
                 expect(clearTimeout).toHaveBeenCalledWith(
-                    worker.incrementalReconnectTask
+                    incrementalReconnectTask
                 )
                 expect(clearTimeout).toHaveBeenCalledWith(
                     worker.sendDisconnectedNotificationTask
@@ -272,6 +273,29 @@ describe('WebsocketSharedWorker', () => {
             )
 
             expect(incrementalReconnectSpy).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not start a new reconnect task if one is already in progress', () => {
+            const incrementalReconnectSpy = jest.spyOn(
+                worker,
+                'incrementalReconnect'
+            )
+            worker._onSocketDisconnect()
+            worker._onSocketDisconnect()
+
+            expect(incrementalReconnectSpy).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not start a new reconnect task if the previous one was terminated', () => {
+            const incrementalReconnectSpy = jest.spyOn(
+                worker,
+                'incrementalReconnect'
+            )
+            worker._onSocketDisconnect()
+            worker._onSocketConnect()
+            worker._onSocketDisconnect()
+
+            expect(incrementalReconnectSpy).toHaveBeenCalledTimes(2)
         })
     })
 

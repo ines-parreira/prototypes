@@ -130,6 +130,7 @@ export class WebsocketSharedWorker {
         if (this.incrementalReconnectTask) {
             this.incrementalReconnectBackoff = 1
             clearTimeout(this.incrementalReconnectTask)
+            this.incrementalReconnectTask = null
         }
 
         if (this.sendDisconnectedNotificationTask) {
@@ -149,9 +150,12 @@ export class WebsocketSharedWorker {
             DISCONNECTED_NOTIFICATION_DELAY * 1000
         )
 
-        // After a disconnection, we might need to reconnect manually as the client will not try to reconnect
-        // automatically. See: https://github.com/socketio/socket.io-client/issues/1067
-        this.incrementalReconnect()
+        // https://linear.app/gorgias/issue/PLTOF-236/sharedworker-spawns-new-retry-loops
+        if (!this.incrementalReconnectTask) {
+            // After a disconnection, we might need to reconnect manually as the client will not try to reconnect
+            // automatically. See: https://github.com/socketio/socket.io-client/issues/1067
+            this.incrementalReconnect()
+        }
     }
 
     /**
