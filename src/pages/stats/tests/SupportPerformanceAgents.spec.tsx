@@ -1,42 +1,46 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import {MemoryRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import React from 'react'
 import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import LD from 'launchdarkly-react-client-sdk'
-
-import {LEARN_MORE_URL} from 'pages/stats/SupportPerformanceOverview'
 import {TicketChannel} from 'business/types/ticket'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
-import {teams} from 'fixtures/teams'
 import {tags} from 'fixtures/tag'
-import {RootState, StoreDispatch} from 'state/types'
-import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
+import {teams} from 'fixtures/teams'
 import {agentsStatsFilterLabels} from 'pages/stats/AgentsStatsFilter'
 import {channelsStatsFilterLabels} from 'pages/stats/ChannelsStatsFilter'
+import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
+import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter'
+
+import {LEARN_MORE_URL} from 'pages/stats/SupportPerformanceOverview'
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
+import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
 import SupportPerformanceAgents, {
-    AGENTS_PAGE_TITLE,
-    AGENT_PERFORMANCE_SECTION_TITLE,
     AGENT_PERFORMANCE_LEGACY_PATH,
+    AGENT_PERFORMANCE_SECTION_TITLE,
+    AGENTS_PAGE_TITLE,
 } from '../SupportPerformanceAgents'
-import {FirstResponseTimeCellContent} from '../FirstResponseTimeCellContent'
 
 jest.unmock('react-router-dom')
 jest.mock('pages/stats/FirstResponseTimeCellContent.tsx')
 const FirstResponseTimeCellContentMock = assumeMock(
     FirstResponseTimeCellContent
 )
+jest.mock('pages/stats/TicketsRepliedCellContent.tsx')
+const TicketsRepliedCellContentMock = assumeMock(TicketsRepliedCellContent)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const cellMock = () => <div />
 
 describe('SupportPerformanceAgents', () => {
     const tag = tags[0]
@@ -75,7 +79,8 @@ describe('SupportPerformanceAgents', () => {
         tagsStatsFilterLabels,
     ]
 
-    FirstResponseTimeCellContentMock.mockImplementation(() => <div />)
+    FirstResponseTimeCellContentMock.mockImplementation(cellMock)
+    TicketsRepliedCellContentMock.mockImplementation(cellMock)
 
     beforeEach(() => {
         jest.clearAllMocks()

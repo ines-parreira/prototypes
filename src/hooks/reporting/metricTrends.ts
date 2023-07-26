@@ -10,6 +10,7 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    formatReportingQueryDate,
     HelpdeskMessagesStatsFiltersMembers,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
@@ -197,14 +198,14 @@ export const getTicketsRepliedQueryFactory = (
             member: HelpdeskMessageMember.SentDatetime,
             operator: ReportingFilterOperator.InDateRange,
             values: [
-                filters.period.start_datetime,
-                filters.period.end_datetime,
+                formatReportingQueryDate(filters.period.start_datetime),
+                formatReportingQueryDate(filters.period.end_datetime),
             ],
         },
         {
             member: TicketMember.PeriodEnd,
             operator: ReportingFilterOperator.BeforeDate,
-            values: [filters.period.end_datetime],
+            values: [formatReportingQueryDate(filters.period.end_datetime)],
         },
         {
             member: TicketMember.FirstMessageChannel,

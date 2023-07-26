@@ -1,10 +1,14 @@
-import {NotSpamNorTrashedTicketsFilter} from 'hooks/reporting/metricTrends'
+import {
+    getTicketsRepliedQueryFactory,
+    NotSpamNorTrashedTicketsFilter,
+} from 'hooks/reporting/metricTrends'
 import {
     Metric,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {
+    HelpdeskMessageMeasure,
     ReportingFilter,
     ReportingFilterOperator,
     ReportingQuery,
@@ -73,6 +77,35 @@ export const useFirstResponseTimeMetricPerAgent = (
 ): Metric =>
     useMetricPerDimension(
         firstResponseTimeMetricPerAgentQueryFactory(
+            statsFilters,
+            timezone,
+            sorting
+        ),
+        agentAssigneeId
+    )
+
+export const ticketsRepliedMetricPerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery => ({
+    ...getTicketsRepliedQueryFactory(filters, timezone),
+    dimensions: [TicketDimension.AssigneeUserId],
+    ...(sorting
+        ? {
+              order: [[HelpdeskMessageMeasure.TicketCount, sorting]],
+          }
+        : {}),
+})
+
+export const useTicketsRepliedMetricPerAgent = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string
+): Metric =>
+    useMetricPerDimension(
+        ticketsRepliedMetricPerAgentQueryFactory(
             statsFilters,
             timezone,
             sorting

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {HeaderCell} from 'pages/stats/HeaderCell'
@@ -16,6 +17,8 @@ const getCell = (
     column: TableColumn
 ): React.FunctionComponent<{agentId: number}> => {
     switch (column) {
+        case TableColumn.RepliedTickets:
+            return TicketsRepliedCellContent
         case TableColumn.FirstResponseTime:
             return FirstResponseTimeCellContent
         case TableColumn.AgentName:

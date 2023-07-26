@@ -12,6 +12,7 @@ export enum TableColumn {
 export const TableColumnsOrder: TableColumn[] = [
     TableColumn.AgentName,
     TableColumn.FirstResponseTime,
+    TableColumn.RepliedTickets,
 ]
 
 export const TableLabels: Record<TableColumn, string> = {
