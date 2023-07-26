@@ -7,6 +7,7 @@ import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
+import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
 import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
@@ -42,6 +43,9 @@ const TicketsRepliedCellContentMock = assumeMock(TicketsRepliedCellContent)
 
 jest.mock('pages/stats/ClosedTicketsCellContent.tsx')
 const ClosedTicketsCellContentMock = assumeMock(ClosedTicketsCellContent)
+
+jest.mock('pages/stats/MessagesSentCellContent.tsx')
+const MessagesSentCellContentMock = assumeMock(MessagesSentCellContent)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const cellMock = () => <div />
@@ -86,6 +90,7 @@ describe('SupportPerformanceAgents', () => {
     FirstResponseTimeCellContentMock.mockImplementation(cellMock)
     TicketsRepliedCellContentMock.mockImplementation(cellMock)
     ClosedTicketsCellContentMock.mockImplementation(cellMock)
+    MessagesSentCellContentMock.mockImplementation(() => <div />)
 
     beforeEach(() => {
         jest.clearAllMocks()

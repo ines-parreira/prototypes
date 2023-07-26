@@ -14,6 +14,7 @@ export const TableColumnsOrder: TableColumn[] = [
     TableColumn.FirstResponseTime,
     TableColumn.RepliedTickets,
     TableColumn.ClosedTickets,
+    TableColumn.MessagesSent,
 ]
 
 export const TableLabels: Record<TableColumn, string> = {

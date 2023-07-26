@@ -1,5 +1,6 @@
 import {
     closedTicketsQueryFactory,
+    getMessagesSentQueryFactory,
     getTicketsRepliedQueryFactory,
     NotSpamNorTrashedTicketsFilter,
 } from 'hooks/reporting/metricTrends'
@@ -137,5 +138,30 @@ export const useClosedTicketsMetricPerAgent = (
 ): Metric =>
     useMetricPerDimension(
         closedTicketsPerAgentQueryFactory(statsFilters, timezone, sorting),
+        agentAssigneeId
+    )
+
+export const messagesSentMetricPerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery => ({
+    ...getMessagesSentQueryFactory(filters, timezone),
+    dimensions: [TicketDimension.AssigneeUserId],
+    ...(sorting
+        ? {
+              order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+          }
+        : {}),
+})
+
+export const useMessagesSentMetricPerAgent = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string
+): Metric =>
+    useMetricPerDimension(
+        messagesSentMetricPerAgentQueryFactory(statsFilters, timezone, sorting),
         agentAssigneeId
     )

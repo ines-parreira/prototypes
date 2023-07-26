@@ -1,17 +1,19 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
     closedTicketsPerAgentQueryFactory,
     firstResponseTimeMetricPerAgentQueryFactory,
     ticketsRepliedMetricPerAgentQueryFactory,
     useClosedTicketsMetricPerAgent,
+    messagesSentMetricPerAgentQueryFactory,
     useFirstResponseTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
+    useMessagesSentMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {NotSpamNorTrashedTicketsFilter} from 'hooks/reporting/metricTrends'
+import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {OrderDirection} from 'models/api/types'
 import {
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
@@ -94,6 +96,7 @@ describe('metricsPerDimension', () => {
                 timezone: timezone,
             })
         })
+
         it('should build a query with and agents sorting', () => {
             const agents = [2]
 
@@ -437,6 +440,144 @@ describe('metricsPerDimension', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 closedTicketsPerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting
+                ),
+                agentId
+            )
+        })
+    })
+
+    describe('messagesSentMetricPerAgentQueryFactory', () => {
+        it('should build a query', () => {
+            expect(
+                messagesSentMetricPerAgentQueryFactory(statsFilters, timezone)
+            ).toEqual({
+                dimensions: [TicketDimension.AssigneeUserId],
+                filters: [
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [formatReportingQueryDate(periodEnd)],
+                    },
+                    {
+                        member: HelpdeskMessageMember.SentDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [
+                            formatReportingQueryDate(periodStart),
+                            formatReportingQueryDate(periodEnd),
+                        ],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
+                    {
+                        member: TicketMember.Integration,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.integrations?.map(String),
+                    },
+                    {
+                        member: TicketMember.FirstMessageChannel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.channels,
+                    },
+                    {
+                        member: TicketMember.Tags,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.tags?.map(String),
+                    },
+                ],
+                measures: [HelpdeskMessageMeasure.MessageCount],
+                timezone: timezone,
+            })
+        })
+
+        it('should build a query with and agents sorting', () => {
+            const agents = [2]
+
+            expect(
+                messagesSentMetricPerAgentQueryFactory(
+                    {...statsFilters, agents},
+                    timezone,
+                    sorting
+                )
+            ).toEqual({
+                dimensions: [TicketDimension.AssigneeUserId],
+                filters: [
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [formatReportingQueryDate(periodEnd)],
+                    },
+                    {
+                        member: HelpdeskMessageMember.SentDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [
+                            formatReportingQueryDate(periodStart),
+                            formatReportingQueryDate(periodEnd),
+                        ],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
+                    {
+                        member: TicketMember.Integration,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.integrations?.map(String),
+                    },
+                    {
+                        member: TicketMember.FirstMessageChannel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.channels,
+                    },
+                    {
+                        member: HelpdeskMessageMember.SenderId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: agents.map(String),
+                    },
+                    {
+                        member: TicketMember.Tags,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statsFilters.tags?.map(String),
+                    },
+                ],
+                measures: [HelpdeskMessageMeasure.MessageCount],
+                order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+                timezone: timezone,
+            })
+        })
+    })
+
+    describe('useFirstResponseTimeMetricPerAgent', () => {
+        it('should pass the query to useMetricPerDimension hook', () => {
+            renderHook(
+                () =>
+                    useMessagesSentMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId
+                    ),
+                {}
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                messagesSentMetricPerAgentQueryFactory(
                     statsFilters,
                     timezone,
                     sorting

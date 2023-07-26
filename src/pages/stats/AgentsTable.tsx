@@ -2,6 +2,7 @@ import React from 'react'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
+import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {HeaderCell} from 'pages/stats/HeaderCell'
@@ -22,6 +23,8 @@ const getCell = (
             return TicketsRepliedCellContent
         case TableColumn.ClosedTickets:
             return ClosedTicketsCellContent
+        case TableColumn.MessagesSent:
+            return MessagesSentCellContent
         case TableColumn.FirstResponseTime:
             return FirstResponseTimeCellContent
         case TableColumn.AgentName:
