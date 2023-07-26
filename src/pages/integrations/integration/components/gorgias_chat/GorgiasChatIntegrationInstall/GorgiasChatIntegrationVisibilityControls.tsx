@@ -199,7 +199,7 @@ const GorgiasChatIntegrationVisibilityControls = forwardRef<
         const hideUpdateInstallationButton =
             !installation?.visibility?.method ||
             (isShowOnEveryPage &&
-                visibilityMethod ===
+                initialVisibilityMethod ===
                     GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage)
 
         return (
