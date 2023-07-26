@@ -76,18 +76,26 @@ export default function useLanguagesMismatchWarnings(
             if (!shouldDisplayWarnings) return
             const workflow = workflows.find((w) => w.id === workflowId)
             if (!workflow) return
+            // we align the workflow languages with the channel languages
+            // for example chat will use nl for Dutch, but the workflow use nl-NL
+            const workflowLanguages =
+                workflow.available_languages?.map(
+                    (wl) =>
+                        channelLanguages.find(
+                            (cl) => cl === wl.substring(0, cl.length)
+                        ) ?? wl
+                ) ?? []
             // There is no overlap between the flow language and the channel language.
             if (
-                _intersection(channelLanguages, workflow.available_languages)
-                    .length === 0
+                _intersection(channelLanguages, workflowLanguages).length === 0
             ) {
                 return {
                     type: 'error',
                     message: (
                         <>
                             This flow is in{' '}
-                            {workflow.available_languages
-                                ?.map(getChannelLanguageLabel)
+                            {workflowLanguages
+                                .map(getChannelLanguageLabel)
                                 .join(', ')}
                             , but this channel is in{' '}
                             {channelLanguages
@@ -110,8 +118,7 @@ export default function useLanguagesMismatchWarnings(
                 [TicketChannel.Chat, TicketChannel.ContactForm].includes(
                     channelType
                 ) &&
-                (workflow.available_languages ?? []).length >
-                    channelLanguages.length
+                workflowLanguages.length > channelLanguages.length
             ) {
                 return {
                     type: 'warning',
@@ -131,7 +138,7 @@ export default function useLanguagesMismatchWarnings(
             // The channel has a language that the flow doesn’t have
             const extraChannelLanguages = _difference(
                 channelLanguages,
-                workflow.available_languages ?? []
+                workflowLanguages
             )
             if (extraChannelLanguages.length > 0) {
                 return {
@@ -154,7 +161,7 @@ export default function useLanguagesMismatchWarnings(
 
             // If the flow has a language that the channel doesn’t have.
             const extraWorkflowLanguages = _difference(
-                workflow.available_languages ?? [],
+                workflowLanguages,
                 channelLanguages
             )
             if (extraWorkflowLanguages.length > 0) {
