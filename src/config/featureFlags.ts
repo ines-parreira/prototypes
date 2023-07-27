@@ -36,6 +36,7 @@ export enum FeatureFlagKey {
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     RevenueShopifyHistoryTriggers = 'revenue-shopify-history-triggers',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
+    SeparateSnoozeButton = 'separate-snooze-button',
     SpotlightGlobalSearch = 'spotlight-global-search',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
