@@ -23,6 +23,7 @@ import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from '../models/visualBuilderGraph.model'
+import {verifyPayloadSize} from '../utils/payloadLengthCheck'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
@@ -145,6 +146,7 @@ export function useWorkflowEditor(
         currentLanguage,
         switchLanguage,
         setCurrentLanguage,
+        validateTranslationsPayloadSize,
     } = useWorkflowTranslations(
         visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
         visualBuilderGraphDirty.available_languages ?? ['en-US'],
@@ -252,18 +254,18 @@ export function useWorkflowEditor(
         if (!isDirty) return
         setIsSavePending(true)
         try {
+            validateTranslationsPayloadSize(visualBuilderGraphDirty)
+            const empyTranslationText = verifyPayloadSize(
+                emptyTranslatedTexts(configurationDirty)
+            )
             // why saving order differ depending on isNew?
             // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
             if (isNew) {
-                await upsertWorkflowConfiguration(
-                    emptyTranslatedTexts(configurationDirty)
-                )
+                await upsertWorkflowConfiguration(empyTranslationText)
                 await saveTranslations(visualBuilderGraphDirty)
             } else {
                 await saveTranslations(visualBuilderGraphDirty)
-                await upsertWorkflowConfiguration(
-                    emptyTranslatedTexts(configurationDirty)
-                )
+                await upsertWorkflowConfiguration(empyTranslationText)
             }
             // trigger channel cache invalidation to refresh the entrypoint labels and deleted translations on their side
             void handleSelfServiceConfigurationUpdate(() => {
@@ -282,6 +284,7 @@ export function useWorkflowEditor(
         saveTranslations,
         isNew,
         handleSelfServiceConfigurationUpdate,
+        validateTranslationsPayloadSize,
     ])
 
     const handleDiscard = useCallback(() => {

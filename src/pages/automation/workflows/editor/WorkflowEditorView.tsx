@@ -3,6 +3,7 @@ import {Container} from 'reactstrap'
 import {useEffectOnce} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import axios from 'axios'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -25,6 +26,11 @@ import useWorkflowChannelSupport, {
 } from '../hooks/useWorkflowChannelSupport'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
+
+import {
+    PayloadSizeLimitError,
+    SIZE_LIMIT_ERROR,
+} from '../utils/payloadLengthCheck'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
@@ -108,9 +114,15 @@ function WorkflowEditorViewWrapped({
                 await appendWorkflowInStore(workflowId)
             }
         } catch (e) {
+            let message =
+                'An error happened trying to save the flow, please try again or contact support'
+            if (
+                e instanceof PayloadSizeLimitError ||
+                (axios.isAxiosError(e) && e.response?.status === 413)
+            )
+                message = SIZE_LIMIT_ERROR
             notifyMerchant({
-                message:
-                    'An error happened trying to save the flow, please try again or contact support',
+                message,
                 status: NotificationStatus.Error,
             })
             return

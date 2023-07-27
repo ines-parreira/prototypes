@@ -15,8 +15,10 @@ import _keys from 'lodash/keys'
 import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
 import _mapValues from 'lodash/mapValues'
+
 import {LanguageCode} from '../models/workflowConfiguration.types'
 import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
+import {verifyPayloadSize} from '../utils/payloadLengthCheck'
 import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
@@ -217,6 +219,25 @@ export default function useWorkflowTranslations(
         },
         [currentLanguage, availableLanguages, switchLanguage]
     )
+    const validateTranslationsPayloadSize = useCallback(
+        (graph: VisualBuilderGraph) => {
+            if (!configurationInternalId) return
+            const nextTranslationsByLangDirty = snapshotTranslations(
+                graph,
+                currentLanguage,
+                translationsByLangDirty
+            )
+            for (const languageCode of availableLanguages) {
+                verifyPayloadSize(nextTranslationsByLangDirty[languageCode])
+            }
+        },
+        [
+            currentLanguage,
+            availableLanguages,
+            translationsByLangDirty,
+            configurationInternalId,
+        ]
+    )
 
     const areTranslationsDirty = useMemo(
         () =>
@@ -241,6 +262,8 @@ export default function useWorkflowTranslations(
         translateKey,
         setCurrentLanguage,
         switchLanguage,
+        translationsByLang,
+        validateTranslationsPayloadSize,
     }
 }
 
