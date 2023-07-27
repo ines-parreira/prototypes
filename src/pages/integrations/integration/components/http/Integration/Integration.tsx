@@ -96,7 +96,7 @@ export class Integration extends Component<Props, State> {
 
     _mapIntegrationToState = (integration: HttpIntegration) => {
         const isJsonBody =
-            integration.http.request_content_type === ContentType.Json
+            integration.http?.request_content_type === ContentType.Json
         let formData = integration.http.form
         if (
             !isJsonBody &&
