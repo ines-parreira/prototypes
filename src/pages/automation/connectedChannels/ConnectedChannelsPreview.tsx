@@ -6,7 +6,9 @@ import SelfServicePreview from 'pages/automation/common/components/preview/SelfS
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
+import {StoreIntegration} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {getShopUrlFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {TicketChannel} from 'business/types/ticket'
@@ -22,11 +24,13 @@ import {HELP_CENTER_DEFAULT_LOCALE} from '../../settings/helpCenter/constants'
 type Props = {
     channel?: SelfServiceChannel
     selfServiceConfiguration: SelfServiceConfiguration
+    storeIntegration?: StoreIntegration
 }
 
 const ConnectedChannelsPreview = ({
     channel,
     selfServiceConfiguration,
+    storeIntegration,
 }: Props) => {
     const history = useMemo(
         () =>
@@ -89,6 +93,15 @@ const ConnectedChannelsPreview = ({
 
     const previewUrl = useMemo(() => {
         switch (channel?.type) {
+            case TicketChannel.Chat: {
+                if (!storeIntegration) return undefined
+
+                const shopUrl = getShopUrlFromStoreIntegration(storeIntegration)
+
+                return shopUrl
+                    ? `${shopUrl}?${PREVIEW_MODE_QUERY_PARAM}=true`
+                    : undefined
+            }
             case TicketChannel.ContactForm:
                 return `${channel.value.url_template}?${PREVIEW_MODE_QUERY_PARAM}=true`
             case TicketChannel.HelpCenter:
@@ -100,7 +113,7 @@ const ConnectedChannelsPreview = ({
             default:
                 return undefined
         }
-    }, [channel])
+    }, [channel, storeIntegration])
 
     return (
         <SelfServicePreviewContainer channel={channel} previewUrl={previewUrl}>

@@ -42,10 +42,8 @@ const ConnectedChannelsView = () => {
             id: string
         }>()
     const channels = useSelfServiceChannels(shopType, shopName)
-    const {selfServiceConfiguration} = useSelfServiceConfiguration(
-        shopType,
-        shopName
-    )
+    const {selfServiceConfiguration, storeIntegration} =
+        useSelfServiceConfiguration(shopType, shopName)
     const {isFetchPending: isWorkflowsFetchPending, workflowConfigurations} =
         useWorkflowConfigurations()
     const workflowChannelSupportContext = useWorkflowChannelSupport(
@@ -225,6 +223,7 @@ const ConnectedChannelsView = () => {
             <ConnectedChannelsPreview
                 channel={expandedChannel}
                 selfServiceConfiguration={selfServiceConfiguration!}
+                storeIntegration={storeIntegration}
             />
         </AutomationView>
     )
