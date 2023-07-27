@@ -63,7 +63,7 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                     <div className={css.formInput}>
                         <Label className={css.label}>Phone number</Label>
                         <PhoneNumberInput
-                            value={billingContact.shipping.phone}
+                            value={billingContact.shipping.phone || ''}
                             onChange={(phone) =>
                                 setBillingContact((prev) => ({
                                     ...prev,
