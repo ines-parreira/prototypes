@@ -283,6 +283,7 @@ export enum SegmentEvent {
     DraftTicket = 'draft-ticket',
     InfobarFieldCopied = 'infobar-field-copied',
     TicketExport = 'ticket-export',
+    PreviewModeClicked = 'preview-mode-clicked',
 }
 
 export enum StatViewLinkClickedStat {

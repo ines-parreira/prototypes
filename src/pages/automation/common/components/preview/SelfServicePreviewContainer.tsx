@@ -73,7 +73,9 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
                           )}
                 </div>
 
-                {previewUrl ? <PreviewChannelButton url={previewUrl} /> : null}
+                {previewUrl ? (
+                    <PreviewChannelButton channel={channel} url={previewUrl} />
+                ) : null}
             </div>
         </div>
     )
