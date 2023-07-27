@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SocketManager _renderOutdatedBanner() should render the "outdated" banner 1`] = `
+[
+  [
+    {
+      "dismissible": false,
+      "id": "outdated-shared-worker",
+      "message": "Your Helpdesk is using a stale live notifications connection. Please close all the Gorgias tabs (or browser copies) to make sure your Gorgias application is using the latest version and try to open a new page again.",
+      "showIcon": true,
+      "status": "error",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
 exports[`SocketManager onConnect() should update the manager's \`isConnected\` status and remove the websocket notification 1`] = `
 [
   [

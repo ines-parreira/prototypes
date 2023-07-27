@@ -33,6 +33,7 @@ import {
     HEALTH_CHECK_INTERVAL,
     HEALTH_CHECK_RECEIVE_TIMEOUT,
     HEALTH_CHECK_SEND_INTERVAL,
+    SHARED_WORKER_VERSION,
 } from './constants'
 import {
     WSMessage,
@@ -213,6 +214,8 @@ export class WebsocketSharedWorker {
                 this.onClientConnected(message, messagePort)
             } else if (message.type === MessagePortEvent.HealthCheck) {
                 this.onHealthCheck(message.data as string)
+            } else if (message.type === MessagePortEvent.GetVersion) {
+                this._broadcastVersion()
             } else if (this.socket) {
                 this.socket.send(message)
             }
@@ -220,6 +223,13 @@ export class WebsocketSharedWorker {
 
     onPortConnect = (event: MessageEvent) => {
         event.ports[0].onmessage = this.onPortMessage(event.ports[0])
+    }
+
+    _broadcastVersion = () => {
+        this.broadcastChannel.postMessage({
+            type: BroadcastChannelEvent.Version,
+            data: SHARED_WORKER_VERSION,
+        })
     }
 }
 

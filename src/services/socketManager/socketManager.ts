@@ -12,17 +12,21 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 
-import {BROADCAST_CHANNEL_NAME} from './constants'
+import {
+    BROADCAST_CHANNEL_NAME,
+    OUTDATED_NOTIFICATION_DELAY,
+    SHARED_WORKER_VERSION,
+} from './constants'
 import {
     fallbackBroadcastChannelAdapter,
     fallbackWorkerAdapter,
 } from './fallbackWorkerAdapter'
 import {
     BroadcastChannelEvent,
-    ServerMessage,
-    MessagePortEvent,
-    SocketEventType,
     JoinEventType,
+    MessagePortEvent,
+    ServerMessage,
+    SocketEventType,
     WSMessage,
 } from './types'
 
@@ -40,6 +44,7 @@ export class SocketManager {
         : fallbackBroadcastChannelAdapter
     isConnected = false
     disconnectedNotificationId = '696480246'
+    outdatedNotificationId = 'outdated-shared-worker'
     rooms: socketEvents.SendData[] = [] // rooms currently joined
     worker = currentBrowserSupportsSharedWorker
         ? new window.SharedWorker(
@@ -47,6 +52,7 @@ export class SocketManager {
               'WebsocketSharedWorker'
           )
         : fallbackWorkerAdapter
+    _isSharedWorkerUpToDate = !currentBrowserSupportsSharedWorker
 
     constructor() {
         this.worker.port.start()
@@ -75,6 +81,8 @@ export class SocketManager {
             wsUrl: window.WS_URL,
             clientId: window.CLIENT_ID,
         })
+
+        this._checkVersion()
     }
 
     onMessage = (message: WSMessage) => {
@@ -90,6 +98,10 @@ export class SocketManager {
                 break
             case BroadcastChannelEvent.ServerMessage:
                 this.onServerMessage(message.json as any)
+                break
+            case BroadcastChannelEvent.Version:
+                this._onVersion(message.data)
+                break
         }
     }
 
@@ -314,6 +326,38 @@ export class SocketManager {
         this.rooms = this.rooms.filter(
             (roomData: Record<string, unknown>): boolean =>
                 roomData.dataType !== data.dataType
+        )
+    }
+
+    _checkVersion = () => {
+        this.worker.port.postMessage({
+            type: MessagePortEvent.GetVersion,
+        })
+
+        setTimeout(() => {
+            if (!this._isSharedWorkerUpToDate) {
+                this._renderOutdatedBanner()
+            }
+        }, OUTDATED_NOTIFICATION_DELAY * 1000)
+    }
+
+    _onVersion = (version: number) => {
+        this._isSharedWorkerUpToDate = version === SHARED_WORKER_VERSION
+    }
+
+    _renderOutdatedBanner = () => {
+        this.dispatchReduxAction(
+            notify({
+                id: this.outdatedNotificationId,
+                style: NotificationStyle.Banner,
+                status: NotificationStatus.Error,
+                dismissible: false,
+                message:
+                    'Your Helpdesk is using a stale live notifications connection. Please close all the Gorgias tabs ' +
+                    '(or browser copies) to make sure your Gorgias application is using the latest version and try ' +
+                    'to open a new page again.',
+                showIcon: true,
+            })
         )
     }
 }

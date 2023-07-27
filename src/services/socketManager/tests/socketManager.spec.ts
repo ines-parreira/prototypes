@@ -4,7 +4,7 @@ import * as reapop from 'reapop'
 import * as socketEvents from 'config/socketEvents'
 import * as actions from 'state/notifications/actions'
 
-import {BROADCAST_CHANNEL_NAME} from '../constants'
+import {BROADCAST_CHANNEL_NAME, SHARED_WORKER_VERSION} from '../constants'
 import {
     BroadcastChannelEvent,
     MessagePortEvent,
@@ -22,12 +22,22 @@ describe('SocketManager', () => {
     const sendToServerSpy = jest.spyOn(socketManager, '_sendToServer')
     const joinRoomSpy = jest.spyOn(socketManager, '_joinRoom')
     const leaveRoomSpy = jest.spyOn(socketManager, '_leaveRoom')
+    const onVersionSpy = jest.spyOn(socketManager, '_onVersion')
+    const renderOutdatedBannerSpy = jest.spyOn(
+        socketManager,
+        '_renderOutdatedBanner'
+    )
 
     const notifySpy = jest.spyOn(actions, 'notify')
     const dismissNotificationSpy = jest.spyOn(reapop, 'dismissNotification')
 
     beforeEach(() => {
         jest.clearAllMocks()
+        jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
     describe('constructor()', () => {
@@ -56,6 +66,11 @@ describe('SocketManager', () => {
             expect(
                 socketManager.broadcastChannel.addEventListener
             ).toHaveBeenCalledTimes(1)
+
+            expect(socketManager._isSharedWorkerUpToDate).toBe(false)
+            expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
+                type: MessagePortEvent.GetVersion,
+            })
         })
     })
 
@@ -92,6 +107,17 @@ describe('SocketManager', () => {
             expect(onDisconnectSpy).not.toHaveBeenCalled()
             expect(onServerMessageSpy).toHaveBeenCalledTimes(1)
             expect(onServerMessageSpy).toHaveBeenCalledWith(message.json)
+        })
+
+        it('should call `_onVersion` when receiving a `VERSION` event', () => {
+            const message = {
+                type: BroadcastChannelEvent.Version,
+                data: SHARED_WORKER_VERSION,
+            }
+
+            socketManager.onMessage(message)
+
+            expect(onVersionSpy).toHaveBeenCalledWith(SHARED_WORKER_VERSION)
         })
     })
 
@@ -179,6 +205,50 @@ describe('SocketManager', () => {
             expect(leaveRoomSpy.mock.calls[0][0]).toEqual(
                 config!.dataToSend(id)
             )
+        })
+    })
+
+    describe('_checkVersion()', () => {
+        it('should render the banner because the shared worker is outdated', () => {
+            socketManager._checkVersion()
+            expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
+                type: MessagePortEvent.GetVersion,
+            })
+
+            socketManager._isSharedWorkerUpToDate = false
+            jest.runOnlyPendingTimers()
+            expect(renderOutdatedBannerSpy).toHaveBeenCalled()
+        })
+
+        it('should not render the banner because the shared worker is up-to-date', () => {
+            socketManager._checkVersion()
+            expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
+                type: MessagePortEvent.GetVersion,
+            })
+
+            socketManager._isSharedWorkerUpToDate = true
+            jest.runOnlyPendingTimers()
+            expect(renderOutdatedBannerSpy).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('_onVersion()', () => {
+        it('should update the "up-to-date" status of the shared worker', () => {
+            const socketManager = new SocketManager()
+            expect(socketManager._isSharedWorkerUpToDate).toBe(false)
+
+            socketManager._onVersion(SHARED_WORKER_VERSION)
+            expect(socketManager._isSharedWorkerUpToDate).toBe(true)
+
+            socketManager._onVersion(1)
+            expect(socketManager._isSharedWorkerUpToDate).toBe(false)
+        })
+    })
+
+    describe('_renderOutdatedBanner()', () => {
+        it('should render the "outdated" banner', () => {
+            socketManager._renderOutdatedBanner()
+            expect(notifySpy.mock.calls).toMatchSnapshot()
         })
     })
 })

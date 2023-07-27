@@ -5,6 +5,7 @@ import {
     HEALTH_CHECK_SEND_INTERVAL,
     HEALTH_CHECK_INTERVAL,
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
+    SHARED_WORKER_VERSION,
 } from '../constants'
 import {
     BroadcastChannelEvent,
@@ -421,6 +422,20 @@ describe('WebsocketSharedWorker', () => {
                 expect(worker.socket.send).toHaveBeenCalledWith(message.data)
             }
         )
+
+        it('should call `_broadcastVersion` because it received a message of type `GET_VERSION`', () => {
+            worker._broadcastVersion = jest.fn()
+
+            const handler = worker.onPortMessage(messagePort)
+            worker.socket = io()
+            const message = {
+                data: {type: MessagePortEvent.GetVersion},
+            }
+
+            handler(message as MessageEvent<WSMessage>)
+
+            expect(worker._broadcastVersion).toHaveBeenCalled()
+        })
     })
 
     describe('onPortConnect()', () => {
@@ -433,6 +448,17 @@ describe('WebsocketSharedWorker', () => {
             } as unknown as MessageEvent)
 
             expect(messagePort.onmessage).toEqual(expect.any(Function))
+        })
+    })
+
+    describe('_broadcastVersion()', () => {
+        it('should broadcast its current version', () => {
+            worker._broadcastVersion()
+
+            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.Version,
+                data: SHARED_WORKER_VERSION,
+            })
         })
     })
 })
