@@ -104,23 +104,25 @@ export const useMessagesPerTicketTrend = createUseMetricTrend(
     })
 )
 
+export const resolutionTimeQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+) => ({
+    measures: [TicketMeasure.ResolutionTime],
+    dimensions: [],
+    timezone,
+    segments: [TicketSegment.ClosedTickets, TicketSegment.ConversationStarted],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(
+            TicketStatsFiltersMembers,
+            statsFilters
+        ),
+    ],
+})
+
 export const useResolutionTimeTrend = createUseMetricTrend(
-    (filters, timezone) => ({
-        measures: [TicketMeasure.ResolutionTime],
-        dimensions: [],
-        timezone,
-        segments: [
-            TicketSegment.ClosedTickets,
-            TicketSegment.ConversationStarted,
-        ],
-        filters: [
-            ...NotSpamNorTrashedTicketsFilter,
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                filters
-            ),
-        ],
-    })
+    resolutionTimeQueryFactory
 )
 
 export const useOpenTicketsTrend = createUseMetricTrend(

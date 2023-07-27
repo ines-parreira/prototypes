@@ -20,6 +20,7 @@ import {channelsStatsFilterLabels} from 'pages/stats/ChannelsStatsFilter'
 import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter'
+import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
 
 import {LEARN_MORE_URL} from 'pages/stats/SupportPerformanceOverview'
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
@@ -46,6 +47,8 @@ const ClosedTicketsCellContentMock = assumeMock(ClosedTicketsCellContent)
 
 jest.mock('pages/stats/MessagesSentCellContent.tsx')
 const MessagesSentCellContentMock = assumeMock(MessagesSentCellContent)
+jest.mock('pages/stats/ResolutionTimeCellContent.tsx')
+const ResolutionTimeCellContentMock = assumeMock(ResolutionTimeCellContent)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const cellMock = () => <div />
@@ -90,7 +93,8 @@ describe('SupportPerformanceAgents', () => {
     FirstResponseTimeCellContentMock.mockImplementation(cellMock)
     TicketsRepliedCellContentMock.mockImplementation(cellMock)
     ClosedTicketsCellContentMock.mockImplementation(cellMock)
-    MessagesSentCellContentMock.mockImplementation(() => <div />)
+    MessagesSentCellContentMock.mockImplementation(cellMock)
+    ResolutionTimeCellContentMock.mockImplementation(cellMock)
 
     beforeEach(() => {
         jest.clearAllMocks()
