@@ -33,14 +33,14 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
       ],
     },
     {
-      "member": "FirstTicketState.messageIntegrationId",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "FirstTicketState.messageChannel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -106,14 +106,14 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
       ],
     },
     {
-      "member": "FirstTicketState.messageIntegrationId",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "FirstTicketState.messageChannel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -165,7 +165,7 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
       ],
     },
     {
-      "member": "FirstTicketState.helpdeskMessageDatetime",
+      "member": "TicketMessages.firstHelpdeskMessageDatetime",
       "operator": "inDateRange",
       "values": [
         "2021-05-29T00:00:00+02:00",
@@ -173,7 +173,7 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
       ],
     },
     {
-      "member": "FirstTicketState.helpdeskMessageUserId",
+      "member": "TicketMessages.firstHelpdeskMessageUserId",
       "operator": "equals",
       "values": [
         "2",
@@ -194,14 +194,14 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
       ],
     },
     {
-      "member": "FirstTicketState.messageIntegrationId",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "FirstTicketState.messageChannel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -218,7 +218,7 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
     },
   ],
   "measures": [
-    "FirstTicketState.firstResponseTime",
+    "TicketMessages.firstResponseTime",
   ],
   "segments": [
     "TicketMessages.conversationStarted",
@@ -260,14 +260,14 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
       ],
     },
     {
-      "member": "FirstTicketState.messageIntegrationId",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "FirstTicketState.messageChannel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -334,14 +334,14 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "FirstTicketState.messageIntegrationId",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "FirstTicketState.messageChannel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -365,7 +365,7 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
     },
   ],
   "measures": [
-    "FirstTicketState.resolutionTime",
+    "TicketMessages.resolutionTime",
   ],
   "segments": [
     "Ticket.closedTickets",
@@ -416,14 +416,14 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "FirstTicketState.messageIntegrationId",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "FirstTicketState.messageChannel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",

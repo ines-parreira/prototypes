@@ -17,14 +17,14 @@ exports[`reporting utils statsFiltersToReportingFilters should convert StatsFilt
     ],
   },
   {
-    "member": "FirstTicketState.messageIntegrationId",
+    "member": "TicketMessages.integration",
     "operator": "equals",
     "values": [
       "1",
     ],
   },
   {
-    "member": "FirstTicketState.messageChannel",
+    "member": "TicketMessages.firstMessageChannel",
     "operator": "equals",
     "values": [
       "email",
