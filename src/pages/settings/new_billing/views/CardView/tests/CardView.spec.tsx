@@ -105,7 +105,10 @@ describe('CardView', () => {
     it('renders the component', () => {
         const {getByText} = renderWithRouter(
             <Provider store={store}>
-                <CardView />
+                <CardView
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                />
             </Provider>
         )
 
@@ -127,7 +130,10 @@ describe('CardView', () => {
 
         const {getByTestId, getByText} = render(
             <Provider store={store}>
-                <CardView />
+                <CardView
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                />
             </Provider>
         )
 

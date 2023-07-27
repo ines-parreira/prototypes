@@ -96,7 +96,7 @@ const BillingProcessView = ({
         anyProductChanged,
         totalProductAmount,
         interval,
-        handleSubscribe,
+        updateSubscription,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
@@ -294,10 +294,12 @@ const BillingProcessView = ({
                                 currency={helpdeskPrices?.[0].currency}
                             />
                         </div>
-                        <SummaryPaymentSection
-                            setIsPaymentEnabled={setIsPaymentEnabled}
-                            isCreditCardFetched={isCreditCardFetched}
-                        />
+                        {!isTrialing && (
+                            <SummaryPaymentSection
+                                setIsPaymentEnabled={setIsPaymentEnabled}
+                                isCreditCardFetched={isCreditCardFetched}
+                            />
+                        )}
                         <SummaryFooter
                             isPaymentEnabled={isPaymentEnabled}
                             isTrialing={isTrialing}
@@ -306,7 +308,7 @@ const BillingProcessView = ({
                             anyDowngradedPlanSelected={
                                 !!anyDowngradedPlanSelected
                             }
-                            handleSubscribe={handleSubscribe}
+                            updateSubscription={updateSubscription}
                             periodEnd={periodEnd}
                         />
                     </Card>

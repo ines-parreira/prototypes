@@ -51,7 +51,7 @@ const BillingFrequencyView = ({
         setSelectedPlans,
         totalProductAmount,
         anyProductChanged,
-        handleSubscribe,
+        updateSubscription,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
@@ -208,17 +208,19 @@ const BillingFrequencyView = ({
                             isFrequencyChanged={true}
                         />
                     </div>
-                    <SummaryPaymentSection
-                        setIsPaymentEnabled={setIsPaymentEnabled}
-                        isCreditCardFetched={isCreditCardFetched}
-                    />
+                    {!isTrialing && (
+                        <SummaryPaymentSection
+                            setIsPaymentEnabled={setIsPaymentEnabled}
+                            isCreditCardFetched={isCreditCardFetched}
+                        />
+                    )}
                     <SummaryFooter
                         isPaymentEnabled={isPaymentEnabled}
                         isTrialing={isTrialing}
                         anyProductChanged={anyProductChanged}
                         anyNewProductSelected={false}
                         anyDowngradedPlanSelected={false}
-                        handleSubscribe={handleSubscribe}
+                        updateSubscription={updateSubscription}
                         periodEnd={periodEnd}
                     />
                 </Card>

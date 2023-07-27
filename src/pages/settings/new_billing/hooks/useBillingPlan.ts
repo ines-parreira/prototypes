@@ -336,7 +336,6 @@ export const useBillingPlans = ({
     ])
 
     const handleHelpdeskAndAutomationPlansChange = useCallback(async () => {
-        const gorgiasApi = new GorgiasApi()
         const plansToBeUpdated: string[] = []
         const notifications: Notification[] = []
 
@@ -349,11 +348,6 @@ export const useBillingPlans = ({
                 automationProduct?.price_id ||
             (automationProduct?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected)
-
-        // If helpdesk and automation prices haven't changed, do not update stripe
-        if (!isNewHelpdeskProduct && !isNewAutomationProduct) {
-            return
-        }
 
         // handle subscribe for Helpdesk plan
         if (isNewHelpdeskProduct) {
@@ -424,58 +418,6 @@ export const useBillingPlans = ({
                         )
                     )
                 }
-                if (isFreeTrial) {
-                    try {
-                        const response = await gorgiasApi.startSubscription()
-                        const subscription = response.get('subscription')
-                        dispatch(setCurrentSubscription(subscription))
-
-                        const payment: Map<any, any> | null =
-                            response.get('payment')
-                        if (payment!.get('confirmation_url')) {
-                            await dispatch(
-                                notify({
-                                    status: NotificationStatus.Info,
-                                    message:
-                                        'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
-                                        'You will be redirected in a few seconds to a secure page.',
-                                    dismissAfter: 5000,
-                                    dismissible: false,
-                                })
-                            )
-
-                            setTimeout(() => {
-                                history.push(payment!.get('confirmation_url'))
-                            }, 4500)
-                        } else if (payment!.get('error')) {
-                            void notify({
-                                status: NotificationStatus.Error,
-                                message: `${
-                                    payment!.get('error') as string
-                                } Please update your payment method and retry to pay your invoice.`,
-                            })
-                        } else {
-                            await dispatch(
-                                notify({
-                                    status: NotificationStatus.Success,
-                                    message: 'Your subscription has started!',
-                                })
-                            )
-                        }
-                    } catch (exception) {
-                        const error = exception as ErrorResponse
-                        const errorMsg =
-                            error.response && error.response.data?.error
-                                ? error.response.data.error.msg
-                                : 'Failed to update credit card. Please try again in a few seconds.'
-                        await dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                title: errorMsg,
-                            })
-                        )
-                    }
-                }
             } catch (error) {
                 dispatchBillingError()
                 throw error
@@ -494,15 +436,72 @@ export const useBillingPlans = ({
         dispatchBillingError,
     ])
 
-    const handleSubscribe = useCallback(() => {
+    const updateSubscription = useCallback(() => {
         return Promise.all([
             handleHelpdeskAndAutomationPlansChange(),
             handleSMSAndVoicePlansChange(),
         ])
     }, [handleHelpdeskAndAutomationPlansChange, handleSMSAndVoicePlansChange])
 
+    const startSubscription = useCallback(async () => {
+        if (!isFreeTrial) return
+
+        const gorgiasApi = new GorgiasApi()
+
+        try {
+            const response = await gorgiasApi.startSubscription()
+            const subscription = response.get('subscription')
+            dispatch(setCurrentSubscription(subscription))
+
+            const payment: Map<any, any> | null = response.get('payment')
+            if (payment!.get('confirmation_url')) {
+                await dispatch(
+                    notify({
+                        status: NotificationStatus.Info,
+                        message:
+                            'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
+                            'You will be redirected in a few seconds to a secure page.',
+                        dismissAfter: 5000,
+                        dismissible: false,
+                    })
+                )
+
+                setTimeout(() => {
+                    history.push(payment!.get('confirmation_url'))
+                }, 4500)
+            } else if (payment!.get('error')) {
+                void notify({
+                    status: NotificationStatus.Error,
+                    message: `${
+                        payment!.get('error') as string
+                    } Please update your payment method and retry to pay your invoice.`,
+                })
+            } else {
+                await dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'Your subscription has started!',
+                    })
+                )
+            }
+        } catch (exception) {
+            const error = exception as ErrorResponse
+            const errorMsg =
+                error.response && error.response.data?.error
+                    ? error.response.data.error.msg
+                    : 'Failed to update credit card. Please try again in a few seconds.'
+            await dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    title: errorMsg,
+                })
+            )
+        }
+    }, [dispatch, history, isFreeTrial])
+
     return {
-        handleSubscribe,
+        updateSubscription,
+        startSubscription,
         anyProductChanged,
         anyDowngradedPlanSelected,
         anyNewProductSelected,

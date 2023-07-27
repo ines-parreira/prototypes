@@ -4,6 +4,7 @@ import {Form} from 'reactstrap'
 import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
+import {TicketPurpose} from 'state/billing/types'
 import BackLink from '../../components/BackLink/BackLink'
 import {useCreditCard} from '../../hooks/useCreditCard'
 import AddressForm from '../../components/AddressForm/AddressForm'
@@ -15,7 +16,12 @@ import {
     creditCardNormalizer,
 } from './utils'
 
-const CardView = () => {
+type CardViewProps = {
+    contactBilling: (ticketPurpose: TicketPurpose) => void
+    dispatchBillingError: () => void
+}
+
+const CardView = ({contactBilling, dispatchBillingError}: CardViewProps) => {
     const {
         fields,
         errors,
@@ -23,13 +29,14 @@ const CardView = () => {
         isDisabled,
         isSubmitting,
         isUpdating,
+        isTrialingSubscription,
         handleSubmit,
         updateField,
         billingContact,
         setBillingContact,
         isCreditCardFetched,
         isContactFetched,
-    } = useCreditCard()
+    } = useCreditCard({contactBilling, dispatchBillingError})
 
     const currentMonth = new Date().getMonth() + 1
 
@@ -148,6 +155,7 @@ const CardView = () => {
                     className={css.submitButton}
                 >
                     {isUpdating ? 'Update card' : 'Add payment method'}
+                    {isTrialingSubscription && ' & Pay'}
                 </Button>
             </Form>
         </div>

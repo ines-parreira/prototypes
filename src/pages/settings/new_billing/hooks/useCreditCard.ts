@@ -3,7 +3,12 @@ import {fromJS} from 'immutable'
 import {useHistory} from 'react-router-dom'
 import {AnyAction} from 'redux'
 import useAppSelector from 'hooks/useAppSelector'
-import {BillingContact, CreditCard, ErrorResponse} from 'state/billing/types'
+import {
+    BillingContact,
+    CreditCard,
+    ErrorResponse,
+    TicketPurpose,
+} from 'state/billing/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -23,9 +28,18 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {loadScript} from 'utils'
 import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
-import {BILLING_PROCESS_PATH} from '../constants'
+import {BILLING_BASE_PATH} from '../constants'
+import {useBillingPlans} from './useBillingPlan'
 
-export const useCreditCard = () => {
+type useCreditCardProps = {
+    contactBilling: (ticketPurpose: TicketPurpose) => void
+    dispatchBillingError: () => void
+}
+
+export const useCreditCard = ({
+    contactBilling,
+    dispatchBillingError,
+}: useCreditCardProps) => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const dispatch = useAppDispatch()
@@ -52,6 +66,11 @@ export const useCreditCard = () => {
     const [isContactFetched, setIsContactFetched] = useState(false)
     const [isStripeLoaded, setIsStripeLoaded] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
+
+    const {startSubscription} = useBillingPlans({
+        contactBilling,
+        dispatchBillingError,
+    })
 
     const isUpdating = useMemo(
         () => isCreditCardFetched && !!card.get('brand'),
@@ -103,7 +122,7 @@ export const useCreditCard = () => {
     }, [initialBillingContact, billingContact])
 
     useEffect(() => {
-        // load Stripe.js cause we need it to create token for credit card
+        // load Stripe.js because we need it to create token for credit card
         if (typeof Stripe === 'undefined') {
             loadScript('https://js.stripe.com/v2/', () => {
                 if (window.STRIPE_PUBLIC_KEY) {
@@ -202,7 +221,8 @@ export const useCreditCard = () => {
             )
 
             if (isTrialingSubscription) {
-                history.push(`${BILLING_PROCESS_PATH}/helpdesk`)
+                await startSubscription()
+                history.push(`${BILLING_BASE_PATH}`)
             } else {
                 history.goBack()
             }
@@ -241,6 +261,7 @@ export const useCreditCard = () => {
         isDisabled,
         isUpdating,
         isSubmitting,
+        isTrialingSubscription,
         handleSubmit,
         updateField,
         billingContact,

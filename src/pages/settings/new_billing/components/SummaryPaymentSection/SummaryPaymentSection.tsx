@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import {
     getShopifyBillingStatus,
+    isTrialing,
     paymentMethod,
 } from 'state/currentAccount/selectors'
 import {creditCard} from 'state/billing/selectors'
@@ -34,6 +35,7 @@ const SummaryPaymentSection = ({
 
     const payment = useAppSelector(paymentMethod)
     const card = useAppSelector(creditCard)
+    const isFreeTrial = useAppSelector(isTrialing)
 
     // Get the current date
     const currentDate = new Date()
@@ -254,11 +256,17 @@ const SummaryPaymentSection = ({
                             rel="noopener noreferrer"
                         >
                             Activate Billing with Shopify
+                            {isFreeTrial && ' & Pay'}
                         </Link>
                     </div>
                 )
         }
-    }, [isPaymentInformationView, shopifyBillingStatus, hasSmallFont])
+    }, [
+        isPaymentInformationView,
+        shopifyBillingStatus,
+        hasSmallFont,
+        isFreeTrial,
+    ])
 
     const renderStripe = useMemo(() => {
         // Customer uses Stripe billing

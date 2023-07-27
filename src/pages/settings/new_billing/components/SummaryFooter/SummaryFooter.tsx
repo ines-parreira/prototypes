@@ -1,11 +1,11 @@
-import React, {useMemo, useState} from 'react'
+import React, {useState} from 'react'
 import classNames from 'classnames'
 
 import {useHistory} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 
 import {reportError} from 'utils/errors'
-import {BILLING_BASE_PATH} from '../../constants'
+import {BILLING_BASE_PATH, BILLING_PAYMENT_CARD_PATH} from '../../constants'
 import css from './SummaryFooter.less'
 
 export type SummaryFooterProps = {
@@ -14,7 +14,7 @@ export type SummaryFooterProps = {
     anyProductChanged: boolean
     anyNewProductSelected: boolean
     anyDowngradedPlanSelected: boolean
-    handleSubscribe?: () => Promise<[void, void]>
+    updateSubscription?: () => Promise<[void, void]>
     periodEnd: string
     hideSubscribeButton?: boolean
     handleConfirmTerms?: (termsChecked: boolean) => void
@@ -26,7 +26,7 @@ const SummaryFooter = ({
     anyProductChanged,
     anyNewProductSelected,
     anyDowngradedPlanSelected,
-    handleSubscribe,
+    updateSubscription,
     periodEnd,
     hideSubscribeButton = false,
     handleConfirmTerms,
@@ -35,30 +35,27 @@ const SummaryFooter = ({
     const [isSubscriptionUpdating, setIsSubscriptionUpdating] = useState(false)
     const history = useHistory()
 
-    const updateSubscription = async () => {
+    const handleUpdateSubscription = async () => {
         setIsSubscriptionUpdating(true)
         try {
-            await handleSubscribe?.()
+            await updateSubscription?.()
         } catch (error) {
             reportError(error as Error)
         } finally {
             setIsSubscriptionUpdating(false)
-            history.push(BILLING_BASE_PATH)
+
+            if (isTrialing) {
+                history.push(BILLING_PAYMENT_CARD_PATH)
+            } else {
+                history.push(BILLING_BASE_PATH)
+            }
         }
     }
-
-    const labelSubmitButton = useMemo(() => {
-        if (isTrialing && isPaymentEnabled) {
-            return 'Pay & Start Subscription'
-        }
-
-        return 'Update Subscription'
-    }, [isTrialing, isPaymentEnabled])
 
     return (
         <div
             className={classNames(css.container, {
-                [css.disabled]: !isPaymentEnabled,
+                [css.disabled]: !isTrialing && !isPaymentEnabled,
             })}
         >
             {anyProductChanged && (
@@ -76,7 +73,7 @@ const SummaryFooter = ({
                                 type="checkbox"
                                 className={css.checkbox}
                                 id="terms"
-                                disabled={!isPaymentEnabled}
+                                disabled={!isTrialing && !isPaymentEnabled}
                                 checked={isTermsChecked}
                                 onChange={() => {
                                     setIsTermsChecked(!isTermsChecked)
@@ -130,17 +127,17 @@ const SummaryFooter = ({
                     <Button
                         isDisabled={
                             isTrialing
-                                ? !isPaymentEnabled
+                                ? !isTermsChecked && anyNewProductSelected
                                 : !isPaymentEnabled ||
                                   (!isTermsChecked && anyNewProductSelected) ||
                                   !anyProductChanged
                         }
                         className={css.button}
                         id="update-subscription"
-                        onClick={updateSubscription}
+                        onClick={handleUpdateSubscription}
                         isLoading={isSubscriptionUpdating}
                     >
-                        {labelSubmitButton}
+                        Update Subscription
                     </Button>
                 </div>
             )}

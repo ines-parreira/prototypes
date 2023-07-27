@@ -41,7 +41,7 @@ jest.mock(
 )
 
 describe('SummaryFooter', () => {
-    const mockHandleSubscribe = jest.fn()
+    const mockUpdateSubscription = jest.fn()
 
     const props: SummaryFooterProps = {
         isPaymentEnabled: true,
@@ -49,7 +49,7 @@ describe('SummaryFooter', () => {
         anyProductChanged: true,
         anyNewProductSelected: true,
         anyDowngradedPlanSelected: true,
-        handleSubscribe: mockHandleSubscribe,
+        updateSubscription: mockUpdateSubscription,
         periodEnd: '2020-12-31',
     }
 
@@ -109,7 +109,7 @@ describe('SummaryFooter', () => {
         const button = screen.getByText('Update Subscription')
         fireEvent.click(button)
 
-        expect(mockHandleSubscribe).toHaveBeenCalled()
+        expect(mockUpdateSubscription).toHaveBeenCalled()
         await waitFor(() => {
             expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
         })

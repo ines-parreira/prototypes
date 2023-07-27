@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
-import {NavLink, Route, Switch, useHistory} from 'react-router-dom'
+import {NavLink, Redirect, Route, Switch, useHistory} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -11,6 +11,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {
     getCurrentAccountState,
     isTrialing,
+    paymentMethod,
 } from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
@@ -65,6 +66,7 @@ const BillingStartView = () => {
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const smsProduct = useAppSelector(getCurrentSMSProduct)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
+    const payment = useAppSelector(paymentMethod)
 
     const hasAccessToNewBilling: boolean | undefined =
         useFlags()[FeatureFlagKey.NewBillingInterface]
@@ -329,7 +331,14 @@ const BillingStartView = () => {
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENT_CARD_PATH}>
-                            <CardView />
+                            {payment === 'shopify' ? (
+                                <Redirect to={BILLING_PAYMENT_PATH} />
+                            ) : (
+                                <CardView
+                                    contactBilling={contactBilling}
+                                    dispatchBillingError={dispatchBillingError}
+                                />
+                            )}
                         </Route>
                     </Switch>
                 ) : (
