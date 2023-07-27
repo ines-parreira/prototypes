@@ -16,7 +16,10 @@ import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellPr
 
 import {ChatCampaign} from '../../types/Campaign'
 
+import {CampaignPreviewPopover} from '../CampaignPreviewPopover'
+
 import {CampaignToolsCell} from './components/CampaignToolsCell'
+
 import css from './CampaignsTable.less'
 
 type Props = {
@@ -60,13 +63,18 @@ export const CampaignsTable = ({
                             aria-label={`Enable campaign ${campaign.name}`}
                         />
                     </BodyCell>
-                    <BodyCell innerClassName={css.anchorCell}>
-                        <Link className={css.anchor} to={editLink}>
-                            <div>
-                                <b>{campaign.name}</b>
-                            </div>
-                        </Link>
-                    </BodyCell>
+                    <CampaignPreviewPopover
+                        message={campaign.message.text}
+                        triggers={campaign.triggers}
+                    >
+                        <BodyCell innerClassName={css.anchorCell}>
+                            <Link className={css.anchor} to={editLink}>
+                                <div>
+                                    <b>{campaign.name}</b>
+                                </div>
+                            </Link>
+                        </BodyCell>
+                    </CampaignPreviewPopover>
                     <BodyCell style={{width: 110}}>
                         <CampaignToolsCell
                             campaign={campaign}

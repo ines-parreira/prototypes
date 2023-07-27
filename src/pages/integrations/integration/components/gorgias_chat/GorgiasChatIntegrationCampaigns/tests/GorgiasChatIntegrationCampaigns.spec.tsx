@@ -14,6 +14,10 @@ import GorgiasChatIntegrationCampaigns, {
     GorgiasChatIntegrationCampaignsComponent,
 } from '../GorgiasChatIntegrationCampaigns'
 
+import {createTrigger} from '../utils/createTrigger'
+
+import {CampaignTriggerKey} from '../types/enums/CampaignTriggerKey.enum'
+
 jest.mock('utils/launchDarkly')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const updateOrCreateIntegrationRequest = jest.spyOn(
@@ -82,11 +86,29 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                                     {
                                         id: '156a4d-fg68h40-sd6f4',
                                         name: 'Super campaign',
+                                        message: {
+                                            text: 'Campaign message 1',
+                                            html: 'Campaign message 1',
+                                        },
+                                        triggers: [
+                                            createTrigger(
+                                                CampaignTriggerKey.BusinessHours
+                                            ),
+                                        ],
                                         deactivated_datetime: null,
                                     },
                                     {
                                         id: 'not-so-good-campaign-d8f9-fds486-sf78',
                                         name: 'Not so good campaign',
+                                        message: {
+                                            text: 'Campaign message 2',
+                                            html: 'Campaign message 2',
+                                        },
+                                        triggers: [
+                                            createTrigger(
+                                                CampaignTriggerKey.BusinessHours
+                                            ),
+                                        ],
                                         deactivated_datetime:
                                             '2017-10-06T17:17:56.565Z',
                                     },
@@ -232,11 +254,29 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                                     {
                                         id: '156a4d-fg68h40-sd6f4',
                                         name: 'Super campaign',
+                                        message: {
+                                            text: 'Campaign message 1',
+                                            html: 'Campaign message 1',
+                                        },
+                                        triggers: [
+                                            createTrigger(
+                                                CampaignTriggerKey.BusinessHours
+                                            ),
+                                        ],
                                         deactivated_datetime: null,
                                     },
                                     {
                                         id: 'not-so-good-campaign-d8f9-fds486-sf78',
                                         name: 'Not so good campaign',
+                                        message: {
+                                            text: 'Campaign message 2',
+                                            html: 'Campaign message 2',
+                                        },
+                                        triggers: [
+                                            createTrigger(
+                                                CampaignTriggerKey.BusinessHours
+                                            ),
+                                        ],
                                         deactivated_datetime:
                                             '2017-10-06T17:17:56.565Z',
                                     },
@@ -266,11 +306,29 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                                     {
                                         id: '156a4d-fg68h40-sd6f4',
                                         name: 'Super campaign',
+                                        message: {
+                                            text: 'Campaign message 1',
+                                            html: 'Campaign message 1',
+                                        },
+                                        triggers: [
+                                            createTrigger(
+                                                CampaignTriggerKey.BusinessHours
+                                            ),
+                                        ],
                                         deactivated_datetime: null,
                                     },
                                     {
                                         id: 'not-so-good-campaign-d8f9-fds486-sf78',
                                         name: 'Not so good campaign',
+                                        message: {
+                                            text: 'Campaign message 2',
+                                            html: 'Campaign message 2',
+                                        },
+                                        triggers: [
+                                            createTrigger(
+                                                CampaignTriggerKey.BusinessHours
+                                            ),
+                                        ],
                                         deactivated_datetime:
                                             '2017-10-06T17:17:56.565Z',
                                     },
@@ -301,6 +359,11 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                                         id: '156a4d-fg68h40-sd6f4',
                                         name: 'Super campaign',
                                         deactivated_datetime: null,
+                                        triggers: [
+                                            createTrigger(
+                                                CampaignTriggerKey.BusinessHours
+                                            ),
+                                        ],
                                         message: {
                                             text: 'Hello world',
                                             html: '<p>Hello world</p>',
@@ -334,6 +397,15 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                                     {
                                         id: '156a4d-fg68h40-sd6f4',
                                         name: 'Super campaign',
+                                        message: {
+                                            text: 'Campaign message 1',
+                                            html: 'Campaign message 1',
+                                        },
+                                        triggers: [
+                                            createTrigger(
+                                                CampaignTriggerKey.BusinessHours
+                                            ),
+                                        ],
                                         deactivated_datetime: null,
                                     },
                                 ],
