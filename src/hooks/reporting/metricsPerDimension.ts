@@ -1,6 +1,7 @@
 import {
     closedTicketsQueryFactory,
     resolutionTimeQueryFactory,
+    customerSatisfactionQueryFactory,
     getMessagesSentQueryFactory,
     getTicketsRepliedQueryFactory,
     NotSpamNorTrashedTicketsFilter,
@@ -189,6 +190,35 @@ export const useResolutionTimeMetricPerAgent = (
 ): Metric =>
     useMetricPerDimension(
         resolutionTimeMetricPerAgentQueryFactory(
+            statsFilters,
+            timezone,
+            sorting
+        ),
+        agentAssigneeId
+    )
+
+export const customerSatisfactionMetricPerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery => ({
+    ...customerSatisfactionQueryFactory(filters, timezone),
+    dimensions: [TicketDimension.AssigneeUserId],
+    ...(sorting
+        ? {
+              order: [[TicketMeasure.SurveyScore, sorting]],
+          }
+        : {}),
+})
+
+export const useCustomerSatisfactionMetricPerAgent = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string
+): Metric =>
+    useMetricPerDimension(
+        customerSatisfactionMetricPerAgentQueryFactory(
             statsFilters,
             timezone,
             sorting

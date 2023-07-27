@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
 import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
+import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
@@ -49,6 +50,10 @@ jest.mock('pages/stats/MessagesSentCellContent.tsx')
 const MessagesSentCellContentMock = assumeMock(MessagesSentCellContent)
 jest.mock('pages/stats/ResolutionTimeCellContent.tsx')
 const ResolutionTimeCellContentMock = assumeMock(ResolutionTimeCellContent)
+jest.mock('pages/stats/CustomerSatisfactionCellContent.tsx')
+const CustomerSatisfactionCellContentMock = assumeMock(
+    CustomerSatisfactionCellContent
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const cellMock = () => <div />
@@ -95,6 +100,7 @@ describe('SupportPerformanceAgents', () => {
     ClosedTicketsCellContentMock.mockImplementation(cellMock)
     MessagesSentCellContentMock.mockImplementation(cellMock)
     ResolutionTimeCellContentMock.mockImplementation(cellMock)
+    CustomerSatisfactionCellContentMock.mockImplementation(cellMock)
 
     beforeEach(() => {
         jest.clearAllMocks()

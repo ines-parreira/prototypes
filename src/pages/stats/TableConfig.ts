@@ -11,6 +11,7 @@ export enum TableColumn {
 
 export const TableColumnsOrder: TableColumn[] = [
     TableColumn.AgentName,
+    TableColumn.CustomerSatisfaction,
     TableColumn.FirstResponseTime,
     TableColumn.ResolutionTime,
     TableColumn.RepliedTickets,

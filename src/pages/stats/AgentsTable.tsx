@@ -6,6 +6,7 @@ import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
+import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {HeaderCell} from 'pages/stats/HeaderCell'
 import {TableColumn, TableColumnsOrder} from 'pages/stats/TableConfig'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -28,6 +29,8 @@ const getCell = (
             return MessagesSentCellContent
         case TableColumn.FirstResponseTime:
             return FirstResponseTimeCellContent
+        case TableColumn.CustomerSatisfaction:
+            return CustomerSatisfactionCellContent
         case TableColumn.AgentName:
             return AgentCellContent
         case TableColumn.ResolutionTime:

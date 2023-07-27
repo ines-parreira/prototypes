@@ -31,20 +31,25 @@ export const NotSpamNorTrashedTicketsFilter = [
     },
 ]
 
+export const customerSatisfactionQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+) => ({
+    measures: [TicketMeasure.SurveyScore],
+    dimensions: [],
+    timezone,
+    segments: [TicketSegment.SurveyScored],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(
+            TicketStatsFiltersMembers,
+            statsFilters
+        ),
+    ],
+})
+
 export const useCustomerSatisfactionTrend = createUseMetricTrend(
-    (filters, timezone) => ({
-        measures: [TicketMeasure.SurveyScore],
-        dimensions: [],
-        timezone,
-        segments: [TicketSegment.SurveyScored],
-        filters: [
-            ...NotSpamNorTrashedTicketsFilter,
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                filters
-            ),
-        ],
-    })
+    customerSatisfactionQueryFactory
 )
 
 export const useFirstResponseTimeTrend = createUseMetricTrend(
