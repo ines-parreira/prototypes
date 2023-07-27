@@ -11,6 +11,7 @@ import * as socketEvents from 'config/socketEvents'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
     BROADCAST_CHANNEL_NAME,
@@ -359,6 +360,8 @@ export class SocketManager {
                 showIcon: true,
             })
         )
+
+        logEvent(SegmentEvent.OutdatedSharedWorkerDetected)
     }
 }
 

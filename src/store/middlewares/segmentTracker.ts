@@ -112,6 +112,7 @@ export enum SegmentEvent {
     NavbarViewToggled = 'navbar-view-toggled',
     NotificationSettingsUpdated = 'notification-settings-updated',
     OnboardingWidgetClicked = 'onboarding-widget-clicked',
+    OutdatedSharedWorkerDetected = 'outdated-shared-worker-detected',
     PaymentMethodAddClicked = 'payment-method-add-clicked',
     PaymentMethodAdded = 'payment-method-added',
     RuleDebbugingCollapsed = 'rule/debugging/collapsed',

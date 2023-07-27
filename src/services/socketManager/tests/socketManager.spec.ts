@@ -4,6 +4,7 @@ import * as reapop from 'reapop'
 import * as socketEvents from 'config/socketEvents'
 import * as actions from 'state/notifications/actions'
 
+import * as segmentTracker from 'store/middlewares/segmentTracker'
 import {BROADCAST_CHANNEL_NAME, SHARED_WORKER_VERSION} from '../constants'
 import {
     BroadcastChannelEvent,
@@ -13,6 +14,8 @@ import {
     ServerMessage,
 } from '../types'
 import {SocketManager} from '../socketManager'
+
+const logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
 
 describe('SocketManager', () => {
     const socketManager = new SocketManager()
@@ -38,6 +41,7 @@ describe('SocketManager', () => {
 
     afterEach(() => {
         jest.useRealTimers()
+        logEventSpy.mockClear()
     })
 
     describe('constructor()', () => {
@@ -249,6 +253,9 @@ describe('SocketManager', () => {
         it('should render the "outdated" banner', () => {
             socketManager._renderOutdatedBanner()
             expect(notifySpy.mock.calls).toMatchSnapshot()
+            expect(logEventSpy).toHaveBeenLastCalledWith(
+                segmentTracker.SegmentEvent.OutdatedSharedWorkerDetected
+            )
         })
     })
 })
