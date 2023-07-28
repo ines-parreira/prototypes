@@ -1,4 +1,4 @@
-import io from 'socket.io-client'
+import io, {Socket} from 'socket.io-client'
 
 import {
     DISCONNECTED_NOTIFICATION_DELAY,
@@ -402,7 +402,10 @@ describe('WebsocketSharedWorker', () => {
             const messagePort = new MockMessagePort()
             const message = {clientId: 'my_client_id', wsUrl: 'my_ws_url'}
 
-            worker.socket = io()
+            worker.socket = {
+                connected: true,
+                send: jest.fn(),
+            } as unknown as Socket
 
             expect(worker.connectedTabs).toEqual({})
 
@@ -420,6 +423,27 @@ describe('WebsocketSharedWorker', () => {
             expect(worker.socket.send).toHaveBeenCalledWith({
                 event: SocketEvent.ClientConnected,
                 clientId: message.clientId,
+            })
+        })
+
+        it('should NOT send a `WS_CONNECTED` event on the message port if the socket is offline', () => {
+            const messagePort = new MockMessagePort()
+            const message = {clientId: 'my_client_id', wsUrl: 'my_ws_url'}
+
+            worker.socket = {
+                connected: false,
+                send: jest.fn(),
+            } as unknown as Socket
+
+            worker.onClientConnected(message, messagePort)
+
+            expect(worker.socket.send).toHaveBeenCalledWith({
+                event: SocketEvent.ClientConnected,
+                clientId: message.clientId,
+            })
+
+            expect(messagePort.postMessage).not.toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.WsConnected,
             })
         })
     })

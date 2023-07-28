@@ -197,9 +197,11 @@ export class WebsocketSharedWorker {
             this.socket.on('disconnect', this._onSocketDisconnect)
             this.socket.on('connect_error', this._onSocketConnectError)
         } else {
-            messagePort.postMessage({
-                type: BroadcastChannelEvent.WsConnected,
-            })
+            if (this.socket.connected) {
+                messagePort.postMessage({
+                    type: BroadcastChannelEvent.WsConnected,
+                })
+            }
         }
 
         this.connectedTabs[message.clientId!] = {
