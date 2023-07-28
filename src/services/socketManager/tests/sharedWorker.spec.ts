@@ -235,11 +235,13 @@ describe('WebsocketSharedWorker', () => {
                 'tasks',
             () => {
                 const incrementalReconnectTask = setTimeout(jest.fn(), 1000)
-                worker.incrementalReconnectTask = incrementalReconnectTask
-                worker.sendDisconnectedNotificationTask = setTimeout(
+                const sendDisconnectedNotificationTask = setTimeout(
                     jest.fn(),
                     1000
                 )
+                worker.incrementalReconnectTask = incrementalReconnectTask
+                worker.sendDisconnectedNotificationTask =
+                    sendDisconnectedNotificationTask
                 worker.incrementalReconnectBackoff =
                     MAX_INCREMENTAL_RECONNECT_BACKOFF
 
@@ -249,7 +251,7 @@ describe('WebsocketSharedWorker', () => {
                     incrementalReconnectTask
                 )
                 expect(clearTimeout).toHaveBeenCalledWith(
-                    worker.sendDisconnectedNotificationTask
+                    sendDisconnectedNotificationTask
                 )
                 expect(worker.incrementalReconnectBackoff).toEqual(1)
             }
@@ -257,21 +259,13 @@ describe('WebsocketSharedWorker', () => {
     })
 
     describe('_onSocketDisconnect()', () => {
-        it('should delay a task to send the disconnected notification and try to reconnect', () => {
+        it('should try to reconnect', () => {
             const incrementalReconnectSpy = jest.spyOn(
                 worker,
                 'incrementalReconnect'
             )
 
-            expect(worker.sendDisconnectedNotificationTask).toEqual(null)
-
             worker._onSocketDisconnect()
-
-            expect(worker.sendDisconnectedNotificationTask).not.toEqual(null)
-            expect(setTimeout).toHaveBeenCalledWith(
-                expect.any(Function),
-                DISCONNECTED_NOTIFICATION_DELAY * 1000
-            )
 
             expect(incrementalReconnectSpy).toHaveBeenCalledTimes(1)
         })
@@ -300,6 +294,58 @@ describe('WebsocketSharedWorker', () => {
         })
     })
 
+    describe.each([
+        {
+            name: 'socket disconnect',
+            fn: () => worker._onSocketDisconnect(),
+        },
+        {
+            name: 'socket connect error',
+            fn: () => worker._onSocketConnectError(new Error('test error')),
+        },
+    ])('disconnected notification on $name', ({fn}) => {
+        it('should delay a task to send the disconnected notification', () => {
+            fn()
+            jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
+
+            expect(worker.sendDisconnectedNotificationTask).not.toEqual(null)
+            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.WsDisconnected,
+            })
+        })
+
+        it('should not schedule more than one task', () => {
+            fn()
+            fn()
+            jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
+
+            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledTimes(1)
+            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.WsDisconnected,
+            })
+        })
+
+        it('should schedule a new task to send the disconnected notification after a successful connection', () => {
+            fn()
+            jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
+            fn()
+            worker._onSocketDisconnect()
+            jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
+
+            expect(worker.broadcastChannel.postMessage).toHaveBeenNthCalledWith(
+                1,
+                {
+                    type: BroadcastChannelEvent.WsDisconnected,
+                }
+            )
+            expect(
+                worker.broadcastChannel.postMessage
+            ).toHaveBeenLastCalledWith({
+                type: BroadcastChannelEvent.WsDisconnected,
+            })
+        })
+    })
+
     describe('onClientConnected()', () => {
         it('should setup a socket for the worker because it has no socket', () => {
             const messagePort = new MockMessagePort()
@@ -314,7 +360,7 @@ describe('WebsocketSharedWorker', () => {
             expect(worker.wsUrl).toEqual(message.wsUrl)
             expect(worker.socket).not.toEqual(null)
 
-            expect(worker.socket?.on).toHaveBeenCalledTimes(3)
+            expect(worker.socket?.on).toHaveBeenCalledTimes(4)
             expect(worker.socket?.on).toHaveBeenCalledWith(
                 'json',
                 worker._onSocketJson
@@ -326,6 +372,10 @@ describe('WebsocketSharedWorker', () => {
             expect(worker.socket?.on).toHaveBeenCalledWith(
                 'disconnect',
                 worker._onSocketDisconnect
+            )
+            expect(worker.socket?.on).toHaveBeenCalledWith(
+                'connect_error',
+                worker._onSocketConnectError
             )
 
             expect(worker.connectedTabs).toEqual({

@@ -136,26 +136,39 @@ export class WebsocketSharedWorker {
 
         if (this.sendDisconnectedNotificationTask) {
             clearTimeout(this.sendDisconnectedNotificationTask)
+            this.sendDisconnectedNotificationTask = null
         }
+    }
+
+    _onSocketConnectError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.log('WS connect error!', error.message)
+        this.scheduleDisconnectedNotificationTask()
     }
 
     _onSocketDisconnect = () => {
         // eslint-disable-next-line no-console
         console.log('WS disconnected!')
 
-        this.sendDisconnectedNotificationTask = setTimeout(
-            () =>
-                this.broadcastChannel.postMessage({
-                    type: BroadcastChannelEvent.WsDisconnected,
-                }),
-            DISCONNECTED_NOTIFICATION_DELAY * 1000
-        )
+        this.scheduleDisconnectedNotificationTask()
 
         // https://linear.app/gorgias/issue/PLTOF-236/sharedworker-spawns-new-retry-loops
         if (!this.incrementalReconnectTask) {
             // After a disconnection, we might need to reconnect manually as the client will not try to reconnect
             // automatically. See: https://github.com/socketio/socket.io-client/issues/1067
             this.incrementalReconnect()
+        }
+    }
+
+    private scheduleDisconnectedNotificationTask = () => {
+        if (!this.sendDisconnectedNotificationTask) {
+            this.sendDisconnectedNotificationTask = setTimeout(
+                () =>
+                    this.broadcastChannel.postMessage({
+                        type: BroadcastChannelEvent.WsDisconnected,
+                    }),
+                DISCONNECTED_NOTIFICATION_DELAY * 1000
+            )
         }
     }
 
@@ -182,6 +195,7 @@ export class WebsocketSharedWorker {
             this.socket.on('json', this._onSocketJson)
             this.socket.on('connect', this._onSocketConnect)
             this.socket.on('disconnect', this._onSocketDisconnect)
+            this.socket.on('connect_error', this._onSocketConnectError)
         } else {
             messagePort.postMessage({
                 type: BroadcastChannelEvent.WsConnected,
