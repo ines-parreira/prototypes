@@ -53,7 +53,7 @@ export const ImportDataContainer = (
                         className={css.mb16}
                         icon
                         actionLabel="Read more"
-                        actionHref="https://docs.gorgias.com/helpdesk-migration/switching-from-zendesk"
+                        actionHref="https://link.gorgias.com/m8v"
                     >
                         When you activate the integration, 2 years of data will
                         be loaded from Zendesk at first, then continuous syncing
