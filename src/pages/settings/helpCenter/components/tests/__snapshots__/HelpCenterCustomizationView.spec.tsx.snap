@@ -139,6 +139,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             aria-disabled="false"
             aria-label="help center preview"
             class="wrapper fill secondary medium"
+            id="preview-help-center"
             type="button"
           >
             <i

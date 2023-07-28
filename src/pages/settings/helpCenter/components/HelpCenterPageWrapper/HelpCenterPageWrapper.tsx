@@ -1,7 +1,7 @@
 import React, {ReactNode, useMemo, useState} from 'react'
 import classNames from 'classnames'
 import {Container} from 'reactstrap'
-import {useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 
 import {HelpCenter} from 'models/helpCenter/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -19,6 +19,7 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {TicketChannel} from 'business/types/ticket'
+import Tooltip from 'pages/common/components/Tooltip'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../../utils/helpCenter.utils'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
@@ -28,6 +29,8 @@ import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import PendingChangesModal from '../PendingChangesModal'
 import {LanguageSelect} from '../LanguageSelect/LanguageSelect'
 import css from './HelpCenterPageWrapper.less'
+
+const TOOLTIP_TARGET_ID = 'preview-help-center'
 
 type Props = {
     helpCenter: HelpCenter
@@ -174,9 +177,28 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                             className={css.languageSelector}
                         />
                     )}
+                    {!!helpCenter.deactivated_datetime ? (
+                        <Tooltip
+                            placement="bottom"
+                            target={TOOLTIP_TARGET_ID}
+                            autohide={false}
+                        >
+                            <div className={css.tooltipContainer}>
+                                Your Help Center must be{' '}
+                                <Link
+                                    to={`/app/settings/help-center/${helpCenter.id}/publish-track`}
+                                >
+                                    published
+                                </Link>{' '}
+                                to view it.
+                            </div>
+                        </Tooltip>
+                    ) : null}
                     <Button
                         aria-label="help center preview"
                         intent="secondary"
+                        isDisabled={!!helpCenter.deactivated_datetime}
+                        id={TOOLTIP_TARGET_ID}
                         onClick={() => {
                             const windowRef = window.open(
                                 helpCenterUrl,
