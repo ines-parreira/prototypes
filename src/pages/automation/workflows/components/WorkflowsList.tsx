@@ -2,7 +2,6 @@ import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import IconButton from 'pages/common/components/button/IconButton'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -43,7 +42,6 @@ function getLanguageList(
 const WorkflowsList = ({
     storeWorkflows: entrypoints,
     onDelete,
-    onDuplicate,
     goToEditWorkflowPage,
     isUpdatePending,
 }: Props) => {
@@ -83,22 +81,22 @@ const WorkflowsList = ({
                             </BodyCell>
                         )}
                         <BodyCell size="smallest">
-                            <IconButton
-                                className="mr-1"
-                                fillStyle="ghost"
-                                intent="secondary"
-                                isDisabled={isUpdatePending}
-                                onClick={async (e) => {
-                                    e.stopPropagation()
-                                    const duplicated = await onDuplicate(
-                                        entrypoint.workflow_id
-                                    )
-                                    goToEditWorkflowPage(duplicated.id)
-                                }}
-                                title="Duplicate flow"
-                            >
-                                file_copy
-                            </IconButton>
+                            {/*<IconButton*/}
+                            {/*    className="mr-1"*/}
+                            {/*    fillStyle="ghost"*/}
+                            {/*    intent="secondary"*/}
+                            {/*    isDisabled={isUpdatePending}*/}
+                            {/*    onClick={async (e) => {*/}
+                            {/*        e.stopPropagation()*/}
+                            {/*        const duplicated = await onDuplicate(*/}
+                            {/*            entrypoint.workflow_id*/}
+                            {/*        )*/}
+                            {/*        goToEditWorkflowPage(duplicated.id)*/}
+                            {/*    }}*/}
+                            {/*    title="Duplicate flow"*/}
+                            {/*>*/}
+                            {/*    file_copy*/}
+                            {/*</IconButton>*/}
                             <DeleteWorkflowAction
                                 onDelete={() => {
                                     void onDelete(entrypoint.workflow_id)
