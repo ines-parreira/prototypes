@@ -21,7 +21,6 @@ export enum FeatureFlagKey {
     EnforceTicketsOnES = 'enforce-tickets-on-es',
     FlowsMultiLanguages = 'flows-multi-languages',
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
-    HelpCenterAndContactFormFlows = 'help-center-and-contact-form-flows',
     HelpCenterMigrationConfig = 'migration-config',
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',

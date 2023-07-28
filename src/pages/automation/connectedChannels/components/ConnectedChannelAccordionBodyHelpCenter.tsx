@@ -1,8 +1,6 @@
 import React, {useMemo} from 'react'
 import {useAsyncFn} from 'react-use'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
 import useHelpCentersAutomationSettings from 'pages/automation/common/hooks/useHelpCenterAutomationSettings'
@@ -29,9 +27,6 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-
-    const helpCenterAndContactFormFlowsEnabled =
-        useFlags()[FeatureFlagKey.HelpCenterAndContactFormFlows]
 
     const {automationSettings, handleHelpCenterAutomationSettingsUpdate} =
         useHelpCentersAutomationSettings(channel.value.id)
@@ -101,27 +96,25 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
 
     return (
         <>
-            {helpCenterAndContactFormFlowsEnabled && (
-                <ConnectedChannelWorkflowsFeature
-                    channelType={TicketChannel.HelpCenter}
-                    channelId={`contact-form-${channel.value.id}`}
-                    integrationId={channel.value.id}
-                    channelLanguages={channel.value.supported_locales}
-                    maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
-                    entrypoints={workflowsEntrypoints}
-                    limitTooltipMessage="You have reached the maximum number of enabled flows in this channel. Disable another flow in order to enable this flow."
-                    onChange={(nextEntrypoints) => {
-                        void handleHelpCenterAutomationSettingsUpdate({
-                            workflows: nextEntrypoints.map(
-                                ({workflow_id, enabled}) => ({
-                                    id: workflow_id,
-                                    enabled,
-                                })
-                            ),
-                        })
-                    }}
-                />
-            )}
+            <ConnectedChannelWorkflowsFeature
+                channelType={TicketChannel.HelpCenter}
+                channelId={`contact-form-${channel.value.id}`}
+                integrationId={channel.value.id}
+                channelLanguages={channel.value.supported_locales}
+                maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
+                entrypoints={workflowsEntrypoints}
+                limitTooltipMessage="You have reached the maximum number of enabled flows in this channel. Disable another flow in order to enable this flow."
+                onChange={(nextEntrypoints) => {
+                    void handleHelpCenterAutomationSettingsUpdate({
+                        workflows: nextEntrypoints.map(
+                            ({workflow_id, enabled}) => ({
+                                id: workflow_id,
+                                enabled,
+                            })
+                        ),
+                    })
+                }}
+            />
 
             <ConnectedChannelFeatureToggle
                 name="Order management flows"

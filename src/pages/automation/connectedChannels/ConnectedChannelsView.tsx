@@ -1,9 +1,7 @@
 import React, {useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {IntegrationType} from 'models/integration/constants'
@@ -137,11 +135,7 @@ const ConnectedChannelsView = () => {
 
     const expandedChannel = channels[expandedChannelIndex]
 
-    const helpCenterAndContactFormFlowsEnabled =
-        useFlags()[FeatureFlagKey.HelpCenterAndContactFormFlows]
-
     const displayContactForms =
-        helpCenterAndContactFormFlowsEnabled &&
         connectedChannelsViewContext.workflowsEntrypoints.length > 0
 
     return (
