@@ -1,16 +1,29 @@
+@import (reference) '~css/new/layout.less';
+
 :local {
     .pageContainer {
-        padding: 24px;
+        padding: @layout-spacing-m;
     }
 
     .campaignsTable {
         :global td.link-full-td > a > div {
-            padding-top: 18px;
-            padding-bottom: 18px;
+            padding-top: @layout-spacing-s;
+            padding-bottom: @layout-spacing-s;
         }
     }
 
     .createCampaignLink {
-        margin-left: 8px;
+        margin-left: @layout-spacing-xs;
+    }
+
+    .noCampaignsLayer {
+        margin-top: @layout-spacing-s;
+    }
+
+    .campaignsToolbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
 }

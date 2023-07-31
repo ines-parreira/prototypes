@@ -108,12 +108,14 @@ export const CampaignsTable = ({
                 </TableHead>
                 <TableBody>{renderTableBody()}</TableBody>
             </TableWrapper>
-            <NumberedPagination
-                className={css.pagination}
-                count={Math.ceil(data.length / perPage)}
-                page={page}
-                onChange={setPage}
-            />
+            {data.length > perPage && (
+                <NumberedPagination
+                    className={css.pagination}
+                    count={Math.ceil(data.length / perPage)}
+                    page={page}
+                    onChange={setPage}
+                />
+            )}
         </>
     )
 }

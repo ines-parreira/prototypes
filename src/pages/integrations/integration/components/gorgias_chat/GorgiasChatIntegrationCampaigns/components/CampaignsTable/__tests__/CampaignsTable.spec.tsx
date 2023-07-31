@@ -92,4 +92,24 @@ describe('<CampaignsTable />', () => {
             expect(screen.getByText('Business hours')).toBeInTheDocument()
         })
     })
+
+    it('does not show the pagination if there is only one page', () => {
+        const onClickDelete = jest.fn()
+        const onClickDuplicate = jest.fn()
+        const onToggleCampaign = jest.fn()
+
+        render(
+            <CampaignsTable
+                data={data}
+                perPage={25}
+                integration={integration}
+                onClickDelete={onClickDelete}
+                onClickDuplicate={onClickDuplicate}
+                onToggleCampaign={onToggleCampaign}
+            />
+        )
+
+        expect(() => screen.getByLabelText(/next/)).toThrow()
+        expect(() => screen.getByLabelText(/previous/)).toThrow()
+    })
 })

@@ -51,77 +51,77 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
         deleteCampaign: jest.fn(),
     }
 
-    describe('render()', () => {
-        it('should display the empty state correctly', () => {
-            const {container} = render(
-                <Provider store={store}>
-                    <GorgiasChatIntegrationCampaigns
-                        {...minProps}
-                        integration={fromJS({
-                            id: 118,
-                            type: 'gorgias_chat',
-                            name: 'My new chat',
-                            meta: {
-                                campaigns: [],
-                            },
-                        })}
-                    />
-                </Provider>
-            )
+    it('should display the empty state correctly', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <GorgiasChatIntegrationCampaigns
+                    {...minProps}
+                    integration={fromJS({
+                        id: 118,
+                        type: 'gorgias_chat',
+                        name: 'My new chat',
+                        meta: {
+                            campaigns: [],
+                        },
+                    })}
+                />
+            </Provider>
+        )
 
-            expect(container).toMatchSnapshot()
-        })
+        expect(container).toMatchSnapshot()
+    })
 
-        it('should display the list correctly', () => {
-            const {container} = render(
-                <Provider store={store}>
-                    <GorgiasChatIntegrationCampaigns
-                        {...minProps}
-                        integration={fromJS({
-                            id: 118,
-                            type: 'gorgias_chat',
-                            name: 'My new chat',
-                            meta: {
-                                campaigns: [
-                                    {
-                                        id: '156a4d-fg68h40-sd6f4',
-                                        name: 'Super campaign',
-                                        message: {
-                                            text: 'Campaign message 1',
-                                            html: 'Campaign message 1',
-                                        },
-                                        triggers: [
-                                            createTrigger(
-                                                CampaignTriggerKey.BusinessHours
-                                            ),
-                                        ],
-                                        deactivated_datetime: null,
+    it('should display the list correctly', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <GorgiasChatIntegrationCampaigns
+                    {...minProps}
+                    integration={fromJS({
+                        id: 118,
+                        type: 'gorgias_chat',
+                        name: 'My new chat',
+                        meta: {
+                            campaigns: [
+                                {
+                                    id: '156a4d-fg68h40-sd6f4',
+                                    name: 'Super campaign',
+                                    message: {
+                                        text: 'Campaign message 1',
+                                        html: 'Campaign message 1',
                                     },
-                                    {
-                                        id: 'not-so-good-campaign-d8f9-fds486-sf78',
-                                        name: 'Not so good campaign',
-                                        message: {
-                                            text: 'Campaign message 2',
-                                            html: 'Campaign message 2',
-                                        },
-                                        triggers: [
-                                            createTrigger(
-                                                CampaignTriggerKey.BusinessHours
-                                            ),
-                                        ],
-                                        deactivated_datetime:
-                                            '2017-10-06T17:17:56.565Z',
+                                    triggers: [
+                                        createTrigger(
+                                            CampaignTriggerKey.BusinessHours
+                                        ),
+                                    ],
+                                    deactivated_datetime: null,
+                                },
+                                {
+                                    id: 'not-so-good-campaign-d8f9-fds486-sf78',
+                                    name: 'Not so good campaign',
+                                    message: {
+                                        text: 'Campaign message 2',
+                                        html: 'Campaign message 2',
                                     },
-                                ],
-                            },
-                        })}
-                    />
-                </Provider>
-            )
+                                    triggers: [
+                                        createTrigger(
+                                            CampaignTriggerKey.BusinessHours
+                                        ),
+                                    ],
+                                    deactivated_datetime:
+                                        '2017-10-06T17:17:56.565Z',
+                                },
+                            ],
+                        },
+                    })}
+                />
+            </Provider>
+        )
 
-            expect(container).toMatchSnapshot()
-        })
+        expect(container).toMatchSnapshot()
+    })
 
+    describe('Revenue campaign generator', () => {
         it('should not display infobox to non-admin', () => {
             const {queryByText} = render(
                 <Provider store={store}>
@@ -239,7 +239,9 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                 'true'
             )
         })
+    })
 
+    describe('Campaign actions', () => {
         it('should display the duplicate buttons correctly', () => {
             const {container, getAllByTestId} = render(
                 <Provider store={store}>
@@ -426,6 +428,127 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
             await waitFor(() => {
                 expect(minProps.deleteCampaign).toHaveBeenCalled()
             })
+        })
+    })
+
+    describe('Campaign filters', () => {
+        const integrationWithCampaigns = fromJS({
+            id: 118,
+            type: 'gorgias_chat',
+            name: 'My new chat',
+            meta: {
+                campaigns: [
+                    {
+                        id: '156a4d-fg68h40-sd6f4',
+                        name: 'Super campaign',
+                        message: {
+                            text: 'Campaign message 1',
+                            html: 'Campaign message 1',
+                        },
+                        triggers: [
+                            createTrigger(CampaignTriggerKey.BusinessHours),
+                        ],
+                        deactivated_datetime: null,
+                    },
+                    {
+                        id: 'not-so-good-campaign-d8f9-fds486-sf78',
+                        name: 'Not so good campaign',
+                        message: {
+                            text: 'Campaign message 2',
+                            html: 'Campaign message 2',
+                        },
+                        triggers: [
+                            createTrigger(CampaignTriggerKey.BusinessHours),
+                        ],
+                        deactivated_datetime: '2017-10-06T17:17:56.565Z',
+                    },
+                ],
+            },
+        })
+
+        const integrationWithoutCampaigns = fromJS({
+            id: 118,
+            type: 'gorgias_chat',
+            name: 'My new chat',
+            meta: {
+                campaigns: [],
+            },
+        })
+
+        it('should display the status filter', () => {
+            const {getByText} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={integrationWithCampaigns}
+                    />
+                </Provider>
+            )
+
+            getByText('All')
+            getByText('Active')
+            getByText('Inactive')
+        })
+
+        it('should not display the status filter if there are no campaigns', () => {
+            const {getByText} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={integrationWithoutCampaigns}
+                    />
+                </Provider>
+            )
+
+            expect(() => getByText('All')).toThrow()
+            expect(() => getByText('Active')).toThrow()
+            expect(() => getByText('Inactive')).toThrow()
+        })
+
+        it('should display all campaigns by default', () => {
+            const {getByText} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={integrationWithCampaigns}
+                    />
+                </Provider>
+            )
+
+            getByText('Super campaign')
+            getByText('Not so good campaign')
+        })
+
+        it('should display only active campaigns', () => {
+            const {getByText} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={integrationWithCampaigns}
+                    />
+                </Provider>
+            )
+
+            fireEvent.click(getByText('Active'))
+
+            getByText('Super campaign')
+            expect(() => getByText('Not so good campaign')).toThrow()
+        })
+
+        it('should display only inactive campaigns', () => {
+            const {getByText} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={integrationWithCampaigns}
+                    />
+                </Provider>
+            )
+
+            fireEvent.click(getByText('Inactive'))
+
+            expect(() => getByText('Super campaign')).toThrow()
+            getByText('Not so good campaign')
         })
     })
 })

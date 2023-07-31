@@ -1,24 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<GorgiasChatIntegrationCampaigns/> render() should display infobox to admin 1`] = `
-[
-  [
-    Immutable.Map {
-      "id": 118,
-      "type": "gorgias_chat",
-      "name": "My new chat 3",
-      "meta": Immutable.Map {
-        "campaigns": Immutable.List [],
-      },
-    },
-    {
-      "generate_revenue_campaigns": true,
-    },
-  ],
-]
-`;
-
-exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete buttons correctly 1`] = `
+exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the delete buttons correctly 1`] = `
 <div>
   <div
     class="full-width"
@@ -138,9 +120,55 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
     <div
       class="pageContainer container-fluid"
     >
-      <span>
-        Use campaigns to prompt visitors of your website to start chatting with your team.
-      </span>
+      <div
+        class="campaignsToolbar"
+      >
+        <span>
+          Use campaigns to prompt visitors of your website to start chatting with your team.
+        </span>
+        <div
+          class="container"
+          role="radiogroup"
+        >
+          <label
+            class="badge checked"
+          >
+            <input
+              checked=""
+              class="input"
+              name="all"
+              type="radio"
+            />
+            <div>
+              All
+            </div>
+          </label>
+          <label
+            class="badge"
+          >
+            <input
+              class="input"
+              name="active"
+              type="radio"
+            />
+            <div>
+              Active
+            </div>
+          </label>
+          <label
+            class="badge"
+          >
+            <input
+              class="input"
+              name="inactive"
+              type="radio"
+            />
+            <div>
+              Inactive
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
     <table
       class="table table-integrations mt-3 campaignsTable"
@@ -399,46 +427,11 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
         </tr>
       </tbody>
     </table>
-    <div
-      class="pagination"
-    >
-      <ul
-        class="container"
-      >
-        <li
-          aria-label="previous"
-          class="item arrow disabled"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            keyboard_arrow_left
-          </i>
-        </li>
-        <li
-          aria-current="true"
-          aria-label="page-1"
-          class="item selected"
-        >
-          1
-        </li>
-        <li
-          aria-label="next"
-          class="item arrow disabled"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            keyboard_arrow_right
-          </i>
-        </li>
-      </ul>
-    </div>
   </div>
 </div>
 `;
 
-exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicate buttons correctly 1`] = `
+exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the duplicate buttons correctly 1`] = `
 <div>
   <div
     class="full-width"
@@ -558,9 +551,55 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
     <div
       class="pageContainer container-fluid"
     >
-      <span>
-        Use campaigns to prompt visitors of your website to start chatting with your team.
-      </span>
+      <div
+        class="campaignsToolbar"
+      >
+        <span>
+          Use campaigns to prompt visitors of your website to start chatting with your team.
+        </span>
+        <div
+          class="container"
+          role="radiogroup"
+        >
+          <label
+            class="badge checked"
+          >
+            <input
+              checked=""
+              class="input"
+              name="all"
+              type="radio"
+            />
+            <div>
+              All
+            </div>
+          </label>
+          <label
+            class="badge"
+          >
+            <input
+              class="input"
+              name="active"
+              type="radio"
+            />
+            <div>
+              Active
+            </div>
+          </label>
+          <label
+            class="badge"
+          >
+            <input
+              class="input"
+              name="inactive"
+              type="radio"
+            />
+            <div>
+              Inactive
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
     <table
       class="table table-integrations mt-3 campaignsTable"
@@ -819,46 +858,29 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
         </tr>
       </tbody>
     </table>
-    <div
-      class="pagination"
-    >
-      <ul
-        class="container"
-      >
-        <li
-          aria-label="previous"
-          class="item arrow disabled"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            keyboard_arrow_left
-          </i>
-        </li>
-        <li
-          aria-current="true"
-          aria-label="page-1"
-          class="item selected"
-        >
-          1
-        </li>
-        <li
-          aria-label="next"
-          class="item arrow disabled"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            keyboard_arrow_right
-          </i>
-        </li>
-      </ul>
-    </div>
   </div>
 </div>
 `;
 
-exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty state correctly 1`] = `
+exports[`<GorgiasChatIntegrationCampaigns/> Revenue campaign generator should display infobox to admin 1`] = `
+[
+  [
+    Immutable.Map {
+      "id": 118,
+      "type": "gorgias_chat",
+      "name": "My new chat 3",
+      "meta": Immutable.Map {
+        "campaigns": Immutable.List [],
+      },
+    },
+    {
+      "generate_revenue_campaigns": true,
+    },
+  ],
+]
+`;
+
+exports[`<GorgiasChatIntegrationCampaigns/> should display the empty state correctly 1`] = `
 <div>
   <div
     class="full-width"
@@ -978,10 +1000,16 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
     <div
       class="pageContainer container-fluid"
     >
-      <span>
-        Use campaigns to prompt visitors of your website to start chatting with your team.
-      </span>
-      <div>
+      <div
+        class="campaignsToolbar"
+      >
+        <span>
+          Use campaigns to prompt visitors of your website to start chatting with your team.
+        </span>
+      </div>
+      <div
+        class="noCampaignsLayer"
+      >
         This integration doesn't have any campaigns yet.
       </div>
     </div>
@@ -989,7 +1017,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
 </div>
 `;
 
-exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list correctly 1`] = `
+exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`] = `
 <div>
   <div
     class="full-width"
@@ -1109,9 +1137,55 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
     <div
       class="pageContainer container-fluid"
     >
-      <span>
-        Use campaigns to prompt visitors of your website to start chatting with your team.
-      </span>
+      <div
+        class="campaignsToolbar"
+      >
+        <span>
+          Use campaigns to prompt visitors of your website to start chatting with your team.
+        </span>
+        <div
+          class="container"
+          role="radiogroup"
+        >
+          <label
+            class="badge checked"
+          >
+            <input
+              checked=""
+              class="input"
+              name="all"
+              type="radio"
+            />
+            <div>
+              All
+            </div>
+          </label>
+          <label
+            class="badge"
+          >
+            <input
+              class="input"
+              name="active"
+              type="radio"
+            />
+            <div>
+              Active
+            </div>
+          </label>
+          <label
+            class="badge"
+          >
+            <input
+              class="input"
+              name="inactive"
+              type="radio"
+            />
+            <div>
+              Inactive
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
     <table
       class="table table-integrations mt-3 campaignsTable"
@@ -1370,41 +1444,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
         </tr>
       </tbody>
     </table>
-    <div
-      class="pagination"
-    >
-      <ul
-        class="container"
-      >
-        <li
-          aria-label="previous"
-          class="item arrow disabled"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            keyboard_arrow_left
-          </i>
-        </li>
-        <li
-          aria-current="true"
-          aria-label="page-1"
-          class="item selected"
-        >
-          1
-        </li>
-        <li
-          aria-label="next"
-          class="item arrow disabled"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            keyboard_arrow_right
-          </i>
-        </li>
-      </ul>
-    </div>
   </div>
 </div>
 `;

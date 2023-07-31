@@ -1,4 +1,10 @@
-import React, {MouseEvent, Component} from 'react'
+import React, {
+    ChangeEvent,
+    MouseEvent,
+    useCallback,
+    useMemo,
+    useState,
+} from 'react'
 import {Link} from 'react-router-dom'
 import {Map, fromJS, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
@@ -14,8 +20,10 @@ import {
 } from 'state/campaigns/actions'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import {IntegrationType} from 'models/integration/constants'
+import Segmented from 'pages/common/components/Segmented'
 import CampaignGenerator from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/CampaignGenerator'
+
+import {IntegrationType} from 'models/integration/constants'
 
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
@@ -31,120 +39,182 @@ type Props = {
     currentUser: Map<any, any>
 } & ConnectedProps<typeof connector>
 
-export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
-    toggleCampaign = (campaign: ChatCampaign) => {
-        const {updateCampaign, integration} = this.props
-        let form: Map<any, any> = fromJS(campaign)
+export const GorgiasChatIntegrationCampaignsComponent = ({
+    integration,
+    currentUser,
+    createCampaign,
+    deleteCampaign,
+    updateCampaign,
+}: Props) => {
+    const [statusFilter, setStatusFilter] = useState('all')
 
-        if (campaign.deactivated_datetime) {
-            form = form.set('deactivated_datetime', null)
-        } else {
-            form = form.set('deactivated_datetime', moment.utc())
+    const toggleCampaign = useCallback(
+        (campaign: ChatCampaign) => {
+            let form: Map<any, any> = fromJS(campaign)
+
+            if (campaign.deactivated_datetime) {
+                form = form.set('deactivated_datetime', null)
+            } else {
+                form = form.set('deactivated_datetime', moment.utc())
+            }
+
+            void updateCampaign(form, integration)
+        },
+        [integration, updateCampaign]
+    )
+
+    const handleDuplicateCampaign = useCallback(
+        async (event: MouseEvent, campaign: ChatCampaign) => {
+            event.stopPropagation()
+
+            await createCampaign(
+                fromJS({
+                    ...campaign,
+                    id: '',
+                    name: `${campaign.name} (copy)`,
+                    deactivated_datetime: new Date().toISOString(),
+                    message: {
+                        text: campaign.message.text ?? '',
+                        html: removeLinksFromHtml(campaign.message.html) ?? '',
+                    },
+                }),
+                integration
+            )
+        },
+        [createCampaign, integration]
+    )
+
+    const handleDeleteCampaign = useCallback(
+        (campaign: ChatCampaign) =>
+            deleteCampaign(fromJS(campaign), integration),
+        [deleteCampaign, integration]
+    )
+
+    const handleUpdateStatusFilter = (event: ChangeEvent, value: string) => {
+        setStatusFilter(value)
+    }
+
+    const allCampaigns = useMemo(() => {
+        const campaignsList =
+            (integration.getIn(['meta', 'campaigns']) as List<any>) ||
+            fromJS([])
+        return campaignsList.toJS() as ChatCampaign[]
+    }, [integration])
+
+    const statusFilterOptions = useMemo(() => {
+        return [
+            {
+                label: 'All',
+                value: 'all',
+            },
+            {
+                label: 'Active',
+                value: 'active',
+                disabled: !allCampaigns.some(
+                    (campaign) => !campaign.deactivated_datetime
+                ),
+            },
+            {
+                label: 'Inactive',
+                value: 'inactive',
+                disabled: !allCampaigns.some(
+                    (campaign) => campaign.deactivated_datetime
+                ),
+            },
+        ]
+    }, [allCampaigns])
+
+    const campaigns = useMemo(() => {
+        if (statusFilter === 'active') {
+            return allCampaigns.filter(
+                (campaign) => !campaign.deactivated_datetime
+            )
         }
 
-        void updateCampaign(form, integration)
-    }
+        if (statusFilter === 'inactive') {
+            return allCampaigns.filter(
+                (campaign) => campaign.deactivated_datetime
+            )
+        }
 
-    handleDuplicateCampaign = async (
-        event: MouseEvent,
-        campaign: ChatCampaign
-    ) => {
-        event.stopPropagation()
+        return allCampaigns
+    }, [allCampaigns, statusFilter])
 
-        const {createCampaign, integration} = this.props
-
-        await createCampaign(
-            fromJS({
-                ...campaign,
-                id: '',
-                name: `${campaign.name} (copy)`,
-                deactivated_datetime: new Date().toISOString(),
-                message: {
-                    text: campaign.message.text ?? '',
-                    html: removeLinksFromHtml(campaign.message.html) ?? '',
-                },
-            }),
-            integration
-        )
-    }
-
-    handleDeleteCampaign = async (campaign: ChatCampaign) => {
-        const {deleteCampaign, integration} = this.props
-        await deleteCampaign(fromJS(campaign), integration)
-    }
-
-    render() {
-        const {integration, currentUser} = this.props
-
-        const campaigns: List<any> =
-            integration.getIn(['meta', 'campaigns']) || fromJS([])
-
-        return (
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                >
-                                    Chat
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {integration.get('name')}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
+    return (
+        <div className="full-width">
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                            >
+                                Chat
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {integration.get('name')}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+            >
+                <GorgiasChatIntegrationConnectedChannel
+                    integration={integration}
+                />
+                <Link
+                    to={
+                        `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
+                        `${integration.get('id') as string}/campaigns/new`
                     }
+                    className={css.createCampaignLink}
                 >
-                    <GorgiasChatIntegrationConnectedChannel
-                        integration={integration}
-                    />
-                    <Link
-                        to={
-                            `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
-                            `${integration.get('id') as string}/campaigns/new`
-                        }
-                        className={css.createCampaignLink}
-                    >
-                        <Button>Create Campaign</Button>
-                    </Link>
-                </PageHeader>
+                    <Button>Create Campaign</Button>
+                </Link>
+            </PageHeader>
 
-                <GorgiasChatIntegrationHeader integration={integration} />
+            <GorgiasChatIntegrationHeader integration={integration} />
 
-                <Container fluid className={css.pageContainer}>
+            <Container fluid className={css.pageContainer}>
+                <div className={css.campaignsToolbar}>
                     <span>
                         Use campaigns to prompt visitors of your website to
                         start chatting with your team.
                     </span>
 
-                    <CampaignChatHiddenWarning integration={integration} />
-
-                    <CampaignGenerator
-                        integration={integration}
-                        currentUser={currentUser}
-                    />
-
-                    {campaigns.isEmpty() && (
-                        <div>
-                            This integration doesn't have any campaigns yet.
-                        </div>
+                    {allCampaigns.length > 0 && (
+                        <Segmented
+                            options={statusFilterOptions}
+                            value={statusFilter}
+                            onChange={handleUpdateStatusFilter}
+                        />
                     )}
-                </Container>
+                </div>
 
-                {!campaigns.isEmpty() && (
-                    <CampaignsTable
-                        data={campaigns.toJS() as ChatCampaign[]}
-                        integration={integration}
-                        onClickDelete={this.handleDeleteCampaign}
-                        onClickDuplicate={this.handleDuplicateCampaign}
-                        onToggleCampaign={this.toggleCampaign}
-                    />
+                <CampaignChatHiddenWarning integration={integration} />
+
+                <CampaignGenerator
+                    integration={integration}
+                    currentUser={currentUser}
+                />
+
+                {campaigns.length === 0 && (
+                    <div className={css.noCampaignsLayer}>
+                        This integration doesn't have any campaigns yet.
+                    </div>
                 )}
-            </div>
-        )
-    }
+            </Container>
+
+            {campaigns.length > 0 && (
+                <CampaignsTable
+                    data={campaigns}
+                    integration={integration}
+                    onClickDelete={handleDeleteCampaign}
+                    onClickDuplicate={handleDuplicateCampaign}
+                    onToggleCampaign={toggleCampaign}
+                />
+            )}
+        </div>
+    )
 }
 
 const connector = connect(null, {
