@@ -3,6 +3,8 @@ import {screen, fireEvent, render, waitFor} from '@testing-library/react'
 
 import {createTrigger} from '../../../utils/createTrigger'
 import {CampaignTriggerKey} from '../../../types/enums/CampaignTriggerKey.enum'
+import {DeviceTypeOperators} from '../../../types/enums/DeviceTypeOperators.enum'
+import {SingleCampaignInViewOperators} from '../../../types/enums/SingleCampaignInViewOperators.enum'
 
 import {CampaignPreviewPopover} from '../CampaignPreviewPopover'
 
@@ -45,6 +47,33 @@ describe('<CampaignPreviewPopover />', () => {
             expect(
                 screen.getByText('Currently visited product')
             ).toBeInTheDocument()
+            expect(screen.getByText('Business hours')).toBeInTheDocument()
+        })
+    })
+
+    it('does not show the triggers that are under preferences or device type', async () => {
+        const triggers = [
+            createTrigger(CampaignTriggerKey.BusinessHours),
+            {
+                key: CampaignTriggerKey.DeviceType,
+                value: 'desktop',
+                operator: DeviceTypeOperators.Desktop,
+            },
+            {
+                key: CampaignTriggerKey.SingleInView,
+                value: 'true',
+                operator: SingleCampaignInViewOperators.Equal,
+            },
+        ]
+        render(
+            <CampaignPreviewPopover message={message} triggers={triggers}>
+                <div>Campaign name preview</div>
+            </CampaignPreviewPopover>
+        )
+
+        fireEvent.mouseOver(screen.getByText('Campaign name preview'))
+
+        await waitFor(() => {
             expect(screen.getByText('Business hours')).toBeInTheDocument()
         })
     })

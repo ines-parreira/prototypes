@@ -11,6 +11,7 @@ import _uniqBy from 'lodash/uniqBy'
 
 import {TRIGGER_LIST} from '../../constants/triggers'
 import {CampaignTrigger} from '../../types/CampaignTrigger'
+import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 
 import css from './style.less'
 
@@ -33,7 +34,13 @@ export const CampaignPreviewPopover = ({
     const [isOpen, setOpen] = useState<boolean>(false)
 
     const uniqueTriggers = useMemo(() => {
-        return _uniqBy(triggers, 'key')
+        return _uniqBy(triggers, 'key').filter((trigger) => {
+            const noShowTriggers = [
+                CampaignTriggerKey.SingleInView,
+                CampaignTriggerKey.DeviceType,
+            ]
+            return !noShowTriggers.includes(trigger.key)
+        })
     }, [triggers])
 
     useEffect(() => {
