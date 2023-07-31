@@ -1942,66 +1942,65 @@ describe('actions', () => {
             store.dispatch(actions.setActiveCustomerAsReceiver())
             expect(store.getActions()).toEqual([])
         })
-        // })
+    })
 
-        describe('submitTicket()', () => {
-            it('should format custom fields correctly', async () => {
-                mockServer.onPost('/api/tickets/').reply(200, {data: {id: 1}})
+    describe('submitTicket()', () => {
+        it('should format custom fields correctly', async () => {
+            mockServer.onPost('/api/tickets/').reply(200, {data: {id: 1}})
 
-                const customFields = {
-                    1: {
-                        id: 1,
-                        value: 'hello',
-                    },
-                }
+            const customFields = {
+                1: {
+                    id: 1,
+                    value: 'hello',
+                },
+            }
 
-                store = mockStore({
-                    ticket: fromJS({
+            store = mockStore({
+                ticket: fromJS({
+                    ...ticketInitialState.toJS(),
+                    custom_fields: customFields,
+                }),
+                newMessage: initialState,
+            })
+
+            await store.dispatch(
+                actions.submitTicket(
+                    fromJS({
                         ...ticketInitialState.toJS(),
                         custom_fields: customFields,
                     }),
-                    newMessage: initialState,
-                })
-
-                await store.dispatch(
-                    actions.submitTicket(
-                        fromJS({
-                            ...ticketInitialState.toJS(),
-                            custom_fields: customFields,
-                        }),
-                        TicketStatus.Open,
-                        undefined,
-                        fromJS({}),
-                        true
-                    )
+                    TicketStatus.Open,
+                    undefined,
+                    fromJS({}),
+                    true
                 )
+            )
 
-                expect(
-                    (
-                        JSON.parse(mockServer.history.post[0].data) as {
-                            custom_fields: unknown
-                        }
-                    ).custom_fields
-                ).toEqual([customFields[1]])
-            })
+            expect(
+                (
+                    JSON.parse(mockServer.history.post[0].data) as {
+                        custom_fields: unknown
+                    }
+                ).custom_fields
+            ).toEqual([customFields[1]])
+        })
 
-            it('should catch error and dispatch NEW_MESSAGE_SUBMIT_TICKET_ERROR action', async () => {
-                mockServer.onPost('/api/tickets/').reply(400, undefined)
+        it('should catch error and dispatch NEW_MESSAGE_SUBMIT_TICKET_ERROR action', async () => {
+            mockServer.onPost('/api/tickets/').reply(400, undefined)
 
-                await store.dispatch(
-                    actions.submitTicket(
-                        ticketInitialState,
-                        TicketStatus.Open,
-                        undefined,
-                        fromJS({}),
-                        true
-                    )
+            await store.dispatch(
+                actions.submitTicket(
+                    ticketInitialState,
+                    TicketStatus.Open,
+                    undefined,
+                    fromJS({}),
+                    true
                 )
+            )
 
-                expect((store.getActions().pop() as {type: string}).type).toBe(
-                    NEW_MESSAGE_SUBMIT_TICKET_ERROR
-                )
-            })
+            expect((store.getActions().pop() as {type: string}).type).toBe(
+                NEW_MESSAGE_SUBMIT_TICKET_ERROR
+            )
         })
     })
 })

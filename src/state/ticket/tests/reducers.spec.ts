@@ -1517,7 +1517,6 @@ describe('ticket reducers', () => {
             const customFieldsInitialState = {
                 1: {id: 1, value: 'test', hasError: true},
                 2: {id: 2, value: 'test', hasError: false},
-                3: {id: 3, value: 'test', hasError: false},
             }
             const action = {
                 type: types.SET_INVALID_CUSTOM_FIELDS_TO_ERRORED,
@@ -1538,7 +1537,7 @@ describe('ticket reducers', () => {
             ).toEqual({
                 ...customFieldsInitialState,
                 2: {...customFieldsInitialState[2], hasError: true},
-                3: {...customFieldsInitialState[3], hasError: true},
+                3: {id: 3, hasError: true},
             })
         })
     })

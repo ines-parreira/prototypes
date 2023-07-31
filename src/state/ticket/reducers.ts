@@ -752,10 +752,13 @@ export default function reducer(
                 id: CustomFieldState['id']
                 value: CustomFieldState['value']
             }
-            return state.mergeIn(['custom_fields', String(id)], {
-                id,
-                value,
-            })
+            return state.mergeIn(
+                ['custom_fields', String(id)],
+                fromJS({
+                    id,
+                    value,
+                })
+            )
         }
 
         case types.UPDATE_CUSTOM_FIELD_ERROR: {
@@ -763,7 +766,10 @@ export default function reducer(
                 id: CustomFieldState['id']
                 hasError: CustomFieldState['hasError']
             }
-            return state.mergeIn(['custom_fields', String(id)], {id, hasError})
+            return state.mergeIn(
+                ['custom_fields', String(id)],
+                fromJS({id, hasError})
+            )
         }
 
         case types.SET_INVALID_CUSTOM_FIELDS_TO_ERRORED: {
@@ -771,9 +777,9 @@ export default function reducer(
                 action.payload as CustomFieldState['id'][]
             let nextState = state
             erroredCustomFields.forEach((erroredId) => {
-                nextState = nextState.setIn(
-                    ['custom_fields', String(erroredId), 'hasError'],
-                    true
+                nextState = nextState.mergeIn(
+                    ['custom_fields', String(erroredId)],
+                    fromJS({id: erroredId, hasError: true})
                 )
             })
             return nextState
