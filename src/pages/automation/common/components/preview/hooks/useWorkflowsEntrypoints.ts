@@ -28,8 +28,10 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
             if (
                 !enabledWorkflowIdsInChannel ||
                 enabledWorkflowIdsInChannel.length === 0
-            )
+            ) {
+                setEntrypoints([])
                 return
+            }
             const entrypoints = await fetchWorkflowEntrypoints(
                 enabledWorkflowIdsInChannel,
                 channelLanguage
