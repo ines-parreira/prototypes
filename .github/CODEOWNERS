@@ -25,3 +25,20 @@ src/utils/tests/__snapshots__/reporting.spec.ts.snap @gorgias/analytics-frontend
 src/utils/tests/date.spec.ts @gorgias/analytics-frontend
 src/utils/tests/file.spec.ts @gorgias/analytics-frontend
 src/utils/tests/reporting.spec.ts @gorgias/analytics-frontend
+
+# Help center scope @gorgias/automations-help-center
+src/rest_api/help_center_api @gorgias/automations-help-center
+src/config/helpCenter.ts @gorgias/automations-help-center
+src/config/help_center_texts.json @gorgias/automations-help-center
+src/pages/settings/helpCenter @gorgias/automations-help-center
+src/models/helpCenter @gorgias/automations-help-center
+src/hooks/helpCenter @gorgias/automations-help-center
+src/state/entities/helpCenter @gorgias/automations-help-center
+
+# Contact Form scope @gorgias/automations-help-center
+src/state/contactForm @gorgias/automations-help-center
+src/pages/settings/contactForm @gorgias/automations-help-center
+src/state/ui/contactForm @gorgias/automations-help-center
+src/state/entities/contactForm @gorgias/automations-help-center
+src/models/contactForm @gorgias/automations-help-center
+
