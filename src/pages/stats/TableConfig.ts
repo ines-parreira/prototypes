@@ -16,6 +16,7 @@ export const TableColumnsOrder: TableColumn[] = [
     TableColumn.ResolutionTime,
     TableColumn.RepliedTickets,
     TableColumn.ClosedTickets,
+    TableColumn.PercentageOfClosedTickets,
     TableColumn.MessagesSent,
 ]
 

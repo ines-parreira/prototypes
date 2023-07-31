@@ -13,9 +13,9 @@ export type MetricTrend = {
     }
 }
 
-type QueryReturnType = [Record<ReportingMeasure, string | null>]
+export type QueryReturnType = [Record<ReportingMeasure, string | null>]
 
-const selectMeasure = (
+export const selectMeasure = (
     measure: ReportingMeasure,
     data: UsePostReportingQueryData<QueryReturnType>
 ) => {

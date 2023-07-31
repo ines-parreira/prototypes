@@ -7,6 +7,7 @@ import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellCon
 import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
+import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 import {HeaderCell} from 'pages/stats/HeaderCell'
 import {TableColumn, TableColumnsOrder} from 'pages/stats/TableConfig'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -25,6 +26,8 @@ const getCell = (
             return TicketsRepliedCellContent
         case TableColumn.ClosedTickets:
             return ClosedTicketsCellContent
+        case TableColumn.PercentageOfClosedTickets:
+            return PercentageOfClosedTicketsCellContent
         case TableColumn.MessagesSent:
             return MessagesSentCellContent
         case TableColumn.FirstResponseTime:

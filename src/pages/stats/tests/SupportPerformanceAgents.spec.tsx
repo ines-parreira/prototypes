@@ -22,6 +22,7 @@ import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter'
 import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
+import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 
 import {LEARN_MORE_URL} from 'pages/stats/SupportPerformanceOverview'
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
@@ -53,6 +54,10 @@ const ResolutionTimeCellContentMock = assumeMock(ResolutionTimeCellContent)
 jest.mock('pages/stats/CustomerSatisfactionCellContent.tsx')
 const CustomerSatisfactionCellContentMock = assumeMock(
     CustomerSatisfactionCellContent
+)
+jest.mock('pages/stats/PercentageOfClosedTicketsCellContent.tsx')
+const PercentageOfClosedTicketsCellContentMock = assumeMock(
+    PercentageOfClosedTicketsCellContent
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -101,6 +106,7 @@ describe('SupportPerformanceAgents', () => {
     MessagesSentCellContentMock.mockImplementation(cellMock)
     ResolutionTimeCellContentMock.mockImplementation(cellMock)
     CustomerSatisfactionCellContentMock.mockImplementation(cellMock)
+    PercentageOfClosedTicketsCellContentMock.mockImplementation(cellMock)
 
     beforeEach(() => {
         jest.clearAllMocks()
