@@ -16,6 +16,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     BROADCAST_CHANNEL_NAME,
     OUTDATED_NOTIFICATION_DELAY,
+    SHARED_WORKER_LEGACY_VERSION,
     SHARED_WORKER_VERSION,
 } from './constants'
 import {
@@ -53,7 +54,9 @@ export class SocketManager {
               'WebsocketSharedWorker'
           )
         : fallbackWorkerAdapter
-    _isSharedWorkerUpToDate = !currentBrowserSupportsSharedWorker
+    _detectedSharedWorkerVersion = currentBrowserSupportsSharedWorker
+        ? SHARED_WORKER_LEGACY_VERSION
+        : SHARED_WORKER_VERSION
 
     constructor() {
         this.worker.port.start()
@@ -336,14 +339,14 @@ export class SocketManager {
         })
 
         setTimeout(() => {
-            if (!this._isSharedWorkerUpToDate) {
+            if (this._detectedSharedWorkerVersion !== SHARED_WORKER_VERSION) {
                 this._renderOutdatedBanner()
             }
         }, OUTDATED_NOTIFICATION_DELAY * 1000)
     }
 
     _onVersion = (version: number) => {
-        this._isSharedWorkerUpToDate = version === SHARED_WORKER_VERSION
+        this._detectedSharedWorkerVersion = version
     }
 
     _renderOutdatedBanner = () => {
@@ -361,7 +364,9 @@ export class SocketManager {
             })
         )
 
-        logEvent(SegmentEvent.OutdatedSharedWorkerDetected)
+        logEvent(SegmentEvent.OutdatedSharedWorkerDetected, {
+            version: this._detectedSharedWorkerVersion,
+        })
     }
 }
 

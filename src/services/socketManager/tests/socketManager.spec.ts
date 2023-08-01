@@ -5,7 +5,11 @@ import * as socketEvents from 'config/socketEvents'
 import * as actions from 'state/notifications/actions'
 
 import * as segmentTracker from 'store/middlewares/segmentTracker'
-import {BROADCAST_CHANNEL_NAME, SHARED_WORKER_VERSION} from '../constants'
+import {
+    BROADCAST_CHANNEL_NAME,
+    SHARED_WORKER_LEGACY_VERSION,
+    SHARED_WORKER_VERSION,
+} from '../constants'
 import {
     BroadcastChannelEvent,
     MessagePortEvent,
@@ -71,7 +75,9 @@ describe('SocketManager', () => {
                 socketManager.broadcastChannel.addEventListener
             ).toHaveBeenCalledTimes(1)
 
-            expect(socketManager._isSharedWorkerUpToDate).toBe(false)
+            expect(socketManager._detectedSharedWorkerVersion).toBe(
+                SHARED_WORKER_LEGACY_VERSION
+            )
             expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
                 type: MessagePortEvent.GetVersion,
             })
@@ -219,7 +225,8 @@ describe('SocketManager', () => {
                 type: MessagePortEvent.GetVersion,
             })
 
-            socketManager._isSharedWorkerUpToDate = false
+            socketManager._detectedSharedWorkerVersion =
+                SHARED_WORKER_LEGACY_VERSION
             jest.runOnlyPendingTimers()
             expect(renderOutdatedBannerSpy).toHaveBeenCalled()
         })
@@ -230,7 +237,7 @@ describe('SocketManager', () => {
                 type: MessagePortEvent.GetVersion,
             })
 
-            socketManager._isSharedWorkerUpToDate = true
+            socketManager._detectedSharedWorkerVersion = SHARED_WORKER_VERSION
             jest.runOnlyPendingTimers()
             expect(renderOutdatedBannerSpy).not.toHaveBeenCalled()
         })
@@ -239,13 +246,14 @@ describe('SocketManager', () => {
     describe('_onVersion()', () => {
         it('should update the "up-to-date" status of the shared worker', () => {
             const socketManager = new SocketManager()
-            expect(socketManager._isSharedWorkerUpToDate).toBe(false)
+            expect(socketManager._detectedSharedWorkerVersion).toBe(
+                SHARED_WORKER_LEGACY_VERSION
+            )
 
             socketManager._onVersion(SHARED_WORKER_VERSION)
-            expect(socketManager._isSharedWorkerUpToDate).toBe(true)
-
-            socketManager._onVersion(1)
-            expect(socketManager._isSharedWorkerUpToDate).toBe(false)
+            expect(socketManager._detectedSharedWorkerVersion).toBe(
+                SHARED_WORKER_VERSION
+            )
         })
     })
 
@@ -254,7 +262,8 @@ describe('SocketManager', () => {
             socketManager._renderOutdatedBanner()
             expect(notifySpy.mock.calls).toMatchSnapshot()
             expect(logEventSpy).toHaveBeenLastCalledWith(
-                segmentTracker.SegmentEvent.OutdatedSharedWorkerDetected
+                segmentTracker.SegmentEvent.OutdatedSharedWorkerDetected,
+                {version: SHARED_WORKER_VERSION}
             )
         })
     })
