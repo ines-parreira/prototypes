@@ -199,7 +199,7 @@ export const TicketDetailContainer = ({
         submittedTicket = ticket.setIn(['newMessage', 'sender'], sender)
 
         // Ensure that a customer is always set on the ticket when created
-        if (sourceType !== 'internal-note') {
+        if (sourceType !== 'internal-note' && receiver) {
             submittedTicket = ticket.set('customer', receiver)
         }
 
