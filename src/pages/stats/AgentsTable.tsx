@@ -1,4 +1,5 @@
 import React from 'react'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
@@ -8,15 +9,17 @@ import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
-import {HeaderCell} from 'pages/stats/HeaderCell'
-import {TableColumn, TableColumnsOrder} from 'pages/stats/TableConfig'
+import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
+import {TableColumnsOrder} from 'pages/stats/TableConfig'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import useAppSelector from 'hooks/useAppSelector'
-import {getAgentsJS} from 'state/agents/selectors'
+import {selectSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {User} from 'config/types/user'
+import {TableColumn} from 'state/ui/stats/types'
 
 const getCell = (
     column: TableColumn
@@ -44,17 +47,16 @@ const getCell = (
 }
 
 export const AgentsTable = () => {
-    const agents = useAppSelector(getAgentsJS)
+    const agents = useAppSelector<Pick<User, 'id'>[]>(selectSortedAgents)
 
     return (
         <div>
             <TableWrapper>
                 <TableHead>
                     {TableColumnsOrder.map((column) => (
-                        <HeaderCell
-                            key={`header-cell-${column}`}
-                            column={column}
-                        />
+                        <HeaderCell key={`header-cell-${column}`}>
+                            <AgentsHeaderCellContent column={column} />
+                        </HeaderCell>
                     ))}
                 </TableHead>
                 <TableBody>

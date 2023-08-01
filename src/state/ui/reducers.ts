@@ -1,4 +1,8 @@
 import {combineReducers} from 'redux'
+import {
+    agentPerformanceSlice,
+    AgentPerformanceState,
+} from 'state/ui/stats/agentPerformanceSlice'
 
 import editor from './editor/reducer'
 import {EditorState} from './editor/types'
@@ -23,6 +27,7 @@ const uiReducers = combineReducers<{
     selfServiceConfigurations: SelfServiceConfigurationsState
     helpCenter: HelpCenterState
     contactForm: ContactFormState
+    [agentPerformanceSlice.name]: AgentPerformanceState
 }>({
     editor,
     stats,
@@ -31,6 +36,7 @@ const uiReducers = combineReducers<{
     selfServiceConfigurations,
     helpCenter,
     contactForm,
+    [agentPerformanceSlice.name]: agentPerformanceSlice.reducer,
 })
 
 export default uiReducers

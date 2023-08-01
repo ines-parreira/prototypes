@@ -49,6 +49,9 @@ export enum OrderDirection {
     Desc = 'desc',
 }
 
+export const opposite = (direction: OrderDirection) =>
+    direction === OrderDirection.Asc ? OrderDirection.Desc : OrderDirection.Asc
+
 export enum MetaSortOptions {
     Relevance = 'relevance',
 }

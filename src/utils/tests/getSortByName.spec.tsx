@@ -1,4 +1,4 @@
-import {getSortByName} from 'pages/stats/revenue/utils/getSortByName'
+import {getSortByName} from 'utils/getSortByName'
 
 describe('getSortByName', () => {
     it.each([

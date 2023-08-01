@@ -6,9 +6,7 @@ import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
-import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
-import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
+import {AgentsTable} from 'pages/stats/AgentsTable'
 import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
@@ -19,14 +17,10 @@ import {teams} from 'fixtures/teams'
 import {agentsStatsFilterLabels} from 'pages/stats/AgentsStatsFilter'
 import {channelsStatsFilterLabels} from 'pages/stats/ChannelsStatsFilter'
 import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
-import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter'
-import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
-import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 
 import {LEARN_MORE_URL} from 'pages/stats/SupportPerformanceOverview'
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
-import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
@@ -37,28 +31,9 @@ import SupportPerformanceAgents, {
 } from '../SupportPerformanceAgents'
 
 jest.unmock('react-router-dom')
-jest.mock('pages/stats/FirstResponseTimeCellContent.tsx')
-const FirstResponseTimeCellContentMock = assumeMock(
-    FirstResponseTimeCellContent
-)
-jest.mock('pages/stats/TicketsRepliedCellContent.tsx')
-const TicketsRepliedCellContentMock = assumeMock(TicketsRepliedCellContent)
 
-jest.mock('pages/stats/ClosedTicketsCellContent.tsx')
-const ClosedTicketsCellContentMock = assumeMock(ClosedTicketsCellContent)
-
-jest.mock('pages/stats/MessagesSentCellContent.tsx')
-const MessagesSentCellContentMock = assumeMock(MessagesSentCellContent)
-jest.mock('pages/stats/ResolutionTimeCellContent.tsx')
-const ResolutionTimeCellContentMock = assumeMock(ResolutionTimeCellContent)
-jest.mock('pages/stats/CustomerSatisfactionCellContent.tsx')
-const CustomerSatisfactionCellContentMock = assumeMock(
-    CustomerSatisfactionCellContent
-)
-jest.mock('pages/stats/PercentageOfClosedTicketsCellContent.tsx')
-const PercentageOfClosedTicketsCellContentMock = assumeMock(
-    PercentageOfClosedTicketsCellContent
-)
+jest.mock('pages/stats/AgentsTable.tsx')
+const AgentsTableMock = assumeMock(AgentsTable)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const cellMock = () => <div />
@@ -99,14 +74,7 @@ describe('SupportPerformanceAgents', () => {
         integrationsStatsFilterLabels,
         tagsStatsFilterLabels,
     ]
-
-    FirstResponseTimeCellContentMock.mockImplementation(cellMock)
-    TicketsRepliedCellContentMock.mockImplementation(cellMock)
-    ClosedTicketsCellContentMock.mockImplementation(cellMock)
-    MessagesSentCellContentMock.mockImplementation(cellMock)
-    ResolutionTimeCellContentMock.mockImplementation(cellMock)
-    CustomerSatisfactionCellContentMock.mockImplementation(cellMock)
-    PercentageOfClosedTicketsCellContentMock.mockImplementation(cellMock)
+    AgentsTableMock.mockImplementation(cellMock)
 
     beforeEach(() => {
         jest.clearAllMocks()

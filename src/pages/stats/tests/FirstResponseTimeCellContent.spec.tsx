@@ -8,6 +8,7 @@ import {useFirstResponseTimeMetricPerAgent} from 'hooks/reporting/metricsPerDime
 import {formatDuration} from 'pages/stats/common/utils'
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {initialState} from 'state/stats/reducers'
+import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
@@ -29,6 +30,9 @@ describe('<FirstResponseTimeCellContent>', () => {
 
     const defaultState = {
         stats: initialState,
+        ui: {
+            agentPerformance: agentPerformanceInitialState,
+        },
     } as RootState
 
     const useFirstResponseTimeMetricPerAgentReturnValue = {

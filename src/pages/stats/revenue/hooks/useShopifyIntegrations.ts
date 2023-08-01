@@ -5,7 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getStatsStoreIntegrations} from 'state/stats/selectors'
 
 import {IntegrationType} from 'models/integration/types'
-import {getSortByName} from 'pages/stats/revenue/utils/getSortByName'
+import {getSortByName} from 'utils/getSortByName'
 
 export function useShopifyIntegrations() {
     const allStoreIntegrations = useAppSelector(getStatsStoreIntegrations)

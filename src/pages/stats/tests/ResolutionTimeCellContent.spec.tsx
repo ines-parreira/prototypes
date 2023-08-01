@@ -9,6 +9,7 @@ import {formatDuration} from 'pages/stats/common/utils'
 import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -29,6 +30,9 @@ describe('<ResolutionTimeCellContent>', () => {
 
     const defaultState = {
         stats: initialState,
+        ui: {
+            agentPerformance: agentPerformanceInitialState,
+        },
     } as RootState
 
     const useResolutionTimeMetricPerAgentReturnValue = {
