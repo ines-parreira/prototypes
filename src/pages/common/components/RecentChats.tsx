@@ -13,7 +13,6 @@ import {RootState} from 'state/types'
 import {MAX_RECENT_CHATS} from 'config/recentChats'
 import withRouter from 'pages/common/utils/withRouter'
 
-import Tooltip from './Tooltip'
 import SourceIcon from './SourceIcon'
 import css from './RecentChats.less'
 
@@ -98,16 +97,8 @@ class RecentChats extends Component<Props> {
                     )}
                 >
                     <h4 className={navbarCss['category-title']}>
-                        <span id="active-chats-title">Chat & messaging</span>
+                        <span>Chat & messaging</span>
                     </h4>
-                    <Tooltip
-                        placement="left"
-                        target="active-chats-title"
-                        className={css.tooltip}
-                    >
-                        Open chats assigned to you or unassigned
-                    </Tooltip>
-
                     <div className={navbarCss.menu}>
                         {tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
                             <RecentChatsItem

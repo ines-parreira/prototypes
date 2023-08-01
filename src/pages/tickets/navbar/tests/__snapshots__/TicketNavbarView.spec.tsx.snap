@@ -10,7 +10,6 @@ exports[`<TicketNavbarView/> should render 1`] = `
   >
     <a
       class="link"
-      title="New & Open Tickets 4999+"
       to="/app/tickets/7/new-%26-open-tickets"
     >
       <span

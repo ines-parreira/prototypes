@@ -43,7 +43,6 @@ const NavbarSectionBlock = ({
                         css.nameWrapper,
                         'd-flex align-items-center flex-grow'
                     )}
-                    title={name}
                 >
                     {icon && <div className={css.iconWrapper}>{icon}</div>}
                     <span className={css.name}>{name}</span>

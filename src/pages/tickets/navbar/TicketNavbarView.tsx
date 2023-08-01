@@ -5,15 +5,13 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
-
-import {UserRole} from '../../../config/types/user'
-import {MAX_TICKET_COUNT_PER_VIEW} from '../../../config/views'
-import {View, ViewVisibility} from '../../../models/view/types'
-import {RootState} from '../../../state/types'
-import {activeViewIdSet} from '../../../state/ui/views/actions'
-import {hasRole} from '../../../utils'
-import ViewCount from '../../common/components/ViewCount/ViewCount'
-import ViewName from '../../common/components/ViewName/ViewName'
+import {UserRole} from 'config/types/user'
+import {View, ViewVisibility} from 'models/view/types'
+import ViewCount from 'pages/common/components/ViewCount/ViewCount'
+import ViewName from 'pages/common/components/ViewName/ViewName'
+import {RootState} from 'state/types'
+import {activeViewIdSet} from 'state/ui/views/actions'
+import {hasRole} from 'utils'
 
 import {TicketNavbarElementType} from './TicketNavbar'
 import css from './TicketNavbarView.less'
@@ -36,7 +34,6 @@ export function TicketNavbarViewContainer({
     viewCount,
 }: OwnProps & ConnectedProps<typeof connector>) {
     const wrapperRef = useRef<HTMLDivElement>(null)
-    const count = viewCount || 0
     const ticketNavbarId = `ticket-navbar-view-${view.id}`
 
     const canDrag = useMemo(
@@ -104,11 +101,6 @@ export function TicketNavbarViewContainer({
                                 [navbarCss.isDragged]: isDragging,
                                 [navbarCss.isNested]: view.section_id != null,
                             })}
-                            title={`${view.name} ${
-                                count >= MAX_TICKET_COUNT_PER_VIEW
-                                    ? `${MAX_TICKET_COUNT_PER_VIEW - 1}+`
-                                    : count
-                            }`}
                             to={`/app/tickets/${view.id}/${encodeURIComponent(
                                 view.slug
                             )}`}
