@@ -15,6 +15,7 @@ export enum FeatureFlagKey {
     ChatShowOrHideOnSelectedUrls = 'chat-show-or-hide-on-selected-urls',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContinuousChatViewsPolling = 'continuous-chat-views-polling',
+    CustomVoicemailOutsideBusinessHours = 'enable-custom-voicemail-outside-business-hours',
     DecoupleContactForm = 'decouple-contact-form',
     EarlyAdopter = 'early-adopter',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',

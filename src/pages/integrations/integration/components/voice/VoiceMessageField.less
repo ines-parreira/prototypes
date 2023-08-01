@@ -1,8 +1,35 @@
+@import (reference) '~css/new/layout.less';
+
 :local {
+    .radioButtonOption {
+        margin-bottom: @layout-spacing-s;
+    }
+
     .optionContent {
         display: flex;
         flex-direction: column;
         margin-left: 20px;
         margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .optionContentHorizontal {
+        display: flex;
+        width: 100%;
+    }
+
+    .textToSpeechTextarea {
+        width: 100%;
+    }
+
+    .horizontalRadioButtons {
+        display: flex;
+        gap: @layout-spacing-l;
+    }
+
+    .recordingWithRemove {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
     }
 }

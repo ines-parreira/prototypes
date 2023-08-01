@@ -92,3 +92,8 @@ export enum EmailProvider {
 }
 
 export const TAGS_LIMIT = 30
+
+export const TEXT_TO_SPEECH_MAX_LENGTH = 1000
+export const MAX_VOICE_RECORDING_FILE_SIZE_MB = 2
+export const MAX_VOICE_RECORDING_FILE_SIZE =
+    MAX_VOICE_RECORDING_FILE_SIZE_MB * 1000000

@@ -1,18 +1,18 @@
 import React, {useState, useEffect, useCallback} from 'react'
-import {Input} from 'reactstrap'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     VoiceMessage,
     VoiceMessageRecording,
+    VoiceMessageTextToSpeech,
     VoiceMessageType,
 } from 'models/integration/types'
+import {TEXT_TO_SPEECH_MAX_LENGTH} from 'models/integration/constants'
 import RadioButton from 'pages/common/components/RadioButton'
 import Button from 'pages/common/components/button/Button'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getBase64} from 'utils/file'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Textarea from 'pages/common/forms/TextArea'
 import {countLines} from 'utils/string'
+import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 
 import css from './VoiceMessageField.less'
 
@@ -21,30 +21,17 @@ type Props = {
     onChange: (value: VoiceMessage) => void
     allowNone?: boolean
     maxRecordingDuration?: number
+    horizontal?: boolean
 }
-
-const TEXT_TO_SPEECH_MAX_LENGTH = 1000
-const MAX_VOICE_RECORDING_FILE_SIZE_MB = 2
-const MAX_VOICE_RECORDING_FILE_SIZE = MAX_VOICE_RECORDING_FILE_SIZE_MB * 1000000
 
 const VoiceMessageField = ({
     value,
     onChange,
     allowNone,
     maxRecordingDuration,
+    horizontal = false,
 }: Props): JSX.Element => {
-    const dispatch = useAppDispatch()
-    const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
-    const handleVoiceMessageTypeChange = useCallback(
-        (type) => {
-            onChange({
-                ...value,
-                voice_message_type: type,
-            })
-        },
-        [value, onChange]
-    )
-
+    const {validateVoiceRecordingUpload} = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
         string | undefined
     >()
@@ -59,144 +46,126 @@ const VoiceMessageField = ({
         }
     }, [value, voiceRecordingPath, setVoiceRecordingPath])
 
-    const handleUploadButtonClick = () => {
-        voiceRecordingFileInput?.current?.click()
-    }
+    const handleVoiceMessageTypeChange = useCallback(
+        (type) => {
+            onChange({
+                ...value,
+                voice_message_type: type,
+            })
+        },
+        [value, onChange]
+    )
 
     const handleVoiceRecordingUpload = useCallback(
         async (event: React.ChangeEvent<HTMLInputElement>) => {
-            if (!event.target.files) {
-                return
-            }
+            const voiceRecordingUpload = await validateVoiceRecordingUpload(
+                event,
+                maxRecordingDuration,
+                horizontal
+            )
+            if (voiceRecordingUpload) {
+                const {url, newVoiceFields} = voiceRecordingUpload
+                setVoiceRecordingPath(url)
 
-            const uploadedFile = event.target.files[0]
-            if (uploadedFile.size > MAX_VOICE_RECORDING_FILE_SIZE) {
-                void dispatch(
-                    notify({
-                        message: `Invalid file size. The max size is ${MAX_VOICE_RECORDING_FILE_SIZE_MB} MB.`,
-                        status: NotificationStatus.Error,
-                    })
-                )
-                return
-            }
-
-            const url = window.URL.createObjectURL(uploadedFile)
-
-            if (maxRecordingDuration) {
-                try {
-                    const duration = await getAudioFileDuration(url)
-                    if (duration > maxRecordingDuration) {
-                        void dispatch(
-                            notify({
-                                message: `Please upload an audio file of ${maxRecordingDuration} seconds or less.`,
-                                status: NotificationStatus.Error,
-                            })
-                        )
-                        return
-                    }
-                } catch {
-                    void dispatch(
-                        notify({
-                            message:
-                                'Invalid audio file provided. Please upload a valid mp3 file.',
-                            status: NotificationStatus.Error,
-                        })
-                    )
-                    return
+                const newValue: VoiceMessageRecording = {
+                    ...value,
+                    ...newVoiceFields,
+                    voice_message_type: VoiceMessageType.VoiceRecording,
                 }
+                onChange(newValue)
             }
-
-            setVoiceRecordingPath(url)
-
-            const serializedFile = await getBase64(uploadedFile)
-            const newValue: VoiceMessageRecording = {
-                ...value,
-                voice_message_type: VoiceMessageType.VoiceRecording,
-                new_voice_recording_file: serializedFile,
-                new_voice_recording_file_name: uploadedFile.name,
-                new_voice_recording_file_type: uploadedFile.type,
-            }
-            onChange(newValue)
         },
-        [value, onChange, maxRecordingDuration, dispatch]
+        [
+            value,
+            onChange,
+            maxRecordingDuration,
+            horizontal,
+            validateVoiceRecordingUpload,
+        ]
     )
 
-    const textToSpeechLines =
-        value.voice_message_type === VoiceMessageType.TextToSpeech &&
-        value.text_to_speech_content
-            ? countLines(value.text_to_speech_content)
-            : 0
+    const handleVoiceRecordingRemoval = useCallback(() => {
+        setVoiceRecordingPath(undefined)
+        const newValue: VoiceMessageRecording = {
+            ...value,
+            voice_message_type: VoiceMessageType.VoiceRecording,
+            new_voice_recording_file: undefined,
+            new_voice_recording_file_name: undefined,
+            new_voice_recording_file_type: undefined,
+            voice_recording_file_path: undefined,
+        }
+        onChange(newValue)
+    }, [onChange, value])
+
+    if (horizontal) {
+        return (
+            <>
+                <div className={css.horizontalRadioButtons}>
+                    <VoiceRecordingRadioButton
+                        selectedVoiceMessageType={value.voice_message_type}
+                        onChange={handleVoiceMessageTypeChange}
+                        label={'Voice recording'}
+                        caption={'Max 2MB, mp3 only'}
+                    />
+                    <TextToSpeechRadioButton
+                        selectedVoiceMessageType={value.voice_message_type}
+                        onChange={handleVoiceMessageTypeChange}
+                        label={'Text-to-speech'}
+                    />
+                    {allowNone && (
+                        <NoneRadioButton
+                            selectedVoiceMessageType={value.voice_message_type}
+                            onChange={handleVoiceMessageTypeChange}
+                        />
+                    )}
+                </div>
+                {value.voice_message_type ===
+                    VoiceMessageType.VoiceRecording && (
+                    <VoiceRecordingInput
+                        voiceRecordingPath={voiceRecordingPath}
+                        handleVoiceRecordingUpload={handleVoiceRecordingUpload}
+                        handleVoiceRecordingRemoval={
+                            handleVoiceRecordingRemoval
+                        }
+                        className={css.optionContentHorizontal}
+                    />
+                )}
+                {value.voice_message_type === VoiceMessageType.TextToSpeech && (
+                    <TextToSpeechRecordingInput
+                        onChange={onChange}
+                        selectedValue={value}
+                        className={css.optionContentHorizontal}
+                    />
+                )}
+            </>
+        )
+    }
 
     return (
         <>
-            <RadioButton
-                className="mb-3"
-                label="Insert Voice Recording"
-                value={VoiceMessageType.VoiceRecording}
-                isSelected={
-                    value.voice_message_type === VoiceMessageType.VoiceRecording
-                }
+            <VoiceRecordingRadioButton
+                selectedVoiceMessageType={value.voice_message_type}
                 onChange={handleVoiceMessageTypeChange}
             />
             {value.voice_message_type === VoiceMessageType.VoiceRecording && (
-                <div className={css.optionContent}>
-                    <div>
-                        {voiceRecordingPath && (
-                            // eslint-disable-next-line jsx-a11y/media-has-caption
-                            <audio controls src={voiceRecordingPath} />
-                        )}
-                    </div>
-                    <div>
-                        <input
-                            className="d-none"
-                            type="file"
-                            accept=".mp3"
-                            ref={voiceRecordingFileInput}
-                            onChange={handleVoiceRecordingUpload}
-                        />
-                        <Button
-                            intent="secondary"
-                            onClick={handleUploadButtonClick}
-                        >
-                            <i className="material-icons large">backup</i>{' '}
-                            Select file
-                        </Button>
-                    </div>
-                </div>
+                <VoiceRecordingInput
+                    voiceRecordingPath={voiceRecordingPath}
+                    handleVoiceRecordingUpload={handleVoiceRecordingUpload}
+                />
             )}
-            <RadioButton
-                className="mb-3"
-                label="Text To Speech"
-                value={VoiceMessageType.TextToSpeech}
-                isSelected={
-                    value.voice_message_type === VoiceMessageType.TextToSpeech
-                }
+            <TextToSpeechRadioButton
+                selectedVoiceMessageType={value.voice_message_type}
                 onChange={handleVoiceMessageTypeChange}
             />
             {value.voice_message_type === VoiceMessageType.TextToSpeech && (
-                <div className={css.optionContent}>
-                    <Input
-                        type="textarea"
-                        maxLength={TEXT_TO_SPEECH_MAX_LENGTH}
-                        value={value.text_to_speech_content ?? ''}
-                        onChange={(event) => {
-                            onChange({
-                                ...value,
-                                text_to_speech_content: event.target.value,
-                            })
-                        }}
-                        rows={textToSpeechLines > 2 ? textToSpeechLines : 2}
-                    />
-                </div>
+                <TextToSpeechRecordingInput
+                    onChange={onChange}
+                    selectedValue={value}
+                />
             )}
             {allowNone && (
-                <RadioButton
-                    className="mb-3"
-                    label="None"
-                    value={VoiceMessageType.None}
-                    isSelected={
-                        value.voice_message_type === VoiceMessageType.None
-                    }
+                <NoneRadioButton
+                    selectedVoiceMessageType={value.voice_message_type}
                     onChange={handleVoiceMessageTypeChange}
                 />
             )}
@@ -204,16 +173,178 @@ const VoiceMessageField = ({
     )
 }
 
-function getAudioFileDuration(url: string): Promise<number> {
-    return new Promise((resolve, reject) => {
-        const audio = new Audio(url)
-        audio.addEventListener('error', () => reject(), false)
-        audio.addEventListener(
-            'canplaythrough',
-            () => resolve(audio.duration),
-            false
-        )
-    })
+type VoiceMessageRadioButtonProps = {
+    selectedVoiceMessageType: VoiceMessageType
+    onChange: (value: string) => void
+    label?: string
+    caption?: string
+}
+
+const NoneRadioButton = ({
+    selectedVoiceMessageType,
+    onChange,
+    label = 'None',
+}: VoiceMessageRadioButtonProps) => {
+    return (
+        <RadioButton
+            className={css.radioButtonOption}
+            label={label}
+            value={VoiceMessageType.None}
+            isSelected={selectedVoiceMessageType === VoiceMessageType.None}
+            onChange={onChange}
+        />
+    )
+}
+
+const TextToSpeechRadioButton = ({
+    selectedVoiceMessageType,
+    onChange,
+    label = 'Text To Speech',
+}: VoiceMessageRadioButtonProps) => {
+    return (
+        <RadioButton
+            className={css.radioButtonOption}
+            label={label}
+            value={VoiceMessageType.TextToSpeech}
+            isSelected={
+                selectedVoiceMessageType === VoiceMessageType.TextToSpeech
+            }
+            onChange={onChange}
+        />
+    )
+}
+
+const VoiceRecordingRadioButton = ({
+    selectedVoiceMessageType,
+    onChange,
+    label = 'Insert Voice Recording',
+    caption = '',
+}: VoiceMessageRadioButtonProps) => {
+    return (
+        <RadioButton
+            className={css.radioButtonOption}
+            label={label}
+            value={VoiceMessageType.VoiceRecording}
+            isSelected={
+                selectedVoiceMessageType === VoiceMessageType.VoiceRecording
+            }
+            onChange={onChange}
+            caption={caption}
+        />
+    )
+}
+
+type PropsTextToSpeechRecordingInput = {
+    selectedValue: VoiceMessageTextToSpeech
+    onChange: (value: VoiceMessage) => void
+    className?: string
+}
+
+const TextToSpeechRecordingInput = ({
+    selectedValue,
+    onChange,
+    className = css.optionContent,
+}: PropsTextToSpeechRecordingInput) => {
+    const textToSpeechLines =
+        selectedValue.voice_message_type === VoiceMessageType.TextToSpeech &&
+        selectedValue.text_to_speech_content
+            ? countLines(selectedValue.text_to_speech_content)
+            : 0
+    const noMessageProvided = selectedValue.text_to_speech_content.length === 0
+    return (
+        <div className={className}>
+            <Textarea
+                className={css.textToSpeechTextarea}
+                maxLength={TEXT_TO_SPEECH_MAX_LENGTH}
+                value={selectedValue.text_to_speech_content ?? ''}
+                onChange={(message) => {
+                    onChange({
+                        ...selectedValue,
+                        text_to_speech_content: message,
+                    })
+                }}
+                rows={textToSpeechLines > 2 ? textToSpeechLines : 2}
+                placeholder={'Write a message to convert to speech'}
+                error={
+                    noMessageProvided
+                        ? 'Text-to-speech message is required'
+                        : ''
+                }
+            />
+        </div>
+    )
+}
+
+type PropsVoiceRecordingInput = {
+    voiceRecordingPath: Maybe<string>
+    handleVoiceRecordingUpload: (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => Promise<void>
+    handleVoiceRecordingRemoval?: () => void
+    uploadLabel?: string
+    className?: string
+}
+
+const VoiceRecordingInput = ({
+    voiceRecordingPath,
+    handleVoiceRecordingUpload,
+    handleVoiceRecordingRemoval,
+    uploadLabel = 'Select file',
+    className = css.optionContent,
+}: PropsVoiceRecordingInput) => {
+    const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
+
+    const handleUploadButtonClick = () => {
+        voiceRecordingFileInput?.current?.click()
+    }
+    const allowRemoving = !!handleVoiceRecordingRemoval
+    return (
+        <div className={className}>
+            {voiceRecordingPath && (
+                <div
+                    className={
+                        handleVoiceRecordingRemoval && css.recordingWithRemove
+                    }
+                >
+                    {
+                        // eslint-disable-next-line jsx-a11y/media-has-caption
+                        <audio controls src={voiceRecordingPath} />
+                    }
+                    {allowRemoving && (
+                        <div>
+                            <Button
+                                id={`recording-delete`}
+                                intent="destructive"
+                                onClick={handleVoiceRecordingRemoval}
+                                fillStyle={'ghost'}
+                            >
+                                <ButtonIconLabel icon="delete" />
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            )}
+            {(!voiceRecordingPath || !allowRemoving) && (
+                <div>
+                    <input
+                        className="d-none"
+                        type="file"
+                        accept=".mp3"
+                        ref={voiceRecordingFileInput}
+                        onChange={handleVoiceRecordingUpload}
+                    />
+                    <Button
+                        intent="secondary"
+                        onClick={handleUploadButtonClick}
+                    >
+                        <ButtonIconLabel icon="backup">
+                            {uploadLabel}
+                        </ButtonIconLabel>
+                    </Button>
+                </div>
+            )}
+        </div>
+    )
 }
 
 export default VoiceMessageField

@@ -11,8 +11,6 @@ import VoiceMessageField from '../VoiceMessageField'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 describe('<VoiceMessageField />', () => {
-    window.URL.createObjectURL = jest.fn()
-
     const onChange: jest.MockedFunction<(value: VoiceMessage) => void> =
         jest.fn()
 
@@ -23,6 +21,7 @@ describe('<VoiceMessageField />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
     })
 
     it('should render', () => {
@@ -136,6 +135,96 @@ describe('<VoiceMessageField />', () => {
                 />
             </Provider>
         )
+
+        const noneOption = getByLabelText(/None/)
+        fireEvent.click(noneOption)
+
+        expect(onChange).toHaveBeenCalledWith({
+            voice_message_type: VoiceMessageType.None,
+            text_to_speech_content: 'Cannot answer right now',
+        })
+    })
+})
+
+describe('<VoiceMessageField horizontal="true" />', () => {
+    const onChange: jest.MockedFunction<(value: VoiceMessage) => void> =
+        jest.fn()
+
+    const defaultMessage = {
+        voice_message_type: VoiceMessageType.TextToSpeech,
+        text_to_speech_content: 'Cannot answer right now',
+    }
+
+    const renderComponent = (message: VoiceMessage = defaultMessage) => {
+        return render(
+            <Provider store={mockStore()}>
+                <VoiceMessageField
+                    value={message}
+                    onChange={onChange}
+                    allowNone
+                    horizontal={true}
+                />
+            </Provider>
+        )
+    }
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+        window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
+    })
+
+    it('should render', () => {
+        const {getByLabelText} = renderComponent()
+        expect(getByLabelText('Voice recording')).toBeInTheDocument()
+        expect(getByLabelText('Text-to-speech')).toBeInTheDocument()
+        expect(getByLabelText('None')).toBeInTheDocument()
+    })
+
+    it('should allow changing the text to speech text', () => {
+        const {container} = renderComponent()
+        const textarea = container.querySelector('textarea')
+        if (textarea) {
+            fireEvent.change(textarea, {
+                target: {value: 'Please hold'},
+            })
+        }
+
+        expect(onChange).toHaveBeenCalledWith({
+            voice_message_type: VoiceMessageType.TextToSpeech,
+            text_to_speech_content: 'Please hold',
+        })
+    })
+
+    it('should allow inserting a voice recording', async () => {
+        const file = new File(['audio data'], 'example.mp3', {
+            type: 'audio/mpeg',
+        })
+
+        const defaultMessage: VoiceMessage = {
+            voice_message_type: VoiceMessageType.VoiceRecording,
+        }
+
+        const {container} = renderComponent(defaultMessage)
+
+        const input = container.querySelector('input[type="file"]')
+        expect(input).toBeInTheDocument()
+        if (input) {
+            fireEvent.change(input, {target: {files: [file]}})
+        }
+
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith({
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                new_voice_recording_file:
+                    'data:audio/mpeg;base64,YXVkaW8gZGF0YQ==',
+                new_voice_recording_file_name: 'example.mp3',
+                new_voice_recording_file_type: 'audio/mpeg',
+            })
+        })
+    })
+
+    it('should allow setting no voice message', () => {
+        const {getByLabelText} = renderComponent()
 
         const noneOption = getByLabelText(/None/)
         fireEvent.click(noneOption)

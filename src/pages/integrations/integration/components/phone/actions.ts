@@ -15,7 +15,10 @@ import {
 import client from '../../../../../models/api/resources'
 
 export const updatePhoneVoicemailConfiguration =
-    (payload: Partial<PhoneIntegrationVoicemailSettings>) =>
+    (
+        payload: Partial<PhoneIntegrationVoicemailSettings>,
+        successMessage = 'Voicemail configuration successfully updated.'
+    ) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -39,8 +42,7 @@ export const updatePhoneVoicemailConfiguration =
                     return dispatch(
                         notify({
                             status: NotificationStatus.Success,
-                            message:
-                                'Voicemail configuration successfully updated.',
+                            message: successMessage,
                         })
                     )
                 },

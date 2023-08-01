@@ -1,6 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {PhoneFunction} from 'business/twilio'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PhoneIntegration,
     PhoneIntegrationVoicemailSettings,
@@ -12,6 +15,7 @@ import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {updatePhoneVoicemailConfiguration} from 'pages/integrations/integration/components/phone/actions'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
+import VoiceIntegrationVoicemailIvr from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemailIvr'
 
 import settingsCss from 'pages/settings/settings.less'
 
@@ -19,7 +23,7 @@ type Props = {
     integration: Maybe<PhoneIntegration>
 }
 
-export default function VoiceIntegrationVoicemail({
+function VoiceIntegrationVoicemailOldSettings({
     integration,
 }: Props): JSX.Element | null {
     const dispatch = useAppDispatch()
@@ -48,10 +52,6 @@ export default function VoiceIntegrationVoicemail({
         },
         [payload, setIsLoading, dispatch]
     )
-
-    if (!isPhoneIntegration(integration)) {
-        return null
-    }
 
     return (
         <Container fluid className={settingsCss.pageContainer}>
@@ -106,4 +106,24 @@ export default function VoiceIntegrationVoicemail({
             </Row>
         </Container>
     )
+}
+
+export default function VoiceIntegrationVoicemail({
+    integration,
+}: Props): JSX.Element | null {
+    const useCustomVoicemailOutsideBusinessHours =
+        useFlags()[FeatureFlagKey.CustomVoicemailOutsideBusinessHours]
+
+    if (!isPhoneIntegration(integration)) {
+        return null
+    }
+
+    if (
+        useCustomVoicemailOutsideBusinessHours &&
+        integration?.meta?.function === PhoneFunction.Ivr
+    ) {
+        return <VoiceIntegrationVoicemailIvr integration={integration} />
+    }
+
+    return <VoiceIntegrationVoicemailOldSettings integration={integration} />
 }
