@@ -21,6 +21,9 @@ jest.mock('socket.io-client', () => {
             connect: jest.fn(),
             send: jest.fn(),
             on: jest.fn(),
+            io: {
+                on: jest.fn(),
+            },
         }
     })
 })
@@ -169,53 +172,6 @@ describe('WebsocketSharedWorker', () => {
         )
     })
 
-    describe('incrementalReconnect()', () => {
-        it(
-            "should try to connect the worker's socket, double the reconnect backoff time, " +
-                'and then set another timeout to try again later',
-            () => {
-                worker.socket = io()
-
-                const oldBackoff = worker.incrementalReconnectBackoff
-
-                worker.incrementalReconnect()
-
-                jest.runOnlyPendingTimers()
-
-                expect(worker.socket.connect).toHaveBeenCalledTimes(1)
-                expect(worker.incrementalReconnectBackoff).toEqual(
-                    2 * oldBackoff
-                )
-
-                expect(setTimeout).toHaveBeenLastCalledWith(
-                    expect.any(Function),
-                    worker.incrementalReconnectBackoff * 1000
-                )
-            }
-        )
-
-        it('should not increase the reconnect backoff time above the max', () => {
-            worker.socket = io()
-
-            worker.incrementalReconnectBackoff =
-                MAX_INCREMENTAL_RECONNECT_BACKOFF
-
-            worker.incrementalReconnect()
-
-            jest.runOnlyPendingTimers()
-
-            expect(worker.socket.connect).toHaveBeenCalledTimes(1)
-            expect(worker.incrementalReconnectBackoff).toEqual(
-                MAX_INCREMENTAL_RECONNECT_BACKOFF
-            )
-
-            expect(setTimeout).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                worker.incrementalReconnectBackoff * 1000
-            )
-        })
-    })
-
     describe('_onSocketJson()', () => {
         it("should send the message received to the worker's `BroadcastChannel`", () => {
             const message = {foo: 'bar'}
@@ -230,74 +186,23 @@ describe('WebsocketSharedWorker', () => {
     })
 
     describe('_onSocketConnect()', () => {
-        it(
-            'should post a `WS_CONNECTED` message to the tab, reset the `incrementalReconnectBackoff` and clear all ' +
-                'tasks',
-            () => {
-                const incrementalReconnectTask = setTimeout(jest.fn(), 1000)
-                const sendDisconnectedNotificationTask = setTimeout(
-                    jest.fn(),
-                    1000
-                )
-                worker.incrementalReconnectTask = incrementalReconnectTask
-                worker.sendDisconnectedNotificationTask =
-                    sendDisconnectedNotificationTask
-                worker.incrementalReconnectBackoff =
-                    MAX_INCREMENTAL_RECONNECT_BACKOFF
+        it('should post a `WS_CONNECTED` message to the tab, and clear scheduled "discionnected" notification', () => {
+            const sendDisconnectedNotificationTask = setTimeout(jest.fn(), 1000)
+            worker.sendDisconnectedNotificationTask =
+                sendDisconnectedNotificationTask
 
-                worker._onSocketConnect()
-
-                expect(clearTimeout).toHaveBeenCalledWith(
-                    incrementalReconnectTask
-                )
-                expect(clearTimeout).toHaveBeenCalledWith(
-                    sendDisconnectedNotificationTask
-                )
-                expect(worker.incrementalReconnectBackoff).toEqual(1)
-            }
-        )
-    })
-
-    describe('_onSocketDisconnect()', () => {
-        it('should try to reconnect', () => {
-            const incrementalReconnectSpy = jest.spyOn(
-                worker,
-                'incrementalReconnect'
-            )
-
-            worker._onSocketDisconnect()
-
-            expect(incrementalReconnectSpy).toHaveBeenCalledTimes(1)
-        })
-
-        it('should not start a new reconnect task if one is already in progress', () => {
-            const incrementalReconnectSpy = jest.spyOn(
-                worker,
-                'incrementalReconnect'
-            )
-            worker._onSocketDisconnect()
-            worker._onSocketDisconnect()
-
-            expect(incrementalReconnectSpy).toHaveBeenCalledTimes(1)
-        })
-
-        it('should not start a new reconnect task if the previous one was terminated', () => {
-            const incrementalReconnectSpy = jest.spyOn(
-                worker,
-                'incrementalReconnect'
-            )
-            worker._onSocketDisconnect()
             worker._onSocketConnect()
-            worker._onSocketDisconnect()
 
-            expect(incrementalReconnectSpy).toHaveBeenCalledTimes(2)
+            expect(clearTimeout).toHaveBeenCalledWith(
+                sendDisconnectedNotificationTask
+            )
         })
     })
 
     describe.each([
         {
             name: 'socket disconnect',
-            fn: () => worker._onSocketDisconnect(),
+            fn: () => worker._onSocketDisconnect('some reason'),
         },
         {
             name: 'socket connect error',
@@ -329,7 +234,7 @@ describe('WebsocketSharedWorker', () => {
             fn()
             jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
             fn()
-            worker._onSocketDisconnect()
+            worker._onSocketDisconnect('some reason')
             jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
 
             expect(worker.broadcastChannel.postMessage).toHaveBeenNthCalledWith(
@@ -378,6 +283,12 @@ describe('WebsocketSharedWorker', () => {
                 worker._onSocketConnectError
             )
 
+            expect(worker.socket?.io.on).toHaveBeenCalledTimes(1)
+            expect(worker.socket?.io.on).toHaveBeenCalledWith(
+                'reconnect_attempt',
+                worker._onSocketReconnectAttempt
+            )
+
             expect(worker.connectedTabs).toEqual({
                 [message.clientId]: {
                     messagePort,
@@ -394,6 +305,8 @@ describe('WebsocketSharedWorker', () => {
                 message.wsUrl,
                 expect.objectContaining({
                     path: '/socket.io/v4/',
+                    reconnectionDelayMax:
+                        MAX_INCREMENTAL_RECONNECT_BACKOFF * 1000,
                 })
             )
         })
