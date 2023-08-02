@@ -8,15 +8,11 @@ src/config/stats.tsx @gorgias/analytics-frontend
 src/fixtures/stats.ts @gorgias/analytics-frontend
 src/hooks/reporting @gorgias/analytics-frontend
 src/models/reporting @gorgias/analytics-frontend
-src/models/selfServiceConfiguration @gorgias/automations-engine
-src/pages/automation @gorgias/automations-engine
 src/pages/stats @gorgias/analytics-frontend
-src/pages/stats/self-service @gorgias/automations-engine
 src/pages/stats/revenue @gorgias/revenue
 src/services/performanceTipService.ts @gorgias/analytics-frontend
 src/services/reporting @gorgias/analytics-frontend
 src/services/tests/performanceTipService.spec.ts @gorgias/analytics-frontend
-src/state/entities/selfServiceConfigurations @gorgias/automations-engine
 src/state/entities/stats @gorgias/analytics-frontend
 src/state/stats @gorgias/analytics-frontend
 src/state/ui/stats @gorgias/analytics-frontend
@@ -25,6 +21,22 @@ src/utils/tests/__snapshots__/reporting.spec.ts.snap @gorgias/analytics-frontend
 src/utils/tests/date.spec.ts @gorgias/analytics-frontend
 src/utils/tests/file.spec.ts @gorgias/analytics-frontend
 src/utils/tests/reporting.spec.ts @gorgias/analytics-frontend
+
+# Engine scope @gorgias/automations-engine
+src/models/selfServiceConfiguration @gorgias/automations-engine
+src/pages/automation @gorgias/automations-engine
+src/pages/settings/macros @gorgias/automations-engine
+src/pages/settings/rules @gorgias/automations-engine
+src/pages/stats/self-service @gorgias/automations-engine
+src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply @gorgias/automations-engine
+src/pages/tickets/detail/components/RuleSuggestion @gorgias/automations-engine
+src/state/entities/macros @gorgias/automations-engine
+src/state/entities/ruleRecipes @gorgias/automations-engine
+src/state/entities/rules @gorgias/automations-engine
+src/state/entities/selfServiceConfigurations @gorgias/automations-engine
+src/state/macro @gorgias/automations-engine
+src/state/rules @gorgias/automations-engine
+src/state/ui/selfServiceConfigurations @gorgias/automations-engine
 
 # Help center scope @gorgias/automations-help-center
 src/rest_api/help_center_api @gorgias/automations-help-center
