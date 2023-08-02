@@ -35,4 +35,16 @@ describe('<NumberedPagination />', () => {
 
         expect(getAllByLabelText(/page-/)).toHaveLength(5)
     })
+
+    it('resets the page when the `page` prop is changed', () => {
+        const {getByLabelText, rerender} = render(
+            <NumberedPagination count={10} page={5} />
+        )
+
+        expect(getByLabelText('page-5')).toHaveAttribute('aria-current', 'true')
+
+        rerender(<NumberedPagination count={10} page={1} />)
+
+        expect(getByLabelText('page-1')).toHaveAttribute('aria-current', 'true')
+    })
 })

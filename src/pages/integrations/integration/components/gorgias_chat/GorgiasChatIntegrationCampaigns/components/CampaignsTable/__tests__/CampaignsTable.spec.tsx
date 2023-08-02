@@ -112,4 +112,43 @@ describe('<CampaignsTable />', () => {
         expect(() => screen.getByLabelText(/next/)).toThrow()
         expect(() => screen.getByLabelText(/previous/)).toThrow()
     })
+
+    it('resets the page when the data changes', () => {
+        const onClickDelete = jest.fn()
+        const onClickDuplicate = jest.fn()
+        const onToggleCampaign = jest.fn()
+
+        const {rerender} = render(
+            <CampaignsTable
+                data={data}
+                perPage={5}
+                integration={integration}
+                onClickDelete={onClickDelete}
+                onClickDuplicate={onClickDuplicate}
+                onToggleCampaign={onToggleCampaign}
+            />
+        )
+
+        screen.getByLabelText('page-3').click()
+        expect(screen.getByLabelText('page-3')).toHaveAttribute(
+            'aria-current',
+            'true'
+        )
+
+        rerender(
+            <CampaignsTable
+                data={data.slice(0, 15)}
+                perPage={5}
+                integration={integration}
+                onClickDelete={onClickDelete}
+                onClickDuplicate={onClickDuplicate}
+                onToggleCampaign={onToggleCampaign}
+            />
+        )
+
+        expect(screen.getByLabelText('page-1')).toHaveAttribute(
+            'aria-current',
+            'true'
+        )
+    })
 })

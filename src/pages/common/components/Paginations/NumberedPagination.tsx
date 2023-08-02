@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {PaginationItem} from './components/PaginationItem'
 
@@ -73,6 +73,12 @@ export const NumberedPagination = ({
     onChange,
 }: Props) => {
     const [currentPage, setCurrentPage] = useState(page ?? defaultPage)
+
+    useEffect(() => {
+        if (page !== currentPage) {
+            setCurrentPage(page)
+        }
+    }, [currentPage, page])
 
     const handlePageChange = useCallback(
         (nextPage: number | null) => {

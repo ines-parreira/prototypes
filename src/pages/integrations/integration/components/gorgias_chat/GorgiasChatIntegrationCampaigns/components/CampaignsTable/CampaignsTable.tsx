@@ -1,4 +1,10 @@
-import React, {MouseEvent, useCallback, useMemo, useState} from 'react'
+import React, {
+    MouseEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
@@ -40,6 +46,10 @@ export const CampaignsTable = ({
     onToggleCampaign,
 }: Props) => {
     const [page, setPage] = useState(1)
+
+    useEffect(() => {
+        setPage(1)
+    }, [data])
 
     const paginatedRows = useMemo(() => {
         const start = (page - 1) * perPage
