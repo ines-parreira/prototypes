@@ -123,9 +123,36 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
       <div
         class="campaignsToolbar"
       >
-        <span>
-          Use campaigns to prompt visitors of your website to start chatting with your team.
-        </span>
+        <div
+          class="wrapper search"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-16"
+            name="input-text-16"
+            placeholder="Search by campaign name"
+            type="text"
+            value=""
+          />
+          <span
+            class="suffix"
+          >
+            <i
+              class="material-icons icon material-icons-outlined clear hidden"
+            >
+              cancel
+            </i>
+          </span>
+        </div>
         <div
           class="container"
           role="radiogroup"
@@ -263,7 +290,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                   aria-checked="true"
                   aria-label="Enable campaign Super campaign"
                   class="label label"
-                  for="toggle-button-9"
+                  for="toggle-button-17"
                   role="switch"
                 >
                   <input
@@ -271,8 +298,8 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                     checked=""
                     class="input"
                     disabled=""
-                    id="toggle-button-9"
-                    name="toggle-button-9"
+                    id="toggle-button-17"
+                    name="toggle-button-17"
                     type="checkbox"
                   />
                   <div
@@ -352,15 +379,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                   aria-checked="false"
                   aria-label="Enable campaign Not so good campaign"
                   class="label label"
-                  for="toggle-button-11"
+                  for="toggle-button-19"
                   role="switch"
                 >
                   <input
                     aria-label="Enable campaign Not so good campaign"
                     class="input"
                     disabled=""
-                    id="toggle-button-11"
-                    name="toggle-button-11"
+                    id="toggle-button-19"
+                    name="toggle-button-19"
                     type="checkbox"
                   />
                   <div
@@ -554,9 +581,36 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
       <div
         class="campaignsToolbar"
       >
-        <span>
-          Use campaigns to prompt visitors of your website to start chatting with your team.
-        </span>
+        <div
+          class="wrapper search"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-11"
+            name="input-text-11"
+            placeholder="Search by campaign name"
+            type="text"
+            value=""
+          />
+          <span
+            class="suffix"
+          >
+            <i
+              class="material-icons icon material-icons-outlined clear hidden"
+            >
+              cancel
+            </i>
+          </span>
+        </div>
         <div
           class="container"
           role="radiogroup"
@@ -694,7 +748,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                   aria-checked="true"
                   aria-label="Enable campaign Super campaign"
                   class="label label"
-                  for="toggle-button-5"
+                  for="toggle-button-12"
                   role="switch"
                 >
                   <input
@@ -702,8 +756,8 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                     checked=""
                     class="input"
                     disabled=""
-                    id="toggle-button-5"
-                    name="toggle-button-5"
+                    id="toggle-button-12"
+                    name="toggle-button-12"
                     type="checkbox"
                   />
                   <div
@@ -783,15 +837,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                   aria-checked="false"
                   aria-label="Enable campaign Not so good campaign"
                   class="label label"
-                  for="toggle-button-7"
+                  for="toggle-button-14"
                   role="switch"
                 >
                   <input
                     aria-label="Enable campaign Not so good campaign"
                     class="input"
                     disabled=""
-                    id="toggle-button-7"
-                    name="toggle-button-7"
+                    id="toggle-button-14"
+                    name="toggle-button-14"
                     type="checkbox"
                   />
                   <div
@@ -1003,9 +1057,36 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the empty state corre
       <div
         class="campaignsToolbar"
       >
-        <span>
-          Use campaigns to prompt visitors of your website to start chatting with your team.
-        </span>
+        <div
+          class="wrapper search"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-1"
+            name="input-text-1"
+            placeholder="Search by campaign name"
+            type="text"
+            value=""
+          />
+          <span
+            class="suffix"
+          >
+            <i
+              class="material-icons icon material-icons-outlined clear hidden"
+            >
+              cancel
+            </i>
+          </span>
+        </div>
       </div>
       <div
         class="noCampaignsLayer"
@@ -1140,9 +1221,36 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
       <div
         class="campaignsToolbar"
       >
-        <span>
-          Use campaigns to prompt visitors of your website to start chatting with your team.
-        </span>
+        <div
+          class="wrapper search"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-2"
+            name="input-text-2"
+            placeholder="Search by campaign name"
+            type="text"
+            value=""
+          />
+          <span
+            class="suffix"
+          >
+            <i
+              class="material-icons icon material-icons-outlined clear hidden"
+            >
+              cancel
+            </i>
+          </span>
+        </div>
         <div
           class="container"
           role="radiogroup"
@@ -1280,7 +1388,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
                   aria-checked="true"
                   aria-label="Enable campaign Super campaign"
                   class="label label"
-                  for="toggle-button-1"
+                  for="toggle-button-3"
                   role="switch"
                 >
                   <input
@@ -1288,8 +1396,8 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
                     checked=""
                     class="input"
                     disabled=""
-                    id="toggle-button-1"
-                    name="toggle-button-1"
+                    id="toggle-button-3"
+                    name="toggle-button-3"
                     type="checkbox"
                   />
                   <div
@@ -1369,15 +1477,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
                   aria-checked="false"
                   aria-label="Enable campaign Not so good campaign"
                   class="label label"
-                  for="toggle-button-3"
+                  for="toggle-button-5"
                   role="switch"
                 >
                   <input
                     aria-label="Enable campaign Not so good campaign"
                     class="input"
                     disabled=""
-                    id="toggle-button-3"
-                    name="toggle-button-3"
+                    id="toggle-button-5"
+                    name="toggle-button-5"
                     type="checkbox"
                   />
                   <div

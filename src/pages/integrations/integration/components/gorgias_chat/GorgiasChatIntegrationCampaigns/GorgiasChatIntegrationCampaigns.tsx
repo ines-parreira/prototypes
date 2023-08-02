@@ -10,6 +10,10 @@ import {Map, fromJS, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import debounce from 'lodash/debounce'
+import Fuse from 'fuse.js'
+
+import history from 'pages/history'
 
 import {removeLinksFromHtml} from 'utils/html'
 
@@ -25,19 +29,37 @@ import CampaignGenerator from 'pages/integrations/integration/components/gorgias
 
 import {IntegrationType} from 'models/integration/constants'
 
+import useSearch from 'hooks/useSearch'
+
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
 import {CampaignChatHiddenWarning} from './components/CampaignChatHiddenWarning'
 import {CampaignsTable} from './components/CampaignsTable'
+import {CampaignsSearch} from './components/CampaignsSearch'
+
+import {ChatCampaign} from './types/Campaign'
 
 import css from './GorgiasChatIntegrationCampaigns.less'
-import {ChatCampaign} from './types/Campaign'
 
 type Props = {
     integration: Map<any, any>
     currentUser: Map<any, any>
 } & ConnectedProps<typeof connector>
+
+function setSearch(searchValue: string) {
+    if (searchValue === '') {
+        history.replace('?')
+    } else {
+        history.replace(
+            `?search=${encodeURIComponent(
+                searchValue.toLocaleLowerCase().trim()
+            )}`
+        )
+    }
+}
+
+const debouncedSetSearch = debounce(setSearch, 200)
 
 export const GorgiasChatIntegrationCampaignsComponent = ({
     integration,
@@ -46,6 +68,7 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
     deleteCampaign,
     updateCampaign,
 }: Props) => {
+    const params = useSearch<{search: string}>()
     const [statusFilter, setStatusFilter] = useState('all')
 
     const toggleCampaign = useCallback(
@@ -94,6 +117,10 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
         setStatusFilter(value)
     }
 
+    const handleChangeSearch = (value: string) => {
+        debouncedSetSearch(value)
+    }
+
     const allCampaigns = useMemo(() => {
         const campaignsList =
             (integration.getIn(['meta', 'campaigns']) as List<any>) ||
@@ -125,20 +152,33 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
     }, [allCampaigns])
 
     const campaigns = useMemo(() => {
+        let campaignsByStatus = allCampaigns
+
         if (statusFilter === 'active') {
-            return allCampaigns.filter(
+            campaignsByStatus = allCampaigns.filter(
                 (campaign) => !campaign.deactivated_datetime
             )
         }
 
         if (statusFilter === 'inactive') {
-            return allCampaigns.filter(
+            campaignsByStatus = allCampaigns.filter(
                 (campaign) => campaign.deactivated_datetime
             )
         }
 
-        return allCampaigns
-    }, [allCampaigns, statusFilter])
+        if (params.search) {
+            const fuse = new Fuse(campaignsByStatus, {
+                threshold: 0.25,
+                keys: ['name'],
+            })
+
+            campaignsByStatus = fuse
+                .search(params.search)
+                .map((result) => result.item)
+        }
+
+        return campaignsByStatus
+    }, [allCampaigns, params.search, statusFilter])
 
     return (
         <div className="full-width">
@@ -176,10 +216,11 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
 
             <Container fluid className={css.pageContainer}>
                 <div className={css.campaignsToolbar}>
-                    <span>
-                        Use campaigns to prompt visitors of your website to
-                        start chatting with your team.
-                    </span>
+                    <CampaignsSearch
+                        value={params.search}
+                        onChange={handleChangeSearch}
+                        onClear={() => setSearch('')}
+                    />
 
                     {allCampaigns.length > 0 && (
                         <Segmented
@@ -197,9 +238,15 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
                     currentUser={currentUser}
                 />
 
-                {campaigns.length === 0 && (
+                {campaigns.length === 0 && allCampaigns.length === 0 && (
                     <div className={css.noCampaignsLayer}>
                         This integration doesn't have any campaigns yet.
+                    </div>
+                )}
+
+                {campaigns.length === 0 && allCampaigns.length > 0 && (
+                    <div className={css.noCampaignsLayer}>
+                        No campaigns match your search and filters.
                     </div>
                 )}
             </Container>

@@ -3,6 +3,7 @@ import {fromJS, Map} from 'immutable'
 import {produce} from 'immer'
 import _uniqueId from 'lodash/uniqueId'
 import {EditorState} from 'draft-js'
+import trim from 'lodash/trim'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -315,7 +316,7 @@ export const AdvancedCampaignDetails = memo(
                         html,
                         text,
                     },
-                    name: campaignName,
+                    name: trim(campaignName),
                     triggers: triggersArr,
                 }
 

@@ -9,6 +9,8 @@ import {entitiesInitialState} from 'fixtures/entities'
 import {billingState} from 'fixtures/billing'
 import * as actions from 'state/integrations/actions'
 import * as betaTesterHook from 'pages/common/hooks/useIsRevenueBetaTester'
+import useSearch from 'hooks/useSearch'
+
 import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator'
 import GorgiasChatIntegrationCampaigns, {
     GorgiasChatIntegrationCampaignsComponent,
@@ -19,6 +21,7 @@ import {createTrigger} from '../utils/createTrigger'
 import {CampaignTriggerKey} from '../types/enums/CampaignTriggerKey.enum'
 
 jest.mock('utils/launchDarkly')
+jest.mock('hooks/useSearch')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const updateOrCreateIntegrationRequest = jest.spyOn(
     actions,
@@ -38,6 +41,11 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
         jest.spyOn(betaTesterHook, 'useIsRevenueBetaTester').mockImplementation(
             () => true
         )
+        ;(useSearch as jest.Mock).mockImplementation(() => {
+            return {
+                search: '',
+            }
+        })
     })
 
     const minProps: ComponentProps<
@@ -549,6 +557,80 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
 
             expect(() => getByText('Super campaign')).toThrow()
             getByText('Not so good campaign')
+        })
+    })
+
+    describe('Campaigns search', () => {
+        const integrationWithCampaigns = fromJS({
+            id: 118,
+            type: 'gorgias_chat',
+            name: 'My new chat',
+            meta: {
+                campaigns: [
+                    {
+                        id: '156a4d-fg68h40-sd6f4',
+                        name: 'Super campaign',
+                        message: {
+                            text: 'Campaign message 1',
+                            html: 'Campaign message 1',
+                        },
+                        triggers: [
+                            createTrigger(CampaignTriggerKey.BusinessHours),
+                        ],
+                        deactivated_datetime: null,
+                    },
+                    {
+                        id: 'not-so-good-campaign-d8f9-fds486-sf78',
+                        name: 'Not so good campaign',
+                        message: {
+                            text: 'Campaign message 2',
+                            html: 'Campaign message 2',
+                        },
+                        triggers: [
+                            createTrigger(CampaignTriggerKey.BusinessHours),
+                        ],
+                        deactivated_datetime: '2017-10-06T17:17:56.565Z',
+                    },
+                ],
+            },
+        })
+
+        it('should display the found campaigns', () => {
+            ;(useSearch as jest.Mock).mockImplementation(() => {
+                return {
+                    search: 'Super',
+                }
+            })
+
+            const {getByText} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={integrationWithCampaigns}
+                    />
+                </Provider>
+            )
+
+            getByText('Super campaign')
+            expect(() => getByText('Not so good campaign')).toThrow()
+        })
+
+        it('should display a message if no campaigns were found', () => {
+            ;(useSearch as jest.Mock).mockImplementation(() => {
+                return {
+                    search: 'not found',
+                }
+            })
+            const {getByText} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={integrationWithCampaigns}
+                    />
+                </Provider>
+            )
+
+            getByText('No campaigns match your search and filters.')
         })
     })
 })

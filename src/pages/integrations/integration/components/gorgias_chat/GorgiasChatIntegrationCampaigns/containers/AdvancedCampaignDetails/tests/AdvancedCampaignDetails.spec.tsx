@@ -130,6 +130,7 @@ describe('<AdvancedCampaignDetails />', () => {
 
     describe('Creating a campaign as regular merchant', () => {
         let component: RenderResult
+
         beforeEach(() => {
             jest.spyOn(
                 betaTesterHook,
@@ -296,6 +297,8 @@ describe('<AdvancedCampaignDetails />', () => {
     })
 
     describe('Updating a campaign as regular merchant', () => {
+        const updateCampaignFn = jest.fn()
+
         beforeEach(() => {
             jest.spyOn(
                 betaTesterHook,
@@ -316,7 +319,7 @@ describe('<AdvancedCampaignDetails />', () => {
                         shopifyIntegration={shopifyIntegration}
                         integration={shopifyChatIntegration}
                         createCampaign={jest.fn()}
-                        updateCampaign={jest.fn()}
+                        updateCampaign={updateCampaignFn}
                         deleteCampaign={jest.fn()}
                     />
                 </Provider>
@@ -325,6 +328,30 @@ describe('<AdvancedCampaignDetails />', () => {
 
         afterEach(() => {
             jest.resetAllMocks()
+        })
+
+        it('trims the campaign name', () => {
+            const campaignNameInput = screen.getByLabelText('Campaign name')
+
+            act(() => {
+                fireEvent.change(campaignNameInput, {
+                    target: {
+                        value: '  My Campaign  ',
+                    },
+                })
+            })
+
+            act(() => {
+                fireEvent.click(screen.getByText('Save Changes'))
+            })
+
+            expect(updateCampaignFn).toHaveBeenCalledWith(
+                fromJS({
+                    ...regularMerchantCampaign,
+                    name: 'My Campaign',
+                }),
+                shopifyChatIntegration
+            )
         })
 
         it('adds the selected trigger', async () => {
