@@ -66,7 +66,9 @@ export default function WhatsAppMigrationVerificationForm(): JSX.Element | null 
                                         migration.updateVerificationMethod(
                                             WhatsAppCodeVerificationMethod.Voice
                                         )
-                                        await migration.requestNewCode()
+                                        await migration.requestNewCode(
+                                            WhatsAppCodeVerificationMethod.Voice
+                                        )
                                     }}
                                     href={`?step=${migration.currentStep}`}
                                 >
@@ -79,7 +81,9 @@ export default function WhatsAppMigrationVerificationForm(): JSX.Element | null 
                                         migration.updateVerificationMethod(
                                             WhatsAppCodeVerificationMethod.Sms
                                         )
-                                        await migration.requestNewCode()
+                                        await migration.requestNewCode(
+                                            WhatsAppCodeVerificationMethod.Sms
+                                        )
                                     }}
                                     href={`?step=${migration.currentStep}`}
                                 >

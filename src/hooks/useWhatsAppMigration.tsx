@@ -27,10 +27,16 @@ type Target = {
     waba_id: string
 }
 
+type Verification = {
+    codeRequested?: boolean
+    codeVerificationMethod: CodeVerificationMethod
+}
+
 enum Status {
     NotStarted = 'NotStarted',
     NotSubmitted = 'NotSubmitted',
     Unverified = 'Unverified',
+    Pending = 'Pending',
     Verified = 'Verified',
     Completed = 'Completed',
 }
@@ -50,7 +56,7 @@ type Actions = {
 
     startOrResume: () => Promise<void>
     verifyAndFinish: (code?: string) => Promise<void>
-    requestNewCode: () => Promise<void>
+    requestNewCode: (method?: CodeVerificationMethod) => Promise<void>
 
     next: () => void
     back: () => void
@@ -75,6 +81,7 @@ type State = {
 type PersistedState = {
     target: Maybe<Target>
     progress: Maybe<Progress>
+    verification: Maybe<Verification>
 }
 
 type Errors = Partial<Record<keyof Target, string | undefined>>
@@ -90,9 +97,14 @@ export {Status as WhatsAppMigrationStatus, Step as WhatsAppMigrationStep}
 
 const PROGRESS_STORAGE_KEY = 'whatsapp_migration_progress'
 const TARGET_STORAGE_KEY = 'whatsapp_migration_target'
+const VERIFICATION_STORAGE_KEY = 'whatsapp_migration_verification'
 const DEFAULT_TARGET: Target = {
     phone_number: '',
     waba_id: '',
+}
+const DEFAULT_VERIFICATION: Verification = {
+    codeRequested: false,
+    codeVerificationMethod: CodeVerificationMethod.Voice,
 }
 
 export const WhatsAppMigrationContext = createContext<Migration>({
@@ -103,6 +115,7 @@ export const WhatsAppMigrationContext = createContext<Migration>({
 
     target: undefined,
     progress: undefined,
+    verification: undefined,
 
     errors: undefined,
 
@@ -156,12 +169,16 @@ function useMigration(): Migration {
 
     const [progress, setProgress] =
         useLocalStorage<Maybe<Progress>>(PROGRESS_STORAGE_KEY)
+    const [verification, setVerification] = useLocalStorage<
+        Maybe<Verification>
+    >(VERIFICATION_STORAGE_KEY, DEFAULT_VERIFICATION)
 
     const [errors, setErrors] = useState<Errors>()
     const [isLoading, setIsLoading] = useState(false)
 
-    const [verificationMethod, setVerificationMethod] =
-        useState<CodeVerificationMethod>(CodeVerificationMethod.Voice)
+    const verificationMethod =
+        verification?.codeVerificationMethod ??
+        DEFAULT_VERIFICATION.codeVerificationMethod
 
     useDebounce(
         async () => {
@@ -176,8 +193,8 @@ function useMigration(): Migration {
     )
 
     const status = useMemo(
-        () => getStatusFromPersistedState({target, progress}),
-        [progress, target]
+        () => getStatusFromPersistedState({target, progress, verification}),
+        [progress, target, verification]
     )
 
     const {isStarted, isVerified, isCompleted} = useMemo(() => {
@@ -214,7 +231,10 @@ function useMigration(): Migration {
     }
 
     const updateVerificationMethod = (method: CodeVerificationMethod) => {
-        setVerificationMethod(method)
+        setVerification({
+            ...(verification ?? DEFAULT_VERIFICATION),
+            codeVerificationMethod: method,
+        })
     }
 
     const startOrResume = async () => {
@@ -281,7 +301,9 @@ function useMigration(): Migration {
         history.push('/app/settings/integrations/whatsapp/integrations')
     }
 
-    const requestNewCode = async () => {
+    const requestNewCode = async (
+        method: CodeVerificationMethod = verificationMethod
+    ) => {
         if (!progress?.waba_phone_number_id) {
             void dispatch(
                 notify({
@@ -292,7 +314,7 @@ function useMigration(): Migration {
             return
         }
 
-        await requestCode(progress.waba_phone_number_id)
+        await requestCode(progress.waba_phone_number_id, method)
     }
 
     const fetchProgress = async (target: Target) => {
@@ -332,7 +354,8 @@ function useMigration(): Migration {
 
         try {
             setIsLoading(true)
-            return await startMigration(target)
+            const {phone_number, waba_id} = target
+            return await startMigration({phone_number, waba_id})
         } catch (error) {
             void dispatch(
                 notify({
@@ -348,20 +371,21 @@ function useMigration(): Migration {
         }
     }
 
-    const requestCode = async (phoneNumberId: string) => {
+    const requestCode = async (
+        phoneNumberId: string,
+        method: CodeVerificationMethod = verificationMethod
+    ) => {
         try {
             setIsLoading(true)
 
             await requestVerificationCode({
                 waba_phone_number_id: phoneNumberId,
-                code_method: verificationMethod,
+                code_method: method,
             })
 
             const number = target?.phone_number ?? 'your number'
             const action =
-                verificationMethod === CodeVerificationMethod.Sms
-                    ? 'texted'
-                    : 'called'
+                method === CodeVerificationMethod.Sms ? 'texted' : 'called'
 
             void dispatch(
                 notify({
@@ -472,6 +496,7 @@ function useMigration(): Migration {
     const reset = () => {
         setTarget(null)
         setProgress(null)
+        setVerification(null)
         clearErrors()
     }
 
@@ -491,6 +516,7 @@ function useMigration(): Migration {
     const state: State = {
         target,
         progress,
+        verification,
         status,
         errors,
         verificationMethod,
@@ -533,7 +559,7 @@ function getStatusFromPersistedState({
     progress,
 }: PersistedState): Status {
     if (isEmpty(progress)) {
-        return !target || Object.values(target).every(isEmpty)
+        return !target || [target.waba_id, target.phone_number].every(isEmpty)
             ? Status.NotStarted
             : Status.NotSubmitted
     }
@@ -567,6 +593,7 @@ export function getStepFromStatus(status: Status): Step {
         case Status.NotSubmitted:
             return Step.Migrate
         case Status.Completed:
+        case Status.Pending:
         case Status.Verified:
             return Step.Verify
         default:

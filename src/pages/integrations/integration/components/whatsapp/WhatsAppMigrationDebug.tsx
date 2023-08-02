@@ -20,6 +20,10 @@ export default function WhatsAppMigrationVerificationForm(): JSX.Element | null 
             <strong>progress</strong>
             <br />
             <span>{JSON.stringify(migration.progress)}</span>
+            <br />
+            <strong>verification</strong>
+            <br />
+            <span>{JSON.stringify(migration.verification)}</span>
         </SettingsContent>
     )
 }

@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {
+    WhatsAppCodeVerificationMethod,
     WhatsAppPhoneNumberStatus,
     WhatsAppPhoneNumberVerificationStatus,
 } from 'models/integration/types'
@@ -19,6 +20,7 @@ describe('useWhatsAppMigration()', () => {
         expect(migration.errors).toEqual(undefined)
         expect(migration.target).toEqual(undefined)
         expect(migration.progress).toEqual(undefined)
+        expect(migration.verification).toEqual(undefined)
         expect(migration.isLoading).toEqual(false)
         expect(migration.isStarted).toEqual(false)
         expect(migration.isVerified).toEqual(false)
@@ -43,11 +45,17 @@ describe('utilities', () => {
                 getStatusFromPersistedState({
                     target: undefined,
                     progress: undefined,
+                    verification: undefined,
                 })
             ).toEqual(Status.NotStarted)
 
             expect(
                 getStatusFromPersistedState({
+                    verification: {
+                        codeRequested: false,
+                        codeVerificationMethod:
+                            WhatsAppCodeVerificationMethod.Voice,
+                    },
                     target: {
                         waba_id: '',
                         phone_number: '',
@@ -60,6 +68,11 @@ describe('utilities', () => {
         it('should return Status.NotSubmitted when the data has not yet been submitted to FB', () => {
             expect(
                 getStatusFromPersistedState({
+                    verification: {
+                        codeRequested: false,
+                        codeVerificationMethod:
+                            WhatsAppCodeVerificationMethod.Voice,
+                    },
                     target: {
                         waba_id: '123123',
                         phone_number: '',
@@ -70,6 +83,11 @@ describe('utilities', () => {
 
             expect(
                 getStatusFromPersistedState({
+                    verification: {
+                        codeRequested: false,
+                        codeVerificationMethod:
+                            WhatsAppCodeVerificationMethod.Voice,
+                    },
                     target: {
                         waba_id: '1231231',
                         phone_number: '+1231231231',
@@ -82,6 +100,11 @@ describe('utilities', () => {
         it('should return Status.Unverified when the phone number has not been verified', () => {
             expect(
                 getStatusFromPersistedState({
+                    verification: {
+                        codeRequested: false,
+                        codeVerificationMethod:
+                            WhatsAppCodeVerificationMethod.Voice,
+                    },
                     target: {
                         waba_id: '123123',
                         phone_number: '+123123123',
@@ -99,6 +122,11 @@ describe('utilities', () => {
         it('should return Status.Verified when the phone number has been verified', () => {
             expect(
                 getStatusFromPersistedState({
+                    verification: {
+                        codeRequested: false,
+                        codeVerificationMethod:
+                            WhatsAppCodeVerificationMethod.Voice,
+                    },
                     target: {
                         waba_id: '123123',
                         phone_number: '+123123123',
@@ -116,6 +144,11 @@ describe('utilities', () => {
         it('should return Status.Completed when the phone number has been verified and migrated', () => {
             expect(
                 getStatusFromPersistedState({
+                    verification: {
+                        codeRequested: false,
+                        codeVerificationMethod:
+                            WhatsAppCodeVerificationMethod.Voice,
+                    },
                     target: {
                         waba_id: '123123',
                         phone_number: '+123123123',
@@ -193,6 +226,8 @@ describe('utilities', () => {
             const validTarget = {
                 waba_id: '123123',
                 phone_number: '+12132131234',
+                verificationCodeRequested: false,
+                verificationMethod: WhatsAppCodeVerificationMethod.Sms,
             }
 
             const validationResult = {
