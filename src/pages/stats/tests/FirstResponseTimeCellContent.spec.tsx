@@ -61,7 +61,7 @@ describe('<FirstResponseTimeCellContent>', () => {
         )
 
         expect(
-            screen.getByText(formatDuration(firstResponseTimeValue))
+            screen.getByText(formatDuration(firstResponseTimeValue, 2))
         ).toBeInTheDocument()
     })
 

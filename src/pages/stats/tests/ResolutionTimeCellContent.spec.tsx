@@ -61,7 +61,7 @@ describe('<ResolutionTimeCellContent>', () => {
         )
 
         expect(
-            screen.getByText(formatDuration(resolutionTimeValue))
+            screen.getByText(formatDuration(resolutionTimeValue, 2))
         ).toBeInTheDocument()
     })
 

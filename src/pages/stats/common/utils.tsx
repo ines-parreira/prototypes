@@ -72,22 +72,27 @@ export const formatDuration = (value: number, precision = 9) => {
     }
 
     const duration = moment.duration(value, 'seconds')
-    let curPrecision = 0
+    let currentPrecision = 0
     const parts = [
         [duration.months(), 'mo'],
         [duration.days(), 'd'],
         [duration.hours(), 'h'],
         [duration.minutes(), 'm'],
         [duration.seconds(), 's'],
-    ].reduce((acc, [num, unit]) => {
-        if (num && curPrecision < precision) {
-            acc.push(`${num}${unit}`)
-            curPrecision++
+    ].reduce<string[]>((acc, [num, unit]) => {
+        if (num && currentPrecision < precision) {
+            acc.push(`${num}${unit}`.padStart(3, '0'))
+            currentPrecision++
         }
         return acc
-    }, [] as string[])
+    }, [])
 
-    return parts.join(' ')
+    const result = parts.join(' ')
+
+    if (result.startsWith('0')) {
+        return result.slice(1)
+    }
+    return result
 }
 
 export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {

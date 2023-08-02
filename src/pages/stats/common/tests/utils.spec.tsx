@@ -188,10 +188,10 @@ describe('stats components utils', () => {
         })
         it.each<[number, string]>([
             [1, '1mo'],
-            [2, '1mo 1d'],
-            [3, '1mo 1d 1h'],
-            [4, '1mo 1d 1h 1m'],
-            [5, '1mo 1d 1h 1m 1s'],
+            [2, '1mo 01d'],
+            [3, '1mo 01d 01h'],
+            [4, '1mo 01d 01h 01m'],
+            [5, '1mo 01d 01h 01m 01s'],
         ])('should match template for precision %i', (precision, expected) => {
             const duration = 24 * 3600 * 31 + 24 * 3600 + 3600 + 60 + 1
             expect(formatDuration(duration, precision)).toBe(expected)

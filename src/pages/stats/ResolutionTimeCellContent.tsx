@@ -28,7 +28,7 @@ export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
             {isFetching || isSortingMetricLoading ? (
                 <Skeleton inline />
             ) : (
-                metricValue && formatDuration(metricValue)
+                metricValue && formatDuration(metricValue, 2)
             )}
         </BodyCellContent>
     )

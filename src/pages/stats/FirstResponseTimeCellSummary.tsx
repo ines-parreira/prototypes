@@ -26,7 +26,7 @@ export const FirstResponseTimeCellSummary = () => {
             {isFetching ? (
                 <Skeleton inline />
             ) : (
-                metricValue && formatDuration(metricValue)
+                metricValue && formatDuration(metricValue, 2)
             )}
         </BodyCellContent>
     )
