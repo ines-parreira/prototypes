@@ -27,13 +27,13 @@
 import io, {Socket} from 'socket.io-client'
 
 import {
-    BROADCAST_CHANNEL_NAME,
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     DISCONNECTED_NOTIFICATION_DELAY,
     HEALTH_CHECK_INTERVAL,
     HEALTH_CHECK_RECEIVE_TIMEOUT,
     HEALTH_CHECK_SEND_INTERVAL,
     SHARED_WORKER_VERSION,
+    SCOPED_BROADCAST_CHANNEL_NAME,
 } from './constants'
 import {
     WSMessage,
@@ -46,7 +46,9 @@ export class WebsocketSharedWorker {
     wsUrl: string | null = null
     socket: Socket | null = null
 
-    broadcastChannel = new self.BroadcastChannel(BROADCAST_CHANNEL_NAME)
+    scopedBroadcastChannel = new self.BroadcastChannel(
+        SCOPED_BROADCAST_CHANNEL_NAME
+    )
 
     sendDisconnectedNotificationTask: NodeJS.Timeout | null = null
 
@@ -94,7 +96,7 @@ export class WebsocketSharedWorker {
     }
 
     _onSocketJson = (wsMessage: WSMessage['json']) => {
-        this.broadcastChannel.postMessage({
+        this.scopedBroadcastChannel.postMessage({
             type: BroadcastChannelEvent.ServerMessage,
             json: wsMessage,
         })
@@ -103,7 +105,7 @@ export class WebsocketSharedWorker {
     _onSocketConnect = () => {
         // eslint-disable-next-line no-console
         console.log('WS connected!')
-        this.broadcastChannel.postMessage({
+        this.scopedBroadcastChannel.postMessage({
             type: BroadcastChannelEvent.WsConnected,
         })
 
@@ -136,7 +138,7 @@ export class WebsocketSharedWorker {
         }
         this.sendDisconnectedNotificationTask = setTimeout(
             () =>
-                this.broadcastChannel.postMessage({
+                this.scopedBroadcastChannel.postMessage({
                     type: BroadcastChannelEvent.WsDisconnected,
                 }),
             DISCONNECTED_NOTIFICATION_DELAY * 1000
@@ -218,7 +220,7 @@ export class WebsocketSharedWorker {
     }
 
     _broadcastVersion = () => {
-        this.broadcastChannel.postMessage({
+        this.scopedBroadcastChannel.postMessage({
             type: BroadcastChannelEvent.Version,
             data: SHARED_WORKER_VERSION,
         })

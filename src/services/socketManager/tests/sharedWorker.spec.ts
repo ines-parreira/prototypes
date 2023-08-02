@@ -6,6 +6,7 @@ import {
     HEALTH_CHECK_INTERVAL,
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     SHARED_WORKER_VERSION,
+    SCOPED_BROADCAST_CHANNEL_NAME,
 } from '../constants'
 import {
     BroadcastChannelEvent,
@@ -53,6 +54,18 @@ describe('WebsocketSharedWorker', () => {
         jest.clearAllMocks()
         jest.clearAllTimers()
         worker = new WebsocketSharedWorker()
+    })
+
+    describe('instantiation', () => {
+        it('should create a new BroadcastChannel with correct name', () => {
+            expect(
+                (
+                    worker.scopedBroadcastChannel as BroadcastChannel & {
+                        constructorSpy: jest.Mock
+                    }
+                ).constructorSpy
+            ).toHaveBeenCalledWith(SCOPED_BROADCAST_CHANNEL_NAME)
+        })
     })
 
     describe('startHealthCheck()', () => {
@@ -178,7 +191,9 @@ describe('WebsocketSharedWorker', () => {
 
             worker._onSocketJson(message)
 
-            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
+            expect(
+                worker.scopedBroadcastChannel.postMessage
+            ).toHaveBeenCalledWith({
                 type: BroadcastChannelEvent.ServerMessage,
                 json: message,
             })
@@ -214,7 +229,9 @@ describe('WebsocketSharedWorker', () => {
             jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
 
             expect(worker.sendDisconnectedNotificationTask).not.toEqual(null)
-            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
+            expect(
+                worker.scopedBroadcastChannel.postMessage
+            ).toHaveBeenCalledWith({
                 type: BroadcastChannelEvent.WsDisconnected,
             })
         })
@@ -224,8 +241,12 @@ describe('WebsocketSharedWorker', () => {
             fn()
             jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
 
-            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledTimes(1)
-            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
+            expect(
+                worker.scopedBroadcastChannel.postMessage
+            ).toHaveBeenCalledTimes(1)
+            expect(
+                worker.scopedBroadcastChannel.postMessage
+            ).toHaveBeenCalledWith({
                 type: BroadcastChannelEvent.WsDisconnected,
             })
         })
@@ -237,14 +258,13 @@ describe('WebsocketSharedWorker', () => {
             worker._onSocketDisconnect('some reason')
             jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
 
-            expect(worker.broadcastChannel.postMessage).toHaveBeenNthCalledWith(
-                1,
-                {
-                    type: BroadcastChannelEvent.WsDisconnected,
-                }
-            )
             expect(
-                worker.broadcastChannel.postMessage
+                worker.scopedBroadcastChannel.postMessage
+            ).toHaveBeenNthCalledWith(1, {
+                type: BroadcastChannelEvent.WsDisconnected,
+            })
+            expect(
+                worker.scopedBroadcastChannel.postMessage
             ).toHaveBeenLastCalledWith({
                 type: BroadcastChannelEvent.WsDisconnected,
             })
@@ -442,7 +462,9 @@ describe('WebsocketSharedWorker', () => {
         it('should broadcast its current version', () => {
             worker._broadcastVersion()
 
-            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
+            expect(
+                worker.scopedBroadcastChannel.postMessage
+            ).toHaveBeenCalledWith({
                 type: BroadcastChannelEvent.Version,
                 data: SHARED_WORKER_VERSION,
             })

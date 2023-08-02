@@ -14,8 +14,8 @@ import {StoreDispatch} from 'state/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
-    BROADCAST_CHANNEL_NAME,
     OUTDATED_NOTIFICATION_DELAY,
+    SCOPED_BROADCAST_CHANNEL_NAME,
     SHARED_WORKER_LEGACY_VERSION,
     SHARED_WORKER_VERSION,
 } from './constants'
@@ -41,8 +41,8 @@ const currentBrowserSupportsSharedWorker =
  * Manage the connection with the shared worker that handles the websocket connection with the back-end.
  */
 export class SocketManager {
-    broadcastChannel = currentBrowserSupportsSharedWorker
-        ? new window.BroadcastChannel(BROADCAST_CHANNEL_NAME)
+    scopedBroadcastChannel = currentBrowserSupportsSharedWorker
+        ? new window.BroadcastChannel(SCOPED_BROADCAST_CHANNEL_NAME)
         : fallbackBroadcastChannelAdapter
     isConnected = false
     disconnectedNotificationId = '696480246'
@@ -73,7 +73,7 @@ export class SocketManager {
             }
         }, CONNECTION_TIMEOUT * 1000)
 
-        this.broadcastChannel.addEventListener(
+        this.scopedBroadcastChannel.addEventListener(
             'message',
             (event: MessageEvent) => {
                 this.onMessage(event.data)

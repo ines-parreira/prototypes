@@ -6,7 +6,7 @@ import * as actions from 'state/notifications/actions'
 
 import * as segmentTracker from 'store/middlewares/segmentTracker'
 import {
-    BROADCAST_CHANNEL_NAME,
+    SCOPED_BROADCAST_CHANNEL_NAME,
     SHARED_WORKER_LEGACY_VERSION,
     SHARED_WORKER_VERSION,
 } from '../constants'
@@ -61,18 +61,18 @@ describe('SocketManager', () => {
                 clientId: window.CLIENT_ID,
             })
 
-            expect(socketManager.broadcastChannel).toBeInstanceOf(
+            expect(socketManager.scopedBroadcastChannel).toBeInstanceOf(
                 window.BroadcastChannel
             )
             expect(
                 (
-                    socketManager.broadcastChannel as BroadcastChannel & {
+                    socketManager.scopedBroadcastChannel as BroadcastChannel & {
                         constructorSpy: jest.Mock
                     }
                 ).constructorSpy
-            ).toHaveBeenCalledWith(BROADCAST_CHANNEL_NAME)
+            ).toHaveBeenCalledWith(SCOPED_BROADCAST_CHANNEL_NAME)
             expect(
-                socketManager.broadcastChannel.addEventListener
+                socketManager.scopedBroadcastChannel.addEventListener
             ).toHaveBeenCalledTimes(1)
 
             expect(socketManager._detectedSharedWorkerVersion).toBe(
