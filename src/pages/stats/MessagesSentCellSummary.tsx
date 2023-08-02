@@ -22,11 +22,7 @@ export const MessagesSentCellSummary = () => {
 
     return (
         <BodyCellContent>
-            {isFetching ? (
-                <Skeleton inline />
-            ) : (
-                metricValue && formatMetricValue(metricValue)
-            )}
+            {isFetching ? <Skeleton inline /> : formatMetricValue(metricValue)}
         </BodyCellContent>
     )
 }

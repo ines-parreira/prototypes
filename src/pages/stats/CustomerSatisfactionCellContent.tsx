@@ -33,7 +33,7 @@ export const CustomerSatisfactionCellContent = ({
             {isFetching || isMetricLoading ? (
                 <Skeleton inline />
             ) : (
-                metricValue && formatMetricValue(metricValue)
+                formatMetricValue(metricValue)
             )}
         </BodyCellContent>
     )

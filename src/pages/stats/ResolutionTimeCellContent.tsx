@@ -7,7 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
-import {formatDuration} from './common/utils'
+import {formatMetricValue} from './common/utils'
 
 export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
     const userTimezone = useAppSelector(
@@ -28,7 +28,7 @@ export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
             {isFetching || isMetricLoading ? (
                 <Skeleton inline />
             ) : (
-                metricValue && formatDuration(metricValue, 2)
+                formatMetricValue(metricValue, 'duration')
             )}
         </BodyCellContent>
     )

@@ -1,4 +1,5 @@
 import React from 'react'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import {useTicketsRepliedMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
@@ -27,7 +28,7 @@ export const TicketsRepliedCellContent = ({agentId}: {agentId: number}) => {
             {isFetching || isMetricLoading ? (
                 <Skeleton inline />
             ) : (
-                metricValue && metricValue
+                formatMetricValue(metricValue)
             )}
         </BodyCellContent>
     )

@@ -191,7 +191,13 @@ export const findChannelNameKey = (
     ) as TicketChannel | undefined
 }
 
-export type MetricValueFormat = 'decimal' | 'duration'
+export type MetricValueFormat = 'decimal' | 'duration' | 'percentage'
+
+const metricToDecimal = (value: number) =>
+    value.toLocaleString(DEFAULT_LOCALE, {
+        maximumFractionDigits: 2,
+    })
+
 export const formatMetricValue = (
     value: number | null | undefined,
     format: MetricValueFormat = 'decimal'
@@ -204,9 +210,11 @@ export const formatMetricValue = (
         return formatDuration(value, 2)
     }
 
-    return value.toLocaleString(DEFAULT_LOCALE, {
-        maximumFractionDigits: 2,
-    })
+    if (format === 'percentage') {
+        return `${metricToDecimal(value)}%`
+    }
+
+    return metricToDecimal(value)
 }
 
 export type MetricTrendFormat = 'decimal' | 'duration' | 'percent'

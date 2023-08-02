@@ -7,7 +7,7 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
-import {formatMetricValue, NOT_AVAILABLE_TEXT} from 'pages/stats/common/utils'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
 
 export const PercentageOfClosedTicketsCellContent = ({
@@ -38,11 +38,6 @@ export const PercentageOfClosedTicketsCellContent = ({
         metricValue = (closedTicketsPerAgent.data?.value / data?.value) * 100
     }
 
-    const percentageMetricValue =
-        formatMetricValue(metricValue) !== NOT_AVAILABLE_TEXT
-            ? `${formatMetricValue(metricValue)}%`
-            : formatMetricValue(metricValue)
-
     return (
         <BodyCellContent>
             {isFetching ||
@@ -50,7 +45,7 @@ export const PercentageOfClosedTicketsCellContent = ({
             isMetricLoading ? (
                 <Skeleton inline />
             ) : (
-                percentageMetricValue
+                formatMetricValue(metricValue, 'percentage')
             )}
         </BodyCellContent>
     )

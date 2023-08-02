@@ -3,6 +3,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
 import {initialState} from 'state/stats/reducers'
@@ -45,7 +46,9 @@ describe('<ClosedTicketsCellSummary>', () => {
             </Provider>
         )
 
-        expect(screen.getByText(closedTicketsValue)).toBeInTheDocument()
+        expect(
+            screen.getByText(formatMetricValue(closedTicketsValue))
+        ).toBeInTheDocument()
     })
 
     it('should render skeleton when fetching', () => {
