@@ -3,11 +3,6 @@ import {fromJS, Map, List} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import randomstring from 'randomstring'
 
-import {
-    mockDevelopmentEnvironment,
-    mockProductionEnvironment,
-    mockStagingEnvironment,
-} from 'utils/testing'
 import * as utils from '../utils'
 import schemasJSON from '../fixtures/openapi.json'
 import {
@@ -1065,64 +1060,6 @@ describe('global utils', () => {
             const event = new MouseEvent('mousemove')
 
             expect(utils.isTouchEvent(event)).toEqual(false)
-        })
-    })
-
-    describe('hasModernTheme()', () => {
-        it('should return false for production environment', () => {
-            mockProductionEnvironment()
-
-            expect(
-                utils.hasModernTheme(
-                    fromJS({
-                        domain: 'non-impacted',
-                    })
-                )
-            ).toEqual(false)
-        })
-
-        it('should return true for targeted helpdesk', () => {
-            expect(
-                utils.hasModernTheme(
-                    fromJS({
-                        domain: 'artemisathletix',
-                    })
-                )
-            ).toEqual(true)
-        })
-
-        it('should return true for gorgias helpdesk', () => {
-            expect(
-                utils.hasModernTheme(
-                    fromJS({
-                        domain: 'gorgias',
-                    })
-                )
-            ).toEqual(true)
-        })
-
-        it('should return true for staging environment', () => {
-            mockStagingEnvironment()
-
-            expect(
-                utils.hasModernTheme(
-                    fromJS({
-                        domain: 'a-random-domain',
-                    })
-                )
-            ).toEqual(true)
-        })
-
-        it('should return true for development environment', () => {
-            mockDevelopmentEnvironment()
-
-            expect(
-                utils.hasModernTheme(
-                    fromJS({
-                        domain: 'a-random-domain',
-                    })
-                )
-            ).toEqual(true)
         })
     })
 })

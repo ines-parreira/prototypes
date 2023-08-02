@@ -34,7 +34,6 @@ import {CollectionOperator, EqualityOperator} from 'state/rules/types'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {handle2FAEnforced} from 'state/currentUser/actions'
-import {hasModernTheme} from 'utils'
 
 import css from './App.less'
 import BannerNotifications from './common/components/BannerNotifications/BannerNotifications'
@@ -70,13 +69,7 @@ class App extends React.Component<Props, State> {
     appRef = createRef<HTMLDivElement>()
 
     state: State = {
-        theme: 'classic',
-    }
-
-    componentWillMount() {
-        if (hasModernTheme(this.props.currentAccount)) {
-            this.setState({theme: 'modern'})
-        }
+        theme: 'modern',
     }
 
     componentDidMount() {
