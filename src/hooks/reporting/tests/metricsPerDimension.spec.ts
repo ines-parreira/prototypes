@@ -19,6 +19,7 @@ import {NotSpamNorTrashedTicketsFilter} from 'hooks/reporting/metricTrends'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {
+    HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
     ReportingFilterOperator,
@@ -58,7 +59,7 @@ describe('metricsPerDimension', () => {
                     timezone
                 )
             ).toEqual({
-                dimensions: [TicketDimension.AssigneeUserId],
+                dimensions: [TicketMember.FirstHelpdeskMessageUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     {
@@ -111,7 +112,7 @@ describe('metricsPerDimension', () => {
                     sorting
                 )
             ).toEqual({
-                dimensions: [TicketDimension.AssigneeUserId],
+                dimensions: [TicketMember.FirstHelpdeskMessageUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     {
@@ -190,7 +191,7 @@ describe('metricsPerDimension', () => {
             expect(
                 ticketsRepliedMetricPerAgentQueryFactory(statsFilters, timezone)
             ).toEqual({
-                dimensions: [TicketDimension.AssigneeUserId],
+                dimensions: [HelpdeskMessageDimension.SenderId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     {
@@ -252,7 +253,7 @@ describe('metricsPerDimension', () => {
                     sorting
                 )
             ).toEqual({
-                dimensions: [TicketDimension.AssigneeUserId],
+                dimensions: [HelpdeskMessageDimension.SenderId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     {
@@ -458,7 +459,7 @@ describe('metricsPerDimension', () => {
             expect(
                 messagesSentMetricPerAgentQueryFactory(statsFilters, timezone)
             ).toEqual({
-                dimensions: [TicketDimension.AssigneeUserId],
+                dimensions: [HelpdeskMessageDimension.SenderId],
                 filters: [
                     {
                         member: TicketMember.PeriodEnd,
@@ -514,7 +515,7 @@ describe('metricsPerDimension', () => {
                     sorting
                 )
             ).toEqual({
-                dimensions: [TicketDimension.AssigneeUserId],
+                dimensions: [HelpdeskMessageDimension.SenderId],
                 filters: [
                     {
                         member: TicketMember.PeriodEnd,

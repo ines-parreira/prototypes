@@ -22,6 +22,7 @@ export enum TicketDimension {
     ClosedDatetime = 'Ticket.closedDatetime',
     AssigneeUserId = 'Ticket.assigneeUserId',
     FirstMessageChannel = 'TicketMessages.firstMessageChannel',
+    FirstHelpdeskMessageUserId = 'TicketMessages.firstHelpdeskMessageUserId',
 }
 
 export enum TicketSegment {

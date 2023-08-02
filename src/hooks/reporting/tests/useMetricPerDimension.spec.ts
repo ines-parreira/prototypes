@@ -32,7 +32,7 @@ describe('useMetricPerDimension.spec.ts', () => {
         isError: false,
         data: [
             {
-                [TicketDimension.AssigneeUserId]: agentId,
+                [TicketDimension.FirstHelpdeskMessageUserId]: agentId,
                 [TicketMeasure.FirstResponseTime]: String(metricValue),
             },
         ],

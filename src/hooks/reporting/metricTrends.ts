@@ -63,8 +63,8 @@ export const firstResponseTimeQueryFactory = (
             member: TicketMember.FirstHelpdeskMessageDatetime,
             operator: ReportingFilterOperator.InDateRange,
             values: [
-                statsFilters.period.start_datetime,
-                statsFilters.period.end_datetime,
+                formatReportingQueryDate(statsFilters.period.start_datetime),
+                formatReportingQueryDate(statsFilters.period.end_datetime),
             ],
         },
     ]
