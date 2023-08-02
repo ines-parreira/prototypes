@@ -13,7 +13,7 @@ import {opposite} from 'models/api/types'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {
-    selectAgentSorting,
+    getAgentSorting,
     sortingLoaded,
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
@@ -26,7 +26,7 @@ export const useSortingQueries = (column: TableColumn) => {
 
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
 
-    const sorting = useAppSelector(selectAgentSorting)
+    const sorting = useAppSelector(getAgentSorting)
     const {isFetching: frtIsFetching, data: frtData} =
         useFirstResponseTimeMetricPerAgent(
             pageStatsFilters,

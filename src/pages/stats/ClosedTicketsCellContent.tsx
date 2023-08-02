@@ -6,14 +6,14 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
-import {selectSortingMetricIsLoading} from 'state/ui/stats/agentPerformanceSlice'
+import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
 
 export const ClosedTicketsCellContent = ({agentId}: {agentId: number}) => {
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    const isSortingMetricLoading = useAppSelector(selectSortingMetricIsLoading)
+    const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useClosedTicketsMetricPerAgent(
         pageStatsFilters,
         userTimezone,
@@ -24,11 +24,7 @@ export const ClosedTicketsCellContent = ({agentId}: {agentId: number}) => {
 
     return (
         <BodyCellContent>
-            {isFetching || isSortingMetricLoading ? (
-                <Skeleton inline />
-            ) : (
-                metricValue
-            )}
+            {isFetching || isMetricLoading ? <Skeleton inline /> : metricValue}
         </BodyCellContent>
     )
 }

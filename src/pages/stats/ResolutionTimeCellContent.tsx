@@ -6,7 +6,7 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
-import {selectSortingMetricIsLoading} from 'state/ui/stats/agentPerformanceSlice'
+import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
 import {formatDuration} from './common/utils'
 
 export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
@@ -14,7 +14,7 @@ export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    const isSortingMetricLoading = useAppSelector(selectSortingMetricIsLoading)
+    const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useResolutionTimeMetricPerAgent(
         pageStatsFilters,
         userTimezone,
@@ -25,7 +25,7 @@ export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
 
     return (
         <BodyCellContent>
-            {isFetching || isSortingMetricLoading ? (
+            {isFetching || isMetricLoading ? (
                 <Skeleton inline />
             ) : (
                 metricValue && formatDuration(metricValue, 2)

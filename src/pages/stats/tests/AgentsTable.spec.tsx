@@ -1,4 +1,5 @@
-import {render, screen} from '@testing-library/react'
+import {act, render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
@@ -22,14 +23,27 @@ import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {AgentsTable} from 'pages/stats/AgentsTable'
-import {selectSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {
+    pageSet,
+    getPaginatedAgents,
+    getSortedAgents,
+} from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
 import {agents} from 'fixtures/agents'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('state/ui/stats/agentPerformanceSlice')
-const selectSortedAgentsMock = assumeMock(selectSortedAgents)
+jest.mock(
+    'state/ui/stats/agentPerformanceSlice',
+    () =>
+        ({
+            ...jest.requireActual('state/ui/stats/agentPerformanceSlice'),
+            getSortedAgents: jest.fn(),
+            getPaginatedAgents: jest.fn(),
+        } as Record<string, any>)
+)
+const getSortedAgentsMock = assumeMock(getSortedAgents)
+const getPaginatedAgentsMock = assumeMock(getPaginatedAgents)
 
 jest.mock('pages/stats/FirstResponseTimeCellContent.tsx')
 const FirstResponseTimeCellContentMock = assumeMock(
@@ -82,7 +96,14 @@ const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
 const cellMock = () => <div />
 
 describe('<AgentTable>', () => {
-    selectSortedAgentsMock.mockReturnValue(agents)
+    const currentPage = 2
+    getSortedAgentsMock.mockReturnValue(agents)
+    const paginatedAgents = agents.slice(1)
+    getPaginatedAgentsMock.mockReturnValue({
+        agents: paginatedAgents,
+        currentPage,
+        perPage: 1,
+    })
     const metricCells = [
         FirstResponseTimeCellContentMock,
         TicketsRepliedCellContentMock,
@@ -130,7 +151,7 @@ describe('<AgentTable>', () => {
         metricCells.forEach((metricCell) => {
             expect(metricCell).toHaveBeenCalledWith(
                 {
-                    agentId: agents[0].id,
+                    agentId: paginatedAgents[0].id,
                 },
                 {}
             )
@@ -144,5 +165,55 @@ describe('<AgentTable>', () => {
             </Provider>
         )
         expect(screen.getByText('Average')).toBeInTheDocument()
+    })
+
+    describe('Pagination', () => {
+        it('should render if there are more agents then perPage', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <AgentsTable />
+                </Provider>
+            )
+
+            expect(screen.getByText(currentPage)).toBeInTheDocument()
+        })
+
+        it('should not render if less agent then perPage', () => {
+            getPaginatedAgentsMock.mockReturnValue({
+                agents,
+                currentPage: 1,
+                perPage: agents.length + 1,
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <AgentsTable />
+                </Provider>
+            )
+
+            expect(screen.queryByText(currentPage)).not.toBeInTheDocument()
+        })
+
+        it('should dispatch pageSet action on click', () => {
+            const store = mockStore({})
+            const pageToClick = currentPage - 1
+            getPaginatedAgentsMock.mockReturnValue({
+                agents,
+                currentPage,
+                perPage: 1,
+            })
+
+            render(
+                <Provider store={store}>
+                    <AgentsTable />
+                </Provider>
+            )
+            act(() => {
+                const pageButton = screen.getByText(pageToClick)
+                userEvent.click(pageButton)
+            })
+
+            expect(store.getActions()).toContainEqual(pageSet(pageToClick))
+        })
     })
 })

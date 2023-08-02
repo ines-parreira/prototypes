@@ -18,8 +18,14 @@ type MetricData = {
 }[]
 
 export type AgentPerformanceState = {
-    sorting: AgentPerformanceSorting & {isLoading: boolean}
-    lastSortingMetric: null | MetricData
+    sorting: AgentPerformanceSorting & {
+        isLoading: boolean
+        lastSortingMetric: null | MetricData
+    }
+    pagination: {
+        currentPage: number
+        perPage: number
+    }
 }
 
 export const initialState: AgentPerformanceState = {
@@ -27,8 +33,12 @@ export const initialState: AgentPerformanceState = {
         field: TableColumn.AgentName,
         direction: OrderDirection.Asc,
         isLoading: false,
+        lastSortingMetric: null,
     },
-    lastSortingMetric: null,
+    pagination: {
+        currentPage: 1,
+        perPage: 25,
+    },
 }
 
 export const agentPerformanceSlice = createSlice({
@@ -36,33 +46,42 @@ export const agentPerformanceSlice = createSlice({
     initialState,
     reducers: {
         sortingSet(state, action: PayloadAction<AgentPerformanceSorting>) {
-            state.sorting = {...action.payload, isLoading: true}
+            state.sorting.field = action.payload.field
+            state.sorting.direction = action.payload.direction
+            state.sorting.isLoading = true
         },
         sortingLoaded(state, action: PayloadAction<MetricData | null>) {
             state.sorting.isLoading = false
-            state.lastSortingMetric = action.payload
+            state.sorting.lastSortingMetric = action.payload
+        },
+        pageSet(state, action: PayloadAction<number>) {
+            if (action.payload < 1) {
+                state.pagination.currentPage = 1
+            } else {
+                state.pagination.currentPage = action.payload
+            }
         },
     },
 })
 
-export const {sortingSet, sortingLoaded} = agentPerformanceSlice.actions
+export const {sortingSet, sortingLoaded, pageSet} =
+    agentPerformanceSlice.actions
 
-export const selectAgentPerformance = (state: RootState) =>
-    state.ui[agentPerformanceSlice.name]
-
-export const selectAgentSorting = (state: RootState) =>
+export const getAgentSorting = (state: RootState) =>
     state.ui[agentPerformanceSlice.name].sorting
 
-export const selectSortingMetricIsLoading = (state: RootState) =>
+export const isSortingMetricLoading = (state: RootState) =>
     state.ui[agentPerformanceSlice.name].sorting.isLoading
 
-export const selectSortedAgents = createSelector(
+export const getAgentsPagination = (state: RootState) =>
+    state.ui[agentPerformanceSlice.name].pagination
+
+export const getSortedAgents = createSelector(
     getAgentsJS,
-    selectAgentPerformance,
-    (agentsList, {sorting, lastSortingMetric}) => {
+    getAgentSorting,
+    (agentsList, {direction, field, lastSortingMetric}) => {
         const agents = agentsList
-        const metricName =
-            sorting.field !== TableColumn.AgentName ? sorting.field : null
+        const metricName = field !== TableColumn.AgentName ? field : null
 
         if (metricName && lastSortingMetric) {
             const sortedAgents: User[] = []
@@ -81,8 +100,22 @@ export const selectSortedAgents = createSelector(
             return [...sortedAgents, ...noDataAgents]
         }
         const sortedAgents = agents.sort(getSortByName)
-        return sorting.direction === OrderDirection.Asc
+        return direction === OrderDirection.Asc
             ? sortedAgents
             : [...sortedAgents].reverse()
+    }
+)
+
+export const getPaginatedAgents = createSelector(
+    getSortedAgents,
+    getAgentsPagination,
+    (agents, {currentPage, perPage}) => {
+        const startingItem = (currentPage - 1) * perPage
+        const lastItem = Math.min(startingItem + perPage, agents.length)
+        return {
+            agents: agents.slice(startingItem, lastItem),
+            currentPage,
+            perPage,
+        }
     }
 )

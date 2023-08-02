@@ -8,19 +8,48 @@ import {OrderDirection} from 'models/api/types'
 import {
     initialState,
     agentPerformanceSlice,
-    selectAgentSorting,
+    getAgentSorting,
     sortingSet,
     sortingLoaded,
-    selectSortedAgents,
-    selectSortingMetricIsLoading,
+    getSortedAgents,
+    isSortingMetricLoading,
+    getPaginatedAgents,
+    pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {RootState} from 'state/types'
 import {TableColumn} from 'state/ui/stats/types'
+import {getSortByName} from 'utils/getSortByName'
 
 describe('agentPerformanceSlice', () => {
     const agents = [
         {id: 1, name: 'Adam'},
         {id: 2, name: 'Zoey'},
+        {id: 3, name: 'Betty'},
+        {id: 4, name: 'Jim'},
+        {id: 5, name: 'Barbie'},
+    ]
+
+    const metricData = [
+        {
+            [TicketMember.AssigneeUserId]: '5',
+            [TicketMeasure.FirstResponseTime]: '25',
+        },
+        {
+            [TicketMember.AssigneeUserId]: '4',
+            [TicketMeasure.FirstResponseTime]: '20',
+        },
+        {
+            [TicketMember.AssigneeUserId]: '3',
+            [TicketMeasure.FirstResponseTime]: '15',
+        },
+        {
+            [TicketMember.AssigneeUserId]: '2',
+            [TicketMeasure.FirstResponseTime]: '10',
+        },
+        {
+            [TicketMember.AssigneeUserId]: '1',
+            [TicketMeasure.FirstResponseTime]: '5',
+        },
     ]
 
     describe('reducers', () => {
@@ -37,16 +66,17 @@ describe('agentPerformanceSlice', () => {
                 field: TableColumn.ClosedTickets,
                 direction: OrderDirection.Desc,
                 isLoading: true,
+                lastSortingMetric: null,
             })
         })
 
         it('should keep lastSortingMetric and disable isLoading on sortingLoaded action', () => {
             const loadingState = {
+                ...initialState,
                 sorting: {
                     ...initialState.sorting,
                     isLoading: true,
                 },
-                lastSortingMetric: null,
             }
             const metricData = [
                 {
@@ -61,9 +91,37 @@ describe('agentPerformanceSlice', () => {
             )
 
             expect(newState).toEqual({
-                sorting: {...initialState.sorting, isLoading: false},
-                lastSortingMetric: metricData,
+                ...initialState,
+                sorting: {
+                    ...initialState.sorting,
+                    isLoading: false,
+                    lastSortingMetric: metricData,
+                },
             })
+        })
+
+        it('should set the page', () => {
+            const page = 4
+
+            const newState = agentPerformanceSlice.reducer(
+                initialState,
+                pageSet(page)
+            )
+
+            expect(newState.pagination.currentPage).toEqual(page)
+        })
+
+        it('should set the page to 1 if less then 1 given', () => {
+            const page = -2
+
+            const newState = agentPerformanceSlice.reducer(
+                initialState,
+                pageSet(page)
+            )
+
+            expect(newState.pagination.currentPage).toEqual(
+                initialState.pagination.currentPage
+            )
         })
     })
 
@@ -73,7 +131,7 @@ describe('agentPerformanceSlice', () => {
                 ui: {[agentPerformanceSlice.name]: initialState},
             } as RootState
 
-            expect(selectAgentSorting(state)).toEqual(initialState.sorting)
+            expect(getAgentSorting(state)).toEqual(initialState.sorting)
         })
     })
 
@@ -83,20 +141,20 @@ describe('agentPerformanceSlice', () => {
                 ui: {[agentPerformanceSlice.name]: initialState},
             } as RootState
 
-            expect(selectSortingMetricIsLoading(state)).toEqual(
+            expect(isSortingMetricLoading(state)).toEqual(
                 initialState.sorting.isLoading
             )
         })
     })
 
     describe('selectSortedAgents', () => {
-        it('should return agents if no sorting metric is declared', () => {
+        it('should return agents sorted alphabetically if no sorting metric is declared', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {[agentPerformanceSlice.name]: initialState},
             } as RootState
 
-            expect(selectSortedAgents(state)).toEqual(agents)
+            expect(getSortedAgents(state)).toEqual(agents.sort(getSortByName))
         })
 
         it('should return agents in descending order', () => {
@@ -105,57 +163,58 @@ describe('agentPerformanceSlice', () => {
                 ui: {
                     [agentPerformanceSlice.name]: {
                         sorting: {
-                            field: TableColumn.AgentName,
+                            ...initialState.sorting,
                             direction: OrderDirection.Desc,
-                            isLoading: false,
                         },
-                        lastSortingMetric: null,
                     },
                 },
             } as RootState
 
-            expect(selectSortedAgents(state)).toEqual([...agents].reverse())
+            expect(getSortedAgents(state)).toEqual(
+                [...agents.sort(getSortByName)].reverse()
+            )
         })
 
-        it('should return agents if no sorting metric is declared', () => {
+        it('should return agents in alphabetical order if no sorting metric is declared', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {[agentPerformanceSlice.name]: initialState},
             } as RootState
 
-            expect(selectSortedAgents(state)).toEqual(agents)
+            expect(getSortedAgents(state)).toEqual(agents.sort(getSortByName))
         })
 
         it('should return agents sorted by selected metric', () => {
-            const metricData = [
-                {
-                    [TicketMember.AssigneeUserId]: '2',
-                    [TicketMeasure.FirstResponseTime]: '10',
-                },
-                {
-                    [TicketMember.AssigneeUserId]: '1',
-                    [TicketMeasure.FirstResponseTime]: '5',
-                },
-            ]
-
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     [agentPerformanceSlice.name]: {
                         sorting: {
-                            field: TableColumn.ClosedTickets,
+                            field: TableColumn.FirstResponseTime,
                             direction: OrderDirection.Desc,
                             isLoading: false,
+                            lastSortingMetric: metricData,
                         },
-                        lastSortingMetric: metricData,
                     },
                 },
             } as RootState
 
-            expect(selectSortedAgents(state)).toEqual([agents[1], agents[0]])
+            expect(getSortedAgents(state)).toEqual(
+                metricData.map((metric) =>
+                    agents.find(
+                        (agent) =>
+                            String(agent.id) ===
+                            metric[TicketMember.AssigneeUserId]
+                    )
+                )
+            )
         })
 
         it('should return agents with no data last', () => {
+            const agents = [
+                {id: 1, name: 'Adam'},
+                {id: 2, name: 'Zoey'},
+            ]
             const metricData = [
                 {
                     [TicketMember.AssigneeUserId]: '2',
@@ -171,13 +230,42 @@ describe('agentPerformanceSlice', () => {
                             field: TableColumn.ClosedTickets,
                             direction: OrderDirection.Desc,
                             isLoading: false,
+                            lastSortingMetric: metricData,
                         },
-                        lastSortingMetric: metricData,
                     },
                 },
             } as RootState
 
-            expect(selectSortedAgents(state).pop()).toEqual(agents[0])
+            expect(getSortedAgents(state).pop()).toEqual(agents[0])
+        })
+    })
+
+    describe('selectPaginatedAgents', () => {
+        it('should return agents for current page with currentPage and perPage settings', () => {
+            const currentPage = 2
+            const perPage = 2
+
+            const state = {
+                agents: fromJS({all: fromJS(agents)}),
+                ui: {
+                    [agentPerformanceSlice.name]: {
+                        sorting: initialState.sorting,
+                        pagination: {
+                            currentPage,
+                            perPage,
+                        },
+                    },
+                },
+            } as RootState
+
+            expect(getPaginatedAgents(state)).toEqual({
+                agents: agents.slice(
+                    (currentPage - 1) * perPage,
+                    currentPage * perPage
+                ),
+                currentPage: currentPage,
+                perPage: perPage,
+            })
         })
     })
 })

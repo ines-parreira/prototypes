@@ -8,7 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {formatMetricValue, NOT_AVAILABLE_TEXT} from 'pages/stats/common/utils'
-import {selectSortingMetricIsLoading} from 'state/ui/stats/agentPerformanceSlice'
+import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
 
 export const PercentageOfClosedTicketsCellContent = ({
     agentId,
@@ -19,7 +19,7 @@ export const PercentageOfClosedTicketsCellContent = ({
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    const isSortingMetricLoading = useAppSelector(selectSortingMetricIsLoading)
+    const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const closedTicketsPerAgent = useClosedTicketsMetricPerAgent(
         pageStatsFilters,
         userTimezone,
@@ -47,7 +47,7 @@ export const PercentageOfClosedTicketsCellContent = ({
         <BodyCellContent>
             {isFetching ||
             closedTicketsPerAgent.isFetching ||
-            isSortingMetricLoading ? (
+            isMetricLoading ? (
                 <Skeleton inline />
             ) : (
                 percentageMetricValue

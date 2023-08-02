@@ -1,4 +1,6 @@
 import React from 'react'
+import {useDispatch} from 'react-redux'
+import {NumberedPagination} from 'pages/common/components/Paginations'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
@@ -25,7 +27,11 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import useAppSelector from 'hooks/useAppSelector'
-import {selectSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {
+    pageSet,
+    getPaginatedAgents,
+    getSortedAgents,
+} from 'state/ui/stats/agentPerformanceSlice'
 import {User} from 'config/types/user'
 import {TableColumn} from 'state/ui/stats/types'
 
@@ -49,8 +55,6 @@ const getCell = (
             return AgentCellContent
         case TableColumn.ResolutionTime:
             return ResolutionTimeCellContent
-        default:
-            return AgentCellContent
     }
 }
 
@@ -77,7 +81,16 @@ const getSummaryCell = (column: TableColumn): React.FC => {
 }
 
 export const AgentsTable = () => {
-    const agents = useAppSelector<Pick<User, 'id'>[]>(selectSortedAgents)
+    const agents = useAppSelector<Pick<User, 'id'>[]>(getSortedAgents)
+    const {
+        currentPage,
+        perPage,
+        agents: paginatedAgents,
+    } = useAppSelector(getPaginatedAgents)
+    const dispatch = useDispatch()
+    const onPageChangeCallback = (page: number) => {
+        dispatch(pageSet(page))
+    }
 
     return (
         <div>
@@ -99,7 +112,7 @@ export const AgentsTable = () => {
                             </BodyCell>
                         ))}
                     </TableBodyRow>
-                    {agents.map((agent) => (
+                    {paginatedAgents.map((agent) => (
                         <TableBodyRow key={agent.id}>
                             {TableColumnsOrder.map((column) => (
                                 <BodyCell key={column}>
@@ -113,6 +126,13 @@ export const AgentsTable = () => {
                     ))}
                 </TableBody>
             </TableWrapper>
+            {agents.length >= perPage && (
+                <NumberedPagination
+                    count={Math.ceil(agents.length / perPage)}
+                    page={currentPage}
+                    onChange={onPageChangeCallback}
+                />
+            )}
         </div>
     )
 }
