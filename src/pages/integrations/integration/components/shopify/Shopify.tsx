@@ -89,7 +89,9 @@ function Shopify({integration, integrations, loading, redirectUri}: Props) {
                         )}
                     </Breadcrumb>
                 }
-            />
+            >
+                {isConnections && CTA}
+            </PageHeader>
 
             {isIntegration ? (
                 isNew ? (

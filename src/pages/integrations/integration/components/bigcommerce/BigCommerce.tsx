@@ -86,7 +86,9 @@ function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
                         )}
                     </Breadcrumb>
                 }
-            />
+            >
+                {isConnections && CTA}
+            </PageHeader>
 
             {isIntegration ? (
                 <Integration
@@ -106,12 +108,7 @@ function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
                     {!isConnections ? (
                         <Detail {...detailProps} />
                     ) : (
-                        <List
-                            integrations={integrations}
-                            loading={loading}
-                            redirectUri={redirectUri}
-                            {...connectProps}
-                        />
+                        <List integrations={integrations} loading={loading} />
                     )}
                 </>
             )}

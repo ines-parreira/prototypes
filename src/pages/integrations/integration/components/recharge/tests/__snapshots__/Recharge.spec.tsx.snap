@@ -464,6 +464,21 @@ exports[`<Recharge/> List should render 1`] = `
         </li>
       </ol>
     </nav>
+    <div>
+      <a
+        class="connectButtonWrapper"
+        to="/app/settings/integrations/recharge/new"
+      >
+        <button
+          aria-disabled="false"
+          class="wrapper fill primary medium"
+          type="button"
+        >
+          Connect 
+          recharge
+        </button>
+      </a>
+    </div>
   </div>
   <nav
     class="navbar navbar"
@@ -506,30 +521,5 @@ exports[`<Recharge/> List should render 1`] = `
       </a>
     </li>
   </ul>
-  <div
-    class="wrapper"
-  >
-    <a
-      class="connectButtonWrapper"
-      to="/app/settings/integrations/recharge/new"
-    >
-      <button
-        aria-disabled="false"
-        class="wrapper fill primary medium"
-        type="button"
-      >
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft medium"
-          >
-            add
-          </i>
-          Connect Recharge
-        </span>
-      </button>
-    </a>
-  </div>
 </div>
 `;

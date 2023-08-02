@@ -116,7 +116,9 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
                         )}
                     </Breadcrumb>
                 }
-            />
+            >
+                {isConnections && CTA}
+            </PageHeader>
 
             {isIntegration ? (
                 <Integration

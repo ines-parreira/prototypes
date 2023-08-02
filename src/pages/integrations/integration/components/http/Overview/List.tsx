@@ -11,19 +11,14 @@ import {
     activateIntegration,
     deactivateIntegration,
 } from 'state/integrations/actions'
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {HttpIntegration} from 'models/integration/types'
 import {IntegrationType} from 'models/integration/constants'
 
 import NoIntegration from '../../NoIntegration'
-import {BASE_PATH, NEW_INTEGRATION_PATH} from '../constants'
+import {BASE_PATH} from '../constants'
 import css from './List.less'
-
-const httpConfig = getIntegrationConfig(IntegrationType.Http)
 
 function List() {
     const loading = useAppSelector(getIntegrationsLoading)
@@ -90,14 +85,6 @@ function List() {
                     <NoIntegration />
                 </div>
             )}
-            <div className={css.wrapper}>
-                <ConnectLink
-                    connectUrl={`${BASE_PATH}/${NEW_INTEGRATION_PATH}`}
-                    integrationTitle={IntegrationType.Http}
-                >
-                    <Button>Add {httpConfig?.title}</Button>
-                </ConnectLink>
-            </div>
         </>
     )
 }

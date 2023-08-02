@@ -13,21 +13,15 @@ const httpConfig = getIntegrationConfig(IntegrationType.Http)
 function Details() {
     if (!httpConfig) return null
 
-    const connectProps = {
-        connectUrl: `${BASE_PATH}/${NEW_INTEGRATION_PATH}`,
-        isExternalConnectUrl: false,
-    }
-
     const detailProps = mapAppToDetail(httpConfig)
-    const CTA = (
+    detailProps.infocard.CTA = (
         <ConnectLink
-            connectUrl={connectProps.connectUrl}
+            connectUrl={`${BASE_PATH}/${NEW_INTEGRATION_PATH}`}
             integrationTitle={httpConfig.title}
         >
             <Button>Add {httpConfig.title}</Button>
         </ConnectLink>
     )
-    detailProps.infocard.CTA = CTA
 
     return <RootDetails {...detailProps} />
 }

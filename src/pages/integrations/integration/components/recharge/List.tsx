@@ -2,12 +2,8 @@ import React from 'react'
 import {List as ImmutableList, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
-import {Props as BannerProps} from 'pages/common/components/BannerNotifications/BannerNotification'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
-import {IntegrationType} from 'models/integration/types'
 
 import NoIntegration from '../NoIntegration'
 import css from './List.less'
@@ -16,21 +12,9 @@ type Props = {
     integrations: ImmutableList<Map<any, any>>
     loading: Map<any, any>
     redirectUri: string
-    connectUrl: string
-    isExternalConnectUrl: boolean
-    notification?: BannerProps
-    isConnectionDisabled?: boolean
 }
 
-function List({
-    integrations,
-    loading,
-    redirectUri,
-    connectUrl,
-    isExternalConnectUrl,
-    isConnectionDisabled = false,
-    notification,
-}: Props) {
+function List({integrations, loading, redirectUri}: Props) {
     if (loading.get('integrations', false)) {
         return <Loader />
     }
@@ -87,23 +71,6 @@ function List({
                     <NoIntegration />
                 </div>
             )}
-            <div className={css.wrapper}>
-                <ConnectLink
-                    connectUrl={connectUrl}
-                    isExternal={isExternalConnectUrl}
-                    isDisabled={isConnectionDisabled}
-                    integrationTitle={IntegrationType.Recharge}
-                    disabledMessage={
-                        (isConnectionDisabled && notification?.message) || ''
-                    }
-                >
-                    <Button isDisabled={isConnectionDisabled}>
-                        <ButtonIconLabel icon="add">
-                            Connect Recharge
-                        </ButtonIconLabel>
-                    </Button>
-                </ConnectLink>
-            </div>
         </>
     )
 }

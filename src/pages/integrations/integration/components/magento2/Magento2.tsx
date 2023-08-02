@@ -69,18 +69,23 @@ function Magento2({integration, integrations, loading, redirectUri}: Props) {
     }
 
     const detailProps = mapAppToDetail(magento2Config)
+
+    const connectLink = (
+        <ConnectLink
+            connectUrl={connectProps.connectUrl}
+            isExternal={connectProps.isExternalConnectUrl}
+            isDisabled={connectProps.isConnectionDisabled}
+            integrationTitle={IntegrationType.Magento2}
+        >
+            <Button isDisabled={connectProps.isConnectionDisabled}>
+                Connect {IntegrationType.Magento2}
+            </Button>
+        </ConnectLink>
+    )
+
     const CTA = (
         <>
-            <ConnectLink
-                connectUrl={connectProps.connectUrl}
-                isExternal={connectProps.isExternalConnectUrl}
-                isDisabled={connectProps.isConnectionDisabled}
-                integrationTitle={IntegrationType.Magento2}
-            >
-                <Button isDisabled={connectProps.isConnectionDisabled}>
-                    Connect {IntegrationType.Magento2}
-                </Button>
-            </ConnectLink>
+            {connectLink}
             {connectProps.isConnectionDisabled && (
                 <div className={css.disabledConnectionNotification}>
                     App is not available on your current plan.{' '}
@@ -130,7 +135,9 @@ function Magento2({integration, integrations, loading, redirectUri}: Props) {
                         )}
                     </Breadcrumb>
                 }
-            />
+            >
+                {isConnections && connectLink}
+            </PageHeader>
 
             {isIntegration ? (
                 isNew ? (
@@ -164,7 +171,6 @@ function Magento2({integration, integrations, loading, redirectUri}: Props) {
                             integrations={integrations}
                             loading={loading}
                             redirectUri={redirectUri}
-                            {...connectProps}
                         />
                     )}
                 </>
