@@ -3,13 +3,11 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {HelpdeskMessageMeasure, TicketDimension} from 'models/reporting/types'
-import {useMessagesSentMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useMessagesSentMetric} from 'hooks/reporting/metrics'
 import {formatMetricValue} from 'pages/stats/common/utils'
-import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
+import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -18,45 +16,31 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metricsPerDimension')
-const useMessagesSentMetricPerAgentMock = assumeMock(
-    useMessagesSentMetricPerAgent
-)
+jest.mock('hooks/reporting/metrics')
+const useMessagesSentMetricMock = assumeMock(useMessagesSentMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('<MessagesSentCellContent>', () => {
-    const agentId = 123
+describe('<MessagesSentCellSummary>', () => {
     const messagesSentValue = 1234
 
     const defaultState = {
         stats: initialState,
-        ui: {
-            agentPerformance: agentPerformanceInitialState,
-        },
     } as RootState
 
-    const useMessagesSentMetricPerAgentReturnValue = {
+    const useMessagesSentMetricReturnValue = {
         data: {
             value: messagesSentValue,
-            allData: [
-                {
-                    [HelpdeskMessageMeasure.MessageCount]: messagesSentValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
-                },
-            ],
         },
         isFetching: false,
         isError: false,
     }
 
-    useMessagesSentMetricPerAgentMock.mockReturnValue(
-        useMessagesSentMetricPerAgentReturnValue
-    )
+    useMessagesSentMetricMock.mockReturnValue(useMessagesSentMetricReturnValue)
 
     it('should render value as decimal', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <MessagesSentCellContent agentId={agentId} />
+                <MessagesSentCellSummary />
             </Provider>
         )
 
@@ -66,13 +50,13 @@ describe('<MessagesSentCellContent>', () => {
     })
 
     it('should render skeleton when fetching', () => {
-        useMessagesSentMetricPerAgentMock.mockReturnValue({
-            ...useMessagesSentMetricPerAgentReturnValue,
+        useMessagesSentMetricMock.mockReturnValue({
+            ...useMessagesSentMetricReturnValue,
             isFetching: true,
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <MessagesSentCellContent agentId={agentId} />
+                <MessagesSentCellSummary />
             </Provider>
         )
 

@@ -3,12 +3,10 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {TicketDimension, TicketMeasure} from 'models/reporting/types'
-import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
+import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
+import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -17,45 +15,33 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metricsPerDimension')
-const useClosedTicketsMetricPerAgentMock = assumeMock(
-    useClosedTicketsMetricPerAgent
-)
+jest.mock('hooks/reporting/metrics')
+const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('<ClosedTicketsCellContent>', () => {
-    const agentId = 123
+describe('<ClosedTicketsCellSummary>', () => {
     const closedTicketsValue = 1234
 
     const defaultState = {
         stats: initialState,
-        ui: {
-            agentPerformance: agentPerformanceInitialState,
-        },
     } as RootState
 
-    const useClosedTicketsMetricPerAgentMockReturnValue = {
+    const useClosedTicketsMetricMockReturnValue = {
         data: {
             value: closedTicketsValue,
-            allData: [
-                {
-                    [TicketMeasure.TicketCount]: closedTicketsValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
-                },
-            ],
         },
         isFetching: false,
         isError: false,
     }
 
-    useClosedTicketsMetricPerAgentMock.mockReturnValue(
-        useClosedTicketsMetricPerAgentMockReturnValue
+    useClosedTicketsMetricMock.mockReturnValue(
+        useClosedTicketsMetricMockReturnValue
     )
 
     it('should render value as decimal', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <ClosedTicketsCellContent agentId={agentId} />
+                <ClosedTicketsCellSummary />
             </Provider>
         )
 
@@ -63,13 +49,13 @@ describe('<ClosedTicketsCellContent>', () => {
     })
 
     it('should render skeleton when fetching', () => {
-        useClosedTicketsMetricPerAgentMock.mockReturnValue({
-            ...useClosedTicketsMetricPerAgentMockReturnValue,
+        useClosedTicketsMetricMock.mockReturnValue({
+            ...useClosedTicketsMetricMockReturnValue,
             isFetching: true,
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <ClosedTicketsCellContent agentId={agentId} />
+                <ClosedTicketsCellSummary />
             </Provider>
         )
 

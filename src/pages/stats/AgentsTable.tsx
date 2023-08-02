@@ -1,5 +1,4 @@
 import React from 'react'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
@@ -11,6 +10,15 @@ import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionC
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
 import {TableColumnsOrder} from 'pages/stats/TableConfig'
+import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
+import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
+import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
+import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
+import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
+import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
+import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
+import {SummaryCell} from 'pages/stats/SummaryCell'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -46,6 +54,28 @@ const getCell = (
     }
 }
 
+const getSummaryCell = (column: TableColumn): React.FC => {
+    switch (column) {
+        case TableColumn.RepliedTickets:
+            return TicketsRepliedCellSummary
+        case TableColumn.ClosedTickets:
+            return ClosedTicketsCellSummary
+        case TableColumn.PercentageOfClosedTickets:
+            return PercentageOfClosedTicketsCellSummary
+        case TableColumn.MessagesSent:
+            return MessagesSentCellSummary
+        case TableColumn.FirstResponseTime:
+            return FirstResponseTimeCellSummary
+        case TableColumn.CustomerSatisfaction:
+            return CustomerSatisfactionCellSummary
+        case TableColumn.ResolutionTime:
+            return ResolutionTimeCellSummary
+        case TableColumn.AgentName:
+        default:
+            return SummaryCell
+    }
+}
+
 export const AgentsTable = () => {
     const agents = useAppSelector<Pick<User, 'id'>[]>(selectSortedAgents)
 
@@ -60,6 +90,15 @@ export const AgentsTable = () => {
                     ))}
                 </TableHead>
                 <TableBody>
+                    <TableBodyRow>
+                        {TableColumnsOrder.map((column) => (
+                            <BodyCell key={column}>
+                                {React.createElement(getSummaryCell(column), {
+                                    key: `summary-${column}`,
+                                })}
+                            </BodyCell>
+                        ))}
+                    </TableBodyRow>
                     {agents.map((agent) => (
                         <TableBodyRow key={agent.id}>
                             {TableColumnsOrder.map((column) => (

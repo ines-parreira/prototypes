@@ -52,42 +52,47 @@ export const useCustomerSatisfactionTrend = createUseMetricTrend(
     customerSatisfactionQueryFactory
 )
 
-export const useFirstResponseTimeTrend = createUseMetricTrend(
-    (filters, timezone) => {
-        const {agents, ...statFiltersWithoutAgents} = filters
-        const commonFilters: ReportingFilter[] = [
-            ...NotSpamNorTrashedTicketsFilter,
-            {
-                member: TicketMember.FirstHelpdeskMessageDatetime,
-                operator: ReportingFilterOperator.InDateRange,
-                values: [
-                    filters.period.start_datetime,
-                    filters.period.end_datetime,
-                ],
-            },
-        ]
-        if (agents?.length) {
-            commonFilters.push({
-                member: TicketMember.FirstHelpdeskMessageUserId,
-                operator: ReportingFilterOperator.Equals,
-                values: agents.map((agent) => agent.toString()),
-            })
-        }
-
-        return {
-            measures: [TicketMeasure.FirstResponseTime],
-            dimensions: [],
-            timezone,
-            segments: [TicketSegment.ConversationStarted],
-            filters: [
-                ...commonFilters,
-                ...statsFiltersToReportingFilters(
-                    TicketStatsFiltersMembers,
-                    statFiltersWithoutAgents
-                ),
+export const firstResponseTimeQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+) => {
+    const {agents, ...statFiltersWithoutAgents} = statsFilters
+    const commonFilters: ReportingFilter[] = [
+        ...NotSpamNorTrashedTicketsFilter,
+        {
+            member: TicketMember.FirstHelpdeskMessageDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                statsFilters.period.start_datetime,
+                statsFilters.period.end_datetime,
             ],
-        }
+        },
+    ]
+    if (agents?.length) {
+        commonFilters.push({
+            member: TicketMember.FirstHelpdeskMessageUserId,
+            operator: ReportingFilterOperator.Equals,
+            values: agents.map((agent) => agent.toString()),
+        })
     }
+
+    return {
+        measures: [TicketMeasure.FirstResponseTime],
+        dimensions: [],
+        timezone,
+        segments: [TicketSegment.ConversationStarted],
+        filters: [
+            ...commonFilters,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                statFiltersWithoutAgents
+            ),
+        ],
+    }
+}
+
+export const useFirstResponseTimeTrend = createUseMetricTrend(
+    firstResponseTimeQueryFactory
 )
 
 export const useMessagesPerTicketTrend = createUseMetricTrend(

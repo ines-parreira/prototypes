@@ -3,15 +3,22 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 import {TableColumnsOrder} from 'pages/stats/TableConfig'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
+import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
 import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
+import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
+import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
+import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
+import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
+import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
+import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
+import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {AgentsTable} from 'pages/stats/AgentsTable'
@@ -46,6 +53,30 @@ jest.mock('pages/stats/PercentageOfClosedTicketsCellContent.tsx')
 const PercentageOfClosedTicketsCellContentMock = assumeMock(
     PercentageOfClosedTicketsCellContent
 )
+
+jest.mock('pages/stats/FirstResponseTimeCellSummary.tsx')
+const FirstResponseTimeCellSummaryMock = assumeMock(
+    FirstResponseTimeCellSummary
+)
+jest.mock('pages/stats/TicketsRepliedCellSummary.tsx')
+const TicketsRepliedCellSummaryMock = assumeMock(TicketsRepliedCellSummary)
+
+jest.mock('pages/stats/ClosedTicketsCellSummary.tsx')
+const ClosedTicketsCellSummaryMock = assumeMock(ClosedTicketsCellSummary)
+
+jest.mock('pages/stats/MessagesSentCellSummary.tsx')
+const MessagesSentCellSummaryMock = assumeMock(MessagesSentCellSummary)
+jest.mock('pages/stats/ResolutionTimeCellSummary.tsx')
+const ResolutionTimeCellSummaryMock = assumeMock(ResolutionTimeCellSummary)
+jest.mock('pages/stats/CustomerSatisfactionCellSummary.tsx')
+const CustomerSatisfactionCellSummaryMock = assumeMock(
+    CustomerSatisfactionCellSummary
+)
+jest.mock('pages/stats/PercentageOfClosedTicketsCellSummary.tsx')
+const PercentageOfClosedTicketsCellSummaryMock = assumeMock(
+    PercentageOfClosedTicketsCellSummary
+)
+
 jest.mock('pages/stats/AgentsHeaderCellContent.tsx')
 const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
 const cellMock = () => <div />
@@ -63,6 +94,19 @@ describe('<AgentTable>', () => {
     ]
     metricCells.forEach((metricCell) => metricCell.mockImplementation(cellMock))
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
+
+    const metricSummaryCells = [
+        FirstResponseTimeCellSummaryMock,
+        TicketsRepliedCellSummaryMock,
+        ClosedTicketsCellSummaryMock,
+        MessagesSentCellSummaryMock,
+        ResolutionTimeCellSummaryMock,
+        CustomerSatisfactionCellSummaryMock,
+        PercentageOfClosedTicketsCellSummaryMock,
+    ]
+    metricSummaryCells.forEach((metricCell) =>
+        metricCell.mockImplementation(cellMock)
+    )
 
     afterAll(jest.clearAllMocks)
 
@@ -91,5 +135,14 @@ describe('<AgentTable>', () => {
                 {}
             )
         })
+    })
+
+    it('should render the table summary row', () => {
+        render(
+            <Provider store={mockStore({})}>
+                <AgentsTable />
+            </Provider>
+        )
+        expect(screen.getByText('Average')).toBeInTheDocument()
     })
 })

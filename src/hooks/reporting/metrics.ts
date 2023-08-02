@@ -1,4 +1,11 @@
-import {closedTicketsQueryFactory} from 'hooks/reporting/metricTrends'
+import {
+    closedTicketsQueryFactory,
+    customerSatisfactionQueryFactory,
+    firstResponseTimeQueryFactory,
+    resolutionTimeQueryFactory,
+    getTicketsRepliedQueryFactory,
+    getMessagesSentQueryFactory,
+} from 'hooks/reporting/metricTrends'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {StatsFilters} from 'models/stat/types'
 
@@ -14,3 +21,28 @@ export const useClosedTicketsMetric = (
     statsFilters: StatsFilters,
     timezone: string
 ): Metric => useMetric(closedTicketsQueryFactory(statsFilters, timezone))
+
+export const useCustomerSatisfactionMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric => useMetric(customerSatisfactionQueryFactory(statsFilters, timezone))
+
+export const useFirstResponseTimeMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric => useMetric(firstResponseTimeQueryFactory(statsFilters, timezone))
+
+export const useResolutionTimeMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric => useMetric(resolutionTimeQueryFactory(statsFilters, timezone))
+
+export const useTicketsRepliedMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric => useMetric(getTicketsRepliedQueryFactory(statsFilters, timezone))
+
+export const useMessagesSentMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric => useMetric(getMessagesSentQueryFactory(statsFilters, timezone))

@@ -3,7 +3,14 @@ import moment from 'moment'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
-import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
+import {
+    useClosedTicketsMetric,
+    useCustomerSatisfactionMetric,
+    useFirstResponseTimeMetric,
+    useMessagesSentMetric,
+    useResolutionTimeMetric,
+    useTicketsRepliedMetric,
+} from 'hooks/reporting/metrics'
 import {useMetric} from 'hooks/reporting/useMetric'
 
 jest.mock('hooks/reporting/useMetric')
@@ -27,15 +34,17 @@ describe('metrics', () => {
 
     useMetricMock.mockReturnValue(defaultMetricValue)
 
-    describe.each([['useClosedTicketsMetric', useClosedTicketsMetric]])(
-        '%s',
-        (testName, useTrendFn) => {
-            it('should create reporting metric', () => {
-                const {result} = renderHook(() =>
-                    useTrendFn(statsFilters, 'UTC')
-                )
-                expect(result.current).toBe(defaultMetricValue)
-            })
-        }
-    )
+    describe.each([
+        ['useClosedTicketsMetric', useClosedTicketsMetric],
+        ['useCustomerSatisfactionMetric', useCustomerSatisfactionMetric],
+        ['useFirstResponseTimeMetric', useFirstResponseTimeMetric],
+        ['useMessagesSentMetric', useMessagesSentMetric],
+        ['useResolutionTimeMetric', useResolutionTimeMetric],
+        ['useTicketsRepliedMetric', useTicketsRepliedMetric],
+    ])('%s', (testName, useTrendFn) => {
+        it('should create reporting metric', () => {
+            const {result} = renderHook(() => useTrendFn(statsFilters, 'UTC'))
+            expect(result.current).toBe(defaultMetricValue)
+        })
+    })
 })

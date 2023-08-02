@@ -3,14 +3,13 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {HelpdeskMessageMeasure, TicketDimension} from 'models/reporting/types'
-import {useMessagesSentMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
+import {TicketDimension, TicketMeasure} from 'models/reporting/types'
+import {useCustomerSatisfactionMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
+import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -19,14 +18,14 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 jest.mock('hooks/reporting/metricsPerDimension')
-const useMessagesSentMetricPerAgentMock = assumeMock(
-    useMessagesSentMetricPerAgent
+const useCustomerSatisfactionMetricPerAgentMock = assumeMock(
+    useCustomerSatisfactionMetricPerAgent
 )
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('<MessagesSentCellContent>', () => {
+describe('<CustomerSatisfactionCellContent>', () => {
     const agentId = 123
-    const messagesSentValue = 1234
+    const surveyScoreValue = 5
 
     const defaultState = {
         stats: initialState,
@@ -35,12 +34,12 @@ describe('<MessagesSentCellContent>', () => {
         },
     } as RootState
 
-    const useMessagesSentMetricPerAgentReturnValue = {
+    const useCustomerSatisfactionMetricPerAgentMockReturnValue = {
         data: {
-            value: messagesSentValue,
+            value: surveyScoreValue,
             allData: [
                 {
-                    [HelpdeskMessageMeasure.MessageCount]: messagesSentValue,
+                    [TicketMeasure.SurveyScore]: surveyScoreValue,
                     [TicketDimension.AssigneeUserId]: agentId,
                 },
             ],
@@ -49,30 +48,28 @@ describe('<MessagesSentCellContent>', () => {
         isError: false,
     }
 
-    useMessagesSentMetricPerAgentMock.mockReturnValue(
-        useMessagesSentMetricPerAgentReturnValue
+    useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(
+        useCustomerSatisfactionMetricPerAgentMockReturnValue
     )
 
     it('should render value as decimal', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <MessagesSentCellContent agentId={agentId} />
+                <CustomerSatisfactionCellContent agentId={agentId} />
             </Provider>
         )
 
-        expect(
-            screen.getByText(formatMetricValue(messagesSentValue))
-        ).toBeInTheDocument()
+        expect(screen.getByText(surveyScoreValue)).toBeInTheDocument()
     })
 
     it('should render skeleton when fetching', () => {
-        useMessagesSentMetricPerAgentMock.mockReturnValue({
-            ...useMessagesSentMetricPerAgentReturnValue,
+        useCustomerSatisfactionMetricPerAgentMock.mockReturnValue({
+            ...useCustomerSatisfactionMetricPerAgentMockReturnValue,
             isFetching: true,
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <MessagesSentCellContent agentId={agentId} />
+                <CustomerSatisfactionCellContent agentId={agentId} />
             </Provider>
         )
 

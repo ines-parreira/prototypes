@@ -17,7 +17,7 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.FirstResponseTime]: 'First Response Time',
     [TableColumn.ResolutionTime]: 'Resolution Time',
     [TableColumn.MessagesSent]: 'Messages Sent',
-    [TableColumn.PercentageOfClosedTickets]: 'Percentage of Closed Tickets',
+    [TableColumn.PercentageOfClosedTickets]: '% of Closed Tickets',
     [TableColumn.ClosedTickets]: 'Closed Tickets',
     [TableColumn.RepliedTickets]: 'Tickets Replied',
 }
