@@ -17,7 +17,7 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     isOrderedBy?: boolean
     onClick?: () => void
     title: string
-    tooltip?: string
+    tooltip?: ReactNode
 }
 
 export default function HeaderCellProperty({
