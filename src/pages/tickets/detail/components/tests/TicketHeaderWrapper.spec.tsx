@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
@@ -8,6 +9,10 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 import TicketHeaderWrapper from 'pages/tickets/detail/components/TicketHeaderWrapper'
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlags: jest.fn(),
+}))
 
 jest.mock('pages/tickets/detail/components/HistoryButton', () => () => (
     <div>HistoryButton</div>
@@ -22,6 +27,7 @@ jest.mock(
 
 const mockedServer = new MockAdapter(client)
 const mockStore = configureMockStore([thunk])
+const useFlagsMock = useFlags as jest.Mock
 
 describe('<TicketHeaderWrapper/>', () => {
     const minProps: ComponentProps<typeof TicketHeaderWrapper> = {
@@ -38,6 +44,7 @@ describe('<TicketHeaderWrapper/>', () => {
 
     beforeEach(() => {
         mockedServer.reset()
+        useFlagsMock.mockReturnValue(false)
     })
 
     it('should render history button, ticket header and separator, and ticket fields', () => {

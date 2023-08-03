@@ -75,6 +75,7 @@ describe('<TicketHeader />', () => {
 
     const minProps = {
         className: '',
+        hasSeparateSnooze: false,
         ticket: fromJS(_omit(ticket, 'id')),
     } as ComponentProps<typeof TicketHeader>
 

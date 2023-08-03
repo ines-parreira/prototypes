@@ -1,7 +1,9 @@
 import classnames from 'classnames'
+import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
-import {fromJS, Map} from 'immutable'
+import {FeatureFlagKey} from 'config/featureFlags'
 import HistoryButton from 'pages/tickets/detail/components/HistoryButton'
 import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
 import useAppSelector from 'hooks/useAppSelector'
@@ -105,6 +107,8 @@ const TicketHeaderWrapper = ({
     handleHistoryToggle,
     setStatus,
 }: Props) => {
+    const hasSeparateSnooze =
+        useFlags()[FeatureFlagKey.SeparateSnoozeButton] || false
     const ticket = useAppSelector((state) => state.ticket)
     const customers = useAppSelector(getCustomersState)
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)
@@ -138,6 +142,7 @@ const TicketHeaderWrapper = ({
                         </div>
                     )}
                     <TicketHeader
+                        hasSeparateSnooze={hasSeparateSnooze}
                         ticket={ticket}
                         hideTicket={hideTicket}
                         setStatus={setStatus}
