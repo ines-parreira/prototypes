@@ -55,7 +55,7 @@ export type PhoneIntegrationIvrSettings = {
 
 export type VoiceMessageTextToSpeech = {
     voice_message_type: VoiceMessageType.TextToSpeech
-    text_to_speech_content: string
+    text_to_speech_content: Maybe<string>
 }
 
 export type VoiceMessageRecording = {

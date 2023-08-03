@@ -195,6 +195,31 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         })
     })
 
+    it('should allow showing the text to speech text with empty text', () => {
+        const message: VoiceMessage = {
+            voice_message_type: VoiceMessageType.TextToSpeech,
+            text_to_speech_content: null,
+        }
+        const {container, getByPlaceholderText} = renderComponent(message)
+
+        expect(
+            getByPlaceholderText('Write a message to convert to speech')
+        ).toBeInTheDocument()
+
+        const textarea = container.querySelector('textarea')
+        expect(textarea).toBeInTheDocument()
+        if (textarea) {
+            fireEvent.change(textarea, {
+                target: {value: 'Please hold'},
+            })
+        }
+
+        expect(onChange).toHaveBeenCalledWith({
+            voice_message_type: VoiceMessageType.TextToSpeech,
+            text_to_speech_content: 'Please hold',
+        })
+    })
+
     it('should allow inserting a voice recording', async () => {
         const file = new File(['audio data'], 'example.mp3', {
             type: 'audio/mpeg',

@@ -250,7 +250,7 @@ const TextToSpeechRecordingInput = ({
         selectedValue.text_to_speech_content
             ? countLines(selectedValue.text_to_speech_content)
             : 0
-    const noMessageProvided = selectedValue.text_to_speech_content.length === 0
+    const noMessageProvided = selectedValue.text_to_speech_content?.length === 0
     return (
         <div className={className}>
             <Textarea
