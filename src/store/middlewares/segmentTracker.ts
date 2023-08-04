@@ -285,6 +285,7 @@ export enum SegmentEvent {
     InfobarFieldCopied = 'infobar-field-copied',
     TicketExport = 'ticket-export',
     PreviewModeClicked = 'preview-mode-clicked',
+    FallbackWorkerStarted = 'fallback-worker-started',
 }
 
 export enum StatViewLinkClickedStat {

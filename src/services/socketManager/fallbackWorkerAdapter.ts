@@ -9,6 +9,8 @@
 import io, {Socket} from 'socket.io-client'
 import _noop from 'lodash/noop'
 
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+
 import {WSMessage, BroadcastChannelEvent} from './types'
 import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
@@ -110,7 +112,10 @@ const fallbackWorker = new FallbackWorker()
 
 export const fallbackWorkerAdapter = {
     port: {
-        start: () => fallbackWorker.onConnect(),
+        start: () => {
+            logEvent(SegmentEvent.FallbackWorkerStarted)
+            fallbackWorker.onConnect()
+        },
         postMessage: (message: WSMessage) => fallbackWorker.onMessage(message),
         onmessage: _noop,
     },
