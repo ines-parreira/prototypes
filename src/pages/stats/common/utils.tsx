@@ -22,6 +22,7 @@ import StatsFiltersContext from '../StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
 export const NOT_AVAILABLE_TEXT = 'N/A'
+export const NOT_AVAILABLE_PLACEHOLDER = '-'
 
 export const comparedPeriodString = (
     previousStartDatetime: Moment,
@@ -191,7 +192,7 @@ export const findChannelNameKey = (
     ) as TicketChannel | undefined
 }
 
-export type MetricValueFormat = 'decimal' | 'duration' | 'percentage'
+export type MetricValueFormat = 'decimal' | 'duration' | 'percent'
 
 const metricToDecimal = (value: number) =>
     value.toLocaleString(DEFAULT_LOCALE, {
@@ -200,17 +201,18 @@ const metricToDecimal = (value: number) =>
 
 export const formatMetricValue = (
     value: number | null | undefined,
-    format: MetricValueFormat = 'decimal'
+    format: MetricValueFormat = 'decimal',
+    notAvailableText: string = NOT_AVAILABLE_TEXT
 ) => {
     if (value == null) {
-        return NOT_AVAILABLE_TEXT
+        return notAvailableText
     }
 
     if (format === 'duration') {
         return formatDuration(value, 2)
     }
 
-    if (format === 'percentage') {
+    if (format === 'percent') {
         return `${metricToDecimal(value)}%`
     }
 

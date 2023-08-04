@@ -1,5 +1,8 @@
 import React from 'react'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import {useTicketsRepliedMetric} from 'hooks/reporting/metrics'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
@@ -22,7 +25,15 @@ export const TicketsRepliedCellSummary = () => {
 
     return (
         <BodyCellContent>
-            {isFetching ? <Skeleton inline /> : formatMetricValue(metricValue)}
+            {isFetching ? (
+                <Skeleton inline />
+            ) : (
+                formatMetricValue(
+                    metricValue,
+                    'decimal',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )}
         </BodyCellContent>
     )
 }

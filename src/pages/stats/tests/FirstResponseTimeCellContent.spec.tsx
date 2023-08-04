@@ -5,7 +5,10 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {TicketDimension, TicketMeasure} from 'models/reporting/types'
 import {useFirstResponseTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import {formatDuration} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {initialState} from 'state/stats/reducers'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
@@ -61,7 +64,13 @@ describe('<FirstResponseTimeCellContent>', () => {
         )
 
         expect(
-            screen.getByText(formatDuration(firstResponseTimeValue, 2))
+            screen.getByText(
+                formatMetricValue(
+                    firstResponseTimeValue,
+                    'duration',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
         ).toBeInTheDocument()
     })
 

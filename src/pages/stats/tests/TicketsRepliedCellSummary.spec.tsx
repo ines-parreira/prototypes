@@ -3,7 +3,10 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {useTicketsRepliedMetric} from 'hooks/reporting/metrics'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 import {initialState} from 'state/stats/reducers'
@@ -47,7 +50,13 @@ describe('<TicketsRepliedCellSummary>', () => {
         )
 
         expect(
-            screen.getByText(formatMetricValue(ticketsRepliedValue))
+            screen.getByText(
+                formatMetricValue(
+                    ticketsRepliedValue,
+                    'decimal',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
         ).toBeInTheDocument()
     })
 

@@ -6,7 +6,7 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
-import {formatMetricValue} from './common/utils'
+import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
 export const ResolutionTimeCellSummary = () => {
     const userTimezone = useAppSelector(
@@ -26,7 +26,11 @@ export const ResolutionTimeCellSummary = () => {
             {isFetching ? (
                 <Skeleton inline />
             ) : (
-                formatMetricValue(metricValue, 'duration')
+                formatMetricValue(
+                    metricValue,
+                    'duration',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
             )}
         </BodyCellContent>
     )

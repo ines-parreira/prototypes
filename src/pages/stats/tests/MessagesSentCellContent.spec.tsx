@@ -5,7 +5,10 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {HelpdeskMessageMeasure, TicketDimension} from 'models/reporting/types'
 import {useMessagesSentMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
@@ -61,7 +64,13 @@ describe('<MessagesSentCellContent>', () => {
         )
 
         expect(
-            screen.getByText(formatMetricValue(messagesSentValue))
+            screen.getByText(
+                formatMetricValue(
+                    messagesSentValue,
+                    'decimal',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
         ).toBeInTheDocument()
     })
 

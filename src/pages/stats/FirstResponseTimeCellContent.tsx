@@ -7,7 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
-import {formatMetricValue} from './common/utils'
+import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
 export const FirstResponseTimeCellContent = ({agentId}: {agentId: number}) => {
     const userTimezone = useAppSelector(
@@ -28,7 +28,11 @@ export const FirstResponseTimeCellContent = ({agentId}: {agentId: number}) => {
             {isFetching || isMetricLoading ? (
                 <Skeleton inline />
             ) : (
-                formatMetricValue(metricValue, 'duration')
+                formatMetricValue(
+                    metricValue,
+                    'duration',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
             )}
         </BodyCellContent>
     )

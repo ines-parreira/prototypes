@@ -5,7 +5,10 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {TicketDimension, TicketMeasure} from 'models/reporting/types'
 import {useResolutionTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import {formatDuration} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
@@ -61,7 +64,13 @@ describe('<ResolutionTimeCellContent>', () => {
         )
 
         expect(
-            screen.getByText(formatDuration(resolutionTimeValue, 2))
+            screen.getByText(
+                formatMetricValue(
+                    resolutionTimeValue,
+                    'duration',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
         ).toBeInTheDocument()
     })
 

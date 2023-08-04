@@ -4,7 +4,10 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {useResolutionTimeMetric} from 'hooks/reporting/metrics'
-import {formatDuration} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
@@ -47,7 +50,13 @@ describe('<ResolutionTimeCellSummary>', () => {
         )
 
         expect(
-            screen.getByText(formatDuration(resolutionTimeValue, 2))
+            screen.getByText(
+                formatMetricValue(
+                    resolutionTimeValue,
+                    'duration',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
         ).toBeInTheDocument()
     })
 

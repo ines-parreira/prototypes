@@ -216,9 +216,7 @@ describe('stats components utils', () => {
         })
 
         it('should format value up to two decimal places and render as percentage when format is "percentage"', () => {
-            expect(formatMetricValue(123456.789, 'percentage')).toBe(
-                '123,456.79%'
-            )
+            expect(formatMetricValue(123456.789, 'percent')).toBe('123,456.79%')
         })
 
         it('should format value as duration with precision two when format is "duration"', () => {

@@ -4,7 +4,10 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {TicketDimension, TicketMeasure} from 'models/reporting/types'
-import {formatMetricValue, NOT_AVAILABLE_TEXT} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
@@ -69,7 +72,9 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
 
     it('should render value as percentage', () => {
         const formattedValue = formatMetricValue(
-            (closedTicketsValue / allClosedTicketsValue) * 100
+            (closedTicketsValue / allClosedTicketsValue) * 100,
+            'percent',
+            NOT_AVAILABLE_PLACEHOLDER
         )
         render(
             <Provider store={mockStore(defaultState)}>
@@ -77,10 +82,10 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
             </Provider>
         )
 
-        expect(screen.getByText(`${formattedValue}%`)).toBeInTheDocument()
+        expect(screen.getByText(formattedValue)).toBeInTheDocument()
     })
 
-    it('should render value as N/A', () => {
+    it('should render value as -', () => {
         useClosedTicketsMetricPerAgentMock.mockReturnValue({
             ...useClosedTicketsMetricPerAgentMockReturnValue,
             data: {
@@ -94,7 +99,7 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
             </Provider>
         )
 
-        expect(screen.getByText(NOT_AVAILABLE_TEXT)).toBeInTheDocument()
+        expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
     })
 
     it('should render skeleton when fetching', () => {

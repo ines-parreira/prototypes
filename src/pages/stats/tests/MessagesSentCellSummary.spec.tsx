@@ -4,7 +4,10 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {useMessagesSentMetric} from 'hooks/reporting/metrics'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
@@ -45,7 +48,13 @@ describe('<MessagesSentCellSummary>', () => {
         )
 
         expect(
-            screen.getByText(formatMetricValue(messagesSentValue))
+            screen.getByText(
+                formatMetricValue(
+                    messagesSentValue,
+                    'decimal',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
         ).toBeInTheDocument()
     })
 

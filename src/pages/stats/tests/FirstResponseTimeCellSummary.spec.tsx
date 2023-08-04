@@ -4,7 +4,10 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {useFirstResponseTimeMetric} from 'hooks/reporting/metrics'
-import {formatDuration} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
@@ -47,7 +50,13 @@ describe('<FirstResponseTimeCellContent>', () => {
         )
 
         expect(
-            screen.getByText(formatDuration(firstResponseTimeValue, 2))
+            screen.getByText(
+                formatMetricValue(
+                    firstResponseTimeValue,
+                    'duration',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
         ).toBeInTheDocument()
     })
 

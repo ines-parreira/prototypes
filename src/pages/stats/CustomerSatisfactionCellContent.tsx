@@ -7,7 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
-import {formatMetricValue} from './common/utils'
+import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
 export const CustomerSatisfactionCellContent = ({
     agentId,
@@ -33,7 +33,11 @@ export const CustomerSatisfactionCellContent = ({
             {isFetching || isMetricLoading ? (
                 <Skeleton inline />
             ) : (
-                formatMetricValue(metricValue)
+                formatMetricValue(
+                    metricValue,
+                    'decimal',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
             )}
         </BodyCellContent>
     )

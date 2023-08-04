@@ -6,7 +6,10 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 
 export const CustomerSatisfactionCellSummary = () => {
     const userTimezone = useAppSelector(
@@ -21,7 +24,15 @@ export const CustomerSatisfactionCellSummary = () => {
 
     return (
         <BodyCellContent>
-            {isFetching ? <Skeleton inline /> : formatMetricValue(data?.value)}
+            {isFetching ? (
+                <Skeleton inline />
+            ) : (
+                formatMetricValue(
+                    data?.value,
+                    'decimal',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )}
         </BodyCellContent>
     )
 }

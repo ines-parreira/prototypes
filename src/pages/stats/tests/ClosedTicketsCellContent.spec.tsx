@@ -3,7 +3,10 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {TicketDimension, TicketMeasure} from 'models/reporting/types'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
@@ -61,7 +64,13 @@ describe('<ClosedTicketsCellContent>', () => {
         )
 
         expect(
-            screen.getByText(formatMetricValue(closedTicketsValue))
+            screen.getByText(
+                formatMetricValue(
+                    closedTicketsValue,
+                    'decimal',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
         ).toBeInTheDocument()
     })
 

@@ -7,7 +7,10 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPageStatsFilters} from 'state/stats/selectors'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
 
 export const PercentageOfClosedTicketsCellContent = ({
@@ -45,7 +48,11 @@ export const PercentageOfClosedTicketsCellContent = ({
             isMetricLoading ? (
                 <Skeleton inline />
             ) : (
-                formatMetricValue(metricValue, 'percentage')
+                formatMetricValue(
+                    metricValue,
+                    'percent',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
             )}
         </BodyCellContent>
     )
