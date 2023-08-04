@@ -34,6 +34,8 @@ import {
     HEALTH_CHECK_SEND_INTERVAL,
     SHARED_WORKER_VERSION,
     SCOPED_BROADCAST_CHANNEL_NAME,
+    INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
+    INCREMENTAL_RECONNECT_BACKOFF,
 } from './constants'
 import {
     WSMessage,
@@ -41,6 +43,7 @@ import {
     BroadcastChannelEvent,
     SocketEvent,
 } from './types'
+import IncrementalBackoff from './incrementalBackoff'
 
 export class WebsocketSharedWorker {
     wsUrl: string | null = null
@@ -51,6 +54,11 @@ export class WebsocketSharedWorker {
     )
 
     sendDisconnectedNotificationTask: NodeJS.Timeout | null = null
+
+    reconnectBackoff = new IncrementalBackoff({
+        initialDelay: INCREMENTAL_RECONNECT_BACKOFF * 1000,
+        maxDelay: MAX_INCREMENTAL_RECONNECT_BACKOFF * 1000,
+    })
 
     connectedTabs: Record<
         string,
@@ -113,12 +121,21 @@ export class WebsocketSharedWorker {
             clearTimeout(this.sendDisconnectedNotificationTask)
             this.sendDisconnectedNotificationTask = null
         }
+
+        this.reconnectBackoff.reset()
     }
 
     _onSocketConnectError = (error: Error) => {
         // eslint-disable-next-line no-console
         console.log('WS connect error!', error.message)
         this.scheduleDisconnectedNotificationTask()
+
+        if (error.message === INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE) {
+            this.reconnectBackoff.scheduleCall((attempt) => {
+                this._onSocketReconnectAttempt(attempt)
+                this.socket?.connect()
+            })
+        }
     }
 
     _onSocketDisconnect = (reason: string) => {
@@ -163,6 +180,7 @@ export class WebsocketSharedWorker {
             this.socket = io(this.wsUrl, {
                 transports: ['websocket'],
                 path: '/socket.io/v4/',
+                reconnectionDelay: INCREMENTAL_RECONNECT_BACKOFF * 1000,
                 reconnectionDelayMax: MAX_INCREMENTAL_RECONNECT_BACKOFF * 1000,
             })
 

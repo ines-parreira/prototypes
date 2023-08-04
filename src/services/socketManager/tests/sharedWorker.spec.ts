@@ -7,6 +7,8 @@ import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     SHARED_WORKER_VERSION,
     SCOPED_BROADCAST_CHANNEL_NAME,
+    INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
+    INCREMENTAL_RECONNECT_BACKOFF,
 } from '../constants'
 import {
     BroadcastChannelEvent,
@@ -14,6 +16,7 @@ import {
     SocketEvent,
     WSMessage,
 } from '../types'
+import IncrementalBackoff from '../incrementalBackoff'
 import {WebsocketSharedWorker} from '../sharedWorker'
 
 jest.mock('socket.io-client', () => {
@@ -33,6 +36,8 @@ jest.useFakeTimers()
 jest.spyOn(global, 'setInterval')
 jest.spyOn(global, 'setTimeout')
 jest.spyOn(global, 'clearTimeout')
+
+jest.mock('../incrementalBackoff')
 
 class MockMessagePort implements MessagePort {
     postMessage = jest.fn()
@@ -65,6 +70,13 @@ describe('WebsocketSharedWorker', () => {
                     }
                 ).constructorSpy
             ).toHaveBeenCalledWith(SCOPED_BROADCAST_CHANNEL_NAME)
+        })
+
+        it('should create a new IncrementalBackoff with correct delays', () => {
+            expect(IncrementalBackoff as jest.Mock).toHaveBeenLastCalledWith({
+                initialDelay: INCREMENTAL_RECONNECT_BACKOFF * 1000,
+                maxDelay: MAX_INCREMENTAL_RECONNECT_BACKOFF * 1000,
+            })
         })
     })
 
@@ -201,7 +213,17 @@ describe('WebsocketSharedWorker', () => {
     })
 
     describe('_onSocketConnect()', () => {
-        it('should post a `WS_CONNECTED` message to the tab, and clear scheduled "discionnected" notification', () => {
+        it('should post `WS_CONNECTED` message to the tab', () => {
+            worker._onSocketConnect()
+
+            expect(
+                worker.scopedBroadcastChannel.postMessage
+            ).toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.WsConnected,
+            })
+        })
+
+        it('should clear scheduled "disconnected" notification', () => {
             const sendDisconnectedNotificationTask = setTimeout(jest.fn(), 1000)
             worker.sendDisconnectedNotificationTask =
                 sendDisconnectedNotificationTask
@@ -211,6 +233,15 @@ describe('WebsocketSharedWorker', () => {
             expect(clearTimeout).toHaveBeenCalledWith(
                 sendDisconnectedNotificationTask
             )
+            expect(worker.sendDisconnectedNotificationTask).toBe(null)
+        })
+
+        it('should clear scheduled reconnect', () => {
+            const reset = jest.spyOn(IncrementalBackoff.prototype, 'reset')
+
+            worker._onSocketConnect()
+
+            expect(reset).toBeCalled()
         })
     })
 
@@ -271,6 +302,35 @@ describe('WebsocketSharedWorker', () => {
         })
     })
 
+    describe('onSocketConnectError()', () => {
+        it('should not schedule reconnect on error', () => {
+            const scheduleCall = jest.spyOn(
+                IncrementalBackoff.prototype,
+                'scheduleCall'
+            )
+
+            worker._onSocketConnectError(new Error('Any error'))
+
+            expect(scheduleCall).not.toHaveBeenCalled()
+        })
+
+        it('should schedule reconnect on internal server connection error', () => {
+            worker.socket = io()
+            const scheduleCall = jest.spyOn(
+                IncrementalBackoff.prototype,
+                'scheduleCall'
+            )
+
+            worker._onSocketConnectError(
+                new Error(INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE)
+            )
+            expect(scheduleCall).toHaveBeenCalledTimes(1)
+
+            scheduleCall.mock.calls[0][0](1)
+            expect(worker.socket.connect).toHaveBeenCalledTimes(1)
+        })
+    })
+
     describe('onClientConnected()', () => {
         it('should setup a socket for the worker because it has no socket', () => {
             const messagePort = new MockMessagePort()
@@ -325,6 +385,7 @@ describe('WebsocketSharedWorker', () => {
                 message.wsUrl,
                 expect.objectContaining({
                     path: '/socket.io/v4/',
+                    reconnectionDelay: INCREMENTAL_RECONNECT_BACKOFF * 1000,
                     reconnectionDelayMax:
                         MAX_INCREMENTAL_RECONNECT_BACKOFF * 1000,
                 })

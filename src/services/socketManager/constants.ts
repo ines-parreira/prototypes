@@ -1,5 +1,6 @@
 export const BROADCAST_CHANNEL_NAME = 'WebsocketBroadcastChannel'
 
+export const INCREMENTAL_RECONNECT_BACKOFF = 1
 export const MAX_INCREMENTAL_RECONNECT_BACKOFF = 30
 export const DISCONNECTED_NOTIFICATION_DELAY = 10
 export const HEALTH_CHECK_INTERVAL = 10
@@ -7,5 +8,7 @@ export const HEALTH_CHECK_RECEIVE_TIMEOUT = 5
 export const HEALTH_CHECK_SEND_INTERVAL = 1
 export const OUTDATED_NOTIFICATION_DELAY = 30
 export const SHARED_WORKER_LEGACY_VERSION = 1
-export const SHARED_WORKER_VERSION = 6
+export const SHARED_WORKER_VERSION = 7
 export const SCOPED_BROADCAST_CHANNEL_NAME = `${BROADCAST_CHANNEL_NAME}-${SHARED_WORKER_VERSION}`
+export const INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE =
+    'Connection is rejected due to unexpected error. Please try again.'
