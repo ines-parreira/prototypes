@@ -1243,6 +1243,24 @@ declare namespace Components {
       from: string;
       to: string;
     }
+    export interface CreateShopifyPageEmbedmentDto {
+      /**
+       * example:
+       * 229672878386
+       */
+      shopify_page_id?: string;
+      position?: "TOP" | "BOTTOM";
+      /**
+       * example:
+       * My new page
+       */
+      title?: string;
+      /**
+       * example:
+       * my-new-page
+       */
+      handle?: string;
+    }
     export interface CreateSubjectLinesDto {
       /**
        * List of options that will be displayed to the user in the subject line's select dropdown
@@ -1811,6 +1829,37 @@ declare namespace Components {
       to: string;
       help_center_id: number;
     }
+    export interface ShopifyPageDto {
+      id: string;
+      title: string;
+      handle: string;
+      body_html: string;
+    }
+    export interface ShopifyPageEmbedmentDto {
+      /**
+       * example:
+       * 1
+       */
+      id: number;
+      /**
+       * example:
+       * 229672878386
+       */
+      shopify_page_id?: string;
+      /**
+       * example:
+       * My page title
+       */
+      shopify_page_title: string;
+      /**
+       * example:
+       * my-page-title
+       */
+      shopify_page_handle: string;
+      position: "TOP" | "BOTTOM";
+      created_datetime: string; // date-time
+      updated_datetime: string; // date-time
+    }
     export interface SignedPostPolicyDto {
       url: string;
       fields: {
@@ -2272,6 +2321,9 @@ declare namespace Components {
       group?: "header" | "footer";
       meta?: NavigationLinkMeta;
     }
+    export interface UpdateShopifyPageEmbedmentDto {
+      position?: "TOP" | "BOTTOM";
+    }
     export interface UploadAttachmentDto {
       file: AttachmentFileDto;
       channel: AttachmentChannelDto;
@@ -2462,6 +2514,18 @@ declare namespace Paths {
       export type $201 = Components.Schemas.ContactFormDto;
     }
   }
+  namespace CreateContactFormShopifyEmbedment {
+    namespace Parameters {
+      export type ContactFormId = number;
+    }
+    export interface PathParameters {
+      contact_form_id: Parameters.ContactFormId;
+    }
+    export type RequestBody = Components.Schemas.CreateShopifyPageEmbedmentDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.ShopifyPageEmbedmentDto;
+    }
+  }
   namespace CreateCustomDomain {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -2600,6 +2664,16 @@ declare namespace Paths {
     }
     export interface PathParameters {
       id: Parameters.Id;
+    }
+  }
+  namespace DeleteContactFormShopifyEmbedment {
+    namespace Parameters {
+      export type ContactFormId = number;
+      export type EmbedmentId = number;
+    }
+    export interface PathParameters {
+      embedment_id: Parameters.EmbedmentId;
+      contact_form_id: Parameters.ContactFormId;
     }
   }
   namespace DeleteCustomDomain {
@@ -3095,6 +3169,23 @@ declare namespace Paths {
       export type $200 = Components.Schemas.CategoryTranslationsListPageDto;
     }
   }
+  namespace ListContactFormShopifyEmbedments {
+    namespace Parameters {
+      export type ContactFormId = number;
+      export type Page = any;
+      export type PerPage = any;
+    }
+    export interface PathParameters {
+      contact_form_id: Parameters.ContactFormId;
+    }
+    export interface QueryParameters {
+      per_page?: Parameters.PerPage;
+      page?: Parameters.Page;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ShopifyPageEmbedmentDto[];
+    }
+  }
   namespace ListContactForms {
     namespace Parameters {
       export type Page = any;
@@ -3195,6 +3286,17 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.NavigationLinksListPageDto;
+    }
+  }
+  namespace ListShopifyPages {
+    namespace Parameters {
+      export type ContactFormId = number;
+    }
+    export interface PathParameters {
+      contact_form_id: Parameters.ContactFormId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ShopifyPageDto[];
     }
   }
   namespace PurgeCache {
@@ -3356,6 +3458,20 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.UpdateContactFormDto;
     namespace Responses {
       export type $200 = Components.Schemas.ContactFormDto;
+    }
+  }
+  namespace UpdateContactFormShopifyEmbedment {
+    namespace Parameters {
+      export type ContactFormId = number;
+      export type EmbedmentId = number;
+    }
+    export interface PathParameters {
+      embedment_id: Parameters.EmbedmentId;
+      contact_form_id: Parameters.ContactFormId;
+    }
+    export type RequestBody = Components.Schemas.UpdateShopifyPageEmbedmentDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.ShopifyPageEmbedmentDto;
     }
   }
   namespace UpdateEmailIntegration {
@@ -4184,6 +4300,46 @@ export interface OperationMethods {
     data?: Paths.HandoverWorkflowExecution.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
+  /**
+   * listContactFormShopifyEmbedments - List the Contact Form Shopify Embedments
+   */
+  'listContactFormShopifyEmbedments'(
+    parameters?: Parameters<Paths.ListContactFormShopifyEmbedments.PathParameters & Paths.ListContactFormShopifyEmbedments.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListContactFormShopifyEmbedments.Responses.$200>
+  /**
+   * createContactFormShopifyEmbedment - Create a Contact Form Shopify Embedment
+   */
+  'createContactFormShopifyEmbedment'(
+    parameters?: Parameters<Paths.CreateContactFormShopifyEmbedment.PathParameters> | null,
+    data?: Paths.CreateContactFormShopifyEmbedment.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateContactFormShopifyEmbedment.Responses.$201>
+  /**
+   * updateContactFormShopifyEmbedment - Update a Contact Form Shopify Embedment
+   */
+  'updateContactFormShopifyEmbedment'(
+    parameters?: Parameters<Paths.UpdateContactFormShopifyEmbedment.PathParameters> | null,
+    data?: Paths.UpdateContactFormShopifyEmbedment.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateContactFormShopifyEmbedment.Responses.$200>
+  /**
+   * deleteContactFormShopifyEmbedment - Delete a Contact Form Shopify Embedment
+   */
+  'deleteContactFormShopifyEmbedment'(
+    parameters?: Parameters<Paths.DeleteContactFormShopifyEmbedment.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * listShopifyPages - List the Contact Form Shopify Embedments
+   */
+  'listShopifyPages'(
+    parameters?: Parameters<Paths.ListShopifyPages.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListShopifyPages.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -5038,6 +5194,52 @@ export interface PathsDictionary {
       data?: Paths.HandoverWorkflowExecution.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms/{contact_form_id}/page-embedments']: {
+    /**
+     * createContactFormShopifyEmbedment - Create a Contact Form Shopify Embedment
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateContactFormShopifyEmbedment.PathParameters> | null,
+      data?: Paths.CreateContactFormShopifyEmbedment.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateContactFormShopifyEmbedment.Responses.$201>
+    /**
+     * listContactFormShopifyEmbedments - List the Contact Form Shopify Embedments
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListContactFormShopifyEmbedments.PathParameters & Paths.ListContactFormShopifyEmbedments.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListContactFormShopifyEmbedments.Responses.$200>
+  }
+  ['/api/help-center/contact-forms/{contact_form_id}/page-embedments/{embedment_id}']: {
+    /**
+     * updateContactFormShopifyEmbedment - Update a Contact Form Shopify Embedment
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateContactFormShopifyEmbedment.PathParameters> | null,
+      data?: Paths.UpdateContactFormShopifyEmbedment.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateContactFormShopifyEmbedment.Responses.$200>
+    /**
+     * deleteContactFormShopifyEmbedment - Delete a Contact Form Shopify Embedment
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteContactFormShopifyEmbedment.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms/{contact_form_id}/pages']: {
+    /**
+     * listShopifyPages - List the Contact Form Shopify Embedments
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListShopifyPages.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListShopifyPages.Responses.$200>
   }
 }
 
