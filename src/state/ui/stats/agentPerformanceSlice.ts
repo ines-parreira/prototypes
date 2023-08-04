@@ -1,7 +1,9 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import _intersectionBy from 'lodash/intersectionBy'
 import {User} from 'config/types/user'
 import {OrderDirection} from 'models/api/types'
 import {ReportingMeasure, TicketMember} from 'models/reporting/types'
+import {getPageStatsFilters} from 'state/stats/selectors'
 import {getSortByName} from 'utils/getSortByName'
 import {getAgentsJS} from 'state/agents/selectors'
 
@@ -76,8 +78,21 @@ export const isSortingMetricLoading = (state: RootState) =>
 export const getAgentsPagination = (state: RootState) =>
     state.ui[agentPerformanceSlice.name].pagination
 
-export const getSortedAgents = createSelector(
+export const getFilteredAgents = createSelector(
     getAgentsJS,
+    getPageStatsFilters,
+    (agents, filters) =>
+        filters?.agents
+            ? _intersectionBy(
+                  agents,
+                  filters?.agents.map((agentId: number) => ({id: agentId})),
+                  'id'
+              )
+            : agents
+)
+
+export const getSortedAgents = createSelector(
+    getFilteredAgents,
     getAgentSorting,
     (agentsList, {direction, field, lastSortingMetric}) => {
         const agents = agentsList

@@ -5,6 +5,7 @@ import {
     TicketMember,
 } from 'models/reporting/types'
 import {OrderDirection} from 'models/api/types'
+import {initialState as initialStatsFiltersState} from 'state/stats/reducers'
 import {
     initialState,
     agentPerformanceSlice,
@@ -15,6 +16,7 @@ import {
     isSortingMetricLoading,
     getPaginatedAgents,
     pageSet,
+    getFilteredAgents,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {RootState} from 'state/types'
 import {TableColumn} from 'state/ui/stats/types'
@@ -125,7 +127,7 @@ describe('agentPerformanceSlice', () => {
         })
     })
 
-    describe('selectAgentSorting', () => {
+    describe('getAgentSorting', () => {
         it('should return the current sorting', () => {
             const state = {
                 ui: {[agentPerformanceSlice.name]: initialState},
@@ -135,7 +137,7 @@ describe('agentPerformanceSlice', () => {
         })
     })
 
-    describe('selectSortingMetricIsLoading', () => {
+    describe('getSortingMetricIsLoading', () => {
         it('should return the loading state of current sorting', () => {
             const state = {
                 ui: {[agentPerformanceSlice.name]: initialState},
@@ -147,11 +149,45 @@ describe('agentPerformanceSlice', () => {
         })
     })
 
-    describe('selectSortedAgents', () => {
+    describe('getFilteredAgents', () => {
+        it('should return all agents if no StatsFilter.agents ', () => {
+            const state = {
+                agents: fromJS({all: fromJS(agents)}),
+                ui: {[agentPerformanceSlice.name]: initialState},
+                stats: initialStatsFiltersState,
+            } as RootState
+
+            expect(getFilteredAgents(state).length).toEqual(agents.length)
+        })
+
+        it('should return filtered agents if StatsFilter.agents selected', () => {
+            const filteredAgents = [1, 2]
+            const state = {
+                agents: fromJS({all: fromJS(agents)}),
+                ui: {[agentPerformanceSlice.name]: initialState},
+                stats: fromJS({
+                    filters: {
+                        period: {
+                            start_datetime: '1970-01-01T00:00:00+00:00',
+                            end_datetime: '1970-01-01T00:00:00+00:00',
+                        },
+                        agents: filteredAgents,
+                    },
+                }),
+            } as RootState
+
+            expect(getFilteredAgents(state).length).toEqual(
+                filteredAgents.length
+            )
+        })
+    })
+
+    describe('getSortedAgents', () => {
         it('should return agents sorted alphabetically if no sorting metric is declared', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {[agentPerformanceSlice.name]: initialState},
+                stats: initialStatsFiltersState,
             } as RootState
 
             expect(getSortedAgents(state)).toEqual(agents.sort(getSortByName))
@@ -168,6 +204,7 @@ describe('agentPerformanceSlice', () => {
                         },
                     },
                 },
+                stats: initialStatsFiltersState,
             } as RootState
 
             expect(getSortedAgents(state)).toEqual(
@@ -179,6 +216,7 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {[agentPerformanceSlice.name]: initialState},
+                stats: initialStatsFiltersState,
             } as RootState
 
             expect(getSortedAgents(state)).toEqual(agents.sort(getSortByName))
@@ -197,6 +235,7 @@ describe('agentPerformanceSlice', () => {
                         },
                     },
                 },
+                stats: initialStatsFiltersState,
             } as RootState
 
             expect(getSortedAgents(state)).toEqual(
@@ -234,13 +273,14 @@ describe('agentPerformanceSlice', () => {
                         },
                     },
                 },
+                stats: initialStatsFiltersState,
             } as RootState
 
             expect(getSortedAgents(state).pop()).toEqual(agents[0])
         })
     })
 
-    describe('selectPaginatedAgents', () => {
+    describe('getPaginatedAgents', () => {
         it('should return agents for current page with currentPage and perPage settings', () => {
             const currentPage = 2
             const perPage = 2
@@ -256,6 +296,7 @@ describe('agentPerformanceSlice', () => {
                         },
                     },
                 },
+                stats: initialStatsFiltersState,
             } as RootState
 
             expect(getPaginatedAgents(state)).toEqual({
