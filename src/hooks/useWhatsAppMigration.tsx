@@ -270,6 +270,7 @@ function useMigration(): Migration {
 
     const verifyAndFinish = async (code?: string) => {
         switch (status) {
+            case Status.Pending:
             case Status.Unverified: {
                 try {
                     await verifyCode(code ?? '')
@@ -393,6 +394,11 @@ function useMigration(): Migration {
                     message: `We ${action} ${number} with a one-time code`,
                 })
             )
+
+            setVerification({
+                codeVerificationMethod: method,
+                codeRequested: true,
+            })
         } catch (error) {
             void dispatch(
                 notify({
@@ -557,6 +563,7 @@ export function isMigrationInProgress(): boolean {
 function getStatusFromPersistedState({
     target,
     progress,
+    verification,
 }: PersistedState): Status {
     if (isEmpty(progress)) {
         return !target || [target.waba_id, target.phone_number].every(isEmpty)
@@ -568,7 +575,7 @@ function getStatusFromPersistedState({
         progress?.verification_status !==
         WhatsAppPhoneNumberVerificationStatus.Verified
     ) {
-        return Status.Unverified
+        return verification?.codeRequested ? Status.Pending : Status.Unverified
     }
 
     if (

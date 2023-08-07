@@ -119,6 +119,28 @@ describe('utilities', () => {
             ).toEqual(Status.Unverified)
         })
 
+        it('should return status.Pending when the verification code was requested but not verified', () => {
+            expect(
+                getStatusFromPersistedState({
+                    verification: {
+                        codeRequested: true,
+                        codeVerificationMethod:
+                            WhatsAppCodeVerificationMethod.Voice,
+                    },
+                    target: {
+                        waba_id: '123123',
+                        phone_number: '+123123123',
+                    },
+                    progress: {
+                        waba_phone_number_id: '1231231',
+                        status: WhatsAppPhoneNumberStatus.Pending,
+                        verification_status:
+                            WhatsAppPhoneNumberVerificationStatus.Unverified,
+                    },
+                })
+            ).toEqual(Status.Pending)
+        })
+
         it('should return Status.Verified when the phone number has been verified', () => {
             expect(
                 getStatusFromPersistedState({
