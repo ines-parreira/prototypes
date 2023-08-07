@@ -27,15 +27,18 @@ describe('<CampaignsTable />', () => {
         const onClickDelete = jest.fn()
         const onClickDuplicate = jest.fn()
         const onToggleCampaign = jest.fn()
+        const onChangePage = jest.fn()
 
         const {container} = render(
             <CampaignsTable
                 data={data}
+                page={1}
                 perPage={10}
                 integration={integration}
                 onClickDelete={onClickDelete}
                 onClickDuplicate={onClickDuplicate}
                 onToggleCampaign={onToggleCampaign}
+                onChangePage={onChangePage}
             />
         )
 
@@ -48,40 +51,57 @@ describe('<CampaignsTable />', () => {
         const onClickDelete = jest.fn()
         const onClickDuplicate = jest.fn()
         const onToggleCampaign = jest.fn()
+        const onChangePage = jest.fn()
 
-        const {container, getByText} = render(
+        const {container, rerender} = render(
             <CampaignsTable
                 data={data}
+                page={1}
                 perPage={10}
                 integration={integration}
                 onClickDelete={onClickDelete}
                 onClickDuplicate={onClickDuplicate}
                 onToggleCampaign={onToggleCampaign}
+                onChangePage={onChangePage}
             />
         )
 
         const firstPage = container.querySelectorAll('tr')
         expect(firstPage.length).toEqual(11) // 10 campaign rows + header row
 
-        getByText('keyboard_arrow_right').click()
-
-        const secondPage = container.querySelectorAll('tr')
-        expect(secondPage.length).toEqual(10) // 9 campaign rows + header row
-    })
-
-    it('shows the preview tooltip if merchant is part of revenue beta', async () => {
-        const onClickDelete = jest.fn()
-        const onClickDuplicate = jest.fn()
-        const onToggleCampaign = jest.fn()
-
-        render(
+        rerender(
             <CampaignsTable
-                data={[data[0]]}
+                data={data}
+                page={2}
                 perPage={10}
                 integration={integration}
                 onClickDelete={onClickDelete}
                 onClickDuplicate={onClickDuplicate}
                 onToggleCampaign={onToggleCampaign}
+                onChangePage={onChangePage}
+            />
+        )
+
+        const secondPage = container.querySelectorAll('tr')
+        expect(secondPage.length).toEqual(10) // 9 campaign rows + header row
+    })
+
+    it('shows the preview tooltip', async () => {
+        const onClickDelete = jest.fn()
+        const onClickDuplicate = jest.fn()
+        const onToggleCampaign = jest.fn()
+        const onChangePage = jest.fn()
+
+        render(
+            <CampaignsTable
+                data={[data[0]]}
+                page={1}
+                perPage={10}
+                integration={integration}
+                onClickDelete={onClickDelete}
+                onClickDuplicate={onClickDuplicate}
+                onToggleCampaign={onToggleCampaign}
+                onChangePage={onChangePage}
             />
         )
 
@@ -97,6 +117,7 @@ describe('<CampaignsTable />', () => {
         const onClickDelete = jest.fn()
         const onClickDuplicate = jest.fn()
         const onToggleCampaign = jest.fn()
+        const onChangePage = jest.fn()
 
         render(
             <CampaignsTable
@@ -106,6 +127,7 @@ describe('<CampaignsTable />', () => {
                 onClickDelete={onClickDelete}
                 onClickDuplicate={onClickDuplicate}
                 onToggleCampaign={onToggleCampaign}
+                onChangePage={onChangePage}
             />
         )
 
@@ -117,19 +139,21 @@ describe('<CampaignsTable />', () => {
         const onClickDelete = jest.fn()
         const onClickDuplicate = jest.fn()
         const onToggleCampaign = jest.fn()
+        const onChangePage = jest.fn()
 
         const {rerender} = render(
             <CampaignsTable
                 data={data}
+                page={3}
                 perPage={5}
                 integration={integration}
                 onClickDelete={onClickDelete}
                 onClickDuplicate={onClickDuplicate}
                 onToggleCampaign={onToggleCampaign}
+                onChangePage={onChangePage}
             />
         )
 
-        screen.getByLabelText('page-3').click()
         expect(screen.getByLabelText('page-3')).toHaveAttribute(
             'aria-current',
             'true'
@@ -143,6 +167,7 @@ describe('<CampaignsTable />', () => {
                 onClickDelete={onClickDelete}
                 onClickDuplicate={onClickDuplicate}
                 onToggleCampaign={onToggleCampaign}
+                onChangePage={onChangePage}
             />
         )
 

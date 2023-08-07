@@ -1,11 +1,5 @@
-import React, {
-    MouseEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
-import {Link} from 'react-router-dom'
+import React, {MouseEvent, useCallback, useMemo} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
@@ -32,8 +26,10 @@ type Props = {
     data: ChatCampaign[]
     integration: Map<any, any>
     perPage?: number
+    page?: number
     onClickDelete: (campaign: ChatCampaign) => void
     onClickDuplicate: (event: MouseEvent, campaign: ChatCampaign) => void
+    onChangePage: (page: number) => void
     onToggleCampaign: (campaign: ChatCampaign) => void
 }
 
@@ -41,16 +37,13 @@ export const CampaignsTable = ({
     data,
     integration,
     perPage = 25,
+    page = 1,
     onClickDelete,
     onClickDuplicate,
+    onChangePage,
     onToggleCampaign,
 }: Props) => {
-    const [page, setPage] = useState(1)
-
-    useEffect(() => {
-        setPage(1)
-    }, [data])
-
+    const history = useHistory()
     const paginatedRows = useMemo(() => {
         const start = (page - 1) * perPage
         const end = start + perPage
@@ -78,7 +71,16 @@ export const CampaignsTable = ({
                         triggers={campaign.triggers}
                     >
                         <BodyCell innerClassName={css.anchorCell}>
-                            <Link className={css.anchor} to={editLink}>
+                            <Link
+                                className={css.anchor}
+                                to={editLink}
+                                onClick={(event) => {
+                                    event.preventDefault()
+                                    history.push(editLink, {
+                                        previousSearch: window.location.search,
+                                    })
+                                }}
+                            >
                                 <div>
                                     <b>{campaign.name}</b>
                                 </div>
@@ -95,7 +97,13 @@ export const CampaignsTable = ({
                 </TableBodyRow>
             )
         },
-        [integration, onClickDelete, onClickDuplicate, onToggleCampaign]
+        [
+            history,
+            integration,
+            onClickDelete,
+            onClickDuplicate,
+            onToggleCampaign,
+        ]
     )
 
     const renderTableBody = useCallback(() => {
@@ -123,7 +131,7 @@ export const CampaignsTable = ({
                     className={css.pagination}
                     count={Math.ceil(data.length / perPage)}
                     page={page}
-                    onChange={setPage}
+                    onChange={onChangePage}
                 />
             )}
         </>

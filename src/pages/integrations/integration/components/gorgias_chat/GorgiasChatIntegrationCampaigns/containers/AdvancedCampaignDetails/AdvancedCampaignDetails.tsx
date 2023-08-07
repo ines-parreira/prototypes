@@ -488,6 +488,13 @@ export const AdvancedCampaignDetails = memo(
             ]),
         }
 
+        const backUrl = `/app/settings/channels/${
+            integration.get('type') as string
+        }/${integration.get('id') as string}/campaigns${
+            (history.location.state as Record<string, string>)
+                ?.previousSearch ?? ''
+        }`
+
         return (
             <IntegrationProvider
                 chatIntegration={integration}
@@ -495,9 +502,7 @@ export const AdvancedCampaignDetails = memo(
             >
                 <div data-testid="advanced-campaign-details-page">
                     <CampaignDetailsHeader
-                        backToHref={`/app/settings/channels/${
-                            integration.get('type') as string
-                        }/${integration.get('id') as string}/campaigns`}
+                        backToHref={backUrl}
                         isUpdate={isUpdate}
                     />
 

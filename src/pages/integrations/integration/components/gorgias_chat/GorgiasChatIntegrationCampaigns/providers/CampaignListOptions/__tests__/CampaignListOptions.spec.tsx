@@ -1,0 +1,103 @@
+import React, {useContext} from 'react'
+import {render} from '@testing-library/react'
+
+import useSearch from 'hooks/useSearch'
+
+import * as utils from '../utils'
+import {CampaignListOptionsContext} from '../context'
+
+import {CampaignListOptions} from '../CampaignListOptions'
+
+jest.mock('hooks/useSearch')
+jest.mock('../utils')
+
+const TestingComponent = () => {
+    const {getParams, onChangeParams} = useContext(CampaignListOptionsContext)
+    const {page, search, state} = getParams()
+
+    return (
+        <>
+            <span data-testid="page">{page}</span>
+            <span data-testid="search">{search}</span>
+            <span data-testid="state">{state}</span>
+
+            <button
+                data-testid="update"
+                onClick={() =>
+                    onChangeParams({
+                        page: 2,
+                        search: 'test',
+                        state: 'active',
+                    })
+                }
+            >
+                Update
+            </button>
+        </>
+    )
+}
+
+describe('<CampaignListOptions />', () => {
+    const updateUrlSpy = jest.spyOn(utils, 'updateUrlWithSearchParams')
+
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                search: '',
+            },
+        })
+        ;(useSearch as jest.Mock).mockImplementation(() => ({}))
+    })
+
+    afterEach(() => {
+        updateUrlSpy.mockClear()
+    })
+
+    it('provides the default context', () => {
+        const {getByTestId} = render(
+            <CampaignListOptions>
+                <TestingComponent />
+            </CampaignListOptions>
+        )
+
+        expect(getByTestId('page')).toHaveTextContent('1')
+        expect(getByTestId('search')).toHaveTextContent('')
+        expect(getByTestId('state')).toHaveTextContent('all')
+    })
+
+    it('syncs the URL with the current options', () => {
+        expect(window.location.search).toBe('')
+
+        render(
+            <CampaignListOptions>
+                <TestingComponent />
+            </CampaignListOptions>
+        )
+
+        expect(updateUrlSpy).toHaveBeenCalledWith({
+            page: 1,
+            search: '',
+            state: 'all',
+        })
+    })
+
+    it('updates the URL when the options change', () => {
+        const {getByTestId} = render(
+            <CampaignListOptions>
+                <TestingComponent />
+            </CampaignListOptions>
+        )
+
+        getByTestId('update').click()
+
+        expect(getByTestId('page')).toHaveTextContent('2')
+        expect(getByTestId('search')).toHaveTextContent('test')
+        expect(getByTestId('state')).toHaveTextContent('active')
+
+        expect(updateUrlSpy).toHaveBeenCalledWith({
+            page: 2,
+            search: 'test',
+            state: 'active',
+        })
+    })
+})

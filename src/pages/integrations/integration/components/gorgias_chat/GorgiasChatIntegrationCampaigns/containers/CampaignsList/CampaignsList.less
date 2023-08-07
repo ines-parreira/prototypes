@@ -1,0 +1,24 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/new/layout.less';
+
+:local {
+    .pageContainer {
+        padding: @layout-spacing-m;
+    }
+
+    .campaignsToolbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        @media @mobiles {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    .noCampaignsLayer {
+        margin-top: @layout-spacing-s;
+    }
+}
