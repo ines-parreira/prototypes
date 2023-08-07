@@ -192,12 +192,10 @@ export class WebsocketSharedWorker {
                 'reconnect_attempt',
                 this._onSocketReconnectAttempt
             )
-        } else {
-            if (this.socket.connected) {
-                messagePort.postMessage({
-                    type: BroadcastChannelEvent.WsConnected,
-                })
-            }
+        } else if (this.socket.connected) {
+            messagePort.postMessage({
+                type: BroadcastChannelEvent.WsConnected,
+            })
         }
 
         this.connectedTabs[message.clientId!] = {

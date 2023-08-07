@@ -4,8 +4,11 @@ import {BroadcastChannelEvent, WSMessage} from '../types'
 import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     DISCONNECTED_NOTIFICATION_DELAY,
+    INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
+    INCREMENTAL_RECONNECT_BACKOFF,
 } from '../constants'
 import {FallbackWorker, fallbackWorkerAdapter} from '../fallbackWorkerAdapter'
+import IncrementalBackoff from '../incrementalBackoff'
 
 jest.mock('socket.io-client', () => {
     return jest.fn(() => {
@@ -13,6 +16,9 @@ jest.mock('socket.io-client', () => {
             connect: jest.fn(),
             send: jest.fn(),
             on: jest.fn(),
+            io: {
+                on: jest.fn(),
+            },
         }
     })
 })
@@ -20,6 +26,8 @@ jest.mock('socket.io-client', () => {
 jest.useFakeTimers()
 jest.spyOn(global, 'setTimeout')
 jest.spyOn(global, 'clearTimeout')
+
+jest.mock('../incrementalBackoff')
 
 describe('FallbackWorker', () => {
     let fallbackWorker: FallbackWorker
@@ -38,53 +46,6 @@ describe('FallbackWorker', () => {
         fallbackWorker = new FallbackWorker()
     })
 
-    describe('incrementalReconnect()', () => {
-        it(
-            "should try to connect the worker's socket, double the reconnect backoff time, " +
-                'and then set another timeout to try again later',
-            () => {
-                fallbackWorker.onConnect()
-
-                const oldBackoff = fallbackWorker.incrementalReconnectBackoff
-
-                fallbackWorker.incrementalReconnect()
-
-                jest.runOnlyPendingTimers()
-
-                expect(fallbackWorker.socket?.connect).toHaveBeenCalledTimes(1)
-                expect(fallbackWorker.incrementalReconnectBackoff).toEqual(
-                    2 * oldBackoff
-                )
-
-                expect(setTimeout).toHaveBeenLastCalledWith(
-                    expect.any(Function),
-                    fallbackWorker.incrementalReconnectBackoff * 1000
-                )
-            }
-        )
-
-        it('should not increase the reconnect backoff time above the max', () => {
-            fallbackWorker.onConnect()
-
-            fallbackWorker.incrementalReconnectBackoff =
-                MAX_INCREMENTAL_RECONNECT_BACKOFF
-
-            fallbackWorker.incrementalReconnect()
-
-            jest.runOnlyPendingTimers()
-
-            expect(fallbackWorker.socket?.connect).toHaveBeenCalledTimes(1)
-            expect(fallbackWorker.incrementalReconnectBackoff).toEqual(
-                MAX_INCREMENTAL_RECONNECT_BACKOFF
-            )
-
-            expect(setTimeout).toHaveBeenLastCalledWith(
-                expect.any(Function),
-                fallbackWorker.incrementalReconnectBackoff * 1000
-            )
-        })
-    })
-
     describe('_onSocketJson', () => {
         it('should post the message to the tab', () => {
             const message = {foo: 'bar'}
@@ -99,56 +60,112 @@ describe('FallbackWorker', () => {
     })
 
     describe('_onSocketConnect', () => {
-        it(
-            'should post a `WS_CONNECTED` message to the tab, reset the `incrementalReconnectBackoff` and clear all ' +
-                'tasks',
-            () => {
-                fallbackWorker.incrementalReconnectTask = setTimeout(
-                    jest.fn(),
-                    1000
-                )
-                fallbackWorker.sendDisconnectedNotificationTask = setTimeout(
-                    jest.fn(),
-                    1000
-                )
-                fallbackWorker.incrementalReconnectBackoff =
-                    MAX_INCREMENTAL_RECONNECT_BACKOFF
+        it('should post `WS_CONNECTED` message to the tab', () => {
+            fallbackWorker._onSocketConnect()
 
-                fallbackWorker._onSocketConnect()
+            expect(spyFallbackWorker.postMessage).toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.WsConnected,
+            })
+        })
 
-                expect(clearTimeout).toHaveBeenCalledWith(
-                    fallbackWorker.incrementalReconnectTask
-                )
-                expect(clearTimeout).toHaveBeenCalledWith(
-                    fallbackWorker.sendDisconnectedNotificationTask
-                )
-                expect(fallbackWorker.incrementalReconnectBackoff).toEqual(1)
-            }
-        )
+        it('should clear scheduled "disconnected" notification', () => {
+            const sendDisconnectedNotificationTask = setTimeout(jest.fn(), 1000)
+            fallbackWorker.sendDisconnectedNotificationTask =
+                sendDisconnectedNotificationTask
+
+            fallbackWorker._onSocketConnect()
+
+            expect(clearTimeout).toHaveBeenCalledWith(
+                sendDisconnectedNotificationTask
+            )
+            expect(fallbackWorker.sendDisconnectedNotificationTask).toBe(null)
+        })
+
+        it('should clear scheduled reconnect', () => {
+            const reset = jest.spyOn(IncrementalBackoff.prototype, 'reset')
+
+            fallbackWorker._onSocketConnect()
+
+            expect(reset).toBeCalled()
+        })
     })
 
-    describe('_onSocketDisconnect', () => {
-        it('should delay a task to send the disconnected notification and try to reconnect', () => {
-            const incrementalReconnectSpy = jest.spyOn(
-                fallbackWorker,
-                'incrementalReconnect'
-            )
-
-            expect(fallbackWorker.sendDisconnectedNotificationTask).toEqual(
-                null
-            )
-
-            fallbackWorker._onSocketDisconnect()
+    describe.each([
+        {
+            name: 'socket disconnect',
+            fn: () => fallbackWorker._onSocketDisconnect('some reason'),
+        },
+        {
+            name: 'socket connect error',
+            fn: () =>
+                fallbackWorker._onSocketConnectError(new Error('test error')),
+        },
+    ])('disconnected notification on $name', ({fn}) => {
+        it('should delay a task to send the disconnected notification', () => {
+            fn()
+            jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
 
             expect(fallbackWorker.sendDisconnectedNotificationTask).not.toEqual(
                 null
             )
-            expect(setTimeout).toHaveBeenCalledWith(
-                expect.any(Function),
-                DISCONNECTED_NOTIFICATION_DELAY * 1000
+            expect(spyFallbackWorker.postMessage).toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.WsDisconnected,
+            })
+        })
+
+        it('should not schedule more than one task', () => {
+            fn()
+            fn()
+            jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
+
+            expect(spyFallbackWorker.postMessage).toHaveBeenCalledTimes(1)
+            expect(spyFallbackWorker.postMessage).toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.WsDisconnected,
+            })
+        })
+
+        it('should schedule a new task to send the disconnected notification after a successful connection', () => {
+            fn()
+            jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
+            fn()
+            fallbackWorker._onSocketDisconnect('some reason')
+            jest.advanceTimersByTime(DISCONNECTED_NOTIFICATION_DELAY * 1000)
+
+            expect(spyFallbackWorker.postMessage).toHaveBeenNthCalledWith(1, {
+                type: BroadcastChannelEvent.WsDisconnected,
+            })
+            expect(spyFallbackWorker.postMessage).toHaveBeenLastCalledWith({
+                type: BroadcastChannelEvent.WsDisconnected,
+            })
+        })
+    })
+
+    describe('onSocketConnectError()', () => {
+        it('should not schedule reconnect on error', () => {
+            const scheduleCall = jest.spyOn(
+                IncrementalBackoff.prototype,
+                'scheduleCall'
             )
 
-            expect(incrementalReconnectSpy).toHaveBeenCalledTimes(1)
+            fallbackWorker._onSocketConnectError(new Error('Any error'))
+
+            expect(scheduleCall).not.toHaveBeenCalled()
+        })
+
+        it('should schedule reconnect on internal server connection error', () => {
+            fallbackWorker.socket = io()
+            const scheduleCall = jest.spyOn(
+                IncrementalBackoff.prototype,
+                'scheduleCall'
+            )
+
+            fallbackWorker._onSocketConnectError(
+                new Error(INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE)
+            )
+            expect(scheduleCall).toHaveBeenCalledTimes(1)
+
+            scheduleCall.mock.calls[0][0](1)
+            expect(fallbackWorker.socket.connect).toHaveBeenCalledTimes(1)
         })
     })
 
@@ -159,7 +176,7 @@ describe('FallbackWorker', () => {
             fallbackWorker.onConnect()
 
             expect(fallbackWorker.socket).not.toEqual(null)
-            expect(fallbackWorker.socket?.on).toHaveBeenCalledTimes(3)
+            expect(fallbackWorker.socket?.on).toHaveBeenCalledTimes(4)
             expect(fallbackWorker.socket?.on).toHaveBeenCalledWith(
                 'json',
                 fallbackWorker._onSocketJson
@@ -172,21 +189,45 @@ describe('FallbackWorker', () => {
                 'disconnect',
                 fallbackWorker._onSocketDisconnect
             )
+            expect(fallbackWorker.socket?.io.on).toHaveBeenCalledTimes(1)
+            expect(fallbackWorker.socket?.io.on).toHaveBeenCalledWith(
+                'reconnect_attempt',
+                fallbackWorker._onSocketReconnectAttempt
+            )
             expect(io).toHaveBeenNthCalledWith(
                 1,
                 window.WS_URL,
                 expect.objectContaining({
                     path: '/socket.io/v4/',
+                    reconnectionDelay: INCREMENTAL_RECONNECT_BACKOFF * 1000,
+                    reconnectionDelayMax:
+                        MAX_INCREMENTAL_RECONNECT_BACKOFF * 1000,
                 })
             )
         })
 
         it('should post a `WS_CONNECTED` message to the tab because the worker already have a socket', () => {
-            fallbackWorker.socket = io()
+            fallbackWorker.socket = {
+                connected: true,
+                send: jest.fn(),
+            } as unknown as Socket
 
             fallbackWorker.onConnect()
 
             expect(spyFallbackWorker.postMessage).toHaveBeenCalledWith({
+                type: BroadcastChannelEvent.WsConnected,
+            })
+        })
+
+        it('should NOT send a `WS_CONNECTED` event on the message port if the socket is offline', () => {
+            fallbackWorker.socket = {
+                connected: false,
+                send: jest.fn(),
+            } as unknown as Socket
+
+            fallbackWorker.onConnect()
+
+            expect(spyFallbackWorker.postMessage).not.toHaveBeenCalledWith({
                 type: BroadcastChannelEvent.WsConnected,
             })
         })

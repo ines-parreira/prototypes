@@ -15,33 +15,20 @@ import {WSMessage, BroadcastChannelEvent} from './types'
 import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     DISCONNECTED_NOTIFICATION_DELAY,
+    INCREMENTAL_RECONNECT_BACKOFF,
+    INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
 } from './constants'
+import IncrementalBackoff from './incrementalBackoff'
 
 export class FallbackWorker {
     socket: Socket | null = null
 
-    incrementalReconnectBackoff = 1
-    incrementalReconnectTask: NodeJS.Timeout | null = null
-
     sendDisconnectedNotificationTask: NodeJS.Timeout | null = null
 
-    incrementalReconnect = () => {
-        // eslint-disable-next-line no-console
-        console.log(`Reconnecting in ${this.incrementalReconnectBackoff}`)
-
-        this.incrementalReconnectTask = setTimeout(() => {
-            // eslint-disable-next-line no-console
-            console.log('Reconnecting...')
-            this.socket?.connect()
-
-            this.incrementalReconnectBackoff = Math.min(
-                this.incrementalReconnectBackoff * 2,
-                MAX_INCREMENTAL_RECONNECT_BACKOFF
-            )
-
-            this.incrementalReconnect()
-        }, this.incrementalReconnectBackoff * 1000)
-    }
+    reconnectBackoff = new IncrementalBackoff({
+        initialDelay: INCREMENTAL_RECONNECT_BACKOFF * 1000,
+        maxDelay: MAX_INCREMENTAL_RECONNECT_BACKOFF * 1000,
+    })
 
     _onSocketJson = (wsMessage: WSMessage['json']) => {
         fallbackWorkerAdapter.postMessage({
@@ -53,35 +40,53 @@ export class FallbackWorker {
     _onSocketConnect = () => {
         // eslint-disable-next-line no-console
         console.log('WS connected!')
-        fallbackBroadcastChannelAdapter.postMessage({
+        fallbackWorkerAdapter.postMessage({
             type: BroadcastChannelEvent.WsConnected,
         })
 
-        if (this.incrementalReconnectTask) {
-            this.incrementalReconnectBackoff = 1
-            clearTimeout(this.incrementalReconnectTask)
-        }
-
         if (this.sendDisconnectedNotificationTask) {
             clearTimeout(this.sendDisconnectedNotificationTask)
+            this.sendDisconnectedNotificationTask = null
+        }
+
+        this.reconnectBackoff.reset()
+    }
+
+    _onSocketConnectError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.log('WS connect error!', error.message)
+        this.scheduleDisconnectedNotificationTask()
+
+        if (error.message === INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE) {
+            this.reconnectBackoff.scheduleCall((attempt) => {
+                this._onSocketReconnectAttempt(attempt)
+                this.socket?.connect()
+            })
         }
     }
 
-    _onSocketDisconnect = () => {
+    _onSocketDisconnect = (reason: string) => {
         // eslint-disable-next-line no-console
-        console.log('WS disconnected!')
+        console.log('WS disconnected!', reason)
+        this.scheduleDisconnectedNotificationTask()
+    }
 
+    _onSocketReconnectAttempt = (attempt: number) => {
+        // eslint-disable-next-line no-console
+        console.log('Reconnect attempt', attempt)
+    }
+
+    private scheduleDisconnectedNotificationTask = () => {
+        if (this.sendDisconnectedNotificationTask) {
+            return
+        }
         this.sendDisconnectedNotificationTask = setTimeout(
             () =>
-                fallbackBroadcastChannelAdapter.postMessage({
+                fallbackWorkerAdapter.postMessage({
                     type: BroadcastChannelEvent.WsDisconnected,
                 }),
             DISCONNECTED_NOTIFICATION_DELAY * 1000
         )
-
-        // After a disconnection, we might need to reconnect manually as the client will not try to reconnect
-        // automatically. See: https://github.com/socketio/socket.io-client/issues/1067
-        this.incrementalReconnect()
     }
 
     onConnect = () => {
@@ -89,12 +94,19 @@ export class FallbackWorker {
             this.socket = io(window.WS_URL, {
                 transports: ['websocket'],
                 path: '/socket.io/v4/',
+                reconnectionDelay: INCREMENTAL_RECONNECT_BACKOFF * 1000,
+                reconnectionDelayMax: MAX_INCREMENTAL_RECONNECT_BACKOFF * 1000,
             })
 
             this.socket.on('json', this._onSocketJson)
             this.socket.on('connect', this._onSocketConnect)
             this.socket.on('disconnect', this._onSocketDisconnect)
-        } else {
+            this.socket.on('connect_error', this._onSocketConnectError)
+            this.socket.io.on(
+                'reconnect_attempt',
+                this._onSocketReconnectAttempt
+            )
+        } else if (this.socket.connected) {
             fallbackWorkerAdapter.postMessage({
                 type: BroadcastChannelEvent.WsConnected,
             })
