@@ -6,7 +6,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
   id="TicketHeader"
 >
   <div
-    class="d-flex justify-content-between mb-2"
+    class="d-flex justify-content-between align-items-center mb-2"
   >
     <div
       class="wrapper component"
@@ -355,7 +355,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
   id="TicketHeader"
 >
   <div
-    class="d-flex justify-content-between mb-2"
+    class="d-flex justify-content-between align-items-center mb-2"
   >
     <div
       class="wrapper isFocused component"
@@ -569,7 +569,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
   id="TicketHeader"
 >
   <div
-    class="d-flex justify-content-between mb-2"
+    class="d-flex justify-content-between align-items-center mb-2"
   >
     <div
       class="wrapper component"
@@ -928,7 +928,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
   id="TicketHeader"
 >
   <div
-    class="d-flex justify-content-between mb-2"
+    class="d-flex justify-content-between align-items-center mb-2"
   >
     <div
       class="wrapper component"

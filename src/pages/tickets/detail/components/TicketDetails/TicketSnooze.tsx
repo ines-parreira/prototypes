@@ -1,8 +1,11 @@
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useRef} from 'react'
 
-import Tooltip from '../../../../common/components/Tooltip'
-import {formatDatetime} from '../../../../../utils'
+import {FeatureFlagKey} from 'config/featureFlags'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Tooltip from 'pages/common/components/Tooltip'
+import {formatDatetime} from 'utils'
 
 import css from './TicketSnooze.less'
 
@@ -13,9 +16,14 @@ type Props = {
 }
 
 const TicketSnooze = ({className, datetime, timezone}: Props) => {
+    const hasSeparateSnooze =
+        useFlags()[FeatureFlagKey.SeparateSnoozeButton] || false
+    const badgeRef = useRef<HTMLDivElement>(null)
     const wrapperRef = useRef<HTMLDivElement>(null)
 
-    return datetime ? (
+    if (!datetime) return null
+
+    return !hasSeparateSnooze ? (
         <>
             <div
                 ref={wrapperRef}
@@ -30,7 +38,16 @@ const TicketSnooze = ({className, datetime, timezone}: Props) => {
                 Snooze {formatDatetime(datetime, timezone)}
             </Tooltip>
         </>
-    ) : null
+    ) : (
+        <>
+            <span ref={badgeRef} className={css.badge}>
+                <Badge type={ColorType.Blue}>Snoozed</Badge>
+            </span>
+            <Tooltip placement="bottom" target={badgeRef}>
+                Snoozed until {formatDatetime(datetime, timezone)}
+            </Tooltip>
+        </>
+    )
 }
 
 export default TicketSnooze
