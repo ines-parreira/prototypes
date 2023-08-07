@@ -25,7 +25,7 @@ import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/ut
 type CategoryLink = {
     className?: string
     requiredRole?: UserRole
-    requiredFeatureFlag?: FeatureFlagKey
+    requiredFeatureFlags?: FeatureFlagKey[]
     text: string
     to: string
     extra?: ReactNode
@@ -123,7 +123,10 @@ const CATEGORIES: Category[] = [
             {
                 requiredRole: ADMIN_ROLE,
                 to: 'revenue/click-tracking',
-                requiredFeatureFlag: FeatureFlagKey.RevenueClickTracking,
+                requiredFeatureFlags: [
+                    FeatureFlagKey.RevenueBetaTesters,
+                    FeatureFlagKey.RevenueClickTracking,
+                ],
                 text: 'Click Tracking',
             },
         ],
@@ -241,15 +244,17 @@ const SettingsNavbar = () => {
                             to,
                             text,
                             requiredRole,
-                            requiredFeatureFlag,
+                            requiredFeatureFlags,
                             extra,
                         }) => {
                             let computedText = text
                             if (
                                 (requiredRole &&
                                     !hasRole(currentUser, requiredRole)) ||
-                                (requiredFeatureFlag &&
-                                    !featureFlags[requiredFeatureFlag])
+                                (requiredFeatureFlags &&
+                                    !requiredFeatureFlags.every(
+                                        (flag) => featureFlags[flag]
+                                    ))
                             ) {
                                 return null
                             }

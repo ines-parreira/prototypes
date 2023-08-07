@@ -49,6 +49,7 @@ describe('<ClickTrackingSettingsView />', () => {
 
     it('should render if the account has the feature flag', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.RevenueBetaTesters]: true,
             [FeatureFlagKey.RevenueClickTracking]: true,
         }))
 

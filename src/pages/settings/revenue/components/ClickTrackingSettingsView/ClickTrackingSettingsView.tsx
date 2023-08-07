@@ -7,12 +7,14 @@ import css from 'pages/settings/settings.less'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
 import {ClickTrackingCustomDomain} from '../ClickTrackingCustomDomain'
 
 export const ClickTrackingSettingsView = () => {
     // Only show this page if the click tracking feature flag is on
+    const isRevenueSubscriber = useIsRevenueBetaTester()
     const clickTrackingEnabled = useFlags()[FeatureFlagKey.RevenueClickTracking]
-    if (!clickTrackingEnabled) {
+    if (!isRevenueSubscriber || !clickTrackingEnabled) {
         return null
     }
 
