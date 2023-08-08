@@ -6,6 +6,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 import WorkflowsView from './WorkflowsView'
 
@@ -52,14 +53,16 @@ export default function WorkflowsViewContainer() {
     }
 
     return (
-        <WorkflowsView
-            shopName={shopName}
-            shopType={shopType}
-            goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
-            goToEditWorkflowPage={goToEditWorkflowPage}
-            quickResponsesUrl={quickResponsesUrl}
-            connectedChannelsUrl={connectedChannelsUrl}
-            notifyMerchant={notifyMerchant}
-        />
+        <ErrorBoundary sentryTags={{section: 'workflows'}}>
+            <WorkflowsView
+                shopName={shopName}
+                shopType={shopType}
+                goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
+                goToEditWorkflowPage={goToEditWorkflowPage}
+                quickResponsesUrl={quickResponsesUrl}
+                connectedChannelsUrl={connectedChannelsUrl}
+                notifyMerchant={notifyMerchant}
+            />
+        </ErrorBoundary>
     )
 }

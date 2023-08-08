@@ -8,6 +8,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {Notification} from 'state/notifications/types'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 import WorkflowEditorView from './WorkflowEditorView'
 
@@ -51,16 +52,18 @@ export default function WorkflowEditorViewContainer() {
     }
 
     return (
-        <WorkflowEditorView
-            currentAccountId={currentAccountId}
-            goToWorkflowsListPage={goToWorkflowsListPage}
-            goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
-            goToConnectedChannelsPage={goToConnectedChannelsPage}
-            workflowId={workflowId}
-            isNewWorkflow={isNewWorkflow}
-            notifyMerchant={notifyMerchant}
-            shopName={shopName}
-            shopType={shopType}
-        />
+        <ErrorBoundary sentryTags={{section: 'workflows'}}>
+            <WorkflowEditorView
+                currentAccountId={currentAccountId}
+                goToWorkflowsListPage={goToWorkflowsListPage}
+                goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
+                goToConnectedChannelsPage={goToConnectedChannelsPage}
+                workflowId={workflowId}
+                isNewWorkflow={isNewWorkflow}
+                notifyMerchant={notifyMerchant}
+                shopName={shopName}
+                shopType={shopType}
+            />
+        </ErrorBoundary>
     )
 }

@@ -3,6 +3,7 @@ import {Redirect, useHistory, useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 import WorkflowTemplatesView from './WorkflowTemplatesView'
 
@@ -32,11 +33,15 @@ const WorkflowTemplatesViewContainer = () => {
     }
 
     return (
-        <WorkflowTemplatesView
-            goToNewWorkflowPage={goToNewWorkflowPage}
-            goToNewWorkflowFromTemplatePage={goToNewWorkflowFromTemplatePage}
-            workflowsUrl={workflowsUrl}
-        />
+        <ErrorBoundary sentryTags={{section: 'workflows'}}>
+            <WorkflowTemplatesView
+                goToNewWorkflowPage={goToNewWorkflowPage}
+                goToNewWorkflowFromTemplatePage={
+                    goToNewWorkflowFromTemplatePage
+                }
+                workflowsUrl={workflowsUrl}
+            />
+        </ErrorBoundary>
     )
 }
 

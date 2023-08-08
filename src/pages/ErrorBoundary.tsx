@@ -11,6 +11,7 @@ import css from './ErrorBoundary.less'
 
 type Props = {
     children: ReactNode
+    sentryTags?: Record<string, string>
 }
 
 type State = {
@@ -42,7 +43,11 @@ export class ErrorBoundary extends PureComponent<Props, State> {
                 extra: errorInfo,
             })
         }
-        reportError(error, {extra: errorInfo})
+        const {sentryTags} = this.props
+        reportError(error, {
+            extra: errorInfo,
+            ...(sentryTags != null ? {tags: sentryTags} : {}),
+        })
     }
 
     _onToggle = () => {
