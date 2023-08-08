@@ -1,10 +1,11 @@
 import _debounce from 'lodash/debounce'
-import React, {useEffect, useMemo, useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useHistory, useParams} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 
 import GorgiasApi from 'services/gorgiasApi'
+import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import useSearch from '../../../hooks/useSearch'
 import {
     UserRole,
@@ -374,8 +375,10 @@ export function TicketNavbarContainer({
         [accountSetting, userSetting]
     )
 
+    const {scrollableAreaRef} = useAutoScrollOnDragging()
+
     return (
-        <Navbar activeContent="tickets">
+        <Navbar activeContent="tickets" navbarContentRef={scrollableAreaRef}>
             <RecentChats />
             <NavbarBlock
                 actions={

@@ -5,6 +5,7 @@ import React, {
     ReactNode,
     MouseEvent as MouseEventReact,
     TouchEvent as TouchEventReact,
+    RefObject,
 } from 'react'
 import PropTypes from 'prop-types'
 import {connect, ConnectedProps} from 'react-redux'
@@ -131,6 +132,7 @@ const mainMenu: MenuItem[] = [
 type OwnProps = {
     activeContent: Maybe<string>
     children: ReactNode
+    navbarContentRef?: RefObject<HTMLDivElement>
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -324,6 +326,7 @@ export class Navbar extends Component<Props, State> {
             currentUser,
             isTrialing,
             isPreferencesLoading,
+            navbarContentRef,
         } = this.props
         const {isResizing} = this.state
         const isBasicOrPro = ['pro', 'basic'].some((priceType) =>
@@ -335,7 +338,6 @@ export class Navbar extends Component<Props, State> {
 
         return (
             <div
-                ref={this.navbarRef}
                 className={classnames(css.sidebar, {
                     [css.isResizing]: isResizing,
                 })}
@@ -404,7 +406,10 @@ export class Navbar extends Component<Props, State> {
                         {isSpotlightEnabled && <SpotlightButton />}
                     </div>
 
-                    <div className={css['navbar-content']}>
+                    <div
+                        ref={navbarContentRef}
+                        className={css['navbar-content']}
+                    >
                         {this.props.children}
                     </div>
 
