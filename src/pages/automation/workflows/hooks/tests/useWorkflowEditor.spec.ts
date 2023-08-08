@@ -50,9 +50,7 @@ describe('useWorkflowEditor', () => {
         updateMock({})
     })
     it('generates an empty workflow configuration when is new', () => {
-        const {result} = renderHook(() =>
-            useWorkflowEditor(1, 'a', true, '', '')
-        )
+        const {result} = renderHook(() => useWorkflowEditor(1, 'a', true))
         expect(result.current.configuration.name).toEqual('')
     })
 
@@ -61,7 +59,7 @@ describe('useWorkflowEditor', () => {
             fetchWorkflowConfiguration: () => Promise.resolve(null),
         })
         const {result, waitForNextUpdate} = renderHook(() =>
-            useWorkflowEditor(1, 'a', false, '', '')
+            useWorkflowEditor(1, 'a', false)
         )
         await waitForNextUpdate()
         expect(result.current.hookError).toBeDefined()
@@ -114,7 +112,7 @@ describe('useWorkflowEditor', () => {
                 } as WorkflowConfiguration),
         })
         const {result, waitForNextUpdate, rerender} = renderHook(() =>
-            useWorkflowEditor(1, 'a', false, '', '')
+            useWorkflowEditor(1, 'a', false)
         )
         expect(result.current.isFetchPending).toBe(true)
         // wait for asynchronous effect to update the local configuration

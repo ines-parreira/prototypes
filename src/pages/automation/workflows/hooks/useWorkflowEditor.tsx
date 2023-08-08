@@ -8,8 +8,6 @@ import React, {
     useMemo,
 } from 'react'
 
-import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
-
 import {
     LanguageCode,
     WorkflowConfiguration,
@@ -76,8 +74,6 @@ export const withWorkflowEditorContext =
             currentAccountId: number
             workflowId: string
             isNewWorkflow: boolean
-            shopType: string
-            shopName: string
         }
     >(
         Component: React.FC<WrappedProps>
@@ -86,9 +82,7 @@ export const withWorkflowEditorContext =
         const contextValue = useWorkflowEditor(
             props.currentAccountId,
             props.workflowId,
-            props.isNewWorkflow,
-            props.shopType,
-            props.shopName
+            props.isNewWorkflow
         )
         return (
             <WorkflowEditorContext.Provider value={contextValue}>
@@ -100,9 +94,7 @@ export const withWorkflowEditorContext =
 export function useWorkflowEditor(
     currentAccountId: number,
     workflowId: string,
-    isNew: boolean,
-    shopType: string,
-    shopName: string
+    isNew: boolean
 ): WorkflowEditorContext {
     const {
         fetchWorkflowConfiguration,
@@ -153,11 +145,6 @@ export function useWorkflowEditor(
         isNew,
         visualBuilderGraphDirty.wfConfigurationOriginal.internal_id !==
             workflowFactoryInstance.current.internal_id
-    )
-
-    const {handleSelfServiceConfigurationUpdate} = useSelfServiceConfiguration(
-        shopType,
-        shopName
     )
 
     useEffect(() => {
@@ -267,10 +254,6 @@ export function useWorkflowEditor(
                 await saveTranslations(visualBuilderGraphDirty)
                 await upsertWorkflowConfiguration(empyTranslationText)
             }
-            // trigger channel cache invalidation to refresh the entrypoint labels and deleted translations on their side
-            void handleSelfServiceConfigurationUpdate(() => {
-                // update without modifying anything, just make it trigger channels cache invalidation
-            })
         } catch (e) {
             setIsSavePending(false)
             throw e
@@ -283,7 +266,6 @@ export function useWorkflowEditor(
         visualBuilderGraphDirty,
         saveTranslations,
         isNew,
-        handleSelfServiceConfigurationUpdate,
         validateTranslationsPayloadSize,
     ])
 

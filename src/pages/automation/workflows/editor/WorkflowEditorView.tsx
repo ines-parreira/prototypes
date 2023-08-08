@@ -10,6 +10,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {withSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
+import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import useSearch from 'hooks/useSearch'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -62,6 +63,10 @@ function WorkflowEditorViewWrapped({
         useFlags()[FeatureFlagKey.FlowsMultiLanguages]
     const {template: templateSlug} = useSearch<{template: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
+    const {handleSelfServiceConfigurationUpdate} = useSelfServiceConfiguration(
+        shopType,
+        shopName
+    )
     const {appendWorkflowInStore} = useStoreWorkflows(
         shopType,
         shopName,
@@ -112,6 +117,11 @@ function WorkflowEditorViewWrapped({
             await workflowEditorContext.handleSave()
             if (isNewWorkflow) {
                 await appendWorkflowInStore(workflowId)
+            } else {
+                // trigger channel cache invalidation to refresh the entrypoint labels and deleted translations on their side
+                void handleSelfServiceConfigurationUpdate(() => {
+                    // update without modifying anything, just make it trigger channels cache invalidation
+                })
             }
         } catch (e) {
             let message =
