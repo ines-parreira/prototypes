@@ -6,9 +6,9 @@ import * as actions from 'state/notifications/actions'
 
 import * as segmentTracker from 'store/middlewares/segmentTracker'
 import {
+    RELOAD_TAB_DELAY,
     SCOPED_BROADCAST_CHANNEL_NAME,
-    SHARED_WORKER_LEGACY_VERSION,
-    SHARED_WORKER_VERSION,
+    SHARED_WORKER_NAME,
 } from '../constants'
 import {
     BroadcastChannelEvent,
@@ -25,15 +25,12 @@ describe('SocketManager', () => {
     const socketManager = new SocketManager()
     const onConnectSpy = jest.spyOn(socketManager, 'onConnect')
     const onDisconnectSpy = jest.spyOn(socketManager, 'onDisconnect')
+    const onReloadSpy = jest.spyOn(socketManager, 'onReload')
     const onServerMessageSpy = jest.spyOn(socketManager, 'onServerMessage')
     const sendToServerSpy = jest.spyOn(socketManager, '_sendToServer')
     const joinRoomSpy = jest.spyOn(socketManager, '_joinRoom')
     const leaveRoomSpy = jest.spyOn(socketManager, '_leaveRoom')
-    const onVersionSpy = jest.spyOn(socketManager, '_onVersion')
-    const renderOutdatedBannerSpy = jest.spyOn(
-        socketManager,
-        '_renderOutdatedBanner'
-    )
+    const resetWorker = jest.spyOn(socketManager, 'resetWorker')
 
     const notifySpy = jest.spyOn(actions, 'notify')
     const dismissNotificationSpy = jest.spyOn(reapop, 'dismissNotification')
@@ -52,8 +49,18 @@ describe('SocketManager', () => {
         it('should initialize the socket manager correctly', () => {
             const socketManager = new SocketManager()
 
+            expect(
+                (
+                    socketManager.worker as SharedWorker & {
+                        constructorSpy: jest.Mock
+                    }
+                ).constructorSpy
+            ).toHaveBeenCalledWith(
+                window.SHARED_WORKER_BUILD_URL,
+                SHARED_WORKER_NAME
+            )
+
             expect(socketManager.worker).toBeInstanceOf(window.SharedWorker)
-            expect(socketManager.worker.port.start).toHaveBeenCalledTimes(1)
             expect(socketManager.worker.port.onmessage).not.toEqual(null)
             expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
                 type: MessagePortEvent.ClientConnected,
@@ -74,13 +81,6 @@ describe('SocketManager', () => {
             expect(
                 socketManager.scopedBroadcastChannel.addEventListener
             ).toHaveBeenCalledTimes(1)
-
-            expect(socketManager._detectedSharedWorkerVersion).toBe(
-                SHARED_WORKER_LEGACY_VERSION
-            )
-            expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
-                type: MessagePortEvent.GetVersion,
-            })
         })
     })
 
@@ -92,6 +92,7 @@ describe('SocketManager', () => {
 
             expect(onConnectSpy).toHaveBeenCalledTimes(1)
             expect(onDisconnectSpy).not.toHaveBeenCalled()
+            expect(onReloadSpy).not.toHaveBeenCalled()
             expect(onServerMessageSpy).not.toHaveBeenCalled()
         })
 
@@ -102,6 +103,18 @@ describe('SocketManager', () => {
 
             expect(onConnectSpy).not.toHaveBeenCalled()
             expect(onDisconnectSpy).toHaveBeenCalledTimes(1)
+            expect(onReloadSpy).not.toHaveBeenCalled()
+            expect(onServerMessageSpy).not.toHaveBeenCalled()
+        })
+
+        it('should call `onReload` when receiving a `RELOAD_ALL_TABS` event', () => {
+            socketManager.onMessage({
+                type: BroadcastChannelEvent.ReloadAllTabs,
+            })
+
+            expect(onConnectSpy).not.toHaveBeenCalled()
+            expect(onDisconnectSpy).not.toHaveBeenCalled()
+            expect(onReloadSpy).toHaveBeenCalledTimes(1)
             expect(onServerMessageSpy).not.toHaveBeenCalled()
         })
 
@@ -115,19 +128,9 @@ describe('SocketManager', () => {
 
             expect(onConnectSpy).not.toHaveBeenCalled()
             expect(onDisconnectSpy).not.toHaveBeenCalled()
+            expect(onReloadSpy).not.toHaveBeenCalled()
             expect(onServerMessageSpy).toHaveBeenCalledTimes(1)
             expect(onServerMessageSpy).toHaveBeenCalledWith(message.json)
-        })
-
-        it('should call `_onVersion` when receiving a `VERSION` event', () => {
-            const message = {
-                type: BroadcastChannelEvent.Version,
-                data: SHARED_WORKER_VERSION,
-            }
-
-            socketManager.onMessage(message)
-
-            expect(onVersionSpy).toHaveBeenCalledWith(SHARED_WORKER_VERSION)
         })
     })
 
@@ -165,6 +168,9 @@ describe('SocketManager', () => {
 
             expect(socketManager.isConnected).toEqual(false)
             expect(notifySpy.mock.calls).toMatchSnapshot()
+            expect(resetWorker).toHaveBeenCalledTimes(0)
+            notifySpy.mock.calls[0][0]?.onClick?.()
+            expect(resetWorker).toHaveBeenCalledTimes(1)
         })
     })
 
@@ -218,53 +224,29 @@ describe('SocketManager', () => {
         })
     })
 
-    describe('_checkVersion()', () => {
-        it('should render the banner because the shared worker is outdated', () => {
-            socketManager._checkVersion()
-            expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
-                type: MessagePortEvent.GetVersion,
-            })
-
-            socketManager._detectedSharedWorkerVersion =
-                SHARED_WORKER_LEGACY_VERSION
-            jest.runOnlyPendingTimers()
-            expect(renderOutdatedBannerSpy).toHaveBeenCalled()
-        })
-
-        it('should not render the banner because the shared worker is up-to-date', () => {
-            socketManager._checkVersion()
-            expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
-                type: MessagePortEvent.GetVersion,
-            })
-
-            socketManager._detectedSharedWorkerVersion = SHARED_WORKER_VERSION
-            jest.runOnlyPendingTimers()
-            expect(renderOutdatedBannerSpy).not.toHaveBeenCalled()
+    describe('onReload()', () => {
+        it('should call `location.reload`', () => {
+            socketManager.onReload()
+            expect(window.location.reload).toHaveBeenCalledTimes(1)
         })
     })
 
-    describe('_onVersion()', () => {
-        it('should update the "up-to-date" status of the shared worker', () => {
-            const socketManager = new SocketManager()
-            expect(socketManager._detectedSharedWorkerVersion).toBe(
-                SHARED_WORKER_LEGACY_VERSION
-            )
-
-            socketManager._onVersion(SHARED_WORKER_VERSION)
-            expect(socketManager._detectedSharedWorkerVersion).toBe(
-                SHARED_WORKER_VERSION
-            )
+    describe('resetWorker()', () => {
+        it('should call onReload and send reload signal after exhausting timeout', () => {
+            socketManager.resetWorker()
+            jest.advanceTimersByTime(RELOAD_TAB_DELAY * 1000)
+            expect(onReloadSpy).toHaveBeenCalledTimes(1)
+            expect(
+                socketManager.scopedBroadcastChannel.postMessage
+            ).toHaveBeenNthCalledWith(1, {
+                type: BroadcastChannelEvent.ReloadAllTabs,
+            })
         })
-    })
-
-    describe('_renderOutdatedBanner()', () => {
-        it('should render the "outdated" banner', () => {
-            socketManager._renderOutdatedBanner()
-            expect(notifySpy.mock.calls).toMatchSnapshot()
-            expect(logEventSpy).toHaveBeenLastCalledWith(
-                segmentTracker.SegmentEvent.OutdatedSharedWorkerDetected,
-                {version: SHARED_WORKER_VERSION}
-            )
+        it('should send a terminate worker signal', () => {
+            socketManager.resetWorker()
+            expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
+                type: MessagePortEvent.TerminateWorker,
+            })
         })
     })
 })

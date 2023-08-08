@@ -11,13 +11,11 @@ import * as socketEvents from 'config/socketEvents'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
-    OUTDATED_NOTIFICATION_DELAY,
+    RELOAD_TAB_DELAY,
     SCOPED_BROADCAST_CHANNEL_NAME,
-    SHARED_WORKER_LEGACY_VERSION,
-    SHARED_WORKER_VERSION,
+    SHARED_WORKER_NAME,
 } from './constants'
 import {
     fallbackBroadcastChannelAdapter,
@@ -51,15 +49,11 @@ export class SocketManager {
     worker = currentBrowserSupportsSharedWorker
         ? new window.SharedWorker(
               window.SHARED_WORKER_BUILD_URL,
-              'WebsocketSharedWorker'
+              SHARED_WORKER_NAME
           )
         : fallbackWorkerAdapter
-    _detectedSharedWorkerVersion = currentBrowserSupportsSharedWorker
-        ? SHARED_WORKER_LEGACY_VERSION
-        : SHARED_WORKER_VERSION
 
     constructor() {
-        this.worker.port.start()
         this.worker.port.onmessage = (event: MessageEvent) =>
             this.onMessage(event.data)
 
@@ -85,8 +79,6 @@ export class SocketManager {
             wsUrl: window.WS_URL,
             clientId: window.CLIENT_ID,
         })
-
-        this._checkVersion()
     }
 
     onMessage = (message: WSMessage) => {
@@ -100,11 +92,11 @@ export class SocketManager {
             case MessagePortEvent.HealthCheck:
                 this.onHealthCheck()
                 break
+            case BroadcastChannelEvent.ReloadAllTabs:
+                this.onReload()
+                break
             case BroadcastChannelEvent.ServerMessage:
                 this.onServerMessage(message.json as any)
-                break
-            case BroadcastChannelEvent.Version:
-                this._onVersion(message.data)
                 break
         }
     }
@@ -146,10 +138,10 @@ export class SocketManager {
                 message: 'You are not connected to live ticket updates.',
                 actionHTML: `<span class="d-inline-flex align-items-baseline">
                               <img src=${refreshIcon} class="align-self-center" style="margin-right: 8px"/>
-                              <span class="text-primary">Reload page</span>
+                              <span class="text-primary">Refresh</span>
                              </span>`,
                 showIcon: true,
-                onClick: () => window.location.reload(false),
+                onClick: this.resetWorker,
                 allowHTML: true,
             })
         )
@@ -333,40 +325,20 @@ export class SocketManager {
         )
     }
 
-    _checkVersion = () => {
+    onReload = () => {
+        window.location.reload()
+    }
+
+    resetWorker = () => {
         this.worker.port.postMessage({
-            type: MessagePortEvent.GetVersion,
+            type: MessagePortEvent.TerminateWorker,
         })
-
-        setTimeout(() => {
-            if (this._detectedSharedWorkerVersion !== SHARED_WORKER_VERSION) {
-                this._renderOutdatedBanner()
-            }
-        }, OUTDATED_NOTIFICATION_DELAY * 1000)
-    }
-
-    _onVersion = (version: number) => {
-        this._detectedSharedWorkerVersion = version
-    }
-
-    _renderOutdatedBanner = () => {
-        this.dispatchReduxAction(
-            notify({
-                id: this.outdatedNotificationId,
-                style: NotificationStyle.Banner,
-                status: NotificationStatus.Error,
-                dismissible: false,
-                message:
-                    'Your Helpdesk is using a stale live notifications connection. Please close all the Gorgias tabs ' +
-                    '(or browser copies) to make sure your Gorgias application is using the latest version and try ' +
-                    'to open a new page again.',
-                showIcon: true,
+        window.setTimeout(() => {
+            this.scopedBroadcastChannel.postMessage({
+                type: BroadcastChannelEvent.ReloadAllTabs,
             })
-        )
-
-        logEvent(SegmentEvent.OutdatedSharedWorkerDetected, {
-            version: this._detectedSharedWorkerVersion,
-        })
+            this.onReload()
+        }, RELOAD_TAB_DELAY * 1000)
     }
 }
 

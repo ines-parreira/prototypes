@@ -129,9 +129,13 @@ class mockPushJS {
 }
 
 class MockSharedWorker {
+    constructorSpy = jest.fn()
     port = {
         start: jest.fn(),
         postMessage: jest.fn(),
+    }
+    constructor(...args: unknown[]) {
+        this.constructorSpy(...args)
     }
 }
 
@@ -211,6 +215,14 @@ Object.defineProperty(window, 'cancelAnimationFrame', {
 
 Object.defineProperty(window, 'open', {
     value: jest.fn(),
+})
+
+// Needed to test self.close() in shared worker test
+Object.defineProperty(window, 'self', {
+    value: {
+        ...window.self,
+        close: jest.fn(),
+    },
 })
 
 // failed expect in timeouts require try/catch and done.fail

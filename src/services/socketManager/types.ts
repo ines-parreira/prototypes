@@ -14,13 +14,13 @@ export enum BroadcastChannelEvent {
     ServerMessage = 'SERVER_MESSAGE',
     WsConnected = 'WS_CONNECTED',
     WsDisconnected = 'WS_DISCONNECTED',
-    Version = 'VERSION',
+    ReloadAllTabs = 'RELOAD_ALL_TABS',
 }
 
 export enum MessagePortEvent {
     ClientConnected = 'CLIENT_CONNECTED',
     HealthCheck = 'HEALTH_CHECK',
-    GetVersion = 'GET_VERSION',
+    TerminateWorker = 'TERMINATE_WORKER',
 }
 
 export enum SocketEvent {

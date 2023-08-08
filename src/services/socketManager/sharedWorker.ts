@@ -32,7 +32,6 @@ import {
     HEALTH_CHECK_INTERVAL,
     HEALTH_CHECK_RECEIVE_TIMEOUT,
     HEALTH_CHECK_SEND_INTERVAL,
-    SHARED_WORKER_VERSION,
     SCOPED_BROADCAST_CHANNEL_NAME,
     INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
     INCREMENTAL_RECONNECT_BACKOFF,
@@ -48,6 +47,11 @@ import IncrementalBackoff from './incrementalBackoff'
 export class WebsocketSharedWorker {
     wsUrl: string | null = null
     socket: Socket | null = null
+
+    constructor() {
+        // eslint-disable-next-line no-console
+        console.log('Initiating shared worker')
+    }
 
     scopedBroadcastChannel = new self.BroadcastChannel(
         SCOPED_BROADCAST_CHANNEL_NAME
@@ -224,8 +228,8 @@ export class WebsocketSharedWorker {
                 this.onClientConnected(message, messagePort)
             } else if (message.type === MessagePortEvent.HealthCheck) {
                 this.onHealthCheck(message.data as string)
-            } else if (message.type === MessagePortEvent.GetVersion) {
-                this._broadcastVersion()
+            } else if (message.type === MessagePortEvent.TerminateWorker) {
+                this.onTerminateWorker()
             } else if (this.socket) {
                 this.socket.send(message)
             }
@@ -235,11 +239,8 @@ export class WebsocketSharedWorker {
         event.ports[0].onmessage = this.onPortMessage(event.ports[0])
     }
 
-    _broadcastVersion = () => {
-        this.scopedBroadcastChannel.postMessage({
-            type: BroadcastChannelEvent.Version,
-            data: SHARED_WORKER_VERSION,
-        })
+    onTerminateWorker = () => {
+        self.close()
     }
 }
 

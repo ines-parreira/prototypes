@@ -5,7 +5,6 @@ import {
     HEALTH_CHECK_SEND_INTERVAL,
     HEALTH_CHECK_INTERVAL,
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
-    SHARED_WORKER_VERSION,
     SCOPED_BROADCAST_CHANNEL_NAME,
     INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
     INCREMENTAL_RECONNECT_BACKOFF,
@@ -475,6 +474,18 @@ describe('WebsocketSharedWorker', () => {
             expect(onHealthCheckSpy).toHaveBeenCalledWith(message.data.data)
         })
 
+        it('should call `onTerminateWorker` because the type of the message passed is `TERMINATE_WORKER`', () => {
+            const handler = worker.onPortMessage(messagePort)
+            const onTerminateWorkerSpy = jest.spyOn(worker, 'onTerminateWorker')
+
+            const message = {data: {type: MessagePortEvent.TerminateWorker}}
+
+            handler(message as MessageEvent<WSMessage>)
+
+            expect(onTerminateWorkerSpy).toHaveBeenCalled()
+            expect(self.close).toHaveBeenCalled()
+        })
+
         it(
             "should send the message on the worker's socket because the type of the message is not " +
                 '`CLIENT_CONNECTED` or `HEALTH_CHECK` and the worker has a socket',
@@ -490,20 +501,6 @@ describe('WebsocketSharedWorker', () => {
                 expect(worker.socket.send).toHaveBeenCalledWith(message.data)
             }
         )
-
-        it('should call `_broadcastVersion` because it received a message of type `GET_VERSION`', () => {
-            worker._broadcastVersion = jest.fn()
-
-            const handler = worker.onPortMessage(messagePort)
-            worker.socket = io()
-            const message = {
-                data: {type: MessagePortEvent.GetVersion},
-            }
-
-            handler(message as MessageEvent<WSMessage>)
-
-            expect(worker._broadcastVersion).toHaveBeenCalled()
-        })
     })
 
     describe('onPortConnect()', () => {
@@ -516,19 +513,6 @@ describe('WebsocketSharedWorker', () => {
             } as unknown as MessageEvent)
 
             expect(messagePort.onmessage).toEqual(expect.any(Function))
-        })
-    })
-
-    describe('_broadcastVersion()', () => {
-        it('should broadcast its current version', () => {
-            worker._broadcastVersion()
-
-            expect(
-                worker.scopedBroadcastChannel.postMessage
-            ).toHaveBeenCalledWith({
-                type: BroadcastChannelEvent.Version,
-                data: SHARED_WORKER_VERSION,
-            })
         })
     })
 })
