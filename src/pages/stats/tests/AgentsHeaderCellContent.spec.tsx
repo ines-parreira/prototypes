@@ -16,6 +16,7 @@ describe('<AgentsHeaderCellContent>', () => {
     useSortingQueriesMock.mockReturnValue({
         sortCallback,
         direction: OrderDirection.Asc,
+        field: TableColumn.AgentName,
     })
 
     afterAll(jest.clearAllMocks)
@@ -28,15 +29,33 @@ describe('<AgentsHeaderCellContent>', () => {
         expect(screen.getByText(TableLabels[column]))
     })
 
-    it('should render sorting icon and trigger sorting action on click', () => {
+    it('should render trigger sorting action on click', () => {
         const sortableColumn = TableColumn.FirstResponseTime
 
         render(<AgentsHeaderCellContent column={sortableColumn} />)
-        const sortingIcon = screen.getByRole('cell')
+        const cell = screen.getByRole('cell')
         act(() => {
-            userEvent.click(sortingIcon)
+            userEvent.click(cell)
         })
 
         expect(sortCallback).toHaveBeenCalled()
+    })
+
+    it('should render sorting icon on the column currently not sorted', () => {
+        const sortableColumn = TableColumn.AgentName
+
+        render(<AgentsHeaderCellContent column={sortableColumn} />)
+        const sortingIcon = screen.getByText('arrow_drop_up')
+
+        expect(sortingIcon).toBeInTheDocument()
+    })
+
+    it('should not render sorting icon on the column currently not sorted', () => {
+        const column = TableColumn.FirstResponseTime
+
+        render(<AgentsHeaderCellContent column={column} />)
+        const sortingIcon = screen.queryByText('arrow_drop_up')
+
+        expect(sortingIcon).not.toBeInTheDocument()
     })
 })

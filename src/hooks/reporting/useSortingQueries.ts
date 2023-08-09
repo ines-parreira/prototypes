@@ -128,5 +128,6 @@ export const useSortingQueries = (column: TableColumn) => {
     return {
         sortCallback,
         direction: sorting.direction,
+        field: sorting.field,
     }
 }
