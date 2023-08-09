@@ -545,7 +545,8 @@ export const receivedEvents: ReceivedEvent[] = [
                 chatsActions.fetchChatsThrottled(reduxStore.dispatch)
             }
 
-            const newAccountProducts = account.current_subscription.products
+            const newAccountProducts =
+                account.current_subscription?.products || {}
             const areProductsLoaded = Object.values(newAccountProducts).every(
                 (priceId) => !!prices[priceId]
             )
