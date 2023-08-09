@@ -2,7 +2,11 @@ import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import _intersectionBy from 'lodash/intersectionBy'
 import {User} from 'config/types/user'
 import {OrderDirection} from 'models/api/types'
-import {ReportingMeasure, TicketMember} from 'models/reporting/types'
+import {
+    ReportingMeasure,
+    TicketMember,
+    HelpdeskMessageMember,
+} from 'models/reporting/types'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {getSortByName} from 'utils/getSortByName'
 import {getAgentsJS} from 'state/agents/selectors'
@@ -16,7 +20,11 @@ type AgentPerformanceSorting = {
 }
 
 type MetricData = {
-    [key in ReportingMeasure | TicketMember.AssigneeUserId]?: string
+    [key in
+        | ReportingMeasure
+        | TicketMember.AssigneeUserId
+        | TicketMember.FirstHelpdeskMessageUserId
+        | HelpdeskMessageMember.SenderId]?: string
 }[]
 
 export type AgentPerformanceState = {
@@ -104,7 +112,12 @@ export const getSortedAgents = createSelector(
             agents.forEach((agent) => {
                 const agentIndex = lastSortingMetric.findIndex(
                     (metric) =>
-                        metric[TicketMember.AssigneeUserId] === String(agent.id)
+                        metric[TicketMember.AssigneeUserId] ===
+                            String(agent.id) ||
+                        metric[TicketMember.FirstHelpdeskMessageUserId] ===
+                            String(agent.id) ||
+                        metric[HelpdeskMessageMember.SenderId] ===
+                            String(agent.id)
                 )
                 if (agentIndex >= 0) {
                     sortedAgents[agentIndex] = agent
