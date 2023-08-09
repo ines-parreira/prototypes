@@ -64,7 +64,7 @@ const SummaryPaymentSection = ({
                 return
             }
 
-            if (card.isEmpty()) {
+            if (card.isEmpty() && !isFreeTrial) {
                 setIsPaymentEnabled?.(false)
                 void dispatch(
                     notify({
@@ -159,6 +159,7 @@ const SummaryPaymentSection = ({
         shopifyBillingStatus,
         isCreditCardFetched,
         setIsPaymentEnabled,
+        isFreeTrial,
     ])
 
     // Customer uses Shopify billing

@@ -8,7 +8,7 @@ import {
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
     getCurrentSMSProduct,
-    getCurrentUsage,
+    getCurrentProductsUsage,
     getCurrentVoiceProduct,
     getHelpdeskPrices,
     getSMSProduct,
@@ -18,6 +18,7 @@ import {PlanInterval, ProductType} from 'models/billing/types'
 import {objKeys} from 'utils'
 import {
     getCurrentAccountState,
+    getCurrentSubscription,
     isTrialing,
 } from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -68,14 +69,16 @@ export const useBillingPlans = ({
     const domain: string = currentAccount.get('domain')
     const currentUser = useAppSelector(getCurrentUser)
     const from: string = currentUser.get('email')
-    const currentUsage = useAppSelector(getCurrentUsage)
+    const currentUsage = useAppSelector(getCurrentProductsUsage)
     const isFreeTrial = useAppSelector(isTrialing)
+    const currentSubscription = useAppSelector(getCurrentSubscription)
+    const isSubscriptionCanceled = currentSubscription.isEmpty()
 
     const periodEnd = useMemo(
         () =>
-            moment(currentUsage.getIn(['meta', 'end_datetime'])).format(
-                DATE_FORMAT
-            ),
+            moment(
+                currentUsage.helpdesk?.meta.subscription_end_datetime
+            ).format(DATE_FORMAT),
         [currentUsage]
     )
 
@@ -126,11 +129,16 @@ export const useBillingPlans = ({
         (price) => (filterByInterval ? price.interval === interval : true)
     )
 
+    const voiceInitialIndex =
+        voicePrices?.findIndex((price) => !!price.amount) ?? 0
+
     // SMS
     const smsProduct = useAppSelector(getCurrentSMSProduct)
     const smsPrices = useAppSelector(getSMSProduct)?.prices.filter((price) =>
         filterByInterval ? price.interval === interval : true
     )
+
+    const smsInitialIndex = smsPrices?.findIndex((price) => !!price.amount) ?? 0
 
     // Selected plans
     const [selectedPlans, setSelectedPlans] = useState<SelectedPlans>({
@@ -147,11 +155,11 @@ export const useBillingPlans = ({
                 selectedProduct === ProductType.Automation,
         },
         [ProductType.Voice]: {
-            plan: voiceProduct || voicePrices?.[0],
+            plan: voiceProduct || voicePrices?.[voiceInitialIndex],
             isSelected: !!voiceProduct || selectedProduct === ProductType.Voice,
         },
         [ProductType.SMS]: {
-            plan: smsProduct || smsPrices?.[0],
+            plan: smsProduct || smsPrices?.[smsInitialIndex],
             isSelected: !!smsProduct || selectedProduct === ProductType.SMS,
         },
     })
@@ -257,6 +265,11 @@ export const useBillingPlans = ({
         [selectedPlans]
     )
 
+    const isIntervalChanged = useMemo(
+        () => interval !== selectedPlans[ProductType.Helpdesk].plan?.interval,
+        [interval, selectedPlans]
+    )
+
     const handleSMSAndVoicePlansChange = useCallback(async () => {
         const plansToBeHandledManually: ProductType[] = []
         objKeys(selectedPlans).forEach((key) => {
@@ -349,8 +362,20 @@ export const useBillingPlans = ({
             (automationProduct?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected)
 
+        // Set notification when interval is changing
+        if (isIntervalChanged) {
+            notifications.push({
+                message: 'Your billing frequency has been updated to yearly',
+                status: NotificationStatus.Success,
+                style: NotificationStyle.Alert,
+                showIcon: true,
+                showDismissButton: true,
+                noAutoDismiss: true,
+            })
+        }
+
         // handle subscribe for Helpdesk plan
-        if (isNewHelpdeskProduct) {
+        if (isNewHelpdeskProduct && !isIntervalChanged) {
             // Set the notification
             const notification = setHelpdeskNotification({
                 oldProduct: helpdeskProduct,
@@ -372,13 +397,13 @@ export const useBillingPlans = ({
 
         // handle subscribe for Automation plan
         if (selectedPlans[ProductType.Automation].isSelected) {
-            if (isNewAutomationProduct) {
+            if (isNewAutomationProduct && !isIntervalChanged) {
                 const notification = setAutomationNotification({
                     oldProduct: automationProduct,
                     newProduct: selectedPlans[ProductType.Automation].plan,
                     periodEnd,
                     onClick: () => {
-                        history.push('/app/settings')
+                        history.push('/app/automation')
                     },
                     interval,
                     isFreeTrial,
@@ -396,7 +421,11 @@ export const useBillingPlans = ({
         // update subscription for Helpdesk and Automation plans
         if (plansToBeUpdated.length > 0) {
             // Automation has been removed while in free trial
-            if (notifications.length === 0 && !!automationProduct) {
+            if (
+                notifications.length === 0 &&
+                !!automationProduct &&
+                selectedPlans[ProductType.Automation].isSelected === false
+            ) {
                 notifications.push({
                     message:
                         'You have removed Automation from your subscription',
@@ -427,11 +456,12 @@ export const useBillingPlans = ({
         selectedPlans,
         helpdeskProduct,
         automationProduct,
+        isIntervalChanged,
         periodEnd,
+        isFreeTrial,
         history,
         interval,
         anyProductChanged,
-        isFreeTrial,
         dispatch,
         dispatchBillingError,
     ])
@@ -513,12 +543,15 @@ export const useBillingPlans = ({
         automationInitialIndex,
         voiceProduct,
         voicePrices,
+        voiceInitialIndex,
         smsProduct,
         smsPrices,
+        smsInitialIndex,
         selectedPlans,
         setSelectedPlans,
         interval,
         isEnterpriseHelpdeskPlanSelected,
         isStarterHelpdeskPlanSelected,
+        isSubscriptionCanceled,
     }
 }

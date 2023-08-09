@@ -11,8 +11,8 @@ jest.mock('../hooks/useScheduledDowngrades')
 const mockUseScheduledDowngrades = useScheduledDowngrades as jest.Mock
 
 describe('BillingScheduledDowngrades', () => {
-    const price1 = {name: 'Price 1', price_id: 'price1'}
-    const price2 = {name: 'Price 2', price_id: 'price2'}
+    const price1 = {name: 'Price 1', price_id: 'price1', interval: 'month'}
+    const price2 = {name: 'Price 2', price_id: 'price2', interval: 'month'}
 
     beforeEach(() => {
         mockUseScheduledDowngrades.mockReturnValue({loading: true})
@@ -56,9 +56,12 @@ describe('BillingScheduledDowngrades', () => {
         })
 
         const {getByText} = render(<BillingScheduledDowngrades />)
-        const msg =
-            'Your plan change from Helpdesk Price 1 to Price 2 will take effect at the end of your billing cycle, on March 31st 2023.'
-        expect(getByText(msg)).toBeInTheDocument()
+        const type = 'Helpdesk'
+        expect(getByText(type)).toBeInTheDocument()
+        const date = 'March 31st 2023'
+        expect(getByText(date)).toBeInTheDocument()
+        const counter = '0 tickets/month'
+        expect(getByText(counter)).toBeInTheDocument()
     })
 
     it('should render a downgrade message for plans that will no longer have a plan after the downgrade', () => {

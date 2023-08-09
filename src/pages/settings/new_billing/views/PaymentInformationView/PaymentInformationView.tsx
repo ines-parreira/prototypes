@@ -35,6 +35,7 @@ type PaymentInformationViewProps = {
     automationProduct?: AutomationPrice
     voiceProduct?: SMSOrVoicePrice
     smsProduct?: SMSOrVoicePrice
+    isCurrentSubscriptionCanceled: boolean
 }
 
 const PaymentInformationView = ({
@@ -43,6 +44,7 @@ const PaymentInformationView = ({
     automationProduct,
     voiceProduct,
     smsProduct,
+    isCurrentSubscriptionCanceled,
 }: PaymentInformationViewProps) => {
     const dispatch = useAppDispatch()
 
@@ -113,6 +115,21 @@ const PaymentInformationView = ({
             } else if (isAAOLegacy) {
                 toolTipContent =
                     'To change billing frequency, update Automation to a non-legacy plan'
+            } else if (isCurrentSubscriptionCanceled) {
+                toolTipContent = (
+                    <>
+                        Your subscription is cancelled. To reactivate, please{' '}
+                        <span
+                            className={css.link}
+                            onClick={() =>
+                                contactBilling(TicketPurpose.CONTACT_US)
+                            }
+                        >
+                            contact us
+                        </span>
+                        .
+                    </>
+                )
             } else if (isSubscribedToVoiceOrSms) {
                 toolTipContent = (
                     <>
@@ -170,6 +187,7 @@ const PaymentInformationView = ({
         isSubscribedToHelpdeskStarter,
         isAAOLegacy,
         isSubscribedToVoiceOrSms,
+        isCurrentSubscriptionCanceled,
         contactBilling,
     ])
 

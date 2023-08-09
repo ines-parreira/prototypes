@@ -36,6 +36,22 @@ const store = mockedStore({
                 },
             },
         }),
+        currentProductsUsage: {
+            helpdesk: {
+                data: {
+                    extra_tickets_cost_in_cents: 0,
+                    num_extra_tickets: 0,
+                    num_tickets: 0,
+                },
+                meta: {
+                    subscription_start_datetime: '2021-01-01T00:00:00Z',
+                    subscription_end_datetime: '2021-02-01T00:00:00Z',
+                },
+            },
+            automation: null,
+            voice: null,
+            sms: null,
+        },
     }),
 })
 
@@ -45,6 +61,7 @@ describe('UsageAndPlansView', () => {
             <Provider store={store}>
                 <BillingFrequencyView
                     isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
                     periodEnd="2021-01-01"
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}

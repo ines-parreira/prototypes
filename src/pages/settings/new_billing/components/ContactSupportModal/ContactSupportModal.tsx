@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -14,6 +15,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {isTrialing} from 'state/currentAccount/selectors'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {sendSupportTicket} from '../../utils/sendSupportTicket'
+import {BILLING_BASE_PATH} from '../../constants'
 import css from './ContactSupportModal.less'
 
 export type ContactSupportModalProps = {
@@ -43,6 +45,7 @@ const ContactSupportModal = ({
     const [message, setMessage] = useState(defaultMessage)
     const isFreeTrial = useAppSelector(isTrialing)
     const helpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const history = useHistory()
 
     useEffect(() => {
         setMessage(defaultMessage)
@@ -81,6 +84,7 @@ const ContactSupportModal = ({
         } finally {
             setMessage('')
             handleOnClose()
+            history.push(BILLING_BASE_PATH)
         }
     }
 

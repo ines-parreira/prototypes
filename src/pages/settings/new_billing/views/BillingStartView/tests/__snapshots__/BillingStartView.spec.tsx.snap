@@ -120,14 +120,16 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   class="subscribeContainer"
                 >
                   <button
-                    aria-disabled="false"
-                    class="wrapper fill primary medium"
+                    aria-disabled="true"
+                    class="wrapper fill primary medium isDisabled"
+                    id="productCardButton_helpdesk"
                     type="button"
                   >
                     Subscribe
                   </button>
                 </div>
               </div>
+              <div />
             </div>
           </div>
           <div
@@ -171,14 +173,16 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   class="subscribeContainer"
                 >
                   <button
-                    aria-disabled="false"
-                    class="wrapper fill primary medium"
+                    aria-disabled="true"
+                    class="wrapper fill primary medium isDisabled"
+                    id="productCardButton_automation"
                     type="button"
                   >
                     Subscribe
                   </button>
                 </div>
               </div>
+              <div />
             </div>
           </div>
           <div
@@ -222,14 +226,16 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   class="subscribeContainer"
                 >
                   <button
-                    aria-disabled="false"
-                    class="wrapper fill primary medium"
+                    aria-disabled="true"
+                    class="wrapper fill primary medium isDisabled"
+                    id="productCardButton_voice"
                     type="button"
                   >
                     Subscribe
                   </button>
                 </div>
               </div>
+              <div />
             </div>
           </div>
           <div
@@ -273,14 +279,16 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   class="subscribeContainer"
                 >
                   <button
-                    aria-disabled="false"
-                    class="wrapper fill primary medium"
+                    aria-disabled="true"
+                    class="wrapper fill primary medium isDisabled"
+                    id="productCardButton_sms"
                     type="button"
                   >
                     Subscribe
                   </button>
                 </div>
               </div>
+              <div />
             </div>
           </div>
         </div>

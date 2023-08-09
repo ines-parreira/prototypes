@@ -47,10 +47,15 @@
         }
     }
 
+    .extraCost {
+        font-size: 14px;
+    }
+
     .footer {
         display: flex;
         flex-direction: row-reverse;
         justify-content: space-between;
+        align-items: flex-end;
     }
 
     .subscribeContainer {
@@ -61,9 +66,10 @@
     }
 
     .tooltip {
-        max-width: 222px !important;
-        position: relative;
-        left: -10px;
+        :global(.tooltip) {
+            max-width: 222px !important;
+            left: -10px !important;
+        }
 
         a {
             color: inherit;
@@ -78,5 +84,9 @@
 
     .warning {
         color: var(--feedback-warning);
+    }
+
+    .contactUs {
+        cursor: pointer;
     }
 }

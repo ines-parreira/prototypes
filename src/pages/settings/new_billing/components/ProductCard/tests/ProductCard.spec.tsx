@@ -37,6 +37,8 @@ describe('ProductCard', () => {
                     type={ProductType.Helpdesk}
                     product={basicMonthlyHelpdeskPrice}
                     isDisabled={false}
+                    isCurrentSubscriptionCanceled={false}
+                    contactBilling={jest.fn()}
                 />
             </Provider>
         )
@@ -50,6 +52,8 @@ describe('ProductCard', () => {
                     type={ProductType.Automation}
                     product={basicYearlyAutomationPrice}
                     isDisabled={false}
+                    isCurrentSubscriptionCanceled={false}
+                    contactBilling={jest.fn()}
                 />
             </Provider>
         )
@@ -60,7 +64,12 @@ describe('ProductCard', () => {
     it('should render an inactive ProductCard component', () => {
         render(
             <Provider store={store}>
-                <ProductCard type={ProductType.Automation} isDisabled={false} />
+                <ProductCard
+                    type={ProductType.Automation}
+                    isDisabled={false}
+                    isCurrentSubscriptionCanceled={false}
+                    contactBilling={jest.fn()}
+                />
             </Provider>
         )
 
@@ -71,7 +80,12 @@ describe('ProductCard', () => {
     it('should render a disabled ProductCard component', () => {
         render(
             <Provider store={store}>
-                <ProductCard type={ProductType.Automation} isDisabled={true} />
+                <ProductCard
+                    type={ProductType.Automation}
+                    isDisabled={true}
+                    isCurrentSubscriptionCanceled={false}
+                    contactBilling={jest.fn()}
+                />
             </Provider>
         )
 

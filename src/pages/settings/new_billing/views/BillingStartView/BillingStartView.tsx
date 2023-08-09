@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
-import {NavLink, Redirect, Route, Switch, useHistory} from 'react-router-dom'
+import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -10,6 +10,7 @@ import {BillingBanner, TicketPurpose} from 'state/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCurrentAccountState,
+    getCurrentSubscription,
     isTrialing,
     paymentMethod,
 } from 'state/currentAccount/selectors'
@@ -29,7 +30,10 @@ import {
 } from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
-import {fetchCurrentProductsUsage} from 'state/billing/actions'
+import {
+    fetchCurrentProductsUsage,
+    fetchPaymentMethod,
+} from 'state/billing/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 import {
@@ -56,7 +60,6 @@ import css from './BillingStartView.less'
 
 const BillingStartView = () => {
     const dispatch = useAppDispatch()
-    const history = useHistory()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
     const currentUsage = useAppSelector(getCurrentProductsUsage)
@@ -67,6 +70,9 @@ const BillingStartView = () => {
     const smsProduct = useAppSelector(getCurrentSMSProduct)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const payment = useAppSelector(paymentMethod)
+    const isPaymentShopify = payment === 'shopify'
+    const currentSubscription = useAppSelector(getCurrentSubscription)
+    const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
 
     const hasAccessToNewBilling: boolean | undefined =
         useFlags()[FeatureFlagKey.NewBillingInterface]
@@ -168,6 +174,7 @@ const BillingStartView = () => {
     useEffect(() => {
         const fetchUsage = async () => {
             await dispatch(fetchCurrentProductsUsage())
+            await dispatch(fetchPaymentMethod())
             setIsUsageFetched(true)
         }
 
@@ -278,9 +285,11 @@ const BillingStartView = () => {
                     Usage & Plans
                 </NavLink>
                 <NavLink to={BILLING_PAYMENT_PATH}>Payment Information</NavLink>
-                <NavLink to={BILLING_PAYMENTS_HISTORY_PATH}>
-                    Payment History
-                </NavLink>
+                {!isPaymentShopify && (
+                    <NavLink to={BILLING_PAYMENTS_HISTORY_PATH}>
+                        Payment History
+                    </NavLink>
+                )}
             </SecondaryNavbar>
             <Container fluid className={css.mainContainer}>
                 {isUsageFetched ? (
@@ -293,6 +302,9 @@ const BillingStartView = () => {
                                 voiceBanner={voiceBanner}
                                 smsBanner={smsBanner}
                                 helpdeskBanner={helpdeskBanner}
+                                isCurrentSubscriptionCanceled={
+                                    isCurrentSubscriptionCanceled
+                                }
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENT_PATH}>
@@ -302,11 +314,16 @@ const BillingStartView = () => {
                                 automationProduct={automationProduct}
                                 voiceProduct={voiceProduct}
                                 smsProduct={smsProduct}
+                                isCurrentSubscriptionCanceled={
+                                    isCurrentSubscriptionCanceled
+                                }
                             />
                         </Route>
-                        <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>
-                            <PaymentsHistoryView />
-                        </Route>
+                        {!isPaymentShopify && (
+                            <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>
+                                <PaymentsHistoryView />
+                            </Route>
+                        )}
                         <Route
                             path={`${BILLING_PROCESS_PATH}/:selectedProduct`}
                         >
@@ -316,6 +333,9 @@ const BillingStartView = () => {
                                 setDefaultMessage={setDefaultMessage}
                                 dispatchBillingError={dispatchBillingError}
                                 isTrialing={isTrialingSubscription}
+                                isCurrentSubscriptionCanceled={
+                                    isCurrentSubscriptionCanceled
+                                }
                                 periodEnd={periodEnd}
                             />
                         </Route>
@@ -328,6 +348,9 @@ const BillingStartView = () => {
                                 dispatchBillingError={dispatchBillingError}
                                 periodEnd={periodEnd}
                                 isTrialing={isTrialingSubscription}
+                                isCurrentSubscriptionCanceled={
+                                    isCurrentSubscriptionCanceled
+                                }
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENT_CARD_PATH}>
@@ -349,7 +372,6 @@ const BillingStartView = () => {
                 isOpen={isModalOpen}
                 handleOnClose={() => {
                     setIsModalOpen(false)
-                    history.push(BILLING_BASE_PATH)
                 }}
                 subject={subject}
                 from={from}

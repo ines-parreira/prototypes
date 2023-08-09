@@ -26,6 +26,7 @@ type BillingFrequencyViewProps = {
     dispatchBillingError: () => void
     periodEnd: string
     isTrialing: boolean
+    isCurrentSubscriptionCanceled: boolean
 }
 
 const BillingFrequencyView = ({
@@ -33,6 +34,7 @@ const BillingFrequencyView = ({
     dispatchBillingError,
     periodEnd,
     isTrialing,
+    isCurrentSubscriptionCanceled,
 }: BillingFrequencyViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -121,12 +123,12 @@ const BillingFrequencyView = ({
         ]
     )
 
-    // redirect to the main page if yearly frequency is selected
+    // redirect to the main page if yearly frequency is selected or subscription is canceled
     useEffect(() => {
-        if (interval === PlanInterval.Year) {
+        if (interval === PlanInterval.Year || isCurrentSubscriptionCanceled) {
             history.push(BILLING_PAYMENT_PATH)
         }
-    }, [interval, history])
+    }, [interval, isCurrentSubscriptionCanceled, history])
 
     // fetch card
     useEffect(() => {

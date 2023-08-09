@@ -1,7 +1,8 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
 
+import classNames from 'classnames'
 import {
     AutomationPrice,
     HelpdeskPrice,
@@ -21,6 +22,7 @@ import SummaryTotal from '../../components/SummaryTotal'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection'
 import SummaryFooter from '../../components/SummaryFooter'
 import {
+    BILLING_BASE_PATH,
     ENTERPRISE_PRICE_ID,
     PRICING_DETAILS_URL,
     PRODUCT_INFO,
@@ -40,6 +42,7 @@ type BillingProcessViewProps = {
     setDefaultMessage: React.Dispatch<React.SetStateAction<string>>
     dispatchBillingError: () => void
     isTrialing: boolean
+    isCurrentSubscriptionCanceled: boolean
     periodEnd: string
 }
 
@@ -69,8 +72,10 @@ const BillingProcessView = ({
     dispatchBillingError,
     isTrialing,
     periodEnd,
+    isCurrentSubscriptionCanceled,
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
+    const history = useHistory()
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
 
@@ -87,8 +92,10 @@ const BillingProcessView = ({
         automationInitialIndex,
         smsProduct,
         smsPrices,
+        smsInitialIndex,
         voiceProduct,
         voicePrices,
+        voiceInitialIndex,
         isEnterpriseHelpdeskPlanSelected,
         isStarterHelpdeskPlanSelected,
         anyDowngradedPlanSelected,
@@ -128,6 +135,13 @@ const BillingProcessView = ({
             dispatch(dismissNotification('billing-error'))
         }
     }, [dispatch])
+
+    // if subscription is canceled, return to billing base path
+    useEffect(() => {
+        if (isCurrentSubscriptionCanceled) {
+            history.push(BILLING_BASE_PATH)
+        }
+    }, [isCurrentSubscriptionCanceled, history])
 
     const messageForEnterprise = useMemo(() => {
         let message =
@@ -219,6 +233,7 @@ const BillingProcessView = ({
                                 isStarterHelpdeskPlanSelected
                             }
                             isTrialing={isTrialing}
+                            initialIndex={voiceInitialIndex}
                         />
                         <ProductPlanSelection
                             type={ProductType.SMS}
@@ -231,6 +246,7 @@ const BillingProcessView = ({
                                 isStarterHelpdeskPlanSelected
                             }
                             isTrialing={isTrialing}
+                            initialIndex={smsInitialIndex}
                         />
                     </div>
                 </Card>
@@ -314,6 +330,16 @@ const BillingProcessView = ({
                         />
                     </Card>
                 )}
+            </div>
+            <div className={css.unsubscribe}>
+                If you have any questions regarding your subscription, please{' '}
+                <span
+                    className={classNames('text-primary', css.contactUs)}
+                    onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
+                >
+                    contact us
+                </span>
+                .
             </div>
         </div>
     )

@@ -28,7 +28,7 @@ describe('<MissingBillingInformationRow />', () => {
             role: {name: UserRole.Admin},
         }) as Map<any, any>,
         currentAccount: fromJS({
-            meta: {hasCreditCard: true},
+            meta: {hasCreditCard: true, should_pay_with_shopify: false},
         }) as Map<any, any>,
         billing: fromJS({
             paymentMethod: PaymentMethodType.Stripe,
@@ -85,9 +85,9 @@ describe('<MissingBillingInformationRow />', () => {
             'the payment method is shopify',
             {
                 ...initialState,
-                billing: initialState.billing.set(
-                    'paymentMethod',
-                    PaymentMethodType.Shopify
+                currentAccount: initialState.currentAccount.setIn(
+                    ['meta', 'should_pay_with_shopify'],
+                    true
                 ),
             },
         ],

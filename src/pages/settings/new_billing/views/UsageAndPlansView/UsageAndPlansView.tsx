@@ -27,6 +27,7 @@ import BillingScheduledDowngrades from 'pages/settings/billing/BillingScheduledD
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {isAAOLegacyPrice} from 'models/billing/utils'
 import {
     BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_FREQUENCY_PATH,
@@ -47,6 +48,7 @@ type UsageAndPlansViewProps = {
     voiceBanner?: BillingBanner
     smsBanner?: BillingBanner
     helpdeskBanner?: BillingBanner
+    isCurrentSubscriptionCanceled: boolean
 }
 
 const UsageAndPlansView = ({
@@ -56,6 +58,7 @@ const UsageAndPlansView = ({
     smsBanner,
     voiceBanner,
     helpdeskBanner,
+    isCurrentSubscriptionCanceled,
 }: UsageAndPlansViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -71,6 +74,9 @@ const UsageAndPlansView = ({
     const isSubscribedToVoiceOrSMS = !!voiceProduct || !!smsProduct
 
     const isTrialingSubscription = useAppSelector(isTrialing)
+    const isAAOLegacy = !!automationProduct
+        ? isAAOLegacyPrice(automationProduct, ProductType.Automation)
+        : false
     const trialingStart = moment(
         currentSubscription.get('trial_start_datetime')
     )
@@ -244,6 +250,24 @@ const UsageAndPlansView = ({
                                 with our team.
                             </Tooltip>
                         </div>
+                    ) : isAAOLegacy ? (
+                        <div>
+                            <span
+                                className={css.disabledText}
+                                id="update-billing-frequency"
+                            >
+                                Update
+                            </span>
+                            <Tooltip
+                                target="update-billing-frequency"
+                                placement="top"
+                                className={css.tooltip}
+                                autohide={false}
+                            >
+                                To change billing frequency, update Automation
+                                to a non-legacy plan
+                            </Tooltip>
+                        </div>
                     ) : (
                         <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
                     )}
@@ -257,12 +281,20 @@ const UsageAndPlansView = ({
                     usage={currentUsage?.helpdesk}
                     banner={helpdeskBanner}
                     isDisabled={isSubscribedToHelpdeskStarter}
+                    isCurrentSubscriptionCanceled={
+                        isCurrentSubscriptionCanceled
+                    }
+                    contactBilling={contactBilling}
                 />
                 <ProductCard
                     type={ProductType.Automation}
                     product={automationProduct}
                     usage={currentUsage?.automation}
                     isDisabled={isSubscribedToHelpdeskStarter}
+                    isCurrentSubscriptionCanceled={
+                        isCurrentSubscriptionCanceled
+                    }
+                    contactBilling={contactBilling}
                 />
                 <ProductCard
                     type={ProductType.Voice}
@@ -270,6 +302,10 @@ const UsageAndPlansView = ({
                     usage={currentUsage?.voice}
                     banner={voiceBanner}
                     isDisabled={isSubscribedToHelpdeskStarter}
+                    isCurrentSubscriptionCanceled={
+                        isCurrentSubscriptionCanceled
+                    }
+                    contactBilling={contactBilling}
                 />
                 <ProductCard
                     type={ProductType.SMS}
@@ -277,6 +313,10 @@ const UsageAndPlansView = ({
                     usage={currentUsage?.sms}
                     banner={smsBanner}
                     isDisabled={isSubscribedToHelpdeskStarter}
+                    isCurrentSubscriptionCanceled={
+                        isCurrentSubscriptionCanceled
+                    }
+                    contactBilling={contactBilling}
                 />
             </div>
             <div className={css.unsubscribe}>

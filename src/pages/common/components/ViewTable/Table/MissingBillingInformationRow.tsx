@@ -11,9 +11,11 @@ import Button from 'pages/common/components/button/Button'
 import {hasRole} from 'utils'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {UserRole} from 'config/types/user'
-import {hasCreditCard as getHasCreditCard} from 'state/currentAccount/selectors'
 import {
     paymentMethod as getPaymentMethod,
+    hasCreditCard as getHasCreditCard,
+} from 'state/currentAccount/selectors'
+import {
     isMissingContactInformation as getIsMissingContactInformation,
     getContact,
 } from 'state/billing/selectors'

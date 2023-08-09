@@ -4,6 +4,8 @@ import React from 'react'
 import {ProductType} from 'models/billing/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import {PRODUCT_INFO} from '../new_billing/constants'
+import {formatNumTickets} from '../new_billing/utils/formatAmount'
 import useScheduledDowngrades from './hooks/useScheduledDowngrades'
 import css from './BillingScheduledDowngrades.less'
 
@@ -37,11 +39,20 @@ export default function BillingScheduledDowngrades() {
             {scheduledDowngrades.map((downgrade) =>
                 downgrade.to ? (
                     <Alert key={downgrade.product.id} className={css.downgrade}>
-                        Your plan change from{' '}
-                        {productNames[downgrade.product.type]}{' '}
-                        {downgrade.from.name} to {downgrade.to.name} will take
-                        effect at the end of your billing cycle, on{' '}
-                        {moment(downgrade.datetime).format('MMMM Do YYYY')}.
+                        Your plan change for{' '}
+                        <b>{PRODUCT_INFO[downgrade.product.type].title}</b> to{' '}
+                        <b>
+                            {formatNumTickets(
+                                downgrade.to.num_quota_tickets ?? 0
+                            )}{' '}
+                            {PRODUCT_INFO[downgrade.product.type].counter}/
+                            {downgrade.to.interval}
+                        </b>{' '}
+                        will take effect at the end of your billing cycle, on{' '}
+                        <b>
+                            {moment(downgrade.datetime).format('MMMM Do YYYY')}
+                        </b>
+                        .
                     </Alert>
                 ) : (
                     <Alert key={downgrade.product.id} className={css.downgrade}>
