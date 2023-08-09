@@ -24,6 +24,7 @@ export const CampaignListOptions = ({children}: Props) => {
         page?: string
         search?: string
         state?: string
+        filters?: string
     }>()
 
     const [page, setPage] = useState(
@@ -31,6 +32,9 @@ export const CampaignListOptions = ({children}: Props) => {
     )
     const [search, setSearch] = useState(params.search ?? defaultParams.search)
     const [state, setState] = useState(params.state ?? defaultParams.state)
+    const [filters, setFilters] = useState<string[]>(
+        params?.filters?.split(',') ?? defaultParams.filters
+    )
 
     useEffect(
         () => {
@@ -38,6 +42,7 @@ export const CampaignListOptions = ({children}: Props) => {
                 page,
                 search,
                 state,
+                filters: filters.join(','),
             })
         },
         // We ensure the URL reflects the current options state
@@ -56,6 +61,10 @@ export const CampaignListOptions = ({children}: Props) => {
         if (params.state) {
             setState(params.state)
         }
+
+        if (params.filters) {
+            setFilters(params.filters.split(','))
+        }
     }, [params])
 
     const handleChangeParams = useCallback(
@@ -72,14 +81,19 @@ export const CampaignListOptions = ({children}: Props) => {
                 setState(params.state)
             }
 
+            if (params.filters !== undefined) {
+                setFilters(params.filters.split(','))
+            }
+
             updateUrlWithSearchParams({
                 page,
                 search,
                 state,
+                filters: filters.join(','),
                 ...params,
             })
         },
-        [page, search, state]
+        [filters, page, search, state]
     )
 
     const handleGetParams = useCallback(
@@ -87,8 +101,9 @@ export const CampaignListOptions = ({children}: Props) => {
             page,
             search,
             state,
+            filters,
         }),
-        [page, search, state]
+        [filters, page, search, state]
     )
 
     const memoValue = useMemo(

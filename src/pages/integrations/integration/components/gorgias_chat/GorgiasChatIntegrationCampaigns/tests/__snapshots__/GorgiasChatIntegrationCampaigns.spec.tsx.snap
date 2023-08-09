@@ -196,6 +196,62 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
           </label>
         </div>
       </div>
+      <div
+        class="quickFiltersContainer"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Contains product cards
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Contains discount codes
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Triggered on exit intent
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Triggered outside business hours
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <table
       class="table table-integrations mt-3 campaignsTable"
@@ -654,6 +710,62 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
           </label>
         </div>
       </div>
+      <div
+        class="quickFiltersContainer"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Contains product cards
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Contains discount codes
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Triggered on exit intent
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Triggered outside business hours
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <table
       class="table table-integrations mt-3 campaignsTable"
@@ -1089,6 +1201,62 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the empty state corre
         </div>
       </div>
       <div
+        class="quickFiltersContainer"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Contains product cards
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Contains discount codes
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Triggered on exit intent
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Triggered outside business hours
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
         class="noCampaignsLayer"
       >
         This integration doesn't have any campaigns yet.
@@ -1292,6 +1460,62 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
               Inactive
             </div>
           </label>
+        </div>
+      </div>
+      <div
+        class="quickFiltersContainer"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Contains product cards
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Contains discount codes
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Triggered on exit intent
+              </span>
+            </button>
+          </div>
+          <div
+            class="item"
+          >
+            <button
+              aria-pressed="false"
+              class="container"
+            >
+              <span>
+                Triggered outside business hours
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

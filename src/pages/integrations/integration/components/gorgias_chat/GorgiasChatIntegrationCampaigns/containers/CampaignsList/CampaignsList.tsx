@@ -5,6 +5,14 @@ import Fuse from 'fuse.js'
 import {Container} from 'reactstrap'
 
 import Segmented from 'pages/common/components/Segmented'
+import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+
+import {QuickFilters} from '../QuickFilters'
+
+import {QUICK_FILTERS} from '../../constants/filters'
+
+import {quickFiltersInvoke} from '../../utils/filters'
+
 import {CampaignsTable} from '../../components/CampaignsTable'
 import {CampaignsSearch} from '../../components/CampaignsSearch'
 import {CampaignGenerator} from '../../components/CampaignGenerator'
@@ -35,9 +43,10 @@ export const CampaignsList = ({
     onDuplicateCampaign,
     onUpdateCampaign,
 }: Props) => {
+    const isRevenueSubscriber = useIsRevenueBetaTester()
     const {getParams, onChangeParams} = useCampaignListOptions()
 
-    const {page, search, state} = getParams()
+    const {page, search, state, filters} = getParams()
 
     const statusFilterOptions = useMemo(() => {
         return [
@@ -86,8 +95,12 @@ export const CampaignsList = ({
             campaignsByStatus = fuse.search(search).map((result) => result.item)
         }
 
+        if (filters.length && isRevenueSubscriber) {
+            campaignsByStatus = quickFiltersInvoke(campaignsByStatus, filters)
+        }
+
         return campaignsByStatus
-    }, [campaigns, search, state])
+    }, [campaigns, filters, isRevenueSubscriber, search, state])
 
     const handleChangeSearch = (value: string) => {
         onChangeParams({search: value, page: 1})
@@ -103,6 +116,10 @@ export const CampaignsList = ({
 
     const handleChangePage = (page: number) => {
         onChangeParams({page})
+    }
+
+    const handleChangeFilters = (filters: string[]) => {
+        onChangeParams({filters: filters.join(','), page: 1})
     }
 
     // Check if page is out of range or the state filter is invalid or disabled and default to default values
@@ -151,6 +168,16 @@ export const CampaignsList = ({
                         />
                     )}
                 </div>
+
+                {isRevenueSubscriber && (
+                    <div className={css.quickFiltersContainer}>
+                        <QuickFilters
+                            filters={QUICK_FILTERS}
+                            defaultActiveFilters={filters}
+                            onChangeFilters={handleChangeFilters}
+                        />
+                    </div>
+                )}
 
                 <CampaignChatHiddenWarning integration={integration} />
 

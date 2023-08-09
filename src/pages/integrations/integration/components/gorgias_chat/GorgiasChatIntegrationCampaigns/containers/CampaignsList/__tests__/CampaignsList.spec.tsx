@@ -10,6 +10,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
 import useSearch from 'hooks/useSearch'
 
+import * as revenueBetaHook from 'pages/common/hooks/useIsRevenueBetaTester'
+
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
 import {createTrigger} from '../../../utils/createTrigger'
@@ -53,6 +55,13 @@ const integration = fromJS({
 describe('<CampaignsList />', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 
+    beforeAll(() => {
+        jest.spyOn(
+            revenueBetaHook,
+            'useIsRevenueBetaTester'
+        ).mockImplementation(() => true)
+    })
+
     beforeEach(() => {
         store = mockStore({
             entities: entitiesInitialState,
@@ -68,6 +77,7 @@ describe('<CampaignsList />', () => {
             return {
                 getParams: () => ({
                     search: '',
+                    filters: [],
                 }),
             }
         })
@@ -79,6 +89,7 @@ describe('<CampaignsList />', () => {
                 return {
                     getParams: () => ({
                         search: 'Awesome',
+                        filters: [],
                     }),
                 }
             })
@@ -122,6 +133,7 @@ describe('<CampaignsList />', () => {
                 return {
                     getParams: () => ({
                         search: 'not found',
+                        filters: [],
                     }),
                 }
             })
@@ -228,6 +240,7 @@ describe('<CampaignsList />', () => {
                 return {
                     getParams: () => ({
                         state: 'active',
+                        filters: [],
                     }),
                 }
             })
@@ -254,6 +267,7 @@ describe('<CampaignsList />', () => {
                 return {
                     getParams: () => ({
                         state: 'inactive',
+                        filters: [],
                     }),
                 }
             })

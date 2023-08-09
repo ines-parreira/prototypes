@@ -78,6 +78,7 @@ describe('<CampaignListOptions />', () => {
             page: 1,
             search: '',
             state: 'all',
+            filters: '',
         })
     })
 
@@ -98,6 +99,7 @@ describe('<CampaignListOptions />', () => {
             page: 2,
             search: 'test',
             state: 'active',
+            filters: '',
         })
     })
 })
