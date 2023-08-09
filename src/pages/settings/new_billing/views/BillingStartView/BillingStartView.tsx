@@ -51,7 +51,7 @@ import BillingProcessView from '../BillingProcessView'
 import BillingInformationView from '../BillingInformationView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
-import CardView from '../CardView/CardView'
+import PaymentMethodView from '../PaymentMethodView/PaymentMethodView'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
@@ -334,7 +334,7 @@ const BillingStartView = () => {
                             {payment === 'shopify' ? (
                                 <Redirect to={BILLING_PAYMENT_PATH} />
                             ) : (
-                                <CardView
+                                <PaymentMethodView
                                     contactBilling={contactBilling}
                                     dispatchBillingError={dispatchBillingError}
                                 />

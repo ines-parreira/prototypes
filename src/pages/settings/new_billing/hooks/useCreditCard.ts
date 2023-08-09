@@ -77,10 +77,10 @@ export const useCreditCard = ({
         [card, isCreditCardFetched]
     )
 
-    const isDisabled = useMemo(
+    const isCardValid = useMemo(
         () =>
-            Object.values(fields).some((field) => !field) ||
-            Object.values(errors).some((error) => !!error),
+            Object.values(fields).every((field) => !!field) &&
+            Object.values(errors).every((error) => !error),
         [fields, errors]
     )
 
@@ -177,8 +177,8 @@ export const useCreditCard = ({
         return newErrors
     }
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
+        e?.preventDefault()
         const [exp_month, exp_year] = fields.expDate.split('/')
         const cardToEncode: stripe.StripeCardTokenData = {
             name: fields.name,
@@ -258,7 +258,7 @@ export const useCreditCard = ({
         isStripeLoaded,
         isCreditCardFetched,
         isContactFetched,
-        isDisabled,
+        isCardValid,
         isUpdating,
         isSubmitting,
         isTrialingSubscription,

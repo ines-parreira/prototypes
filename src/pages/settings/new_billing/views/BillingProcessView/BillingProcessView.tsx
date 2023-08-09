@@ -310,6 +310,7 @@ const BillingProcessView = ({
                             }
                             updateSubscription={updateSubscription}
                             periodEnd={periodEnd}
+                            ctaText="Update Subscription"
                         />
                     </Card>
                 )}

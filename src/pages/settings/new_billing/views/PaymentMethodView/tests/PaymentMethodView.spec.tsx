@@ -12,7 +12,7 @@ import {
     products,
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
-import CardView from '../CardView'
+import PaymentMethodView from '../PaymentMethodView'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -101,18 +101,18 @@ const store = mockedStore({
     }),
 })
 
-describe('CardView', () => {
+describe('PaymentMethodView', () => {
     it('renders the component', () => {
         const {getByText} = renderWithRouter(
             <Provider store={store}>
-                <CardView
+                <PaymentMethodView
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}
                 />
             </Provider>
         )
 
-        expect(getByText('Payment method')).toBeInTheDocument()
+        expect(getByText('Payment Method')).toBeInTheDocument()
         expect(getByText('Name on the card')).toBeInTheDocument()
     })
 
@@ -130,7 +130,7 @@ describe('CardView', () => {
 
         const {getByTestId, getByText} = render(
             <Provider store={store}>
-                <CardView
+                <PaymentMethodView
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}
                 />

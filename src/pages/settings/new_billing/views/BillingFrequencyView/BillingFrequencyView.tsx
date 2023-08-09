@@ -222,6 +222,7 @@ const BillingFrequencyView = ({
                         anyDowngradedPlanSelected={false}
                         updateSubscription={updateSubscription}
                         periodEnd={periodEnd}
+                        ctaText="Update Subscription"
                     />
                 </Card>
             </div>

@@ -44,9 +44,16 @@ describe('creditCardExpDateNormalizer', () => {
         expect(formattedValue).toBe('12 / 22')
     })
 
-    it('should return the previous value if new value is more than 4 characters', () => {
+    it('should return the previous value if new value is more than 4 characters but not 6 characters', () => {
         const value = '12 / 345'
         const previousValue = '12 / 34'
+        const formattedValue = creditCardExpDateNormalizer(value, previousValue)
+        expect(formattedValue).toBe(previousValue)
+    })
+
+    it('should format the expiration date if the new value is exactly 6 characters', () => {
+        const value = '12 / 2026'
+        const previousValue = '12 / 26'
         const formattedValue = creditCardExpDateNormalizer(value, previousValue)
         expect(formattedValue).toBe(previousValue)
     })

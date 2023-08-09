@@ -236,6 +236,7 @@ const AutomationPlanSubscriptionDescription = ({
                         handleConfirmTerms={(termsChecked) =>
                             setIsTermsChecked(termsChecked)
                         }
+                        ctaText="Update Subscription"
                     />
                 )}
             </div>

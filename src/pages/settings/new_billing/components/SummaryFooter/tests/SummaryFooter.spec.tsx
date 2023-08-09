@@ -51,6 +51,7 @@ describe('SummaryFooter', () => {
         anyDowngradedPlanSelected: true,
         updateSubscription: mockUpdateSubscription,
         periodEnd: '2020-12-31',
+        ctaText: 'Update Subscription',
     }
 
     it('disables the container when isPaymentEnabled is false', () => {

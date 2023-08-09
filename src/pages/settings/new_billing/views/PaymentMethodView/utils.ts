@@ -21,8 +21,18 @@ export function creditCardExpDateNormalizer(
     value: string,
     previousValue: string
 ) {
+    // remove all whitespace and forward slashes
     const newValue = value.replace(/[ /]/g, '')
-    if ((isNumeric(newValue) && newValue.length <= 4) || !newValue) {
+    if (
+        (isNumeric(newValue) &&
+            (newValue.length <= 4 || newValue.length === 6)) ||
+        !newValue
+    ) {
+        // browser autofill uses the full year notation
+        if (newValue.length === 6) {
+            return `${newValue.slice(0, 2)} / ${newValue.slice(-2)}`
+        }
+
         // user type backyard and cursor is at `MM / ` <--
         if (value.length === 4 && value.indexOf(' /') > -1) {
             return newValue
