@@ -8,6 +8,7 @@ import {
     WorkflowStepWorkflowCall,
     WorkflowTransition,
 } from '../models/workflowConfiguration.types'
+import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
 const genStepMessages = (
     id: string,
@@ -47,7 +48,7 @@ const genStepWorkflowCall = (id: string): WorkflowStepWorkflowCall => ({
     id,
     kind: 'workflow_call',
     settings: {
-        configuration_id: 'workflow-to-call-id',
+        configuration_id: WAS_THIS_HELPFUL_WORKFLOW_ID,
     },
 })
 

@@ -1,7 +1,7 @@
 import React, {createContext, useMemo} from 'react'
 
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {StoreIntegration} from 'models/integration/types'
+import {IntegrationType, StoreIntegration} from 'models/integration/types'
 
 import useStoreIntegrations from './useStoreIntegrations'
 
@@ -19,9 +19,9 @@ const useSelfServiceStoreIntegration = (shopType: string, shopName: string) => {
 
 export default useSelfServiceStoreIntegration
 
-const StoreIntegrationContext = createContext<StoreIntegration | undefined>(
-    undefined
-)
+export const StoreIntegrationContext = createContext<
+    StoreIntegration | undefined
+>(undefined)
 
 export const withSelfServiceStoreIntegrationContext =
     <
@@ -53,4 +53,32 @@ export const useSelfServiceStoreIntegrationContext = () => {
         )
     }
     return storeIntegration
+}
+
+export function createSelfServiceStoreIntegrationContextForPreview(): StoreIntegration {
+    return {
+        id: 5,
+        type: IntegrationType.Shopify,
+        name: 'foo',
+        description: null,
+        created_datetime: '',
+        updated_datetime: '',
+        locked_datetime: null,
+        deactivated_datetime: null,
+        deleted_datetime: null,
+        uri: '',
+        decoration: null,
+        user: {
+            id: 1,
+        },
+        meta: {
+            oauth: {
+                status: '',
+                error: '',
+                scope: '',
+            },
+            shop_name: '',
+            webhooks: [],
+        },
+    }
 }

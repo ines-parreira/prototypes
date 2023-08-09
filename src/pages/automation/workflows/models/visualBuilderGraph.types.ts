@@ -74,6 +74,20 @@ export type FileUploadNodeType = Node<
     'file_upload'
 >
 
+export type OrderSelectionNodeType = Node<
+    {
+        wfConfigurationRef: {
+            wfConfigurationMessagesStepId: string
+            wfConfigurationShopperAuthenticationStepId: string
+            wfConfigurationOrderSelectionWorkflowCallStepId: string
+        }
+        content: MessageContent
+        integrationId: number
+        isGreyedOut?: boolean | null
+    },
+    'order_selection'
+>
+
 export type EndNodeType = Node<
     {
         wfConfigurationRef: {
@@ -94,6 +108,7 @@ export type VisualBuilderNode =
     | AutomatedMessageNodeType
     | TextReplyNodeType
     | FileUploadNodeType
+    | OrderSelectionNodeType
     | EndNodeType
 
 export type VisualBuilderEdge = Edge<{

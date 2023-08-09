@@ -4,13 +4,17 @@ import _cloneDeep from 'lodash/cloneDeep'
 import _omit from 'lodash/omit'
 import _isEqual from 'lodash/isEqual'
 
-import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
+import {
+    ORDER_SELECTION_WORKFLOW_ID,
+    WAS_THIS_HELPFUL_WORKFLOW_ID,
+} from '../constants'
 import {
     WorkflowConfiguration,
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
     WorkflowStepHandover,
     WorkflowStepMessages,
+    WorkflowStepShopperAuthentication,
     WorkflowStepTextInput,
     WorkflowStepWorkflowCall,
 } from './workflowConfiguration.types'
@@ -224,6 +228,68 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = messagesStepId
                 }
                 stepIdByNodeId[node.id] = attachmentsInputStepId
+            } else if (node.type === 'order_selection') {
+                const messagesStepId =
+                    node.data.wfConfigurationRef.wfConfigurationMessagesStepId
+                const shopperAuthenticationStepId =
+                    node.data.wfConfigurationRef
+                        .wfConfigurationShopperAuthenticationStepId
+                const orderSelectionWorkflowCallStepId =
+                    node.data.wfConfigurationRef
+                        .wfConfigurationOrderSelectionWorkflowCallStepId
+                const messagesStep: WorkflowStepMessages = {
+                    id: messagesStepId,
+                    kind: 'messages',
+                    settings: {
+                        messages: [
+                            {
+                                content: node.data.content,
+                            },
+                        ],
+                    },
+                }
+                const shopperAuthenticationStep: WorkflowStepShopperAuthentication =
+                    {
+                        id: shopperAuthenticationStepId,
+                        kind: 'shopper-authentication',
+                        settings: {
+                            integration_id: node.data.integrationId,
+                        },
+                    }
+                const orderSelectionWorkflowCallStep: WorkflowStepWorkflowCall =
+                    {
+                        id: orderSelectionWorkflowCallStepId,
+                        kind: 'workflow_call',
+                        settings: {
+                            configuration_id: ORDER_SELECTION_WORKFLOW_ID,
+                        },
+                    }
+                c.steps.push(
+                    messagesStep,
+                    shopperAuthenticationStep,
+                    orderSelectionWorkflowCallStep
+                )
+                c.transitions.push({
+                    id: ulid(),
+                    from_step_id: messagesStepId,
+                    to_step_id: shopperAuthenticationStepId,
+                })
+                c.transitions.push({
+                    id: ulid(),
+                    from_step_id: shopperAuthenticationStepId,
+                    to_step_id: orderSelectionWorkflowCallStepId,
+                })
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: messagesStepId,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = messagesStepId
+                }
+                stepIdByNodeId[node.id] = orderSelectionWorkflowCallStepId
             } else if (node.type === 'multiple_choices') {
                 const messagesStepId =
                     node.data.wfConfigurationRef.wfConfigurationMessagesStepId

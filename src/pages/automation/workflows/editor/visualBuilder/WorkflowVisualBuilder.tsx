@@ -21,6 +21,7 @@ import NodeEditorDrawer from './NodeEditorDrawer'
 import 'reactflow/dist/style.css'
 import TextReplyNode from './nodes/TextReplyNode'
 import FileUploadNode from './nodes/FileUploadNode'
+import OrderSelectionNode from './nodes/OrderSelectionNode'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
@@ -28,6 +29,7 @@ const nodeTypes = {
     multiple_choices: MultipleChoicesNode,
     text_reply: TextReplyNode,
     file_upload: FileUploadNode,
+    order_selection: OrderSelectionNode,
     end: EndNode,
 }
 

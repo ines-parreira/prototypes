@@ -1,6 +1,8 @@
 import {ulid} from 'ulidx'
+import React, {ReactNode} from 'react'
 
 import colors from 'assets/tokens/colors.json'
+import orderSelectionIcon from 'assets/img/workflows/icons/order-selection.svg'
 
 import {
     WorkflowConfiguration,
@@ -32,19 +34,25 @@ export const colorByVisualBuilderNodeType: Record<
         color: colors['📺 Classic'].Accessory.Green_text.value,
         backgroundColor: colors['📺 Classic'].Accessory.Green_bg.value,
     },
+    order_selection: {
+        color: colors['📺 Classic'].Accessory.Blue_text.value,
+        backgroundColor: colors['📺 Classic'].Accessory.Teal_bg.value,
+    },
 }
 
-export const materialIconByVisualBuilderNodeType: Record<
+export const iconByVisualBuilderNodeType: Record<
     Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>,
-    string
+    ReactNode
 > = {
-    automated_message: 'chat_bubble',
-    multiple_choices: 'view_list',
-    text_reply: 'short_text',
-    file_upload: 'attach_file',
+    automated_message: <i className="material-icons">chat_bubble</i>,
+    multiple_choices: <i className="material-icons">view_list</i>,
+    text_reply: <i className="material-icons">short_text</i>,
+    file_upload: <i className="material-icons">attach_file</i>,
+    order_selection: <img src={orderSelectionIcon} alt="" />,
 }
 
 export const WAS_THIS_HELPFUL_WORKFLOW_ID = '01GWPRH2G05DYYFBB1GNVNRB19'
+export const ORDER_SELECTION_WORKFLOW_ID = '01H6XMB9DXNERSDSMPAM84JJ6J'
 
 export const WORKFLOW_TEMPLATES: Record<
     WorkflowTemplate['slug'],

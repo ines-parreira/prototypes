@@ -16,6 +16,7 @@ import AutomatedMessageEditor from './editors/AutomatedMessageEditor'
 import TextReplyEditor from './editors/TextReplyEditor'
 import FileUploadEditor from './editors/FileUploadEditor'
 import EndNodeEditor from './editors/EndNodeEditor'
+import OrderSelectionEditor from './editors/OrderSelectionEditor'
 
 type NodeEditorDrawerProps = {
     nodeInEdition?: VisualBuilderNode | null
@@ -77,6 +78,8 @@ export default function NodeEditorDrawer({
                             'Collect text reply'}
                         {memoizedNodeInEdition?.type === 'file_upload' &&
                             'Collect file upload'}
+                        {memoizedNodeInEdition?.type === 'order_selection' &&
+                            'Order selection'}
                         {memoizedNodeInEdition?.type === 'end' && 'End flow'}
                     </h3>
                     <Drawer.HeaderActions>
@@ -131,6 +134,11 @@ export default function NodeEditorDrawer({
                     )}
                     {memoizedNodeInEdition?.type === 'file_upload' && (
                         <FileUploadEditor
+                            nodeInEdition={memoizedNodeInEdition}
+                        />
+                    )}
+                    {memoizedNodeInEdition?.type === 'order_selection' && (
+                        <OrderSelectionEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
                     )}

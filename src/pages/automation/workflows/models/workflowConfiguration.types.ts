@@ -58,6 +58,14 @@ export type WorkflowStepHandover = {
     }
 }
 
+export type WorkflowStepShopperAuthentication = {
+    id: string
+    kind: 'shopper-authentication'
+    settings: {
+        integration_id: number
+    }
+}
+
 export type WorkflowStep =
     | WorkflowStepMessages
     | WorkflowStepTextInput
@@ -65,6 +73,7 @@ export type WorkflowStep =
     | WorkflowStepChoices
     | WorkflowStepWorkflowCall
     | WorkflowStepHandover
+    | WorkflowStepShopperAuthentication
 
 export type WorkflowTransition = {
     id: string

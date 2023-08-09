@@ -12,6 +12,7 @@ import {
     EndNodeType,
     FileUploadNodeType,
     MultipleChoicesNodeType,
+    OrderSelectionNodeType,
     TextReplyNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
@@ -180,6 +181,31 @@ export const buildEndNode: () => EndNodeType = () => {
                 wfConfigurationWorkflowCallOrHandoverStepId: id,
             },
             withWasThisHelpfulPrompt: true,
+        },
+    }
+}
+
+export const buildOrderSelectionNode: (
+    storeIntegrationId: number
+) => OrderSelectionNodeType = (storeIntegrationId: number) => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'order_selection',
+        data: {
+            wfConfigurationRef: {
+                wfConfigurationMessagesStepId: id,
+                wfConfigurationShopperAuthenticationStepId: ulid(),
+                wfConfigurationOrderSelectionWorkflowCallStepId: ulid(),
+            },
+            content: {
+                html: '',
+                html_tkey: ulid(),
+                text: '',
+                text_tkey: ulid(),
+            },
+            integrationId: storeIntegrationId,
         },
     }
 }

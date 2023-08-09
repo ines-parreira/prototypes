@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
 import {NodeProps} from 'reactflow'
 import classNames from 'classnames'
 import {produce, Draft} from 'immer'
@@ -16,14 +16,16 @@ import {
 
 import {
     colorByVisualBuilderNodeType,
-    materialIconByVisualBuilderNodeType,
+    iconByVisualBuilderNodeType,
 } from 'pages/automation/workflows/constants'
 import {
     useWorkflowChannelSupportContext,
     getChannelName,
+    optionalNodeTypes,
 } from 'pages/automation/workflows/hooks/useWorkflowChannelSupport'
 import Tooltip from 'pages/common/components/Tooltip'
 import {VisualBuilderGraphAction} from 'pages/automation/workflows/hooks/useVisualBuilderGraphReducer'
+import {useSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
 
 import EdgeIconButton from './EdgeIconButton'
 import css from './EdgeBlock.less'
@@ -32,7 +34,7 @@ type MenuItem = {
     label: string
     type: NonNullable<VisualBuilderNode['type']>
     description: string
-    icon: string
+    icon: ReactNode
     style: {
         color: string
         backgroundColor: string
@@ -77,12 +79,13 @@ function useMenuItems(
     nodeId: string,
     dispatch: React.Dispatch<VisualBuilderGraphAction>
 ) {
+    const storeIntegration = useSelfServiceStoreIntegrationContext()
     const [menuItems, setMenuItems] = useState<MenuItem[]>([
         {
             label: 'Multiple choice',
             type: 'multiple_choices',
             description: 'Display up to 6 options',
-            icon: materialIconByVisualBuilderNodeType.multiple_choices,
+            icon: iconByVisualBuilderNodeType.multiple_choices,
             style: colorByVisualBuilderNodeType.multiple_choices,
             onClick: () => {
                 dispatch({
@@ -95,7 +98,7 @@ function useMenuItems(
             label: 'Collect text reply',
             description: 'Allow up to 5,000 characters',
             type: 'text_reply',
-            icon: materialIconByVisualBuilderNodeType.text_reply,
+            icon: iconByVisualBuilderNodeType.text_reply,
             style: colorByVisualBuilderNodeType.text_reply,
             hidden: true,
             onClick: () => {
@@ -109,7 +112,7 @@ function useMenuItems(
             label: 'Collect file upload',
             description: 'Allow up to 5 files',
             type: 'file_upload',
-            icon: materialIconByVisualBuilderNodeType.file_upload,
+            icon: iconByVisualBuilderNodeType.file_upload,
             style: colorByVisualBuilderNodeType.file_upload,
             hidden: true,
             onClick: () => {
@@ -123,12 +126,27 @@ function useMenuItems(
             label: 'Automated answer',
             description: 'Display short text',
             type: 'automated_message',
-            icon: materialIconByVisualBuilderNodeType.automated_message,
+            icon: iconByVisualBuilderNodeType.automated_message,
             style: colorByVisualBuilderNodeType.automated_message,
             onClick: () => {
                 dispatch({
                     type: 'INSERT_AUTOMATED_MESSAGE_NODE',
                     beforeNodeId: nodeId,
+                })
+            },
+        },
+        {
+            label: 'Order selection',
+            description: 'Display last 5 orders',
+            type: 'order_selection',
+            icon: iconByVisualBuilderNodeType.order_selection,
+            style: colorByVisualBuilderNodeType.order_selection,
+            hidden: true,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_ORDER_SELECTION_NODE',
+                    beforeNodeId: nodeId,
+                    storeIntegrationId: storeIntegration.id,
                 })
             },
         },
@@ -159,44 +177,37 @@ function useMenuItemsForConnectedChannels(
         getSupportedChannels,
     } = useWorkflowChannelSupportContext()
     useEffect(() => {
-        if (!isStepUnsupportedInAllChannels('text_reply')) {
-            updateMenuItems((draft) => {
-                if (
-                    draft.type === 'text_reply' ||
-                    draft.type === 'file_upload'
-                ) {
-                    draft.hidden = false
-                }
-            })
-        }
+        optionalNodeTypes.map((nodeType) => {
+            if (!isStepUnsupportedInAllChannels(nodeType)) {
+                updateMenuItems((draft) => {
+                    if (draft.type === nodeType) {
+                        draft.hidden = false
+                    }
+                })
+            }
+        })
     }, [isStepUnsupportedInAllChannels, updateMenuItems])
+
     useEffect(() => {
-        async function f() {
+        optionalNodeTypes.map(async (nodeType) => {
             const unsupportedConnectedChannels =
-                await getUnsupportedConnectedChannels(
-                    configurationId,
-                    'text_reply'
-                )
-            const supportedChannels = getSupportedChannels('text_reply')
-            const shopperInputDisabledText =
+                await getUnsupportedConnectedChannels(configurationId, nodeType)
+            const supportedChannels = getSupportedChannels(nodeType)
+            const disabledText =
                 unsupportedConnectedChannels.length > 0
                     ? ` This step is currently only supported in ${supportedChannels
                           .map(getChannelName)
                           .join('and')}.
                     Disable the flow in other channels to use this step.`
                     : ''
-            if (shopperInputDisabledText) {
+            if (disabledText) {
                 updateMenuItems((draft) => {
-                    if (
-                        draft.type === 'text_reply' ||
-                        draft.type === 'file_upload'
-                    ) {
-                        draft.disabledText = shopperInputDisabledText
+                    if (draft.type === nodeType) {
+                        draft.disabledText = disabledText
                     }
                 })
             }
-        }
-        void f()
+        })
     }, [
         getSupportedChannels,
         getUnsupportedConnectedChannels,
@@ -285,13 +296,7 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
                                     )}
                                 >
                                     <div className={css.menuIcon} style={style}>
-                                        <i
-                                            className={classNames(
-                                                'material-icons'
-                                            )}
-                                        >
-                                            {icon}
-                                        </i>
+                                        {icon}
                                     </div>
                                     <div>
                                         {label}

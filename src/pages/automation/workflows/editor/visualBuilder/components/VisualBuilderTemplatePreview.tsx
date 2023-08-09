@@ -16,6 +16,10 @@ import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
 import MultipleChoicesNode from '../nodes/MultipleChoicesNode'
 import EndNode from '../nodes/EndNode'
 import CustomEdge from '../CustomEdge'
+import {
+    createSelfServiceStoreIntegrationContextForPreview,
+    StoreIntegrationContext,
+} from '../../../../common/hooks/useSelfServiceStoreIntegration'
 
 type VisualBuilderTemplatePreviewProps = {
     visualBuilderGraph: VisualBuilderGraph
@@ -74,14 +78,20 @@ function withProviders<T extends {visualBuilderGraph: VisualBuilderGraph}>(
             createWorkflowEditorContextForPreview(props.visualBuilderGraph)
         const workflowChannelSupportContextValue =
             createWorkflowChannelSupportContextForPreview()
+        const selfServiceStoreIntegrationContextValue =
+            createSelfServiceStoreIntegrationContextForPreview()
         return (
             <WorkflowEditorContext.Provider value={workflowEditorContextValue}>
                 <WorkflowChannelSupportContext.Provider
                     value={workflowChannelSupportContextValue}
                 >
-                    <ReactFlowProvider>
-                        <Component {...props} />
-                    </ReactFlowProvider>
+                    <StoreIntegrationContext.Provider
+                        value={selfServiceStoreIntegrationContextValue}
+                    >
+                        <ReactFlowProvider>
+                            <Component {...props} />
+                        </ReactFlowProvider>
+                    </StoreIntegrationContext.Provider>
                 </WorkflowChannelSupportContext.Provider>
             </WorkflowEditorContext.Provider>
         )

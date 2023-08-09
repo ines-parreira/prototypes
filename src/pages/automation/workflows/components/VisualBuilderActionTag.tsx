@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 import {
     colorByVisualBuilderNodeType,
-    materialIconByVisualBuilderNodeType,
+    iconByVisualBuilderNodeType,
 } from '../constants'
 import {VisualBuilderNode} from '../models/visualBuilderGraph.types'
 
@@ -25,9 +25,7 @@ export default function VisualBuilderActionTag({
             className={classnames(css.visualBuilderActionTag)}
             style={colorByVisualBuilderNodeType[nodeType]}
         >
-            <i className={classnames('material-icons', css.icon)}>
-                {materialIconByVisualBuilderNodeType[nodeType]}
-            </i>
+            {iconByVisualBuilderNodeType[nodeType]}
             {children}
         </div>
     )

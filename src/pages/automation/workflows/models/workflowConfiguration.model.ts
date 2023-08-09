@@ -1,5 +1,9 @@
 import {ulid} from 'ulidx'
 import {
+    ORDER_SELECTION_WORKFLOW_ID,
+    WAS_THIS_HELPFUL_WORKFLOW_ID,
+} from '../constants'
+import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from './visualBuilderGraph.model'
@@ -8,6 +12,7 @@ import {
     EndNodeType,
     FileUploadNodeType,
     MultipleChoicesNodeType,
+    OrderSelectionNodeType,
     TextReplyNodeType,
     TriggerButtonNodeType,
     VisualBuilderEdge,
@@ -163,6 +168,48 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[nextSteps[0].id] = n.id
             nodes.push(n)
+        } else if (
+            step.kind === 'messages' &&
+            nextSteps.length === 1 &&
+            nextSteps[0].kind === 'shopper-authentication'
+        ) {
+            const orderSelectionWorkflowCallStepId = c.transitions.find(
+                (t) => t.from_step_id === nextSteps[0].id
+            )?.to_step_id
+            const orderSelectionWorkflowCallStep = c.steps.find(
+                (s) =>
+                    s.id === orderSelectionWorkflowCallStepId &&
+                    s.kind === 'workflow_call' &&
+                    s.settings.configuration_id === ORDER_SELECTION_WORKFLOW_ID
+            )
+
+            if (!orderSelectionWorkflowCallStep) {
+                throw new Error(
+                    'order_selection node expects a chain of message -> shopper-authentication -> workflow_call steps'
+                )
+            }
+
+            // group message step followed by a shopper-authentication & workflow_call steps into an order_selection node
+            const n: OrderSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'order_selection',
+                data: {
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
+                    ),
+                    wfConfigurationRef: {
+                        wfConfigurationMessagesStepId: step.id,
+                        wfConfigurationShopperAuthenticationStepId:
+                            nextSteps[0].id,
+                        wfConfigurationOrderSelectionWorkflowCallStepId:
+                            orderSelectionWorkflowCallStep.id,
+                    },
+                    integrationId: nextSteps[0].settings.integration_id,
+                },
+            }
+            nodeIdByStepId[orderSelectionWorkflowCallStep.id] = n.id
+            nodes.push(n)
         } else if (step.kind === 'messages') {
             // single message step will become an automated_answer node
             const n: AutomatedMessageNodeType = {
@@ -180,8 +227,10 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
-        } else if (step.kind === 'workflow_call') {
-            // workflow_call step is always an end_node for now
+        } else if (
+            step.kind === 'workflow_call' &&
+            step.settings.configuration_id === WAS_THIS_HELPFUL_WORKFLOW_ID
+        ) {
             const n: EndNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,

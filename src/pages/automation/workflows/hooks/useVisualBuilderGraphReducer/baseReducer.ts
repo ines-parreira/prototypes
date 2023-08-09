@@ -7,6 +7,7 @@ import {
     AutomatedMessageNodeType,
     EndNodeType,
     FileUploadNodeType,
+    OrderSelectionNodeType,
     TextReplyNodeType,
     TriggerButtonNodeType,
     VisualBuilderGraph,
@@ -16,6 +17,7 @@ import {
     buildAutomatedMessageNode,
     buildEndNode,
     buildFileUploadNode,
+    buildOrderSelectionNode,
     buildTextReplyNode,
     computeNodesPositions,
     deleteBranch,
@@ -52,6 +54,11 @@ export type VisualBuilderBaseAction =
           content: MessageContent
       }
     | {
+          type: 'SET_ORDER_SELECTION_CONTENT'
+          orderSelectionNodeId: string
+          content: MessageContent
+      }
+    | {
           type: 'SET_END_NODE_SETTINGS'
           endNodeId: string
           settings: Pick<
@@ -73,6 +80,11 @@ export type VisualBuilderBaseAction =
     | {
           type: 'INSERT_FILE_UPLOAD_NODE'
           beforeNodeId: string
+      }
+    | {
+          type: 'INSERT_ORDER_SELECTION_NODE'
+          beforeNodeId: string
+          storeIntegrationId: number
       }
     | {
           type: 'DELETE_NODE'
@@ -141,6 +153,17 @@ export function baseReducer(
                     node.data.content = action.content
                 }
             })
+        case 'SET_ORDER_SELECTION_CONTENT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is OrderSelectionNodeType =>
+                        n.id === action.orderSelectionNodeId &&
+                        n.type === 'order_selection'
+                )
+                if (node) {
+                    node.data.content = action.content
+                }
+            })
         case 'SET_END_NODE_SETTINGS':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
@@ -181,6 +204,14 @@ export function baseReducer(
                 insertNodeBefore(
                     graph,
                     buildFileUploadNode(),
+                    action.beforeNodeId
+                )
+            )
+        case 'INSERT_ORDER_SELECTION_NODE':
+            return computeNodesPositions(
+                insertNodeBefore(
+                    graph,
+                    buildOrderSelectionNode(action.storeIntegrationId),
                     action.beforeNodeId
                 )
             )
