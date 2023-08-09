@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import moment, {Moment} from 'moment-timezone'
 import classnames from 'classnames'
@@ -40,6 +40,7 @@ import shortcutManager from 'services/shortcutManager'
 import {hasRole} from 'utils'
 
 import Snooze from './Snooze'
+import TicketActions, {Action} from './TicketActions'
 import TicketTags from './TicketDetails/TicketTags'
 import TicketStatus from './TicketDetails/TicketStatus'
 import TicketAssignee from './TicketDetails/TicketAssignee/TicketAssignee'
@@ -219,6 +220,82 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         const isTrashed = !!ticket.get('trashed_datetime')
         const snoozedUntil = ticket.get('snooze_datetime')
 
+        const handlePrint = () => {
+            logEvent(SegmentEvent.PrintTicketClicked)
+            // setTimeout allows React to complete the current JS click event triggers
+            // before printing the page
+            setTimeout(() => {
+                window.open(`/app/ticket/${ticket.get('id') as number}/print`)
+            }, 1)
+        }
+
+        const markUnread = async () => {
+            await ticketPartialUpdate({
+                is_unread: true,
+            })
+            void notify({
+                status: NotificationStatus.Success,
+                message: 'Ticket has been marked as unread',
+            })
+        }
+
+        const createActions = (onDisplayConfirmation: () => void) => {
+            const actions: Action[] = []
+            actions.push([
+                'Merge ticket',
+                'call_merge',
+                this._toggleMergeTicketModal,
+            ])
+
+            if (!ticket.get('is_unread'))
+                actions.push([
+                    'Mark as unread',
+                    'markunread_mailbox',
+                    markUnread,
+                ])
+
+            if (shouldDisplayAuditLogEvents) {
+                actions.push([
+                    'Hide all events',
+                    'event_note',
+                    this._toggleAuditLogEvents,
+                ])
+            } else {
+                actions.push([
+                    'Show all events',
+                    'event_note',
+                    this._toggleAuditLogEvents,
+                ])
+            }
+
+            actions.push(['Print ticket', 'print', handlePrint])
+
+            if (ticket.get('spam')) {
+                actions.push(['Unmark as spam', 'undo', this._toggleSpam])
+            } else {
+                actions.push([
+                    'Mark as spam',
+                    'not_interested',
+                    this._toggleSpam,
+                ])
+            }
+
+            if (hasRole(currentUser, UserRole.Agent)) {
+                if (isTrashed) {
+                    actions.push(['Undelete', 'undo', this._unTrashTicket])
+                } else {
+                    actions.push([
+                        'Delete',
+                        'delete',
+                        onDisplayConfirmation,
+                        'delete',
+                    ])
+                }
+            }
+
+            return actions
+        }
+
         return (
             <div
                 className={classnames(css.component, className)}
@@ -233,245 +310,253 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                         focus={!ticket.get('id')}
                     />
 
-                    <TicketSnooze
-                        className={css.headerIcon}
-                        datetime={ticket.get('snooze_datetime')}
-                        timezone={timezone}
-                    />
+                    <div className="d-flex justify-content-between align-items-center ml-3">
+                        <TicketSnooze
+                            className={css.headerIcon}
+                            datetime={ticket.get('snooze_datetime')}
+                            timezone={timezone}
+                        />
 
-                    <TicketTrash
-                        className={css.headerIcon}
-                        trashed={
-                            isTrashed &&
-                            !ticket.getIn(['_internal', 'loading', 'setTrash'])
-                        }
-                    />
+                        <TicketTrash
+                            className={css.headerIcon}
+                            trashed={
+                                isTrashed &&
+                                !ticket.getIn([
+                                    '_internal',
+                                    'loading',
+                                    'setTrash',
+                                ])
+                            }
+                        />
 
-                    <TicketSpam
-                        className={css.headerIcon}
-                        spam={
-                            ticket.get('spam') &&
-                            !ticket.getIn(['_internal', 'loading', 'setSpam'])
-                        }
-                    />
+                        <TicketSpam
+                            className={css.headerIcon}
+                            spam={
+                                ticket.get('spam') &&
+                                !ticket.getIn([
+                                    '_internal',
+                                    'loading',
+                                    'setSpam',
+                                ])
+                            }
+                        />
 
-                    {isUpdate && (
-                        <Fragment>
-                            {hasSeparateSnooze && (
-                                <Snooze
-                                    until={snoozedUntil}
-                                    onUpdate={this._snoozeTicket}
-                                />
-                            )}
-                            <ConfirmationPopover
-                                buttonProps={{
-                                    autoFocus: true,
-                                    intent: 'destructive',
-                                }}
-                                content={
-                                    <>
-                                        You are about to <b>delete</b> this
-                                        ticket.
-                                    </>
-                                }
-                                fade={false}
-                                id="ticket-actions-button"
-                                isOpen={askTrashConfirmation}
-                                onConfirm={this._trashTicket}
-                                toggle={() =>
-                                    this.setState({askTrashConfirmation: false})
-                                }
-                            >
-                                {({onDisplayConfirmation}) => (
-                                    <UncontrolledDropdown>
-                                        <DropdownToggle
-                                            color="secondary"
-                                            type="button"
-                                            size="sm"
-                                            id="ticket-actions-button"
-                                            className="btn-transparent"
-                                        >
-                                            <i className="material-icons md-2">
-                                                {showSnoozePicker
-                                                    ? 'snooze'
-                                                    : 'more_vert'}
-                                            </i>
-                                        </DropdownToggle>
-                                        <TicketSnoozePicker
-                                            datetime={ticket.get(
-                                                'snooze_datetime'
-                                            )}
-                                            timezone={timezone}
-                                            isOpen={showSnoozePicker}
-                                            toggle={this._toggleSnoozePicker}
-                                            onSubmit={this._snoozeTicket}
-                                        />
-                                        <DropdownMenu
-                                            right
-                                            className={css.actionsDropdown}
-                                        >
-                                            {!hasSeparateSnooze && (
-                                                <DropdownItem
+                        {isUpdate && (
+                            <>
+                                {hasSeparateSnooze && (
+                                    <Snooze
+                                        until={snoozedUntil}
+                                        onUpdate={this._snoozeTicket}
+                                    />
+                                )}
+                                <ConfirmationPopover
+                                    buttonProps={{
+                                        autoFocus: true,
+                                        intent: 'destructive',
+                                    }}
+                                    content={
+                                        <>
+                                            You are about to <b>delete</b> this
+                                            ticket.
+                                        </>
+                                    }
+                                    fade={false}
+                                    id="ticket-actions-button"
+                                    isOpen={askTrashConfirmation}
+                                    onConfirm={this._trashTicket}
+                                    toggle={() =>
+                                        this.setState({
+                                            askTrashConfirmation: false,
+                                        })
+                                    }
+                                >
+                                    {({onDisplayConfirmation}) =>
+                                        hasSeparateSnooze ? (
+                                            <TicketActions
+                                                actions={createActions(
+                                                    onDisplayConfirmation
+                                                )}
+                                            />
+                                        ) : (
+                                            <UncontrolledDropdown>
+                                                <DropdownToggle
+                                                    color="secondary"
                                                     type="button"
-                                                    onClick={
+                                                    size="sm"
+                                                    id="ticket-actions-button"
+                                                    className="btn-transparent"
+                                                >
+                                                    <i className="material-icons md-2">
+                                                        {showSnoozePicker
+                                                            ? 'snooze'
+                                                            : 'more_vert'}
+                                                    </i>
+                                                </DropdownToggle>
+                                                <TicketSnoozePicker
+                                                    datetime={ticket.get(
+                                                        'snooze_datetime'
+                                                    )}
+                                                    timezone={timezone}
+                                                    isOpen={showSnoozePicker}
+                                                    toggle={
                                                         this._toggleSnoozePicker
                                                     }
+                                                    onSubmit={
+                                                        this._snoozeTicket
+                                                    }
+                                                />
+                                                <DropdownMenu
+                                                    right
+                                                    className={
+                                                        css.actionsDropdown
+                                                    }
                                                 >
-                                                    <i className="icon material-icons">
-                                                        snooze
-                                                    </i>
-                                                    {ticket.get(
-                                                        'snooze_datetime'
-                                                    )
-                                                        ? 'Change snooze time'
-                                                        : 'Snooze'}
-                                                </DropdownItem>
-                                            )}
-                                            {!hasSeparateSnooze &&
-                                                ticket.get(
-                                                    'snooze_datetime'
-                                                ) && (
+                                                    {!hasSeparateSnooze && (
+                                                        <DropdownItem
+                                                            type="button"
+                                                            onClick={
+                                                                this
+                                                                    ._toggleSnoozePicker
+                                                            }
+                                                        >
+                                                            <i className="icon material-icons">
+                                                                snooze
+                                                            </i>
+                                                            {ticket.get(
+                                                                'snooze_datetime'
+                                                            )
+                                                                ? 'Change snooze time'
+                                                                : 'Snooze'}
+                                                        </DropdownItem>
+                                                    )}
+                                                    {!hasSeparateSnooze &&
+                                                        ticket.get(
+                                                            'snooze_datetime'
+                                                        ) && (
+                                                            <DropdownItem
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    this._snoozeTicket(
+                                                                        null
+                                                                    )
+                                                                }
+                                                            >
+                                                                <i className="icon material-icons">
+                                                                    timer_off
+                                                                </i>
+                                                                Clear snooze
+                                                            </DropdownItem>
+                                                        )}
                                                     <DropdownItem
                                                         type="button"
-                                                        onClick={() =>
-                                                            this._snoozeTicket(
-                                                                null
-                                                            )
+                                                        onClick={
+                                                            this
+                                                                ._toggleMergeTicketModal
                                                         }
                                                     >
                                                         <i className="icon material-icons">
-                                                            timer_off
+                                                            call_merge
                                                         </i>
-                                                        Clear snooze
+                                                        Merge ticket
                                                     </DropdownItem>
-                                                )}
-                                            <DropdownItem
-                                                type="button"
-                                                onClick={
-                                                    this._toggleMergeTicketModal
-                                                }
-                                            >
-                                                <i className="icon material-icons">
-                                                    call_merge
-                                                </i>
-                                                Merge ticket
-                                            </DropdownItem>
-                                            {!ticket.get('is_unread') && (
-                                                <DropdownItem
-                                                    type="button"
-                                                    onClick={async () => {
-                                                        await ticketPartialUpdate(
-                                                            {
-                                                                is_unread: true,
+                                                    {!ticket.get(
+                                                        'is_unread'
+                                                    ) && (
+                                                        <DropdownItem
+                                                            type="button"
+                                                            onClick={markUnread}
+                                                        >
+                                                            <i className="icon material-icons">
+                                                                markunread_mailbox
+                                                            </i>
+                                                            Mark as unread
+                                                        </DropdownItem>
+                                                    )}
+                                                    <DropdownItem
+                                                        type="button"
+                                                        onClick={
+                                                            this
+                                                                ._toggleAuditLogEvents
+                                                        }
+                                                    >
+                                                        <i className="icon material-icons">
+                                                            event_note
+                                                        </i>
+                                                        {shouldDisplayAuditLogEvents
+                                                            ? 'Hide'
+                                                            : 'Display'}{' '}
+                                                        all events
+                                                    </DropdownItem>
+                                                    <DropdownItem
+                                                        type="button"
+                                                        onClick={handlePrint}
+                                                    >
+                                                        <i className="icon material-icons">
+                                                            print
+                                                        </i>
+                                                        Print ticket
+                                                    </DropdownItem>
+                                                    <DropdownItem
+                                                        type="button"
+                                                        onClick={
+                                                            this._toggleSpam
+                                                        }
+                                                    >
+                                                        {ticket.get('spam') ? (
+                                                            <span>
+                                                                <i className="icon material-icons">
+                                                                    undo
+                                                                </i>
+                                                                Unmark as spam
+                                                            </span>
+                                                        ) : (
+                                                            <span>
+                                                                <i className="icon material-icons">
+                                                                    not_interested
+                                                                </i>
+                                                                Mark as spam
+                                                            </span>
+                                                        )}
+                                                    </DropdownItem>
+                                                    {!hasRole(
+                                                        currentUser,
+                                                        UserRole.Agent
+                                                    ) ? null : isTrashed ? (
+                                                        <DropdownItem
+                                                            type="button"
+                                                            onClick={
+                                                                this
+                                                                    ._unTrashTicket
                                                             }
-                                                        )
-                                                        void notify({
-                                                            status: NotificationStatus.Success,
-                                                            message:
-                                                                'Ticket has been marked as unread',
-                                                        })
-                                                    }}
-                                                >
-                                                    <i className="icon material-icons">
-                                                        markunread_mailbox
-                                                    </i>
-                                                    Mark as unread
-                                                </DropdownItem>
-                                            )}
-                                            <DropdownItem
-                                                type="button"
-                                                onClick={
-                                                    this._toggleAuditLogEvents
-                                                }
-                                            >
-                                                <i className="icon material-icons">
-                                                    event_note
-                                                </i>
-                                                {shouldDisplayAuditLogEvents
-                                                    ? 'Hide'
-                                                    : 'Display'}{' '}
-                                                all events
-                                            </DropdownItem>
-                                            <DropdownItem
-                                                type="button"
-                                                onClick={() => {
-                                                    logEvent(
-                                                        SegmentEvent.PrintTicketClicked
-                                                    )
-                                                    // setTimeout allows React to complete the current JS click event triggers
-                                                    // before printing the page
-                                                    setTimeout(() => {
-                                                        window.open(
-                                                            `/app/ticket/${
-                                                                ticket.get(
-                                                                    'id'
-                                                                ) as number
-                                                            }/print`
-                                                        )
-                                                    }, 1)
-                                                }}
-                                            >
-                                                <i className="icon material-icons">
-                                                    print
-                                                </i>
-                                                Print ticket
-                                            </DropdownItem>
-                                            <DropdownItem
-                                                type="button"
-                                                onClick={this._toggleSpam}
-                                            >
-                                                {ticket.get('spam') ? (
-                                                    <span>
-                                                        <i className="icon material-icons">
-                                                            undo
-                                                        </i>
-                                                        Unmark as spam
-                                                    </span>
-                                                ) : (
-                                                    <span>
-                                                        <i className="icon material-icons">
-                                                            not_interested
-                                                        </i>
-                                                        Mark as spam
-                                                    </span>
-                                                )}
-                                            </DropdownItem>
-                                            {!hasRole(
-                                                currentUser,
-                                                UserRole.Agent
-                                            ) ? null : isTrashed ? (
-                                                <DropdownItem
-                                                    type="button"
-                                                    onClick={
-                                                        this._unTrashTicket
-                                                    }
-                                                >
-                                                    <i className="icon material-icons">
-                                                        undo
-                                                    </i>
-                                                    Undelete
-                                                </DropdownItem>
-                                            ) : (
-                                                <DropdownItem
-                                                    type="button"
-                                                    onClick={
-                                                        onDisplayConfirmation
-                                                    }
-                                                >
-                                                    <div className="text-danger">
-                                                        <i className="icon material-icons">
-                                                            delete
-                                                        </i>
-                                                        Delete
-                                                    </div>
-                                                </DropdownItem>
-                                            )}
-                                        </DropdownMenu>
-                                    </UncontrolledDropdown>
-                                )}
-                            </ConfirmationPopover>
-                        </Fragment>
-                    )}
+                                                        >
+                                                            <i className="icon material-icons">
+                                                                undo
+                                                            </i>
+                                                            Undelete
+                                                        </DropdownItem>
+                                                    ) : (
+                                                        <DropdownItem
+                                                            type="button"
+                                                            onClick={
+                                                                onDisplayConfirmation
+                                                            }
+                                                        >
+                                                            <div className="text-danger">
+                                                                <i className="icon material-icons">
+                                                                    delete
+                                                                </i>
+                                                                Delete
+                                                            </div>
+                                                        </DropdownItem>
+                                                    )}
+                                                </DropdownMenu>
+                                            </UncontrolledDropdown>
+                                        )
+                                    }
+                                </ConfirmationPopover>
+                            </>
+                        )}
+                    </div>
                 </div>
 
                 <div className="d-flex justify-content-between">

@@ -1,17 +1,17 @@
+import cn from 'classnames'
 import {Moment} from 'moment'
-import React, {Fragment, useCallback, useState} from 'react'
-import {
-    Button,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    UncontrolledDropdown,
-} from 'reactstrap'
+import React, {useCallback, useRef, useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 
+import Button from 'pages/common/components/button/Button'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+
 import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
+import css from './Snooze.less'
 
 type Props = {
     until?: string
@@ -19,78 +19,95 @@ type Props = {
 }
 
 export default function Snooze({until, onUpdate}: Props) {
+    const [showDropdown, setShowDropdown] = useState(false)
     const [showPicker, setShowPicker] = useState(false)
     const timezone = useAppSelector(getTimezone)
 
-    const handleToggle = useCallback(() => {
-        setShowPicker((s) => !s)
-    }, [])
+    const toggleRef = useRef<HTMLButtonElement>(null)
+
+    const isSnoozed = !!until
+    const handleClick = useCallback(() => {
+        if (!isSnoozed) {
+            setShowPicker((s) => !s)
+            return
+        }
+
+        setShowDropdown((s) => !s)
+    }, [isSnoozed])
 
     const handleClickClear = useCallback(() => {
         onUpdate(null)
     }, [onUpdate])
 
-    const snoozePicker = (
-        <TicketSnoozePicker
-            datetime={until}
-            timezone={timezone}
-            isOpen={showPicker}
-            toggle={handleToggle}
-            onSubmit={onUpdate}
-        />
-    )
+    const handleToggleDropdown = useCallback(() => {
+        setShowDropdown((s) => !s)
+    }, [])
 
-    const isSnoozed = !!until
-    /**
-     * The DropdownToggle component comes from reactstrap and uses
-     * reactstrap's Button component under the hood, so in order to
-     * keep the same look and feel, we use that button here.
-     *
-     * Unfortunately, it is not possible to prevent the DropdownToggle
-     * from opening the dropdown, so I've had to separate this case here
-     */
-    if (!isSnoozed) {
-        return (
-            <Fragment>
-                <Button
-                    className="btn-transparent"
-                    color="secondary"
-                    id="ticket-snooze-button"
-                    size="sm"
-                    type="button"
-                    onClick={handleToggle}
-                >
-                    <i className="material-icons md-2">snooze</i>
-                </Button>
-                {snoozePicker}
-            </Fragment>
-        )
-    }
+    const handleShowSnoozePicker = useCallback(() => {
+        setShowPicker(true)
+    }, [])
 
     return (
-        <UncontrolledDropdown>
-            <DropdownToggle
-                className="btn-transparent"
-                color="secondary"
-                id="ticket-snooze-button"
-                size="sm"
-                type="button"
+        <>
+            <Button
+                ref={toggleRef}
+                className={css.button}
+                fillStyle="ghost"
+                intent="secondary"
+                onClick={handleClick}
             >
-                <i className="material-icons md-2">snooze</i>
-            </DropdownToggle>
-            {snoozePicker}
-            <DropdownMenu right>
-                <DropdownItem type="button" onClick={handleToggle}>
-                    <i className="icon material-icons">snooze</i>
-                    Change snooze time
-                </DropdownItem>
-                {isSnoozed && (
-                    <DropdownItem type="button" onClick={handleClickClear}>
-                        <i className="icon material-icons">timer_off</i>
+                <i className={cn(css.icon, 'material-icons')}>snooze</i>
+            </Button>
+            <TicketSnoozePicker
+                datetime={until}
+                timezone={timezone}
+                isOpen={showPicker}
+                onSubmit={onUpdate}
+            >
+                <span className={css.pickerAnchor} />
+            </TicketSnoozePicker>
+            <Dropdown
+                isOpen={showDropdown}
+                offset={4}
+                placement="bottom-end"
+                target={toggleRef}
+                onToggle={handleToggleDropdown}
+            >
+                <DropdownBody>
+                    <DropdownItem
+                        onClick={handleShowSnoozePicker}
+                        option={{label: '', value: ''}}
+                        shouldCloseOnSelect
+                    >
+                        <i
+                            className={cn(
+                                css.icon,
+                                css.optionIcon,
+                                'material-icons'
+                            )}
+                        >
+                            update
+                        </i>
+                        Change snooze time
+                    </DropdownItem>
+                    <DropdownItem
+                        onClick={handleClickClear}
+                        option={{label: '', value: ''}}
+                        shouldCloseOnSelect
+                    >
+                        <i
+                            className={cn(
+                                css.icon,
+                                css.optionIcon,
+                                'material-icons'
+                            )}
+                        >
+                            alarm_off
+                        </i>
                         Clear snooze
                     </DropdownItem>
-                )}
-            </DropdownMenu>
-        </UncontrolledDropdown>
+                </DropdownBody>
+            </Dropdown>
+        </>
     )
 }

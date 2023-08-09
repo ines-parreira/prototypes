@@ -10,6 +10,7 @@ exports[`<TicketSnoozePicker/> rendering should not render the datepicker when c
   toggle: undefined
   rangesLabel: "Remind me in"
   unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
+  children: undefined
 </div>
 `;
 
@@ -25,6 +26,7 @@ exports[`<TicketSnoozePicker/> rendering should render a DatePicker and log erro
       toggle: undefined
       rangesLabel: "Remind me in"
       unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
+      children: undefined
     </div>
   </div>
 </body>
@@ -42,6 +44,7 @@ exports[`<TicketSnoozePicker/> rendering should render the default datetime valu
       toggle: undefined
       rangesLabel: "Remind me in"
       unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
+      children: undefined
     </div>
   </div>
 </body>
@@ -59,6 +62,7 @@ exports[`<TicketSnoozePicker/> rendering should render the provided value 1`] = 
       toggle: undefined
       rangesLabel: "Remind me in"
       unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
+      children: undefined
     </div>
   </div>
 </body>

@@ -22,114 +22,118 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
       />
     </div>
     <div
-      class="dropdown"
+      class="d-flex justify-content-between align-items-center ml-3"
     >
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="btn-transparent btn btn-secondary btn-sm"
-        id="ticket-actions-button"
-        type="button"
-      >
-        <i
-          class="material-icons md-2"
-        >
-          more_vert
-        </i>
-      </button>
-      <span />
       <div
-        aria-hidden="true"
-        class="actionsDropdown dropdown-menu dropdown-menu-right"
-        role="menu"
-        tabindex="-1"
+        class="dropdown"
       >
         <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-transparent btn btn-secondary btn-sm"
+          id="ticket-actions-button"
           type="button"
         >
           <i
-            class="icon material-icons"
+            class="material-icons md-2"
           >
-            snooze
+            more_vert
           </i>
-          Snooze
         </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
+        <span />
+        <div
+          aria-hidden="true"
+          class="actionsDropdown dropdown-menu dropdown-menu-right"
+          role="menu"
+          tabindex="-1"
         >
-          <i
-            class="icon material-icons"
-          >
-            call_merge
-          </i>
-          Merge ticket
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <i
-            class="icon material-icons"
-          >
-            event_note
-          </i>
-          Display
-           
-          all events
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <i
-            class="icon material-icons"
-          >
-            print
-          </i>
-          Print ticket
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <span>
-            <i
-              class="icon material-icons"
-            >
-              not_interested
-            </i>
-            Mark as spam
-          </span>
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <div
-            class="text-danger"
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
           >
             <i
               class="icon material-icons"
             >
-              delete
+              snooze
             </i>
-            Delete
-          </div>
-        </button>
+            Snooze
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              call_merge
+            </i>
+            Merge ticket
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              event_note
+            </i>
+            Display
+             
+            all events
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              print
+            </i>
+            Print ticket
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              <i
+                class="icon material-icons"
+              >
+                not_interested
+              </i>
+              Mark as spam
+            </span>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="text-danger"
+            >
+              <i
+                class="icon material-icons"
+              >
+                delete
+              </i>
+              Delete
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -370,6 +374,9 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
         value="Great ticket"
       />
     </div>
+    <div
+      class="d-flex justify-content-between align-items-center ml-3"
+    />
   </div>
   <div
     class="d-flex justify-content-between"
@@ -585,124 +592,128 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
       />
     </div>
     <div
-      class="headerIcon"
+      class="d-flex justify-content-between align-items-center ml-3"
     >
-      <i
-        class="icon material-icons text-danger"
-        id="ticket-header-spam-icon"
-      >
-        flag
-      </i>
-    </div>
-    <div
-      class="dropdown"
-    >
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="btn-transparent btn btn-secondary btn-sm"
-        id="ticket-actions-button"
-        type="button"
+      <div
+        class="headerIcon"
       >
         <i
-          class="material-icons md-2"
+          class="icon material-icons text-danger"
+          id="ticket-header-spam-icon"
         >
-          more_vert
+          flag
         </i>
-      </button>
-      <span />
+      </div>
       <div
-        aria-hidden="true"
-        class="actionsDropdown dropdown-menu dropdown-menu-right"
-        role="menu"
-        tabindex="-1"
+        class="dropdown"
       >
         <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-transparent btn btn-secondary btn-sm"
+          id="ticket-actions-button"
           type="button"
         >
           <i
-            class="icon material-icons"
+            class="material-icons md-2"
           >
-            snooze
+            more_vert
           </i>
-          Snooze
         </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
+        <span />
+        <div
+          aria-hidden="true"
+          class="actionsDropdown dropdown-menu dropdown-menu-right"
+          role="menu"
+          tabindex="-1"
         >
-          <i
-            class="icon material-icons"
-          >
-            call_merge
-          </i>
-          Merge ticket
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <i
-            class="icon material-icons"
-          >
-            event_note
-          </i>
-          Display
-           
-          all events
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <i
-            class="icon material-icons"
-          >
-            print
-          </i>
-          Print ticket
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <span>
-            <i
-              class="icon material-icons"
-            >
-              undo
-            </i>
-            Unmark as spam
-          </span>
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <div
-            class="text-danger"
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
           >
             <i
               class="icon material-icons"
             >
-              delete
+              snooze
             </i>
-            Delete
-          </div>
-        </button>
+            Snooze
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              call_merge
+            </i>
+            Merge ticket
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              event_note
+            </i>
+            Display
+             
+            all events
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              print
+            </i>
+            Print ticket
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              <i
+                class="icon material-icons"
+              >
+                undo
+              </i>
+              Unmark as spam
+            </span>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="text-danger"
+            >
+              <i
+                class="icon material-icons"
+              >
+                delete
+              </i>
+              Delete
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -944,120 +955,124 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
       />
     </div>
     <div
-      class="headerIcon"
+      class="d-flex justify-content-between align-items-center ml-3"
     >
-      <i
-        class="icon material-icons text-danger"
-        id="ticket-header-trash-icon"
-      >
-        delete
-      </i>
-    </div>
-    <div
-      class="dropdown"
-    >
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="btn-transparent btn btn-secondary btn-sm"
-        id="ticket-actions-button"
-        type="button"
+      <div
+        class="headerIcon"
       >
         <i
-          class="material-icons md-2"
+          class="icon material-icons text-danger"
+          id="ticket-header-trash-icon"
         >
-          more_vert
+          delete
         </i>
-      </button>
-      <span />
+      </div>
       <div
-        aria-hidden="true"
-        class="actionsDropdown dropdown-menu dropdown-menu-right"
-        role="menu"
-        tabindex="-1"
+        class="dropdown"
       >
         <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-transparent btn btn-secondary btn-sm"
+          id="ticket-actions-button"
           type="button"
         >
           <i
-            class="icon material-icons"
+            class="material-icons md-2"
           >
-            snooze
+            more_vert
           </i>
-          Snooze
         </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
+        <span />
+        <div
+          aria-hidden="true"
+          class="actionsDropdown dropdown-menu dropdown-menu-right"
+          role="menu"
+          tabindex="-1"
         >
-          <i
-            class="icon material-icons"
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
           >
-            call_merge
-          </i>
-          Merge ticket
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <i
-            class="icon material-icons"
-          >
-            event_note
-          </i>
-          Display
-           
-          all events
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <i
-            class="icon material-icons"
-          >
-            print
-          </i>
-          Print ticket
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <span>
             <i
               class="icon material-icons"
             >
-              not_interested
+              snooze
             </i>
-            Mark as spam
-          </span>
-        </button>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <i
-            class="icon material-icons"
+            Snooze
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
           >
-            undo
-          </i>
-          Undelete
-        </button>
+            <i
+              class="icon material-icons"
+            >
+              call_merge
+            </i>
+            Merge ticket
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              event_note
+            </i>
+            Display
+             
+            all events
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              print
+            </i>
+            Print ticket
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              <i
+                class="icon material-icons"
+              >
+                not_interested
+              </i>
+              Mark as spam
+            </span>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="icon material-icons"
+            >
+              undo
+            </i>
+            Undelete
+          </button>
+        </div>
       </div>
     </div>
   </div>

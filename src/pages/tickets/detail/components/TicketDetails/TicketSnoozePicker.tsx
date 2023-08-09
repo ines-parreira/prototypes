@@ -1,17 +1,19 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import moment, {Moment} from 'moment-timezone'
 
 import DatePicker from '../../../../common/forms/DatePicker'
 
 type Props = {
+    children?: ReactNode
     datetime?: string
     onSubmit: (date: Moment) => void
     isOpen: boolean
     timezone: string | null
-    toggle: () => void
+    toggle?: () => void
 }
 
 const TicketSnoozePicker = ({
+    children,
     datetime,
     onSubmit,
     isOpen,
@@ -46,7 +48,9 @@ const TicketSnoozePicker = ({
             toggle={toggle}
             rangesLabel="Remind me in"
             unavailableDateMessage="You can’t select a time before current time to snooze a ticket."
-        />
+        >
+            {children}
+        </DatePicker>
     )
 }
 

@@ -60,6 +60,9 @@ describe('Snooze', () => {
             <Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />
         )
 
+        const snoozeEl = getByText('snooze')
+        userEvent.click(snoozeEl)
+
         expect(getByText('Change snooze time')).toBeInTheDocument()
         userEvent.click(getByText('update snooze time'))
         expect(onUpdate).toHaveBeenCalled()
@@ -75,9 +78,12 @@ describe('Snooze', () => {
             <Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />
         )
 
-        const el = getByText('Clear snooze')
-        expect(el).toBeInTheDocument()
-        userEvent.click(el)
+        const snoozeEl = getByText('snooze')
+        userEvent.click(snoozeEl)
+
+        const clearEl = getByText('Clear snooze')
+        expect(clearEl).toBeInTheDocument()
+        userEvent.click(clearEl)
         expect(onUpdate).toHaveBeenCalledWith(null)
     })
 })
