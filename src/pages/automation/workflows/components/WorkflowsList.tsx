@@ -7,6 +7,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import {
     LanguageCode,
@@ -42,6 +43,7 @@ function getLanguageList(
 const WorkflowsList = ({
     storeWorkflows: entrypoints,
     onDelete,
+    onDuplicate,
     goToEditWorkflowPage,
     isUpdatePending,
 }: Props) => {
@@ -81,22 +83,22 @@ const WorkflowsList = ({
                             </BodyCell>
                         )}
                         <BodyCell size="smallest">
-                            {/*<IconButton*/}
-                            {/*    className="mr-1"*/}
-                            {/*    fillStyle="ghost"*/}
-                            {/*    intent="secondary"*/}
-                            {/*    isDisabled={isUpdatePending}*/}
-                            {/*    onClick={async (e) => {*/}
-                            {/*        e.stopPropagation()*/}
-                            {/*        const duplicated = await onDuplicate(*/}
-                            {/*            entrypoint.workflow_id*/}
-                            {/*        )*/}
-                            {/*        goToEditWorkflowPage(duplicated.id)*/}
-                            {/*    }}*/}
-                            {/*    title="Duplicate flow"*/}
-                            {/*>*/}
-                            {/*    file_copy*/}
-                            {/*</IconButton>*/}
+                            <IconButton
+                                className="mr-1"
+                                fillStyle="ghost"
+                                intent="secondary"
+                                isDisabled={isUpdatePending}
+                                onClick={async (e) => {
+                                    e.stopPropagation()
+                                    const duplicated = await onDuplicate(
+                                        entrypoint.workflow_id
+                                    )
+                                    goToEditWorkflowPage(duplicated.id)
+                                }}
+                                title="Duplicate flow"
+                            >
+                                file_copy
+                            </IconButton>
                             <DeleteWorkflowAction
                                 onDelete={() => {
                                     void onDelete(entrypoint.workflow_id)

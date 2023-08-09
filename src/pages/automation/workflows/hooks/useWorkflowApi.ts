@@ -132,30 +132,17 @@ export default function useWorkflowApi(): WorkflowApi {
     )
     const duplicateWorkflowConfiguration = useCallback(
         async (configurationId: string) => {
-            const original = await fetchWorkflowConfiguration(configurationId)
-            const stepIdMapping: Map<string, string> = new Map(
-                original.steps.map((s) => [s.id, ulid()])
-            )
-            const duplicate: WorkflowConfiguration = {
-                ...original,
-                id: ulid(),
-                internal_id: ulid(),
-                name: `${original.name} - copy`,
-                initial_step_id: stepIdMapping.get(original.initial_step_id)!,
-                steps: original.steps.map((s) => ({
-                    ...s,
-                    id: stepIdMapping.get(s.id)!,
-                })),
-                transitions: original.transitions.map((t) => ({
-                    ...t,
-                    id: ulid(),
-                    from_step_id: stepIdMapping.get(t.from_step_id)!,
-                    to_step_id: stepIdMapping.get(t.to_step_id)!,
-                })),
-            }
-            return upsertWorkflowConfiguration(duplicate)
+            setIsUpdatePending(true)
+            return apiClient
+                .post<WorkflowConfiguration>(
+                    `/configurations/${configurationId}/duplicate`
+                )
+                .then((res) => {
+                    setIsUpdatePending(false)
+                    return res.data
+                })
         },
-        [fetchWorkflowConfiguration, upsertWorkflowConfiguration]
+        []
     )
     const fetchWorkflowTranslations = useCallback(
         (internalId: string, language: string) => {
