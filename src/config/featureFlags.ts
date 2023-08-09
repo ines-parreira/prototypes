@@ -1,6 +1,7 @@
 export enum FeatureFlagKey {
     AnalyticsFilterByTags = 'analytics-filter-by-tags',
     AnalyticsNewAgentPerformance = 'analytics-new-agent-performance',
+    AnalyticsExportAgentsPerformance = 'analytics-export-agents-performance',
     AnalyticsPerformanceTips = 'analytics-performance-tips',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',

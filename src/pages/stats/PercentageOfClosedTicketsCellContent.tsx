@@ -1,7 +1,6 @@
 import React from 'react'
-import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
-import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
@@ -23,33 +22,20 @@ export const PercentageOfClosedTicketsCellContent = ({
     )
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
-    const closedTicketsPerAgent = useClosedTicketsMetricPerAgent(
+    const {data, isFetching} = usePercentageOfClosedTicketsMetricPerAgent(
         pageStatsFilters,
         userTimezone,
         undefined,
         String(agentId)
     )
 
-    const {data, isFetching} = useClosedTicketsMetric(
-        pageStatsFilters,
-        userTimezone
-    )
-
-    let metricValue
-
-    if (closedTicketsPerAgent.data?.value && data?.value) {
-        metricValue = (closedTicketsPerAgent.data?.value / data?.value) * 100
-    }
-
     return (
         <BodyCellContent>
-            {isFetching ||
-            closedTicketsPerAgent.isFetching ||
-            isMetricLoading ? (
+            {isFetching || isMetricLoading ? (
                 <Skeleton inline />
             ) : (
                 formatMetricValue(
-                    metricValue,
+                    data?.value,
                     'percent',
                     NOT_AVAILABLE_PLACEHOLDER
                 )

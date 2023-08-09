@@ -23,6 +23,8 @@ import {LEARN_MORE_URL} from 'pages/stats/SupportPerformanceOverview'
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
+import {useAgentsMetrics} from 'pages/stats/useAgentsMetrics'
+import {useAgentsSummaryMetrics} from 'pages/stats/useAgentsSummaryMetrics'
 
 import SupportPerformanceAgents, {
     AGENT_PERFORMANCE_LEGACY_PATH,
@@ -32,8 +34,13 @@ import SupportPerformanceAgents, {
 
 jest.unmock('react-router-dom')
 
+jest.mock('state/ui/stats/agentPerformanceSlice')
+jest.mock('pages/stats/useAgentsMetrics')
+jest.mock('pages/stats/useAgentsSummaryMetrics')
 jest.mock('pages/stats/AgentsTable.tsx')
 const AgentsTableMock = assumeMock(AgentsTable)
+const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
+const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const cellMock = () => <div />
@@ -182,5 +189,42 @@ describe('SupportPerformanceAgents', () => {
                 })
             ).toBeInTheDocument()
         })
+    })
+
+    it('should render the export data button', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsExportAgentsPerformance]: true,
+        }))
+
+        useAgentsMetricsMock.mockReturnValue({
+            reportData: {
+                closedTicketsMetric: {
+                    isFetching: false,
+                    isError: false,
+                    data: {allData: [], value: null},
+                },
+            },
+        } as any)
+        useAgentsSummaryMetricsMock.mockReturnValue({
+            summaryData: {
+                closedTicketsMetric: {
+                    isFetching: false,
+                    isError: false,
+                    data: {value: 2},
+                },
+            },
+        } as any)
+
+        render(
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <SupportPerformanceAgents />
+                </Provider>
+            </MemoryRouter>
+        )
+
+        const button = screen.getByText(/Download data/)
+
+        expect(button).toBeInTheDocument()
     })
 })

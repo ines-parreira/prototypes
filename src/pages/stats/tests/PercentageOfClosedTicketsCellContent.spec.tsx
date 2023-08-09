@@ -4,12 +4,8 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {TicketDimension, TicketMeasure} from 'models/reporting/types'
-import {
-    formatMetricValue,
-    NOT_AVAILABLE_PLACEHOLDER,
-} from 'pages/stats/common/utils'
-import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
+import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
@@ -22,18 +18,15 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metrics')
 jest.mock('hooks/reporting/metricsPerDimension')
-const useClosedTicketsMetricPerAgentMock = assumeMock(
-    useClosedTicketsMetricPerAgent
+const usePercentageOfClosedTicketsMetricPerAgentMock = assumeMock(
+    usePercentageOfClosedTicketsMetricPerAgent
 )
-const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<PercentageOfClosedTicketsCellContent>', () => {
     const agentId = 123
-    const closedTicketsValue = 123
-    const allClosedTicketsValue = 1234
+    const percentageOfClosedTicketsValue = 2.5
 
     const defaultState = {
         stats: initialState,
@@ -42,12 +35,12 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
         },
     } as RootState
 
-    const useClosedTicketsMetricPerAgentMockReturnValue = {
+    const usePercentageOfClosedTicketsMetricPerAgentMockReturnValue = {
         data: {
-            value: closedTicketsValue,
+            value: percentageOfClosedTicketsValue,
             allData: [
                 {
-                    [TicketMeasure.TicketCount]: closedTicketsValue,
+                    [TicketMeasure.TicketCount]: percentageOfClosedTicketsValue,
                     [TicketDimension.AssigneeUserId]: agentId,
                 },
             ],
@@ -56,40 +49,27 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
         isError: false,
     }
 
-    const useClosedTicketsMetricMockReturnValue = {
-        data: {value: allClosedTicketsValue},
-        isFetching: false,
-        isError: false,
-    }
-
-    useClosedTicketsMetricPerAgentMock.mockReturnValue(
-        useClosedTicketsMetricPerAgentMockReturnValue
-    )
-
-    useClosedTicketsMetricMock.mockReturnValue(
-        useClosedTicketsMetricMockReturnValue
+    usePercentageOfClosedTicketsMetricPerAgentMock.mockReturnValue(
+        usePercentageOfClosedTicketsMetricPerAgentMockReturnValue
     )
 
     it('should render value as percentage', () => {
-        const formattedValue = formatMetricValue(
-            (closedTicketsValue / allClosedTicketsValue) * 100,
-            'percent',
-            NOT_AVAILABLE_PLACEHOLDER
-        )
         render(
             <Provider store={mockStore(defaultState)}>
                 <PercentageOfClosedTicketsCellContent agentId={agentId} />
             </Provider>
         )
 
-        expect(screen.getByText(formattedValue)).toBeInTheDocument()
+        expect(
+            screen.getByText(`${percentageOfClosedTicketsValue}%`)
+        ).toBeInTheDocument()
     })
 
     it('should render value as -', () => {
-        useClosedTicketsMetricPerAgentMock.mockReturnValue({
-            ...useClosedTicketsMetricPerAgentMockReturnValue,
+        usePercentageOfClosedTicketsMetricPerAgentMock.mockReturnValue({
+            ...usePercentageOfClosedTicketsMetricPerAgentMockReturnValue,
             data: {
-                ...useClosedTicketsMetricPerAgentMockReturnValue.data,
+                ...usePercentageOfClosedTicketsMetricPerAgentMockReturnValue.data,
                 value: null,
             },
         })
@@ -103,8 +83,8 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
     })
 
     it('should render skeleton when fetching', () => {
-        useClosedTicketsMetricMock.mockReturnValue({
-            ...useClosedTicketsMetricMockReturnValue,
+        usePercentageOfClosedTicketsMetricPerAgentMock.mockReturnValue({
+            ...usePercentageOfClosedTicketsMetricPerAgentMockReturnValue,
             isFetching: true,
         })
 

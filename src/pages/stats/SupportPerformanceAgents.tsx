@@ -22,6 +22,7 @@ import TagsStatsFilter from './TagsStatsFilter'
 import DashboardSection from './DashboardSection'
 import StatsPage from './StatsPage'
 import {LEARN_MORE_URL} from './SupportPerformanceOverview'
+import {DownloadAgentsPerformanceDataButton} from './DownloadAgentsPerformanceDataButton'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
 export const AGENT_PERFORMANCE_SECTION_TITLE = 'Agent Performance'
@@ -32,6 +33,8 @@ export default function SupportPerformanceAgents() {
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
     const hasFilterByTags: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsFilterByTags]
+    const hasExportAgentsPerformance: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsExportAgentsPerformance]
 
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
@@ -105,6 +108,9 @@ export default function SupportPerformanceAgents() {
                             value={pageStatsFilters.period}
                             variant="ghost"
                         />
+                        {hasExportAgentsPerformance && (
+                            <DownloadAgentsPerformanceDataButton />
+                        )}
                     </>
                 }
             >

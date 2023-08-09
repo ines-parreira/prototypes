@@ -16,10 +16,10 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.CustomerSatisfaction]: 'Customer Satisfaction',
     [TableColumn.FirstResponseTime]: 'First Response Time',
     [TableColumn.ResolutionTime]: 'Resolution Time',
-    [TableColumn.MessagesSent]: 'Messages Sent',
-    [TableColumn.PercentageOfClosedTickets]: '% of Closed Tickets',
     [TableColumn.ClosedTickets]: 'Closed Tickets',
+    [TableColumn.PercentageOfClosedTickets]: '% of Closed Tickets',
     [TableColumn.RepliedTickets]: 'Tickets Replied',
+    [TableColumn.MessagesSent]: 'Messages Sent',
 }
 
 export type TooltipData = {title: string; link: string}
