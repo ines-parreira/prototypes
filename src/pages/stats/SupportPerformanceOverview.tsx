@@ -18,7 +18,10 @@ import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import StatsPage from 'pages/stats/StatsPage'
-import {currentAccountHasFeature} from 'state/currentAccount/selectors'
+import {
+    currentAccountHasFeature,
+    getSurveysSettingsJS,
+} from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 import {
     getMessagingIntegrationsStatsFilter,
@@ -120,6 +123,11 @@ export default function SupportPerformanceOverview() {
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
+    const surveySettings = useAppSelector(getSurveysSettingsJS)
+    const hasSatisfactionSurveyEnabledAndConfigured =
+        hasSatisfactionSurveyEnabled &&
+        (surveySettings?.data.send_survey_for_chat ||
+            surveySettings?.data.send_survey_for_email)
     const statsFilters = useAppSelector(getStatsFilters)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
@@ -443,7 +451,7 @@ export default function SupportPerformanceOverview() {
                             tip={
                                 hasPerformanceTips &&
                                 areTipsVisible &&
-                                (hasSatisfactionSurveyEnabled ? (
+                                (hasSatisfactionSurveyEnabledAndConfigured ? (
                                     <PerformanceTip
                                         metric={MetricName.CustomerSatisfaction}
                                         data={customerSatisfactionTrend.data}

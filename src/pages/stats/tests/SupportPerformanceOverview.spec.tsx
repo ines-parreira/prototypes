@@ -17,6 +17,7 @@ import {integrationsState} from 'fixtures/integrations'
 import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import {AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     useClosedTicketsTrend,
@@ -108,7 +109,23 @@ describe('<SupportPerformanceOverview />', () => {
     }
     const tag = tags[0]
     const defaultState = {
-        currentAccount: fromJS(account),
+        currentAccount: fromJS({
+            ...account,
+            settings: [
+                ...account.settings,
+                {
+                    id: 123,
+                    type: AccountSettingType.SatisfactionSurveys,
+                    data: {
+                        send_survey_for_chat: true,
+                        send_survey_for_email: false,
+                        survey_email_html: 'string',
+                        survey_email_text: 'string',
+                        survey_interval: 100,
+                    },
+                },
+            ],
+        }),
         integrations: fromJS(integrationsState),
         stats: fromJS({
             filters: defaultStatsFilters,

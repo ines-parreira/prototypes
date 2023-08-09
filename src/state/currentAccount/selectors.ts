@@ -9,6 +9,7 @@ import {getTimezone} from '../currentUser/selectors'
 import {
     AccountFeature,
     AccountSettingBusinessHours,
+    AccountSettingSatisfactionSurvey,
     AccountSettingType,
     ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
@@ -105,6 +106,15 @@ const createSettingByTypeSelector = (type: string) => {
 export const getSurveysSettings = createSettingByTypeSelector(
     AccountSettingType.SatisfactionSurveys
 )
+
+export const getSurveysSettingsJS = createSelector(
+    getSurveysSettings,
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingSatisfactionSurvey)
+)
+
 export const DEPRECATED_getBusinessHoursSettings = createSettingByTypeSelector(
     AccountSettingType.BusinessHours
 )

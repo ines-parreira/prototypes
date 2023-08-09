@@ -259,6 +259,32 @@ describe('current account selectors', () => {
         })
     })
 
+    describe('getSurveysSettingsJS', () => {
+        it('should return the setting', () => {
+            expect(
+                selectors.getSurveysSettingsJS(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        fromJS([{type: AccountSettingType.SatisfactionSurveys}])
+                    )
+                )
+            ).toEqual({type: AccountSettingType.SatisfactionSurveys})
+        })
+
+        it('should return undefined when there is no setting', () => {
+            expect(
+                selectors.getSurveysSettingsJS(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        fromJS([{type: 'unknown'}])
+                    )
+                )
+            ).toBe(undefined)
+        })
+    })
+
     describe('getBusinessHoursSettings', () => {
         it('should return the setting', () => {
             expect(
