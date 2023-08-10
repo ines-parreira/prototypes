@@ -43,4 +43,5 @@ export enum FeatureFlagKey {
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     AAOPreviewMode = 'aao-preview-mode',
+    ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
 }

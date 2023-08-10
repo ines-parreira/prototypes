@@ -1,7 +1,9 @@
-import React from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {usePrevious} from 'react-use'
 
 import {deleteIntegration} from 'state/integrations/actions'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -15,15 +17,18 @@ import NavigatedSuccessModal, {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import {Tab} from 'pages/integrations/integration/Integration'
-
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
 import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
-
 import css from './GorgiasChatIntegrationInstall.less'
+import InstallationStep from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
+import InstallationTab from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationTab'
 
 type Props = {
     integration: Map<any, any>
@@ -41,22 +46,133 @@ const GorgiasChatIntegrationInstall = ({
 }: Props) => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const {installed} = useAppSelector(getChatInstallationStatus)
-    const applicationId = integration.getIn(['meta', 'app_id'])
+    const applicationId: string = integration.getIn(['meta', 'app_id'])
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
+        ? Number(integration.getIn(['meta', 'shop_integration_id']))
+        : undefined
     const shopifyIntegrationIds: List<number> = integration.getIn(
         ['meta', 'shopify_integration_ids'],
         fromJS([])
     )
 
-    const storeIntegration = storeIntegrations.find(
-        (storeIntegration) => storeIntegration.id === shopIntegrationId
-    )
+    const storeIntegration = shopIntegrationId
+        ? storeIntegrations.find(
+              (storeIntegration) => storeIntegration.id === shopIntegrationId
+          )
+        : undefined
 
     const isConnected = Boolean(storeIntegration)
     const isConnectedToShopify =
         storeIntegration?.type === IntegrationType.Shopify
-    const isOneClickInstallation =
-        shopifyIntegrationIds.includes(shopIntegrationId)
+    const isOneClickInstallation = shopIntegrationId
+        ? shopifyIntegrationIds.includes(shopIntegrationId)
+        : undefined
+
+    const hasShopifyScriptTagScope = useMemo(
+        () =>
+            ['read_script_tags', 'write_script_tags'].every((scope) => {
+                if (
+                    !storeIntegration ||
+                    storeIntegration?.type !== IntegrationType.Shopify
+                ) {
+                    return []
+                }
+
+                return storeIntegration?.meta.oauth.scope?.includes(scope)
+            }),
+        [storeIntegration]
+    )
+    const hasScriptTagFeatureFlagOn: boolean =
+        useFlags()[FeatureFlagKey.ShopifyIntegrationScopeScriptTag] ?? false
+    const [showScriptTagMigrateNotice, setShowScriptTagMigrateNotice] =
+        useState(false)
+    const oneClickInstallationDate: string =
+        integration.getIn(['meta', 'one_click_installation_datetime']) ??
+        undefined
+    const oneClickUninstallationDate: string =
+        integration.getIn(['meta', 'one_click_uninstallation_datetime']) ??
+        undefined
+    const oneClickInstallationMethod: string =
+        integration.getIn(['meta', 'one_click_installation_method']) ??
+        undefined
+    const fiveDays = 1000 * 60 * 60 * 24 * 5
+    // We are missing the oneClickInstallation metadata during the PUT (create) request.
+    const justCreated: boolean =
+        new Date().getTime() -
+            new Date(integration.get('created_datetime')).getTime() <
+        1000 * 60 * 60
+    const previousIsOneClickInstallation = usePrevious(isOneClickInstallation)
+    // We are storing the deducted new installation method dynamically, because
+    // the integration data does not get updated immediately upon an 1-click
+    // installation. We need this to dynamically hide the migration banner.
+    const [oneClickInstallationMethodNew, setOneClickInstallationMethodNew] =
+        useState<string>()
+
+    useEffect(() => {
+        if (
+            previousIsOneClickInstallation === false &&
+            isOneClickInstallation
+        ) {
+            if (hasShopifyScriptTagScope && hasScriptTagFeatureFlagOn) {
+                setOneClickInstallationMethodNew('script_tag')
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOneClickInstallation])
+
+    const activeOrRecentOneClickUsage = useMemo(() => {
+        // `one_click_installation_datetime` can be null despite oneClick installation to true,
+        // because we only introduced this datetime tracking in the past months.
+        if (isOneClickInstallation) {
+            return true
+        }
+
+        return [oneClickInstallationDate, oneClickUninstallationDate].some(
+            (clickDate) => {
+                if (clickDate) {
+                    const diff =
+                        new Date().getTime() - new Date(clickDate).getTime()
+                    return diff < fiveDays
+                }
+                return false
+            }
+        )
+    }, [
+        fiveDays,
+        isOneClickInstallation,
+        oneClickInstallationDate,
+        oneClickUninstallationDate,
+    ])
+
+    useEffect(() => {
+        // Feature flag early return.
+        if (!hasScriptTagFeatureFlagOn) {
+            setShowScriptTagMigrateNotice(false)
+            return
+        }
+
+        // Quick workaround for just created integrations.
+        if (justCreated) {
+            setShowScriptTagMigrateNotice(
+                isConnectedToShopify &&
+                    activeOrRecentOneClickUsage &&
+                    !hasShopifyScriptTagScope
+            )
+            return
+        }
+
+        const installationMethod = oneClickInstallationMethodNew
+            ? oneClickInstallationMethodNew
+            : oneClickInstallationMethod
+
+        setShowScriptTagMigrateNotice(
+            isConnectedToShopify &&
+                activeOrRecentOneClickUsage &&
+                (!hasShopifyScriptTagScope ||
+                    installationMethod !== 'script_tag')
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [oneClickInstallationMethod, oneClickInstallationMethodNew])
 
     return (
         <>
@@ -109,11 +225,49 @@ const GorgiasChatIntegrationInstall = ({
                                 Add-on features in chat and to enable 1-click
                                 installation for Shopify stores.
                             </div>
+                            {showScriptTagMigrateNotice && (
+                                <Alert type={AlertType.Info} className="mb-3">
+                                    <p>
+                                        We've upgraded our Shopify 1-click
+                                        install feature for better stability, as
+                                        it's now theme-independent. Follow the
+                                        steps below to migrate:
+                                    </p>
+                                    <InstallationTab>
+                                        <InstallationStep index={1}>
+                                            Go to the{' '}
+                                            <Link
+                                                to={`/app/settings/integrations/shopify/${
+                                                    shopIntegrationId ?? ''
+                                                }`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                settings page of your Shopify
+                                                integration
+                                            </Link>{' '}
+                                            and click on{' '}
+                                            <i>"Update App Permissions"</i>.{' '}
+                                        </InstallationStep>
+                                        <InstallationStep index={2}>
+                                            1-click uninstall and 1-click
+                                            install the chat again.
+                                        </InstallationStep>
+                                    </InstallationTab>
+                                    <br></br>
+                                    <p>
+                                        This notice will vanish once the
+                                        migration is entirely completed.
+                                    </p>
+                                </Alert>
+                            )}
                             <GorgiasChatIntegrationConnectStore
                                 integration={integration}
                                 storeIntegration={storeIntegration}
                                 storeIntegrations={storeIntegrations}
-                                isOneClickInstallation={isOneClickInstallation}
+                                isOneClickInstallation={
+                                    isOneClickInstallation ?? false
+                                }
                             />
                         </div>
 
@@ -130,7 +284,9 @@ const GorgiasChatIntegrationInstall = ({
                                             updateOrCreateIntegration
                                         }
                                         isConnected={isConnected}
-                                        isInstalled={isOneClickInstallation}
+                                        isInstalled={
+                                            isOneClickInstallation ?? false
+                                        }
                                     />
                                 )}
                                 <GorgiasChatIntegrationManualInstallationCard
