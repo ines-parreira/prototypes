@@ -17,4 +17,5 @@ export interface ChatCampaign {
     attachments?: CampaignAttachment[]
     triggers: CampaignTrigger[]
     deactivated_datetime?: string
+    created_datetime?: string | null
 }

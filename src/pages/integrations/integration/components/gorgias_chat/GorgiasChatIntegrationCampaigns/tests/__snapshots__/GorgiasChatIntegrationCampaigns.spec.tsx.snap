@@ -307,6 +307,28 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
           </td>
           <td
             class="wrapper normal"
+          >
+            <div
+              class="content"
+            >
+              <div
+                class="cell"
+              >
+                <span
+                  class="title"
+                >
+                  Creation date
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
             style="width: 110px;"
           >
             <div
@@ -381,6 +403,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                   </b>
                 </div>
               </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent"
+            >
+              <div />
             </div>
           </td>
           <td
@@ -469,6 +500,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                   </b>
                 </div>
               </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent"
+            >
+              <div />
             </div>
           </td>
           <td
@@ -821,6 +861,28 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
           </td>
           <td
             class="wrapper normal"
+          >
+            <div
+              class="content"
+            >
+              <div
+                class="cell"
+              >
+                <span
+                  class="title"
+                >
+                  Creation date
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
             style="width: 110px;"
           >
             <div
@@ -895,6 +957,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                   </b>
                 </div>
               </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent"
+            >
+              <div />
             </div>
           </td>
           <td
@@ -983,6 +1054,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                   </b>
                 </div>
               </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent"
+            >
+              <div />
             </div>
           </td>
           <td
@@ -1573,6 +1653,28 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
           </td>
           <td
             class="wrapper normal"
+          >
+            <div
+              class="content"
+            >
+              <div
+                class="cell"
+              >
+                <span
+                  class="title"
+                >
+                  Creation date
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
             style="width: 110px;"
           >
             <div
@@ -1647,6 +1749,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
                   </b>
                 </div>
               </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent"
+            >
+              <div />
             </div>
           </td>
           <td
@@ -1735,6 +1846,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
                   </b>
                 </div>
               </a>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent"
+            >
+              <div />
             </div>
           </td>
           <td

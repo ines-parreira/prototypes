@@ -346,6 +346,7 @@ export const AdvancedCampaignDetails = memo(
                 if (isUpdate) {
                     await updateCampaign(fromJS(payload), integration)
                 } else {
+                    payload['created_datetime'] = new Date().toISOString()
                     await createCampaign(fromJS(payload), integration)
                 }
             } finally {

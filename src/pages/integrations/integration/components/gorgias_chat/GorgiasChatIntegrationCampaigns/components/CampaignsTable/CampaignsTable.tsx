@@ -57,6 +57,12 @@ export const CampaignsTable = ({
                 `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
                 `${integration.get('id') as number}/campaigns/${campaign.id}`
 
+            const creationDate = campaign?.created_datetime
+                ? new Date(campaign.created_datetime).toLocaleDateString(
+                      'en-US'
+                  )
+                : ''
+
             return (
                 <TableBodyRow key={index} className={css.tableRow}>
                     <BodyCell style={{width: 88}}>
@@ -87,6 +93,9 @@ export const CampaignsTable = ({
                             </Link>
                         </BodyCell>
                     </CampaignPreviewPopover>
+                    <BodyCell>
+                        <div>{creationDate}</div>
+                    </BodyCell>
                     <BodyCell style={{width: 110}}>
                         <CampaignToolsCell
                             campaign={campaign}
@@ -122,6 +131,7 @@ export const CampaignsTable = ({
                 <TableHead>
                     <HeaderCellProperty title="" style={{width: 88}} />
                     <HeaderCellProperty title="Campaign name" />
+                    <HeaderCellProperty title="Creation date" />
                     <HeaderCellProperty title="" style={{width: 110}} />
                 </TableHead>
                 <TableBody>{renderTableBody()}</TableBody>
