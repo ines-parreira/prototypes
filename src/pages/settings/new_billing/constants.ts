@@ -13,8 +13,6 @@ export const INTERVAL = {
     Year: 'year',
 }
 
-export const BILLABLE_TICKETS_URL =
-    'https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#automation-add-on-tickets'
 export const PRICING_DETAILS_URL = 'https://www.gorgias.com/pricing'
 export const BILLING_SALES_TAX_URL =
     'https://www.gorgias.com/pricing/billing-sales-tax'
@@ -27,7 +25,7 @@ export const PRODUCT_INFO = {
         counter: 'tickets',
         perTicket: 'per ticket',
         tooltip: 'Tickets that have a response from an agent or a rule.',
-        tooltipLink: BILLABLE_TICKETS_URL,
+        tooltipLink: 'https://link.gorgias.com/vw1',
         bannerLink: '/app/settings',
     },
     [ProductType.Automation]: {
@@ -37,7 +35,7 @@ export const PRODUCT_INFO = {
         perTicket: 'per automated interaction',
         tooltip:
             'An interaction is automated when your customer solves their request without human intervention using a feature from our automation add-on.',
-        tooltipLink: BILLABLE_TICKETS_URL,
+        tooltipLink: 'https://link.gorgias.com/5jnkqn7',
         bannerLink: '/app/automation',
     },
     [ProductType.Voice]: {
@@ -47,7 +45,7 @@ export const PRODUCT_INFO = {
         perTicket: 'per voice ticket',
         tooltip:
             'Tickets where at least one phone call takes place between your customer and your team.',
-        tooltipLink: BILLABLE_TICKETS_URL,
+        tooltipLink: 'https://link.gorgias.com/4j9',
         bannerLink: 'https://docs.gorgias.com/en-US/set-up-voice-81798',
     },
     [ProductType.SMS]: {
@@ -57,7 +55,7 @@ export const PRODUCT_INFO = {
         perTicket: 'per SMS ticket',
         tooltip:
             'Tickets where at least one SMS message has been sent from an agent or a rule.',
-        tooltipLink: BILLABLE_TICKETS_URL,
+        tooltipLink: 'https://link.gorgias.com/bfde15',
         bannerLink: 'https://docs.gorgias.com/en-US/set-up-sms-81919',
     },
 }
