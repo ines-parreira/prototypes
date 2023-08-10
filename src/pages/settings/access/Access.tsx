@@ -265,7 +265,7 @@ export const AccessContainer = (props: Props) => {
                                 )}
                                 help={
                                     !domainError
-                                        ? 'Wildcards allowed (e.g. *domain.com)'
+                                        ? 'Wildcards allowed (e.g. *.domain.com)'
                                         : null
                                 }
                                 placeholder="domain.com, mydomain.com"

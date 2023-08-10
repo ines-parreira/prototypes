@@ -172,7 +172,7 @@ exports[`<Access/> should render properly 1`] = `
               <small
                 class="form-text text-muted"
               >
-                Wildcards allowed (e.g. *domain.com)
+                Wildcards allowed (e.g. *.domain.com)
               </small>
             </div>
           </div>
@@ -401,7 +401,7 @@ gorgias.io
               <small
                 class="form-text text-muted"
               >
-                Wildcards allowed (e.g. *domain.com)
+                Wildcards allowed (e.g. *.domain.com)
               </small>
             </div>
           </div>
