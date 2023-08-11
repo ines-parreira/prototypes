@@ -25,6 +25,7 @@ export enum FeatureFlagKey {
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',
     HelpCenterMigrationConfig = 'migration-config',
+    ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     MacroForwardByEmail = 'macro-forward-by-email',

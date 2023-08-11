@@ -2,10 +2,10 @@ import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 
-import * as viewsConfig from 'config/views'
-import Search from 'pages/common/components/Search'
-import Table from 'pages/common/components/ViewTable/Table'
-import {searchTickets} from 'state/mergeTickets/actions'
+import Search from '../Search'
+import Table from '../ViewTable/Table'
+import {searchTickets} from '../../../../state/mergeTickets/actions'
+import * as viewsConfig from '../../../../config/views'
 
 import css from './SelectTargetTicket.less'
 
@@ -34,14 +34,16 @@ class SelectTargetTicket extends React.Component<Props, State> {
         this.setState({listIsLoading: true}, () => this._search())
     }
 
-    _search = () => {
-        const {query} = this.state
+    _search = (direction: string | null = null) => {
+        const {query, navigation} = this.state
 
         this.props
             .search(
                 query,
                 this.props.sourceTicket.get('id') as number,
-                query ? null : this.props.customerId
+                query ? null : this.props.customerId,
+                direction,
+                navigation
             )
             .then((data) => {
                 this.setState({
@@ -69,12 +71,12 @@ class SelectTargetTicket extends React.Component<Props, State> {
         )
     }
 
-    _onPageChange = () => {
+    _onPageChange = (direction: string | null = null) => {
         this.setState(
             {
                 listIsLoading: true,
             },
-            () => this._search()
+            () => this._search(direction)
         )
     }
 

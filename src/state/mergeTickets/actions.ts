@@ -1,11 +1,15 @@
 import {AxiosError} from 'axios'
+import {Map} from 'immutable'
 import {isEmpty} from 'lodash'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {defaultMergeTicketsView} from 'config/views'
+import {BASE_VIEW_ID} from 'constants/view'
 import client from 'models/api/resources'
-import {OrderDirection} from 'models/api/types'
+import {ApiListResponsePagination, OrderDirection} from 'models/api/types'
 import {searchTickets as modelSearchTickets} from 'models/ticket/resources'
 import {Ticket, TicketSearchSortableProperties} from 'models/ticket/types'
+import {MoveIndexDirection} from 'pages/common/utils/keyboard'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
@@ -20,7 +24,9 @@ export const LIMIT = 5
 export function searchTickets(
     searchQuery: string,
     sourceTicketId: number,
-    customerId: Maybe<number> = null
+    customerId: Maybe<number> = null,
+    direction: Maybe<string> = null,
+    navigation: Map<any, any>
 ) {
     return async (
         dispatch: StoreDispatch
@@ -30,6 +36,17 @@ export function searchTickets(
             searchQuery,
             customerId
         )
+        let url = `/api/views/${BASE_VIEW_ID}/items/`
+
+        if (!navigation.isEmpty()) {
+            if (direction === MoveIndexDirection.Next) {
+                url = navigation.get('next_items')
+            } else if (direction === MoveIndexDirection.Prev) {
+                url = navigation.get('prev_items')
+            }
+        }
+
+        let promise
 
         const launchDarklyClient = getLDClient()
         try {
@@ -40,12 +57,24 @@ export function searchTickets(
             }
         }
 
-        const promise = modelSearchTickets({
-            search: (view.get('search') as string) || '',
-            filters: view.get('filters') as string,
-            limit: LIMIT,
-            orderBy: `${TicketSearchSortableProperties.CreatedDatetime}:${OrderDirection.Desc}`,
-        })
+        if (
+            launchDarklyClient.variation(
+                FeatureFlagKey.ElasticsearchTicketSearch
+            )
+        ) {
+            promise = modelSearchTickets({
+                search: (view.get('search') as string) || '',
+                filters: view.get('filters') as string,
+                limit: LIMIT,
+                orderBy: `${TicketSearchSortableProperties.CreatedDatetime}:${OrderDirection.Desc}`,
+            })
+        } else {
+            promise = client.put<ApiListResponsePagination<Ticket[]>>(
+                url,
+                {view},
+                {params: {limit: LIMIT}}
+            )
+        }
 
         try {
             const resp = await promise

@@ -1,14 +1,18 @@
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import {fromJS} from 'immutable'
 
-import {BASE_VIEW_ID} from 'constants/view'
 import {searchTickets as modelSearchTickets} from 'models/ticket/resources'
-import client from 'models/api/resources'
-import {Ticket} from 'models/ticket/types'
-import {StoreDispatch} from 'state/types'
 import {getLDClient} from 'utils/launchDarkly'
-
+import {
+    BASE_VIEW_ID,
+    NEXT_VIEW_NAV_DIRECTION,
+    PREV_VIEW_NAV_DIRECTION,
+} from '../../../constants/view'
+import client from '../../../models/api/resources'
+import {Ticket} from '../../../models/ticket/types'
+import {StoreDispatch} from '../../types'
 import {mergeTickets, searchTickets} from '../actions'
 
 jest.mock('models/ticket/resources', () => ({
@@ -50,14 +54,17 @@ describe('mergeTickets actions', () => {
         it('should use the elasticsearch function when the feature flag is enabled', () => {
             mockModelSearchTickets.mockReturnValue({})
             variation.mockReturnValue(true)
-            return store.dispatch(searchTickets('', 1, 118)).then(() => {
-                expect(mockModelSearchTickets).toHaveBeenCalledWith({
-                    filters: 'neq(ticket.id, 1) && eq(ticket.customer.id, 118)',
-                    limit: 5,
-                    search: '',
-                    orderBy: 'created_datetime:desc',
+            return store
+                .dispatch(searchTickets('', 1, 118, null, fromJS({})))
+                .then(() => {
+                    expect(mockModelSearchTickets).toHaveBeenCalledWith({
+                        filters:
+                            'neq(ticket.id, 1) && eq(ticket.customer.id, 118)',
+                        limit: 5,
+                        search: '',
+                        orderBy: 'created_datetime:desc',
+                    })
                 })
-            })
         })
 
         it('should search the tickets of the customer because we passed a customer id', () => {
@@ -68,9 +75,11 @@ describe('mergeTickets actions', () => {
                     return [200, [1, 2, 3]]
                 })
 
-            return store.dispatch(searchTickets('', 1, 118)).then((data) => {
-                expect(data).toMatchSnapshot()
-            })
+            return store
+                .dispatch(searchTickets('', 1, 118, null, fromJS({})))
+                .then((data) => {
+                    expect(data).toMatchSnapshot()
+                })
         })
 
         it('should search the tickets using the search query because we did not pass a customer id', () => {
@@ -82,7 +91,7 @@ describe('mergeTickets actions', () => {
                 })
 
             return store
-                .dispatch(searchTickets('foo', 1, null))
+                .dispatch(searchTickets('foo', 1, null, null, fromJS({})))
                 .then((data) => {
                     expect(data).toMatchSnapshot()
                 })
@@ -93,12 +102,14 @@ describe('mergeTickets actions', () => {
                 .onPut(`/api/views/${BASE_VIEW_ID}/items/`)
                 .reply(500, {error: 'this does not work'})
 
-            return store.dispatch(searchTickets('foo', 1, null)).then(
-                () => null,
-                () => {
-                    expect(store.getActions()).toMatchSnapshot()
-                }
-            )
+            return store
+                .dispatch(searchTickets('foo', 1, null, null, fromJS({})))
+                .then(
+                    () => null,
+                    () => {
+                        expect(store.getActions()).toMatchSnapshot()
+                    }
+                )
         })
 
         it('should search the tickets using the next url because we passed direction = next', () => {
@@ -108,9 +119,19 @@ describe('mergeTickets actions', () => {
                 return [200, [1, 2, 3]]
             })
 
-            return store.dispatch(searchTickets('', 1, null)).then((data) => {
-                expect(data).toMatchSnapshot()
-            })
+            return store
+                .dispatch(
+                    searchTickets(
+                        '',
+                        1,
+                        null,
+                        NEXT_VIEW_NAV_DIRECTION,
+                        fromJS({next_items: url})
+                    )
+                )
+                .then((data) => {
+                    expect(data).toMatchSnapshot()
+                })
         })
 
         it('should search the tickets using the previous url because we passed direction = prev', () => {
@@ -120,9 +141,19 @@ describe('mergeTickets actions', () => {
                 return [200, [1, 2, 3]]
             })
 
-            return store.dispatch(searchTickets('', 1, null)).then((data) => {
-                expect(data).toMatchSnapshot()
-            })
+            return store
+                .dispatch(
+                    searchTickets(
+                        '',
+                        1,
+                        null,
+                        PREV_VIEW_NAV_DIRECTION,
+                        fromJS({prev_items: url})
+                    )
+                )
+                .then((data) => {
+                    expect(data).toMatchSnapshot()
+                })
         })
     })
 

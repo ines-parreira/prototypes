@@ -13,6 +13,7 @@ import {useLocation} from 'react-router-dom'
 import classnames from 'classnames'
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 import _isEmpty from 'lodash/isEmpty'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import axios, {CancelToken} from 'axios'
 import {VirtuosoHandle} from 'react-virtuoso'
 
@@ -28,8 +29,10 @@ import Search from 'pages/common/components/Search'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {ViewType} from 'models/view/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {searchTickets} from 'models/ticket/resources'
-import {CursorMeta} from 'models/api/types'
+import client from 'models/api/resources'
+import {ApiListResponsePagination, CursorMeta} from 'models/api/types'
 import {Ticket} from 'models/ticket/types'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -91,6 +94,9 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const virtuosoRef = useRef<VirtuosoHandle>(null)
     const modalBodyRef = useRef<HTMLDivElement>(null)
     const spotlightSearchInputRef = useRef<HTMLInputElement>(null)
+
+    const isESTicketSearchEnabled =
+        useFlags()[FeatureFlagKey.ElasticsearchTicketSearch]
 
     const [searchQuery, setSearchQuery] = useState<string>()
     const [lastSearchQueries, setLastSearchQueries] = useState<{
@@ -264,7 +270,10 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 let promise
                 let searchEngine = SearchEngine.PG
 
-                if (viewType === ViewType.TicketList) {
+                if (
+                    isESTicketSearchEnabled &&
+                    viewType === ViewType.TicketList
+                ) {
                     promise = searchTickets({
                         search: searchTerm,
                         filters: '',
@@ -272,7 +281,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                         cancelToken,
                     })
                     searchEngine = SearchEngine.ES
-                } else {
+                } else if (viewType === ViewType.CustomerList) {
                     promise = searchCustomers({
                         search: searchTerm,
                         orderBy: '_score:desc',
@@ -280,6 +289,20 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                         cancelToken,
                     })
                     searchEngine = SearchEngine.ES
+                } else {
+                    const url = cursor || `/api/views/${0}/items/`
+                    promise = client.put<
+                        ApiListResponsePagination<
+                            Ticket[] | Customer[],
+                            OldSearchPaginationMeta
+                        >
+                    >(
+                        url,
+                        {
+                            view: {search: searchTerm, type: viewType},
+                        },
+                        {cancelToken}
+                    )
                 }
 
                 try {
@@ -328,7 +351,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     }
                 }
             },
-        [searchRank, dispatch, lastSearchQueries]
+        [searchRank, dispatch, isESTicketSearchEnabled, lastSearchQueries]
     )
 
     const [cancellableFetchSearchItems, cancelSearch] = useCancellableRequest(

@@ -428,6 +428,9 @@ export function fetchViewItems(
         )
 
         if (
+            launchDarklyClient.variation(
+                FeatureFlagKey.ElasticsearchTicketSearch
+            ) &&
             activeView.get('search') != null &&
             activeView.get('type') === ViewType.TicketList
         ) {

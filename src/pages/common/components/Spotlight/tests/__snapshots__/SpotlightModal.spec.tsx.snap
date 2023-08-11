@@ -169,7 +169,7 @@ exports[`<SpotlightModal/> should fetch items for the search term on previous ta
 ]
 `;
 
-exports[`<SpotlightModal/> should fetch tickets on enter keypress from the search endpoint 1`] = `
+exports[`<SpotlightModal/> should fetch tickets on enter keypress from the new search endpoint 1`] = `
 [
   {
     "cancelToken": CancelToken {
@@ -203,10 +203,41 @@ exports[`<SpotlightModal/> should fetch tickets on enter keypress from the searc
 ]
 `;
 
+exports[`<SpotlightModal/> should fetch tickets on enter keypress from the old search endpoint 1`] = `
+[
+  {
+    "cancelToken": CancelToken {
+      "promise": Promise {},
+    },
+    "data": "{"view":{"search":"foo2","type":"ticket-list"}}",
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "put",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "url": "/api/views/0/items/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+]
+`;
+
 exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
 <div
-  aria-describedby="modal-mocked-desc"
-  aria-labelledby="modal-mocked-title"
+  aria-describedby="modal-1-desc"
+  aria-labelledby="modal-1-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -234,8 +265,8 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
           </span>
           <input
             class="input"
-            id="input-text-mocked"
-            name="input-text-mocked"
+            id="input-text-2"
+            name="input-text-2"
             placeholder="Search..."
             type="text"
             value=""
@@ -276,7 +307,7 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-mocked-desc"
+        id="modal-1-desc"
       >
         <div
           class="wrapper"
@@ -347,8 +378,8 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
 
 exports[`<SpotlightModal/> should reset search after closing and end previous searchRank scenario 1`] = `
 <div
-  aria-describedby="modal-mocked-desc"
-  aria-labelledby="modal-mocked-title"
+  aria-describedby="modal-63-desc"
+  aria-labelledby="modal-63-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -376,8 +407,8 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
           </span>
           <input
             class="input"
-            id="input-text-mocked"
-            name="input-text-mocked"
+            id="input-text-64"
+            name="input-text-64"
             placeholder="Search..."
             type="text"
             value=""
@@ -418,7 +449,7 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-mocked-desc"
+        id="modal-63-desc"
       >
         <div
           class="wrapper"
@@ -489,8 +520,8 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
 
 exports[`<SpotlightModal/> should set customers tab on click 1`] = `
 <div
-  aria-describedby="modal-mocked-desc"
-  aria-labelledby="modal-mocked-title"
+  aria-describedby="modal-3-desc"
+  aria-labelledby="modal-3-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -518,8 +549,8 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
           </span>
           <input
             class="input"
-            id="input-text-mocked"
-            name="input-text-mocked"
+            id="input-text-4"
+            name="input-text-4"
             placeholder="Search..."
             type="text"
             value=""
@@ -560,7 +591,7 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-mocked-desc"
+        id="modal-3-desc"
       >
         <div
           class="wrapper"
@@ -631,8 +662,8 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
 
 exports[`<SpotlightModal/> should show SpotlightLoader component while results are fetched 1`] = `
 <div
-  aria-describedby="modal-mocked-desc"
-  aria-labelledby="modal-mocked-title"
+  aria-describedby="modal-45-desc"
+  aria-labelledby="modal-45-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -660,8 +691,8 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
           </span>
           <input
             class="input"
-            id="input-text-mocked"
-            name="input-text-mocked"
+            id="input-text-46"
+            name="input-text-46"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -702,7 +733,7 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-mocked-desc"
+        id="modal-45-desc"
       >
         <div>
           SpotlightLoader
@@ -757,8 +788,8 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
 
 exports[`<SpotlightModal/> should show SpotlightNoResults component when no results are available  1`] = `
 <div
-  aria-describedby="modal-mocked-desc"
-  aria-labelledby="modal-mocked-title"
+  aria-describedby="modal-47-desc"
+  aria-labelledby="modal-47-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -786,8 +817,8 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
           </span>
           <input
             class="input"
-            id="input-text-mocked"
-            name="input-text-mocked"
+            id="input-text-48"
+            name="input-text-48"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -828,7 +859,7 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-mocked-desc"
+        id="modal-47-desc"
       >
         <div
           class="wrapper"
