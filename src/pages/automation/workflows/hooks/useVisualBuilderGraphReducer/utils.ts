@@ -195,9 +195,10 @@ export const buildOrderSelectionNode: (
         type: 'order_selection',
         data: {
             wfConfigurationRef: {
-                wfConfigurationMessagesStepId: id,
-                wfConfigurationShopperAuthenticationStepId: ulid(),
+                wfConfigurationMessagesStepId: ulid(),
+                wfConfigurationShopperAuthenticationStepId: id,
                 wfConfigurationOrderSelectionWorkflowCallStepId: ulid(),
+                wfConfigurationNoOrdersWorkflowCallStepId: ulid(),
             },
             content: {
                 html: '',

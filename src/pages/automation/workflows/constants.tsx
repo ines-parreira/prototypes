@@ -53,6 +53,7 @@ export const iconByVisualBuilderNodeType: Record<
 
 export const WAS_THIS_HELPFUL_WORKFLOW_ID = '01GWPRH2G05DYYFBB1GNVNRB19'
 export const ORDER_SELECTION_WORKFLOW_ID = '01H6XMB9DXNERSDSMPAM84JJ6J'
+export const NO_ORDERS_WORKFLOW_ID = '01H7FR7QJ4YG1QWXTXNJ5WV1EH'
 
 export const WORKFLOW_TEMPLATES: Record<
     WorkflowTemplate['slug'],

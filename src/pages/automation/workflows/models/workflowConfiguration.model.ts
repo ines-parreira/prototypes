@@ -1,5 +1,6 @@
 import {ulid} from 'ulidx'
 import {
+    NO_ORDERS_WORKFLOW_ID,
     ORDER_SELECTION_WORKFLOW_ID,
     WAS_THIS_HELPFUL_WORKFLOW_ID,
 } from '../constants'
@@ -23,6 +24,7 @@ import {
     MessageContent,
     WorkflowConfiguration,
     WorkflowStep,
+    WorkflowStepMessages,
     WorkflowTransition,
 } from './workflowConfiguration.types'
 
@@ -169,12 +171,28 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             nodeIdByStepId[nextSteps[0].id] = n.id
             nodes.push(n)
         } else if (
-            step.kind === 'messages' &&
-            nextSteps.length === 1 &&
-            nextSteps[0].kind === 'shopper-authentication'
+            step.kind === 'shopper-authentication' &&
+            nextSteps.length === 2
         ) {
+            const noOrdersWorkflowCallStep = nextSteps.find(
+                (s) =>
+                    s.kind === 'workflow_call' &&
+                    s.settings.configuration_id === NO_ORDERS_WORKFLOW_ID
+            )
+            const messagesStep = nextSteps.find(
+                (s): s is WorkflowStepMessages => s.kind === 'messages'
+            )
+
+            if (!noOrdersWorkflowCallStep || !messagesStep) {
+                throw new Error(
+                    `order_selection node expects a "branching" shopper-authentication step:
+                    - workflow_call (no orders)
+                    - message -> workflow_call (order selection)`
+                )
+            }
+
             const orderSelectionWorkflowCallStepId = c.transitions.find(
-                (t) => t.from_step_id === nextSteps[0].id
+                (t) => t.from_step_id === messagesStep.id
             )?.to_step_id
             const orderSelectionWorkflowCallStep = c.steps.find(
                 (s) =>
@@ -185,31 +203,37 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
 
             if (!orderSelectionWorkflowCallStep) {
                 throw new Error(
-                    'order_selection node expects a chain of message -> shopper-authentication -> workflow_call steps'
+                    `order_selection node expects a "branching" shopper-authentication step:
+                    - workflow_call (no orders)
+                    - message -> workflow_call (order selection)`
                 )
             }
 
-            // group message step followed by a shopper-authentication & workflow_call steps into an order_selection node
+            // group branching shopper-authentication step (1) workflow-call, (2) message -> workflow_call steps into an order_selection node
             const n: OrderSelectionNodeType = {
                 ...buildNodeCommonProperties(),
                 id: step.id,
                 type: 'order_selection',
                 data: {
                     content: injectTkeysInContentIfNotExist(
-                        step.settings.messages[0].content
+                        messagesStep.settings.messages[0].content
                     ),
                     wfConfigurationRef: {
-                        wfConfigurationMessagesStepId: step.id,
-                        wfConfigurationShopperAuthenticationStepId:
-                            nextSteps[0].id,
+                        wfConfigurationMessagesStepId: messagesStep.id,
+                        wfConfigurationShopperAuthenticationStepId: step.id,
                         wfConfigurationOrderSelectionWorkflowCallStepId:
                             orderSelectionWorkflowCallStep.id,
+                        wfConfigurationNoOrdersWorkflowCallStepId:
+                            noOrdersWorkflowCallStep.id,
                     },
-                    integrationId: nextSteps[0].settings.integration_id,
+                    integrationId: step.settings.integration_id,
                 },
             }
             nodeIdByStepId[orderSelectionWorkflowCallStep.id] = n.id
             nodes.push(n)
+        } else if (previousStep?.kind === 'shopper-authentication') {
+            // already processed as part of the order_selection node
+            return
         } else if (step.kind === 'messages') {
             // single message step will become an automated_answer node
             const n: AutomatedMessageNodeType = {

@@ -1,3 +1,5 @@
+import type {RulesLogic} from 'json-logic-js'
+
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
 export type MessageContent = {
@@ -83,6 +85,7 @@ export type WorkflowTransition = {
         id: string
         kind: 'choices'
     }>
+    conditions?: RulesLogic
 }
 
 export const supportedLanguages = [

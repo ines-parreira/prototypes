@@ -80,6 +80,7 @@ export type OrderSelectionNodeType = Node<
             wfConfigurationMessagesStepId: string
             wfConfigurationShopperAuthenticationStepId: string
             wfConfigurationOrderSelectionWorkflowCallStepId: string
+            wfConfigurationNoOrdersWorkflowCallStepId: string
         }
         content: MessageContent
         integrationId: number
