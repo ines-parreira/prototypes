@@ -32,6 +32,15 @@ export async function saveSocialLinks(
             })
         }
 
+        // Case when we updated value but value was invalid and then removed it
+        if (
+            socialLink.updated_datetime === 'now' &&
+            socialLink.id < 0 &&
+            socialLink.value === ''
+        ) {
+            return null
+        }
+
         if (socialLink.updated_datetime === 'now') {
             const group = 'footer'
             const meta: NavigationLinkMeta = {
