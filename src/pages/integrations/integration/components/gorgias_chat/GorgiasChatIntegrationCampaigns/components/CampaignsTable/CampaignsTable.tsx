@@ -1,4 +1,4 @@
-import React, {MouseEvent, useCallback, useMemo} from 'react'
+import React, {MouseEvent, useCallback} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
@@ -13,6 +13,8 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import TableHead from 'pages/common/components/table/TableHead'
 import {NumberedPagination} from 'pages/common/components/Paginations/NumberedPagination'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+
+import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
 
 import {ChatCampaign} from '../../types/Campaign'
 
@@ -44,12 +46,13 @@ export const CampaignsTable = ({
     onToggleCampaign,
 }: Props) => {
     const history = useHistory()
-    const paginatedRows = useMemo(() => {
-        const start = (page - 1) * perPage
-        const end = start + perPage
+    const {sortBy, sortDirection, sortedCampaigns, changeSorting} =
+        useSortedCampaigns(data)
 
-        return data.slice(start, end)
-    }, [data, page, perPage])
+    const handleChangeSort = useCallback(
+        (key: SortingKeys) => () => changeSorting(key),
+        [changeSorting]
+    )
 
     const renderRows = useCallback(
         (campaign: ChatCampaign, index: number) => {
@@ -115,9 +118,9 @@ export const CampaignsTable = ({
         ]
     )
 
-    const renderTableBody = useCallback(() => {
-        return paginatedRows.map(renderRows)
-    }, [paginatedRows, renderRows])
+    const start = (page - 1) * perPage
+    const end = start + perPage
+    const paginatedRows = sortedCampaigns.slice(start, end)
 
     return (
         <>
@@ -130,11 +133,27 @@ export const CampaignsTable = ({
             >
                 <TableHead>
                     <HeaderCellProperty title="" style={{width: 88}} />
-                    <HeaderCellProperty title="Campaign name" />
-                    <HeaderCellProperty title="Creation date" />
+                    <HeaderCellProperty
+                        isOrderedBy={sortBy === 'name'}
+                        direction={
+                            sortBy === 'name' ? sortDirection : undefined
+                        }
+                        title="Campaign name"
+                        onClick={handleChangeSort('name')}
+                    />
+                    <HeaderCellProperty
+                        isOrderedBy={sortBy === 'created_datetime'}
+                        direction={
+                            sortBy === 'created_datetime'
+                                ? sortDirection
+                                : undefined
+                        }
+                        title="Creation date"
+                        onClick={handleChangeSort('created_datetime')}
+                    />
                     <HeaderCellProperty title="" style={{width: 110}} />
                 </TableHead>
-                <TableBody>{renderTableBody()}</TableBody>
+                <TableBody>{paginatedRows.map(renderRows)}</TableBody>
             </TableWrapper>
             {data.length > perPage && (
                 <NumberedPagination

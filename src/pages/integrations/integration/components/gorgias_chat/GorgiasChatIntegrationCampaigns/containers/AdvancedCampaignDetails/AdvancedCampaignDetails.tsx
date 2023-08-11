@@ -318,6 +318,7 @@ export const AdvancedCampaignDetails = memo(
                     },
                     name: trim(campaignName),
                     triggers: triggersArr,
+                    created_datetime: campaign?.created_datetime,
                 }
 
                 if (isRevenueBetaTester) {

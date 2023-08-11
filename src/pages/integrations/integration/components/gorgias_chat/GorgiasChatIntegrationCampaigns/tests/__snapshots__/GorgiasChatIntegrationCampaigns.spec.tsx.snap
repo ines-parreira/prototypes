@@ -284,7 +284,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
             </div>
           </td>
           <td
-            class="wrapper normal"
+            class="wrapper is-clickable normal"
           >
             <div
               class="content"
@@ -306,7 +306,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
             </div>
           </td>
           <td
-            class="wrapper normal"
+            class="wrapper is-clickable normal"
           >
             <div
               class="content"
@@ -838,7 +838,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
             </div>
           </td>
           <td
-            class="wrapper normal"
+            class="wrapper is-clickable normal"
           >
             <div
               class="content"
@@ -860,7 +860,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
             </div>
           </td>
           <td
-            class="wrapper normal"
+            class="wrapper is-clickable normal"
           >
             <div
               class="content"
@@ -1630,7 +1630,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
             </div>
           </td>
           <td
-            class="wrapper normal"
+            class="wrapper is-clickable normal"
           >
             <div
               class="content"
@@ -1652,7 +1652,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
             </div>
           </td>
           <td
-            class="wrapper normal"
+            class="wrapper is-clickable normal"
           >
             <div
               class="content"

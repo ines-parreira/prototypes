@@ -2,12 +2,16 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {screen, fireEvent, render, waitFor} from '@testing-library/react'
 
+import useSearch from 'hooks/useSearch'
+
 import {createTrigger} from '../../../utils/createTrigger'
 
 import {ChatCampaign} from '../../../types/Campaign'
 import {CampaignTriggerKey} from '../../../types/enums/CampaignTriggerKey.enum'
 
 import {CampaignsTable} from '../CampaignsTable'
+
+jest.mock('hooks/useSearch')
 
 const data = Array.from({length: 19}, (_, i) => ({
     id: i,
@@ -23,6 +27,15 @@ const integration = fromJS({
     id: '1',
 })
 describe('<CampaignsTable />', () => {
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                search: '',
+            },
+        })
+        ;(useSearch as jest.Mock).mockImplementation(() => ({}))
+    })
+
     it('renders the `perPage` items', () => {
         const onClickDelete = jest.fn()
         const onClickDuplicate = jest.fn()

@@ -81,6 +81,7 @@ const regularMerchantCampaign: ChatCampaign = {
             operator: CurrentUrlOperators.Contains,
         },
     ],
+    created_datetime: undefined,
 }
 
 const revenueMerchantCampaign: ChatCampaign = {

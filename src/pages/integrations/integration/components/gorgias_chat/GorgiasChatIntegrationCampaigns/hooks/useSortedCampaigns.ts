@@ -1,0 +1,171 @@
+import {useCallback, useMemo, useState} from 'react'
+
+import {OrderDirection, opposite} from 'models/api/types'
+
+import history from 'pages/history'
+import useSearch from 'hooks/useSearch'
+
+import {ChatCampaign} from '../types/Campaign'
+
+function sortActiveFirst(campaigns: ChatCampaign[]): ChatCampaign[] {
+    const _sortCreation = (a: ChatCampaign, b: ChatCampaign) => {
+        // If the campaign is created before we added the created_datetime field, we put it at the end of the list
+        if (!a.created_datetime) {
+            return -1
+        }
+
+        // If the campaign is created before we added the created_datetime field, we put it at the end of the list
+        if (!b.created_datetime) {
+            return 1
+        }
+
+        if (a.created_datetime > b.created_datetime) {
+            return -1
+        }
+
+        if (a.created_datetime < b.created_datetime) {
+            return 1
+        }
+
+        return 0
+    }
+
+    return campaigns.sort((a, b) => {
+        if (a.deactivated_datetime) {
+            if (b.deactivated_datetime) {
+                return _sortCreation(a, b)
+            }
+            return 1
+        }
+
+        if (b.deactivated_datetime) {
+            return -1
+        }
+
+        return _sortCreation(a, b)
+    })
+}
+
+function sortByCreation(campaigns: ChatCampaign[]): ChatCampaign[] {
+    return campaigns.sort((a, b) => {
+        if (!a.created_datetime) {
+            return 1
+        }
+
+        if (!b.created_datetime) {
+            return -1
+        }
+
+        if (a.created_datetime > b.created_datetime) {
+            return 1
+        }
+
+        if (a.created_datetime < b.created_datetime) {
+            return -1
+        }
+
+        return 0
+    })
+}
+
+function sortByName(campaigns: ChatCampaign[]): ChatCampaign[] {
+    return campaigns.sort((a, b) => {
+        const lowerCaseA = a.name.toLowerCase()
+        const lowerCaseB = b.name.toLowerCase()
+
+        if (lowerCaseA > lowerCaseB) {
+            return 1
+        }
+
+        if (lowerCaseA < lowerCaseB) {
+            return -1
+        }
+        return 0
+    })
+}
+
+function updateSearchParams(params: Record<string, any>) {
+    const currentParams = new URLSearchParams(location.search)
+
+    Object.entries(params).forEach(([key, value]) => {
+        if (value) {
+            currentParams.set(key, value)
+        } else {
+            currentParams.delete(key)
+        }
+    })
+
+    history.replace({
+        search: currentParams.toString(),
+    })
+}
+
+export type SortingKeys = 'created_datetime' | 'name'
+
+export function useSortedCampaigns(campaigns: ChatCampaign[]) {
+    const params = useSearch<{
+        sortBy?: string
+        sortDirection?: string
+    }>()
+
+    const [sortBy, setSortBy] = useState<SortingKeys>(
+        (params.sortBy ?? undefined) as SortingKeys
+    )
+    const [sortDirection, setSortDirection] = useState<OrderDirection>(
+        (params.sortDirection as OrderDirection) ?? OrderDirection.Desc
+    )
+
+    const changeSorting = useCallback(
+        (sortingKey: SortingKeys) => {
+            if (sortingKey === sortBy) {
+                setSortDirection(opposite(sortDirection))
+
+                updateSearchParams({
+                    sortBy,
+                    sortDirection: opposite(sortDirection),
+                })
+
+                return
+            }
+
+            setSortBy(sortingKey)
+            setSortDirection(OrderDirection.Asc)
+
+            updateSearchParams({
+                sortBy: sortingKey,
+                sortDirection: OrderDirection.Asc,
+            })
+        },
+        [sortBy, sortDirection]
+    )
+
+    const sortedCampaigns = useMemo(() => {
+        if (sortBy === 'created_datetime') {
+            if (sortDirection === OrderDirection.Asc) {
+                return sortByCreation(campaigns).reverse()
+            }
+            return sortByCreation(campaigns)
+        }
+
+        if (sortBy === 'name') {
+            if (sortDirection === OrderDirection.Asc) {
+                return sortByName(campaigns).reverse()
+            }
+            return sortByName(campaigns)
+        }
+
+        return sortActiveFirst(campaigns)
+    }, [campaigns, sortBy, sortDirection])
+
+    const api = useMemo(
+        () => ({
+            sortBy,
+            sortDirection,
+            sortedCampaigns,
+            changeSorting,
+        }),
+        [changeSorting, sortBy, sortDirection, sortedCampaigns]
+    )
+
+    return api
+}
