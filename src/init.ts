@@ -16,6 +16,7 @@ import {
 } from 'chart.js'
 import {SankeyController, Flow} from 'chartjs-chart-sankey'
 import {QueryClient} from '@tanstack/react-query'
+import {omit} from 'lodash'
 
 import './polyfills'
 
@@ -216,7 +217,7 @@ export function initApp({datadog, sentry}: InitAppParams) {
     }
 
     // Supply an initial state to redux for faster page loads. See #752
-    const initialState = window.GORGIAS_STATE || {}
+    const initialState = omit(window.GORGIAS_STATE, 'channels') || {}
 
     if (initialState.currentUser) {
         initMoment(initialState.currentUser as unknown as EditableUserProfile)

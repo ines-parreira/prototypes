@@ -18,6 +18,7 @@ import {mockProductionEnvironment, mockStagingEnvironment} from 'utils/testing'
 import {GorgiasInitialState} from 'types'
 import {account} from 'fixtures/account'
 import {initDatadogRum} from 'utils/datadog'
+import {Channel} from 'models/channel/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -135,7 +136,7 @@ describe('init', () => {
             window.GORGIAS_STATE = {
                 currentAccount: account,
                 currentUser: user,
-            } as GorgiasInitialState
+            } as GorgiasInitialState & {channels: Channel[]}
         })
 
         describe.each([

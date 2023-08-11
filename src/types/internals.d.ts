@@ -1,3 +1,4 @@
+import {Channel} from 'models/channel/types'
 import {Middleware} from 'redux'
 
 import {Page} from 'services/statusPageManager/types'
@@ -7,7 +8,7 @@ import {SystemMessage} from 'utils'
 declare global {
     interface Window {
         GORGIAS_CONSTANTS: {[key: string]: any}
-        GORGIAS_STATE: GorgiasInitialState
+        GORGIAS_STATE: GorgiasInitialState & {channels: Channel[]}
         SEGMENT_EVENTS_TO_TRACK?: {data: any; type: string}[]
         SYSTEM_MESSAGES: SystemMessage[]
         GORGIAS_RELEASE: string
