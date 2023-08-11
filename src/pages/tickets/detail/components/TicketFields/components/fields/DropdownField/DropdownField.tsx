@@ -165,6 +165,31 @@ export default function DropdownField({
         }
     }, [dispatch, id, isValueEmpty, value, choices])
 
+    // Fit prediction icon, trying to resize the input if necessary
+    const maxWidth = isLarge ? 136 : 82
+    const [containerWidth, setContainerWidth] = useState(maxWidth)
+    const [inputWidth, setInputWidth] = useState(maxWidth)
+    const prediction = fieldState?.prediction
+    const isPredictionCorrect =
+        prediction &&
+        prediction.predicted === value &&
+        prediction.confidence >= 80 &&
+        prediction.display
+    const hiddenRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        const current = hiddenRef.current
+        if (current && isPredictionCorrect) {
+            current.textContent = getStealthLabel(value)
+            const newInputWidth = Math.min(current.offsetWidth + 20, maxWidth) // 20px padding
+            setInputWidth(newInputWidth)
+            setContainerWidth(Math.max(newInputWidth + 17, maxWidth)) //17px icon
+        } else {
+            setContainerWidth(maxWidth)
+            setInputWidth(maxWidth)
+        }
+    }, [isLarge, isPredictionCorrect, maxWidth, value])
+
     return (
         <>
             <Label label={label} isRequired={isRequired}>
@@ -173,28 +198,40 @@ export default function DropdownField({
                         {getLabel(value)}
                     </Tooltip>
                 )}
-                <StealthInput
-                    id={inputId}
-                    ref={inputRef}
-                    name={label}
-                    value={getStealthLabel(value)}
-                    isActive={false}
-                    isLarge={isLarge}
-                    onFocus={() => {
-                        if (!isActive) {
-                            logEvent(
-                                SegmentEvent.CustomFieldTicketValueDropdownFocused,
-                                {
-                                    ticketId,
-                                    id,
-                                    label,
-                                }
-                            )
-                        }
-                        setActive(true)
-                    }}
-                    hasError={hasError}
-                />
+                <span style={{width: `${containerWidth}px`}}>
+                    <StealthInput
+                        id={inputId}
+                        ref={inputRef}
+                        name={label}
+                        value={getStealthLabel(value)}
+                        isActive={false}
+                        isLarge={isLarge}
+                        style={{width: `${inputWidth}px`}}
+                        onFocus={() => {
+                            if (!isActive) {
+                                logEvent(
+                                    SegmentEvent.CustomFieldTicketValueDropdownFocused,
+                                    {
+                                        ticketId,
+                                        id,
+                                        label,
+                                    }
+                                )
+                            }
+                            setActive(true)
+                        }}
+                        hasError={hasError}
+                    />
+                    <span
+                        ref={hiddenRef}
+                        style={{visibility: 'hidden', position: 'absolute'}}
+                    ></span>
+                    {isPredictionCorrect && hiddenRef.current && (
+                        <i className={`material-icons ${css.predictionIcon}`}>
+                            auto_awesome
+                        </i>
+                    )}
+                </span>
             </Label>
             {!choices.length && <EmptyHelper target={inputRef} id={id} />}
             <Dropdown
@@ -290,32 +327,36 @@ export default function DropdownField({
                                 currentBranch[CHOICE_VALUES_SYMBOL]
                             ).map((choice) => {
                                 const label = getLabel(choice)
+                                const fullValue = getFullValueFromCurrentPath(
+                                    currentPath,
+                                    choice
+                                )
                                 return (
                                     <DropdownItem
                                         key={choice.toString()}
                                         tag="button"
                                         onClick={() => {
-                                            handleChange(
-                                                getFullValueFromCurrentPath(
-                                                    currentPath,
-                                                    choice
-                                                )
-                                            )
+                                            handleChange(fullValue)
                                         }}
                                         option={{
                                             label,
                                             value: choice,
                                         }}
                                     >
+                                        {fullValue ===
+                                            prediction?.predicted && (
+                                            <i
+                                                className={`material-icons mr-2 ${css.predictionIcon}`}
+                                            >
+                                                auto_awesome
+                                            </i>
+                                        )}
                                         <span className={css.choiceButton}>
                                             <span className={css.ellipsis}>
                                                 {label}
                                             </span>
                                         </span>
-                                        {getFullValueFromCurrentPath(
-                                            currentPath,
-                                            choice
-                                        ) === value && <CheckIcon />}
+                                        {fullValue === value && <CheckIcon />}
                                     </DropdownItem>
                                 )
                             })}

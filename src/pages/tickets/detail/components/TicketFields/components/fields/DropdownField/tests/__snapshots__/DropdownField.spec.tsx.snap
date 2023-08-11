@@ -17,15 +17,23 @@ exports[`<DropdownField /> should display display results when searching 1`] = `
       >
         *
       </sup>
-      <input
-        autocomplete="off"
-        class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-input-1"
-        name="dropdown"
-        placeholder="+Add"
-        type="text"
-        value="c2"
-      />
+      <span
+        style="width: 82px;"
+      >
+        <input
+          autocomplete="off"
+          class="baseStyles stealth"
+          id="ticket-whateva-custom-field-value-input-1"
+          name="dropdown"
+          placeholder="+Add"
+          style="width: 82px;"
+          type="text"
+          value="c2"
+        />
+        <span
+          style="visibility: hidden; position: absolute;"
+        />
+      </span>
     </label>
   </div>
   <div
@@ -219,6 +227,21 @@ exports[`<DropdownField /> should display display results when searching 1`] = `
 </body>
 `;
 
+exports[`<DropdownField /> should display prediction icon in field and in list 1`] = `
+[
+  <i
+    class="material-icons predictionIcon"
+  >
+    auto_awesome
+  </i>,
+  <i
+    class="material-icons mr-2 predictionIcon"
+  >
+    auto_awesome
+  </i>,
+]
+`;
+
 exports[`<DropdownField /> should render the dropdown component correctly 1`] = `
 <body>
   <div>
@@ -236,15 +259,23 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
       >
         *
       </sup>
-      <input
-        autocomplete="off"
-        class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-input-1"
-        name="dropdown"
-        placeholder="+Add"
-        type="text"
-        value="c2"
-      />
+      <span
+        style="width: 82px;"
+      >
+        <input
+          autocomplete="off"
+          class="baseStyles stealth"
+          id="ticket-whateva-custom-field-value-input-1"
+          name="dropdown"
+          placeholder="+Add"
+          style="width: 82px;"
+          type="text"
+          value="c2"
+        />
+        <span
+          style="visibility: hidden; position: absolute;"
+        />
+      </span>
     </label>
     )
   </div>

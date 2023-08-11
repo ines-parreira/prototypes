@@ -44,15 +44,23 @@ exports[`<TicketField /> should render the appropriate field 2`] = `
     Dropdown field
     :
   </span>
-  <input
-    autocomplete="off"
-    class="baseStyles stealth"
-    id="ticket-whateva-custom-field-value-input-2"
-    name="Dropdown field"
-    placeholder="+Add"
-    type="text"
-    value="some value"
-  />
+  <span
+    style="width: 82px;"
+  >
+    <input
+      autocomplete="off"
+      class="baseStyles stealth"
+      id="ticket-whateva-custom-field-value-input-2"
+      name="Dropdown field"
+      placeholder="+Add"
+      style="width: 82px;"
+      type="text"
+      value="some value"
+    />
+    <span
+      style="visibility: hidden; position: absolute;"
+    />
+  </span>
 </label>
 `;
 
@@ -66,15 +74,23 @@ exports[`<TicketField /> should render the appropriate field 3`] = `
     Yes/No field
     :
   </span>
-  <input
-    autocomplete="off"
-    class="baseStyles stealth"
-    id="ticket-whateva-custom-field-value-input-2"
-    name="Yes/No field"
-    placeholder="+Add"
-    type="text"
-    value="Yes"
-  />
+  <span
+    style="width: 82px;"
+  >
+    <input
+      autocomplete="off"
+      class="baseStyles stealth"
+      id="ticket-whateva-custom-field-value-input-2"
+      name="Yes/No field"
+      placeholder="+Add"
+      style="width: 82px;"
+      type="text"
+      value="Yes"
+    />
+    <span
+      style="visibility: hidden; position: absolute;"
+    />
+  </span>
 </label>
 `;
 

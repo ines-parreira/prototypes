@@ -72,6 +72,7 @@ export type CustomFieldState = {
     id: CustomField['id']
     value?: CustomFieldValue
     hasError?: boolean
+    prediction?: CustomFieldPrediction
 }
 
 export type CustomFields = {
@@ -82,4 +83,12 @@ export function isCustomField(
     field: CustomField | CustomFieldInput
 ): field is CustomField {
     return 'id' in field
+}
+
+export type CustomFieldPrediction = {
+    confidence: number
+    confirmed: boolean
+    display: boolean
+    modified: boolean
+    predicted: string
 }

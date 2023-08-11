@@ -48,6 +48,13 @@ describe('<DropdownField />', () => {
         isRequired: true,
         onChange: jest.fn(),
     }
+    const prediction = {
+        confidence: 87,
+        confirmed: true,
+        display: true,
+        modified: false,
+        predicted: 's1::ss2::c2',
+    }
 
     let store = mockStore(defaultState)
 
@@ -251,5 +258,46 @@ describe('<DropdownField />', () => {
         userEvent.click(screen.getByRole('textbox'))
         await userEvent.type(screen.getByPlaceholderText('Search'), 's1')
         expect(container.parentElement).toMatchSnapshot()
+    })
+
+    it('should display prediction icon in field and in list', () => {
+        const props = {
+            ...initialProps,
+            fieldState: {
+                ...fieldState,
+                prediction,
+            },
+        }
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <DropdownField {...props} />
+                </Provider>
+            </QueryClientProvider>
+        )
+        userEvent.click(screen.getByRole('textbox'))
+        expect(screen.getAllByText('auto_awesome')).toMatchSnapshot()
+    })
+
+    it.each([
+        {...prediction, predicted: 'not::the::value'},
+        {...prediction, confidence: 12},
+        {...prediction, display: false},
+    ])('should not display prediction icon', (wrongPrediction) => {
+        const props = {
+            ...initialProps,
+            fieldState: {
+                ...fieldState,
+                prediction: wrongPrediction,
+            },
+        }
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <DropdownField {...props} />
+                </Provider>
+            </QueryClientProvider>
+        )
+        expect(screen.queryByText('auto_awesome')).toBeNull()
     })
 })
