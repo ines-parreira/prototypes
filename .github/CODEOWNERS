@@ -9,7 +9,6 @@ src/fixtures/stats.ts @gorgias/analytics-frontend
 src/hooks/reporting @gorgias/analytics-frontend
 src/models/reporting @gorgias/analytics-frontend
 src/pages/stats @gorgias/analytics-frontend
-src/pages/stats/revenue @gorgias/revenue
 src/services/performanceTipService.ts @gorgias/analytics-frontend
 src/services/reporting @gorgias/analytics-frontend
 src/services/tests/performanceTipService.spec.ts @gorgias/analytics-frontend
@@ -17,12 +16,13 @@ src/state/entities/stats @gorgias/analytics-frontend
 src/state/stats @gorgias/analytics-frontend
 src/state/ui/stats @gorgias/analytics-frontend
 src/utils/reporting.ts @gorgias/analytics-frontend
-src/utils/tests/__snapshots__/reporting.spec.ts.snap @gorgias/analytics-frontend
+src/utils/tests/**snapshots**/reporting.spec.ts.snap @gorgias/analytics-frontend
 src/utils/tests/date.spec.ts @gorgias/analytics-frontend
 src/utils/tests/file.spec.ts @gorgias/analytics-frontend
 src/utils/tests/reporting.spec.ts @gorgias/analytics-frontend
 
 # Engine scope @gorgias/automations-engine
+
 src/models/selfServiceConfiguration @gorgias/automations-engine
 src/pages/automation @gorgias/automations-engine
 src/pages/settings/macros @gorgias/automations-engine
@@ -39,6 +39,7 @@ src/state/rules @gorgias/automations-engine
 src/state/ui/selfServiceConfigurations @gorgias/automations-engine
 
 # Help center scope @gorgias/automations-help-center
+
 src/rest_api/help_center_api @gorgias/automations-help-center
 src/config/helpCenter.ts @gorgias/automations-help-center
 src/config/help_center_texts.json @gorgias/automations-help-center
@@ -48,9 +49,15 @@ src/hooks/helpCenter @gorgias/automations-help-center
 src/state/entities/helpCenter @gorgias/automations-help-center
 
 # Contact Form scope @gorgias/automations-help-center
+
 src/state/contactForm @gorgias/automations-help-center
 src/pages/settings/contactForm @gorgias/automations-help-center
 src/state/ui/contactForm @gorgias/automations-help-center
 src/state/entities/contactForm @gorgias/automations-help-center
 src/models/contactForm @gorgias/automations-help-center
 
+# Revenue scope @gorgias/revenue
+
+src/pages/stats/revenue @gorgias/revenue
+src/pages/settings/revenue @gorgias/revenue
+src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns @gorgias/revenue
