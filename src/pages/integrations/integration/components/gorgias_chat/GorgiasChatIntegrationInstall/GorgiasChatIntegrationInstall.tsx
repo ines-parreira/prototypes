@@ -20,6 +20,7 @@ import {Tab} from 'pages/integrations/integration/Integration'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
+import warningIcon from 'assets/img/icons/warning.svg'
 
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
@@ -216,6 +217,51 @@ const GorgiasChatIntegrationInstall = ({
 
                 <Container fluid className={css.container}>
                     <div className={css.content}>
+                        {showScriptTagMigrateNotice && (
+                            <Alert type={AlertType.Warning}>
+                                <p
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <img
+                                        src={warningIcon}
+                                        alt="icon"
+                                        className={css.migrationBannerIcon}
+                                    />
+                                    <b>
+                                        Update 1-click installation for Shopify
+                                        method
+                                    </b>
+                                </p>
+                                <p>
+                                    We enhanced the 1-click installation for
+                                    Shopify method to ensure better stability.
+                                    Please follow the steps below to update your
+                                    chat:
+                                </p>
+                                <InstallationTab>
+                                    <InstallationStep index={1}>
+                                        Go to the{' '}
+                                        <Link
+                                            to={`/app/settings/integrations/shopify/${
+                                                shopIntegrationId ?? ''
+                                            }`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Shopify integration settings page
+                                        </Link>{' '}
+                                        and click <b>Update App Permissions</b>.
+                                    </InstallationStep>
+                                    <InstallationStep index={2}>
+                                        <b>Uninstall and reinstall</b> your chat
+                                        via 1-click installation for Shopify.
+                                    </InstallationStep>
+                                </InstallationTab>
+                            </Alert>
+                        )}
                         <div>
                             <div className={css.connectStoreTitle}>
                                 Connect store
@@ -225,42 +271,6 @@ const GorgiasChatIntegrationInstall = ({
                                 Add-on features in chat and to enable 1-click
                                 installation for Shopify stores.
                             </div>
-                            {showScriptTagMigrateNotice && (
-                                <Alert type={AlertType.Info} className="mb-3">
-                                    <p>
-                                        We've upgraded our Shopify 1-click
-                                        install feature for better stability, as
-                                        it's now theme-independent. Follow the
-                                        steps below to migrate:
-                                    </p>
-                                    <InstallationTab>
-                                        <InstallationStep index={1}>
-                                            Go to the{' '}
-                                            <Link
-                                                to={`/app/settings/integrations/shopify/${
-                                                    shopIntegrationId ?? ''
-                                                }`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                settings page of your Shopify
-                                                integration
-                                            </Link>{' '}
-                                            and click on{' '}
-                                            <i>"Update App Permissions"</i>.{' '}
-                                        </InstallationStep>
-                                        <InstallationStep index={2}>
-                                            1-click uninstall and 1-click
-                                            install the chat again.
-                                        </InstallationStep>
-                                    </InstallationTab>
-                                    <br></br>
-                                    <p>
-                                        This notice will vanish once the
-                                        migration is entirely completed.
-                                    </p>
-                                </Alert>
-                            )}
                             <GorgiasChatIntegrationConnectStore
                                 integration={integration}
                                 storeIntegration={storeIntegration}
