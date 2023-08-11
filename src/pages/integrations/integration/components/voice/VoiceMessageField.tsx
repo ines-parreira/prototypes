@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react'
+import classnames from 'classnames'
 
 import {
     VoiceMessage,
@@ -86,19 +87,6 @@ const VoiceMessageField = ({
         ]
     )
 
-    const handleVoiceRecordingRemoval = useCallback(() => {
-        setVoiceRecordingPath(undefined)
-        const newValue: VoiceMessageRecording = {
-            ...value,
-            voice_message_type: VoiceMessageType.VoiceRecording,
-            new_voice_recording_file: undefined,
-            new_voice_recording_file_name: undefined,
-            new_voice_recording_file_type: undefined,
-            voice_recording_file_path: undefined,
-        }
-        onChange(newValue)
-    }, [onChange, value])
-
     if (horizontal) {
         return (
             <>
@@ -129,10 +117,9 @@ const VoiceMessageField = ({
                     <VoiceRecordingInput
                         voiceRecordingPath={voiceRecordingPath}
                         handleVoiceRecordingUpload={handleVoiceRecordingUpload}
-                        handleVoiceRecordingRemoval={
-                            handleVoiceRecordingRemoval
-                        }
                         className={css.optionContentHorizontal}
+                        replaceLabel={'Replace File'}
+                        uploadLabel={'Upload File'}
                     />
                 )}
                 {value.voice_message_type === VoiceMessageType.TextToSpeech && (
@@ -296,16 +283,16 @@ type PropsVoiceRecordingInput = {
     handleVoiceRecordingUpload: (
         event: React.ChangeEvent<HTMLInputElement>
     ) => Promise<void>
-    handleVoiceRecordingRemoval?: () => void
     uploadLabel?: string
+    replaceLabel?: string
     className?: string
 }
 
 const VoiceRecordingInput = ({
     voiceRecordingPath,
     handleVoiceRecordingUpload,
-    handleVoiceRecordingRemoval,
     uploadLabel = 'Select file',
+    replaceLabel = 'Select file',
     className = css.optionContent,
 }: PropsVoiceRecordingInput) => {
     const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
@@ -313,56 +300,37 @@ const VoiceRecordingInput = ({
     const handleUploadButtonClick = () => {
         voiceRecordingFileInput?.current?.click()
     }
-    const allowRemoving = !!handleVoiceRecordingRemoval
     return (
         <div className={className}>
             {voiceRecordingPath && (
-                <div
-                    className={
-                        handleVoiceRecordingRemoval && css.recordingWithRemove
-                    }
+                // eslint-disable-next-line jsx-a11y/media-has-caption
+                <audio
+                    controls
+                    src={voiceRecordingPath}
+                    aria-label={'voice-recording'}
+                />
+            )}
+
+            <div>
+                <input
+                    className={'d-none'}
+                    type="file"
+                    accept=".mp3"
+                    ref={voiceRecordingFileInput}
+                    onChange={handleVoiceRecordingUpload}
+                />
+                <Button
+                    intent="secondary"
+                    onClick={handleUploadButtonClick}
+                    className={classnames({
+                        [css.replaceFileButton]: !!voiceRecordingPath,
+                    })}
                 >
-                    {
-                        // eslint-disable-next-line jsx-a11y/media-has-caption
-                        <audio
-                            controls
-                            src={voiceRecordingPath}
-                            aria-label={'voice-recording'}
-                        />
-                    }
-                    {allowRemoving && (
-                        <div>
-                            <Button
-                                id={`recording-delete`}
-                                intent="destructive"
-                                onClick={handleVoiceRecordingRemoval}
-                                fillStyle={'ghost'}
-                            >
-                                <ButtonIconLabel icon="delete" />
-                            </Button>
-                        </div>
-                    )}
-                </div>
-            )}
-            {(!voiceRecordingPath || !allowRemoving) && (
-                <div>
-                    <input
-                        className="d-none"
-                        type="file"
-                        accept=".mp3"
-                        ref={voiceRecordingFileInput}
-                        onChange={handleVoiceRecordingUpload}
-                    />
-                    <Button
-                        intent="secondary"
-                        onClick={handleUploadButtonClick}
-                    >
-                        <ButtonIconLabel icon="backup">
-                            {uploadLabel}
-                        </ButtonIconLabel>
-                    </Button>
-                </div>
-            )}
+                    <ButtonIconLabel icon="backup">
+                        {voiceRecordingPath ? replaceLabel : uploadLabel}
+                    </ButtonIconLabel>
+                </Button>
+            </div>
         </div>
     )
 }

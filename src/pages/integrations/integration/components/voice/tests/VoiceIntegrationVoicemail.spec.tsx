@@ -352,7 +352,7 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
         expect(getByText('We are during business hours')).toBeInTheDocument()
     })
 
-    it('should allow removing a voice recording', () => {
+    it('should allow replacing a voice recording', () => {
         const standardIntegrationWithDifferentSettings: PhoneIntegration = {
             ...standardIntegration,
             meta: {
@@ -370,21 +370,36 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
             },
         }
 
-        const {getByRole, queryByLabelText, queryByRole} =
-            renderVoiceIntegrationVoicemail(
-                defaultStoreState,
-                standardIntegrationWithDifferentSettings
-            )
+        const {queryByLabelText, queryByRole} = renderVoiceIntegrationVoicemail(
+            defaultStoreState,
+            standardIntegrationWithDifferentSettings
+        )
         expect(queryByLabelText('voice-recording')).toBeInTheDocument()
-        expect(getByRole('button', {name: 'delete'})).toBeInTheDocument()
-        expect(queryByRole('button', {name: 'backup Select file'})).toBeNull()
+        expect(queryByRole('button', {name: 'backup Replace file'})).toBeNull()
+    })
 
-        fireEvent.click(getByRole('button', {name: 'delete'}))
-        expect(queryByLabelText('voice-recording')).toBeNull()
-        expect(
-            getByRole('button', {name: 'backup Select file'})
-        ).toBeInTheDocument()
+    it('should not allow saving without a recording file', () => {
+        const standardIntegrationWithDifferentSettings: PhoneIntegration = {
+            ...standardIntegration,
+            meta: {
+                ...standardIntegration.meta,
+                voicemail: {
+                    allow_to_leave_voicemail: true,
+                    voice_message_type: VoiceMessageType.TextToSpeech,
+                    text_to_speech_content: 'We are during business hours',
+                    outside_business_hours: {
+                        use_during_business_hours_settings: false,
+                        voice_message_type: VoiceMessageType.VoiceRecording,
+                        voice_recording_file_path: '',
+                    },
+                },
+            },
+        }
 
+        const {getByRole} = renderVoiceIntegrationVoicemail(
+            defaultStoreState,
+            standardIntegrationWithDifferentSettings
+        )
         fireEvent.click(getByRole('button', {name: 'Save changes'}))
         expect(updatePhoneVoicemailConfigurationSpy.mock.calls).toEqual([])
     })
