@@ -381,6 +381,7 @@ describe('handleCallEvents', () => {
 
             expect(dispatch).toHaveBeenCalledWith(setCall(null))
             expect(dispatch).toHaveBeenCalledWith(setIsRinging(false))
+            expect(dispatch).toHaveBeenCalledWith(setIsDialing(false))
             expect(dispatch).toHaveBeenCalledWith(setWarning(null))
         })
 
@@ -394,6 +395,7 @@ describe('handleCallEvents', () => {
 
             expect(dispatch).toHaveBeenCalledWith(setCall(null))
             expect(dispatch).toHaveBeenCalledWith(setIsRinging(false))
+            expect(dispatch).toHaveBeenCalledWith(setIsDialing(false))
             expect(dispatch).toHaveBeenCalledWith(setWarning(null))
             expect(cancelCall).toHaveBeenCalledWith(call)
         })
@@ -408,6 +410,7 @@ describe('handleCallEvents', () => {
 
             expect(dispatch).toHaveBeenCalledWith(setCall(null))
             expect(dispatch).toHaveBeenCalledWith(setIsRinging(false))
+            expect(dispatch).toHaveBeenCalledWith(setIsDialing(false))
             expect(dispatch).toHaveBeenCalledWith(setWarning(null))
 
             expect(disconnectCall).toHaveBeenCalledTimes(1)

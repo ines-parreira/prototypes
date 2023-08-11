@@ -45,12 +45,12 @@ export default function PhoneIntegrationBar(): JSX.Element | null {
         return null
     }
 
-    if (isDialing) {
-        return <OutgoingPhoneCall call={call} />
-    }
-
     if (isRinging) {
         return <IncomingPhoneCall call={call} />
+    }
+
+    if (isDialing) {
+        return <OutgoingPhoneCall call={call} />
     }
 
     return <OngoingPhoneCall call={call} />

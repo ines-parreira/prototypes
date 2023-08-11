@@ -187,6 +187,7 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
         dispatch(setCall(null))
         dispatch(setIsRinging(false))
         dispatch(setWarning(null))
+        dispatch(setIsDialing(false))
     })
 
     call.on('cancel', () => {
@@ -198,6 +199,7 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
         dispatch(setCall(null))
         dispatch(setIsRinging(false))
         dispatch(setWarning(null))
+        dispatch(setIsDialing(false))
 
         void cancelCall(call)
     })
@@ -211,6 +213,7 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
         dispatch(setCall(null))
         dispatch(setIsRinging(false))
         dispatch(setWarning(null))
+        dispatch(setIsDialing(false))
 
         void disconnectCall()
     })
