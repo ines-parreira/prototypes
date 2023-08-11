@@ -75,6 +75,9 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
             <p />
             <ul>
               <li>
+                Multiple help centers for multi-brands
+              </li>
+              <li>
                 Multilingual, customizable settings to match with your brand;
               </li>
               <li>
