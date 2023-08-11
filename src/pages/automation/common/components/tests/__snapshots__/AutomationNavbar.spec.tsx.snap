@@ -201,11 +201,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               >
                 Flow builder
               </span>
-              <div
-                class="badge badge"
-              >
-                BETA
-              </div>
             </a>
             <a
               class="link isNested"
@@ -292,11 +287,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               >
                 Flow builder
               </span>
-              <div
-                class="badge badge"
-              >
-                BETA
-              </div>
             </a>
             <a
               class="link isNested"
@@ -1167,11 +1157,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               >
                 Flow builder
               </span>
-              <div
-                class="badge badge"
-              >
-                BETA
-              </div>
             </a>
             <a
               class="link isNested"
@@ -1258,11 +1243,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               >
                 Flow builder
               </span>
-              <div
-                class="badge badge"
-              >
-                BETA
-              </div>
             </a>
             <a
               class="link isNested"

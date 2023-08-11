@@ -9,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
 
@@ -59,12 +58,6 @@ const AutomationNavbarAddOnSectionBlock = ({
                         <span className={cssNavbar['item-name']}>
                             Flow builder
                         </span>
-                        <Badge
-                            type={ColorType.Blue}
-                            className={cssNavbar.badge}
-                        >
-                            BETA
-                        </Badge>
                     </NavbarLink>
                     <NavbarLink
                         to={`/app/automation/${shopType}/${shopName}/quick-responses`}
