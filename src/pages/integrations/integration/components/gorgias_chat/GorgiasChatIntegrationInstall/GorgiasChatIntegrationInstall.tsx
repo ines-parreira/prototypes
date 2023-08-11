@@ -3,7 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {usePrevious} from 'react-use'
+import {useLocalStorage, usePrevious} from 'react-use'
 
 import {deleteIntegration} from 'state/integrations/actions'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -94,8 +94,7 @@ const GorgiasChatIntegrationInstall = ({
         integration.getIn(['meta', 'one_click_uninstallation_datetime']) ??
         undefined
     const oneClickInstallationMethod: string =
-        integration.getIn(['meta', 'one_click_installation_method']) ??
-        undefined
+        integration.getIn(['meta', 'one_click_installation_method']) ?? 'asset'
     const fiveDays = 1000 * 60 * 60 * 24 * 5
     // We are missing the oneClickInstallation metadata during the PUT (create) request.
     const justCreated: boolean =
@@ -106,8 +105,11 @@ const GorgiasChatIntegrationInstall = ({
     // We are storing the deducted new installation method dynamically, because
     // the integration data does not get updated immediately upon an 1-click
     // installation. We need this to dynamically hide the migration banner.
+    // useLocalStorage to persist over tab switching.
     const [oneClickInstallationMethodNew, setOneClickInstallationMethodNew] =
-        useState<string>()
+        useLocalStorage<string>(
+            `gorgias.one-click-installation-new-${applicationId}`
+        )
 
     useEffect(() => {
         if (
@@ -116,6 +118,8 @@ const GorgiasChatIntegrationInstall = ({
         ) {
             if (hasShopifyScriptTagScope && hasScriptTagFeatureFlagOn) {
                 setOneClickInstallationMethodNew('script_tag')
+            } else {
+                setOneClickInstallationMethodNew('asset')
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,10 +166,10 @@ const GorgiasChatIntegrationInstall = ({
             return
         }
 
-        const installationMethod = oneClickInstallationMethodNew
-            ? oneClickInstallationMethodNew
-            : oneClickInstallationMethod
-
+        const installationMethod =
+            oneClickInstallationMethodNew && isOneClickInstallation
+                ? oneClickInstallationMethodNew
+                : oneClickInstallationMethod
         setShowScriptTagMigrateNotice(
             isConnectedToShopify &&
                 activeOrRecentOneClickUsage &&
@@ -173,7 +177,7 @@ const GorgiasChatIntegrationInstall = ({
                     installationMethod !== 'script_tag')
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [oneClickInstallationMethod, oneClickInstallationMethodNew])
+    }, [isOneClickInstallation])
 
     return (
         <>
