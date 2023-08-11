@@ -8,18 +8,22 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter} from 'utils/testing'
 import ContactFormAutoEmbedPublishSection, {
     ContactFormAutoEmbedPublishSectionProps,
 } from '../ContactFormAutoEmbedPublishSection'
 import {CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID} from '../../ContactFormAutoEmbedCard'
-import {renderWithRouter} from '../../../../../../utils/testing'
 
 const defaultProps: ContactFormAutoEmbedPublishSectionProps = {
     contactFormShopName: 'store-name',
     contactFormId: 1,
 }
+
+const queryClient = createTestQueryClient()
 
 const SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED = 'shopify-store-updated'
 const SHOPIFY_SHOP_NAME_UPDATE_NEEDED = 'shopify-store-update-needed'
@@ -64,7 +68,11 @@ const renderView = (ui: JSX.Element, {state}: {state: Partial<RootState>}) => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
-    return renderWithRouter(<Provider store={mockStore(state)}>{ui}</Provider>)
+    return renderWithRouter(
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(state)}>{ui}</Provider>
+        </QueryClientProvider>
+    )
 }
 
 describe('<ContactFormAutoEmbedPublishSection />', () => {

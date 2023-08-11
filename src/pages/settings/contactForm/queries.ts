@@ -1,18 +1,20 @@
 import {
     UseInfiniteQueryOptions,
     useInfiniteQuery,
+    UseQueryOptions,
+    useQuery,
     useMutation,
 } from '@tanstack/react-query'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {Paths} from '../../../rest_api/help_center_api/client.generated'
 import {MutationOverrides} from '../../../types/query'
-import {createContactForm, getContactForms} from './resources'
+import {createContactForm, getContactForms, getShopifyPages} from './resources'
 
 /**
  * RQ Key Factory for Contact Forms
  */
 export const contactFormKeys = {
-    all: () => ['contactForm'],
+    all: () => ['contactForm'] as const,
     lists: () => [...contactFormKeys.all(), 'list'] as const,
     list: (params: Paths.ListContactForms.QueryParameters) => [
         ...contactFormKeys.lists(),
@@ -20,6 +22,30 @@ export const contactFormKeys = {
     ],
     details: () => [...contactFormKeys.all(), 'detail'] as const,
     detail: (id: number) => [...contactFormKeys.details(), id] as const,
+}
+
+/**
+ * RQ Key Factory for Contact Form Shopify Pages
+ */
+export const embeddablePageKeys = {
+    all: () => ['embeddablePage'] as const,
+    lists: () => [...embeddablePageKeys.all(), 'list'] as const,
+}
+
+/**
+ * RQ Key Factory for Contact Form Embeddable Pages /contact-form/{id1}/pages/{id2}
+ */
+export const contactFormEmbeddablePageKeys = {
+    all: (contactFormId: number) =>
+        [
+            ...contactFormKeys.detail(contactFormId),
+            ...embeddablePageKeys.all(),
+        ] as const,
+    lists: (contactFormId: number) =>
+        [
+            ...contactFormEmbeddablePageKeys.all(contactFormId),
+            ...embeddablePageKeys.lists(),
+        ] as const,
 }
 
 /**
@@ -48,6 +74,29 @@ export const useGetContactFormList = <
             }
             return undefined
         },
+        enabled: !!client,
+        ...overrides,
+    })
+}
+
+export const useGetShopifyPages = <
+    TData = Awaited<ReturnType<typeof getShopifyPages>>
+>(
+    contactFormId: Paths.ListShopifyPages.Parameters.ContactFormId,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getShopifyPages>>,
+        unknown,
+        TData
+    >
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: contactFormEmbeddablePageKeys.lists(contactFormId),
+        queryFn: async () =>
+            getShopifyPages(client, {
+                contact_form_id: contactFormId,
+            }),
         enabled: !!client,
         ...overrides,
     })

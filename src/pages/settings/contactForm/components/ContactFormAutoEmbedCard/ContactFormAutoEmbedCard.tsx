@@ -11,6 +11,8 @@ import {
 } from 'pages/settings/contactForm/utils/navigation'
 
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
+import {useGetShopifyPages} from '../../queries'
+import {EmbeddablePage} from '../PageEmbedmentForm'
 import {
     CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID,
     CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
@@ -69,6 +71,11 @@ const ContactFormAutoEmbedCard = ({
     const [isEmbedModalOpen, setIsEmbedModalOpen] = React.useState(false)
 
     const isConnectedToNonShopify = !isNotConnected && !shopifyIntegrationId
+
+    const getShopifyPages = useGetShopifyPages(contactFormId, {
+        enabled: isEmbedModalOpen,
+    })
+    const pages: EmbeddablePage[] = getShopifyPages.data ?? []
 
     if (isNotConnected) {
         return (
@@ -158,7 +165,9 @@ const ContactFormAutoEmbedCard = ({
 
         const openEmbedFormWizard = needScopeUpdate
             ? _noop
-            : () => setIsEmbedModalOpen(true)
+            : () => {
+                  setIsEmbedModalOpen(true)
+              }
 
         return (
             <div
@@ -191,6 +200,9 @@ const ContactFormAutoEmbedCard = ({
                 />
                 <Button
                     isDisabled={needScopeUpdate}
+                    isLoading={
+                        getShopifyPages.isFetching && !getShopifyPages.isFetched
+                    }
                     onClick={openEmbedFormWizard}
                     data-testid={
                         CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
@@ -199,8 +211,9 @@ const ContactFormAutoEmbedCard = ({
                     Embed Form
                 </Button>
                 <ContactFormAutoEmbedModalAssistant
-                    isOpen={isEmbedModalOpen}
+                    isOpen={isEmbedModalOpen && getShopifyPages.isFetched}
                     onClose={() => setIsEmbedModalOpen(false)}
+                    pages={pages}
                 />
             </div>
         )

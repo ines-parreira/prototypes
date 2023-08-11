@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {screen} from '@testing-library/react'
 import LD from 'launchdarkly-react-client-sdk'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
 import {account} from 'fixtures/account'
@@ -14,6 +15,7 @@ import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/cur
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID} from 'pages/settings/contactForm/components/ContactFormAutoEmbedCard'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -23,13 +25,17 @@ describe('ContactFormPublish', () => {
         currentAccount: fromJS(account),
     }
 
+    const queryClient = createTestQueryClient()
+
     const renderView = ({state}: {state: Partial<RootState>}) => {
         return renderWithRouter(
-            <CurrentContactFormContext.Provider value={ContactFormFixture}>
-                <Provider store={mockStore(state)}>
-                    <ContactFormPublish />,
-                </Provider>
-            </CurrentContactFormContext.Provider>
+            <QueryClientProvider client={queryClient}>
+                <CurrentContactFormContext.Provider value={ContactFormFixture}>
+                    <Provider store={mockStore(state)}>
+                        <ContactFormPublish />,
+                    </Provider>
+                </CurrentContactFormContext.Provider>
+            </QueryClientProvider>
         )
     }
 

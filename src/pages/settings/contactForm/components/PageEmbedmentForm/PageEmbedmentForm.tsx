@@ -17,7 +17,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import imageLayoutTop from 'assets/img/icons/layout-top.svg'
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 
-import {EmbedMode, PagePosition, ShopifyPage} from './types'
+import {EmbedMode, PagePosition, EmbeddablePage} from './types'
 
 import css from './PageEmbedmentForm.less'
 import {
@@ -32,7 +32,7 @@ export type PageEmbedmentFormProps = {
     state: PageEmbedmentFormReducerState
 
     // TODO: define a real model for the shopify page
-    shopifyPages: ShopifyPage[]
+    shopifyPages: EmbeddablePage[]
 }
 
 /**
@@ -153,7 +153,7 @@ const PageEmbedmentForm = ({
                     onToggle={setIsDropdownOpen}
                     floating={floatingRef}
                     ref={targetRef}
-                    label={selectedPage.name}
+                    label={selectedPage.title}
                 >
                     <SelectInputBoxContext.Consumer>
                         {(context) => (
@@ -170,40 +170,45 @@ const PageEmbedmentForm = ({
                                 />
                                 <DropdownBody>
                                     {/* {options.map((option) => ( */}
-                                    {shopifyPages.map(({id, name, slug}) => (
-                                        <DropdownItem
-                                            key={id}
-                                            option={{
-                                                // This label is only used as a reference for the
-                                                // searchable string value
-                                                label: name + ' /' + slug,
-                                                value: id,
-                                            }}
-                                            onClick={() =>
-                                                dispatch({
-                                                    type: 'setSelectedPage',
-                                                    payload: {
-                                                        id,
-                                                        name,
-                                                        slug,
-                                                    },
-                                                })
-                                            }
-                                            shouldCloseOnSelect
-                                        >
-                                            {/* This is where we determine how each item will present the data */}
-                                            <div className={css.dropdownItem}>
-                                                {name} <br />
-                                                <span
-                                                    className={
-                                                        css.dropdownItemSlug
-                                                    }
+                                    {shopifyPages.map(
+                                        ({id, title, handle, body_html}) => (
+                                            <DropdownItem
+                                                key={id}
+                                                option={{
+                                                    // This label is only used as a reference for the
+                                                    // searchable string value
+                                                    label: `${title}/${handle}`,
+                                                    value: id,
+                                                }}
+                                                onClick={() =>
+                                                    dispatch({
+                                                        type: 'setSelectedPage',
+                                                        payload: {
+                                                            id,
+                                                            title,
+                                                            handle,
+                                                            body_html,
+                                                        },
+                                                    })
+                                                }
+                                                shouldCloseOnSelect
+                                            >
+                                                {/* This is where we determine how each item will present the data */}
+                                                <div
+                                                    className={css.dropdownItem}
                                                 >
-                                                    /{slug}
-                                                </span>
-                                            </div>
-                                        </DropdownItem>
-                                    ))}
+                                                    {title} <br />
+                                                    <span
+                                                        className={
+                                                            css.dropdownItemSlug
+                                                        }
+                                                    >
+                                                        /{handle}
+                                                    </span>
+                                                </div>
+                                            </DropdownItem>
+                                        )
+                                    )}
                                 </DropdownBody>
                             </Dropdown>
                         )}

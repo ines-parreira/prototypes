@@ -21,3 +21,14 @@ export const createContactForm = async (
 
     return res.data
 }
+
+export const getShopifyPages = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.ListShopifyPages.PathParameters
+) => {
+    if (!client) return null
+
+    const res = await client.listShopifyPages(pathParameters)
+
+    return res.data
+}

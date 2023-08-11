@@ -1,3 +1,5 @@
+import {Components} from 'rest_api/help_center_api/client.generated'
+
 export enum PagePosition {
     TOP = 'top',
     BOTTOM = 'bottom',
@@ -10,7 +12,7 @@ export enum EmbedMode {
 
 export type SelectedPage = {
     id: string
-    name: string
+    title: string
 }
 
 export type PageEmbedmentFormValueStateWithError<T = string> = {
@@ -18,4 +20,4 @@ export type PageEmbedmentFormValueStateWithError<T = string> = {
     error: string
 }
 
-export type ShopifyPage = {id: string; name: string; slug: string}
+export type EmbeddablePage = Components.Schemas.ShopifyPageDto

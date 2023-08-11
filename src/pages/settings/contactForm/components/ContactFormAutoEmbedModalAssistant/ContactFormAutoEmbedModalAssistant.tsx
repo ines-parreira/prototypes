@@ -6,44 +6,17 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import Button from 'pages/common/components/button/Button'
 
 import PageEmbedmentForm, {
-    ShopifyPage,
+    EmbeddablePage,
     usePageEmbedmentForm,
 } from '../PageEmbedmentForm'
 import {MODAL_LABELS} from './constants'
 
 import css from './ContactFormAutoEmbedModalAssistant.less'
 
-const MOCK_SHOPIFY_PAGES: ShopifyPage[] = [
-    {
-        id: 'About Us',
-        name: 'About Us',
-        slug: 'about-us',
-    },
-    {
-        id: 'Contact Us',
-        name: 'Contact Us',
-        slug: 'contact-us',
-    },
-    {
-        id: 'FAQ',
-        name: 'FAQ',
-        slug: 'faq',
-    },
-    {
-        id: 'Size Chart',
-        name: 'Size Chart',
-        slug: 'size-chart',
-    },
-    {
-        id: 'Shipping',
-        name: 'Shipping',
-        slug: 'shipping',
-    },
-]
-
 type ContactFormAutoEmbedModalAssistantProps = {
     isOpen: boolean
     onClose: () => void
+    pages: EmbeddablePage[]
 }
 
 /**
@@ -51,9 +24,10 @@ type ContactFormAutoEmbedModalAssistantProps = {
  * We might refactor this component to a more generic one in the future when supporting the Help center embedment.
  */
 const ContactFormAutoEmbedModalAssistant = (
-    {onClose, isOpen}: ContactFormAutoEmbedModalAssistantProps = {
+    {onClose, isOpen, pages}: ContactFormAutoEmbedModalAssistantProps = {
         isOpen: false,
         onClose: _noop,
+        pages: [],
     }
 ) => {
     const {
@@ -92,7 +66,7 @@ const ContactFormAutoEmbedModalAssistant = (
                 }
                 dispatch={pageEmbedmentFormDispatch}
                 state={pageEmbedmentForm}
-                shopifyPages={MOCK_SHOPIFY_PAGES}
+                shopifyPages={pages}
             />
             <ModalActionsFooter>
                 <Button intent="secondary" onClick={resetPageEmbedmentForm}>

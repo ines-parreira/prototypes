@@ -6,6 +6,11 @@ import {
     ContactFormEmptyListFixture,
 } from '../fixtures/contacForm'
 import * as contactFormResourceMethods from '../resources'
+import {
+    ShopifyPagesEmptyListFixture,
+    ShopifyPagesGeneric500ErrorFixture,
+    ShopifyPagesListFixture,
+} from '../fixtures/shopifyPage'
 
 export type MockOptions = 'success' | 'error' | 'success-empty'
 export const mockResourceServerReplies = (
@@ -15,6 +20,7 @@ export const mockResourceServerReplies = (
     } = {
         getContactForms: 'success',
         createContactForm: 'success',
+        getShopifyPages: 'success',
     }
 ) => {
     if (options.getContactForms === 'success') {
@@ -32,6 +38,23 @@ export const mockResourceServerReplies = (
         mockedServer
             .onGet(`/api/help-center/contact-forms`)
             .reply(500, ContactFormGeneric500ErrorFixture)
+    }
+
+    if (options.getShopifyPages === 'success') {
+        mockedServer
+            .onGet('/api/help-center/contact-forms/1/pages')
+            .reply(200, ShopifyPagesListFixture)
+    }
+    if (options.getShopifyPages === 'success-empty') {
+        mockedServer
+            .onGet('/api/help-center/contact-forms/1/pages')
+            .reply(200, ShopifyPagesEmptyListFixture)
+    }
+
+    if (options.getShopifyPages === 'error') {
+        mockedServer
+            .onGet(`/api/help-center/contact-forms/1/pages`)
+            .reply(500, ShopifyPagesGeneric500ErrorFixture)
     }
 
     if (options.createContactForm === 'success') {
@@ -52,6 +75,9 @@ export const mockResourceServerReplies = (
             ContactFormListFixtures,
             ContactFormEmptyListFixture,
             ContactFormGeneric500ErrorFixture,
+            ShopifyPagesListFixture,
+            ShopifyPagesEmptyListFixture,
+            ShopifyPagesGeneric500ErrorFixture,
         },
     }
 }

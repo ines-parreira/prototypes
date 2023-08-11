@@ -1,44 +1,16 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
 import PageEmbedmentForm, {PageEmbedmentFormProps} from '../PageEmbedmentForm'
 import {DEFAULT_VALUES} from '../usePageEmbedmentForm'
-import {ShopifyPage} from '../types'
-
-const MOCK_SHOPIFY_PAGES: ShopifyPage[] = [
-    {
-        id: 'About Us',
-        name: 'About Us',
-        slug: 'about-us',
-    },
-    {
-        id: 'Contact Us',
-        name: 'Contact Us',
-        slug: 'contact-us',
-    },
-    {
-        id: 'FAQ',
-        name: 'FAQ',
-        slug: 'faq',
-    },
-    {
-        id: 'Size Chart',
-        name: 'Size Chart',
-        slug: 'size-chart',
-    },
-    {
-        id: 'Shipping',
-        name: 'Shipping',
-        slug: 'shipping',
-    },
-]
 
 const baseProps: PageEmbedmentFormProps = {
     dispatch: jest.fn(),
     state: DEFAULT_VALUES,
     modeSelectionTitle: 'Choose where to embed this entity',
     positionSelectionTitle: 'Select the position of the entity',
-    shopifyPages: MOCK_SHOPIFY_PAGES,
+    shopifyPages: ShopifyPagesListFixture,
 }
 
 describe('<PageEmbedmentForm />', () => {

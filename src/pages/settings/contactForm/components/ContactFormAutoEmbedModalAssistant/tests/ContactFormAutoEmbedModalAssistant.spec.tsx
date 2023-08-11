@@ -1,5 +1,6 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
+import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
 import {MODAL_LABELS} from '../constants'
 
@@ -7,11 +8,13 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
     it('it renders the component', () => {
         const isOpen = true
         const onClose = jest.fn()
+        const pages = ShopifyPagesListFixture
 
         render(
             <ContactFormAutoEmbedModalAssistant
                 isOpen={isOpen}
                 onClose={onClose}
+                pages={pages}
             />
         )
 

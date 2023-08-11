@@ -149,3 +149,77 @@ exports[`getContactForms resolves with a list of contact forms on success 1`] = 
   "put": [],
 }
 `;
+
+exports[`getShopifyPages rejects if the server returns an error 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {},
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/help-center/contact-forms/1/pages",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+}
+`;
+
+exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {},
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/help-center/contact-forms/1/pages",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+}
+`;

@@ -4,7 +4,7 @@ import {
     PageEmbedmentFormValueStateWithError,
     PagePosition,
     SelectedPage,
-    ShopifyPage,
+    EmbeddablePage,
 } from './types'
 
 export type PageEmbedmentFormReducerState = {
@@ -27,7 +27,7 @@ export const DEFAULT_VALUES: PageEmbedmentFormReducerState = {
     },
     selectedPage: {
         id: '',
-        name: '',
+        title: '',
     },
     pagePosition: PagePosition.TOP,
 }
@@ -47,7 +47,7 @@ type PageEmbedmentFormReducerActions =
       }
     | {
           type: 'setSelectedPage'
-          payload: ShopifyPage
+          payload: EmbeddablePage
       }
     | {
           type: 'setPagePosition'

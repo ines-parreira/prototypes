@@ -3,6 +3,10 @@ import {
     ContactFormGeneric500ErrorFixture,
     ContactFormListFixtures,
 } from '../fixtures/contacForm'
+import {
+    ShopifyPagesListFixture,
+    ShopifyPagesGeneric500ErrorFixture,
+} from '../fixtures/shopifyPage'
 import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import * as contactFormResourceMethods from '../resources'
 import {mockResourceServerReplies} from './resource-mocks'
@@ -36,6 +40,46 @@ describe('getContactForms', () => {
 
         await expect(
             contactFormResourceMethods.getContactForms(sdkMocks.client)
+        ).rejects.toMatchInlineSnapshot(
+            `[Error: Request failed with status code 500]`
+        )
+        expect(sdkMocks.mockedServer.history).toMatchSnapshot()
+    })
+})
+
+describe('getShopifyPages', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+    })
+
+    it('resolves with a list of shopify pages on success', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getShopifyPages: 'success',
+        })
+
+        const data = await contactFormResourceMethods.getShopifyPages(
+            sdkMocks.client,
+            {contact_form_id: 1}
+        )
+        expect(data).toEqual(ShopifyPagesListFixture)
+        expect(sdkMocks.mockedServer.history).toMatchSnapshot()
+    })
+
+    it('rejects if the server returns an error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getShopifyPages: 'error',
+        })
+
+        sdkMocks.mockedServer
+            .onGet(`/api/help-center/contact-forms/1/pages`)
+            .reply(500, ShopifyPagesGeneric500ErrorFixture)
+
+        await expect(
+            contactFormResourceMethods.getShopifyPages(sdkMocks.client, {
+                contact_form_id: 1,
+            })
         ).rejects.toMatchInlineSnapshot(
             `[Error: Request failed with status code 500]`
         )

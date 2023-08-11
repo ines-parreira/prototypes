@@ -5,7 +5,11 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
-import {useCreateContactForm, useGetContactFormList} from '../queries'
+import {
+    useCreateContactForm,
+    useGetContactFormList,
+    useGetShopifyPages,
+} from '../queries'
 import {mockResourceServerReplies} from './resource-mocks'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
@@ -55,6 +59,59 @@ describe('useGetContactFormList', () => {
         const {result, waitFor} = renderHook(() => useGetContactFormList(), {
             wrapper,
         })
+
+        await waitFor(() => {
+            expect(result.current.isError).toBeTruthy()
+            expect(result.current.error).toMatchInlineSnapshot(
+                `[Error: Request failed with status code 500]`
+            )
+        })
+    })
+})
+
+describe('useGetShopifyPages', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const contactFormId = 1
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+        queryClient.getQueryCache().clear()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: sdkMocks.client,
+            isReady: true,
+        })
+    })
+
+    it('resolves with the list of shopify pages', async () => {
+        const mocks = mockResourceServerReplies(sdkMocks.mockedServer, {
+            getShopifyPages: 'success',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useGetShopifyPages(contactFormId),
+            {
+                wrapper,
+            }
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
+
+        expect(result.current.data).toEqual(
+            mocks.fixtures.ShopifyPagesListFixture
+        )
+    })
+
+    it('returns the error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getShopifyPages: 'error',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useGetShopifyPages(contactFormId),
+            {
+                wrapper,
+            }
+        )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
