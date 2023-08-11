@@ -44,7 +44,7 @@ function EndNode(node: NodeProps<EndNodeType['data']>) {
                             <i className={classNames('material-icons')}>
                                 {node.data.withWasThisHelpfulPrompt
                                     ? 'thumb_up_alt'
-                                    : 'confirmation_number'}
+                                    : 'forum'}
                             </i>
                         </span>
                         {node.data.withWasThisHelpfulPrompt

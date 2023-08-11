@@ -33,9 +33,7 @@ export default function EndNodeTypeSelect({
             }
             prefix={
                 <i className={classNames('material-icons', css.icon)}>
-                    {withWasThisHelpfulPrompt
-                        ? 'thumb_up_alt'
-                        : 'confirmation_number'}
+                    {withWasThisHelpfulPrompt ? 'thumb_up_alt' : 'forum'}
                 </i>
             }
             className={css.selectInputBox}
@@ -67,7 +65,7 @@ export default function EndNodeTypeSelect({
                                         'mr-2'
                                     )}
                                 >
-                                    confirmation_number
+                                    forum
                                 </i>
                                 Create ticket
                             </DropdownItem>
