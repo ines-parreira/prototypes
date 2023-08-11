@@ -44,8 +44,17 @@ export type PhoneIntegrationPreferences = {
     ringing_behaviour: PhoneRingingBehaviour
 }
 
+type VoicemailOutsideBusinessHoursBasicSettings = {
+    use_during_business_hours_settings: boolean
+}
+
+export type PhoneIntegrationVoicemailOutsideBusinessHoursSettings =
+    | (VoiceMessage & VoicemailOutsideBusinessHoursBasicSettings)
+    | VoicemailOutsideBusinessHoursBasicSettings
+
 export type PhoneIntegrationVoicemailSettings = VoiceMessage & {
     allow_to_leave_voicemail: boolean
+    outside_business_hours?: PhoneIntegrationVoicemailOutsideBusinessHoursSettings
 }
 
 export type PhoneIntegrationIvrSettings = {

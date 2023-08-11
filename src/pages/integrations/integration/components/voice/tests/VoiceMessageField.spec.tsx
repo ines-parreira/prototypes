@@ -220,6 +220,17 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         })
     })
 
+    it('should show error on no text to speech field provided', () => {
+        const message = {
+            voice_message_type: VoiceMessageType.TextToSpeech,
+        } as VoiceMessage
+        const {getByText} = renderComponent(message)
+
+        expect(
+            getByText('Text-to-speech message is required')
+        ).toBeInTheDocument()
+    })
+
     it('should allow inserting a voice recording', async () => {
         const file = new File(['audio data'], 'example.mp3', {
             type: 'audio/mpeg',

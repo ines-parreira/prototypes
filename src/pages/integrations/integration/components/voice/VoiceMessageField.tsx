@@ -22,6 +22,7 @@ type Props = {
     allowNone?: boolean
     maxRecordingDuration?: number
     horizontal?: boolean
+    radioButtonId?: string
 }
 
 const VoiceMessageField = ({
@@ -30,6 +31,7 @@ const VoiceMessageField = ({
     allowNone,
     maxRecordingDuration,
     horizontal = false,
+    radioButtonId = '',
 }: Props): JSX.Element => {
     const {validateVoiceRecordingUpload} = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
@@ -106,16 +108,19 @@ const VoiceMessageField = ({
                         onChange={handleVoiceMessageTypeChange}
                         label={'Voice recording'}
                         caption={'Max 2MB, mp3 only'}
+                        id={radioButtonId}
                     />
                     <TextToSpeechRadioButton
                         selectedVoiceMessageType={value.voice_message_type}
                         onChange={handleVoiceMessageTypeChange}
                         label={'Text-to-speech'}
+                        id={radioButtonId}
                     />
                     {allowNone && (
                         <NoneRadioButton
                             selectedVoiceMessageType={value.voice_message_type}
                             onChange={handleVoiceMessageTypeChange}
+                            id={radioButtonId}
                         />
                     )}
                 </div>
@@ -146,6 +151,7 @@ const VoiceMessageField = ({
             <VoiceRecordingRadioButton
                 selectedVoiceMessageType={value.voice_message_type}
                 onChange={handleVoiceMessageTypeChange}
+                id={radioButtonId}
             />
             {value.voice_message_type === VoiceMessageType.VoiceRecording && (
                 <VoiceRecordingInput
@@ -156,6 +162,7 @@ const VoiceMessageField = ({
             <TextToSpeechRadioButton
                 selectedVoiceMessageType={value.voice_message_type}
                 onChange={handleVoiceMessageTypeChange}
+                id={radioButtonId}
             />
             {value.voice_message_type === VoiceMessageType.TextToSpeech && (
                 <TextToSpeechRecordingInput
@@ -167,6 +174,7 @@ const VoiceMessageField = ({
                 <NoneRadioButton
                     selectedVoiceMessageType={value.voice_message_type}
                     onChange={handleVoiceMessageTypeChange}
+                    id={radioButtonId}
                 />
             )}
         </>
@@ -178,12 +186,14 @@ type VoiceMessageRadioButtonProps = {
     onChange: (value: string) => void
     label?: string
     caption?: string
+    id?: string
 }
 
 const NoneRadioButton = ({
     selectedVoiceMessageType,
     onChange,
     label = 'None',
+    id = '',
 }: VoiceMessageRadioButtonProps) => {
     return (
         <RadioButton
@@ -192,6 +202,7 @@ const NoneRadioButton = ({
             value={VoiceMessageType.None}
             isSelected={selectedVoiceMessageType === VoiceMessageType.None}
             onChange={onChange}
+            id={`${id}${VoiceMessageType.None}`}
         />
     )
 }
@@ -200,6 +211,7 @@ const TextToSpeechRadioButton = ({
     selectedVoiceMessageType,
     onChange,
     label = 'Text To Speech',
+    id = '',
 }: VoiceMessageRadioButtonProps) => {
     return (
         <RadioButton
@@ -210,6 +222,7 @@ const TextToSpeechRadioButton = ({
                 selectedVoiceMessageType === VoiceMessageType.TextToSpeech
             }
             onChange={onChange}
+            id={`${id}${VoiceMessageType.TextToSpeech}`}
         />
     )
 }
@@ -219,6 +232,7 @@ const VoiceRecordingRadioButton = ({
     onChange,
     label = 'Insert Voice Recording',
     caption = '',
+    id = '',
 }: VoiceMessageRadioButtonProps) => {
     return (
         <RadioButton
@@ -230,6 +244,7 @@ const VoiceRecordingRadioButton = ({
             }
             onChange={onChange}
             caption={caption}
+            id={`${id}${VoiceMessageType.VoiceRecording}`}
         />
     )
 }
@@ -250,13 +265,14 @@ const TextToSpeechRecordingInput = ({
         selectedValue.text_to_speech_content
             ? countLines(selectedValue.text_to_speech_content)
             : 0
-    const noMessageProvided = selectedValue.text_to_speech_content?.length === 0
+    const value = selectedValue.text_to_speech_content ?? ''
+    const noMessageProvided = value.length === 0
     return (
         <div className={className}>
             <Textarea
                 className={css.textToSpeechTextarea}
                 maxLength={TEXT_TO_SPEECH_MAX_LENGTH}
-                value={selectedValue.text_to_speech_content ?? ''}
+                value={value}
                 onChange={(message) => {
                     onChange({
                         ...selectedValue,
@@ -308,7 +324,11 @@ const VoiceRecordingInput = ({
                 >
                     {
                         // eslint-disable-next-line jsx-a11y/media-has-caption
-                        <audio controls src={voiceRecordingPath} />
+                        <audio
+                            controls
+                            src={voiceRecordingPath}
+                            aria-label={'voice-recording'}
+                        />
                     }
                     {allowRemoving && (
                         <div>

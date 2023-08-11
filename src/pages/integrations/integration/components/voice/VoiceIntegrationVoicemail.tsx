@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {PhoneFunction} from 'business/twilio'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PhoneIntegration,
@@ -15,7 +14,7 @@ import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {updatePhoneVoicemailConfiguration} from 'pages/integrations/integration/components/phone/actions'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
-import VoiceIntegrationVoicemailIvr from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemailIvr'
+import VoiceIntegrationVoicemailNew from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemailNew'
 
 import settingsCss from 'pages/settings/settings.less'
 
@@ -118,11 +117,8 @@ export default function VoiceIntegrationVoicemail({
         return null
     }
 
-    if (
-        useCustomVoicemailOutsideBusinessHours &&
-        integration?.meta?.function === PhoneFunction.Ivr
-    ) {
-        return <VoiceIntegrationVoicemailIvr integration={integration} />
+    if (useCustomVoicemailOutsideBusinessHours) {
+        return <VoiceIntegrationVoicemailNew integration={integration} />
     }
 
     return <VoiceIntegrationVoicemailOldSettings integration={integration} />

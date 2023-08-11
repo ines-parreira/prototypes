@@ -1,16 +1,37 @@
 @import (reference) '~css/new/layout.less';
 
 :local {
-    .blockHeader {
+    .sectionHeader {
         margin-bottom: @layout-spacing-m;
         margin-top: @layout-spacing-xl;
+        font-weight: 600;
+    }
+
+    .duringBusinessHoursHeader {
+        margin-top: 0;
     }
 
     .ivrTitleHeader {
         margin-bottom: @layout-spacing-xxs;
+        font-weight: 600;
     }
 
     .ivrDetails {
         margin-bottom: @layout-spacing-m;
+    }
+
+    .outsideBusinessHoursContainer {
+        display: flex;
+        align-items: center;
+
+        .setBusinessHoursLink {
+            margin-bottom: @layout-spacing-m;
+            margin-top: @layout-spacing-xl;
+            margin-left: @layout-spacing-s;
+        }
+    }
+
+    .outsideBusinessHoursVoiceMessage {
+        margin-top: @layout-spacing-l;
     }
 }

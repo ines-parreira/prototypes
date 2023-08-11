@@ -31,6 +31,7 @@ function RadioButton(
         isDisabled = false,
         value,
         onChange,
+        id,
         ...props
     }: Props,
     forwardedRef: Ref<HTMLInputElement> | null | undefined
@@ -41,13 +42,13 @@ function RadioButton(
     return (
         <div className={className}>
             <Label
-                htmlFor={value}
+                htmlFor={id ?? value}
                 isDisabled={isDisabled}
                 className={css.label}
             >
                 <input
                     type="radio"
-                    id={value}
+                    id={id ?? value}
                     className={css.input}
                     checked={isSelected}
                     disabled={isDisabled}

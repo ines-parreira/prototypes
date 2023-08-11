@@ -23,7 +23,7 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
     })
 
     const renderCanPayloadBeSubmittedHook = (
-        payload: Partial<PhoneIntegrationVoicemailSettings>
+        payload: Maybe<PhoneIntegrationVoicemailSettings>
     ) =>
         renderHook(
             () => {
@@ -36,8 +36,9 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
         )
 
     it('canPayloadBeSubmitted message_type = None', () => {
-        const payload: Partial<PhoneIntegrationVoicemailSettings> = {
+        const payload: PhoneIntegrationVoicemailSettings = {
             voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
         }
 
         const {result} = renderCanPayloadBeSubmittedHook(payload)
@@ -45,9 +46,10 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
     })
 
     it('canPayloadBeSubmitted checks message_type = VoiceRecording successful', () => {
-        const payload: Partial<PhoneIntegrationVoicemailSettings> = {
+        const payload: PhoneIntegrationVoicemailSettings = {
             voice_message_type: VoiceMessageType.VoiceRecording,
             voice_recording_file_path: 'test',
+            allow_to_leave_voicemail: true,
         }
 
         const {result} = renderCanPayloadBeSubmittedHook(payload)
@@ -56,8 +58,9 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
     })
 
     it('canPayloadBeSubmitted checks voice message file failure', () => {
-        const payload: Partial<PhoneIntegrationVoicemailSettings> = {
+        const payload: PhoneIntegrationVoicemailSettings = {
             voice_message_type: VoiceMessageType.VoiceRecording,
+            allow_to_leave_voicemail: true,
         }
 
         const {result} = renderCanPayloadBeSubmittedHook(payload)
@@ -71,9 +74,10 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
     })
 
     it('canPayloadBeSubmitted checks text to speech field', () => {
-        const payload: Partial<PhoneIntegrationVoicemailSettings> = {
+        const payload: PhoneIntegrationVoicemailSettings = {
             voice_message_type: VoiceMessageType.TextToSpeech,
             text_to_speech_content: 'This is a message',
+            allow_to_leave_voicemail: true,
         }
 
         const {result} = renderCanPayloadBeSubmittedHook(payload)
@@ -82,9 +86,26 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
     })
 
     it('canPayloadBeSubmitted checks text to speech field', () => {
-        const payload: Partial<PhoneIntegrationVoicemailSettings> = {
+        const payload: PhoneIntegrationVoicemailSettings = {
             voice_message_type: VoiceMessageType.TextToSpeech,
             text_to_speech_content: '',
+            allow_to_leave_voicemail: true,
+        }
+
+        const {result} = renderCanPayloadBeSubmittedHook(payload)
+
+        expect(result.current).toBe(false)
+    })
+
+    it('canPayloadBeSubmitted checks outside_business_hours', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: true,
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: '',
+            },
         }
 
         const {result} = renderCanPayloadBeSubmittedHook(payload)
@@ -201,5 +222,140 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
                 'Invalid audio file format provided. Please upload a valid mp3 file.'
             )
         })
+    })
+})
+
+describe('useVoiceMessageValidation().cleanUpPayload', () => {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
+    const renderCleanUpPayloadHook = (
+        payload: Maybe<PhoneIntegrationVoicemailSettings>
+    ) =>
+        renderHook(
+            () => {
+                const {cleanUpPayload} = useVoiceMessageValidation()
+                return cleanUpPayload(payload)
+            },
+            {
+                wrapper,
+            }
+        )
+
+    it('cleans up for outside_business_hours - use same settings', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: true,
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: '',
+            },
+        }
+        const expected = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: true,
+            },
+        }
+
+        const {result} = renderCleanUpPayloadHook(payload)
+        expect(result.current).toEqual(expected)
+    })
+
+    it('cleans up incomplete voice recording', () => {
+        const payload = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            new_voice_recording_file_name: undefined,
+            new_voice_recording_file_type: undefined,
+            voice_recording_file_path: undefined,
+            text_to_speech_content: 'Test me',
+            outside_business_hours: {
+                use_during_business_hours_settings: false,
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Test',
+                new_voice_recording_file_name: undefined,
+                new_voice_recording_file_type: undefined,
+                voice_recording_file_path: undefined,
+            },
+        }
+        const expected = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            voice_recording_file_path: undefined,
+            outside_business_hours: {
+                use_during_business_hours_settings: false,
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Test',
+            },
+        }
+
+        const {result} = renderCleanUpPayloadHook(payload)
+        expect(result.current).toEqual(expected)
+    })
+
+    it('cleans up half updated text', () => {
+        const payload = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            text_to_speech_content: 'Test me',
+            outside_business_hours: {
+                use_during_business_hours_settings: false,
+                voice_message_type: VoiceMessageType.None,
+                text_to_speech_content: 'Test',
+            },
+        }
+        const expected = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: false,
+                voice_message_type: VoiceMessageType.None,
+            },
+        }
+
+        const {result} = renderCleanUpPayloadHook(payload)
+        expect(result.current).toEqual(expected)
+    })
+
+    it('cleans up correctly correct text payload', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.TextToSpeech,
+            text_to_speech_content: 'Hello!',
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: false,
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Test',
+            },
+        }
+
+        const {result} = renderCleanUpPayloadHook(payload)
+        expect(result.current).toEqual(payload)
+    })
+
+    it('cleans up correctly correct voice recording payload', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.VoiceRecording,
+            voice_recording_file_path: 'test',
+            new_voice_recording_file_name: 'test',
+            new_voice_recording_file_type: 'test',
+            new_voice_recording_file: 'test',
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: false,
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                voice_recording_file_path: 'test',
+                new_voice_recording_file_name: 'test',
+                new_voice_recording_file_type: 'test',
+                new_voice_recording_file: 'test',
+            },
+        }
+
+        const {result} = renderCleanUpPayloadHook(payload)
+        expect(result.current).toEqual(payload)
     })
 })

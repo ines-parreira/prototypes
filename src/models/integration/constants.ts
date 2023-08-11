@@ -65,6 +65,12 @@ export const DEFAULT_VOICE_MESSAGE = {
         "Hello, unfortunately we aren't able to take your call right now. Please call us back later. Thank you!",
 }
 
+export const VOICEMAIL_DEFAULT_VOICE_MESSAGE = {
+    voice_message_type: VoiceMessageType.TextToSpeech,
+    text_to_speech_content:
+        "Hello, unfortunately we aren't able to take your call right now. Please leave us a voicemail and we'll get back to you as soon as possible. Thank you!",
+}
+
 export const DEFAULT_IVR_SETTINGS = {
     greeting_message: {
         voice_message_type: VoiceMessageType.TextToSpeech,
