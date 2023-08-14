@@ -3,12 +3,20 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
+import {
+    initialState as agentPerformanceInitialState,
+    getSortedAgents,
+} from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
+import {agents} from 'fixtures/agents'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -17,6 +25,8 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 jest.mock('hooks/reporting/metrics')
+jest.mock('state/ui/stats/agentPerformanceSlice')
+const getSortedAgentsMock = assumeMock(getSortedAgents)
 const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -39,6 +49,7 @@ describe('<PercentageOfClosedTicketsCellSummary>', () => {
     useClosedTicketsMetricMock.mockReturnValue(
         useClosedTicketsMetricMockReturnValue
     )
+    getSortedAgentsMock.mockReturnValue(agents)
 
     it('should render value as percentage', () => {
         render(
@@ -47,7 +58,15 @@ describe('<PercentageOfClosedTicketsCellSummary>', () => {
             </Provider>
         )
 
-        expect(screen.getByText('100%')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                formatMetricValue(
+                    100 / agents.length,
+                    'percent',
+                    NOT_AVAILABLE_PLACEHOLDER
+                )
+            )
+        ).toBeInTheDocument()
     })
 
     it('should render skeleton when fetching', () => {

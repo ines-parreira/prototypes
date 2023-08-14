@@ -12,6 +12,8 @@ import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
+import {agents} from 'fixtures/agents'
+import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -20,6 +22,8 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 jest.mock('hooks/reporting/metrics')
+jest.mock('state/ui/stats/agentPerformanceSlice')
+const getSortedAgentsMock = assumeMock(getSortedAgents)
 const useTicketsRepliedMetricMock = assumeMock(useTicketsRepliedMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -41,6 +45,7 @@ describe('<TicketsRepliedCellSummary>', () => {
     useTicketsRepliedMetricMock.mockReturnValue(
         useTicketsRepliedMetricReturnValue
     )
+    getSortedAgentsMock.mockReturnValue(agents)
 
     it('should render value as decimal', () => {
         render(
@@ -49,13 +54,11 @@ describe('<TicketsRepliedCellSummary>', () => {
             </Provider>
         )
 
+        const value = ticketsRepliedValue / agents.length
+
         expect(
             screen.getByText(
-                formatMetricValue(
-                    ticketsRepliedValue,
-                    'decimal',
-                    NOT_AVAILABLE_PLACEHOLDER
-                )
+                formatMetricValue(value, 'decimal', NOT_AVAILABLE_PLACEHOLDER)
             )
         ).toBeInTheDocument()
     })

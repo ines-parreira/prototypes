@@ -7,6 +7,7 @@ import {createCsv, saveZippedFiles} from 'utils/file'
 import {
     TicketMeasure,
     TicketDimension,
+    HelpdeskMessageMember,
     HelpdeskMessageMeasure,
 } from 'models/reporting/types'
 import {
@@ -60,6 +61,7 @@ export const saveReport = async (
         accessItem: `${
             | TicketDimension
             | TicketMeasure
+            | HelpdeskMessageMember
             | HelpdeskMessageMeasure}`
     ) => {
         const metricValue = (
@@ -67,10 +69,15 @@ export const saveReport = async (
                 [Property in
                     | TicketDimension
                     | TicketMeasure
+                    | HelpdeskMessageMember
                     | HelpdeskMessageMeasure]: string
             }[]
         ).find(
-            (item) => Number(item[TicketDimension.AssigneeUserId]) === agentId
+            (item) =>
+                Number(item[TicketDimension.AssigneeUserId]) === agentId ||
+                Number(item[TicketDimension.FirstHelpdeskMessageUserId]) ===
+                    agentId ||
+                Number(item[HelpdeskMessageMember.SenderId]) === agentId
         )?.[accessItem]
 
         return typeof metricValue === 'string'
@@ -155,10 +162,22 @@ export const saveReport = async (
             ),
             summary.firstResponseTimeMetric.data?.value,
             summary.resolutionTimeMetric.data?.value,
-            formatMetric.decimal(summary.closedTicketsMetric.data?.value),
-            formatMetric.percent(100),
-            formatMetric.decimal(summary.ticketsRepliedMetric.data?.value),
-            formatMetric.decimal(summary.messagesSentMetric.data?.value),
+            formatMetric.decimal(
+                summary.closedTicketsMetric.data?.value
+                    ? summary.closedTicketsMetric.data.value / agents.length
+                    : summary.closedTicketsMetric.data?.value
+            ),
+            formatMetric.percent(100 / agents.length),
+            formatMetric.decimal(
+                summary.ticketsRepliedMetric.data?.value
+                    ? summary.ticketsRepliedMetric.data.value / agents.length
+                    : summary.ticketsRepliedMetric.data?.value
+            ),
+            formatMetric.decimal(
+                summary.messagesSentMetric.data?.value
+                    ? summary.messagesSentMetric.data.value / agents.length
+                    : summary.messagesSentMetric.data?.value
+            ),
         ],
         ...agents.map((agent) => {
             return [
