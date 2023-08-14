@@ -190,6 +190,29 @@ export default function useVoiceMessageValidation() {
         return defaultSettings
     }
 
+    const _isValidTextToSpeech = (
+        payload:
+            | Maybe<PhoneIntegrationVoicemailSettings>
+            | Maybe<PhoneIntegrationVoicemailOutsideBusinessHoursSettings>
+    ) => {
+        if (!payload || !('voice_message_type' in payload)) {
+            return true
+        }
+        return !(
+            payload.voice_message_type === VoiceMessageType.TextToSpeech &&
+            payload.text_to_speech_content?.length === 0
+        )
+    }
+
+    const isValidTextToSpeech = (
+        payload: Maybe<PhoneIntegrationVoicemailSettings>
+    ): boolean => {
+        return (
+            _isValidTextToSpeech(payload) &&
+            _isValidTextToSpeech(payload?.outside_business_hours)
+        )
+    }
+
     const cleanUpPayload = (
         payload: Maybe<PhoneIntegrationVoicemailSettings>
     ): Maybe<PhoneIntegrationVoicemailSettings> => {
@@ -209,11 +232,17 @@ export default function useVoiceMessageValidation() {
         const outsideBusinessHoursPayload = _cleanUpOutsideBusinessHoursPayload(
             payload?.outside_business_hours
         )
+
         if (outsideBusinessHoursPayload) {
             cleanPayload.outside_business_hours = outsideBusinessHoursPayload
         }
         return cleanPayload
     }
 
-    return {validateVoiceRecordingUpload, canPayloadBeSubmitted, cleanUpPayload}
+    return {
+        validateVoiceRecordingUpload,
+        canPayloadBeSubmitted,
+        cleanUpPayload,
+        isValidTextToSpeech,
+    }
 }

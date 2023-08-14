@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Form} from 'reactstrap'
+import _isEqual from 'lodash/isEqual'
 import classnames from 'classnames'
 
 import {
@@ -18,9 +19,13 @@ import useVoiceMessageValidation from 'pages/integrations/integration/components
 import {PhoneFunction} from 'business/twilio'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import SettingsContent from 'pages/settings/SettingsContent'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import {fetchIntegrations} from 'state/integrations/actions'
 
 import VoicemailOutsideBusinessHoursSection from './VoicemailOutsideBusinessHoursSection'
 import css from './VoiceIntegrationVoicemail.less'
+
+const SUCCESSFUL_SUBMIT_MESSAGE = 'Changes saved.'
 
 type Props = {
     integration: Maybe<PhoneIntegration>
@@ -33,7 +38,11 @@ export default function VoiceIntegrationVoicemailNew({
     const [payload, setPayload] = useState<
         PhoneIntegrationVoicemailSettings | undefined
     >(integration?.meta?.voicemail)
-    const {canPayloadBeSubmitted, cleanUpPayload} = useVoiceMessageValidation()
+    const [initialSettings, setInitialSettings] = useState<
+        PhoneIntegrationVoicemailSettings | undefined
+    >(integration?.meta?.voicemail)
+    const {canPayloadBeSubmitted, cleanUpPayload, isValidTextToSpeech} =
+        useVoiceMessageValidation()
     const [isLoading, setIsLoading] = useState(false)
     const isIvr = integration?.meta?.function === PhoneFunction.Ivr
     const defaultVoicemailSettings: PhoneIntegrationVoicemailSettings = {
@@ -43,25 +52,39 @@ export default function VoiceIntegrationVoicemailNew({
     const useSameSettingsOutsideBusinessHours =
         payload?.outside_business_hours?.use_during_business_hours_settings ??
         true
+    const isSubmittable =
+        !_isEqual(cleanUpPayload(payload), cleanUpPayload(initialSettings)) &&
+        isValidTextToSpeech(payload)
 
     useEffect(() => {
         if (!payload) {
             setPayload(integration?.meta?.voicemail)
         }
-    }, [integration, payload, setPayload])
+        if (
+            !initialSettings ||
+            !_isEqual(initialSettings, integration?.meta?.voicemail)
+        ) {
+            setInitialSettings(integration?.meta?.voicemail)
+        }
+    }, [integration, payload, setPayload, initialSettings, setInitialSettings])
 
-    const onSubmit = async (event: React.FormEvent) => {
-        event.preventDefault()
+    const onSubmit = async (event?: React.FormEvent) => {
+        event?.preventDefault()
+
         const cleanPayload = cleanUpPayload(payload)
 
         if (canPayloadBeSubmitted(cleanPayload)) {
             setIsLoading(true)
+
             await dispatch(
                 updatePhoneVoicemailConfiguration(
                     cleanPayload ?? {},
-                    'Changes saved.'
+                    SUCCESSFUL_SUBMIT_MESSAGE
                 )
             )
+
+            void dispatch(fetchIntegrations())
+
             setIsLoading(false)
         }
     }
@@ -168,10 +191,17 @@ export default function VoiceIntegrationVoicemailNew({
                         className={css.sectionHeader}
                         type="submit"
                         isLoading={isLoading}
+                        isDisabled={!isSubmittable}
                     >
                         Save changes
                     </Button>
                 </Form>
+                {isSubmittable && (
+                    <UnsavedChangesPrompt
+                        onSave={() => onSubmit()}
+                        when={isSubmittable}
+                    />
+                )}
             </SettingsContent>
         </SettingsPageContainer>
     )

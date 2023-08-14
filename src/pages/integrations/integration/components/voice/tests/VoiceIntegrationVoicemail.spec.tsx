@@ -1,6 +1,7 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -16,6 +17,8 @@ import {PhoneCountry, PhoneFunction} from 'business/twilio'
 import * as accountFixtures from 'fixtures/account'
 import {RootState, StoreDispatch} from 'state/types'
 import * as api from 'pages/integrations/integration/components/phone/actions'
+import * as actions from 'state/integrations/actions'
+import {renderWithRouter} from 'utils/testing'
 
 import VoiceIntegrationVoicemail from '../VoiceIntegrationVoicemail'
 
@@ -25,6 +28,7 @@ const updatePhoneVoicemailConfigurationSpy = jest.spyOn(
     api,
     'updatePhoneVoicemailConfiguration'
 )
+const fetchIntegratonsSpy = jest.spyOn(actions, 'fetchIntegrations')
 
 const ivrIntegration: PhoneIntegration = {
     id: 1,
@@ -107,7 +111,7 @@ const renderVoiceIntegrationVoicemail = (
     storeState: RootState,
     integration: PhoneIntegration
 ) =>
-    render(
+    renderWithRouter(
         <Provider store={mockStore(storeState)}>
             <VoiceIntegrationVoicemail integration={integration} />
         </Provider>
@@ -142,10 +146,8 @@ describe('<VoiceIntegrationVoicemail /> feature flag check', () => {
         mockFlags({
             [FeatureFlagKey.CustomVoicemailOutsideBusinessHours]: true,
         })
-        const {getByLabelText, getByText} = renderVoiceIntegrationVoicemail(
-            {} as RootState,
-            ivrIntegration
-        )
+        const {getByLabelText, getByText, getByRole} =
+            renderVoiceIntegrationVoicemail({} as RootState, ivrIntegration)
 
         expect(getByText('Voice recording')).toBeInTheDocument()
         expect(getByText('Text-to-speech')).toBeInTheDocument()
@@ -158,16 +160,21 @@ describe('<VoiceIntegrationVoicemail /> feature flag check', () => {
                 'When disabled, the voicemail recording will play but the caller will not be able to leave a message.'
             )
         ).toBeInTheDocument()
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 
     it('should render standard integration (custom voicemail outside business hours)', () => {
         mockFlags({
             [FeatureFlagKey.CustomVoicemailOutsideBusinessHours]: true,
         })
-        const {getByLabelText, getByText} = renderVoiceIntegrationVoicemail(
-            {} as RootState,
-            standardIntegration
-        )
+        const {getByLabelText, getByText, getByRole} =
+            renderVoiceIntegrationVoicemail(
+                {} as RootState,
+                standardIntegration
+            )
         expect(getByText('During business hours')).toBeInTheDocument()
         expect(getByText('Voice recording')).toBeInTheDocument()
         expect(getByText('Text-to-speech')).toBeInTheDocument()
@@ -186,6 +193,10 @@ describe('<VoiceIntegrationVoicemail /> feature flag check', () => {
                 'When disabled, the voicemail recording will play but the caller will not be able to leave a message.'
             )
         ).toBeInTheDocument()
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 })
 
@@ -307,7 +318,7 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
         expect(getByText('We are outside business hours')).toBeInTheDocument()
     })
 
-    it('should allow choosing different settings', () => {
+    it('should allow saving different settings', async () => {
         const standardIntegrationWithDifferentSettings: PhoneIntegration = {
             ...standardIntegration,
             meta: {
@@ -324,32 +335,110 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
                 },
             },
         }
-
-        const {getByLabelText, queryByText, getByText, getAllByLabelText} =
-            render(
-                <Provider store={mockStore(defaultStoreState)}>
-                    <VoiceIntegrationVoicemail
-                        integration={standardIntegrationWithDifferentSettings}
-                    />
-                </Provider>
+        updatePhoneVoicemailConfigurationSpy.mockReturnValue(() => {
+            return new Promise((resolve) =>
+                resolve({
+                    payload: {
+                        message: 'Changes saved.',
+                    },
+                })
             )
+        })
+        fetchIntegratonsSpy.mockReturnValue(() => Promise.resolve(null))
+
+        const {
+            getByLabelText,
+            queryByText,
+            getByText,
+            getAllByLabelText,
+            getByRole,
+        } = renderVoiceIntegrationVoicemail(
+            defaultStoreState,
+            standardIntegrationWithDifferentSettings
+        )
         expect(
             getByLabelText('Use same voicemail as during business hours')
         ).not.toBeChecked()
         expect(getByText('We are outside business hours')).toBeInTheDocument()
 
+        // check settings from API
         const noneRadioButtons = getAllByLabelText('None')
         expect(noneRadioButtons).toHaveLength(2)
 
         const duringBusinessHoursNoneButton = noneRadioButtons[0]
         const outsideBusinessHoursNoneButton = noneRadioButtons[1]
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
 
+        // change outside business hours settings
         fireEvent.click(outsideBusinessHoursNoneButton)
 
         expect(queryByText('We are outside business hours')).toBeNull()
         expect(outsideBusinessHoursNoneButton).toBeChecked()
         expect(duringBusinessHoursNoneButton).not.toBeChecked()
         expect(getByText('We are during business hours')).toBeInTheDocument()
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
+            'aria-disabled',
+            'false'
+        )
+
+        // save changes
+        fireEvent.click(getByRole('button', {name: 'Save changes'}))
+        expect(updatePhoneVoicemailConfigurationSpy.mock.calls).toHaveLength(1)
+        await waitFor(() =>
+            expect(fetchIntegratonsSpy.mock.calls).toHaveLength(1)
+        )
+    })
+
+    it('should disable saving the same settings', async () => {
+        const standardIntegrationWithDifferentSettings: PhoneIntegration = {
+            ...standardIntegration,
+            meta: {
+                ...standardIntegration.meta,
+                voicemail: {
+                    allow_to_leave_voicemail: true,
+                    voice_message_type: VoiceMessageType.None,
+                    outside_business_hours: {
+                        use_during_business_hours_settings: false,
+                        voice_message_type: VoiceMessageType.None,
+                    },
+                },
+            },
+        }
+
+        const {getAllByLabelText, getByRole, getByPlaceholderText} =
+            renderVoiceIntegrationVoicemail(
+                defaultStoreState,
+                standardIntegrationWithDifferentSettings
+            )
+
+        const textToSpeechButtons = getAllByLabelText('Text-to-speech')
+        expect(textToSpeechButtons).toHaveLength(2)
+        const outsideBHTextToSpeechButton = textToSpeechButtons[1]
+
+        const noneRadioButtons = getAllByLabelText('None')
+        expect(noneRadioButtons).toHaveLength(2)
+        const outsideBusinessHoursNoneButton = noneRadioButtons[1]
+
+        // change to text to speech, change the text
+        fireEvent.click(outsideBHTextToSpeechButton)
+        await userEvent.type(
+            getByPlaceholderText('Write a message to convert to speech'),
+            'changed'
+        )
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
+            'aria-disabled',
+            'false'
+        )
+
+        // switch back to the initial None option
+        fireEvent.click(outsideBusinessHoursNoneButton)
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 
     it('should allow replacing a voice recording', () => {

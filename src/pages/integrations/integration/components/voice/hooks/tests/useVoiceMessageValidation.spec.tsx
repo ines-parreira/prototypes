@@ -112,6 +112,22 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
 
         expect(result.current).toBe(false)
     })
+
+    it('canPayloadBeSubmitted checks outside_business_hours', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: true,
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: '',
+            },
+        }
+
+        const {result} = renderCanPayloadBeSubmittedHook(payload)
+
+        expect(result.current).toBe(false)
+    })
 })
 
 describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
@@ -357,5 +373,81 @@ describe('useVoiceMessageValidation().cleanUpPayload', () => {
 
         const {result} = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(payload)
+    })
+})
+
+describe('useVoiceMessageValidation().isValidTextToSpeech', () => {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
+    const renderIsValidTextToSpeechHook = (
+        payload: Maybe<PhoneIntegrationVoicemailSettings>
+    ) =>
+        renderHook(
+            () => {
+                const {isValidTextToSpeech} = useVoiceMessageValidation()
+                return isValidTextToSpeech(payload)
+            },
+            {
+                wrapper,
+            }
+        )
+
+    it('checks invalid text to speech content for outside business hours', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: true,
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: '',
+            },
+        }
+        const {result} = renderIsValidTextToSpeechHook(payload)
+        expect(result.current).toEqual(false)
+    })
+
+    it('checks invalid text to speech content for during business hours', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.TextToSpeech,
+            text_to_speech_content: '',
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: true,
+                voice_message_type: VoiceMessageType.None,
+            },
+        }
+        const {result} = renderIsValidTextToSpeechHook(payload)
+        expect(result.current).toEqual(false)
+    })
+
+    it('checks valid text to speech', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.TextToSpeech,
+            text_to_speech_content: 'Test me',
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: true,
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'another message',
+            },
+        }
+        const {result} = renderIsValidTextToSpeechHook(payload)
+        expect(result.current).toEqual(true)
+    })
+
+    it('checks valid for other message types', () => {
+        const payload: PhoneIntegrationVoicemailSettings = {
+            voice_message_type: VoiceMessageType.None,
+            allow_to_leave_voicemail: true,
+            outside_business_hours: {
+                use_during_business_hours_settings: true,
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                voice_recording_file_path: 'file.mp3',
+            },
+        }
+        const {result} = renderIsValidTextToSpeechHook(payload)
+        expect(result.current).toEqual(true)
     })
 })
