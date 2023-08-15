@@ -121,7 +121,8 @@ const requestPrediction = (
 const sendFeedback = async (
     context: Map<any, any>,
     addedText: string,
-    editorState: EditorState
+    editorState: EditorState,
+    tabKeyUsed = false
 ) => {
     if (!predictionKey) {
         return
@@ -150,6 +151,7 @@ const sendFeedback = async (
         result_number_accepted_characters:
             currentPrediction.numberAcceptedCharacters,
         diverged_phrase: null,
+        tab_key_used: tabKeyUsed,
     })
 
     resetCurrentPrediction()
@@ -169,7 +171,8 @@ const completePrediction = (
     void sendFeedback(
         config.context,
         getPredictionText(predictionKey, editorState),
-        editorState
+        editorState,
+        true
     )
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
