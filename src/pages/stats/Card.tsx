@@ -1,14 +1,10 @@
 import classnames from 'classnames'
-import React, {HTMLProps} from 'react'
+import React, {PropsWithChildren} from 'react'
 
 import css from './Card.less'
 
-type Props = HTMLProps<HTMLDivElement>
+type Props = PropsWithChildren<{className?: string}>
 
-export default function Card({className, children, ...other}: Props) {
-    return (
-        <div className={classnames(css.wrapper, className)} {...other}>
-            {children}
-        </div>
-    )
+export default function Card({className, children}: Props) {
+    return <div className={classnames(css.wrapper, className)}>{children}</div>
 }

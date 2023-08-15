@@ -7,7 +7,9 @@ type Props = Omit<HTMLProps<HTMLTableDataCellElement>, 'size'> & {
     children?: ReactNode
     className?: string
     onClick?: () => void
+    justifyContent?: 'left' | 'right' | 'center'
     size?: 'normal' | 'small' | 'smallest'
+    width?: number | string
 }
 
 export default function HeaderCell({

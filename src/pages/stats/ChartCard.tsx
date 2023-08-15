@@ -11,13 +11,24 @@ type Props = {
     className?: string
     hint?: ReactNode
     title: ReactNode
+    noPadding?: boolean
 }
 
-export default function ChartCard({children, className, hint, title}: Props) {
+export default function ChartCard({
+    children,
+    className,
+    hint,
+    title,
+    noPadding = false,
+}: Props) {
     return (
-        <Card className={classnames(className, css.card)}>
+        <Card
+            className={classnames(className, css.card, {
+                [css.noPadding]: noPadding,
+            })}
+        >
             <div className={css.title}>
-                <span className="heading-section-semibold">{title}</span>
+                <span>{title}</span>
 
                 {hint && (
                     <IconTooltip className={css.tooltip}>{hint}</IconTooltip>

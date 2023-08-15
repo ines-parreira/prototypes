@@ -3,7 +3,6 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import {useTicketsRepliedMetric} from 'hooks/reporting/metrics'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -26,7 +25,7 @@ export const TicketsRepliedCellSummary = () => {
     const metricValue = data?.value ? data.value / agents.length : data?.value
 
     return (
-        <BodyCellContent>
+        <>
             {isFetching ? (
                 <Skeleton inline />
             ) : (
@@ -36,6 +35,6 @@ export const TicketsRepliedCellSummary = () => {
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )}
-        </BodyCellContent>
+        </>
     )
 }

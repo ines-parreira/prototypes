@@ -1,15 +1,25 @@
+@import (reference) '~css/typography.less';
 @import '~css/new/layout';
 
 :local {
     .card {
         padding: @layout-spacing-m;
         min-width: 0;
+
+        &.noPadding {
+            padding: 0;
+        }
     }
 
     .title {
+        .heading-section-semibold();
         align-items: center;
         display: flex;
         margin-bottom: @layout-spacing-m;
+    }
+    .noPadding .title {
+        padding: @layout-spacing-m;
+        margin-bottom: 0;
     }
 
     .tooltip {

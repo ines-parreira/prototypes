@@ -1,6 +1,8 @@
 import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import ChartCard from 'pages/stats/ChartCard'
 import {AgentsTable} from 'pages/stats/AgentsTable'
 
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
@@ -114,8 +116,15 @@ export default function SupportPerformanceAgents() {
                     </>
                 }
             >
-                <DashboardSection title={AGENT_PERFORMANCE_SECTION_TITLE}>
-                    <AgentsTable />
+                <DashboardSection title="">
+                    <DashboardGridCell size={12}>
+                        <ChartCard
+                            title={AGENT_PERFORMANCE_SECTION_TITLE}
+                            noPadding
+                        >
+                            <AgentsTable />
+                        </ChartCard>
+                    </DashboardGridCell>
                 </DashboardSection>
             </StatsPage>
         </div>

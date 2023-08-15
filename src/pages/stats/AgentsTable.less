@@ -1,0 +1,68 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/layout.less';
+
+:local {
+    .wrapper {
+        display: grid;
+    }
+
+    .container {
+        width: 100%;
+        overflow-x: scroll;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .table {
+        box-sizing: border-box;
+        margin-bottom: @layout-spacing-xs;
+
+        .header {
+            th {
+                position: sticky;
+                top: 0;
+                height: 56px;
+                z-index: 1;
+            }
+        }
+
+        tr {
+            height: 56px;
+
+            td {
+                &.withShadow {
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: -1px;
+                        width: 30px;
+                        box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.15);
+
+                        transform: translateX(100%);
+                        pointer-events: none;
+                    }
+                }
+
+                &:first-child {
+                    position: sticky;
+                    left: 0;
+                    z-index: 2;
+                    background-color: var(--neutral-grey-0);
+                }
+
+                &.highlight {
+                    &:first-child {
+                        background-color: var(--neutral-grey-1);
+                    }
+                }
+            }
+        }
+    }
+
+    .pagination {
+        margin-top: @layout-spacing-xs;
+        margin-left: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-xs;
+    }
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
 import {useFirstResponseTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -24,9 +24,9 @@ export const FirstResponseTimeCellContent = ({agentId}: {agentId: number}) => {
     const metricValue = data?.value
 
     return (
-        <BodyCellContent>
+        <>
             {isFetching || isMetricLoading ? (
-                <Skeleton inline />
+                <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
                 formatMetricValue(
                     metricValue,
@@ -34,6 +34,6 @@ export const FirstResponseTimeCellContent = ({agentId}: {agentId: number}) => {
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )}
-        </BodyCellContent>
+        </>
     )
 }

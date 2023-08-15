@@ -5,11 +5,20 @@
         cursor: pointer;
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
         position: relative;
         width: 100%;
         color: var(--neutral-grey-6);
         padding: 16px 12px;
         line-height: 20px;
+        justify-content: flex-start;
+        &.left {
+            justify-content: flex-start;
+        }
+        &.right {
+            justify-content: flex-end;
+        }
+        &.center {
+            justify-content: center;
+        }
     }
 }

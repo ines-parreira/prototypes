@@ -7,9 +7,7 @@ exports[`<ChartCard /> should render the chart card 1`] = `
   <div
     class="title"
   >
-    <span
-      class="heading-section-semibold"
-    >
+    <span>
       Metric title
     </span>
     <div

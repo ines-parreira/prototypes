@@ -1416,9 +1416,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="title"
                 >
-                  <span
-                    class="heading-section-semibold"
-                  >
+                  <span>
                     Tickets created
                   </span>
                   <div
@@ -1447,9 +1445,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="title"
                 >
-                  <span
-                    class="heading-section-semibold"
-                  >
+                  <span>
                     Tickets closed
                   </span>
                   <div
@@ -1478,9 +1474,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="title"
                 >
-                  <span
-                    class="heading-section-semibold"
-                  >
+                  <span>
                     Tickets replied
                   </span>
                   <div
@@ -1509,9 +1503,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="title"
                 >
-                  <span
-                    class="heading-section-semibold"
-                  >
+                  <span>
                     Messages sent
                   </span>
                   <div
@@ -1540,9 +1532,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="title"
                 >
-                  <span
-                    class="heading-section-semibold"
-                  >
+                  <span>
                     Total workload by channel
                   </span>
                   <div

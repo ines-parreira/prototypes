@@ -6,12 +6,25 @@ import css from './BodyCellContent.less'
 type Props = HTMLProps<HTMLTableDataCellElement> & {
     children: ReactNode
     className?: string
+    justifyContent?: 'left' | 'right' | 'center'
     width?: number | string
 }
 
-const BodyCellContent = ({children, width, className}: Props) => {
+const BodyCellContent = ({
+    children,
+    width,
+    className,
+    justifyContent,
+}: Props) => {
     return (
-        <div className={classNames(css.cellContent, className)} style={{width}}>
+        <div
+            className={classNames(
+                css.cellContent,
+                justifyContent && css[justifyContent],
+                className
+            )}
+            style={{width}}
+        >
             {children}
         </div>
     )

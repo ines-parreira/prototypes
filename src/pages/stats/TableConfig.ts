@@ -24,6 +24,9 @@ export const TableLabels: Record<TableColumn, string> = {
 
 export type TooltipData = {title: string; link: string}
 
+export const AGENT_NAME_COLUMN_WIDTH = 200
+export const METRIC_COLUMN_WIDTH = 160
+
 export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
     [TableColumn.AgentName]: undefined,
     [TableColumn.CustomerSatisfaction]: {
@@ -56,3 +59,11 @@ export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
         link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#4-tickets-replied',
     },
 }
+
+export const getColumnWidth = (column: TableColumn) =>
+    column === TableColumn.AgentName
+        ? AGENT_NAME_COLUMN_WIDTH
+        : METRIC_COLUMN_WIDTH
+
+export const getColumnAlignment = (column: TableColumn) =>
+    column === TableColumn.AgentName ? 'left' : 'right'

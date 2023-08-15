@@ -1,38 +1,44 @@
-import React from 'react'
+import classNames from 'classnames'
+import React, {UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
+import useMeasure from 'react-use/lib/useMeasure'
+import {User} from 'config/types/user'
+import useAppSelector from 'hooks/useAppSelector'
 import {NumberedPagination} from 'pages/common/components/Paginations'
-
-import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
-import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
-import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
-import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
-import {AgentCellContent} from 'pages/stats/AgentCellContent'
-import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
-import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
-import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
-import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
-import {TableColumnsOrder} from 'pages/stats/TableConfig'
-import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
-import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
-import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
-import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
-import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
-import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
-import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
-import {SummaryCell} from 'pages/stats/SummaryCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableBody from 'pages/common/components/table/TableBody'
-import useAppSelector from 'hooks/useAppSelector'
+import {AgentCellContent} from 'pages/stats/AgentCellContent'
+import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
+import css from 'pages/stats/AgentsTable.less'
+import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
+import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
+import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
+import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
+import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
+import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
+import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
+import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
+import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
+import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
+import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
+import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
+import {SummaryCell} from 'pages/stats/SummaryCell'
 import {
-    pageSet,
+    getColumnAlignment,
+    getColumnWidth,
+    TableColumnsOrder,
+} from 'pages/stats/TableConfig'
+
+import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
+import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
+import {
     getPaginatedAgents,
     getSortedAgents,
+    pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {User} from 'config/types/user'
 import {TableColumn} from 'state/ui/stats/types'
 
 const getCell = (
@@ -75,7 +81,6 @@ const getSummaryCell = (column: TableColumn): React.FC => {
         case TableColumn.ResolutionTime:
             return ResolutionTimeCellSummary
         case TableColumn.AgentName:
-        default:
             return SummaryCell
     }
 }
@@ -91,48 +96,91 @@ export const AgentsTable = () => {
     const onPageChangeCallback = (page: number) => {
         dispatch(pageSet(page))
     }
+    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [isTableScrolled, setIsTableScrolled] = useState(false)
+    const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
+        if (event.currentTarget.scrollLeft > 0) {
+            setIsTableScrolled(true)
+        } else {
+            setIsTableScrolled(false)
+        }
+    }
 
     return (
-        <div>
-            <TableWrapper>
-                <TableHead>
-                    {TableColumnsOrder.map((column) => (
-                        <HeaderCell key={`header-cell-${column}`}>
-                            <AgentsHeaderCellContent column={column} />
-                        </HeaderCell>
-                    ))}
-                </TableHead>
-                <TableBody>
-                    <TableBodyRow>
-                        {TableColumnsOrder.map((column) => (
-                            <BodyCell key={column}>
-                                {React.createElement(getSummaryCell(column), {
-                                    key: `summary-${column}`,
+        <>
+            <div ref={ref} className={css.container} onScroll={handleScroll}>
+                <TableWrapper className={css.table} style={{width}}>
+                    <TableHead>
+                        {TableColumnsOrder.map((column, index) => (
+                            <AgentsHeaderCellContent
+                                key={`header-cell-${column}`}
+                                width={getColumnWidth(column)} //TODO: consider introducing common props per cell type (header, average, body)
+                                justifyContent={getColumnAlignment(column)}
+                                className={classNames({
+                                    [css.withShadow]:
+                                        index === 0 && isTableScrolled,
                                 })}
-                            </BodyCell>
+                                column={column}
+                            />
                         ))}
-                    </TableBodyRow>
-                    {paginatedAgents.map((agent) => (
-                        <TableBodyRow key={agent.id}>
+                    </TableHead>
+                    <TableBody>
+                        <TableBodyRow>
                             {TableColumnsOrder.map((column) => (
-                                <BodyCell key={column}>
-                                    {React.createElement(getCell(column), {
-                                        agentId: agent.id,
-                                        key: `${column}-${agent.id}`,
+                                <BodyCell
+                                    key={column}
+                                    width={getColumnWidth(column)}
+                                    isHighlighted
+                                    justifyContent={getColumnAlignment(column)}
+                                    className={classNames({
+                                        [css.withShadow]:
+                                            column === TableColumn.AgentName &&
+                                            isTableScrolled,
+                                        [css.highlight]: true, //TODO: looks duplicative to isHighlighted
                                     })}
+                                >
+                                    {React.createElement(
+                                        getSummaryCell(column)
+                                    )}
                                 </BodyCell>
                             ))}
                         </TableBodyRow>
-                    ))}
-                </TableBody>
-            </TableWrapper>
-            {agents.length >= perPage && (
-                <NumberedPagination
-                    count={Math.ceil(agents.length / perPage)}
-                    page={currentPage}
-                    onChange={onPageChangeCallback}
-                />
-            )}
-        </div>
+                        {paginatedAgents.map((agent) => (
+                            <TableBodyRow key={agent.id}>
+                                {TableColumnsOrder.map((column) => (
+                                    <BodyCell
+                                        key={column}
+                                        width={getColumnWidth(column)}
+                                        justifyContent={getColumnAlignment(
+                                            column
+                                        )}
+                                        className={classNames({
+                                            [css.withShadow]:
+                                                column ===
+                                                    TableColumn.AgentName &&
+                                                isTableScrolled,
+                                        })}
+                                    >
+                                        {React.createElement(getCell(column), {
+                                            agentId: agent.id,
+                                        })}
+                                    </BodyCell>
+                                ))}
+                            </TableBodyRow>
+                        ))}
+                    </TableBody>
+                </TableWrapper>
+            </div>
+            <div>
+                {agents.length >= perPage && (
+                    <NumberedPagination
+                        count={Math.ceil(agents.length / perPage)}
+                        page={currentPage}
+                        onChange={onPageChangeCallback}
+                        className={css.pagination}
+                    />
+                )}
+            </div>
+        </>
     )
 }

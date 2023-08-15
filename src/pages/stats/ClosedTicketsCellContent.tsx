@@ -1,9 +1,9 @@
 import React from 'react'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -27,9 +27,9 @@ export const ClosedTicketsCellContent = ({agentId}: {agentId: number}) => {
     const metricValue = data?.value
 
     return (
-        <BodyCellContent>
+        <>
             {isFetching || isMetricLoading ? (
-                <Skeleton inline />
+                <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
                 formatMetricValue(
                     metricValue,
@@ -37,6 +37,6 @@ export const ClosedTicketsCellContent = ({agentId}: {agentId: number}) => {
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )}
-        </BodyCellContent>
+        </>
     )
 }

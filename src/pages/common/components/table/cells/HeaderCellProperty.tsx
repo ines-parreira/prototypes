@@ -1,5 +1,5 @@
-import React, {HTMLProps, ReactNode, useRef} from 'react'
 import classnames from 'classnames'
+import React, {HTMLProps, ReactNode, useRef} from 'react'
 
 import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
 
@@ -18,6 +18,9 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     onClick?: () => void
     title: string
     tooltip?: ReactNode
+    justifyContent?: 'left' | 'right' | 'center'
+    wrapContent?: boolean
+    width?: number | string
 }
 
 export default function HeaderCellProperty({
@@ -28,6 +31,8 @@ export default function HeaderCellProperty({
     onClick,
     title,
     tooltip,
+    justifyContent,
+    wrapContent = false,
     ...otherProps
 }: Props) {
     const tooltipRef = useRef<HTMLElement>(null)
@@ -38,9 +43,18 @@ export default function HeaderCellProperty({
             className={classnames(className)}
             onClick={onClick}
         >
-            <div className={css.content}>
+            <div
+                className={classnames(css.content, {
+                    [css.wrapContent]: wrapContent,
+                })}
+            >
                 {children}
-                <div className={css.cell}>
+                <div
+                    className={classnames(
+                        css.cell,
+                        justifyContent && css[justifyContent]
+                    )}
+                >
                     <span className={css.title}>{title}</span>
                     {tooltip && (
                         <span>

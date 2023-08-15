@@ -2,34 +2,34 @@ import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {TableColumnsOrder} from 'pages/stats/TableConfig'
+import thunk from 'redux-thunk'
+import {agents} from 'fixtures/agents'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
-import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
+import {AgentsTable} from 'pages/stats/AgentsTable'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
-import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
-import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
-import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
-import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
-import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
-import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
 import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
+import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
+import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
 import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
+import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
 import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
+import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
+import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
+import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
 import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
+import {TableColumnsOrder} from 'pages/stats/TableConfig'
+import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {AgentsTable} from 'pages/stats/AgentsTable'
 import {
-    pageSet,
     getPaginatedAgents,
     getSortedAgents,
+    pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
-import {agents} from 'fixtures/agents'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -141,9 +141,9 @@ describe('<AgentTable>', () => {
         expect(screen.getByRole('table')).toBeInTheDocument()
         TableColumnsOrder.forEach((column) => {
             expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
-                {
+                expect.objectContaining({
                     column,
-                },
+                }),
                 {}
             )
         })
