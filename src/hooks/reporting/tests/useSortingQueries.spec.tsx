@@ -208,4 +208,28 @@ describe('useSortingQueries', () => {
             expect(store.getActions().length).toEqual(0)
         }
     )
+
+    it('should disable loading when sorting by AgentName', () => {
+        const store = mockStore({
+            ...defaultState,
+            ui: {
+                agentPerformance: {
+                    ...initialState,
+                    sorting: {
+                        field: TableColumn.AgentName,
+                        direction: OrderDirection.Asc,
+                        isLoading: true,
+                    },
+                },
+            },
+        } as unknown as RootState)
+
+        renderHook(() => useSortingQueries(TableColumn.AgentName), {
+            wrapper: ({children}) => (
+                <Provider store={store}>{children}</Provider>
+            ),
+        })
+
+        expect(store.getActions()).toContainEqual(sortingLoaded(null))
+    })
 })

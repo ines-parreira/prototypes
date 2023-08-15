@@ -78,6 +78,9 @@ export const useSortingQueries = (column: TableColumn) => {
     useEffect(() => {
         if (sorting?.field === column && sorting?.isLoading) {
             switch (column) {
+                case TableColumn.AgentName:
+                    dispatch(sortingLoaded(null))
+                    break
                 case TableColumn.FirstResponseTime:
                     !frtIsFetching && dispatch(sortingLoaded(frtData?.allData))
                     break
