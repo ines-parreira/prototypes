@@ -56,30 +56,6 @@ export default function StatsNavbarView() {
                     >
                         Overview
                     </NavbarLink>
-
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/busiest-times-of-days"
-                    >
-                        Busiest times of days
-                    </NavbarLink>
-
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/ticket-fields"
-                    >
-                        Ticket Fields
-                    </NavbarLink>
-
-                    <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/tags">
-                        Tags
-                    </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/channels"
-                    >
-                        Channels
-                    </NavbarLink>
                     <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/support-performance-agents"
@@ -88,6 +64,27 @@ export default function StatsNavbarView() {
                         {hasAnalyticsNewAgentPerformance && (
                             <Badge type={ColorType.Blue}>new</Badge>
                         )}
+                    </NavbarLink>
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/busiest-times-of-days"
+                    >
+                        Busiest times of days
+                    </NavbarLink>
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/ticket-fields"
+                    >
+                        Ticket Fields
+                    </NavbarLink>
+                    <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/tags">
+                        Tags
+                    </NavbarLink>
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/channels"
+                    >
+                        Channels
                     </NavbarLink>
                     <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
