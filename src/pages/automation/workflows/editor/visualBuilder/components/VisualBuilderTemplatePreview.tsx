@@ -15,6 +15,8 @@ import TriggerButtonNode from '../nodes/TriggerButtonNode'
 import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
 import MultipleChoicesNode from '../nodes/MultipleChoicesNode'
 import EndNode from '../nodes/EndNode'
+import TextReplyNode from '../nodes/TextReplyNode'
+import FileUploadNode from '../nodes/FileUploadNode'
 import CustomEdge from '../CustomEdge'
 import {
     createSelfServiceStoreIntegrationContextForPreview,
@@ -29,6 +31,8 @@ const nodeTypes = {
     trigger_button: TriggerButtonNode,
     automated_message: AutomatedMessageNode,
     multiple_choices: MultipleChoicesNode,
+    text_reply: TextReplyNode,
+    file_upload: FileUploadNode,
     end: EndNode,
 }
 

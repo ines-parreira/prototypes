@@ -24,7 +24,12 @@ import {
     MessageContent,
     WorkflowConfiguration,
     WorkflowStep,
+    WorkflowStepAttachmentsInput,
+    WorkflowStepChoices,
+    WorkflowStepHandover,
     WorkflowStepMessages,
+    WorkflowStepTextInput,
+    WorkflowStepWorkflowCall,
     WorkflowTransition,
 } from './workflowConfiguration.types'
 
@@ -319,5 +324,233 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         nodes,
         edges,
         wfConfigurationOriginal: c,
+    }
+}
+
+type ChoiceEventId = string
+
+export class WorkflowConfigurationBuilder {
+    private readonly data: WorkflowConfiguration
+    private _selection: WorkflowStep
+    constructor({
+        name,
+        initialMessage,
+        ...configuration
+    }: {
+        initialMessage: WorkflowStepMessages['settings']['messages'][number]
+    } & Pick<
+        WorkflowConfiguration,
+        'name' | 'account_id' | 'entrypoint' | 'id'
+    >) {
+        const initialStep: WorkflowStep = {
+            id: ulid(),
+            kind: 'messages',
+            settings: {
+                messages: [initialMessage],
+            },
+        }
+        this.data = {
+            internal_id: ulid(),
+            name,
+            initial_step_id: initialStep.id,
+            is_draft: false,
+            steps: [initialStep],
+            transitions: [],
+            available_languages: ['en-US'],
+            ...configuration,
+        }
+        this._selection = initialStep
+    }
+
+    insertChoicesStepAndSelect() {
+        if (this._selection?.kind !== 'messages')
+            throw new Error(
+                'choices step can only be inserted after messages step'
+            )
+        const step: WorkflowStepChoices = {
+            id: ulid(),
+            kind: 'choices',
+            settings: {
+                choices: [],
+            },
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    private insertChoiceAndStepTargetAndSelect(
+        choiceLabel: string,
+        step: WorkflowStep
+    ): ChoiceEventId {
+        if (this._selection?.kind !== 'choices')
+            throw new Error(
+                `${step.kind} step can only be inserted after choices step`
+            )
+        const choiceEventId = ulid()
+        this._selection.settings.choices.push({
+            event_id: choiceEventId,
+            label: choiceLabel,
+            label_tkey: ulid(),
+        })
+        this.data.steps.push(step)
+        const transition: WorkflowTransition = {
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+            event: {id: choiceEventId, kind: 'choices'},
+        }
+        this.data.transitions.push(transition)
+        this._selection = step
+        return choiceEventId
+    }
+
+    insertChoiceAndMessagesStepAndSelect(
+        choiceLabel: string,
+        messages: WorkflowStepMessages['settings']['messages']
+    ): ChoiceEventId {
+        const step: WorkflowStepMessages = {
+            id: ulid(),
+            kind: 'messages',
+            settings: {
+                messages,
+            },
+        }
+        return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
+    }
+
+    insertChoiceAndHandoverStepAndSelect(
+        choiceLabel: string,
+        handoverSettings: WorkflowStepHandover['settings'] = {}
+    ): ChoiceEventId {
+        const step: WorkflowStepHandover = {
+            id: ulid(),
+            kind: 'handover',
+            settings: handoverSettings,
+        }
+        return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
+    }
+
+    insertWorkflowCallStepAndSelect(
+        configuration_id: string,
+        conditions?: WorkflowTransition['conditions']
+    ) {
+        const step: WorkflowStepWorkflowCall = {
+            id: ulid(),
+            kind: 'workflow_call',
+            settings: {
+                configuration_id,
+            },
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+            conditions,
+        })
+        this._selection = step
+    }
+
+    insertTextInputStepAndSelect() {
+        const step: WorkflowStepTextInput = {
+            id: ulid(),
+            kind: 'text-input',
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    insertAttachmentsInputStepAndSelect() {
+        const step: WorkflowStepAttachmentsInput = {
+            id: ulid(),
+            kind: 'attachments-input',
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    insertMessagesStepAndSelect(
+        messages: WorkflowStepMessages['settings']['messages'],
+        conditions?: WorkflowTransition['conditions']
+    ) {
+        const step: WorkflowStepMessages = {
+            id: ulid(),
+            kind: 'messages',
+            settings: {
+                messages,
+            },
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+            conditions,
+        })
+        this._selection = step
+    }
+
+    insertHandoverStepAndSelect() {
+        const step: WorkflowStepHandover = {
+            id: ulid(),
+            kind: 'handover',
+            settings: {},
+        }
+        this.data.steps.push(step)
+        this.data.transitions.push({
+            id: ulid(),
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        })
+        this._selection = step
+    }
+
+    selectParentStep() {
+        const parentStepId = this.data.transitions.find(
+            (t) => t.to_step_id === this._selection.id
+        )?.from_step_id
+        if (!parentStepId) throw new Error('no parent step found')
+        const parentStep = this.data.steps.find((s) => s.id === parentStepId)
+        if (!parentStep)
+            throw new Error('no parent step found (orphan transition)')
+        this._selection = parentStep
+    }
+
+    selectStepById(stepId: string) {
+        const step = this.data.steps.find((s) => s.id === stepId)
+        if (!step) throw new Error('step not found')
+        this._selection = step
+    }
+
+    selectInitialStep() {
+        const step = this.data.steps.find(
+            (s) => s.id === this.data.initial_step_id
+        )
+        if (!step) throw new Error('initial step missing')
+        this._selection = step
+    }
+
+    build(): WorkflowConfiguration {
+        return this.data
+    }
+
+    // getter for the current selection
+    public get selection(): WorkflowStep {
+        return this._selection
     }
 }
