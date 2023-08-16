@@ -16,6 +16,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {makeExecuteKeyboardAction} from 'utils/testing'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import shortcutManager from 'services/shortcutManager'
+import useAppDispatch from 'hooks/useAppDispatch'
 import TicketHeader from '../TicketHeader'
 
 jest.mock('../../../../../services/shortcutManager')
@@ -39,6 +40,7 @@ jest.mock('state/ticket/actions', () => ({
     setTrashed: jest.fn(),
     snoozeTicket: jest.fn(() => () => Promise.resolve()),
     ticketPartialUpdate: jest.fn(() => () => Promise.resolve()),
+    isTicketNavigationAvailable: jest.fn(),
 }))
 
 jest.mock('reactstrap', () => {
@@ -67,6 +69,8 @@ jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 
 const mockStore = configureMockStore([thunk])
 
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+
 describe('<TicketHeader />', () => {
     const defaultStore: Partial<RootState> = {
         currentUser: fromJS(user),
@@ -76,11 +80,18 @@ describe('<TicketHeader />', () => {
     const minProps = {
         className: '',
         hasSeparateSnooze: false,
+        hasTicketNavigationArrows: true,
         ticket: fromJS(_omit(ticket, 'id')),
     } as ComponentProps<typeof TicketHeader>
 
+    let dispatch: jest.Mock
+    const useAppDispatchMock = useAppDispatch as jest.Mock
+
     beforeEach(() => {
         jest.clearAllMocks()
+
+        dispatch = jest.fn()
+        useAppDispatchMock.mockReturnValue(dispatch)
     })
 
     it('should render new ticket', () => {
@@ -93,13 +104,17 @@ describe('<TicketHeader />', () => {
     })
 
     it('should render existing ticket', () => {
-        const {container} = render(
+        useAppDispatchMock.mockReturnValue(jest.fn(() => true))
+        const {container, getByText} = render(
             <Provider
                 store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
             >
                 <TicketHeader {...minProps} ticket={fromJS(ticket)} />
             </Provider>
         )
+
+        expect(getByText('keyboard_arrow_left')).toBeInTheDocument()
+        expect(getByText('keyboard_arrow_right')).toBeInTheDocument()
 
         expect(container.firstChild).toMatchSnapshot()
     })

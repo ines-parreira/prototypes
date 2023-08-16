@@ -891,6 +891,34 @@ export const fetchTicket =
     }
 
 /**
+ * Check whether the current View is active or not.
+ */
+const isViewActive = () => {
+    return (dispatch: StoreDispatch, getState: () => RootState) => {
+        const view = (
+            viewsSelectors.getActiveView as (state: RootState) => Map<any, any>
+        )(getState())
+
+        const viewId = view.get('id') as number
+        const viewSearch = view.get('search') as string
+        const viewFilters = view.get('filters') as string
+        const isCustomerView = view.get('type') === ViewType.CustomerList
+
+        return !!(viewId || viewSearch || viewFilters) && !isCustomerView
+    }
+}
+
+/**
+ * Check whether Ticket navigation is available or not.
+ * Ticket navigation is not available when we are on the ticket page via direct URL, or we are creating a new ticket
+ * */
+export const isTicketNavigationAvailable = (ticketId: number | string) => {
+    return (dispatch: StoreDispatch) => {
+        return !!parseFloat(ticketId as string) && dispatch(isViewActive())
+    }
+}
+
+/**
  * Fetch the next or the previous ticket immediately
  * but wait for the Promise (`promise` argument) to be resolved to display it
  */
@@ -910,6 +938,13 @@ export const _goToNextOrPrevTicket = (
         const returnedPromise: Promise<Maybe<ReturnType<StoreDispatch>>> =
             promise || Promise.resolve()
 
+        if (!dispatch(isViewActive())) {
+            return returnedPromise.then(() => {
+                // there is no active view so we go to the first view
+                history.push('/app')
+            })
+        }
+
         //$TsFixMe remove casting once views/selectors is migrated
         const view = (
             viewsSelectors.getActiveView as (state: RootState) => Map<any, any>
@@ -918,14 +953,6 @@ export const _goToNextOrPrevTicket = (
         const viewSearch = view.get('search') as string
         const viewFilters = view.get('filters') as string
         const viewCursor = ticketsSelectors.getCursor(getState())
-        const isCustomerView = view.get('type') === ViewType.CustomerList
-
-        if ((!viewId && !viewSearch && !viewFilters) || isCustomerView) {
-            return returnedPromise.then(() => {
-                // there is no active view so we go to the first view
-                history.push('/app')
-            })
-        }
 
         const url = `/api/views/${
             viewId || '0'

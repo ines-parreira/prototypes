@@ -48,10 +48,12 @@ import TicketSpam from './TicketDetails/TicketSpam'
 import TicketSnooze from './TicketDetails/TicketSnooze'
 import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 import TicketTrash from './TicketDetails/TicketTrash'
+import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
 import css from './TicketHeader.less'
 
 type Props = {
     hasSeparateSnooze: boolean
+    hasTicketNavigationArrows: boolean
     ticket: Map<any, any>
     className: string
     hideTicket: () => Promise<void>
@@ -205,6 +207,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             className,
             currentUser,
             hasSeparateSnooze,
+            hasTicketNavigationArrows,
             removeTag,
             setAgent,
             setSubject,
@@ -311,6 +314,11 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                     />
 
                     <div className="d-flex justify-content-between align-items-center ml-3">
+                        {hasTicketNavigationArrows && (
+                            <TicketNavigationArrowPagination
+                                ticketId={ticket.get('id')}
+                            />
+                        )}
                         <TicketSnooze
                             className={css.headerIcon}
                             datetime={ticket.get('snooze_datetime')}

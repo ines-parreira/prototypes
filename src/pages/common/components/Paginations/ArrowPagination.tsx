@@ -28,6 +28,16 @@ type Props = {
     isNextDisabled?: boolean
 
     /**
+     * The ID of the previous item.
+     */
+    previousItemId?: string
+
+    /**
+     * The ID of the next item.
+     */
+    nextItemId?: string
+
+    /**
      * The size of the component.
      * @default 'medium'
      */
@@ -49,6 +59,8 @@ export const ArrowPagination = ({
     classNameItem,
     isPreviousDisabled,
     isNextDisabled,
+    previousItemId,
+    nextItemId,
     size,
     onClickPrevious,
     onClickNext,
@@ -59,6 +71,7 @@ export const ArrowPagination = ({
                 <PaginationItem
                     className={classNameItem}
                     disabled={isPreviousDisabled}
+                    itemId={previousItemId}
                     page={null}
                     size={size}
                     type="previous"
@@ -67,6 +80,7 @@ export const ArrowPagination = ({
                 <PaginationItem
                     className={classNameItem}
                     disabled={isNextDisabled}
+                    itemId={nextItemId}
                     page={null}
                     size={size}
                     type="next"

@@ -1296,4 +1296,98 @@ describe('ticket actions', () => {
             expect(store.getActions()).toMatchSnapshot()
         })
     })
+
+    describe('isTicketNavigationAvailable()', () => {
+        it.each([
+            // ticket is being created, ticketId = 'new' -> isTicketNavigationAvailable = false
+            ['new', {}, false],
+            // no active view -> isTicketNavigationAvailable = false
+            [123, {views: fromJS({active: {}})}, false],
+            // is customer view -> isTicketNavigationAvailable = false
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: 123,
+                            search: 'test',
+                            filters: 'test',
+                            type: ViewType.CustomerList,
+                        },
+                    }),
+                },
+                false,
+            ],
+            // view has `id' key -> isTicketNavigationAvailable = true
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: 123,
+                            search: null,
+                            filters: null,
+                            type: null,
+                        },
+                    }),
+                },
+                true,
+            ],
+            // view has `search` key -> isTicketNavigationAvailable = true
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: null,
+                            search: 'test',
+                            filters: null,
+                            type: null,
+                        },
+                    }),
+                },
+                true,
+            ],
+            // view has `filters` key -> isTicketNavigationAvailable = true
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: null,
+                            search: null,
+                            filters: 'test',
+                            type: null,
+                        },
+                    }),
+                },
+                true,
+            ],
+            // view has multiple required keys -> isTicketNavigationAvailable = true
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: 123,
+                            search: 'test',
+                            filters: 'test',
+                            type: 'testType',
+                        },
+                    }),
+                },
+                true,
+            ],
+        ])(
+            'should test if ticket navigation is available for ticketId and state',
+            (ticketId, state, expectedResult) => {
+                const store = mockStore(state as MockedRootState)
+                const result = store.dispatch(
+                    actions.isTicketNavigationAvailable(ticketId)
+                )
+
+                expect(result).toBe(expectedResult)
+            }
+        )
+    })
 })

@@ -25,6 +25,36 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
       class="d-flex justify-content-between align-items-center ml-3"
     >
       <div
+        class="arrowPaginationWrapper"
+      >
+        <ul
+          class="container"
+        >
+          <li
+            aria-label="previous"
+            class="item paginationItemWrapper btn btn-sm arrow"
+            id="pagination-item-arrow-previous"
+          >
+            <i
+              class="material-icons md-2"
+            >
+              keyboard_arrow_left
+            </i>
+          </li>
+          <li
+            aria-label="next"
+            class="item paginationItemWrapper btn btn-sm arrow"
+            id="pagination-item-arrow-next"
+          >
+            <i
+              class="material-icons md-2"
+            >
+              keyboard_arrow_right
+            </i>
+          </li>
+        </ul>
+      </div>
+      <div
         class="dropdown"
       >
         <button

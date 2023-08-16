@@ -1034,10 +1034,21 @@ describe('TicketDetailContainer component', () => {
         await flushPromises()
     })
 
-    it.each<[string, string, () => jest.Mock]>([
+    it.each<[string, string, boolean, () => jest.Mock]>([
         [
             'next',
             'GO_FORWARD',
+            true,
+            () => {
+                return (minProps.goToNextTicket as jest.Mock).mockReturnValue(
+                    new Promise(_noop)
+                )
+            },
+        ],
+        [
+            'next',
+            'GO_FORWARD',
+            false,
             () => {
                 return (minProps.goToNextTicket as jest.Mock).mockReturnValue(
                     new Promise(_noop)
@@ -1047,6 +1058,17 @@ describe('TicketDetailContainer component', () => {
         [
             'prev',
             'GO_BACK',
+            true,
+            () => {
+                return (minProps.goToPrevTicket as jest.Mock).mockReturnValue(
+                    new Promise(_noop)
+                )
+            },
+        ],
+        [
+            'prev',
+            'GO_BACK',
+            false,
             () => {
                 return (minProps.goToPrevTicket as jest.Mock).mockReturnValue(
                     new Promise(_noop)
@@ -1055,7 +1077,9 @@ describe('TicketDetailContainer component', () => {
         ],
     ])(
         'should debounce %s ticket calls while call is already pending',
-        (testName, actionName, testSetup) => {
+        (testName, actionName, isTicketNavigationAvailable, testSetup) => {
+            mockedDispatch.mockReturnValue(isTicketNavigationAvailable)
+
             const execKeyboardAction =
                 makeExecuteKeyboardAction(shortcutManagerMock)
             const callMock = testSetup()
@@ -1074,7 +1098,9 @@ describe('TicketDetailContainer component', () => {
             execKeyboardAction(actionName)
             execKeyboardAction(actionName)
 
-            expect(callMock).toHaveBeenCalledTimes(1)
+            expect(callMock).toHaveBeenCalledTimes(
+                isTicketNavigationAvailable ? 1 : 0
+            )
         }
     )
 

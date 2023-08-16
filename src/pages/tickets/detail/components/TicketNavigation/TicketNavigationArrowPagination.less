@@ -1,0 +1,22 @@
+@import '~css/new/theme';
+@import '~css/new/layout';
+@import '~css/new/mixins';
+
+:local {
+    .arrowPaginationWrapper {
+        margin-left: @layout-spacing-xs;
+        margin-right: @layout-spacing-xs;
+    }
+
+    .paginationItemWrapper {
+        &:hover {
+            color: var(--neutral-grey-5);
+            background-color: var(--neutral-grey-2);
+        }
+    }
+
+    .paginationItemTooltip {
+        display: flex;
+        align-items: center;
+    }
+}

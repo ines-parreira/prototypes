@@ -11,6 +11,7 @@ type Props = {
     page: number | null
     selected?: boolean
     disabled?: boolean
+    itemId?: string
     size?: NavigationSize
     type: PageType
     onClick: () => void
@@ -21,6 +22,7 @@ export const PaginationItem = ({
     page,
     selected = false,
     disabled = false,
+    itemId,
     size = 'medium',
     type,
     onClick,
@@ -46,7 +48,12 @@ export const PaginationItem = ({
     }
     if (type === 'next' || type === 'previous') {
         return (
-            <li aria-label={type} className={className} onClick={onClick}>
+            <li
+                aria-label={type}
+                className={className}
+                onClick={onClick}
+                id={itemId}
+            >
                 {type === 'next' && (
                     <i className="material-icons md-2">keyboard_arrow_right</i>
                 )}

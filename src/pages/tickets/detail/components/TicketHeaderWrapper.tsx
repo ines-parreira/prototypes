@@ -109,6 +109,8 @@ const TicketHeaderWrapper = ({
 }: Props) => {
     const hasSeparateSnooze =
         useFlags()[FeatureFlagKey.SeparateSnoozeButton] || false
+    const hasTicketNavigationArrows =
+        useFlags()[FeatureFlagKey.TicketNavigationArrows] || false
     const ticket = useAppSelector((state) => state.ticket)
     const customers = useAppSelector(getCustomersState)
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)
@@ -143,6 +145,7 @@ const TicketHeaderWrapper = ({
                     )}
                     <TicketHeader
                         hasSeparateSnooze={hasSeparateSnooze}
+                        hasTicketNavigationArrows={hasTicketNavigationArrows}
                         ticket={ticket}
                         hideTicket={hideTicket}
                         setStatus={setStatus}

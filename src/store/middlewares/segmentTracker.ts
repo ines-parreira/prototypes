@@ -286,6 +286,8 @@ export enum SegmentEvent {
     TicketExport = 'ticket-export',
     PreviewModeClicked = 'preview-mode-clicked',
     FallbackWorkerStarted = 'fallback-worker-started',
+    TicketPreviousNavigation = 'ticket/ticket-navigation/previous-ticket-navigation',
+    TicketNextNavigation = 'ticket/ticket-navigation/next-ticket-navigation',
 }
 
 export enum StatViewLinkClickedStat {

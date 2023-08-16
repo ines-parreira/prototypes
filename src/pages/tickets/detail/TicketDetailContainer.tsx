@@ -43,6 +43,7 @@ import {
     findAndSetCustomer,
     goToNextTicket,
     goToPrevTicket,
+    isTicketNavigationAvailable,
     setCustomer,
     setStatus,
     triggerTicketFieldsErrors,
@@ -181,6 +182,12 @@ export const TicketDetailContainer = ({
     const [{loading: isGoToPrevOrNextTicketPending}, goToPrevOrNextTicket] =
         useAsyncFn(
             async (direction: 'prev' | 'next') => {
+                // Disable Ticket navigation via keyboard shortcuts (`<-` & `->`) when
+                // we are on the ticket page via direct URL, or we are creating a new ticket
+                if (!dispatch(isTicketNavigationAvailable(ticketIdParam))) {
+                    return
+                }
+
                 const ticketNumber = parseInt(ticketIdParam)
                 clearTicket()
                 return direction === 'prev'
