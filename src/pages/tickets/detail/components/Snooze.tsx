@@ -9,6 +9,7 @@ import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 import css from './Snooze.less'
@@ -53,11 +54,15 @@ export default function Snooze({until, onUpdate}: Props) {
                 ref={toggleRef}
                 className={css.button}
                 fillStyle="ghost"
+                id="snooze-button"
                 intent="secondary"
                 onClick={handleClick}
             >
                 <i className={cn(css.icon, 'material-icons')}>snooze</i>
             </Button>
+            <Tooltip placement="bottom-end" target="snooze-button">
+                Snooze ticket
+            </Tooltip>
             <TicketSnoozePicker
                 datetime={until}
                 timezone={timezone}
