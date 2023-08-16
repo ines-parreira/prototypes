@@ -12,7 +12,6 @@ import {
 import {VOICEMAIL_DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import {updatePhoneVoicemailConfiguration} from 'pages/integrations/integration/components/phone/actions'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 import useVoiceMessageValidation from 'pages/integrations/integration/components/voice/hooks/useVoiceMessageValidation'
@@ -22,6 +21,7 @@ import SettingsContent from 'pages/settings/SettingsContent'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {fetchIntegrations} from 'state/integrations/actions'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import VoicemailOutsideBusinessHoursSection from './VoicemailOutsideBusinessHoursSection'
 import css from './VoiceIntegrationVoicemail.less'
 
@@ -173,20 +173,20 @@ export default function VoiceIntegrationVoicemailNew({
                     )}
 
                     <h3 className={css.sectionHeader}>Caller options</h3>
-                    <ToggleInput
-                        isToggled={payload?.allow_to_leave_voicemail ?? false}
-                        onClick={(value: boolean) =>
+                    <CheckBox
+                        isChecked={payload?.allow_to_leave_voicemail ?? false}
+                        onChange={(value: boolean) =>
                             setPayload((payload) => ({
                                 ...(payload ?? VOICEMAIL_DEFAULT_VOICE_MESSAGE),
                                 allow_to_leave_voicemail: value,
                             }))
                         }
                         caption={
-                            'When disabled, the voicemail recording will play but the caller will not be able to leave a message.'
+                            'When unchecked, the voicemail recording will play but the caller will not be able to leave a message.'
                         }
                     >
                         Allow caller to leave voicemail
-                    </ToggleInput>
+                    </CheckBox>
                     <Button
                         className={css.sectionHeader}
                         type="submit"

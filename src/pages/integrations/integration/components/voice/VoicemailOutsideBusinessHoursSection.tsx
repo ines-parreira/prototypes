@@ -6,11 +6,11 @@ import {
     VoiceMessage,
 } from 'models/integration/types'
 import {VOICEMAIL_DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 import useAppSelector from 'hooks/useAppSelector'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import css from './VoiceIntegrationVoicemail.less'
 
 type Props = {
@@ -48,13 +48,13 @@ export default function VoicemailOutsideBusinessHoursSection({
                     </Link>
                 )}
             </div>
-            <ToggleInput
-                isToggled={useSameSettingsOutsideBusinessHours}
-                onClick={onChangeUseSameSettings}
+            <CheckBox
+                isChecked={useSameSettingsOutsideBusinessHours}
+                onChange={onChangeUseSameSettings}
                 isDisabled={!hasBusinessHoursSet}
             >
                 Use same voicemail as during business hours
-            </ToggleInput>
+            </CheckBox>
 
             {!useSameSettingsOutsideBusinessHours && hasBusinessHoursSet && (
                 <div className={css.outsideBusinessHoursVoiceMessage}>

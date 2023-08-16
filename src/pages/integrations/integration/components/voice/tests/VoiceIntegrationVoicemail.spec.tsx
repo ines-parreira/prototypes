@@ -157,7 +157,7 @@ describe('<VoiceIntegrationVoicemail /> feature flag check', () => {
         expect(getByText('Allow caller to leave voicemail')).toBeInTheDocument()
         expect(
             getByText(
-                'When disabled, the voicemail recording will play but the caller will not be able to leave a message.'
+                'When unchecked, the voicemail recording will play but the caller will not be able to leave a message.'
             )
         ).toBeInTheDocument()
         expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
@@ -190,7 +190,7 @@ describe('<VoiceIntegrationVoicemail /> feature flag check', () => {
         expect(getByText('Allow caller to leave voicemail')).toBeInTheDocument()
         expect(
             getByText(
-                'When disabled, the voicemail recording will play but the caller will not be able to leave a message.'
+                'When unchecked, the voicemail recording will play but the caller will not be able to leave a message.'
             )
         ).toBeInTheDocument()
         expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
