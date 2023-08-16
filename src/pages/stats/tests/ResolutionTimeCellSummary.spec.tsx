@@ -11,6 +11,7 @@ import {
 import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -28,6 +29,9 @@ describe('<ResolutionTimeCellSummary>', () => {
 
     const defaultState = {
         stats: initialState,
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     const useResolutionTimeMetricReturnValue = {

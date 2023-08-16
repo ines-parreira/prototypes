@@ -7,6 +7,7 @@ import {useCustomerSatisfactionMetric} from 'hooks/reporting/metrics'
 import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -26,6 +27,9 @@ describe('<CustomerSatisfactionCellSummary>', () => {
 
     const defaultState = {
         stats: initialState,
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     const useCustomerSatisfactionMetricMockReturnValue = {

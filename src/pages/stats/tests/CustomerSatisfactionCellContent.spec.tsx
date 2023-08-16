@@ -8,6 +8,7 @@ import {useCustomerSatisfactionMetricPerAgent} from 'hooks/reporting/metricsPerD
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 
@@ -31,6 +32,7 @@ describe('<CustomerSatisfactionCellContent>', () => {
         stats: initialState,
         ui: {
             agentPerformance: agentPerformanceInitialState,
+            stats: uiStatsInitialState,
         },
     } as RootState
 

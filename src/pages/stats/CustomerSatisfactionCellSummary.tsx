@@ -1,23 +1,19 @@
 import React from 'react'
-import {useCustomerSatisfactionMetric} from 'hooks/reporting/metrics'
-import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getPageStatsFilters} from 'state/stats/selectors'
+import {useCustomerSatisfactionMetric} from 'hooks/reporting/metrics'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 
 export const CustomerSatisfactionCellSummary = () => {
-    const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    const {cleanStatsFilters, userTimezone} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
     )
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
-
     const {data, isFetching} = useCustomerSatisfactionMetric(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
 

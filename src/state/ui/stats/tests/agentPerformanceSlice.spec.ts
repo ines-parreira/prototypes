@@ -1,11 +1,15 @@
 import {fromJS} from 'immutable'
+import {user} from 'fixtures/users'
 import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
 } from 'models/reporting/types'
 import {OrderDirection} from 'models/api/types'
+import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import {initialState as initialStatsFiltersState} from 'state/stats/reducers'
+import {getPageStatsFilters} from 'state/stats/selectors'
+import {initialState as initialUiStatsState} from 'state/ui/stats/reducer'
 import {
     initialState,
     agentPerformanceSlice,
@@ -17,7 +21,9 @@ import {
     getPaginatedAgents,
     pageSet,
     getFilteredAgents,
+    getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import {RootState} from 'state/types'
 import {TableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
@@ -150,11 +156,35 @@ describe('agentPerformanceSlice', () => {
     })
 
     describe('getFilteredAgents', () => {
-        it('should return all agents if no StatsFilter.agents ', () => {
+        it('should return all agents if no StatsFilter.agents', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
-                ui: {[agentPerformanceSlice.name]: initialState},
+                ui: {
+                    [agentPerformanceSlice.name]: initialState,
+                    stats: initialUiStatsState,
+                },
                 stats: initialStatsFiltersState,
+            } as RootState
+
+            expect(getFilteredAgents(state).length).toEqual(agents.length)
+        })
+
+        it('should return all agents if StatsFilter.agents is an empty array', () => {
+            const state = {
+                agents: fromJS({all: fromJS(agents)}),
+                ui: {
+                    [agentPerformanceSlice.name]: initialState,
+                    stats: initialUiStatsState,
+                },
+                stats: fromJS({
+                    filters: {
+                        period: {
+                            start_datetime: '1970-01-01T00:00:00+00:00',
+                            end_datetime: '1970-01-01T00:00:00+00:00',
+                        },
+                        agents: [],
+                    },
+                }),
             } as RootState
 
             expect(getFilteredAgents(state).length).toEqual(agents.length)
@@ -162,17 +192,24 @@ describe('agentPerformanceSlice', () => {
 
         it('should return filtered agents if StatsFilter.agents selected', () => {
             const filteredAgents = [1, 2]
+            const cleanStatsFilters = {
+                period: {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                },
+                agents: filteredAgents,
+            }
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
-                ui: {[agentPerformanceSlice.name]: initialState},
-                stats: fromJS({
-                    filters: {
-                        period: {
-                            start_datetime: '1970-01-01T00:00:00+00:00',
-                            end_datetime: '1970-01-01T00:00:00+00:00',
-                        },
-                        agents: filteredAgents,
+                ui: {
+                    [agentPerformanceSlice.name]: initialState,
+                    stats: {
+                        ...initialUiStatsState,
+                        cleanStatsFilters: cleanStatsFilters,
                     },
+                },
+                stats: fromJS({
+                    filters: cleanStatsFilters,
                 }),
             } as RootState
 
@@ -186,7 +223,10 @@ describe('agentPerformanceSlice', () => {
         it('should return agents sorted alphabetically if no sorting metric is declared', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
-                ui: {[agentPerformanceSlice.name]: initialState},
+                ui: {
+                    [agentPerformanceSlice.name]: initialState,
+                    stats: initialUiStatsState,
+                },
                 stats: initialStatsFiltersState,
             } as RootState
 
@@ -203,6 +243,7 @@ describe('agentPerformanceSlice', () => {
                             direction: OrderDirection.Desc,
                         },
                     },
+                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -215,7 +256,10 @@ describe('agentPerformanceSlice', () => {
         it('should return agents in alphabetical order if no sorting metric is declared', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
-                ui: {[agentPerformanceSlice.name]: initialState},
+                ui: {
+                    [agentPerformanceSlice.name]: initialState,
+                    stats: initialUiStatsState,
+                },
                 stats: initialStatsFiltersState,
             } as RootState
 
@@ -234,6 +278,7 @@ describe('agentPerformanceSlice', () => {
                             lastSortingMetric: metricData,
                         },
                     },
+                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -249,7 +294,7 @@ describe('agentPerformanceSlice', () => {
             )
         })
 
-        it('should return agents with no data last', () => {
+        it('should return agents with no data last in descending order', () => {
             const agents = [
                 {id: 1, name: 'Adam'},
                 {id: 2, name: 'Zoey'},
@@ -272,11 +317,45 @@ describe('agentPerformanceSlice', () => {
                             lastSortingMetric: metricData,
                         },
                     },
+                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
 
             expect(getSortedAgents(state).pop()).toEqual(agents[0])
+        })
+
+        it('should return agents with no data first in ascending order', () => {
+            const agents = [
+                {id: 1, name: 'Adam'},
+                {id: 2, name: 'Zoey'},
+            ]
+            const metricData = [
+                {
+                    [TicketMember.AssigneeUserId]: '2',
+                    [TicketMeasure.FirstResponseTime]: '10',
+                },
+            ]
+
+            const state = {
+                agents: fromJS({all: fromJS(agents)}),
+                ui: {
+                    [agentPerformanceSlice.name]: {
+                        sorting: {
+                            field: TableColumn.ClosedTickets,
+                            direction: OrderDirection.Asc,
+                            isLoading: false,
+                            lastSortingMetric: metricData,
+                        },
+                    },
+                    stats: initialUiStatsState,
+                },
+                stats: initialStatsFiltersState,
+            } as RootState
+
+            expect(getSortedAgents(state).pop()).toEqual(
+                agents[agents.length - 1]
+            )
         })
     })
 
@@ -295,6 +374,7 @@ describe('agentPerformanceSlice', () => {
                             perPage,
                         },
                     },
+                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -307,6 +387,88 @@ describe('agentPerformanceSlice', () => {
                 currentPage: currentPage,
                 perPage: perPage,
             })
+        })
+    })
+
+    describe('getCleanStatsFiltersWithTimezone', () => {
+        const defaultState = {
+            currentUser: currentUserInitialState.mergeDeep(
+                fromJS({
+                    ...user,
+                    _internal: {
+                        loading: {
+                            settings: {
+                                preferences: true,
+                            },
+                            currentUser: true,
+                        },
+                    },
+                })
+            ),
+            ui: {
+                stats: initialUiStatsState,
+            },
+            stats: initialStatsFiltersState,
+        } as RootState
+
+        it('should return pageStatsFilters if no cleanStatsFilters are stored', () => {
+            expect(
+                getCleanStatsFiltersWithTimezone(defaultState).cleanStatsFilters
+            ).toEqual(getPageStatsFilters(defaultState))
+        })
+
+        it('should return cleanStatsFilters filters if defined', () => {
+            const cleanStatsFilters = {
+                period: {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                },
+                agents: [123, 456],
+            }
+            const state = {
+                ...defaultState,
+                ui: {
+                    stats: {
+                        ...initialUiStatsState,
+                        cleanStatsFilters,
+                    },
+                },
+            } as RootState
+            expect(
+                getCleanStatsFiltersWithTimezone(state).cleanStatsFilters
+            ).toEqual(cleanStatsFilters)
+        })
+
+        it('should return user`s Timezone', () => {
+            expect(
+                getCleanStatsFiltersWithTimezone(defaultState).userTimezone
+            ).toEqual(user.timezone)
+        })
+
+        it('should return default timezone if no user`s Timezone', () => {
+            const state = {
+                currentUser: currentUserInitialState.mergeDeep(
+                    fromJS({
+                        ...{...user, timezone: null},
+                        _internal: {
+                            loading: {
+                                settings: {
+                                    preferences: true,
+                                },
+                                currentUser: true,
+                            },
+                        },
+                    })
+                ),
+                ui: {
+                    stats: initialUiStatsState,
+                },
+                stats: initialStatsFiltersState,
+            } as RootState
+
+            expect(
+                getCleanStatsFiltersWithTimezone(state).userTimezone
+            ).toEqual(DEFAULT_TIMEZONE)
         })
     })
 })

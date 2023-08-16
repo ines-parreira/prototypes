@@ -3,16 +3,19 @@ import _intersectionBy from 'lodash/intersectionBy'
 import {User} from 'config/types/user'
 import {OrderDirection} from 'models/api/types'
 import {
+    HelpdeskMessageMember,
     ReportingMeasure,
     TicketMember,
-    HelpdeskMessageMember,
 } from 'models/reporting/types'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {getSortByName} from 'utils/getSortByName'
+import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import {getAgentsJS} from 'state/agents/selectors'
+import {getTimezone} from 'state/currentUser/selectors'
+import {getPageStatsFilters} from 'state/stats/selectors'
 
 import {RootState} from 'state/types'
+import {getCleanStatsFilters} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
+import {getSortByName} from 'utils/getSortByName'
 
 type AgentPerformanceSorting = {
     field: TableColumn
@@ -88,9 +91,9 @@ export const getAgentsPagination = (state: RootState) =>
 
 export const getFilteredAgents = createSelector(
     getAgentsJS,
-    getPageStatsFilters,
+    getCleanStatsFilters,
     (agents, filters) =>
-        filters?.agents
+        filters !== null && filters?.agents && filters.agents.length > 0
             ? _intersectionBy(
                   agents,
                   filters?.agents.map((agentId: number) => ({id: agentId})),
@@ -125,7 +128,9 @@ export const getSortedAgents = createSelector(
                     noDataAgents.push(agent)
                 }
             })
-            return [...sortedAgents, ...noDataAgents]
+            return direction === OrderDirection.Asc
+                ? [...noDataAgents, ...sortedAgents]
+                : [...sortedAgents, ...noDataAgents]
         }
         const sortedAgents = agents.sort(getSortByName)
         return direction === OrderDirection.Asc
@@ -144,6 +149,18 @@ export const getPaginatedAgents = createSelector(
             agents: agents.slice(startingItem, lastItem),
             currentPage,
             perPage,
+        }
+    }
+)
+
+export const getCleanStatsFiltersWithTimezone = createSelector(
+    getCleanStatsFilters,
+    getPageStatsFilters,
+    getTimezone,
+    (cleanStatsFilters, pageStatsFilters, timezone) => {
+        return {
+            userTimezone: timezone || DEFAULT_TIMEZONE,
+            cleanStatsFilters: cleanStatsFilters || pageStatsFilters,
         }
     }
 )

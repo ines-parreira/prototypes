@@ -13,6 +13,7 @@ import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -35,6 +36,7 @@ describe('<ClosedTicketsCellContent>', () => {
         stats: initialState,
         ui: {
             agentPerformance: agentPerformanceInitialState,
+            stats: uiStatsInitialState,
         },
     } as RootState
 

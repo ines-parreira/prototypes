@@ -1,4 +1,5 @@
 import {PayloadActionCreator} from '@reduxjs/toolkit'
+import {StatsFilters} from 'models/stat/types'
 
 import {FETCH_STAT_ENDED, FETCH_STAT_STARTED} from './constants'
 
@@ -7,6 +8,7 @@ export type StatsState = {
         [key: string]: boolean | undefined
     }
     isFilterDirty: boolean
+    cleanStatsFilters: StatsFilters | null
 }
 
 export type StatsAction = FetchStatEndedAction | FetchStatStartedAction

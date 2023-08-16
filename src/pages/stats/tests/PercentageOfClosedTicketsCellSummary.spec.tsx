@@ -10,10 +10,12 @@ import {
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
 import {initialState} from 'state/stats/reducers'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     initialState as agentPerformanceInitialState,
     getSortedAgents,
+    getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
 import {agents} from 'fixtures/agents'
@@ -27,6 +29,9 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 jest.mock('hooks/reporting/metrics')
 jest.mock('state/ui/stats/agentPerformanceSlice')
 const getSortedAgentsMock = assumeMock(getSortedAgents)
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithTimezone
+)
 const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -37,6 +42,7 @@ describe('<PercentageOfClosedTicketsCellSummary>', () => {
         stats: initialState,
         ui: {
             agentPerformance: agentPerformanceInitialState,
+            stats: uiStatsInitialState,
         },
     } as RootState
 
@@ -50,6 +56,15 @@ describe('<PercentageOfClosedTicketsCellSummary>', () => {
         useClosedTicketsMetricMockReturnValue
     )
     getSortedAgentsMock.mockReturnValue(agents)
+    getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+        userTimezone: 'someTimezone',
+        cleanStatsFilters: {
+            period: {
+                start_datetime: '1970-01-01T00:00:00+00:00',
+                end_datetime: '1970-01-01T00:00:00+00:00',
+            },
+        },
+    })
 
     it('should render value as percentage', () => {
         render(

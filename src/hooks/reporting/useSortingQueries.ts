@@ -10,10 +10,9 @@ import {
 } from 'hooks/reporting/metricsPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite} from 'models/api/types'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getPageStatsFilters} from 'state/stats/selectors'
 import {
     getAgentSorting,
+    getCleanStatsFiltersWithTimezone,
     sortingLoaded,
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
@@ -21,39 +20,38 @@ import {TableColumn} from 'state/ui/stats/types'
 
 export const useSortingQueries = (column: TableColumn) => {
     const dispatch = useDispatch()
-
-    const userTimezone = useAppSelector((state) => getTimezone(state) || 'UTC')
-
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
+    const {cleanStatsFilters, userTimezone} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
+    )
 
     const sorting = useAppSelector(getAgentSorting)
     const {isFetching: frtIsFetching, data: frtData} =
         useFirstResponseTimeMetricPerAgent(
-            pageStatsFilters,
+            cleanStatsFilters,
             userTimezone,
             sorting?.direction
         )
     const {isFetching: ticketsRepliedIsFetching, data: ticketsRepliedData} =
         useTicketsRepliedMetricPerAgent(
-            pageStatsFilters,
+            cleanStatsFilters,
             userTimezone,
             sorting?.direction
         )
     const {isFetching: closedTicketsIsFetching, data: closedTicketsData} =
         useClosedTicketsMetricPerAgent(
-            pageStatsFilters,
+            cleanStatsFilters,
             userTimezone,
             sorting?.direction
         )
     const {isFetching: messagesSentIsFetching, data: messagesSentData} =
         useMessagesSentMetricPerAgent(
-            pageStatsFilters,
+            cleanStatsFilters,
             userTimezone,
             sorting?.direction
         )
     const {isFetching: resolutionTimeIsFetching, data: resolutionTimeData} =
         useResolutionTimeMetricPerAgent(
-            pageStatsFilters,
+            cleanStatsFilters,
             userTimezone,
             sorting?.direction
         )
@@ -61,7 +59,7 @@ export const useSortingQueries = (column: TableColumn) => {
         isFetching: customerSatisfactionIsFetching,
         data: customerSatisfactionData,
     } = useCustomerSatisfactionMetricPerAgent(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone,
         sorting?.direction
     )

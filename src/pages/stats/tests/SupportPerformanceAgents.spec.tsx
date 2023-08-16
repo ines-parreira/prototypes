@@ -22,6 +22,7 @@ import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter
 import {LEARN_MORE_URL} from 'pages/stats/SupportPerformanceOverview'
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {useAgentsMetrics} from 'pages/stats/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'pages/stats/useAgentsSummaryMetrics'
@@ -72,6 +73,9 @@ describe('SupportPerformanceAgents', () => {
             tags: {
                 [tag.id]: tag,
             },
+        },
+        ui: {
+            stats: uiStatsInitialState,
         },
     } as RootState
 

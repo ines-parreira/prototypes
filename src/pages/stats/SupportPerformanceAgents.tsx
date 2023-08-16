@@ -1,17 +1,16 @@
-import React, {useMemo, useState} from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import ChartCard from 'pages/stats/ChartCard'
+import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {AgentsTable} from 'pages/stats/AgentsTable'
 
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {
-    getStatsFilters,
-    getMessagingIntegrationsStatsFilter,
     getStatsMessagingIntegrations,
+    getPageStatsFilters,
 } from 'state/stats/selectors'
-import {StatsFilters} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -39,21 +38,8 @@ export default function SupportPerformanceAgents() {
         useFlags()[FeatureFlagKey.AnalyticsExportAgentsPerformance]
 
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
-    const statsFilters = useAppSelector(getStatsFilters)
-    const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
-    )
-
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
-        const {channels, agents, period, tags} = statsFilters
-        return {
-            channels,
-            agents,
-            period,
-            integrations: integrationsStatsFilter,
-            tags,
-        }
-    }, [integrationsStatsFilter, statsFilters])
+    const pageStatsFilters = useAppSelector(getPageStatsFilters)
+    useCleanStatsFilters(pageStatsFilters)
 
     return (
         <div className="full-width">

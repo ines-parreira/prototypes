@@ -1,24 +1,23 @@
 import React from 'react'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
-import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getPageStatsFilters} from 'state/stats/selectors'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {
+    getCleanStatsFiltersWithTimezone,
+    getSortedAgents,
+} from 'state/ui/stats/agentPerformanceSlice'
 
 export const PercentageOfClosedTicketsCellSummary = () => {
-    const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    const {cleanStatsFilters, userTimezone} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
     )
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
     const agents = useAppSelector(getSortedAgents)
 
-    const {isFetching} = useClosedTicketsMetric(pageStatsFilters, userTimezone)
+    const {isFetching} = useClosedTicketsMetric(cleanStatsFilters, userTimezone)
 
     const metricValue = 100 / agents.length
 

@@ -21,6 +21,7 @@ import {
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as filtersInitialState} from 'state/stats/reducers'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -56,6 +57,7 @@ describe('useSortingQueries', () => {
         stats: filtersInitialState,
         ui: {
             agentPerformance: initialState,
+            stats: uiStatsInitialState,
         },
     } as unknown as RootState
 
@@ -145,6 +147,7 @@ describe('useSortingQueries', () => {
             const store = mockStore({
                 ...defaultState,
                 ui: {
+                    ...defaultState.ui,
                     agentPerformance: {
                         ...initialState,
                         sorting: {
@@ -183,6 +186,7 @@ describe('useSortingQueries', () => {
             const store = mockStore({
                 ...defaultState,
                 ui: {
+                    ...defaultState.ui,
                     agentPerformance: {
                         ...initialState,
                         sorting: {
@@ -221,6 +225,7 @@ describe('useSortingQueries', () => {
                         isLoading: true,
                     },
                 },
+                stats: uiStatsInitialState,
             },
         } as unknown as RootState)
 

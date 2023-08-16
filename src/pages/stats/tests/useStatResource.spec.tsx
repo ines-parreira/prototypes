@@ -13,7 +13,11 @@ import {firstResponseTime} from 'fixtures/stats'
 import {FIRST_RESPONSE_TIME} from 'config/stats'
 import {assumeMock} from 'utils/testing'
 import {fetchStat} from 'models/stat/resources'
-import {fetchStatEnded, fetchStatStarted} from 'state/ui/stats/actions'
+import {
+    fetchStatEnded,
+    fetchStatStarted,
+    statFiltersCleanWithPayload,
+} from 'state/ui/stats/actions'
 import {statFetched} from 'state/entities/stats/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -98,19 +102,22 @@ describe('useStatResource', () => {
 
         const actions = store.getActions()
         expect(actions[0]).toEqual(
+            statFiltersCleanWithPayload(defaultStatsFilters)
+        )
+        expect(actions[1]).toEqual(
             fetchStatStarted({
                 statName: defaultStatName,
                 resourceName: defaultResourceName,
             })
         )
-        expect(actions[1]).toEqual(
+        expect(actions[2]).toEqual(
             statFetched({
                 statName: defaultStatName,
                 resourceName: defaultResourceName,
                 value: firstResponseTime,
             })
         )
-        expect(actions[2]).toEqual(
+        expect(actions[3]).toEqual(
             fetchStatEnded({
                 statName: defaultStatName,
                 resourceName: defaultResourceName,
@@ -148,7 +155,7 @@ describe('useStatResource', () => {
                 title: DEFAULT_ERROR_MESSAGE,
             })
         )
-        expect(store.getActions()[1]).toEqual(notificationMock)
+        expect(store.getActions()[2]).toEqual(notificationMock)
     })
 
     it('should return null stat when stat is not found in the store', () => {
@@ -383,7 +390,14 @@ describe('useStatResource', () => {
                 ...defaultState,
                 ui: {
                     ...defaultState.ui,
-                    stats: {...defaultState.ui.stats, isFilterDirty: true},
+                    stats: {
+                        ...defaultState.ui.stats,
+                        isFilterDirty: true,
+                        cleanStatsFilters: {
+                            ...defaultStatsFilters,
+                            tags: [2],
+                        },
+                    },
                 },
             })
 

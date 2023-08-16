@@ -4,6 +4,7 @@ import {
     fetchStatEnded,
     fetchStatStarted,
     statFiltersClean,
+    statFiltersCleanWithPayload,
     statFiltersDirty,
 } from './actions'
 import {StatsState} from './types'
@@ -11,6 +12,7 @@ import {StatsState} from './types'
 export const initialState = {
     fetchingMap: {},
     isFilterDirty: false,
+    cleanStatsFilters: null,
 }
 
 const statsReducer = createReducer<StatsState>(initialState, (builder) =>
@@ -32,6 +34,10 @@ const statsReducer = createReducer<StatsState>(initialState, (builder) =>
         })
         .addCase(statFiltersClean, (state) => {
             state.isFilterDirty = false
+        })
+        .addCase(statFiltersCleanWithPayload, (state, {payload}) => {
+            state.isFilterDirty = false
+            state.cleanStatsFilters = payload
         })
 )
 

@@ -11,9 +11,13 @@ import {useTicketsRepliedMetric} from 'hooks/reporting/metrics'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {agents} from 'fixtures/agents'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
+import {
+    getCleanStatsFiltersWithTimezone,
+    getSortedAgents,
+} from 'state/ui/stats/agentPerformanceSlice'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -24,6 +28,9 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 jest.mock('hooks/reporting/metrics')
 jest.mock('state/ui/stats/agentPerformanceSlice')
 const getSortedAgentsMock = assumeMock(getSortedAgents)
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithTimezone
+)
 const useTicketsRepliedMetricMock = assumeMock(useTicketsRepliedMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -32,6 +39,9 @@ describe('<TicketsRepliedCellSummary>', () => {
 
     const defaultState = {
         stats: initialState,
+        ui: {
+            stats: uiStatsInitialState,
+        },
     } as RootState
 
     const useTicketsRepliedMetricReturnValue = {
@@ -46,6 +56,15 @@ describe('<TicketsRepliedCellSummary>', () => {
         useTicketsRepliedMetricReturnValue
     )
     getSortedAgentsMock.mockReturnValue(agents)
+    getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+        userTimezone: 'someTimezone',
+        cleanStatsFilters: {
+            period: {
+                start_datetime: '1970-01-01T00:00:00+00:00',
+                end_datetime: '1970-01-01T00:00:00+00:00',
+            },
+        },
+    })
 
     it('should render value as decimal', () => {
         render(

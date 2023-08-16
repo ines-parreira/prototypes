@@ -1,8 +1,5 @@
 import {useMemo} from 'react'
-import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getPageStatsFilters} from 'state/stats/selectors'
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
@@ -11,41 +8,40 @@ import {
     useTicketsRepliedMetric,
     useMessagesSentMetric,
 } from 'hooks/reporting/metrics'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 
 export function useAgentsSummaryMetrics() {
-    const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    const {cleanStatsFilters, userTimezone} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
     )
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
-
     const customerSatisfactionMetric = useCustomerSatisfactionMetric(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
 
     const percentageOfClosedTicketsMetric = useClosedTicketsMetric(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
 
     const closedTicketsMetric = useClosedTicketsMetric(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const firstResponseTimeMetric = useFirstResponseTimeMetric(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const messagesSentMetric = useMessagesSentMetric(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const resolutionTimeMetric = useResolutionTimeMetric(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const ticketsRepliedMetric = useTicketsRepliedMetric(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
 
@@ -80,6 +76,6 @@ export function useAgentsSummaryMetrics() {
             ticketsRepliedMetric,
         },
         isLoading: loading,
-        period: pageStatsFilters.period,
+        period: cleanStatsFilters.period,
     }
 }

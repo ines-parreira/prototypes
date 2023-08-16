@@ -1,56 +1,55 @@
 import {useMemo} from 'react'
-import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import {User} from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {
-    useCustomerSatisfactionMetricPerAgent,
     useClosedTicketsMetricPerAgent,
+    useCustomerSatisfactionMetricPerAgent,
     useFirstResponseTimeMetricPerAgent,
     useMessagesSentMetricPerAgent,
+    usePercentageOfClosedTicketsMetricPerAgent,
     useResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
-    usePercentageOfClosedTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
+import useAppSelector from 'hooks/useAppSelector'
+import {
+    getCleanStatsFiltersWithTimezone,
+    getSortedAgents,
+} from 'state/ui/stats/agentPerformanceSlice'
 
 export function useAgentsMetrics() {
-    const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    const {cleanStatsFilters, userTimezone} = useAppSelector(
+        getCleanStatsFiltersWithTimezone
     )
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
     const agents = useAppSelector<User[]>(getSortedAgents)
 
     const customerSatisfactionMetric = useCustomerSatisfactionMetricPerAgent(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
 
     const percentageOfClosedTicketsMetric =
         usePercentageOfClosedTicketsMetricPerAgent(
-            pageStatsFilters,
+            cleanStatsFilters,
             userTimezone
         )
 
     const closedTicketsMetric = useClosedTicketsMetricPerAgent(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const firstResponseTimeMetric = useFirstResponseTimeMetricPerAgent(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const messagesSentMetric = useMessagesSentMetricPerAgent(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const resolutionTimeMetric = useResolutionTimeMetricPerAgent(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
     const ticketsRepliedMetric = useTicketsRepliedMetricPerAgent(
-        pageStatsFilters,
+        cleanStatsFilters,
         userTimezone
     )
 
@@ -86,6 +85,6 @@ export function useAgentsMetrics() {
             ticketsRepliedMetric,
         },
         isLoading: loading,
-        period: pageStatsFilters.period,
+        period: cleanStatsFilters.period,
     }
 }

@@ -1,19 +1,21 @@
-import {useEffect, useState} from 'react'
-
+import {useEffect} from 'react'
+import _isEqual from 'lodash/isEqual'
+import {useDispatch} from 'react-redux'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
+import {statFiltersCleanWithPayload} from 'state/ui/stats/actions'
+import {getCleanStatsFilters, isCleanStatsDirty} from 'state/ui/stats/selectors'
 
 export function useCleanStatsFilters(statsFilters: StatsFilters) {
-    const [cleanStatsFilters, setCleanStatsFilters] = useState(statsFilters)
-    const isFilterDirty = useAppSelector<boolean>(
-        (state) => state.ui.stats.isFilterDirty
-    )
+    const cleanStatsFilters = useAppSelector(getCleanStatsFilters)
+    const isFilterDirty = useAppSelector(isCleanStatsDirty)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!isFilterDirty) {
-            setCleanStatsFilters(statsFilters)
+        if (!isFilterDirty && !_isEqual(cleanStatsFilters, statsFilters)) {
+            dispatch(statFiltersCleanWithPayload(statsFilters))
         }
-    }, [isFilterDirty, statsFilters])
+    }, [cleanStatsFilters, dispatch, isFilterDirty, statsFilters])
 
-    return cleanStatsFilters
+    return cleanStatsFilters ?? statsFilters
 }
