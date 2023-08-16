@@ -79,7 +79,7 @@ function VoiceIntegrationVoicemailOldSettings({
                             />
                         </div>
 
-                        <h5>Caller Options</h5>
+                        <h5>Caller options</h5>
                         <CheckBox
                             isChecked={
                                 payload?.allow_to_leave_voicemail ?? false

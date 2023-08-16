@@ -172,7 +172,7 @@ export default function VoiceIntegrationVoicemailNew({
                         />
                     )}
 
-                    <h3 className={css.sectionHeader}>Caller Options</h3>
+                    <h3 className={css.sectionHeader}>Caller options</h3>
                     <ToggleInput
                         isToggled={payload?.allow_to_leave_voicemail ?? false}
                         onClick={(value: boolean) =>
