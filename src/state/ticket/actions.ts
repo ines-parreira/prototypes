@@ -786,7 +786,20 @@ export const fetchTicket =
 
         return client
             .get<Ticket>(url)
-            .then((json) => json?.data)
+            .then((response) => {
+                if (isCurrentlyOnTicket(ticketId)) {
+                    const wasRedirected =
+                        response?.data?.uri &&
+                        response.data?.id &&
+                        url !== response.data.uri
+
+                    if (wasRedirected) {
+                        history.push(`/app/ticket/${response.data.id}`)
+                    }
+                }
+
+                return response?.data
+            })
             .then(
                 (response) => {
                     if (_isEmpty(response)) {

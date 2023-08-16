@@ -30,6 +30,7 @@ import {
 import {appQueryClient} from 'init'
 import {customFieldDefinitionKeys} from 'models/customField/queries'
 import {getCustomFields} from 'models/customField/resources'
+import {isCurrentlyOnTicket} from 'utils'
 import {initialState} from '../reducers'
 import * as actions from '../actions'
 
@@ -616,6 +617,38 @@ describe('ticket actions', () => {
             return store
                 .dispatch(actions.fetchTicket('1'))
                 .then(() => expect(socketManager.send).not.toHaveBeenCalled())
+        })
+
+        describe('should correctly handle redirects for merged tickets', () => {
+            beforeEach(() => {
+                mockServer.onGet(endpointMatchers.anyTicket).reply(200, {
+                    id: 2,
+                    uri: '/api/tickets/2/',
+                    messages: [],
+                })
+            })
+
+            afterEach(() => {
+                jest.clearAllMocks()
+            })
+
+            it('should redirect to the merged ticket if the current URL is of the old (merged) ticket', () => {
+                return store.dispatch(actions.fetchTicket('1')).finally(() => {
+                    expect(isCurrentlyOnTicket).toHaveReturnedWith(true)
+                    expect(history.push).toHaveBeenCalledWith('/app/ticket/2')
+                })
+            })
+
+            it('should NOT redirect if the current URL is NOT of the merged ticket', () => {
+                return store.dispatch(actions.fetchTicket('99')).finally(() => {
+                    // isCurrentlyOnTicket is implicitly mocked to return:
+                    // `true` for ticketId 1 and `false` for any other ticketId
+                    expect(isCurrentlyOnTicket).toHaveReturnedWith(false)
+                    expect(history.push).not.toHaveBeenCalledWith(
+                        '/app/ticket/2'
+                    )
+                })
+            })
         })
     })
 
