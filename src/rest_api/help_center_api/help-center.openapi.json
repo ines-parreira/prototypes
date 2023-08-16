@@ -6903,13 +6903,13 @@
                 "properties": {
                     "url": {"type": "string"},
                     "name": {"type": "string"},
-                    "size": {"type": "number"},
+                    "size": {"type": "number", "nullable": true},
                     "content_type": {"type": "string"},
                     "extra": {
                         "$ref": "#/components/schemas/WorkflowHandoverMessageAttachmentExtraDto"
                     }
                 },
-                "required": ["url", "name", "size", "content_type", "extra"]
+                "required": ["url", "name", "size", "content_type"]
             },
             "WorkflowHandoverMessageDto": {
                 "type": "object",
@@ -6924,12 +6924,7 @@
                     },
                     "from_agent": {"type": "boolean"}
                 },
-                "required": [
-                    "subject",
-                    "body_html",
-                    "attachments",
-                    "from_agent"
-                ]
+                "required": ["attachments", "from_agent"]
             },
             "WorkflowHandoverDto": {
                 "type": "object",
@@ -6966,7 +6961,20 @@
                         "minLength": 3,
                         "maxLength": 320
                     },
-                    "url": {"type": "string"}
+                    "url": {"type": "string"},
+                    "ticket_tags": {
+                        "nullable": true,
+                        "type": "array",
+                        "items": {"type": "string"}
+                    },
+                    "ticket_assignee_team_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "ticket_assignee_user_id": {
+                        "type": "number",
+                        "nullable": true
+                    }
                 },
                 "required": [
                     "locale",

@@ -2355,13 +2355,16 @@ declare namespace Components {
       conversation: WorkflowHandoverMessageDto[];
       sender_email: string;
       url: string;
+      ticket_tags?: string[] | null;
+      ticket_assignee_team_id?: number | null;
+      ticket_assignee_user_id?: number | null;
     }
     export interface WorkflowHandoverMessageAttachmentDto {
       url: string;
       name: string;
-      size: number;
+      size: number | null;
       content_type: string;
-      extra: WorkflowHandoverMessageAttachmentExtraDto;
+      extra?: WorkflowHandoverMessageAttachmentExtraDto;
     }
     export interface WorkflowHandoverMessageAttachmentExtraDto {
       product_id: number;
@@ -2373,8 +2376,8 @@ declare namespace Components {
       featured_image: string;
     }
     export interface WorkflowHandoverMessageDto {
-      subject: string;
-      body_html: string;
+      subject?: string;
+      body_html?: string;
       attachments: WorkflowHandoverMessageAttachmentDto[];
       from_agent: boolean;
     }
