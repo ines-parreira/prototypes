@@ -18,6 +18,7 @@ import {
     toJS,
     hasRole,
     getCode,
+    fromAST,
 } from '../../utils'
 import {isTimedelta} from '../../utils/ast'
 import {Agents} from '../agents/types'
@@ -105,7 +106,7 @@ export function addFilterAST(view: Map<any, any>, filter: ViewFilter) {
         ? `${view.get('filters') as string} && `
         : ''
     const newCode = `${oldCode}${newCallExprCode}`
-    return fromJS(getAST(newCode)) as Map<any, any>
+    return fromAST(getAST(newCode)) as Map<any, any>
 }
 
 // traverse filters_ast, remove the call expressions and return a new tree
@@ -116,7 +117,7 @@ export function removeFilterAST(
     // As always, we assume that we only have && operators
     const codeSplit = (view.get('filters') as string).split('&&')
     codeSplit.splice(index, 1)
-    return fromJS(getAST(codeSplit.join('&&'))) as Maybe<Map<any, any>>
+    return fromAST(getAST(codeSplit.join('&&'))) as Maybe<Map<any, any>>
 }
 
 // Update a node (CallExpression) in the ast
@@ -222,7 +223,7 @@ export function updateFilterOperator(
 }
 
 function updateAstLoc(ast: Map<any, any>) {
-    return fromJS(getAST(getCode(ast.toJS()))) as Map<any, any>
+    return fromAST(getAST(getCode(ast.toJS()))) as Map<any, any>
 }
 
 export function updateFilterValue(

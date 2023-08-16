@@ -1,8 +1,8 @@
 import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
 import {FormGroup} from 'reactstrap'
 import classnames from 'classnames'
 
+import {fromAST} from 'utils'
 import Program from '../../../common/components/ast/Program'
 import {RuleDraft} from '../../../../state/rules/types'
 import {RuleItemActions} from '../types'
@@ -39,7 +39,7 @@ function RuleEditor({
                         typeof Program
                     >['body']
                 }
-                rule={fromJS(ruleDraft)}
+                rule={fromAST(ruleDraft)}
                 actions={actions}
             />
         </FormGroup>

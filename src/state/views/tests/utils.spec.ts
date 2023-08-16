@@ -2,7 +2,7 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
-import {getAST} from 'utils'
+import {fromAST, getAST} from 'utils'
 
 import * as utils from '../utils'
 
@@ -79,7 +79,7 @@ describe('utils', () => {
             const ast = getAST(
                 "gt(ticket.created_datetime, '2018-04-02T18:57:04.669744')"
             )
-            const res = utils.updateFilterOperator(fromJS(ast), 0, 'isEmpty')
+            const res = utils.updateFilterOperator(fromAST(ast), 0, 'isEmpty')
             expect(res.toJS()).toEqual(
                 getAST('isEmpty(ticket.created_datetime)')
             )
@@ -87,7 +87,7 @@ describe('utils', () => {
 
         it("should re-add a right part if there's none and the operator is not an empty operator", () => {
             const ast = getAST('isEmpty(ticket.created_datetime)')
-            const res = utils.updateFilterOperator(fromJS(ast), 0, 'gte')
+            const res = utils.updateFilterOperator(fromAST(ast), 0, 'gte')
             expect(res.toJS()).toEqual(
                 getAST("gte(ticket.created_datetime, '')")
             )
@@ -101,7 +101,7 @@ describe('utils', () => {
                     "gte(ticket.created_datetime, '2018-04-02T18:57:04.669744')"
                 )
                 const res = utils.updateFilterOperator(
-                    fromJS(ast),
+                    fromAST(ast),
                     0,
                     'gteTimedelta'
                 )
@@ -118,7 +118,7 @@ describe('utils', () => {
                 const ast = getAST(
                     "gteTimedelta(ticket.created_datetime, '1d')"
                 )
-                const res = utils.updateFilterOperator(fromJS(ast), 0, 'gte')
+                const res = utils.updateFilterOperator(fromAST(ast), 0, 'gte')
                 expect(res.toJS()).toEqual(
                     getAST("gte(ticket.created_datetime, '')")
                 )
@@ -127,7 +127,7 @@ describe('utils', () => {
 
         it('should conserve the right part if we are switching between operators of the same kind', () => {
             const ast = getAST("gte(ticket.created_datetime, '1')")
-            const res = utils.updateFilterOperator(fromJS(ast), 0, 'lte')
+            const res = utils.updateFilterOperator(fromAST(ast), 0, 'lte')
             expect(res.toJS()).toEqual(
                 getAST("lte(ticket.created_datetime, '1')")
             )
@@ -137,7 +137,7 @@ describe('utils', () => {
     describe('updateFilterValue', () => {
         it('should update fields value to number', () => {
             const ast = getAST('gte(ticket.created_datetime, 1)')
-            const res = utils.updateFilterValue(fromJS(ast), 0, 2)
+            const res = utils.updateFilterValue(fromAST(ast), 0, 2)
             expect(res.toJS()).toEqual(
                 getAST('gte(ticket.created_datetime, 2)')
             )
@@ -145,7 +145,7 @@ describe('utils', () => {
 
         it('should update fields value to string', () => {
             const ast = getAST("gte(ticket.created_datetime, '1')")
-            const res = utils.updateFilterValue(fromJS(ast), 0, '2')
+            const res = utils.updateFilterValue(fromAST(ast), 0, '2')
             expect(res.toJS()).toEqual(
                 getAST("gte(ticket.created_datetime, '2')")
             )
@@ -153,7 +153,7 @@ describe('utils', () => {
 
         it('should update fields value to array', () => {
             const ast = getAST("gte(ticket.created_datetime, '1')")
-            const res = utils.updateFilterValue(fromJS(ast), 0, [1])
+            const res = utils.updateFilterValue(fromAST(ast), 0, [1])
             expect(res.toJS()).toEqual(
                 getAST('gte(ticket.created_datetime, [1])')
             )
@@ -161,7 +161,7 @@ describe('utils', () => {
 
         it('should remove field value', () => {
             const ast = getAST("gte(ticket.created_datetime, '1')")
-            const res = utils.updateFilterValue(fromJS(ast), 0, null)
+            const res = utils.updateFilterValue(fromAST(ast), 0, null)
             expect(res.toJS()).toEqual(
                 getAST("gte(ticket.created_datetime, '')")
             )

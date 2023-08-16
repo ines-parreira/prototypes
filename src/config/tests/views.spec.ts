@@ -5,7 +5,7 @@ import * as viewsConfig from '../views'
 
 import * as ticketFixtures from '../../fixtures/ticket'
 import {customer} from '../../fixtures/customer'
-import {getAST} from '../../utils'
+import {getAST, isImmutable} from '../../utils'
 import {ViewType, View, ViewField} from '../../models/view/types'
 
 global.console.error = jest.fn()
@@ -30,7 +30,6 @@ describe('Config: views', () => {
     describe('baseView', () => {
         it('has minimum properties required', () => {
             const view = viewsConfig.baseView().toJS()
-
             expect(view).toHaveProperty('id', 0)
             expect(view).toHaveProperty('name')
             expect(view).toHaveProperty('slug')
@@ -39,6 +38,28 @@ describe('Config: views', () => {
             expect(view).toHaveProperty('order_dir')
             expect(view).toHaveProperty('filters')
             expect(view).toHaveProperty('filters_ast')
+        })
+        it('has filtered_as as immutable', () => {
+            const baseView = viewsConfig.baseView()
+            expect(isImmutable(baseView.getIn(['filters_ast']))).toEqual(true)
+        })
+    })
+
+    describe('defaultMergeTicketsView', () => {
+        it('has minimum properties required', () => {
+            const view = viewsConfig.defaultMergeTicketsView(1).toJS()
+            expect(view).toHaveProperty('id', 0)
+            expect(view).toHaveProperty('search')
+            expect(view).toHaveProperty('fields')
+            expect(view).toHaveProperty('filters_ast')
+            expect(view).toHaveProperty('order_by')
+            expect(view).toHaveProperty('order_dir')
+            expect(view).toHaveProperty('type')
+            expect(view).toHaveProperty('slug')
+        })
+        it('has filtered_ast as immutable', () => {
+            const baseView = viewsConfig.defaultMergeTicketsView(1)
+            expect(isImmutable(baseView.getIn(['filters_ast']))).toEqual(true)
         })
     })
 
@@ -124,52 +145,72 @@ describe('Config: views', () => {
                 })
             })
 
-            it('newView', () => {
-                const newView = (
-                    viewConfig.get('newView') as () => Map<any, any>
-                )().toJS() as View
+            describe('noView()', () => {
+                it('has all properties', () => {
+                    const newView = (
+                        viewConfig.get('newView') as () => Map<any, any>
+                    )().toJS() as View
 
-                expect(newView).toHaveProperty('id', 0)
-                expect(newView).toHaveProperty('name')
-                expect(newView).toHaveProperty('slug')
-                expect(newView).toHaveProperty('order_by')
-                expect(newView).toHaveProperty('created_datetime')
-                expect(newView).toHaveProperty('order_dir')
-                expect(newView).toHaveProperty('filters')
-                expect(newView).toHaveProperty('filters_ast')
-                expect(newView).toHaveProperty('fields')
-                expect(newView).toHaveProperty('type')
-                if (newView.type === ViewType.TicketList) {
-                    expect(newView).toHaveProperty('visibility')
-                }
+                    expect(newView).toHaveProperty('id', 0)
+                    expect(newView).toHaveProperty('name')
+                    expect(newView).toHaveProperty('slug')
+                    expect(newView).toHaveProperty('order_by')
+                    expect(newView).toHaveProperty('created_datetime')
+                    expect(newView).toHaveProperty('order_dir')
+                    expect(newView).toHaveProperty('filters')
+                    expect(newView).toHaveProperty('filters_ast')
+                    expect(newView).toHaveProperty('fields')
+                    expect(newView).toHaveProperty('type')
+                    if (newView.type === ViewType.TicketList) {
+                        expect(newView).toHaveProperty('visibility')
+                    }
+                })
+                it('has filtered_ast as immutable', () => {
+                    const newView = (
+                        viewConfig.get('newView') as () => Map<any, any>
+                    )()
+                    expect(isImmutable(newView.getIn(['filters_ast']))).toEqual(
+                        true
+                    )
+                })
             })
 
-            it('searchView', () => {
-                const term = 'term'
-                const filters = 'eq("ticket.channel", "chat")'
-                const searchView = (
-                    viewConfig.get('searchView') as (
-                        term: string,
-                        filters?: string
-                    ) => Map<any, any>
-                )(term, filters).toJS()
+            describe('searchView()', () => {
+                it('it has all properties', () => {
+                    const term = 'term'
+                    const filters = 'eq("ticket.channel", "chat")'
+                    const searchView = (
+                        viewConfig.get('searchView') as (
+                            term: string,
+                            filters?: string
+                        ) => Map<any, any>
+                    )(term, filters).toJS()
 
-                expect(searchView).toHaveProperty('id', 0)
-                expect(searchView).toHaveProperty('name')
-                expect(searchView).toHaveProperty('slug')
-                expect(searchView).toHaveProperty('order_by')
-                expect(searchView).toHaveProperty('created_datetime')
-                expect(searchView).toHaveProperty('order_dir')
-                expect(searchView).toHaveProperty('filters')
-                expect(searchView).toHaveProperty('filters_ast')
-                expect(searchView).toHaveProperty('fields')
-                expect(searchView).toHaveProperty('type')
-                expect(searchView).toHaveProperty('search', term)
-                expect(searchView).toHaveProperty('filters', filters)
-                expect(searchView).toHaveProperty(
-                    'filters_ast',
-                    getAST(filters)
-                )
+                    expect(searchView).toHaveProperty('id', 0)
+                    expect(searchView).toHaveProperty('name')
+                    expect(searchView).toHaveProperty('slug')
+                    expect(searchView).toHaveProperty('order_by')
+                    expect(searchView).toHaveProperty('created_datetime')
+                    expect(searchView).toHaveProperty('order_dir')
+                    expect(searchView).toHaveProperty('filters')
+                    expect(searchView).toHaveProperty('filters_ast')
+                    expect(searchView).toHaveProperty('fields')
+                    expect(searchView).toHaveProperty('type')
+                    expect(searchView).toHaveProperty('search', term)
+                    expect(searchView).toHaveProperty('filters', filters)
+                    expect(searchView).toHaveProperty(
+                        'filters_ast',
+                        getAST(filters)
+                    )
+                })
+                it('has filtered_ast as immutable', () => {
+                    const searchView = (
+                        viewConfig.get('searchView') as () => Map<any, any>
+                    )()
+                    expect(
+                        isImmutable(searchView.getIn(['filters_ast']))
+                    ).toEqual(true)
+                })
             })
         })
     })

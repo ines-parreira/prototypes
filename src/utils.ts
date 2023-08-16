@@ -7,9 +7,10 @@ import {
 } from 'react'
 import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
-import esprima from 'esprima'
+import * as esprima from 'esprima'
 import htmlparser from 'htmlparser2'
 import Immutable, {fromJS, Iterable, List, Map} from 'immutable'
+
 import _filter from 'lodash/filter'
 import _get from 'lodash/get'
 import _has from 'lodash/has'
@@ -184,22 +185,36 @@ export function formatDatetime(
     }
 }
 
-export function getAST(code: string) {
+export function getAST(code: string): esprima.Program {
     if (!_isString(code)) {
         console.error('Not a string:', code)
     }
-    return esprima.parse(code, {loc: true})
+    return esprima.parseScript(code, {loc: true})
 }
 
-export function getFirstExpressionOfAST(ast: ReturnType<typeof esprima.parse>) {
-    return (fromJS(ast) as Map<any, any>).getIn([
+export function getFirstExpressionOfAST(ast: esprima.Program) {
+    return (fromAST(ast) as Map<any, any>).getIn([
         'body',
         0,
         'expression',
     ]) as Map<any, any>
 }
 
-export function getCode(ast: {type: 'Program'}): string {
+/*
+ * Deeply converts AST, plain JS objects and arrays to Immutable Maps and Lists.
+ * Why specifically for AST?
+ * https://github.com/immutable-js/immutable-js/wiki/Converting-from-JS-objects#custom-conversion
+ * https://stackoverflow.com/a/40663730/3443247
+ */
+export function fromAST<T>(js: T): T | List<any> | Map<any, any> | any {
+    return typeof js !== 'object' || js === null
+        ? js
+        : Array.isArray(js)
+        ? Immutable.Seq(js).map(fromAST).toList()
+        : Immutable.Seq(js).map(fromAST).toMap()
+}
+
+export function getCode(ast: esprima.Program): string {
     if (!_isString(ast.type)) {
         console.error('Not an AST:', ast)
     }
@@ -587,7 +602,7 @@ export const isImmutable = (value: any): boolean =>
  */
 export const toImmutable = <T, U = Record<string, unknown>>(
     object: U | Iterable<any, any> | unknown[]
-) => (isImmutable(object) ? object : fromJS(object)) as T
+) => (isImmutable(object) ? object : fromAST(object)) as T
 
 /**
  * Return a passed object as plain JS (not Immutable)

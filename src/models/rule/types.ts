@@ -114,7 +114,7 @@ export type IdentifierElement = {
 export type RuleDraft = {
     id?: number
     code: string
-    code_ast: ReturnType<typeof esprima.parse>
+    code_ast: esprima.Program
     deactivated_datetime: Maybe<string>
     description: string
     event_types: RuleEvent | string

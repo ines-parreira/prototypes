@@ -10,7 +10,7 @@ import React, {
 import {useAsyncFn} from 'react-use'
 import {FormGroup, Label} from 'reactstrap'
 import moment from 'moment'
-import {Map, fromJS, List} from 'immutable'
+import {Map, List} from 'immutable'
 import classnames from 'classnames'
 import _getIn from 'lodash/get'
 import esprima from 'esprima'
@@ -39,6 +39,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
+import {fromAST} from 'utils'
 import {CodeASTType} from '../../../types'
 import RuleItemButtons from '../../../components/RuleItemButtons'
 import RuleEditor from '../../../components/RuleEditor'
@@ -198,7 +199,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
             value: Maybe<string | Record<string, unknown>>,
             operation: RuleOperation,
             code_ast?: CodeASTType
-        ): ReturnType<typeof esprima.parse> => {
+        ): esprima.Program => {
             const {code, ast} = updateCodeAst(
                 schemas,
                 code_ast ?? ruleDraft.code_ast,
@@ -211,7 +212,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
         }
 
         const getCondition = (path: List<any>) =>
-            fromJS(_getIn(ruleDraft, ['code_ast', ...path.toJS()])) as Map<
+            fromAST(_getIn(ruleDraft, ['code_ast', ...path.toJS()])) as Map<
                 any,
                 any
             >

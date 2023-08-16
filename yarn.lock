@@ -4441,10 +4441,10 @@
     "@types/estree" "*"
     "@types/json-schema" "*"
 
-"@types/esprima@2.1.36":
-  version "2.1.36"
-  resolved "https://registry.yarnpkg.com/@types/esprima/-/esprima-2.1.36.tgz#a680a91a9e5a7391d0a900b35a710f196dd8b9a3"
-  integrity sha512-NI/2gHkLxJ9YUhqUr7LEDwijEqdWXDYZm4q+Jwk2NKPxFNUhtDtghOxJ18OFcGsxVJJ0hyTHvpx3pTHY5Y0qQg==
+"@types/esprima@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/esprima/-/esprima-4.0.1.tgz#40f6fb3a3a50ebcaa4dfca17f41e7f10e687df03"
+  integrity sha512-/2d2u4NIv3WJdtW51Z22w6qMqdXc3VYecve/L3bbtvgth/KvT//XJDPfhYLbMq1yEAMu+XLK5q9jjNqlYrkfTA==
   dependencies:
     "@types/estree" "*"
 
@@ -9437,15 +9437,15 @@ espree@^9.0.0:
     acorn-jsx "^5.3.1"
     eslint-visitor-keys "^3.0.0"
 
-esprima@2.7.3, esprima@^2.7.1:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/esprima/-/esprima-2.7.3.tgz#96e3b70d5779f6ad49cd032673d1c312767ba581"
-  integrity sha1-luO3DVd59q1JzQMmc9HDEnZ7pYE=
-
-esprima@^4.0.0, esprima@^4.0.1:
+esprima@4.0.1, esprima@^4.0.0, esprima@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
+
+esprima@^2.7.1:
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-2.7.3.tgz#96e3b70d5779f6ad49cd032673d1c312767ba581"
+  integrity sha1-luO3DVd59q1JzQMmc9HDEnZ7pYE=
 
 esquery@^1.4.0:
   version "1.4.0"

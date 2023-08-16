@@ -10,7 +10,7 @@ export const emptyRule = {
     id: 1,
     description: 'foo',
     name: 'my rule',
-    code_ast: {} as ReturnType<typeof esprima.parse>,
+    code_ast: {} as esprima.Program,
     code: '',
     event_types: 'ticket-created',
     deactivated_datetime: null,

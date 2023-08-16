@@ -3,14 +3,14 @@ import esprima from 'esprima'
 
 import {RuleOperation} from '../../../state/rules/types'
 
-export type CodeASTType = ReturnType<typeof esprima.parse>
+export type CodeASTType = esprima.Program
 
 export type RuleItemActions = {
     modifyCodeAST: (
         path: List<any>,
         node: Maybe<string | Record<string, unknown>>,
         operation: RuleOperation,
-        code_ast?: ReturnType<typeof esprima.parse>
+        code_ast?: esprima.Program
     ) => CodeASTType
     getCondition: (path: List<any>) => Map<any, any>
 }

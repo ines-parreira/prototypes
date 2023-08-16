@@ -2,52 +2,52 @@
 
 exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (first attribute changed 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 39,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 36,
                   "line": 1,
@@ -57,13 +57,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 22,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 15,
                     "line": 1,
                   },
@@ -71,13 +71,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                 "name": "message",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 36,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 23,
                     "line": 1,
                   },
@@ -88,13 +88,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               "type": "MemberExpression",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 14,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -102,7 +102,7 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
             "name": "isNotEmpty",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 37,
               "line": 1,
@@ -117,12 +117,12 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -138,52 +138,52 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
 
 exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (middle attribute changed 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 28,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 21,
                   "line": 1,
@@ -193,13 +193,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 13,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 7,
                     "line": 1,
                   },
@@ -207,13 +207,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 21,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 14,
                     "line": 1,
                   },
@@ -223,13 +223,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               },
               "type": "MemberExpression",
             },
-            {
-              "loc": SourceLocation {
+            Literal {
+              "loc": {
                 "end": {
                   "column": 25,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 23,
                   "line": 1,
                 },
@@ -239,13 +239,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               "value": "",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 6,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -253,7 +253,7 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
             "name": "eq",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 26,
               "line": 1,
@@ -268,12 +268,12 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -289,52 +289,52 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
 
 exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (middle attribute changed 2`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 46,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 39,
                   "line": 1,
@@ -344,9 +344,9 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "line": 1,
                 },
               },
-              "object": {
+              "object": StaticMemberExpression {
                 "computed": false,
-                "loc": WrappingSourceLocation {
+                "loc": {
                   "end": {
                     "column": 34,
                     "line": 1,
@@ -356,13 +356,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                     "line": 1,
                   },
                 },
-                "object": {
-                  "loc": SourceLocation {
+                "object": Identifier {
+                  "loc": {
                     "end": {
                       "column": 25,
                       "line": 1,
                     },
-                    "start": Position {
+                    "start": {
                       "column": 19,
                       "line": 1,
                     },
@@ -370,13 +370,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "name": "ticket",
                   "type": "Identifier",
                 },
-                "property": {
-                  "loc": SourceLocation {
+                "property": Identifier {
+                  "loc": {
                     "end": {
                       "column": 34,
                       "line": 1,
                     },
-                    "start": Position {
+                    "start": {
                       "column": 26,
                       "line": 1,
                     },
@@ -386,13 +386,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                 },
                 "type": "MemberExpression",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 39,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 35,
                     "line": 1,
                   },
@@ -402,14 +402,14 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               },
               "type": "MemberExpression",
             },
-            {
+            ArrayExpression {
               "elements": [],
-              "loc": SourceLocation {
+              "loc": {
                 "end": {
                   "column": 43,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 41,
                   "line": 1,
                 },
@@ -417,13 +417,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               "type": "ArrayExpression",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 18,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -431,7 +431,7 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
             "name": "notContainsAny",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 44,
               "line": 1,
@@ -446,12 +446,12 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -467,52 +467,52 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
 
 exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (middle attribute changed 3`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 33,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 24,
                   "line": 1,
@@ -522,13 +522,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 13,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 7,
                     "line": 1,
                   },
@@ -536,13 +536,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 24,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 14,
                     "line": 1,
                   },
@@ -552,13 +552,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               },
               "type": "MemberExpression",
             },
-            {
-              "loc": SourceLocation {
+            Literal {
+              "loc": {
                 "end": {
                   "column": 30,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 26,
                   "line": 1,
                 },
@@ -568,13 +568,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               "value": true,
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 6,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -582,7 +582,7 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
             "name": "eq",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 31,
               "line": 1,
@@ -597,12 +597,12 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -618,52 +618,52 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
 
 exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property name and reset value (last attribute name changed) 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 33,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 24,
                   "line": 1,
@@ -673,13 +673,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 13,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 7,
                     "line": 1,
                   },
@@ -687,13 +687,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 24,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 14,
                     "line": 1,
                   },
@@ -703,13 +703,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               },
               "type": "MemberExpression",
             },
-            {
-              "loc": SourceLocation {
+            Literal {
+              "loc": {
                 "end": {
                   "column": 30,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 26,
                   "line": 1,
                 },
@@ -719,13 +719,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               "value": true,
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 6,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -733,7 +733,7 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
             "name": "eq",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 31,
               "line": 1,
@@ -748,12 +748,12 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -769,52 +769,52 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
 
 exports[`ast utils updateCodeAst CallExpression changed arguments changed should update value (ArrayExpression value changed) 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 6,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 5,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 5,
             },
-            "start": Position {
+            "start": {
               "column": 8,
               "line": 4,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 6,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 30,
                   "line": 1,
@@ -824,13 +824,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 22,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 16,
                     "line": 1,
                   },
@@ -838,13 +838,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 30,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 23,
                     "line": 1,
                   },
@@ -854,15 +854,15 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               },
               "type": "MemberExpression",
             },
-            {
+            ArrayExpression {
               "elements": [
-                {
-                  "loc": SourceLocation {
+                Literal {
+                  "loc": {
                     "end": {
                       "column": 15,
                       "line": 2,
                     },
-                    "start": Position {
+                    "start": {
                       "column": 8,
                       "line": 2,
                     },
@@ -871,13 +871,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "type": "Literal",
                   "value": "hello",
                 },
-                {
-                  "loc": SourceLocation {
+                Literal {
+                  "loc": {
                     "end": {
                       "column": 15,
                       "line": 3,
                     },
-                    "start": Position {
+                    "start": {
                       "column": 8,
                       "line": 3,
                     },
@@ -887,12 +887,12 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "value": "world",
                 },
               ],
-              "loc": SourceLocation {
+              "loc": {
                 "end": {
                   "column": 5,
                   "line": 4,
                 },
-                "start": Position {
+                "start": {
                   "column": 32,
                   "line": 1,
                 },
@@ -900,13 +900,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               "type": "ArrayExpression",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 15,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -914,7 +914,7 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
             "name": "containsAll",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 6,
               "line": 4,
@@ -929,12 +929,12 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 6,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -953,52 +953,52 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
 
 exports[`ast utils updateCodeAst CallExpression changed arguments changed should update value (Literal value changed) 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 40,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 21,
                   "line": 1,
@@ -1008,13 +1008,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 13,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 7,
                     "line": 1,
                   },
@@ -1022,13 +1022,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 21,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 14,
                     "line": 1,
                   },
@@ -1038,13 +1038,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               },
               "type": "MemberExpression",
             },
-            {
-              "loc": SourceLocation {
+            Literal {
+              "loc": {
                 "end": {
                   "column": 37,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 23,
                   "line": 1,
                 },
@@ -1054,13 +1054,13 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
               "value": "hello world!",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 6,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -1068,7 +1068,7 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
             "name": "eq",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 38,
               "line": 1,
@@ -1083,12 +1083,12 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -1104,52 +1104,52 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
 
 exports[`ast utils updateCodeAst CallExpression changed callee changed should ONLY change callee and keep value (array value - from a collection operator to a collection operator) 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 47,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 33,
                   "line": 1,
@@ -1159,13 +1159,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 25,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 19,
                     "line": 1,
                   },
@@ -1173,13 +1173,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 33,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 26,
                     "line": 1,
                   },
@@ -1189,15 +1189,15 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
               },
               "type": "MemberExpression",
             },
-            {
+            ArrayExpression {
               "elements": [
-                {
-                  "loc": SourceLocation {
+                Literal {
+                  "loc": {
                     "end": {
                       "column": 43,
                       "line": 1,
                     },
-                    "start": Position {
+                    "start": {
                       "column": 36,
                       "line": 1,
                     },
@@ -1207,12 +1207,12 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
                   "value": "hello",
                 },
               ],
-              "loc": SourceLocation {
+              "loc": {
                 "end": {
                   "column": 44,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 35,
                   "line": 1,
                 },
@@ -1220,13 +1220,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
               "type": "ArrayExpression",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 18,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -1234,7 +1234,7 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
             "name": "notContainsAll",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 45,
               "line": 1,
@@ -1249,12 +1249,12 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -1270,52 +1270,52 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
 
 exports[`ast utils updateCodeAst CallExpression changed callee changed should ONLY change callee and keep value (from a string operator to a string operator) 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 34,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 22,
                   "line": 1,
@@ -1325,13 +1325,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 14,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 8,
                     "line": 1,
                   },
@@ -1339,13 +1339,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 22,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 15,
                     "line": 1,
                   },
@@ -1355,13 +1355,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
               },
               "type": "MemberExpression",
             },
-            {
-              "loc": SourceLocation {
+            Literal {
+              "loc": {
                 "end": {
                   "column": 31,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 24,
                   "line": 1,
                 },
@@ -1371,13 +1371,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
               "value": "hello",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 7,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -1385,7 +1385,7 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
             "name": "neq",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 32,
               "line": 1,
@@ -1400,12 +1400,12 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -1421,52 +1421,52 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
 
 exports[`ast utils updateCodeAst CallExpression changed callee changed should ONLY change callee and keep value (integer value) 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 36,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 30,
                   "line": 1,
@@ -1476,13 +1476,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 15,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 8,
                     "line": 1,
                   },
@@ -1490,13 +1490,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
                 "name": "message",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 30,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 16,
                     "line": 1,
                   },
@@ -1506,13 +1506,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
               },
               "type": "MemberExpression",
             },
-            {
-              "loc": SourceLocation {
+            Literal {
+              "loc": {
                 "end": {
                   "column": 33,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 32,
                   "line": 1,
                 },
@@ -1522,13 +1522,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
               "value": 7,
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 7,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -1536,7 +1536,7 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
             "name": "neq",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 34,
               "line": 1,
@@ -1551,12 +1551,12 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -1572,52 +1572,52 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ON
 
 exports[`ast utils updateCodeAst CallExpression changed callee changed should change callee and reset value (changed from a collection operator to string operator) 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 28,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 21,
                   "line": 1,
@@ -1627,13 +1627,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 13,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 7,
                     "line": 1,
                   },
@@ -1641,13 +1641,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 21,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 14,
                     "line": 1,
                   },
@@ -1657,13 +1657,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
               },
               "type": "MemberExpression",
             },
-            {
-              "loc": SourceLocation {
+            Literal {
+              "loc": {
                 "end": {
                   "column": 25,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 23,
                   "line": 1,
                 },
@@ -1673,13 +1673,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
               "value": "",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 6,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -1687,7 +1687,7 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
             "name": "eq",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 26,
               "line": 1,
@@ -1702,12 +1702,12 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -1723,52 +1723,52 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
 
 exports[`ast utils updateCodeAst CallExpression changed callee changed should change callee and reset value (from string operator to a collection operator) 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 44,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 30,
                   "line": 1,
@@ -1778,13 +1778,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 22,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 16,
                     "line": 1,
                   },
@@ -1792,13 +1792,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 30,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 23,
                     "line": 1,
                   },
@@ -1808,15 +1808,15 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
               },
               "type": "MemberExpression",
             },
-            {
+            ArrayExpression {
               "elements": [
-                {
-                  "loc": SourceLocation {
+                Literal {
+                  "loc": {
                     "end": {
                       "column": 40,
                       "line": 1,
                     },
-                    "start": Position {
+                    "start": {
                       "column": 33,
                       "line": 1,
                     },
@@ -1826,12 +1826,12 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
                   "value": "hello",
                 },
               ],
-              "loc": SourceLocation {
+              "loc": {
                 "end": {
                   "column": 41,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 32,
                   "line": 1,
                 },
@@ -1839,13 +1839,13 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
               "type": "ArrayExpression",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 15,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -1853,7 +1853,7 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
             "name": "containsAll",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 42,
               "line": 1,
@@ -1868,12 +1868,12 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -1889,52 +1889,52 @@ exports[`ast utils updateCodeAst CallExpression changed callee changed should ch
 
 exports[`ast utils updateCodeAst CallExpression changed update if statement should add else block to if statement 1`] = `
 {
-  "ast": {
+  "ast": Script {
     "body": [
-      {
-        "alternate": {
+      IfStatement {
+        "alternate": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 3,
             },
-            "start": Position {
+            "start": {
               "column": 7,
               "line": 2,
             },
           },
           "type": "BlockStatement",
         },
-        "consequent": {
+        "consequent": BlockStatement {
           "body": [],
-          "loc": SourceLocation {
+          "loc": {
             "end": {
               "column": 1,
               "line": 2,
             },
-            "start": Position {
+            "start": {
               "column": 33,
               "line": 1,
             },
           },
           "type": "BlockStatement",
         },
-        "loc": SourceLocation {
+        "loc": {
           "end": {
             "column": 1,
             "line": 3,
           },
-          "start": Position {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "test": {
+        "test": CallExpression {
           "arguments": [
-            {
+            StaticMemberExpression {
               "computed": false,
-              "loc": WrappingSourceLocation {
+              "loc": {
                 "end": {
                   "column": 21,
                   "line": 1,
@@ -1944,13 +1944,13 @@ exports[`ast utils updateCodeAst CallExpression changed update if statement shou
                   "line": 1,
                 },
               },
-              "object": {
-                "loc": SourceLocation {
+              "object": Identifier {
+                "loc": {
                   "end": {
                     "column": 13,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 7,
                     "line": 1,
                   },
@@ -1958,13 +1958,13 @@ exports[`ast utils updateCodeAst CallExpression changed update if statement shou
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": {
-                "loc": SourceLocation {
+              "property": Identifier {
+                "loc": {
                   "end": {
                     "column": 21,
                     "line": 1,
                   },
-                  "start": Position {
+                  "start": {
                     "column": 14,
                     "line": 1,
                   },
@@ -1974,13 +1974,13 @@ exports[`ast utils updateCodeAst CallExpression changed update if statement shou
               },
               "type": "MemberExpression",
             },
-            {
-              "loc": SourceLocation {
+            Literal {
+              "loc": {
                 "end": {
                   "column": 30,
                   "line": 1,
                 },
-                "start": Position {
+                "start": {
                   "column": 23,
                   "line": 1,
                 },
@@ -1990,13 +1990,13 @@ exports[`ast utils updateCodeAst CallExpression changed update if statement shou
               "value": "hello",
             },
           ],
-          "callee": {
-            "loc": SourceLocation {
+          "callee": Identifier {
+            "loc": {
               "end": {
                 "column": 6,
                 "line": 1,
               },
-              "start": Position {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -2004,7 +2004,7 @@ exports[`ast utils updateCodeAst CallExpression changed update if statement shou
             "name": "eq",
             "type": "Identifier",
           },
-          "loc": WrappingSourceLocation {
+          "loc": {
             "end": {
               "column": 31,
               "line": 1,
@@ -2019,12 +2019,12 @@ exports[`ast utils updateCodeAst CallExpression changed update if statement shou
         "type": "IfStatement",
       },
     ],
-    "loc": SourceLocation {
+    "loc": {
       "end": {
         "column": 1,
         "line": 3,
       },
-      "start": Position {
+      "start": {
         "column": 0,
         "line": 1,
       },

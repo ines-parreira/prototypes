@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {fromJS, List, Map} from 'immutable'
+import {List, Map} from 'immutable'
 import _getIn from 'lodash/get'
 import {Badge} from 'reactstrap'
 import classnames from 'classnames'
@@ -48,6 +48,7 @@ import {RuleRecipe} from 'models/ruleRecipe/types'
 import successIcon from 'assets/img/icons/success.svg'
 
 import {RuleDraft} from 'models/rule/types'
+import {fromAST} from 'utils'
 import {CodeASTType} from '../../types'
 
 import {tagColors} from '../constants'
@@ -89,16 +90,16 @@ function RuleRecipeCard({
         rule.type === RuleType.Managed && !hasAutomationAddOn
 
     const handleCodeAst = (
-        path: List<any>,
-        value: Maybe<string | Record<string, unknown>>,
-        operation: RuleOperation,
+        _path: List<any>,
+        _value: Maybe<string | Record<string, unknown>>,
+        _operation: RuleOperation,
         code_ast?: CodeASTType
     ): CodeASTType => {
         return code_ast as CodeASTType
     }
 
     const getCondition = (path: List<any>) =>
-        fromJS(_getIn(rule, ['code_ast', ...path.toJS()])) as Map<any, any>
+        fromAST(_getIn(rule, ['code_ast', ...path.toJS()])) as Map<any, any>
 
     const handleRule = {
         modifyCodeAST: handleCodeAst,

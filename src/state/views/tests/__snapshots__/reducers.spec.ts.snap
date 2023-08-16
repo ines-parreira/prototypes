@@ -1175,147 +1175,147 @@ Immutable.Map {
     "dirty": true,
     "filters": "neq(ticket.assignee_user.id, '2')",
     "filters_ast": Immutable.Map {
-      "loc": SourceLocation {
-        "end": {
-          "column": 33,
-          "line": 1,
-        },
-        "start": Position {
-          "column": 0,
-          "line": 1,
-        },
-      },
       "type": "Program",
       "body": Immutable.List [
         Immutable.Map {
-          "loc": SourceLocation {
-            "end": {
-              "column": 33,
-              "line": 1,
-            },
-            "start": Position {
-              "column": 0,
-              "line": 1,
-            },
-          },
           "type": "ExpressionStatement",
           "expression": Immutable.Map {
-            "loc": WrappingSourceLocation {
-              "end": {
-                "column": 33,
-                "line": 1,
-              },
-              "start": {
-                "column": 0,
-                "line": 1,
-              },
-            },
             "type": "CallExpression",
             "callee": Immutable.Map {
-              "loc": SourceLocation {
-                "end": {
-                  "column": 3,
-                  "line": 1,
-                },
-                "start": Position {
-                  "column": 0,
-                  "line": 1,
-                },
-              },
               "type": "Identifier",
               "name": "neq",
+              "loc": Immutable.Map {
+                "start": Immutable.Map {
+                  "line": 1,
+                  "column": 0,
+                },
+                "end": Immutable.Map {
+                  "line": 1,
+                  "column": 3,
+                },
+              },
             },
             "arguments": Immutable.List [
               Immutable.Map {
-                "loc": WrappingSourceLocation {
-                  "end": {
-                    "column": 27,
-                    "line": 1,
-                  },
-                  "start": {
-                    "column": 4,
-                    "line": 1,
-                  },
-                },
                 "type": "MemberExpression",
                 "computed": false,
                 "object": Immutable.Map {
-                  "loc": WrappingSourceLocation {
-                    "end": {
-                      "column": 24,
-                      "line": 1,
-                    },
-                    "start": {
-                      "column": 4,
-                      "line": 1,
-                    },
-                  },
                   "type": "MemberExpression",
                   "computed": false,
                   "object": Immutable.Map {
-                    "loc": SourceLocation {
-                      "end": {
-                        "column": 10,
-                        "line": 1,
-                      },
-                      "start": Position {
-                        "column": 4,
-                        "line": 1,
-                      },
-                    },
                     "type": "Identifier",
                     "name": "ticket",
-                  },
-                  "property": Immutable.Map {
-                    "loc": SourceLocation {
-                      "end": {
-                        "column": 24,
+                    "loc": Immutable.Map {
+                      "start": Immutable.Map {
                         "line": 1,
+                        "column": 4,
                       },
-                      "start": Position {
-                        "column": 11,
+                      "end": Immutable.Map {
                         "line": 1,
+                        "column": 10,
                       },
                     },
+                  },
+                  "property": Immutable.Map {
                     "type": "Identifier",
                     "name": "assignee_user",
+                    "loc": Immutable.Map {
+                      "start": Immutable.Map {
+                        "line": 1,
+                        "column": 11,
+                      },
+                      "end": Immutable.Map {
+                        "line": 1,
+                        "column": 24,
+                      },
+                    },
+                  },
+                  "loc": Immutable.Map {
+                    "start": Immutable.Map {
+                      "line": 1,
+                      "column": 4,
+                    },
+                    "end": Immutable.Map {
+                      "line": 1,
+                      "column": 24,
+                    },
                   },
                 },
                 "property": Immutable.Map {
-                  "loc": SourceLocation {
-                    "end": {
-                      "column": 27,
-                      "line": 1,
-                    },
-                    "start": Position {
-                      "column": 25,
-                      "line": 1,
-                    },
-                  },
                   "type": "Identifier",
                   "name": "id",
+                  "loc": Immutable.Map {
+                    "start": Immutable.Map {
+                      "line": 1,
+                      "column": 25,
+                    },
+                    "end": Immutable.Map {
+                      "line": 1,
+                      "column": 27,
+                    },
+                  },
+                },
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "line": 1,
+                    "column": 4,
+                  },
+                  "end": Immutable.Map {
+                    "line": 1,
+                    "column": 27,
+                  },
                 },
               },
               Immutable.Map {
-                "loc": SourceLocation {
-                  "end": {
-                    "column": 32,
-                    "line": 1,
-                  },
-                  "start": Position {
-                    "column": 29,
-                    "line": 1,
-                  },
-                },
                 "type": "Literal",
                 "value": "2",
                 "raw": "'2'",
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "line": 1,
+                    "column": 29,
+                  },
+                  "end": Immutable.Map {
+                    "line": 1,
+                    "column": 32,
+                  },
+                },
               },
             ],
+            "loc": Immutable.Map {
+              "start": Immutable.Map {
+                "line": 1,
+                "column": 0,
+              },
+              "end": Immutable.Map {
+                "line": 1,
+                "column": 33,
+              },
+            },
+          },
+          "loc": Immutable.Map {
+            "start": Immutable.Map {
+              "line": 1,
+              "column": 0,
+            },
+            "end": Immutable.Map {
+              "line": 1,
+              "column": 33,
+            },
           },
         },
       ],
       "sourceType": "script",
+      "loc": Immutable.Map {
+        "start": Immutable.Map {
+          "line": 1,
+          "column": 0,
+        },
+        "end": Immutable.Map {
+          "line": 1,
+          "column": 33,
+        },
+      },
     },
   },
 }
@@ -1327,147 +1327,147 @@ Immutable.Map {
     "dirty": true,
     "filters": "eq(ticket.assignee_user.id, '3')",
     "filters_ast": Immutable.Map {
-      "loc": SourceLocation {
-        "end": {
-          "column": 32,
-          "line": 1,
-        },
-        "start": Position {
-          "column": 0,
-          "line": 1,
-        },
-      },
       "type": "Program",
       "body": Immutable.List [
         Immutable.Map {
-          "loc": SourceLocation {
-            "end": {
-              "column": 32,
-              "line": 1,
-            },
-            "start": Position {
-              "column": 0,
-              "line": 1,
-            },
-          },
           "type": "ExpressionStatement",
           "expression": Immutable.Map {
-            "loc": WrappingSourceLocation {
-              "end": {
-                "column": 32,
-                "line": 1,
-              },
-              "start": {
-                "column": 0,
-                "line": 1,
-              },
-            },
             "type": "CallExpression",
             "callee": Immutable.Map {
-              "loc": SourceLocation {
-                "end": {
-                  "column": 2,
-                  "line": 1,
-                },
-                "start": Position {
-                  "column": 0,
-                  "line": 1,
-                },
-              },
               "type": "Identifier",
               "name": "eq",
+              "loc": Immutable.Map {
+                "start": Immutable.Map {
+                  "line": 1,
+                  "column": 0,
+                },
+                "end": Immutable.Map {
+                  "line": 1,
+                  "column": 2,
+                },
+              },
             },
             "arguments": Immutable.List [
               Immutable.Map {
-                "loc": WrappingSourceLocation {
-                  "end": {
-                    "column": 26,
-                    "line": 1,
-                  },
-                  "start": {
-                    "column": 3,
-                    "line": 1,
-                  },
-                },
                 "type": "MemberExpression",
                 "computed": false,
                 "object": Immutable.Map {
-                  "loc": WrappingSourceLocation {
-                    "end": {
-                      "column": 23,
-                      "line": 1,
-                    },
-                    "start": {
-                      "column": 3,
-                      "line": 1,
-                    },
-                  },
                   "type": "MemberExpression",
                   "computed": false,
                   "object": Immutable.Map {
-                    "loc": SourceLocation {
-                      "end": {
-                        "column": 9,
-                        "line": 1,
-                      },
-                      "start": Position {
-                        "column": 3,
-                        "line": 1,
-                      },
-                    },
                     "type": "Identifier",
                     "name": "ticket",
-                  },
-                  "property": Immutable.Map {
-                    "loc": SourceLocation {
-                      "end": {
-                        "column": 23,
+                    "loc": Immutable.Map {
+                      "start": Immutable.Map {
                         "line": 1,
+                        "column": 3,
                       },
-                      "start": Position {
-                        "column": 10,
+                      "end": Immutable.Map {
                         "line": 1,
+                        "column": 9,
                       },
                     },
+                  },
+                  "property": Immutable.Map {
                     "type": "Identifier",
                     "name": "assignee_user",
+                    "loc": Immutable.Map {
+                      "start": Immutable.Map {
+                        "line": 1,
+                        "column": 10,
+                      },
+                      "end": Immutable.Map {
+                        "line": 1,
+                        "column": 23,
+                      },
+                    },
+                  },
+                  "loc": Immutable.Map {
+                    "start": Immutable.Map {
+                      "line": 1,
+                      "column": 3,
+                    },
+                    "end": Immutable.Map {
+                      "line": 1,
+                      "column": 23,
+                    },
                   },
                 },
                 "property": Immutable.Map {
-                  "loc": SourceLocation {
-                    "end": {
-                      "column": 26,
-                      "line": 1,
-                    },
-                    "start": Position {
-                      "column": 24,
-                      "line": 1,
-                    },
-                  },
                   "type": "Identifier",
                   "name": "id",
+                  "loc": Immutable.Map {
+                    "start": Immutable.Map {
+                      "line": 1,
+                      "column": 24,
+                    },
+                    "end": Immutable.Map {
+                      "line": 1,
+                      "column": 26,
+                    },
+                  },
+                },
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "line": 1,
+                    "column": 3,
+                  },
+                  "end": Immutable.Map {
+                    "line": 1,
+                    "column": 26,
+                  },
                 },
               },
               Immutable.Map {
-                "loc": SourceLocation {
-                  "end": {
-                    "column": 31,
-                    "line": 1,
-                  },
-                  "start": Position {
-                    "column": 28,
-                    "line": 1,
-                  },
-                },
                 "type": "Literal",
                 "value": "3",
                 "raw": "'3'",
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "line": 1,
+                    "column": 28,
+                  },
+                  "end": Immutable.Map {
+                    "line": 1,
+                    "column": 31,
+                  },
+                },
               },
             ],
+            "loc": Immutable.Map {
+              "start": Immutable.Map {
+                "line": 1,
+                "column": 0,
+              },
+              "end": Immutable.Map {
+                "line": 1,
+                "column": 32,
+              },
+            },
+          },
+          "loc": Immutable.Map {
+            "start": Immutable.Map {
+              "line": 1,
+              "column": 0,
+            },
+            "end": Immutable.Map {
+              "line": 1,
+              "column": 32,
+            },
           },
         },
       ],
       "sourceType": "script",
+      "loc": Immutable.Map {
+        "start": Immutable.Map {
+          "line": 1,
+          "column": 0,
+        },
+        "end": Immutable.Map {
+          "line": 1,
+          "column": 32,
+        },
+      },
     },
   },
 }

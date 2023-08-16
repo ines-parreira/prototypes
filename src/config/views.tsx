@@ -6,7 +6,13 @@ import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
 import {BASE_VIEW_ID} from '../constants/view'
 import {OrderDirection} from '../models/api/types'
 import {ViewField, ViewType, ViewVisibility} from '../models/view/types'
-import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from '../utils'
+import {
+    fieldPath,
+    fromAST,
+    getAST,
+    getLanguageDisplayName,
+    stripHTML,
+} from '../utils'
 import {getMomentUtcISOString} from '../utils/date'
 
 import * as ticketConfig from './ticket'
@@ -32,7 +38,7 @@ export const defaultCell = (fieldName: string, item: Map<any, any>) => {
 
 // Each of the following properties are required to create a new view
 export const baseView = () =>
-    fromJS({
+    fromAST({
         id: BASE_VIEW_ID,
         name: 'New view',
         slug: 'new-view',
@@ -40,21 +46,7 @@ export const baseView = () =>
         created_datetime: getMomentUtcISOString(),
         order_dir: OrderDirection.Desc,
         filters: '',
-        filters_ast: {
-            sourceType: 'script',
-            body: [],
-            loc: {
-                end: {
-                    line: 0,
-                    column: 0,
-                },
-                start: {
-                    line: 0,
-                    column: 0,
-                },
-            },
-            type: 'Program',
-        },
+        filters_ast: getAST(''),
     }) as Map<any, any>
 
 export const defaultMergeTicketsView = (
@@ -66,7 +58,7 @@ export const defaultMergeTicketsView = (
         ? `neq(ticket.id, ${ticketId}) && eq(ticket.customer.id, ${customerId})`
         : `neq(ticket.id, ${ticketId})`
 
-    return fromJS({
+    return fromAST({
         id: BASE_VIEW_ID,
         search: customerId ? null : searchQuery,
         fields: [
@@ -84,7 +76,7 @@ export const defaultMergeTicketsView = (
     }) as Map<any, any>
 }
 
-export const views = fromJS([
+export const views = fromAST([
     {
         name: 'ticket',
         type: ViewType.TicketList,

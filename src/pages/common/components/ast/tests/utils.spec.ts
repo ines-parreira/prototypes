@@ -4,6 +4,13 @@ import {CodeASTType} from 'pages/settings/rules/types'
 import {updateCodeAst} from 'pages/common/components/ast/utils'
 
 import _schemas from 'fixtures/openapi.json'
+import {
+    fromAST,
+    getAST,
+    getFirstExpressionOfAST,
+    isImmutable,
+    toImmutable,
+} from 'utils'
 import _astCodeContains from './fixtures/astCodeContains.json'
 import _astCodeEq from './fixtures/astCodeEq.json'
 import _astCodeNeq from './fixtures/astCodeNeq.json'
@@ -158,7 +165,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
             expect(newAst).toMatchSnapshot()
             newAst = updateCodeAst(
                 schemas,
-                fromJS(newAst.ast),
+                fromAST(newAst.ast),
                 path,
                 'customer',
                 'UPDATE'
@@ -176,7 +183,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
             ])
             newAst = updateCodeAst(
                 schemas,
-                fromJS(newAst.ast),
+                fromAST(newAst.ast),
                 path,
                 'from_agent',
                 'UPDATE'
@@ -229,6 +236,22 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 'UPDATE_IF_STATEMENT'
             )
             expect(newAst).toMatchSnapshot()
+        })
+    })
+    describe('toImmutable()', () => {
+        it('should return immutable object of AST', () => {
+            const code = `notContainsAll(ticket.subject, ['hello'])`
+            const ast = getAST(code)
+
+            expect(isImmutable(toImmutable(ast))).toEqual(true)
+        })
+    })
+    describe('getFirstExpressionOfAST()', () => {
+        it('should return immutable object of AST', () => {
+            const code = `notContainsAll(ticket.subject, ['hello'])`
+            const ast = getAST(code)
+
+            expect(isImmutable(getFirstExpressionOfAST(ast))).toEqual(true)
         })
     })
 })
