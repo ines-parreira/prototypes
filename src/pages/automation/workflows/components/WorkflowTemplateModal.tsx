@@ -34,9 +34,11 @@ export const WorkflowTemplateModal = ({
         <Modal isOpen={isOpen} onClose={onClose} classNameDialog={css.dialog}>
             <ModalHeader title={template.name} />
             <ModalBody className={css.modalBody}>
-                <VisualBuilderTemplatePreview
-                    visualBuilderGraph={visualBuilderGraph}
-                />
+                {isOpen && (
+                    <VisualBuilderTemplatePreview
+                        visualBuilderGraph={visualBuilderGraph}
+                    />
+                )}
             </ModalBody>
             <ModalActionsFooter>
                 <Button intent="secondary" onClick={onClose}>
