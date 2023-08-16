@@ -23,6 +23,11 @@ export const getCurrentAccountMeta = createSelector(
     (state) => (state.get('meta') as Map<any, any>) || fromJS({})
 )
 
+export const getCurrentAccountCreatedDatetime = createSelector(
+    getCurrentAccountState,
+    (currentAccount) => currentAccount.get('created_datetime') as string
+)
+
 export const getCurrentAccountFeatures = createSelector(
     getCurrentAccountState,
     (state) => (state.get('features') as Map<any, any>) || fromJS({})

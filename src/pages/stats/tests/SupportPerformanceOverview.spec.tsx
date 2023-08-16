@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import {UseQueryResult} from '@tanstack/react-query'
+import moment from 'moment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
 import {TipQualifier} from 'services/performanceTipService'
@@ -46,6 +47,7 @@ import TrendBadge from 'pages/stats/TrendBadge'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import SupportPerformanceOverview, {
+    AGENTS_REPORT_RELEASE_DATE,
     STATS_TIPS_VISIBILITY_KEY,
 } from '../SupportPerformanceOverview'
 
@@ -107,25 +109,27 @@ describe('<SupportPerformanceOverview />', () => {
         agents: [agents[0].id],
         tags: [1],
     }
+
     const tag = tags[0]
-    const defaultState = {
-        currentAccount: fromJS({
-            ...account,
-            settings: [
-                ...account.settings,
-                {
-                    id: 123,
-                    type: AccountSettingType.SatisfactionSurveys,
-                    data: {
-                        send_survey_for_chat: true,
-                        send_survey_for_email: false,
-                        survey_email_html: 'string',
-                        survey_email_text: 'string',
-                        survey_interval: 100,
-                    },
+    const defaultAccount = {
+        ...account,
+        settings: [
+            ...account.settings,
+            {
+                id: 123,
+                type: AccountSettingType.SatisfactionSurveys,
+                data: {
+                    send_survey_for_chat: true,
+                    send_survey_for_email: false,
+                    survey_email_html: 'string',
+                    survey_email_text: 'string',
+                    survey_interval: 100,
                 },
-            ],
-        }),
+            },
+        ],
+    }
+    const defaultState = {
+        currentAccount: fromJS(defaultAccount),
         integrations: fromJS(integrationsState),
         stats: fromJS({
             filters: defaultStatsFilters,
@@ -143,6 +147,26 @@ describe('<SupportPerformanceOverview />', () => {
         },
     } as RootState
 
+    const accountCreatedBeforeRelease = {
+        ...defaultAccount,
+        created_datetime: moment(AGENTS_REPORT_RELEASE_DATE)
+            .subtract(1, 'day')
+            .toISOString(),
+    }
+    const accountCreatedAfterRelease = {
+        ...defaultAccount,
+        created_datetime: moment(AGENTS_REPORT_RELEASE_DATE)
+            .add(1, 'day')
+            .toISOString(),
+    }
+    const stateWithOldAccount = {
+        ...defaultState,
+        currentAccount: fromJS(accountCreatedBeforeRelease),
+    }
+    const stateWithFreshAccount = {
+        ...defaultState,
+        currentAccount: fromJS(accountCreatedAfterRelease),
+    }
     const defaultMetricTrend: MetricTrend = {
         isFetching: false,
         isError: true,
@@ -404,6 +428,36 @@ describe('<SupportPerformanceOverview />', () => {
             expect(localStorage.getItem(STATS_TIPS_VISIBILITY_KEY)).toBe(
                 'false'
             )
+        })
+    })
+
+    describe('Switching to old version banner', () => {
+        it('should render a banner that allows switching to the old version if user is registered before agents report release date', () => {
+            const {getByText} = render(
+                <Provider store={mockStore(stateWithOldAccount)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            expect(
+                getByText('Welcome to the new Statistics Overview!', {
+                    exact: false,
+                })
+            ).toBeInTheDocument()
+        })
+
+        it('should NOT render the switching to the old version banner if user is registered after agents report release date', () => {
+            const {queryByText} = render(
+                <Provider store={mockStore(stateWithFreshAccount)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            expect(
+                queryByText('Welcome to the new Statistics Overview!', {
+                    exact: false,
+                })
+            ).not.toBeInTheDocument()
         })
     })
 })

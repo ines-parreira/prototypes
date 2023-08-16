@@ -20,6 +20,7 @@ import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import StatsPage from 'pages/stats/StatsPage'
 import {
     currentAccountHasFeature,
+    getCurrentAccountCreatedDatetime,
     getSurveysSettingsJS,
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -99,6 +100,7 @@ import {OneDimensionalDataItem} from './types'
 import TagsStatsFilter from './TagsStatsFilter'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
+export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
 const DEFAULT_TIMEZONE = 'UTC'
 export const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
@@ -111,10 +113,20 @@ function getBadgeTooltipForPreviousPeriod(statsFilters: StatsFilters) {
 }
 
 export default function SupportPerformanceOverview() {
+    const accountCreatedDatetime = useAppSelector(
+        getCurrentAccountCreatedDatetime
+    )
+
+    const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(() =>
+        moment(accountCreatedDatetime).isBefore(
+            moment(AGENTS_REPORT_RELEASE_DATE)
+        )
+    )
+
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
-    const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
+
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const hasPerformanceTips: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsPerformanceTips]
