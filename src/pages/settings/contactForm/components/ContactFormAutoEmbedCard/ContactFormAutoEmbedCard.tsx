@@ -10,6 +10,7 @@ import {
     linkToShopifyIntegration,
 } from 'pages/settings/contactForm/utils/navigation'
 
+import {PageEmbedment} from 'models/contactForm/types'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
 import {useGetShopifyPages} from '../../queries'
 import {EmbeddablePage} from '../PageEmbedmentForm'
@@ -58,6 +59,7 @@ export type ContactFormAutoEmbedCardProps = {
     needScopeUpdate: boolean
     hasEmbeddedPages: boolean
     contactFormId: number
+    pageEmbedments: PageEmbedment[]
 }
 
 const ContactFormAutoEmbedCard = ({
@@ -66,6 +68,7 @@ const ContactFormAutoEmbedCard = ({
     needScopeUpdate,
     hasEmbeddedPages,
     contactFormId,
+    pageEmbedments,
 }: ContactFormAutoEmbedCardProps) => {
     // Embed modal assistant state
     const [isEmbedModalOpen, setIsEmbedModalOpen] = React.useState(false)
@@ -76,6 +79,11 @@ const ContactFormAutoEmbedCard = ({
         enabled: isEmbedModalOpen,
     })
     const pages: EmbeddablePage[] = getShopifyPages.data ?? []
+    const availablePages = pages.filter((page) =>
+        pageEmbedments.every(
+            (pageEmbedment) => pageEmbedment.shopify_page_id !== page.id
+        )
+    )
 
     if (isNotConnected) {
         return (
@@ -213,7 +221,7 @@ const ContactFormAutoEmbedCard = ({
                 <ContactFormAutoEmbedModalAssistant
                     isOpen={isEmbedModalOpen && getShopifyPages.isFetched}
                     onClose={() => setIsEmbedModalOpen(false)}
-                    pages={pages}
+                    pages={availablePages}
                 />
             </div>
         )

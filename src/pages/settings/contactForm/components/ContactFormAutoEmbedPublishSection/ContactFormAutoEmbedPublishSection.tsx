@@ -8,6 +8,7 @@ import ContactFormAutoEmbedWarningBanner, {
     ContactFormAutoEmbedWarningBannerProps,
 } from '../ContactFormAutoEmbedWarningBanner'
 import ContactFormAutoEmbedCard from '../ContactFormAutoEmbedCard'
+import {useGetPageEmbedments} from '../../queries'
 import {ContactFormAutoEmbedReadinessStatus} from './types'
 
 /**
@@ -53,6 +54,8 @@ const ContactFormAutoEmbedPublishSection = (
         contactFormShopName ?? ''
     )
 
+    const getPageEmbedments = useGetPageEmbedments(contactFormId)
+
     // hide this entire section if the flag is not active
     if (!isAutoEmbedFlagActive) return null
 
@@ -83,6 +86,7 @@ const ContactFormAutoEmbedPublishSection = (
                 isNotConnected={contactFormShopName === null}
                 shopifyIntegrationId={integrationId}
                 needScopeUpdate={needScopeUpdate}
+                pageEmbedments={getPageEmbedments.data ?? []}
                 hasEmbeddedPages={
                     // This is hardcoded for now, we need to update this logic
                     // to perform a query to the list embedment endpoint

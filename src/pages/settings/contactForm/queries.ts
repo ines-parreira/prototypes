@@ -8,7 +8,12 @@ import {
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {Paths} from '../../../rest_api/help_center_api/client.generated'
 import {MutationOverrides} from '../../../types/query'
-import {createContactForm, getContactForms, getShopifyPages} from './resources'
+import {
+    createContactForm,
+    getContactForms,
+    getShopifyPages,
+    getPageEmbedments,
+} from './resources'
 
 /**
  * RQ Key Factory for Contact Forms
@@ -45,6 +50,30 @@ export const contactFormEmbeddablePageKeys = {
         [
             ...contactFormEmbeddablePageKeys.all(contactFormId),
             ...embeddablePageKeys.lists(),
+        ] as const,
+}
+
+/**
+ * RQ Key Factory for Contact Form Page Embedments
+ */
+export const pageEmbedmentsKeys = {
+    all: () => ['pageEmbedments'] as const,
+    lists: () => [...pageEmbedmentsKeys.all(), 'list'] as const,
+}
+
+/**
+ * RQ Key Factory for Contact Form Page Embedments /contact-form/{id1}/page-embedments
+ */
+export const contactFormPageEmbedmentsKeys = {
+    all: (contactFormId: number) =>
+        [
+            ...contactFormKeys.detail(contactFormId),
+            ...pageEmbedmentsKeys.all(),
+        ] as const,
+    lists: (contactFormId: number) =>
+        [
+            ...contactFormPageEmbedmentsKeys.all(contactFormId),
+            ...pageEmbedmentsKeys.lists(),
         ] as const,
 }
 
@@ -95,6 +124,29 @@ export const useGetShopifyPages = <
         queryKey: contactFormEmbeddablePageKeys.lists(contactFormId),
         queryFn: async () =>
             getShopifyPages(client, {
+                contact_form_id: contactFormId,
+            }),
+        enabled: !!client,
+        ...overrides,
+    })
+}
+
+export const useGetPageEmbedments = <
+    TData = Awaited<ReturnType<typeof getPageEmbedments>>
+>(
+    contactFormId: Paths.ListContactFormShopifyEmbedments.Parameters.ContactFormId,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getPageEmbedments>>,
+        unknown,
+        TData
+    >
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: contactFormPageEmbedmentsKeys.lists(contactFormId),
+        queryFn: async () =>
+            getPageEmbedments(client, {
                 contact_form_id: contactFormId,
             }),
         enabled: !!client,

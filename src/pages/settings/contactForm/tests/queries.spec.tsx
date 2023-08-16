@@ -9,6 +9,7 @@ import {
     useCreateContactForm,
     useGetContactFormList,
     useGetShopifyPages,
+    useGetPageEmbedments,
 } from '../queries'
 import {mockResourceServerReplies} from './resource-mocks'
 
@@ -108,6 +109,59 @@ describe('useGetShopifyPages', () => {
 
         const {result, waitFor} = renderHook(
             () => useGetShopifyPages(contactFormId),
+            {
+                wrapper,
+            }
+        )
+
+        await waitFor(() => {
+            expect(result.current.isError).toBeTruthy()
+            expect(result.current.error).toMatchInlineSnapshot(
+                `[Error: Request failed with status code 500]`
+            )
+        })
+    })
+})
+
+describe('useGetPageEmbedments', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const contactFormId = 1
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+        queryClient.getQueryCache().clear()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: sdkMocks.client,
+            isReady: true,
+        })
+    })
+
+    it('resolves with the list of page embedments', async () => {
+        const mocks = mockResourceServerReplies(sdkMocks.mockedServer, {
+            getPageEmbedments: 'success',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useGetPageEmbedments(contactFormId),
+            {
+                wrapper,
+            }
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
+
+        expect(result.current.data).toEqual(
+            mocks.fixtures.PageEmbedmentsListFixture
+        )
+    })
+
+    it('returns the error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getPageEmbedments: 'error',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useGetPageEmbedments(contactFormId),
             {
                 wrapper,
             }

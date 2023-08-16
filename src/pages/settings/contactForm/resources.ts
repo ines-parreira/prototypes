@@ -32,3 +32,18 @@ export const getShopifyPages = async (
 
     return res.data
 }
+
+export const getPageEmbedments = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.ListContactFormShopifyEmbedments.PathParameters,
+    queryParameters: Paths.ListContactFormShopifyEmbedments.QueryParameters = {}
+) => {
+    if (!client) return null
+
+    const res = await client.listContactFormShopifyEmbedments(
+        pathParameters,
+        queryParameters
+    )
+
+    return res.data
+}

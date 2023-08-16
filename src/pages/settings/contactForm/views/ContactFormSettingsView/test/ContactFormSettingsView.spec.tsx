@@ -8,6 +8,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import LD from 'launchdarkly-react-client-sdk'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
@@ -26,10 +27,13 @@ import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {billingState} from 'fixtures/billing'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
+
+const queryClient = createTestQueryClient()
 
 describe('<ContactFormSettingsView />', () => {
     const FORM_ID = '1'
@@ -63,11 +67,13 @@ describe('<ContactFormSettingsView />', () => {
         state?: Partial<RootState>
     }) => {
         return renderWithRouter(
-            <DndProvider backend={HTML5Backend}>
-                <Provider store={mockStore(state)}>
-                    <ContactFormSettingsView />
-                </Provider>
-            </DndProvider>,
+            <QueryClientProvider client={queryClient}>
+                <DndProvider backend={HTML5Backend}>
+                    <Provider store={mockStore(state)}>
+                        <ContactFormSettingsView />
+                    </Provider>
+                </DndProvider>
+            </QueryClientProvider>,
             {
                 path,
                 history,
