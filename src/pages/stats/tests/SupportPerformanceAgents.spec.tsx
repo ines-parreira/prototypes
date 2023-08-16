@@ -19,7 +19,6 @@ import {channelsStatsFilterLabels} from 'pages/stats/ChannelsStatsFilter'
 import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
 import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter'
 
-import {LEARN_MORE_URL} from 'pages/stats/SupportPerformanceOverview'
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -28,7 +27,6 @@ import {useAgentsMetrics} from 'pages/stats/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'pages/stats/useAgentsSummaryMetrics'
 
 import SupportPerformanceAgents, {
-    AGENT_PERFORMANCE_LEGACY_PATH,
     AGENT_PERFORMANCE_SECTION_TITLE,
     AGENTS_PAGE_TITLE,
 } from '../SupportPerformanceAgents'
@@ -103,33 +101,6 @@ describe('SupportPerformanceAgents', () => {
         expect(screen.getByText(AGENTS_PAGE_TITLE)).toBeInTheDocument()
         expect(
             screen.getByText(AGENT_PERFORMANCE_SECTION_TITLE)
-        ).toBeInTheDocument()
-    })
-
-    it('should render a banner that allows switching to the old version', () => {
-        render(
-            <MemoryRouter>
-                <Provider store={mockStore(defaultState)}>
-                    <SupportPerformanceAgents />
-                </Provider>
-            </MemoryRouter>
-        )
-
-        expect(
-            screen.getByText('Switch To Old Version', {exact: false})
-        ).toBeInTheDocument()
-        expect(screen.getByRole('link', {name: /Switch/})).toHaveAttribute(
-            'href',
-            AGENT_PERFORMANCE_LEGACY_PATH
-        )
-        expect(screen.getByRole('link', {name: 'Learn more.'})).toHaveAttribute(
-            'href',
-            LEARN_MORE_URL
-        )
-        expect(
-            screen.getByText('Welcome to the new Agents Performance beta!', {
-                exact: false,
-            })
         ).toBeInTheDocument()
     })
 
