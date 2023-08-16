@@ -243,9 +243,9 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                 'Get started with our recommended top performing campaigns'
             )
             fireEvent.click(getByAltText('dismiss-icon'))
-            expect(localStorage.getItem(CAMPAIGN_INFO_BOX_STORAGE_KEY)).toBe(
-                'true'
-            )
+            expect(
+                localStorage.getItem(`${CAMPAIGN_INFO_BOX_STORAGE_KEY}:118`)
+            ).toBe('true')
         })
     })
 

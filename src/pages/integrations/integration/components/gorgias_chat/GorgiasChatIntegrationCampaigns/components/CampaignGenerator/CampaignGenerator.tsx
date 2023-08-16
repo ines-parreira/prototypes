@@ -11,6 +11,7 @@ import {isAdmin} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import closeIcon from 'assets/img/icons/close.svg'
 
+import {useIsHiddenByLegacyFlag} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsHiddenByLegacyFlag'
 import css from './CampaignGenerator.less'
 
 type Props = {
@@ -27,19 +28,29 @@ export const CampaignGenerator = ({
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const isRevenueBetaTester = useIsRevenueBetaTester()
+    const isHiddenByLegacyCheck = useIsHiddenByLegacyFlag(integration)
+    const storageKey = `${CAMPAIGN_INFO_BOX_STORAGE_KEY}:${
+        integration.get('id') as string
+    }`
 
     const [loading, setLoading] = useState(false)
     const [visible, setVisible] = useState(false)
     const [isHiddenPermanently, setIsHiddenPermanently] =
-        useLocalStorage<boolean>(CAMPAIGN_INFO_BOX_STORAGE_KEY)
+        useLocalStorage<boolean>(storageKey)
 
     useEffect(() => {
         const isVisible =
+            !isHiddenByLegacyCheck &&
             isHiddenPermanently !== true &&
             isRevenueBetaTester &&
             isAdmin(currentUser)
         setVisible(isVisible)
-    }, [isRevenueBetaTester, currentUser, isHiddenPermanently])
+    }, [
+        isRevenueBetaTester,
+        currentUser,
+        isHiddenPermanently,
+        isHiddenByLegacyCheck,
+    ])
 
     const closeRevenueCampaignsInfoBox = () => setIsHiddenPermanently(true)
 
