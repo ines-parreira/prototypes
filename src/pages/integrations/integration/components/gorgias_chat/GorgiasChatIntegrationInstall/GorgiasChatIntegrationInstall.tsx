@@ -170,14 +170,23 @@ const GorgiasChatIntegrationInstall = ({
             oneClickInstallationMethodNew && isOneClickInstallation
                 ? oneClickInstallationMethodNew
                 : oneClickInstallationMethod
+
         setShowScriptTagMigrateNotice(
             isConnectedToShopify &&
                 activeOrRecentOneClickUsage &&
                 (!hasShopifyScriptTagScope ||
                     installationMethod !== 'script_tag')
         )
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOneClickInstallation])
+    }, [
+        activeOrRecentOneClickUsage,
+        hasScriptTagFeatureFlagOn,
+        hasShopifyScriptTagScope,
+        isConnectedToShopify,
+        isOneClickInstallation,
+        justCreated,
+        oneClickInstallationMethod,
+        oneClickInstallationMethodNew,
+    ])
 
     return (
         <>
