@@ -43,6 +43,19 @@ describe('Snooze', () => {
         useAppSelectorMock.mockReturnValue('Europe/Amsterdam')
     })
 
+    it('should show a tooltip when hovering the button', async () => {
+        const {findByText, getByText, queryByText} = render(
+            <Snooze onUpdate={_noop} />
+        )
+
+        const tip = queryByText('Snooze ticket')
+        expect(tip).not.toBeInTheDocument()
+
+        const button = getByText('snooze')
+        userEvent.hover(button)
+        expect(await findByText('Snooze ticket')).toBeInTheDocument()
+    })
+
     it('should show the snooze picker when not currently snoozed', () => {
         const {getByText} = render(<Snooze onUpdate={_noop} />)
 
