@@ -65,6 +65,7 @@ export default function VoiceIntegrationVoicemailNew({
             !_isEqual(initialSettings, integration?.meta?.voicemail)
         ) {
             setInitialSettings(integration?.meta?.voicemail)
+            setPayload(integration?.meta?.voicemail)
         }
     }, [integration, payload, setPayload, initialSettings, setInitialSettings])
 
