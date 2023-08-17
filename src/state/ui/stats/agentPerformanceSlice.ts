@@ -110,7 +110,7 @@ export const getSortedAgents = createSelector(
         const metricName = field !== TableColumn.AgentName ? field : null
 
         if (metricName && lastSortingMetric) {
-            const sortedAgents: User[] = []
+            let sortedAgents: User[] = []
             const noDataAgents: User[] = []
             agents.forEach((agent) => {
                 const agentIndex = lastSortingMetric.findIndex(
@@ -128,6 +128,12 @@ export const getSortedAgents = createSelector(
                     noDataAgents.push(agent)
                 }
             })
+            /**
+             * If you use the agents filters, there will be just a few agents availabile from the getFilteredAgents
+             * Now because lastSortingMetric could have all the list including all the agents, when we set the position of each agent
+             *   we will get "gaps" (empty values) in the resulting array
+             */
+            sortedAgents = sortedAgents.filter(Boolean)
             return direction === OrderDirection.Asc
                 ? [...noDataAgents, ...sortedAgents]
                 : [...sortedAgents, ...noDataAgents]
