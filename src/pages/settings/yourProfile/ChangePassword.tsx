@@ -16,6 +16,7 @@ type Errors = {
     old_password?: string
     new_password?: string
     confirm_new_password?: string
+    two_fa_code?: string
 }
 
 const USER_PASSWORD_MIN_LENGTH = 14
@@ -23,6 +24,7 @@ const USER_PASSWORD_MAX_LENGTH = 128
 const VALIDATE_PASSWORD_ERROR_MESSAGE = 'Passwords do not match.'
 const INVALID_PASSWORD_FORMAT_ERROR_MESSAGE = `A password must contain a minimum of ${USER_PASSWORD_MIN_LENGTH} characters, 1 lower case, 1 upper case and 1 number.`
 const REQUIRED_PASSWORD_ERROR_MESSAGE = 'Please fill out this field.'
+const REQUIRED_TWO_FA_CODE = '2FA code is required to change password'
 
 const USER_PASSWORD_VALIDATION_PATTERN = `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{${USER_PASSWORD_MIN_LENGTH},${USER_PASSWORD_MAX_LENGTH}}$`
 
@@ -35,7 +37,10 @@ export const ChangePasswordContainer = ({
     const [oldPassword, setOldPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [confirmNewPassword, setConfirmNewPassword] = useState('')
+    const [twoFACode, setTwoFACode] = useState('')
     const [errors, setErrors] = useState<Errors>({})
+
+    const isTwoFaEnabled = currentUser.get('has_2fa_enabled')
 
     const handleSubmit = async () => {
         if (!oldPassword) {
@@ -47,6 +52,9 @@ export const ChangePasswordContainer = ({
         if (!confirmNewPassword) {
             errors.confirm_new_password = REQUIRED_PASSWORD_ERROR_MESSAGE
         }
+        if (isTwoFaEnabled && !twoFACode) {
+            errors.two_fa_code = REQUIRED_TWO_FA_CODE
+        }
 
         if (Object.keys(errors).length) {
             setErrors(errors)
@@ -55,7 +63,11 @@ export const ChangePasswordContainer = ({
             return
         }
 
-        const result = (await changePassword(oldPassword, newPassword)) as {
+        const result = (await changePassword(
+            oldPassword,
+            newPassword,
+            twoFACode
+        )) as {
             reason?: string
             error?: AxiosError<{error: {data?: Errors}}>
         }
@@ -72,6 +84,7 @@ export const ChangePasswordContainer = ({
             setOldPassword('')
             setNewPassword('')
             setConfirmNewPassword('')
+            setTwoFACode('')
         } else if (result.error?.message !== 'Network Error') {
             setDirty(false)
         }
@@ -95,7 +108,7 @@ export const ChangePasswordContainer = ({
             errors.new_password = INVALID_PASSWORD_FORMAT_ERROR_MESSAGE
         }
         setErrors(errors)
-    }, [newPassword, confirmNewPassword])
+    }, [newPassword, confirmNewPassword, twoFACode, isTwoFaEnabled])
 
     return (
         <>
@@ -171,7 +184,22 @@ export const ChangePasswordContainer = ({
                     error={errors.confirm_new_password}
                     className={settingsCss.inputField}
                 />
-
+                {isTwoFaEnabled && (
+                    <InputField
+                        type="string"
+                        id="two_fa_code"
+                        name="two_fa_code"
+                        label="2FA Code"
+                        isRequired
+                        value={twoFACode}
+                        onChange={(value) => {
+                            setDirty(true)
+                            setTwoFACode(value)
+                        }}
+                        error={errors.two_fa_code}
+                        className={settingsCss.inputField}
+                    />
+                )}
                 <Button
                     type="submit"
                     className={css.updatePasswordButton}

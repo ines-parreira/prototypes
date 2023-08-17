@@ -50,6 +50,24 @@ describe('current user actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
+    it('change password with 2fa', () => {
+        const data = {
+            old_password: 'password',
+            new_password: 'newPassword',
+            two_fa_code: '123456',
+        }
+        mockServer.onPut('/api/users/0/').reply(200, data)
+        return store
+            .dispatch(
+                actions.changePassword(
+                    data.old_password,
+                    data.new_password,
+                    data.two_fa_code
+                )
+            )
+            .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
     describe('submit setting', () => {
         it('creation', () => {
             const data = {

@@ -11,6 +11,7 @@ type fillInFormTypes = {
     currentPwd?: string
     newPwd?: string
     confirmNewPwd?: string
+    twoFaCode?: string
 }
 
 const mockChangePassword = jest.fn().mockResolvedValue({
@@ -26,12 +27,14 @@ const defaultProps = {
 const DEFAULT_CURRENT_PWD = 'test1234'
 const DEFAULT_NEW_PWD = 'P@ssw0rd123!!!'
 const DEFAULT_CONFIRM_PWD = 'P@ssw0rd123!!!'
+const DEFAULT_TWO_FA_CODE = ''
 
 const fillInForm = ({
     getAllByLabelText,
     currentPwd = DEFAULT_CURRENT_PWD,
     newPwd = DEFAULT_NEW_PWD,
     confirmNewPwd = DEFAULT_CONFIRM_PWD,
+    twoFaCode = DEFAULT_TWO_FA_CODE,
 }: fillInFormTypes) => {
     fireEvent.change(getAllByLabelText(/Current password/i)[0], {
         target: {value: currentPwd},
@@ -42,12 +45,16 @@ const fillInForm = ({
     fireEvent.change(getAllByLabelText(/Confirm new password/i)[0], {
         target: {value: confirmNewPwd},
     })
+    if (twoFaCode !== DEFAULT_TWO_FA_CODE) {
+        fireEvent.change(getAllByLabelText(/2FA Code/i)[0], {
+            target: {value: twoFaCode},
+        })
+    }
 }
 
 beforeEach(() => {
     jest.clearAllMocks()
 })
-
 describe('<ChangePassword />', () => {
     describe('render', () => {
         it('should render the password form', () => {
@@ -100,6 +107,36 @@ describe('<ChangePassword />', () => {
                 )
             ).toBeTruthy()
         })
+
+        it('should not display the 2FA code input if not enabled', () => {
+            const currentUser = fromJS({
+                has_2fa_enabled: false,
+            })
+            const {queryByLabelText} = render(
+                <ChangePasswordContainer
+                    {...defaultProps}
+                    currentUser={currentUser}
+                />
+            )
+            expect(queryByLabelText(/2FA Code/i)).toBeNull()
+        })
+
+        it('should display the error message when 2FA code is missing', () => {
+            const currentUser = fromJS({
+                has_2fa_enabled: true,
+            })
+            const {getAllByLabelText} = render(
+                <ChangePasswordContainer
+                    {...defaultProps}
+                    currentUser={currentUser}
+                />
+            )
+            fillInForm({
+                getAllByLabelText,
+                newPwd: 'test12345',
+                confirmNewPwd: 'test12345',
+            })
+        })
     })
 
     describe('handleSubmit', () => {
@@ -132,7 +169,8 @@ describe('<ChangePassword />', () => {
             await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
-                    DEFAULT_NEW_PWD
+                    DEFAULT_NEW_PWD,
+                    DEFAULT_TWO_FA_CODE
                 )
                 getAllByText(errorMessage)[0]
             })
@@ -159,7 +197,8 @@ describe('<ChangePassword />', () => {
             await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
-                    DEFAULT_NEW_PWD
+                    DEFAULT_NEW_PWD,
+                    DEFAULT_TWO_FA_CODE
                 )
                 expect(button).toMatchSnapshot()
             })
@@ -193,18 +232,25 @@ describe('<ChangePassword />', () => {
         })
 
         it('should empty all the fields when submit successful', async () => {
+            const currentUser = fromJS({
+                has_2fa_enabled: true,
+            })
             const {getAllByText, getAllByLabelText} = render(
-                <ChangePasswordContainer {...defaultProps} />
+                <ChangePasswordContainer
+                    {...defaultProps}
+                    currentUser={currentUser}
+                />
             )
-
-            fillInForm({getAllByLabelText})
+            const twoFaCode = '123456'
+            fillInForm({getAllByLabelText, twoFaCode: twoFaCode})
             const button = getAllByText(/Update Password/i)[1]
             fireEvent.click(button)
 
             await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
-                    DEFAULT_NEW_PWD
+                    DEFAULT_NEW_PWD,
+                    twoFaCode
                 )
                 expect(
                     (
@@ -223,6 +269,10 @@ describe('<ChangePassword />', () => {
                             /Confirm new password/i
                         )[0] as HTMLInputElement
                     ).value
+                ).toBe('')
+                expect(
+                    (getAllByLabelText(/2FA Code/i)[0] as HTMLInputElement)
+                        .value
                 ).toBe('')
             })
         })

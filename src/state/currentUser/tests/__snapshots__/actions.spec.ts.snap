@@ -15,6 +15,22 @@ exports[`current user actions change password 1`] = `
 ]
 `;
 
+exports[`current user actions change password with 2fa 1`] = `
+[
+  {
+    "type": "CHANGE_PASSWORD_START",
+  },
+  {
+    "resp": {
+      "new_password": "newPassword",
+      "old_password": "password",
+      "two_fa_code": "123456",
+    },
+    "type": "CHANGE_PASSWORD_SUCCESS",
+  },
+]
+`;
+
 exports[`current user actions handle2FAEnforced() should display the banner 1`] = `
 [
   [

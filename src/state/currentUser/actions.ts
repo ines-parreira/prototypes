@@ -31,15 +31,21 @@ import * as currentUserSelectors from './selectors'
 import * as constants from './constants'
 
 export const changePassword =
-    (oldPassword: string, newPassword: string) =>
+    (oldPassword: string, newPassword: string, twoFACode?: string) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({type: constants.CHANGE_PASSWORD_START})
 
+        const payload: {[id: string]: string} = {
+            old_password: oldPassword,
+            new_password: newPassword,
+        }
+
+        if (twoFACode) {
+            payload['two_fa_code'] = twoFACode
+        }
+
         return client
-            .put<User>('/api/users/0/', {
-                old_password: oldPassword,
-                new_password: newPassword,
-            })
+            .put<User>('/api/users/0/', payload)
             .then((json) => json?.data)
             .then(
                 (resp) => {
