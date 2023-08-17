@@ -26,6 +26,7 @@ import {
 import Tooltip from 'pages/common/components/Tooltip'
 import {VisualBuilderGraphAction} from 'pages/automation/workflows/hooks/useVisualBuilderGraphReducer'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
+import orderSelectionIcon from 'assets/img/workflows/icons/order-selection.svg'
 
 import EdgeIconButton from './EdgeIconButton'
 import css from './EdgeBlock.less'
@@ -139,7 +140,7 @@ function useMenuItems(
             label: 'Order selection',
             description: 'Display last 5 orders',
             type: 'order_selection',
-            icon: iconByVisualBuilderNodeType.order_selection,
+            icon: <img src={orderSelectionIcon} alt="" />,
             style: colorByVisualBuilderNodeType.order_selection,
             hidden: true,
             onClick: () => {

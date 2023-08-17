@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react'
 
 import colors from 'assets/tokens/colors.json'
-import orderSelectionIcon from 'assets/img/workflows/icons/order-selection.svg'
+import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 
 import {WorkflowTemplate} from './models/workflowConfiguration.types'
 import {VisualBuilderNode} from './models/visualBuilderGraph.types'
