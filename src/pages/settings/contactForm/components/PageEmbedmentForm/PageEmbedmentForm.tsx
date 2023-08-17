@@ -17,6 +17,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import imageLayoutTop from 'assets/img/icons/layout-top.svg'
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 
+import {slugify} from '../../utils/slugify'
 import {EmbedMode, PagePosition, EmbeddablePage} from './types'
 
 import css from './PageEmbedmentForm.less'
@@ -60,6 +61,7 @@ const PageEmbedmentForm = ({
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [isSlugTouched, setIsSlugTouched] = useState(false)
 
     // form states
     const {embedMode, pageName, pageSlug, selectedPage, pagePosition} = state
@@ -117,6 +119,15 @@ const PageEmbedmentForm = ({
                                 value: nextValue,
                             },
                         })
+                        if (!isSlugTouched) {
+                            dispatch({
+                                type: 'setPageSlug',
+                                payload: {
+                                    error: '',
+                                    value: slugify(nextValue),
+                                },
+                            })
+                        }
                     }}
                     error={pageName.error}
                     value={pageName.value}
@@ -133,6 +144,7 @@ const PageEmbedmentForm = ({
                                 value: nextValue,
                             },
                         })
+                        setIsSlugTouched(true)
                     }}
                     value={pageSlug.value}
                     caption="Page identifier added to the end of the URL"

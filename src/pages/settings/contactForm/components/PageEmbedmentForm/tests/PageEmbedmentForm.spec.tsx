@@ -34,14 +34,14 @@ describe('<PageEmbedmentForm />', () => {
               {
                 "payload": {
                   "error": "",
-                  "value": "A",
+                  "value": "a",
                 },
-                "type": "setPageName",
+                "type": "setPageSlug",
               },
             ]
         `)
 
-        expect(dispatch).toHaveBeenCalledTimes(1)
+        expect(dispatch).toHaveBeenCalledTimes(2)
 
         input = screen.getByLabelText('Slug')
 
@@ -59,7 +59,7 @@ describe('<PageEmbedmentForm />', () => {
             ]
         `)
 
-        expect(dispatch).toHaveBeenCalledTimes(2)
+        expect(dispatch).toHaveBeenCalledTimes(3)
     })
 
     it('should dispatch the appropriate action for the existing page mode', () => {
