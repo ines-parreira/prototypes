@@ -5,10 +5,14 @@ import {Moment} from 'moment'
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import useShortcuts from 'hooks/useShortcuts'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import Snooze from '../Snooze'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useShortcuts', () => jest.fn())
+jest.mock('store/middlewares/segmentTracker')
 jest.mock(
     '../TicketDetails/TicketSnoozePicker',
     () =>
@@ -37,9 +41,13 @@ jest.mock(
 )
 
 const useAppSelectorMock = useAppSelector as jest.Mock
+const useShortcutsMock = useShortcuts as jest.Mock
 
 describe('Snooze', () => {
     beforeEach(() => {
+        jest.resetAllMocks()
+        jest.restoreAllMocks()
+
         useAppSelectorMock.mockReturnValue('Europe/Amsterdam')
     })
 
@@ -56,6 +64,19 @@ describe('Snooze', () => {
         expect(await findByText('Snooze ticket')).toBeInTheDocument()
     })
 
+    it('should bind keyboard shortcuts', () => {
+        render(<Snooze onUpdate={_noop} />)
+        expect(useShortcutsMock).toHaveBeenCalledWith('TicketDetailContainer', {
+            OPEN_SNOOZE_TICKET: {
+                action: expect.any(Function),
+            },
+            CLOSE_SNOOZE_TICKET: {
+                key: 'esc',
+                action: expect.any(Function),
+            },
+        })
+    })
+
     it('should show the snooze picker when not currently snoozed', () => {
         const {getByText} = render(<Snooze onUpdate={_noop} />)
 
@@ -64,6 +85,10 @@ describe('Snooze', () => {
         expect(getByText('TicketSnoozePicker closed')).toBeInTheDocument()
 
         userEvent.click(el)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.SnoozeButtonClicked,
+            {isSnoozed: false}
+        )
         expect(getByText('TicketSnoozePicker open')).toBeInTheDocument()
     })
 
@@ -75,6 +100,10 @@ describe('Snooze', () => {
 
         const snoozeEl = getByText('snooze')
         userEvent.click(snoozeEl)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.SnoozeButtonClicked,
+            {isSnoozed: true}
+        )
 
         expect(getByText('Change snooze time')).toBeInTheDocument()
         userEvent.click(getByText('update snooze time'))

@@ -1,8 +1,9 @@
 import cn from 'classnames'
 import {Moment} from 'moment'
-import React, {useCallback, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import useShortcuts from 'hooks/useShortcuts'
 import {getTimezone} from 'state/currentUser/selectors'
 
 import Button from 'pages/common/components/button/Button'
@@ -10,6 +11,7 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Tooltip from 'pages/common/components/Tooltip'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 import css from './Snooze.less'
@@ -28,6 +30,7 @@ export default function Snooze({until, onUpdate}: Props) {
 
     const isSnoozed = !!until
     const handleClick = useCallback(() => {
+        logEvent(SegmentEvent.SnoozeButtonClicked, {isSnoozed})
         if (!isSnoozed) {
             setShowPicker((s) => !s)
             return
@@ -44,9 +47,32 @@ export default function Snooze({until, onUpdate}: Props) {
         setShowDropdown((s) => !s)
     }, [])
 
+    const handleTogglePicker = useCallback(() => {
+        setShowPicker((s) => !s)
+    }, [])
+
     const handleShowSnoozePicker = useCallback(() => {
         setShowPicker(true)
     }, [])
+
+    const actions = useMemo(
+        () => ({
+            OPEN_SNOOZE_TICKET: {
+                action: () => {
+                    setShowPicker(true)
+                },
+            },
+            CLOSE_SNOOZE_TICKET: {
+                key: 'esc',
+                action: () => {
+                    setShowPicker(false)
+                },
+            },
+        }),
+        []
+    )
+
+    useShortcuts('TicketDetailContainer', actions)
 
     return (
         <>
@@ -67,6 +93,7 @@ export default function Snooze({until, onUpdate}: Props) {
                 datetime={until}
                 timezone={timezone}
                 isOpen={showPicker}
+                toggle={handleTogglePicker}
                 onSubmit={onUpdate}
             >
                 <span className={css.pickerAnchor} />

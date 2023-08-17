@@ -127,6 +127,7 @@ export enum SegmentEvent {
     RuleAutomationAddOnUpsell = 'rule-automation-add-on/upsell',
     RuleAutomationAddOnSubscription = 'rule-automation-add-on/subscription',
     RecentActivityClicked = 'recent-activity-clicked',
+    SnoozeButtonClicked = 'snooze-button-clicked',
     InsertVideoOpen = 'insert-video/open',
     InsertVideoAdded = 'insert-video/added',
     InsertVideoAddedFromInsertLink = 'insert-video-from-insert-link/added',
