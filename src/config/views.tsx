@@ -362,7 +362,7 @@ export const views = fromAST([
             if (filters) {
                 view = view.merge({
                     filters,
-                    filters_ast: getAST(filters),
+                    filters_ast: fromAST(getAST(filters)),
                 })
             }
             if (viewName) {
@@ -390,7 +390,7 @@ export const views = fromAST([
             if (filters) {
                 return searchView.merge({
                     filters,
-                    filters_ast: getAST(filters),
+                    filters_ast: fromAST(getAST(filters)),
                 })
             }
 
@@ -460,7 +460,7 @@ export const views = fromAST([
             if (filters) {
                 return searchView.merge({
                     filters,
-                    filters_ast: getAST(filters),
+                    filters_ast: fromAST(getAST(filters)),
                 })
             }
 

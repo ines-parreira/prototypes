@@ -6,7 +6,12 @@ import * as viewsConfig from '../views'
 import * as ticketFixtures from '../../fixtures/ticket'
 import {customer} from '../../fixtures/customer'
 import {getAST, isImmutable} from '../../utils'
-import {ViewType, View, ViewField} from '../../models/view/types'
+import {
+    ViewType,
+    View,
+    ViewField,
+    ViewVisibility,
+} from '../../models/view/types'
 
 global.console.error = jest.fn()
 
@@ -63,15 +68,16 @@ describe('Config: views', () => {
         })
     })
 
-    describe('views', () => {
-        const {views} = viewsConfig
+    describe.each(viewsConfig.views.toJS() as Record<string, unknown>[])(
+        '$name view',
+        (config) => {
+            const viewConfig = fromJS(config) as Map<any, any>
+            const defaultFilters = 'isEmpty(ticket.created_datetime)'
+            const fixtures = {
+                ticket: ticketFixtures.ticket,
+                customer,
+            }
 
-        const fixtures = {
-            ticket: ticketFixtures.ticket,
-            customer,
-        }
-
-        views.forEach((viewConfig: Map<any, any>) => {
             it('view structure', () => {
                 const view = viewConfig.toJS() as Record<string, unknown>
 
@@ -145,7 +151,7 @@ describe('Config: views', () => {
                 })
             })
 
-            describe('noView()', () => {
+            describe('newView()', () => {
                 it('has all properties', () => {
                     const newView = (
                         viewConfig.get('newView') as () => Map<any, any>
@@ -165,11 +171,26 @@ describe('Config: views', () => {
                         expect(newView).toHaveProperty('visibility')
                     }
                 })
+
                 it('has filtered_ast as immutable', () => {
                     const newView = (
                         viewConfig.get('newView') as () => Map<any, any>
                     )()
                     expect(isImmutable(newView.getIn(['filters_ast']))).toEqual(
+                        true
+                    )
+                })
+
+                it('should has filtered_ast as immutable when filters are passed as argument', () => {
+                    const newView = (
+                        viewConfig.get('newView') as (
+                            visibility?: ViewVisibility,
+                            viewName?: string,
+                            filters?: string
+                        ) => Map<any, any>
+                    )(ViewVisibility.Private, 'Some view', defaultFilters)
+
+                    expect(isImmutable(newView.getIn(['filters_ast']))).toBe(
                         true
                     )
                 })
@@ -211,9 +232,22 @@ describe('Config: views', () => {
                         isImmutable(searchView.getIn(['filters_ast']))
                     ).toEqual(true)
                 })
+
+                it('should has filtered_ast as immutable when filters are passed as argument', () => {
+                    const searchView = (
+                        viewConfig.get('searchView') as (
+                            query?: string,
+                            filters?: string
+                        ) => Map<any, any>
+                    )('some query', defaultFilters)
+
+                    expect(isImmutable(searchView.getIn(['filters_ast']))).toBe(
+                        true
+                    )
+                })
             })
-        })
-    })
+        }
+    )
 
     describe('getConfigByName', () => {
         it('returns correct config', () => {
