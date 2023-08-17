@@ -314,16 +314,17 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                     />
 
                     <div className="d-flex justify-content-between align-items-center ml-3">
-                        {hasTicketNavigationArrows && (
-                            <TicketNavigationArrowPagination
-                                ticketId={ticket.get('id')}
-                            />
-                        )}
                         <TicketSnooze
                             className={css.headerIcon}
                             datetime={ticket.get('snooze_datetime')}
                             timezone={timezone}
                         />
+
+                        {hasTicketNavigationArrows && (
+                            <TicketNavigationArrowPagination
+                                ticketId={ticket.get('id')}
+                            />
+                        )}
 
                         <TicketTrash
                             className={css.headerIcon}
