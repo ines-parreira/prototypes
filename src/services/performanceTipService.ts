@@ -127,8 +127,8 @@ export const hintTemplates: Record<TipQualifier, string> = {
 }
 
 export const gradeLabels = {
-    [TipQualifier.Error]: 'Poor',
-    [TipQualifier.LightError]: 'Poor',
+    [TipQualifier.Error]: 'Needs improvement',
+    [TipQualifier.LightError]: 'Needs improvement',
     [TipQualifier.Neutral]: 'Average',
     [TipQualifier.LightSuccess]: 'Good',
     [TipQualifier.Success]: 'Excellent',
