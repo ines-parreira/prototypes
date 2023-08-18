@@ -7,7 +7,10 @@ import {
 } from 'models/reporting/types'
 import {OrderDirection} from 'models/api/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
-import {initialState as initialStatsFiltersState} from 'state/stats/reducers'
+import {
+    defaultStatsFilters,
+    initialState as initialStatsFiltersState,
+} from 'state/stats/reducers'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {initialState as initialUiStatsState} from 'state/ui/stats/reducer'
 import {
@@ -27,6 +30,7 @@ import {initialState as currentUserInitialState} from 'state/currentUser/reducer
 import {RootState} from 'state/types'
 import {TableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
+import {personNames} from 'fixtures/personNames'
 
 describe('agentPerformanceSlice', () => {
     const agents = [
@@ -356,6 +360,40 @@ describe('agentPerformanceSlice', () => {
             expect(getSortedAgents(state).pop()).toEqual(
                 agents[agents.length - 1]
             )
+        })
+        it('should not contain undefined or empty values throughout the result if the lastSortingMetric has more agents than the filtered ones', () => {
+            const agents = personNames.map((name, idx) => ({id: idx, name}))
+            const lastSortingMetric = agents.map((agent) => ({
+                [TicketMember.AssigneeUserId]: String(agent.id),
+                [TicketMeasure.FirstResponseTime]: '10',
+            }))
+            const filteredAgents = [1, 4, 5, 10]
+            const state = {
+                agents: fromJS({all: fromJS(agents)}),
+                ui: {
+                    [agentPerformanceSlice.name]: {
+                        sorting: {
+                            field: TableColumn.FirstResponseTime,
+                            direction: OrderDirection.Asc,
+                            isLoading: false,
+                            lastSortingMetric,
+                        },
+                    },
+                    stats: {
+                        filters: defaultStatsFilters,
+                        cleanStatsFilters: {
+                            agents: filteredAgents,
+                        },
+                    },
+                },
+                stats: initialStatsFiltersState,
+            } as any as RootState
+
+            const sortedAgents = getSortedAgents(state)
+
+            expect(sortedAgents.length).toEqual(filteredAgents.length)
+            expect(sortedAgents).not.toContain(undefined)
+            expect(sortedAgents).not.toContain(null)
         })
     })
 
