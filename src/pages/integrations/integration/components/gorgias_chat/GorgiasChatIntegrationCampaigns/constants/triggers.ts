@@ -144,7 +144,6 @@ export const TRIGGER_LIST = [
         requirements: {
             revenue: true,
             shopify: true,
-            shopify_history: true,
         },
     },
     {
@@ -158,7 +157,6 @@ export const TRIGGER_LIST = [
         requirements: {
             revenue: true,
             shopify: true,
-            shopify_history: true,
         },
     },
     {
@@ -172,7 +170,6 @@ export const TRIGGER_LIST = [
         requirements: {
             revenue: true,
             shopify: true,
-            shopify_history: true,
         },
     },
     {
@@ -186,7 +183,6 @@ export const TRIGGER_LIST = [
         requirements: {
             revenue: true,
             shopify: true,
-            shopify_history: true,
         },
     },
     {
@@ -200,7 +196,6 @@ export const TRIGGER_LIST = [
         requirements: {
             revenue: true,
             shopify: true,
-            shopify_history: true,
         },
     },
     // --------------------
