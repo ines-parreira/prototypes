@@ -30,6 +30,7 @@ export enum TicketSegment {
     ConversationStarted = 'TicketMessages.conversationStarted',
     ClosedTickets = 'Ticket.closedTickets',
     WorkloadTickets = 'Ticket.workloadTickets',
+    TicketCreatedByAgent = 'TicketMessages.ticketCreatedByAgent',
 }
 
 export enum TicketMember {

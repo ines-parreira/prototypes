@@ -4,6 +4,7 @@ import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
+    ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
     TicketDimension,
@@ -19,23 +20,47 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-import useTimeSeries from './useTimeSeries'
+import useTimeSeries, {TimeSeriesQuery} from './useTimeSeries'
 
-export function useTicketsCreatedTimeSeries(
-    filters: StatsFilters,
+export const ticketsCreatedQueryFactory = (
+    statsFilters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity
-) {
-    return useTimeSeries({
+): TimeSeriesQuery => {
+    const {agents, ...statFiltersWithoutAgents} = statsFilters
+    const commonFilters: ReportingFilter[] = [
+        {
+            member: TicketMember.IsTrashed,
+            operator: ReportingFilterOperator.Equals,
+            values: ['0'],
+        },
+        {
+            member: TicketMember.IsSpam,
+            operator: ReportingFilterOperator.Equals,
+            values: ['0'],
+        },
+    ]
+    if (agents?.length) {
+        commonFilters.push({
+            member: TicketMember.FirstHelpdeskMessageUserId,
+            operator: ReportingFilterOperator.Equals,
+            values: agents.map((agent) => agent.toString()),
+        })
+    }
+
+    return {
         measures: [TicketMeasure.TicketCount],
         dimensions: [],
+        segments: agents?.length ? [TicketSegment.TicketCreatedByAgent] : [],
         timeDimensions: [
             {
                 dimension: TicketDimension.CreatedDatetime,
                 granularity,
                 dateRange: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
+                    formatReportingQueryDate(
+                        statsFilters.period.start_datetime
+                    ),
+                    formatReportingQueryDate(statsFilters.period.end_datetime),
                 ],
             },
         ],
@@ -44,20 +69,21 @@ export function useTicketsCreatedTimeSeries(
         filters: [
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                filters
+                statFiltersWithoutAgents
             ),
-            {
-                member: TicketMember.IsTrashed,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketMember.IsSpam,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
+            ...commonFilters,
         ],
-    })
+    }
+}
+
+export function useTicketsCreatedTimeSeries(
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) {
+    return useTimeSeries(
+        ticketsCreatedQueryFactory(filters, timezone, granularity)
+    )
 }
 
 export function useTicketsClosedTimeSeries(

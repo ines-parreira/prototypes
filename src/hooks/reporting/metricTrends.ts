@@ -179,27 +179,47 @@ export const useClosedTicketsTrend = createUseMetricTrend(
     closedTicketsQueryFactory
 )
 
-export const useTicketsCreatedTrend = createUseMetricTrend(
-    (filters, timezone) => ({
+export const ticketsCreatedQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+) => {
+    const {agents, ...statFiltersWithoutAgents} = statsFilters
+    const commonFilters: ReportingFilter[] = [
+        {
+            member: TicketMember.CreatedDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                formatReportingQueryDate(statsFilters.period.start_datetime),
+                formatReportingQueryDate(statsFilters.period.end_datetime),
+            ],
+        },
+        ...NotSpamNorTrashedTicketsFilter,
+    ]
+    if (agents?.length) {
+        commonFilters.push({
+            member: TicketMember.FirstHelpdeskMessageUserId,
+            operator: ReportingFilterOperator.Equals,
+            values: agents.map((agent) => agent.toString()),
+        })
+    }
+
+    return {
         measures: [TicketMeasure.TicketCount],
         dimensions: [],
+        segments: agents?.length ? [TicketSegment.TicketCreatedByAgent] : [],
         timezone,
         filters: [
-            {
-                member: TicketMember.CreatedDatetime,
-                operator: ReportingFilterOperator.InDateRange,
-                values: [
-                    filters.period.start_datetime,
-                    filters.period.end_datetime,
-                ],
-            },
-            ...NotSpamNorTrashedTicketsFilter,
+            ...commonFilters,
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                filters
+                statFiltersWithoutAgents
             ),
         ],
-    })
+    }
+}
+
+export const useTicketsCreatedTrend = createUseMetricTrend(
+    ticketsCreatedQueryFactory
 )
 
 export const getTicketsRepliedQueryFactory = (

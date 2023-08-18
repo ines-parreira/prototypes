@@ -383,8 +383,8 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       "member": "Ticket.createdDatetime",
       "operator": "inDateRange",
       "values": [
-        "2021-05-29T00:00:00+02:00",
-        "2021-06-04T23:59:59+02:00",
+        "2021-05-29T00:00:00.000",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -399,6 +399,13 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       "operator": "equals",
       "values": [
         "0",
+      ],
+    },
+    {
+      "member": "TicketMessages.firstHelpdeskMessageUserId",
+      "operator": "equals",
+      "values": [
+        "2",
       ],
     },
     {
@@ -431,13 +438,6 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "Ticket.assigneeUserId",
-      "operator": "equals",
-      "values": [
-        "2",
-      ],
-    },
-    {
       "member": "Ticket.tags",
       "operator": "equals",
       "values": [
@@ -448,6 +448,9 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
   ],
   "measures": [
     "Ticket.ticketCount",
+  ],
+  "segments": [
+    "TicketMessages.ticketCreatedByAgent",
   ],
   "timezone": "UTC",
 }

@@ -126,13 +126,6 @@ exports[`time series useTicketsCreatedTimeSeries should create reporting filters
         ],
       },
       {
-        "member": "Ticket.assigneeUserId",
-        "operator": "equals",
-        "values": [
-          "2",
-        ],
-      },
-      {
         "member": "Ticket.tags",
         "operator": "equals",
         "values": [
@@ -154,6 +147,13 @@ exports[`time series useTicketsCreatedTimeSeries should create reporting filters
           "0",
         ],
       },
+      {
+        "member": "TicketMessages.firstHelpdeskMessageUserId",
+        "operator": "equals",
+        "values": [
+          "2",
+        ],
+      },
     ],
     "measures": [
       "Ticket.ticketCount",
@@ -163,6 +163,9 @@ exports[`time series useTicketsCreatedTimeSeries should create reporting filters
         "Ticket.createdDatetime",
         "asc",
       ],
+    ],
+    "segments": [
+      "TicketMessages.ticketCreatedByAgent",
     ],
     "timeDimensions": [
       {
