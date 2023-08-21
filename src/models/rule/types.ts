@@ -159,7 +159,7 @@ export type RuleActionAttachment = {
 }
 
 export type RuleAction = {
-    name: RuleActionName
+    name: ActionType
     args: {
         attachments?: RuleActionAttachment[]
         body_html?: string
@@ -181,7 +181,20 @@ export type RuleAction = {
     }
 }
 
-export enum RuleActionName {
-    ReplyToTicket = 'replyToTicket',
-    //...
-}
+export type ActionType =
+    | 'replyToTicket'
+    | 'sendEmail'
+    | 'addInternalNote'
+    | 'applyMacro'
+    | 'addTags'
+    | 'removeTags'
+    | 'setTags'
+    | 'setSubject'
+    | 'setStatus'
+    | 'snoozeTicket'
+    | 'setAssignee'
+    | 'setTeamAssignee'
+    | 'trashTicket'
+    | 'facebookHideComment'
+    | 'facebookLikeComment'
+    | 'excludeFromCSAT'

@@ -14,7 +14,6 @@ import {Map, List} from 'immutable'
 import classnames from 'classnames'
 import _getIn from 'lodash/get'
 import esprima from 'esprima'
-
 import {createRule} from 'models/rule/resources'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
 import {ruleCreated} from 'state/entities/rules/actions'
@@ -40,6 +39,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import {fromAST} from 'utils'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {CodeASTType} from '../../../types'
 import RuleItemButtons from '../../../components/RuleItemButtons'
 import RuleEditor from '../../../components/RuleEditor'
@@ -48,6 +48,7 @@ import {RuleEditorProps, EditorHandle} from '../RuleFormEditor'
 
 import css from './DefaultRuleEditor.less'
 import commonCss from './RuleEditor.less'
+import {getRuleActions} from './utils'
 
 export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
     (
@@ -224,8 +225,34 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
 
         useImperativeHandle(ref, () => ({submit}), [submit])
 
+        const ruleActions = useMemo(
+            () => getRuleActions(ruleDraft),
+            [ruleDraft]
+        )
+
         return (
             <div id="rule-form" className={css.form}>
+                {ruleActions.includes('replyToTicket') && (
+                    <div className="mb-4">
+                        <Alert type={AlertType.Warning} icon>
+                            <span>
+                                The rule has a "reply to customer" action which
+                                will create billable tickets. To avoid unwanted
+                                charges, make sure this rule is set up correctly
+                                and will reply only to intended tickets.
+                                <br />
+                                <a
+                                    href="https://docs.gorgias.com/en-US/rules---best-practices-81748#:~:text=messenger%20as%20well).-,Auto%2Dreply%20rules,-To%20further%20automate"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Learn about auto-reply rules best practices.
+                                </a>
+                            </span>
+                        </Alert>
+                    </div>
+                )}
+
                 <FormGroup>
                     <Label
                         for="ruleName"

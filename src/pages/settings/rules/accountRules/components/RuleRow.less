@@ -6,9 +6,15 @@
             cursor: pointer;
         }
 
+        .fullWidthColumn {
+            width: 100%;
+            flex-grow: 1;
+        }
+
         .middleColumnContent {
             display: flex;
             align-items: center;
+            gap: 16px;
         }
 
         &:hover {
@@ -29,9 +35,15 @@
         top: 50%;
         left: 52px;
     }
+
     .error {
         color: var(--feedback-error);
         line-height: 14px;
+    }
+
+    .warningIcon {
+        font-size: 16px;
+        color: var(--feedback-warning);
     }
 
     .actions {

@@ -54,7 +54,7 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
         class="middleColumnContent"
       >
         <span
-          class="mr-3 name"
+          class="name"
         >
           my rule
         </span>
@@ -160,7 +160,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
         class="middleColumnContent"
       >
         <span
-          class="mr-3 name"
+          class="name"
         >
           my rule
         </span>
@@ -266,7 +266,7 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
         class="middleColumnContent"
       >
         <span
-          class="mr-3 name"
+          class="name"
         >
           my rule
         </span>

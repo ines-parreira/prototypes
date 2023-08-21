@@ -42,7 +42,9 @@ import {
 } from 'state/rules/types'
 
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
+import Tooltip from 'pages/common/components/Tooltip'
 import css from './RuleRow.less'
+import {getRuleActions} from './ruleEditors/utils'
 
 type Props = {
     rule: Rule | ManagedRule<AnyManagedRuleSettings>
@@ -215,6 +217,8 @@ export function RuleRow({
         return [rule.name, rule.description]
     }, [rule, ruleRecipes])
 
+    const ruleActions = useMemo(() => getRuleActions(rule), [rule])
+
     return (
         <tr
             id={rule.id.toString()}
@@ -272,21 +276,63 @@ export function RuleRow({
                 )}
                 id={`rule-name-${rule.id}`}
             >
-                <Link to={link}>
-                    <div className={css.middleColumnContent}>
-                        <span className={classnames('mr-3', css.name)}>
-                            {ruleName}
-                        </span>
-                        {error && (
-                            <span className={classnames('ml-2', css.error)}>
-                                <span className="material-icons mr-1">
-                                    error_outline
+                <>
+                    <Link to={link}>
+                        <div className={css.middleColumnContent}>
+                            <span className={css.name}>{ruleName}</span>
+                            {error && (
+                                <span className={classnames('ml-2', css.error)}>
+                                    <span className="material-icons mr-1">
+                                        error_outline
+                                    </span>
+                                    {error}
                                 </span>
-                                {error}
-                            </span>
-                        )}
-                    </div>
-                </Link>
+                            )}
+                            {ruleActions.includes('replyToTicket') && (
+                                <div>
+                                    <i
+                                        className={classnames(
+                                            'material-icons',
+                                            css.warningIcon
+                                        )}
+                                        id={`copy-icon-${rule.id}`}
+                                        onMouseEnter={() =>
+                                            setDescriptionOpen(false)
+                                        }
+                                    >
+                                        error
+                                    </i>
+                                    <Tooltip
+                                        placement="top"
+                                        target={`copy-icon-${rule.id}`}
+                                        delay={{
+                                            show: 0,
+                                            hide: 500,
+                                        }}
+                                        autohide={false}
+                                        onMouseEnter={() =>
+                                            setDescriptionOpen(false)
+                                        }
+                                    >
+                                        The rule has a “reply to customer”
+                                        action which will create billable
+                                        tickets. To avoid extra charges, make
+                                        sure this rule is set up to reply only
+                                        to intended tickets.{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/rules---best-practices-81748#:~:text=messenger%20as%20well).-,Auto%2Dreply%20rules,-To%20further%20automate"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Learn about auto-reply rules best
+                                            practices.
+                                        </a>
+                                    </Tooltip>
+                                </div>
+                            )}
+                        </div>
+                    </Link>
+                </>
             </td>
             <td
                 className={classnames(

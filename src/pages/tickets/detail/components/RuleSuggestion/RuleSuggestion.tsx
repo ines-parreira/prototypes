@@ -12,7 +12,7 @@ import {
     MacroActionName,
     MacroActionType,
 } from 'models/macroAction/types'
-import {RuleAction, RuleActionName, RuleType} from 'models/rule/types'
+import {RuleAction, RuleType} from 'models/rule/types'
 
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {getEmailChannels} from 'state/integrations/selectors'
@@ -55,7 +55,7 @@ export const getRuleSuggestionContent = (
 ) => {
     const suggestion = ticket.meta.rule_suggestion
     const actions = suggestion.actions
-        ?.filter((action) => action.name !== RuleActionName.ReplyToTicket)
+        ?.filter((action) => action.name !== 'replyToTicket')
         .filter((action) =>
             Object.values(MacroActionName).includes(action.name as any)
         )
@@ -71,7 +71,7 @@ export const getRuleSuggestionContent = (
         )
 
     const text = suggestion.actions?.find(
-        (action) => action.name === RuleActionName.ReplyToTicket
+        (action) => action.name === 'replyToTicket'
     )?.args
 
     return {actions, text}
