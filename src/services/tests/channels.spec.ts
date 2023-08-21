@@ -9,7 +9,7 @@ import {
 import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
-jest.mock('init', () => ({
+jest.mock('api/queryClient', () => ({
     appQueryClient: {
         getQueryData: () => ({
             data: mockChannels,

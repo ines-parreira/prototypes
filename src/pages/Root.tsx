@@ -12,7 +12,7 @@ import {Store} from 'redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {useEffectOnce} from 'react-use'
-import {appQueryClient} from 'init'
+import {appQueryClient} from 'api/queryClient'
 import {RootState} from 'state/types'
 import {getLDClient, LDUser} from 'utils/launchDarkly'
 

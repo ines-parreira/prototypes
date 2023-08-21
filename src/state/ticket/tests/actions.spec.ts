@@ -27,7 +27,7 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 
-import {appQueryClient} from 'init'
+import {appQueryClient} from 'api/queryClient'
 import {customFieldDefinitionKeys} from 'models/customField/queries'
 import {getCustomFields} from 'models/customField/resources'
 import {isCurrentlyOnTicket} from 'utils'

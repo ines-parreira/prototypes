@@ -2,7 +2,7 @@
 
 exports[`SourceIcon component should show HELP_CENTER_CONTACT_FORM icons 1`] = `
 <i
-  className="icon d-inline-block material-icons"
+  class="icon d-inline-block material-icons"
 >
   email
 </i>
@@ -10,7 +10,7 @@ exports[`SourceIcon component should show HELP_CENTER_CONTACT_FORM icons 1`] = `
 
 exports[`SourceIcon component should show SYSTEM_SOURCE_TYPES icons 1`] = `
 <i
-  className="icon d-inline-block text-warning material-icons"
+  class="icon d-inline-block text-warning material-icons"
 >
   note
 </i>
@@ -18,7 +18,7 @@ exports[`SourceIcon component should show SYSTEM_SOURCE_TYPES icons 1`] = `
 
 exports[`SourceIcon component should show SYSTEM_SOURCE_TYPES icons 2`] = `
 <i
-  className="icon d-inline-block material-icons"
+  class="icon d-inline-block material-icons"
 >
   settings
 </i>
@@ -26,7 +26,7 @@ exports[`SourceIcon component should show SYSTEM_SOURCE_TYPES icons 2`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 1`] = `
 <i
-  className="icon d-inline-block material-icons"
+  class="icon d-inline-block material-icons"
 >
   forum
 </i>
@@ -34,7 +34,7 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 1`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 2`] = `
 <i
-  className="icon d-inline-block material-icons"
+  class="icon d-inline-block material-icons"
 >
   email
 </i>
@@ -42,67 +42,67 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 2`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 3`] = `
 <i
-  className="icon d-inline-block icon-custom icon-facebook-feed"
+  class="icon d-inline-block icon-custom icon-facebook-feed"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 4`] = `
 <i
-  className="icon d-inline-block icon-custom icon-facebook-feed"
+  class="icon d-inline-block icon-custom icon-facebook-feed"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 5`] = `
 <i
-  className="icon d-inline-block icon-custom icon-facebook-feed"
+  class="icon d-inline-block icon-custom icon-facebook-feed"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 6`] = `
 <i
-  className="icon d-inline-block icon-custom icon-facebook-messenger"
+  class="icon d-inline-block icon-custom icon-facebook-messenger"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 7`] = `
 <i
-  className="icon d-inline-block icon-custom icon-facebook-messenger"
+  class="icon d-inline-block icon-custom icon-facebook-messenger"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 8`] = `
 <i
-  className="icon d-inline-block icon-custom icon-instagram"
+  class="icon d-inline-block icon-custom icon-instagram"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 9`] = `
 <i
-  className="icon d-inline-block icon-custom icon-instagram"
+  class="icon d-inline-block icon-custom icon-instagram"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 10`] = `
 <i
-  className="icon d-inline-block icon-custom icon-instagram"
+  class="icon d-inline-block icon-custom icon-instagram"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 11`] = `
 <i
-  className="icon d-inline-block icon-custom icon-instagram"
+  class="icon d-inline-block icon-custom icon-instagram"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 12`] = `
 <i
-  className="icon d-inline-block icon-custom icon-instagram-dm"
+  class="icon d-inline-block icon-custom icon-instagram-dm"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 13`] = `
 <i
-  className="icon d-inline-block text-warning material-icons"
+  class="icon d-inline-block text-warning material-icons"
 >
   note
 </i>
@@ -110,49 +110,49 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 13`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 14`] = `
 <i
-  className="icon d-inline-block icon-custom icon-yotpo-review"
+  class="icon d-inline-block icon-custom icon-yotpo-review"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 15`] = `
 <i
-  className="icon d-inline-block icon-custom icon-yotpo-review-public-comment"
+  class="icon d-inline-block icon-custom icon-yotpo-review-public-comment"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 16`] = `
 <i
-  className="icon d-inline-block icon-custom icon-yotpo-review-private-comment"
+  class="icon d-inline-block icon-custom icon-yotpo-review-private-comment"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 17`] = `
 <i
-  className="icon d-inline-block icon-custom icon-twitter"
+  class="icon d-inline-block icon-custom icon-twitter"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 18`] = `
 <i
-  className="icon d-inline-block icon-custom icon-twitter"
+  class="icon d-inline-block icon-custom icon-twitter"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 19`] = `
 <i
-  className="icon d-inline-block icon-custom icon-twitter"
+  class="icon d-inline-block icon-custom icon-twitter"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 20`] = `
 <i
-  className="icon d-inline-block icon-custom icon-twitter-dm"
+  class="icon d-inline-block icon-custom icon-twitter-dm"
 />
 `;
 
 exports[`SourceIcon component should show default icon 1`] = `
 <i
-  className="icon d-inline-block material-icons"
+  class="icon d-inline-block material-icons"
 >
   live_help
 </i>

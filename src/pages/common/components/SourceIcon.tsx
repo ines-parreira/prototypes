@@ -1,22 +1,18 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {IntegrationType} from '../../../models/integration/types'
-import {SourceType} from '../../../models/ticket/types'
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-} from '../../../business/types/ticket'
+import {ChannelLike} from 'models/channel/types'
+import {IntegrationType} from 'models/integration/types'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {isLegacyChannel, toChannel} from 'services/channels'
 
 type Props = {
-    type?: SourceType | IntegrationType | TicketChannel
+    type?: ChannelLike
     className?: string
     id?: string
 }
 
-const sourceTypeToIcon = (
-    sourceType?: SourceType | IntegrationType | TicketChannel
-) => {
+const sourceTypeToIcon = (sourceType?: ChannelLike) => {
     const icon = {
         name: 'live_help',
         custom: false,
@@ -132,6 +128,21 @@ const sourceTypeToIcon = (
 }
 
 const SourceIcon = ({type, className, ...otherProps}: Props) => {
+    if (type && !isLegacyChannel(type)) {
+        const channel = toChannel(type)
+        if (channel && channel.logo_url) {
+            return (
+                <img
+                    src={channel.logo_url}
+                    alt={channel.name}
+                    width="14px"
+                    height="14px"
+                    {...otherProps}
+                />
+            )
+        }
+    }
+
     const icon = sourceTypeToIcon(type)
 
     return (

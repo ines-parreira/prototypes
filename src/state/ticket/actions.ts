@@ -13,7 +13,7 @@ import {
     TicketStatus,
     TicketChannel,
 } from 'business/types/ticket'
-import {appQueryClient} from 'init'
+import {appQueryClient} from 'api/queryClient'
 import {DEFAULT_ACTIONS} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'

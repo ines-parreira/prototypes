@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {useQueryClient} from '@tanstack/react-query'
-import {appQueryClient} from 'init'
+import {appQueryClient} from 'api/queryClient'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {channelsQueryKeys, useListChannels} from 'models/channel/queries'
 import {listChannels} from 'models/channel/resources'
