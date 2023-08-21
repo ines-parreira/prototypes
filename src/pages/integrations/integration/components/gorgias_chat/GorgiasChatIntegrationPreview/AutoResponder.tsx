@@ -48,7 +48,6 @@ export default class AutoResponder extends Component<Props> {
 
     render() {
         const {
-            mainColor,
             chatTitle,
             language,
             isEmailCaptureEnabled = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
@@ -58,10 +57,7 @@ export default class AutoResponder extends Component<Props> {
         return (
             <BotMessages chatTitle={chatTitle} messages={[message]}>
                 {isEmailCaptureEnabled && (
-                    <EmailCaptureMessage
-                        mainColor={mainColor}
-                        language={language}
-                    />
+                    <EmailCaptureMessage language={language} />
                 )}
             </BotMessages>
         )

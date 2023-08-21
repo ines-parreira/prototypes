@@ -1,27 +1,34 @@
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 import React from 'react'
 
-import classnames from 'classnames'
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import Collapse from 'pages/common/components/Collapse/Collapse'
 
+import {GorgiasChatAvatarSettings} from 'models/integration/types'
+
+import List from 'gorgias-design-system/List/List'
+import ListItem from 'gorgias-design-system/List/ListItem'
+import Card from 'gorgias-design-system/Cards/Card'
+import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
 import css from './ChatHomePreview.less'
-
-const ChevronRightIcon = () => (
-    <i className={classnames('material-icons', css.chevronRightIcon)}>
-        chevron_right
-    </i>
-)
+import {BoxIcon, ChevronRightIcon, PlaneIcon} from './icon-utils'
+import ConversationAvatars from './ConversationAvatars'
 
 type Props = {
+    avatar?: GorgiasChatAvatarSettings
+    title: string
+    renderConversation: boolean
     selfServiceConfiguration: SelfServiceConfiguration | null
     language?: string
 }
 
 const ChatHomePreview: React.FC<Props> = ({
+    avatar,
+    title,
+    renderConversation = false,
     language,
     selfServiceConfiguration,
 }) => {
@@ -37,37 +44,47 @@ const ChatHomePreview: React.FC<Props> = ({
         selfServiceConfiguration?.return_order_policy.enabled
 
     const sspTexts =
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         GORGIAS_CHAT_SSP_TEXTS[language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
 
     return (
         <div className={css.contentContainer}>
-            <Collapse isOpen={quickResponses.length > 0} memoizeOnExit>
-                <div className={css.listGroup}>
-                    <div className={css.listGroupItemHeading}>
-                        {sspTexts.quickResponses}
-                    </div>
+            {renderConversation && (
+                <Conversation
+                    avatar={
+                        <ConversationAvatars
+                            avatar={avatar}
+                            chatTitle={title}
+                        />
+                    }
+                    trailIcon={<PlaneIcon />}
+                    title={title}
+                    description={sspTexts.sendUsAMessage}
+                    variant="collapsed"
+                    style={{marginBottom: '20px'}}
+                />
+            )}
+            {quickResponses.length > 0 && (
+                <List style={{marginBottom: '20px'}}>
                     {quickResponses.map((quickResponse) => (
-                        <div
+                        <ListItem
                             key={quickResponse.id}
-                            className={css.listGroupItem}
-                        >
-                            {quickResponse.title}
-                            <ChevronRightIcon />
-                        </div>
+                            label={quickResponse.title}
+                            trailIcon={<ChevronRightIcon />}
+                        />
                     ))}
-                </div>
-            </Collapse>
-            <Collapse isOpen={canManageOrders} memoizeOnExit>
-                <div className={css.listGroup}>
-                    <div className={css.listGroupItemHeading}>
-                        {canTrackOrders
+                </List>
+            )}
+            {canManageOrders && (
+                <Card
+                    leadIcon={<BoxIcon />}
+                    title={
+                        canTrackOrders
                             ? sspTexts.trackAndManageMyOrders
-                            : sspTexts.manageMyOrders}
-                        <ChevronRightIcon />
-                    </div>
-                </div>
-            </Collapse>
+                            : sspTexts.manageMyOrders
+                    }
+                    trailIcon={<ChevronRightIcon />}
+                />
+            )}
         </div>
     )
 }

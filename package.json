@@ -55,6 +55,7 @@
         "@casl/react": "3.0.1",
         "@datadog/browser-logs": "2.0.3",
         "@datadog/browser-rum": "4.26.0",
+        "@emotion/react": "^11.11.1",
         "@floating-ui/react": "0.18.1",
         "@formatjs/intl-displaynames": "5.4.3",
         "@formatjs/intl-locale": "2.4.47",

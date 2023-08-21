@@ -131,7 +131,6 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
             </div>
 
             <ChatIntegrationPreview
-                avatar={avatar}
                 name={name}
                 language={language}
                 mainColor={mainColor}
@@ -172,6 +171,7 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                         <OfflineMessages
                             mainColor={mainColor}
                             chatTitle={name}
+                            language={language}
                         />
                     </ChatIntegrationPreviewContent>
                 )}

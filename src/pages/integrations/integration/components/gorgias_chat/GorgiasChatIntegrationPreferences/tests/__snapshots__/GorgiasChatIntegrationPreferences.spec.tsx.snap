@@ -5,8 +5,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "avatar": undefined,
-  "avatarTeamPictureUrl": null,
-  "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -29,8 +27,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "avatar": undefined,
-  "avatarTeamPictureUrl": null,
-  "avatarType": "team-members",
   "controlTicketVolume": true,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -53,8 +49,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "avatar": undefined,
-  "avatarTeamPictureUrl": null,
-  "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -77,8 +71,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "avatar": undefined,
-  "avatarTeamPictureUrl": null,
-  "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": true,
   "emailCaptureEnabled": true,
@@ -101,8 +93,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "avatar": undefined,
-  "avatarTeamPictureUrl": null,
-  "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -125,8 +115,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "avatar": undefined,
-  "avatarTeamPictureUrl": null,
-  "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -229,8 +217,6 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initial
     "imageType": "agent-picture",
     "nameType": "agent-first-name",
   },
-  "avatarTeamPictureUrl": null,
-  "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -257,8 +243,6 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initia
     "imageType": "agent-picture",
     "nameType": "agent-first-name",
   },
-  "avatarTeamPictureUrl": null,
-  "avatarType": "team-members",
   "controlTicketVolume": false,
   "displayCampaignsHiddenChat": false,
   "emailCaptureEnabled": true,
@@ -357,16 +341,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         <ChatIntegrationPreview
           autoResponderEnabled={false}
           autoResponderReply="reply-dynamic"
-          avatar={
-            {
-              "companyLogoUrl": undefined,
-              "imageType": "agent-picture",
-              "nameType": "agent-first-name",
-            }
-          }
-          avatarTeamPictureUrl={null}
-          avatarType="team-members"
           isOnline={true}
+          isWidgetConversation={true}
           language="en-US"
           mainColor="#789c5d"
           mainFontFamily="Inter"
@@ -377,10 +353,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               "offsetY": 0,
             }
           }
-          renderButtonFooter={false}
           renderFooter={true}
-          renderPoweredBy={true}
-          shouldHideAvatarOnlineMarker={false}
+          renderPoweredBy={false}
         >
           <ChatIntegrationPreviewContent>
             <ChatIntegrationPreviewProvider
@@ -915,16 +889,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         <ChatIntegrationPreview
           autoResponderEnabled={false}
           autoResponderReply="reply-dynamic"
-          avatar={
-            {
-              "companyLogoUrl": undefined,
-              "imageType": "agent-picture",
-              "nameType": "agent-first-name",
-            }
-          }
-          avatarTeamPictureUrl={null}
-          avatarType="team-members"
           isOnline={true}
+          isWidgetConversation={true}
           language="en-US"
           mainColor="#789c5d"
           mainFontFamily="Inter"
@@ -935,10 +901,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               "offsetY": 0,
             }
           }
-          renderButtonFooter={false}
           renderFooter={true}
-          renderPoweredBy={true}
-          shouldHideAvatarOnlineMarker={false}
+          renderPoweredBy={false}
         >
           <ChatIntegrationPreviewContent>
             <ChatIntegrationPreviewProvider

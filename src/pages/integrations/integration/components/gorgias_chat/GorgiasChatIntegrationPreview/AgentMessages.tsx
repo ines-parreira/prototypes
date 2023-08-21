@@ -4,15 +4,14 @@ import classnames from 'classnames'
 
 import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
+import ArticleAttachment from 'gorgias-design-system/Attachments/ArticleAttachment'
 import {AgentDisplayName} from './AgentDisplayName'
-import ArticleAttachment, {
-    ArticleAttachmentSchema,
-    isArticleAttachment,
-} from './ArticleAttachment'
 import ChatAvatar from './ChatAvatar'
 import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
 
 import css from './ChatIntegrationPreview.less'
+import {ArticleAttachmentSchema, isArticleAttachment} from './ArticleAttachment'
+import {FileIcon} from './icon-utils'
 
 export type AgentMessage = {
     content: string
@@ -42,7 +41,9 @@ const renderAgentMessage = ({
                         return (
                             <ArticleAttachment
                                 title={attachment.title}
-                                summary={attachment.summary}
+                                description={attachment.summary}
+                                leadIcon={<FileIcon />}
+                                style={{margin: '-14px'}}
                             />
                         )
                     }
@@ -77,16 +78,22 @@ const AgentMessages: React.FC<Props> = ({
     avatar,
 }) => (
     <div className={css.appMakerMessageWrapper}>
-        <ChatAvatar
-            avatar={avatar}
-            agentName={currentUser.get('name')}
-            agentAvatarUrl={currentUser.getIn(['meta', 'profile_picture_url'])}
-            chatTitle={chatTitle}
-            className={classnames(css.avatar, {
-                [css.isAnimated]: enableAgentMessagesAnimations,
-            })}
-        />
-        <div>
+        <div className={css.agent}>
+            <div
+                className={classnames(css.avatar, {
+                    [css.isAnimated]: enableAgentMessagesAnimations,
+                })}
+            >
+                <ChatAvatar
+                    avatar={avatar}
+                    agentName={currentUser.get('name')}
+                    agentAvatarUrl={currentUser.getIn([
+                        'meta',
+                        'profile_picture_url',
+                    ])}
+                    chatTitle={chatTitle}
+                />
+            </div>
             <AgentDisplayName
                 chatTitle={chatTitle}
                 className={classnames(css.user, {
@@ -95,7 +102,8 @@ const AgentMessages: React.FC<Props> = ({
                 name={currentUser.get('name') as string}
                 type={avatar?.nameType}
             />
-
+        </div>
+        <div className={css.messages}>
             {messages.map((message, index) => (
                 <div
                     className={classnames(

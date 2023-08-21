@@ -41,8 +41,8 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form with default value
       "type": "gorgias_chat",
       "name": "Test Chat Title",
       "decoration": Immutable.Map {
-        "conversation_color": "#0d87dd",
-        "main_color": "#0d87dd",
+        "conversation_color": "#115cb5",
+        "main_color": "#115cb5",
         "introduction_text": "How can we help?",
         "offline_introduction_text": "We'll be back tomorrow",
         "avatar_type": "team-members",

@@ -84,7 +84,9 @@ describe('<ChatAvatar />', () => {
             />
         )
 
-        expect(firstChild).toHaveStyle(`background-image: url(${avatarUrl})`)
+        expect(firstChild?.firstChild).toHaveStyle(
+            `background-image: url(${avatarUrl})`
+        )
     })
 
     it('should display no image', () => {

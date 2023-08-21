@@ -1,12 +1,11 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {assetsUrl} from 'utils'
+import Avatar from 'gorgias-design-system/Avatar/Avatar'
 
 import {useChatIntegrationPreviewContext} from './ChatIntegrationPreviewContext'
 import ChatTitle from './ChatTitle'
 
-import css from './BotMessages.less'
 import previewCss from './ChatIntegrationPreview.less'
 
 type Props = {
@@ -28,25 +27,17 @@ const BotMessages: React.FC<Props> = ({
         <div
             className={classnames(previewCss.appMakerMessageWrapper, className)}
         >
-            {companyLogoUrl ? (
-                <div
-                    className={css.avatar}
-                    style={{
-                        backgroundImage: `url(${companyLogoUrl})`,
-                    }}
-                />
-            ) : (
-                <div className={css.avatar}>
-                    <img
-                        src={assetsUrl('/img/icons/bot-icon.svg')}
-                        alt="Robot icon"
+            <div className={previewCss.agent}>
+                <div className={previewCss.avatar}>
+                    <Avatar
+                        isBot={!companyLogoUrl}
+                        src={companyLogoUrl}
+                        name={chatTitle!}
                     />
                 </div>
-            )}
-
-            <div>
                 <ChatTitle isBot title={chatTitle} />
-
+            </div>
+            <div className={previewCss.messages}>
                 {messages?.map((message, index) => (
                     <div
                         key={message}

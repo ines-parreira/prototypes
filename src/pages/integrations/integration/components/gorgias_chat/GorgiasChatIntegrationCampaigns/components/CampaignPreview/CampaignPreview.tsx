@@ -7,12 +7,9 @@ import {
     GorgiasChatPosition,
 } from 'models/integration/types'
 
-import CustomizedChatLauncher from '../../../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
-
 import {CampaignProduct} from '../../types/CampaignProduct'
-
+import CustomizedChatLauncher from '../../../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
 import {ChatCampaign} from './components/ChatCampaign'
-
 import css from './CampaignPreview.less'
 
 type Props = {
@@ -47,7 +44,6 @@ const CampaignPreview = ({
     translatedTexts,
     position,
     products = [],
-    launcher,
     shouldHideReplyInput,
     onCampaignContentChange,
 }: Props) => (
@@ -55,7 +51,6 @@ const CampaignPreview = ({
         className={classnames(css.preview, className)}
         position={position}
         mainColor={mainColor}
-        launcher={launcher}
         mainFontFamily={mainFontFamily}
     >
         <ChatCampaign

@@ -109,42 +109,42 @@ export const ChatCampaign = ({
         <div ref={measureRef} className={css.campaign}>
             <div className={css.content}>
                 <div className={css.header}>
-                    <div className={css.author}>
-                        <ChatAvatar
-                            className={css.authorAvatar}
-                            chatTitle={chatTitle}
-                            agentName={authorName || 'Random Agent'}
-                            agentAvatarUrl={authorAvatarUrl}
-                            avatar={avatar}
-                            showPlaceholderAvatar={
-                                isAgentAvatarCustomizationEnabled &&
-                                avatar?.imageType ===
-                                    GorgiasChatAvatarImageType.AGENT_PICTURE &&
-                                !isAuthorSelected
-                            }
-                            forceNameType={
-                                isAuthorSelected &&
-                                avatar?.nameType ===
-                                    GorgiasChatAvatarNameType.CHAT_TITLE
-                                    ? GorgiasChatAvatarNameType.AGENT_FIRST_NAME
-                                    : undefined
-                            }
-                        />
-                    </div>
                     <div className={css.message}>
-                        <div className={css.authorName}>
-                            <b>
-                                {isAgentAvatarCustomizationEnabled ? (
-                                    <AuthorName
-                                        authorName={authorName}
-                                        avatar={avatar}
-                                        chatTitle={chatTitle}
-                                        isAuthorSelected={isAuthorSelected}
-                                    />
-                                ) : (
-                                    authorName || "[Random agent's name]"
-                                )}
-                            </b>
+                        <div className={css.author}>
+                            <ChatAvatar
+                                chatTitle={chatTitle}
+                                agentName={authorName || 'Random agent'}
+                                agentAvatarUrl={authorAvatarUrl}
+                                avatar={avatar}
+                                showPlaceholderAvatar={
+                                    isAgentAvatarCustomizationEnabled &&
+                                    avatar?.imageType ===
+                                        GorgiasChatAvatarImageType.AGENT_PICTURE &&
+                                    !isAuthorSelected
+                                }
+                                forceNameType={
+                                    isAuthorSelected &&
+                                    avatar?.nameType ===
+                                        GorgiasChatAvatarNameType.CHAT_TITLE
+                                        ? GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                                        : undefined
+                                }
+                                size={50}
+                            />
+                            <div className={css.authorName}>
+                                <b>
+                                    {isAgentAvatarCustomizationEnabled ? (
+                                        <AuthorName
+                                            authorName={authorName}
+                                            avatar={avatar}
+                                            chatTitle={chatTitle}
+                                            isAuthorSelected={isAuthorSelected}
+                                        />
+                                    ) : (
+                                        authorName || "[Random agent's name]"
+                                    )}
+                                </b>
+                            </div>
                         </div>
                         <div
                             className={css.messageText}

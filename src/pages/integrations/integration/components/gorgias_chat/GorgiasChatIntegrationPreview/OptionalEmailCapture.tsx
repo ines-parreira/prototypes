@@ -14,11 +14,7 @@ type Props = {
     language?: string
 }
 
-const OptionalEmailCapture: React.FC<Props> = ({
-    mainColor,
-    chatTitle,
-    language,
-}) => {
+const OptionalEmailCapture: React.FC<Props> = ({chatTitle, language}) => {
     const translatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
             language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
@@ -29,7 +25,7 @@ const OptionalEmailCapture: React.FC<Props> = ({
             chatTitle={chatTitle}
             messages={[translatedTexts.emailCaptureOnlineTriggerText]}
         >
-            <EmailCaptureMessage mainColor={mainColor} language={language} />
+            <EmailCaptureMessage language={language} />
         </BotMessages>
     )
 }

@@ -106,11 +106,7 @@
                 padding-top: @layout-spacing-m;
 
                 .axisCenter {
-                    top: -60px;
-                }
-
-                &.withLabel .axisCenter {
-                    top: -52px;
+                    top: -@launcher-height;
                 }
 
                 .axisY {
@@ -139,22 +135,15 @@
             }
         }
 
-        @launcher-size: 30px;
+        @launcher-height: 52px;
+        @launcher-size: (@launcher-height / 2);
         @launcher-spacing: @layout-spacing-m + @launcher-size;
-
-        @launcher-with-label-height: 26px;
-        @launcher-with-label-vertical-spacing: @layout-spacing-m +
-            @launcher-with-label-height;
 
         &.top-right {
             margin-bottom: 1em;
             .axisX  {
                 top: @launcher-spacing;
                 right: -@layout-spacing-m;
-            }
-
-            &.withLabel .axisX  {
-                top: @launcher-with-label-vertical-spacing;
             }
         }
 
@@ -165,10 +154,6 @@
             .axisX  {
                 top: @launcher-spacing;
                 left: -@layout-spacing-m;
-            }
-
-            &.withLabel .axisX {
-                top: @launcher-with-label-vertical-spacing;
             }
 
             .axisY {
@@ -183,10 +168,6 @@
                 left: -@layout-spacing-m;
                 bottom: @launcher-spacing;
             }
-
-            &.withLabel .axisX  {
-                bottom: @launcher-with-label-vertical-spacing;
-            }
         }
 
         &.bottom-right {
@@ -194,10 +175,6 @@
             .axisX {
                 bottom: @launcher-spacing;
                 right: -@layout-spacing-m;
-            }
-
-            &.withLabel .axisX {
-                bottom: @launcher-with-label-vertical-spacing;
             }
         }
     }

@@ -1,8 +1,6 @@
 import React from 'react'
-import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {getInitials} from 'pages/common/components/Avatar/utils'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GorgiasChatAvatarImageType,
@@ -10,25 +8,27 @@ import {
     GorgiasChatAvatarSettings,
 } from 'models/integration/types'
 
-import css from './ChatAvatar.less'
+import Avatar from 'gorgias-design-system/Avatar/Avatar'
 
 type Props = {
     agentName: string
     agentAvatarUrl?: string
     avatar?: GorgiasChatAvatarSettings
     chatTitle?: string
-    className?: string
     showPlaceholderAvatar?: boolean
     forceNameType?: GorgiasChatAvatarNameType
+    size?: number
+    showName?: boolean
 }
 const ChatAvatar: React.FC<Props> = ({
     agentName,
     agentAvatarUrl,
     avatar,
     chatTitle,
-    className,
     showPlaceholderAvatar,
     forceNameType,
+    size,
+    showName,
 }) => {
     const nameType = forceNameType || avatar?.nameType
 
@@ -43,39 +43,26 @@ const ChatAvatar: React.FC<Props> = ({
             : undefined
         : agentAvatarUrl
 
+    const formattedAgentName =
+        isAgentAvatarCustomizationEnabled &&
+        nameType === GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+            ? agentName.split(' ')[0]
+            : agentName
+
     const name =
         isAgentAvatarCustomizationEnabled &&
         nameType === GorgiasChatAvatarNameType.CHAT_TITLE
             ? chatTitle
-            : agentName
+            : formattedAgentName
 
     return (
-        <div
-            className={classnames(
-                css.avatar,
-                {
-                    [css.placeholder]: showPlaceholderAvatar,
-                },
-                className
-            )}
-            style={{
-                backgroundImage:
-                    !showPlaceholderAvatar && avatarUrl
-                        ? `url(${avatarUrl})`
-                        : undefined,
-            }}
-        >
-            {showPlaceholderAvatar ? (
-                <i className="material-icons">person</i>
-            ) : (
-                !avatarUrl &&
-                getInitials(
-                    name,
-                    isAgentAvatarCustomizationEnabled &&
-                        nameType === GorgiasChatAvatarNameType.AGENT_FIRST_NAME
-                )
-            )}
-        </div>
+        <Avatar
+            showPlaceholderAvatar={showPlaceholderAvatar}
+            src={avatarUrl}
+            name={name}
+            size={size}
+            showName={showName}
+        />
     )
 }
 

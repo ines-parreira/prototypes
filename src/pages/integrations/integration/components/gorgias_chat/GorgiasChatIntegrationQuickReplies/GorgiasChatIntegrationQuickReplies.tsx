@@ -15,7 +15,6 @@ import {
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 
@@ -41,8 +40,6 @@ type State = {
     quickRepliesEnabled: boolean
     isUpdating: boolean
     isInitialized: boolean
-    avatarType: string
-    avatarTeamPictureUrl: string | null
 }
 
 export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
@@ -54,8 +51,6 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
         quickRepliesEnabled: false,
         isUpdating: false,
         isInitialized: false,
-        avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
-        avatarTeamPictureUrl: null,
     }
 
     _initState = () => {
@@ -75,13 +70,6 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
             quickRepliesEnabled: quickRepliesState.get('enabled') || false,
             quickReplies,
             isInitialized: true,
-            avatarType:
-                integration.getIn(['decoration', 'avatar_type']) ||
-                GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
-            avatarTeamPictureUrl: integration.getIn([
-                'decoration',
-                'avatar_team_picture_url',
-            ]),
         })
     }
 
@@ -129,12 +117,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
 
     render() {
         const {integration} = this.props
-        const {
-            quickRepliesEnabled,
-            isUpdating,
-            avatarType,
-            avatarTeamPictureUrl,
-        } = this.state
+        const {quickRepliesEnabled, isUpdating} = this.state
 
         const position = {
             alignment: integration.getIn(
@@ -167,8 +150,6 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
         const chatPreview = (
             <ChatIntegrationPreview
                 name={integration.get('name')}
-                avatarType={avatarType}
-                avatarTeamPictureUrl={avatarTeamPictureUrl}
                 introductionText={integration.getIn([
                     'decoration',
                     'introduction_text',

@@ -306,7 +306,6 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   >
     <RequiredEmailCapture
       language="en-US"
-      mainColor="#123456"
       name="My little chat integration"
     />
   </ChatIntegrationPreview>
@@ -346,8 +345,6 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
   }
 >
   <ChatIntegrationPreview
-    avatarTeamPictureUrl="https://gorgias.io/avatar.png"
-    avatarType="team-picture"
     introductionText="intro"
     isOnline={true}
     language="en-US"

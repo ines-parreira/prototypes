@@ -47,7 +47,6 @@ import {
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
-    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
@@ -122,8 +121,6 @@ type State = {
     offlineModeEnabledDatetime: Date | null
     liveChatAvailability: string
     avatar: GorgiasChatAvatarSettings | undefined
-    avatarType: string
-    avatarTeamPictureUrl: string | null
     controlTicketVolume: boolean
     selfServiceConfiguration: SelfServiceConfiguration | null
 }
@@ -153,8 +150,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         liveChatAvailability:
             GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
         avatar: undefined,
-        avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
-        avatarTeamPictureUrl: null,
         controlTicketVolume: false,
         selfServiceConfiguration: null,
     }
@@ -242,13 +237,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             'company_logo_url',
                         ]),
                     },
-                    avatarType:
-                        integration.getIn(['decoration', 'avatar_type']) ||
-                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
-                    avatarTeamPictureUrl: integration.getIn([
-                        'decoration',
-                        'avatar_team_picture_url',
-                    ]),
                     controlTicketVolume: integration.getIn([
                         'meta',
                         'preferences',
@@ -448,8 +436,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             offlineModeEnabledDatetime,
             liveChatAvailability,
             avatar,
-            avatarType,
-            avatarTeamPictureUrl,
             controlTicketVolume,
             selfServiceConfiguration,
         } = this.state
@@ -554,7 +540,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             previewChildren = (
                 <RequiredEmailCapturePreview
                     key="required-email-capture"
-                    mainColor={mainColor}
                     language={language}
                     name={chatTitle}
                 />
@@ -562,6 +547,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         } else if (preview === PREVIEW_CONTROL_TICKET_VOLUME) {
             previewChildren = (
                 <ChatHomePreview
+                    avatar={avatar}
+                    title={chatTitle}
+                    renderConversation={isControlTicketVolumeEnabled}
                     selfServiceConfiguration={selfServiceConfiguration}
                     language={language}
                 />
@@ -608,9 +596,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const chatPreview = (
             <ChatIntegrationPreview
                 name={chatTitle}
-                avatarType={avatarType}
-                avatarTeamPictureUrl={avatarTeamPictureUrl}
-                avatar={avatar}
                 introductionText={integration.getIn([
                     'decoration',
                     'introduction_text',
@@ -625,18 +610,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
                 )}
                 isOnline
-                shouldHideAvatarOnlineMarker={
-                    liveChatAvailability === GORGIAS_CHAT_LIVE_CHAT_OFFLINE
-                }
                 language={language}
                 position={position}
-                renderPoweredBy={preview !== PREVIEW_CONTROL_TICKET_VOLUME}
                 renderFooter={renderPreviewFooter}
-                renderButtonFooter={isControlTicketVolumeEnabled}
                 autoResponderEnabled={
                     preview === PREVIEW_AUTO_RESPONDER && autoResponderEnabled
                 }
                 autoResponderReply={autoResponderReply}
+                renderPoweredBy={preview === PREVIEW_CONTROL_TICKET_VOLUME}
+                isWidgetConversation={preview !== PREVIEW_CONTROL_TICKET_VOLUME}
             >
                 <ChatIntegrationPreviewContent>
                     <ChatIntegrationPreviewProvider value={{avatar}}>

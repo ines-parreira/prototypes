@@ -5,19 +5,58 @@ exports[`<BotMessages /> should display bot icon 1`] = `
   class="appMakerMessageWrapper test-class"
 >
   <div
-    class="avatar"
+    class="agent"
   >
-    <img
-      alt="Robot icon"
-      src="/assets/img/icons/bot-icon.svg"
-    />
-  </div>
-  <div>
+    <div
+      class="avatar"
+    >
+      <div
+        class="avatar-container css-1j6zot1"
+      >
+        <div
+          class="avatar css-1gjl7fn"
+          size="32"
+        >
+          <svg
+            aria-label="bot-icon"
+            fill="none"
+            height="22"
+            role="img"
+            viewBox="0 0 22 22"
+            width="22"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.21657 0.458334C9.02672 0.458334 8.87282 0.612236 8.87282 0.802084C8.87282 0.991932 9.02672 1.14583 9.21657 1.14583H13.1946C13.3844 1.14583 13.5383 0.991932 13.5383 0.802084C13.5383 0.612236 13.3844 0.458334 13.1946 0.458334H9.21657Z"
+              fill="white"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M5.28205 3.64072C3.57316 3.64072 1.93382 4.57211 1.54009 6.33288C1.13715 8.13486 0.916656 10.3022 0.916656 11.5426C0.916656 17.2249 5.52307 21.8314 11.2054 21.8314C16.8877 21.8314 21.4941 17.2249 21.4941 11.5426C21.4941 10.3022 21.2736 8.13486 20.8707 6.33287C20.4769 4.57211 18.8376 3.64072 17.1287 3.64072H5.28205ZM2.21102 6.4829C2.51475 5.12461 3.79485 4.32822 5.28205 4.32822H17.1287C18.6159 4.32822 19.896 5.12461 20.1997 6.4829C20.5925 8.23922 20.8066 10.3562 20.8066 11.5426C20.8066 16.8452 16.508 21.1439 11.2054 21.1439C5.90277 21.1439 1.60416 16.8452 1.60416 11.5426C1.60416 10.3562 1.81829 8.23922 2.21102 6.4829Z"
+              fill="white"
+              fill-rule="evenodd"
+            />
+            <path
+              d="M6.03532 11.1451C5.15653 11.1451 4.44412 10.4327 4.44412 9.5539C4.44412 8.67511 5.15652 7.9627 6.03532 7.9627H16.3781C17.2569 7.9627 17.9693 8.67511 17.9693 9.5539C17.9693 10.4327 17.2569 11.1451 16.3781 11.1451H6.03532Z"
+              fill="white"
+            />
+            <path
+              d="M7.85409 15.6615C7.7122 15.5354 7.49492 15.5482 7.36879 15.6901C7.24267 15.832 7.25545 16.0492 7.39734 16.1754C7.88308 16.6071 8.53301 16.946 9.13703 17.1996C10.4592 17.7548 11.9526 17.7548 13.2748 17.1996C13.8788 16.946 14.5287 16.6071 15.0145 16.1754C15.1564 16.0492 15.1691 15.832 15.043 15.6901C14.9169 15.5482 14.6996 15.5354 14.5577 15.6615C14.1548 16.0196 13.5853 16.3236 13.0086 16.5657C11.8567 17.0494 10.5551 17.0494 9.4032 16.5657C8.82647 16.3236 8.25696 16.0196 7.85409 15.6615Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
     <div
       class="title"
     >
       Acme Support Bot
     </div>
+  </div>
+  <div
+    class="messages"
+  >
     <div
       class="bubble firstMessageOfAppMaker"
     >
@@ -45,15 +84,32 @@ exports[`<BotMessages /> should display company logo 1`] = `
   class="appMakerMessageWrapper test-class"
 >
   <div
-    class="avatar"
-    style="background-image: url(company-logo-url.jpg);"
-  />
-  <div>
+    class="agent"
+  >
+    <div
+      class="avatar"
+    >
+      <div
+        class="avatar-container css-1j6zot1"
+      >
+        <div
+          class="avatar css-1krxo19"
+          size="32"
+          src="company-logo-url.jpg"
+        >
+          AS
+        </div>
+      </div>
+    </div>
     <div
       class="title"
     >
       Acme Support Bot
     </div>
+  </div>
+  <div
+    class="messages"
+  >
     <div
       class="bubble firstMessageOfAppMaker"
     >

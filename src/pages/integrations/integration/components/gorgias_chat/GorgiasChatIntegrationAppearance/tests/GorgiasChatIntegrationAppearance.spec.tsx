@@ -424,7 +424,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "launcher": Immutable.Map {
                         "type": "icon",
                       },
-                      "conversation_color": "#0d87dd",
+                      "conversation_color": "#115cb5",
                       "position": Immutable.Map {
                         "alignment": "bottom-right",
                         "offsetX": 0,
@@ -438,7 +438,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "image_type": "agent-picture",
                         "name_type": "agent-first-name",
                       },
-                      "main_color": "#0d87dd",
+                      "main_color": "#115cb5",
                     },
                     "meta": Immutable.Map {
                       "language": "en-US",
@@ -573,7 +573,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "launcher": Immutable.Map {
                         "type": "icon",
                       },
-                      "conversation_color": "#0d87dd",
+                      "conversation_color": "#115cb5",
                       "position": Immutable.Map {
                         "alignment": "bottom-right",
                         "offsetX": 0,
@@ -587,7 +587,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "image_type": "agent-picture",
                         "name_type": "agent-first-name",
                       },
-                      "main_color": "#0d87dd",
+                      "main_color": "#115cb5",
                     },
                     "meta": Immutable.Map {
                       "shop_name": "myStore1",

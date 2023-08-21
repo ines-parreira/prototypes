@@ -64,7 +64,6 @@ import ChatIntegrationPreview from 'pages/integrations/integration/components/go
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import {ChatIntegrationPreviewProvider} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreviewProvider'
 import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
-import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
 import AutoResponderMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AutoResponderMessages'
 import OfflineMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OfflineMessages'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -73,9 +72,11 @@ import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import Label from 'pages/common/forms/Label/Label'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
+import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
+import {defaultChatFontFamily} from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
@@ -550,9 +551,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             </ToggleButton.Wrapper>
             <ChatIntegrationPreview
                 name={name}
-                avatar={avatar}
-                avatarType={avatarType}
-                avatarTeamPictureUrl={avatarTeamPictureUrl}
                 introductionText={introductionText}
                 offlineIntroductionText={offlineIntroductionText}
                 mainColor={mainColor}
@@ -1045,17 +1043,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                         css.launcherPreview
                                                     }
                                                 >
-                                                    <ChatLauncher
-                                                        type={
-                                                            GorgiasChatLauncherType.ICON
-                                                        }
-                                                        backgroundColor={
-                                                            mainColor
-                                                        }
-                                                        fontFamily={
-                                                            mainFontFamily
-                                                        }
-                                                        windowState="closed"
+                                                    <Launcher
+                                                        fillColor={mainColor}
+                                                        shouldHideLabel
                                                     />
                                                 </div>
                                             }
@@ -1083,19 +1073,17 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     className={
                                                         css.launcherPreview
                                                     }
+                                                    style={{
+                                                        fontFamily: `${
+                                                            mainFontFamily ??
+                                                            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                                        }, ${defaultChatFontFamily}`,
+                                                    }}
                                                 >
-                                                    <ChatLauncher
-                                                        type={
-                                                            GorgiasChatLauncherType.ICON_AND_LABEL
-                                                        }
-                                                        backgroundColor={
-                                                            mainColor
-                                                        }
-                                                        fontFamily={
-                                                            mainFontFamily
-                                                        }
+                                                    <Launcher
+                                                        fillColor={mainColor}
+                                                        shouldHideLabel={false}
                                                         label={launcherLabel}
-                                                        windowState="closed"
                                                     />
                                                 </div>
                                             }

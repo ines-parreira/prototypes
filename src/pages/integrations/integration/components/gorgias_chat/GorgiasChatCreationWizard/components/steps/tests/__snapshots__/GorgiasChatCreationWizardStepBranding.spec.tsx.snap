@@ -7,7 +7,7 @@ exports[`<GorgiasChatCreationWizardStepBranding /> submits form when fields have
       "type": "gorgias_chat",
       "id": 1,
       "decoration": Immutable.Map {
-        "conversation_color": "#0d87dd",
+        "conversation_color": "#115cb5",
         "main_color": "#f00ba5",
         "launcher": Immutable.Map {
           "type": "icon-label",

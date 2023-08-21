@@ -1,15 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import classnames from 'classnames'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import styled from '@emotion/styled'
+
+import {ThemeProvider} from '@emotion/react'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-
 import {FeatureFlagKey} from 'config/featureFlags'
-import SelfServiceChatIntegrationFooter from 'pages/automation/common/components/preview/components/SelfServiceChatIntegrationFooter'
+import ConversationHeader, {
+    ConversationHeaderVariant,
+} from 'gorgias-design-system/Header/ConversationHeader'
+import WidgetHeader from 'gorgias-design-system/Header/WidgetHeader'
+import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
@@ -20,22 +27,26 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     isAutoresponderReply,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-    GORGIAS_CHAT_SSP_TEXTS,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
-    GorgiasChatAvatarSettings,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
     GorgiasChatLauncherType,
 } from '../../../../../../models/integration/types'
 import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
 
-import ChatTitle from './ChatTitle'
-import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
-import {getTextColorBasedOnBackground} from './color-utils'
+import {
+    getTextColorBasedOnBackground,
+    getThemeBasedOnContrast,
+} from './color-utils'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 import CustomizedChatLauncher from './CustomizedChatLauncher'
+import {AddIcon, PlaneIcon} from './icon-utils'
+
+export type ChatTheme = {
+    mainColor: string
+}
 
 type Props = {
     name: string
@@ -43,22 +54,17 @@ type Props = {
     offlineIntroductionText?: string
     headerText?: string
     mainColor: string
-    avatar?: GorgiasChatAvatarSettings
-    avatarType?: string
-    avatarTeamPictureUrl?: string | null
     mainFontFamily: string
     isOnline: boolean
     language?: string
     children: ReactNode
     renderFooter?: boolean
-    renderButtonFooter?: boolean
     renderPoweredBy?: boolean
     position?: GorgiasChatPosition
     editedPositionAxis?: PositionAxis | null
     autoResponderEnabled?: boolean
     autoResponderReply?: string
     hideButton?: boolean
-    shouldHideAvatarOnlineMarker?: boolean
     showGoBackButton?: boolean
     enableAnimations?: boolean
     launcher?: {
@@ -67,6 +73,7 @@ type Props = {
     }
     isOpen?: boolean
     showBackground?: boolean
+    isWidgetConversation?: boolean
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -74,18 +81,13 @@ const ChatIntegrationPreview = (props: Props) => {
         name,
         introductionText,
         offlineIntroductionText,
-        avatar,
-        avatarType,
-        avatarTeamPictureUrl,
         mainFontFamily,
         mainColor,
         isOnline,
-        shouldHideAvatarOnlineMarker = false,
         language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
         children,
         renderFooter = true,
-        renderButtonFooter = false,
-        renderPoweredBy = true,
+        renderPoweredBy = false,
         position = {
             alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
             offsetX: 0,
@@ -102,6 +104,7 @@ const ChatIntegrationPreview = (props: Props) => {
         },
         isOpen = true,
         showBackground = true,
+        isWidgetConversation = true,
     } = props
 
     const shoudShowFontCustomization =
@@ -126,7 +129,6 @@ const ChatIntegrationPreview = (props: Props) => {
     const offlineColor = '#EBEBEB' // Colors.LightGrey in chat client
 
     const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
-    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
     const getTypicalResponseText = () => {
         if (!isAutoresponderReply(autoResponderReply)) {
@@ -151,6 +153,8 @@ const ChatIntegrationPreview = (props: Props) => {
         isOnline ? mainColor : offlineColor
     )
 
+    const variant = getThemeBasedOnContrast(isOnline ? mainColor : offlineColor)
+
     const ClockIcon = (
         <i className="material-icons" style={{color: contrastColor}}>
             schedule
@@ -172,116 +176,144 @@ const ChatIntegrationPreview = (props: Props) => {
         )
     }
 
+    const ConversationHeaderMessage = () => {
+        if (!isOnline) {
+            return (
+                <>
+                    {ClockIcon}
+                    {translatedTexts.backLabelBackAt.replace(
+                        '{time}',
+                        moment()
+                            .hour(businessHoursFromHour)
+                            .minutes(0)
+                            .locale(language)
+                            .format('LT')
+                    )}
+                </>
+            )
+        }
+        if (isOnline && autoResponderEnabled && autoResponderReply) {
+            return (
+                <>
+                    {ClockIcon}
+                    {getTypicalResponseText()}
+                </>
+            )
+        }
+    }
+
+    const ConversationHeaderBackButton = () => {
+        return showGoBackButton
+            ? renderWithAnimationIfEnabled(
+                  <div className={css.backButton}>
+                      <i
+                          className="material-icons"
+                          style={{color: contrastColor}}
+                      >
+                          chevron_left
+                      </i>
+                  </div>,
+                  'horizontal'
+              )
+            : null
+    }
+
+    const Gradient = styled.div<{color: string}>`
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: ${({color}) =>
+            `linear-gradient(${color} 34%, hsla(0, 0%, 100%, 0.4))`};
+    `
+
+    const theme: ChatTheme = {
+        mainColor,
+    }
+
     return (
-        <CustomizedChatLauncher
-            className={classnames(
-                css.preview,
-                showBackground && css.previewWithBackground
-            )}
-            mainFontFamily={finalMainFontFamily}
-            launcher={launcher}
-            position={position}
-            mainColor={isOnline ? mainColor : offlineColor}
-            hideButton={hideButton}
-            editedPositionAxis={editedPositionAxis}
-            isClosed={!isOpen || !!editedPositionAxis}
-        >
-            <div className={css.dialog}>
+        <ThemeProvider theme={theme}>
+            <CustomizedChatLauncher
+                className={classnames(
+                    css.preview,
+                    showBackground && css.previewWithBackground
+                )}
+                mainFontFamily={finalMainFontFamily}
+                launcher={launcher}
+                position={position}
+                mainColor={isOnline ? mainColor : offlineColor}
+                hideButton={hideButton}
+                editedPositionAxis={editedPositionAxis}
+                isClosed={!isOpen || !!editedPositionAxis}
+            >
                 <div
-                    className={css.header}
+                    className={css.dialog}
                     style={{
                         backgroundColor: isOnline ? mainColor : offlineColor,
                     }}
                 >
-                    {showGoBackButton &&
-                        renderWithAnimationIfEnabled(
-                            <div className={css.goBackButton}>
-                                <i
-                                    className="material-icons"
-                                    style={{color: contrastColor}}
-                                >
-                                    chevron_left
-                                </i>
-                            </div>,
-                            'horizontal'
-                        )}
-                    <ChatIntegrationAvatar
-                        avatar={avatar}
-                        avatarType={avatarType}
-                        avatarTeamPictureUrl={avatarTeamPictureUrl}
-                        isOnline={isOnline}
-                        shouldHideAvatarOnlineMarker={
-                            !isOnline || shouldHideAvatarOnlineMarker
-                        }
-                        mainColor={mainColor}
-                        offlineColor={offlineColor}
-                    />
+                    <Gradient
+                        color={isOnline ? mainColor : offlineColor}
+                    ></Gradient>
+                    <div className={css.noise}></div>
+                    {isWidgetConversation && (
+                        <ConversationHeader
+                            role="region"
+                            aria-label="Live chat window header"
+                            variant={variant as ConversationHeaderVariant}
+                            title={name}
+                            message={ConversationHeaderMessage()}
+                            leadIcon={ConversationHeaderBackButton()}
+                            style={{zIndex: 2}}
+                        />
+                    )}
 
-                    <div className={css.details} style={{color: contrastColor}}>
-                        <ChatTitle title={name} />
-                        <div className={css.introductionText}>
-                            {nonbreak(
+                    {!isWidgetConversation && (
+                        <WidgetHeader
+                            role="region"
+                            aria-label="Live chat window header"
+                            variant={variant as ConversationHeaderVariant}
+                            title={name}
+                            message={
                                 isOnline
                                     ? introductionText
                                     : offlineIntroductionText
-                            )}
-                        </div>
-                        {!isOnline && (
-                            <div className={css.replyTime}>
-                                {ClockIcon}
-                                {translatedTexts.backLabelBackAt.replace(
-                                    '{time}',
-                                    moment()
-                                        .hour(businessHoursFromHour)
-                                        .minutes(0)
-                                        .locale(language)
-                                        .format('LT')
-                                )}
-                            </div>
+                            }
+                        />
+                    )}
+
+                    <div
+                        className={classnames(
+                            isWidgetConversation &&
+                                css.conversationContentWrapper,
+                            !isWidgetConversation && css.contentWrapper
                         )}
-                        {isOnline &&
-                            autoResponderEnabled &&
-                            autoResponderReply && (
-                                <div className={css.replyTime}>
-                                    {ClockIcon}
-                                    {getTypicalResponseText()}
-                                </div>
-                            )}
+                    >
+                        {children}
+
+                        {renderPoweredBy && (
+                            <GorgiasChatPoweredBy
+                                translatedTexts={translatedTexts}
+                            />
+                        )}
+
+                        {renderFooter && (
+                            <ChatMessageInput
+                                aria-label={'Gorgias message input'}
+                                placeholder={nonbreak(
+                                    translatedTexts.inputPlaceholder
+                                )}
+                                leadIcon={<AddIcon />}
+                                leadIconAriaLabel="Add attachment"
+                                trailIcon={<PlaneIcon />}
+                                trailIconAriaLabel="Send message"
+                                readOnly
+                            />
+                        )}
                     </div>
                 </div>
-
-                {children}
-
-                {renderPoweredBy && (
-                    <GorgiasChatPoweredBy translatedTexts={translatedTexts} />
-                )}
-
-                {renderFooter && (
-                    <div className={css.footer}>
-                        <div className={css.placeholder}>
-                            {nonbreak(translatedTexts.inputPlaceholder)}
-                        </div>
-
-                        <i
-                            className={classnames(
-                                'material-icons',
-                                css.icon,
-                                css.attachmentIcon
-                            )}
-                        >
-                            attach_file
-                        </i>
-                    </div>
-                )}
-
-                {renderButtonFooter && (
-                    <SelfServiceChatIntegrationFooter
-                        sspTexts={sspTexts}
-                        color={mainColor}
-                    />
-                )}
-            </div>
-        </CustomizedChatLauncher>
+            </CustomizedChatLauncher>
+        </ThemeProvider>
     )
 }
 export default ChatIntegrationPreview

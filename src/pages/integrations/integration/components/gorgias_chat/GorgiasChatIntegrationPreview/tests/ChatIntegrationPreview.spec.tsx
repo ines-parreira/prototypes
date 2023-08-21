@@ -16,7 +16,6 @@ import {
 } from 'config/integrations/index'
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
@@ -85,13 +84,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
         it('should display the avatar team picture in the header because the URL is set and the option is enabled', () => {
             const component = shallow(
                 <Provider store={mockStore(defaultState)}>
-                    <ChatIntegrationPreview
-                        {...minProps}
-                        avatarType={
-                            GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE
-                        }
-                        avatarTeamPictureUrl="https://gorgias.io/avatar.png"
-                    >
+                    <ChatIntegrationPreview {...minProps}>
                         <MessageContent {...messageContentMinProps} />
                     </ChatIntegrationPreview>
                 </Provider>
@@ -157,7 +150,6 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} renderFooter={false}>
                         <RequiredEmailCapture
-                            mainColor={mainColor}
                             language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
                             name="My little chat integration"
                         />

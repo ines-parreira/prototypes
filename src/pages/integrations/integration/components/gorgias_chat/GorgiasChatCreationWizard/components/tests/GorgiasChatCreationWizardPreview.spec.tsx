@@ -17,10 +17,6 @@ const mockStore = configureMockStore([thunk])
 
 const language = 'en-US'
 
-const introductionText = GORGIAS_CHAT_WIDGET_TEXTS[language]?.introductionText
-const offlineIntroductionText =
-    GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
-
 const integration: Map<any, any> = fromJS({
     id: 1,
     name: 'Test Integration',
@@ -49,11 +45,15 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
 
         fireEvent.click(radioButtons[0])
 
-        expect(firstChild).toHaveTextContent(introductionText)
+        expect(firstChild).toHaveTextContent(
+            'Hi, could you give me an update on my order status?'
+        )
 
         fireEvent.click(radioButtons[1])
 
-        expect(firstChild).toHaveTextContent(offlineIntroductionText)
+        expect(firstChild).toHaveTextContent(
+            GORGIAS_CHAT_WIDGET_TEXTS['en-US']?.contactFormIntro
+        )
     })
 
     it('renders different preview based on live chat availability', () => {
@@ -109,7 +109,7 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
         )
 
         expect(firstChild).toHaveTextContent(
-            GORGIAS_CHAT_WIDGET_TEXTS['fr-FR']?.offlineIntroductionText
+            GORGIAS_CHAT_WIDGET_TEXTS['fr-FR']?.contactFormIntro
         )
         expect(firstChild).toHaveTextContent(testChatTitle)
     })

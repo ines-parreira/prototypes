@@ -11,12 +11,12 @@ import {
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
 
+import Launcher from 'gorgias-design-system/Launcher/Launcher'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
 import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
-
-import ChatLauncher from './ChatLauncher'
 
 import css from './CustomizedChatLauncher.less'
 
@@ -25,7 +25,7 @@ const offsetLine = assetsUrl('/img/icons/offset-line.svg')
 /**
  * Use the same fallback fonts as the real widget.
  */
-const defaultChatFontFamily =
+export const defaultChatFontFamily =
     'Inter, "Helvetica Neue", Helvetica, Arial, sans-serif'
 
 type Props = {
@@ -81,20 +81,17 @@ const CustomizedChatLauncher: React.FC<Props> = ({
                 <div
                     className={classnames(css.buttonWrapper, css[alignment], {
                         [css.editing]: !!editedPositionAxis,
-                        [css.withLabel]:
-                            launcher.type ===
-                            GorgiasChatLauncherType.ICON_AND_LABEL,
                     })}
                 >
                     <div className={css.axisLauncherWrapper}>
-                        <ChatLauncher
-                            {...launcher}
-                            backgroundColor={mainColor}
-                            fontFamily={mainFontFamily}
-                            windowState={
-                                !isLauncherCustomizationEnabled || isClosed
-                                    ? 'closed'
-                                    : 'opened'
+                        <Launcher
+                            fillColor={mainColor}
+                            label={launcher.label}
+                            shouldHideLabel={
+                                launcher.type === GorgiasChatLauncherType.ICON
+                            }
+                            hasLaunched={
+                                !isLauncherCustomizationEnabled || !isClosed
                             }
                         />
                         {editedPositionAxis === PositionAxis.AXIS_Y && (

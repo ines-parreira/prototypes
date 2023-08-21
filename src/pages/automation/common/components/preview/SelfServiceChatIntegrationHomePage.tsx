@@ -2,25 +2,30 @@ import React from 'react'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
 
-import Collapse from 'pages/common/components/Collapse/Collapse'
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
-import {GorgiasChatIntegration} from 'models/integration/types'
-import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    GORGIAS_CHAT_WIDGET_TEXTS,
+} from 'config/integrations/gorgias_chat'
+import {
+    GorgiasChatAvatarSettings,
+    GorgiasChatIntegration,
+} from 'models/integration/types'
 
-import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
-import SelfServiceChatIntegrationArticleRecommendationFooter from './components/SelfServiceChatIntegrationArticleRecommendationFooter'
-import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
-
+import {
+    AddIcon,
+    BoxIcon,
+    ChevronRightIcon,
+    PlaneIcon,
+} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
+import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
+import List from 'gorgias-design-system/List/List'
+import ListItem from 'gorgias-design-system/List/ListItem'
+import Card from 'gorgias-design-system/Cards/Card'
+import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
+import ConversationAvatars from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationAvatars'
 import css from './SelfServiceChatIntegrationHomePage.less'
-
-const ChevronRightIcon = () => (
-    <i className={classnames('material-icons', css.chevronRightIcon)}>
-        chevron_right
-    </i>
-)
+import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
+import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 
 type Props = {
     integration: GorgiasChatIntegration
@@ -34,13 +39,15 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         hoveredOrderManagementFlow,
         isArticleRecommendationEnabled,
     } = useSelfServicePreviewContext()
-    const currentUser = useAppSelector(getCurrentUser)
     const workflowsEntrypoints = useWorkflowsEntrypoints(
         integration.meta.language ?? 'en-US'
     )
 
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']
+
+    const translatedTexts =
+        GORGIAS_CHAT_WIDGET_TEXTS[integration.meta.language || 'en-US']
 
     const quickResponses =
         selfServiceConfiguration?.quick_response_policies.filter(
@@ -54,18 +61,74 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         selfServiceConfiguration?.return_order_policy.enabled
     const isInitialEntry = history.length === 1
 
+    let variant = 'collapsed'
     if (
         !quickResponses.length &&
         !canManageOrders &&
         !workflowsEntrypoints.length
     ) {
+        variant = 'expanded'
+    }
+
+    const avatar = {
+        companyLogoUrl: integration.decoration.avatar?.company_logo_url,
+        imageType: integration.decoration.avatar?.image_type,
+        nameType: integration.decoration.avatar?.name_type,
+    }
+
+    const SelfServiceConversation = () => {
+        if (variant === 'expanded') {
+            return (
+                <Conversation
+                    avatar={
+                        <ConversationAvatars
+                            avatar={avatar as GorgiasChatAvatarSettings}
+                            chatTitle={integration.name}
+                        />
+                    }
+                    footer={
+                        <ChatMessageInput
+                            aria-label={'Gorgias message input'}
+                            placeholder={
+                                isArticleRecommendationEnabled
+                                    ? sspTexts.articleRecommendationInputPlaceholder
+                                    : translatedTexts.inputPlaceholder
+                            }
+                            leadIcon={
+                                isArticleRecommendationEnabled ? null : (
+                                    <AddIcon />
+                                )
+                            }
+                            leadIconAriaLabel="Add attachment"
+                            trailIcon={<PlaneIcon />}
+                            trailIconAriaLabel="Send message"
+                            readOnly
+                            style={
+                                isArticleRecommendationEnabled
+                                    ? {marginLeft: '10px'}
+                                    : {}
+                            }
+                        />
+                    }
+                    title={integration.name}
+                    variant="expanded"
+                />
+            )
+        }
+
         return (
-            <MessageContent
-                conversationColor={integration.decoration.conversation_color}
-                currentUser={currentUser}
-                customerInitialMessages={[]}
-                agentMessages={[]}
-                hideConversationTimestamp
+            <Conversation
+                avatar={
+                    <ConversationAvatars
+                        avatar={avatar as GorgiasChatAvatarSettings}
+                        chatTitle={integration.name}
+                    />
+                }
+                trailIcon={<PlaneIcon />}
+                title={integration.name}
+                description={sspTexts.sendUsAMessage}
+                variant="collapsed"
+                style={{marginBottom: '20px'}}
             />
         )
     }
@@ -77,68 +140,48 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
             })}
         >
             <div className={css.contentContainer}>
-                <Collapse
-                    isOpen={
-                        quickResponses.length > 0 ||
-                        workflowsEntrypoints.length > 0
-                    }
-                    memoizeOnExit
-                >
-                    <div className={css.listGroup}>
-                        <div className={css.listGroupItemHeading}>
-                            {sspTexts.quickResponses}
-                        </div>
+                <SelfServiceConversation />
+                {(quickResponses.length > 0 ||
+                    workflowsEntrypoints.length > 0) && (
+                    <List style={{marginBottom: '20px'}}>
                         {workflowsEntrypoints.map((entrypoint) => (
-                            <div
+                            <ListItem
                                 key={entrypoint.workflow_id}
-                                className={css.listGroupItem}
-                            >
-                                {entrypoint.label}
-                                <ChevronRightIcon />
-                            </div>
+                                label={entrypoint.label}
+                                trailIcon={<ChevronRightIcon />}
+                            />
                         ))}
                         {quickResponses.map((quickResponse) => (
-                            <div
+                            <ListItem
                                 key={quickResponse.id}
-                                className={classnames(css.listGroupItem, {
-                                    [css.isHighlighted]:
-                                        quickResponse.id ===
-                                        hoveredQuickResponseId,
-                                })}
-                            >
-                                {quickResponse.title}
-                                <ChevronRightIcon />
-                            </div>
+                                label={quickResponse.title}
+                                trailIcon={<ChevronRightIcon />}
+                                className={
+                                    quickResponse.id === hoveredQuickResponseId
+                                        ? 'active'
+                                        : ''
+                                }
+                            />
                         ))}
-                    </div>
-                </Collapse>
-                <Collapse isOpen={canManageOrders} memoizeOnExit>
-                    <div className={css.listGroup}>
-                        <div
-                            className={classnames(css.listGroupItemHeading, {
-                                [css.isHighlighted]: Boolean(
-                                    hoveredOrderManagementFlow
-                                ),
-                            })}
-                        >
-                            {canTrackOrders
+                    </List>
+                )}
+                {canManageOrders && (
+                    <Card
+                        leadIcon={<BoxIcon />}
+                        title={
+                            canTrackOrders
                                 ? sspTexts.trackAndManageMyOrders
-                                : sspTexts.manageMyOrders}
-                            <ChevronRightIcon />
-                        </div>
-                    </div>
-                </Collapse>
+                                : sspTexts.manageMyOrders
+                        }
+                        trailIcon={<ChevronRightIcon />}
+                        className={classnames(css.listGroupItemHeading, {
+                            [css.isHighlighted]: Boolean(
+                                hoveredOrderManagementFlow
+                            ),
+                        })}
+                    />
+                )}
             </div>
-            {isArticleRecommendationEnabled ? (
-                <SelfServiceChatIntegrationArticleRecommendationFooter
-                    sspTexts={sspTexts}
-                />
-            ) : (
-                <SelfServiceChatIntegrationFooter
-                    sspTexts={sspTexts}
-                    color={integration.decoration.main_color}
-                />
-            )}
         </div>
     )
 }

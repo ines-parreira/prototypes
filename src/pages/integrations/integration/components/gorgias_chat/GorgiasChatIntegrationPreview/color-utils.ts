@@ -27,3 +27,19 @@ export function getTextColorBasedOnBackground(
         return CONSTRAST_COLORS.LIGHT
     }
 }
+
+export function getThemeBasedOnContrast(
+    mainColor: string,
+    contrastLevel = DEFAULT_CONTRAST_LEVEL
+): string {
+    try {
+        const lightTextContrast = getContrast(
+            mainColor.trim(),
+            CONSTRAST_COLORS.LIGHT
+        )
+
+        return lightTextContrast >= contrastLevel ? 'light' : 'dark'
+    } catch (e) {
+        return 'light'
+    }
+}

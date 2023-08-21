@@ -5,7 +5,6 @@ import {GorgiasChatIntegration} from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
 
-import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
 import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
 import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
@@ -29,37 +28,16 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
     const history = useHistory()
     const location = useLocation()
 
-    const {reportOrderIssueReason, selfServiceConfiguration} =
-        useSelfServicePreviewContext()
+    const {reportOrderIssueReason} = useSelfServicePreviewContext()
     const {decoration, meta} = integration
 
-    const workflowsEntrypoints = useWorkflowsEntrypoints(
-        props.integration.meta.language ?? 'en-US'
-    )
     const isInitialEntry = history.length === 1
-
-    const quickResponses =
-        selfServiceConfiguration?.quick_response_policies.filter(
-            (quickResponse) => !quickResponse.deactivated_datetime
-        ) ?? []
-    const canManageOrders =
-        selfServiceConfiguration?.track_order_policy.enabled ||
-        selfServiceConfiguration?.report_issue_policy.enabled ||
-        selfServiceConfiguration?.cancel_order_policy.enabled ||
-        selfServiceConfiguration?.return_order_policy.enabled
-
-    const isSSPDisabled =
-        !quickResponses.length &&
-        !canManageOrders &&
-        !workflowsEntrypoints.length
 
     return (
         <ChatIntegrationPreview
             name={integration.name}
             introductionText={decoration.introduction_text}
             mainColor={decoration.main_color}
-            avatarType={decoration.avatar_type}
-            avatarTeamPictureUrl={decoration.avatar_team_picture_url}
             mainFontFamily={
                 decoration.main_font_family ??
                 GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
@@ -71,15 +49,10 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.RETURN ||
                 (location.pathname ===
                     SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE &&
-                    !reportOrderIssueReason?.action?.showHelpfulPrompt) ||
-                (location.pathname === SELF_SERVICE_PREVIEW_ROUTES.HOME &&
-                    isSSPDisabled)
+                    !reportOrderIssueReason?.action?.showHelpfulPrompt)
             }
             renderPoweredBy={
-                location.pathname ===
-                    SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE ||
-                (location.pathname === SELF_SERVICE_PREVIEW_ROUTES.HOME &&
-                    isSSPDisabled)
+                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.HOME
             }
             autoResponderEnabled={meta.preferences?.auto_responder?.enabled}
             autoResponderReply={meta.preferences?.auto_responder?.reply}
@@ -92,6 +65,9 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
             }
             showBackground={false}
+            isWidgetConversation={
+                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
+            }
         >
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>

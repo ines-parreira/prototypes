@@ -31,7 +31,7 @@ import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
-import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
+import Launcher from 'gorgias-design-system/Launcher/Launcher'
 
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 
@@ -262,13 +262,9 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 label="Icon"
                                 preview={
                                     <div className={css.launcherPreview}>
-                                        <ChatLauncher
-                                            type={GorgiasChatLauncherType.ICON}
-                                            backgroundColor={mainColor}
-                                            fontFamily={
-                                                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                                            }
-                                            windowState="closed"
+                                        <Launcher
+                                            fillColor={mainColor}
+                                            shouldHideLabel
                                         />
                                     </div>
                                 }
@@ -288,17 +284,17 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 }
                                 label="Icon and label"
                                 preview={
-                                    <div className={css.launcherPreview}>
-                                        <ChatLauncher
-                                            type={
-                                                GorgiasChatLauncherType.ICON_AND_LABEL
-                                            }
-                                            backgroundColor={mainColor}
-                                            fontFamily={
-                                                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                                            }
+                                    <div
+                                        className={css.launcherPreview}
+                                        style={{
+                                            fontFamily:
+                                                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+                                        }}
+                                    >
+                                        <Launcher
+                                            fillColor={mainColor}
+                                            shouldHideLabel={false}
                                             label={launcherLabel}
-                                            windowState="closed"
                                         />
                                     </div>
                                 }

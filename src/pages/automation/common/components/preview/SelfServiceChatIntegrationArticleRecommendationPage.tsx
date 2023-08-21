@@ -49,7 +49,7 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
 
     return (
         <MessageContent
-            className={css.container}
+            className={css.messageContent}
             conversationColor={decoration.conversation_color}
             currentUser={currentUser}
             customerInitialMessages={['What size am I?']}

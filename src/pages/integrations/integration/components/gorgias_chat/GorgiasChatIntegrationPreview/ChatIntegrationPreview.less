@@ -1,6 +1,8 @@
 @import '~css/new/layout.less';
 @import (reference) '~css/new/util.less';
 
+@noiseSvg: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PScwIDAgMjAwIDIwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz4KICAgIDxmaWx0ZXIgaWQ9J25vaXNlRmlsdGVyJz4KICAgICAgICA8ZmVUdXJidWxlbmNlCiAgICAgICAgICAgIHR5cGU9J2ZyYWN0YWxOb2lzZScKICAgICAgICAgICAgYmFzZUZyZXF1ZW5jeT0nMS40NCcKICAgICAgICAgICAgbnVtT2N0YXZlcz0nMScKICAgICAgICAgICAgc3RpdGNoVGlsZXM9J3N0aXRjaCcgLz4KICAgIDwvZmlsdGVyPgoKICAgIDxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNub2lzZUZpbHRlciknIC8+Cjwvc3ZnPg==';
+
 :local {
     @primary: #479af5;
     @lighterGrey: #f8f9fa;
@@ -13,7 +15,7 @@
     @dark-contrast-color: '161616';
 
     .preview {
-        border-radius: 4px;
+        border-radius: 16px;
         width: 384px;
         color: @textColor;
 
@@ -31,12 +33,12 @@
     .dialog {
         overflow: hidden;
         width: 100%;
-        min-height: 680px;
-        max-height: 680px;
-        background: white;
+        height: 680px;
         border: 0;
-        border-radius: 5px;
+        border-radius: 16px;
         box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
+
+        position: relative;
 
         display: flex;
         flex-direction: column;
@@ -99,7 +101,7 @@
 
         .content {
             overflow: auto;
-            padding: @layout-spacing-s;
+            padding: 0 20px;
             flex: 1;
             pointer-events: initial;
             display: flex;
@@ -112,6 +114,7 @@
                 margin-bottom: @layout-spacing-m;
                 text-transform: uppercase;
                 text-align: center;
+                margin: 24px 0;
             }
 
             .messageTimestamp {
@@ -146,6 +149,50 @@
                 }
             }
         }
+    }
+
+    .gradient {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(@primary 34%, hsla(0, 0%, 100%, 0.4));
+        &.offline-mode {
+            background: linear-gradient(
+                @offlineColor 34%,
+                hsla(0, 0%, 100%, 0.4)
+            );
+        }
+    }
+
+    .noise {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0.1;
+        background-image: url(@noiseSvg);
+    }
+
+    .conversationContentWrapper {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--neutral-grey-0);
+        border-radius: 16px;
+        z-index: 2;
+        height: 100%;
+        padding-bottom: 20px;
+        gap: 20px;
+        overflow-y: auto;
+    }
+
+    .contentWrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        z-index: 2;
+        padding-bottom: 20px;
+        overflow-y: auto;
     }
 
     .agents,
@@ -332,16 +379,15 @@
     }
 
     .appMakerMessageWrapper {
-        display: flex;
         margin-bottom: @layout-spacing-m;
-
-        .avatar {
-            margin-right: @layout-spacing-s;
-        }
 
         &:last-child {
             margin-bottom: 0;
         }
+    }
+
+    .messages {
+        padding-left: 38px;
     }
 
     .user {
@@ -357,22 +403,13 @@
         }
     }
 
-    .avatar {
-        min-width: 36px;
-        width: 36px;
-        height: 36px;
-
-        border-radius: 50px !important;
-        overflow: hidden;
-
+    .agent {
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 8px;
+    }
 
-        img {
-            width: 60%;
-        }
-
+    .avatar {
         &.isAnimated {
             :global {
                 animation: fadeIn 0.35s linear;
@@ -387,92 +424,11 @@
         background: @lighterGrey;
         border: 1px solid @lightGrey;
         border-radius: 3px;
-
-        .inputLabel {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
-
-        .inputWrapper {
-            display: flex;
-
-            input {
-                background: white !important; // `important` to override default grey background for readonly inputs
-                font-size: 14px;
-                padding: 10px;
-                outline: none;
-                box-shadow: none;
-
-                height: 100%;
-                flex-grow: 1;
-
-                border-radius: 3px 0 0 3px;
-                border-top: 1px solid @grey;
-                border-left: 1px solid @grey;
-                border-bottom: 1px solid @grey;
-                border-right: 0;
-
-                &:focus {
-                    box-shadow: none;
-                    outline: none;
-                }
-
-                &::placeholder {
-                    color: @grey;
-                }
-            }
-
-            button {
-                width: 40px;
-                background: @primary;
-                font-size: 30px;
-                color: var(--neutral-grey-0);
-
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                border: 1px solid fade(black, 10%);
-                border-radius: 0 3px 3px 0;
-            }
-        }
     }
 
     .content.requiredEmailCaptureContent {
         flex: 0;
         margin-top: auto;
-    }
-
-    .footer {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        overflow: hidden;
-        padding: 5px 15px 5px 20px;
-        border-top: 1px solid #efefef;
-        color: @grey;
-        height: 56px;
-        min-height: 56px;
-
-        .icon,
-        .placeholder {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .placeholder {
-            color: var(--neutral-grey-4);
-            flex-grow: 100;
-        }
-
-        .send {
-            float: right;
-            border: 0;
-            background: transparent;
-
-            font-weight: 600;
-        }
     }
 
     .automatedTimestamp {

@@ -2,20 +2,31 @@
 
 exports[`<ChatAvatar /> should display no image 1`] = `
 <div
-  class="avatar"
+  class="avatar-container css-1j6zot1"
 >
-  AN
+  <div
+    class="avatar css-hbesmq"
+    size="32"
+  >
+    AN
+  </div>
 </div>
 `;
 
 exports[`<ChatAvatar /> should display placeholder image 1`] = `
 <div
-  class="avatar placeholder"
+  class="avatar-container css-1j6zot1"
 >
-  <i
-    class="material-icons"
+  <div
+    class="avatar css-1krxo19"
+    size="32"
+    src="company-logo-url.jpg"
   >
-    person
-  </i>
+    <i
+      class="material-icons"
+    >
+      person
+    </i>
+  </div>
 </div>
 `;
