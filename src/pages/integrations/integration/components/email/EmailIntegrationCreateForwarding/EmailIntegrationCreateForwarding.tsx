@@ -35,27 +35,27 @@ const servicesWithTutorials = [
     {
         img: groups,
         title: 'Google Groups',
-        link: 'https://gorgias.page/googlegroups',
+        link: 'https://docs.gorgias.com/en-US/gmail-group-275042',
     },
     {
         img: outlook,
         title: 'Outlook',
-        link: 'https://gorgias.page/outlook',
+        link: 'https://docs.gorgias.com/en-US/outlook-standalone-276317',
     },
     {
         img: office,
         title: 'Office 365',
-        link: 'https://gorgias.page/ms365',
+        link: 'https://docs.gorgias.com/en-US/microsoft-365-standalone-276277',
     },
     {
         img: exchange,
         title: 'Microsoft Exchange',
-        link: 'https://gorgias.page/msexchange',
+        link: 'https://docs.gorgias.com/en-US/microsoft-exchange-276386',
     },
     {
         img: zoho,
         title: 'Zoho Mail',
-        link: 'https://gorgias.page/zohomail',
+        link: 'https://docs.gorgias.com/en-US/other-provider-81758#zoho',
     },
 ]
 
