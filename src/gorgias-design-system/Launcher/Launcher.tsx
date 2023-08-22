@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import {gorgiasColors} from 'gorgias-design-system/styles'
 import {getContrastColor} from 'gorgias-design-system/utils'
 
-import GorgiasIcon from './icons/GorgiasIcon'
+import BubbleIcon from './icons/BubbleIcon'
 import CloseIcon from './icons/CloseIcon'
 
 const StyledLabel = styled.span<{
@@ -166,7 +166,7 @@ const Launcher: React.FC<LauncherProps & HTMLAttributes<HTMLButtonElement>> = ({
 }) => {
     const textColor = getContrastColor(fillColor)
 
-    const showIconOnly = hasLaunched || shouldHideLabel
+    const showIconOnly = hasLaunched || !!shouldHideLabel
 
     const unreadMessages =
         unreadMessagesCount > 99 ? '99+' : unreadMessagesCount
@@ -192,13 +192,13 @@ const Launcher: React.FC<LauncherProps & HTMLAttributes<HTMLButtonElement>> = ({
                 </StyledBadge>
             )}
             <StyledIconContainer
-                isLabelHidden={shouldHideLabel}
+                isLabelHidden={showIconOnly}
                 hideIcon={hasLaunched}
             >
-                <GorgiasIcon color={textColor} />
+                <BubbleIcon color={textColor} />
             </StyledIconContainer>
             <StyledIconContainer
-                isLabelHidden={shouldHideLabel}
+                isLabelHidden={showIconOnly}
                 hideIcon={!hasLaunched}
                 isCloseIcon
             >
