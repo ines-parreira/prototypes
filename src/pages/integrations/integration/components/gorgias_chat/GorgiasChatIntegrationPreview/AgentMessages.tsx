@@ -120,6 +120,7 @@ const AgentMessages: React.FC<Props> = ({
                     {renderAgentMessage(message)}
                 </div>
             ))}
+            <div className={css.automatedTimestamp}>Automated</div>
         </div>
     </div>
 )

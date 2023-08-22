@@ -16,35 +16,34 @@
         display: flex;
         flex-direction: column;
         color: var(--neutral-grey-6);
-        padding: @layout-spacing-m 10px 0 10px;
-        background-color: var(--neutral-grey-2);
+        padding: 32px 20px 0;
+        justify-content: space-between;
     }
 
     .title {
-        .heading-subsection-semibold();
-        margin-bottom: @layout-spacing-xs;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 28px;
+        letter-spacing: -0.4px;
     }
 
     .orderContainer {
-        background-color: var(--neutral-grey-0);
-        box-shadow: 0 1px 4px rgba(22, 22, 22, 0.24);
-        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 
     .orderHeader {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px @layout-spacing-xs;
-        gap: @layout-spacing-xxs;
-        border-bottom: 1px dashed var(--neutral-grey-3);
+        flex-direction: column;
+        gap: 4px;
     }
 
     .orderDetails {
         display: flex;
-        align-items: center;
-        gap: @layout-spacing-xs;
         flex: 1;
+        justify-content: space-between;
     }
 
     .orderNumber {
@@ -60,13 +59,12 @@
         margin-left: auto;
     }
 
-    .returnPortal {
-        .body-semibold();
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: @layout-spacing-xl 0;
-        gap: @layout-spacing-s;
+    .externalLinkIcon {
+        width: 12px;
+        height: 12px;
+        margin-left: 6px;
+        path {
+            fill: white;
+        }
     }
 }

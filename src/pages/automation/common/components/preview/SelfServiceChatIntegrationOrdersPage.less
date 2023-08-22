@@ -7,7 +7,7 @@
         display: flex;
         flex-direction: column;
         flex: 1;
-        margin: -20px 0;
+        margin-bottom: -20px;
         background-color: var(--neutral-grey-0);
         border-radius: 16px;
 
@@ -26,27 +26,21 @@
         display: flex;
         flex-direction: column;
         color: var(--neutral-grey-6);
-        padding: @layout-spacing-m 10px 0 10px;
+        padding: 20px;
     }
 
     .title {
-        .heading-subsection-semibold();
-        margin-bottom: @layout-spacing-xs;
-    }
-
-    .orderContainer {
-        background-color: var(--neutral-grey-0);
-        box-shadow: 0 1px 4px rgba(22, 22, 22, 0.24);
-        border-radius: 4px;
+        .heading-section-semibold();
+        padding-top: 12px;
+        padding-bottom: 20px;
     }
 
     .orderHeader {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px @layout-spacing-xs;
+        padding: 0 0 16px;
         gap: @layout-spacing-xxs;
-        border-bottom: 1px dashed var(--neutral-grey-3);
     }
 
     .orderDetails {
@@ -57,7 +51,8 @@
     }
 
     .orderNumber {
-        .body-semibold();
+        .heading-subsection-semibold();
+        color: var(--neutralGrey6);
     }
 
     .orderDate {
@@ -66,7 +61,7 @@
     }
 
     .orderTotalPrice {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-6);
         margin-left: auto;
     }
 
@@ -78,14 +73,18 @@
     .fulfillment {
         display: flex;
         flex-direction: column;
-        padding: @layout-spacing-xs;
         gap: @layout-spacing-s;
     }
 
-    .fulfillmentStatus {
+    .fulfillmentShipment {
         display: flex;
-        align-items: center;
+        flex-direction: row;
         justify-content: space-between;
+    }
+
+    .shipment {
+        .body-semibold();
+        color: var(--neutral-grey-5);
     }
 
     .actions {

@@ -25,7 +25,7 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
 
     const agentMessages: AgentMessage[] = [
         {
-            content: 'Here’s an article that may help:',
+            content: 'Here is an article that may help:',
             isHtml: false,
             attachments: [],
         },

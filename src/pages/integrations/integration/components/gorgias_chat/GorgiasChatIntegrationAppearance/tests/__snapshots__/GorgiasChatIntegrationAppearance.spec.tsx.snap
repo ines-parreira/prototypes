@@ -947,6 +947,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
                               </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1942,6 +1947,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
                               </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -2907,6 +2917,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                                 class="bubble firstMessageOfAppMaker"
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
                               </div>
                             </div>
                           </div>
@@ -3882,6 +3897,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
                               </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -4847,6 +4867,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                 class="bubble firstMessageOfAppMaker"
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
                               </div>
                             </div>
                           </div>
@@ -5827,6 +5852,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                                 class="bubble firstMessageOfAppMaker"
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
                               </div>
                             </div>
                           </div>
@@ -6839,6 +6869,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                                 class="bubble firstMessageOfAppMaker"
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
                               </div>
                             </div>
                           </div>
@@ -7927,6 +7962,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
                               </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -8989,6 +9029,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
                               </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -9954,6 +9999,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                                 class="bubble firstMessageOfAppMaker"
                               >
                                 Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
                               </div>
                             </div>
                           </div>

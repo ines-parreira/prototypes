@@ -1,10 +1,12 @@
 import React, {useEffect} from 'react'
-import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
+import ListItem from 'gorgias-design-system/List/ListItem'
+import {ChevronRightIcon} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
+import List from 'gorgias-design-system/List/List'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
@@ -35,43 +37,27 @@ const SelfServiceChatIntegrationReportIssueReasonsPage = ({
 
     return (
         <div className={css.container}>
-            <div className={css.header}>{sspTexts.whatIsWrongWithOrder}</div>
-            {reportOrderIssueReasons.map((reason) => (
-                <div
-                    key={reason}
-                    className={classnames(css.item, {
-                        [css.isHovered]:
-                            reason === hoveredReportOrderIssueReason,
-                    })}
-                >
-                    {sspTexts[reason]}
-                    <i
-                        className={classnames(
-                            'material-icons',
-                            css.chevronRightIcon,
-                            {
-                                [css.isHovered]:
-                                    reason === hoveredReportOrderIssueReason,
-                            }
-                        )}
-                    >
-                        chevron_right
-                    </i>
-                </div>
-            ))}
-            {!reportOrderIssueReasons.length && (
-                <div className={classnames(css.item, css.isPlaceholder)}>
-                    Issue option
-                    <i
-                        className={classnames(
-                            'material-icons',
-                            css.chevronRightIcon
-                        )}
-                    >
-                        chevron_right
-                    </i>
-                </div>
-            )}
+            <h3 className={css.header}>{sspTexts.whatIsWrongWithOrder}</h3>
+            <List shouldDisplayShadow={false} style={{marginLeft: '-12px'}}>
+                {reportOrderIssueReasons.map((reason) => (
+                    <ListItem
+                        className={
+                            reason === hoveredReportOrderIssueReason
+                                ? 'active'
+                                : ''
+                        }
+                        key={reason}
+                        label={sspTexts[reason]}
+                        trailIcon={<ChevronRightIcon />}
+                    />
+                ))}
+                {!reportOrderIssueReasons.length && (
+                    <ListItem
+                        label="Issue option"
+                        trailIcon={<ChevronRightIcon />}
+                    />
+                )}
+            </List>
         </div>
     )
 }

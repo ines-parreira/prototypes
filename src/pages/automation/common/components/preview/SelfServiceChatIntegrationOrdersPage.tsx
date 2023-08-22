@@ -4,13 +4,12 @@ import {useHistory} from 'react-router-dom'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
+import Button from 'gorgias-design-system/Buttons/Button'
+import Badge from 'gorgias-design-system/Badge/Badge'
 import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
 import MousePointer from './components/MousePointer'
 import useOrdersPagePreview, {PreviewStep} from './hooks/useOrdersPagePreview'
-import useOrderDates from './hooks/useOrderDates'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 import {LINE_ITEMS} from './constants'
 
@@ -30,8 +29,6 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
     const isInitialEntry = history.length === 1
 
-    const {orderPlacedDate} = useOrderDates(language)
-
     return (
         <div
             className={classnames(css.container, {
@@ -46,22 +43,21 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                             <div className={css.orderNumber}>
                                 {sspTexts.order} #3089
                             </div>
-                            <div className={css.orderDate}>
-                                {orderPlacedDate.format('L')}
-                            </div>
                             <div className={css.orderTotalPrice}>$20.00</div>
                         </div>
-                        <i
-                            className={classnames(
-                                'material-icons',
-                                css.collapseIcon
-                            )}
-                        >
-                            keyboard_double_arrow_up
-                        </i>
                     </div>
                     <div className={css.fulfillment}>
-                        <div className={css.fulfillmentStatus}>
+                        <div>
+                            <div className={css.fulfillmentShipment}>
+                                <p className={css.shipment}>Shipment</p>
+                                {orderManagementFlow ===
+                                    'track_order_policy' && (
+                                    <Badge
+                                        label={sspTexts.inTransit}
+                                        color="accessoryGreen"
+                                    />
+                                )}
+                            </div>
                             <div className={css.actions}>
                                 {orderManagementFlow ===
                                     'track_order_policy' && (
@@ -78,7 +74,7 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                         >
                                             <Button
                                                 size="small"
-                                                intent="secondary"
+                                                variant="secondary"
                                                 className={classnames(
                                                     css.flowButton,
                                                     {
@@ -96,7 +92,11 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                                 {sspTexts.track}
                                             </Button>
                                         </MousePointer>
-                                        <Button size="small" intent="secondary">
+                                        <Button
+                                            key={sspTexts.reportIssue}
+                                            variant="secondary"
+                                            size="small"
+                                        >
                                             {sspTexts.reportIssue}
                                         </Button>
                                     </>
@@ -104,7 +104,10 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                 {orderManagementFlow ===
                                     'report_issue_policy' && (
                                     <>
-                                        <Button size="small" intent="secondary">
+                                        <Button
+                                            size="small"
+                                            variant="secondary"
+                                        >
                                             {sspTexts.track}
                                         </Button>
                                         <MousePointer
@@ -117,7 +120,7 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                         >
                                             <Button
                                                 size="small"
-                                                intent="secondary"
+                                                variant="secondary"
                                                 className={classnames(
                                                     css.flowButton,
                                                     {
@@ -132,11 +135,6 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                     </>
                                 )}
                             </div>
-                            {orderManagementFlow === 'track_order_policy' && (
-                                <Badge type={ColorType.LightSuccess}>
-                                    {sspTexts.inTransit}
-                                </Badge>
-                            )}
                         </div>
                         <div className={css.fulfillmentLineItems}>
                             {LINE_ITEMS.map((item) => (

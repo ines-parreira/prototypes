@@ -6,40 +6,13 @@
         .body-regular();
         display: flex;
         flex-direction: column;
-        padding-top: @layout-spacing-xs;
         color: var(--neutral-grey-6);
         overflow: auto;
         pointer-events: initial;
+        padding: 32px 20px;
     }
 
     .header {
-        .heading-subsection-semibold();
-        padding: @layout-spacing-s;
-    }
-
-    .item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: @layout-spacing-s;
-        gap: @layout-spacing-s;
-        border-bottom: 1px solid var(--neutral-grey-3);
-
-        &.isPlaceholder {
-            color: var(--neutral-grey-4);
-        }
-
-        &.isHovered {
-            background-color: var(--neutral-grey-1);
-        }
-    }
-
-    .chevronRightIcon {
-        font-size: 20px;
-        color: var(--neutral-grey-4);
-
-        &.isHovered {
-            color: var(--neutral-grey-5);
-        }
+        .heading-section-semibold();
     }
 }

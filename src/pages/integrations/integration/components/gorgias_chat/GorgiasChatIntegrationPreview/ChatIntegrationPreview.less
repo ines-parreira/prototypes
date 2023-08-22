@@ -13,6 +13,7 @@
     @textColor: #545454;
     @light-contrast-color: 'FFFFFF';
     @dark-contrast-color: '161616';
+    @darker-grey: #424242;
 
     .preview {
         border-radius: 16px;
@@ -101,7 +102,7 @@
 
         .content {
             overflow: auto;
-            padding: 0 20px;
+            padding: 20px;
             flex: 1;
             pointer-events: initial;
             display: flex;
@@ -340,6 +341,7 @@
         padding: 14px;
         margin-bottom: 4px;
         background: #f4f4f4;
+        color: @darker-grey;
         border-radius: 14px;
         font-size: 14px;
         position: relative;
@@ -441,7 +443,7 @@
     .dialog,
     .button {
         font-size: 15px;
-        font-weight: 300;
+        font-weight: 400;
     }
 
     .replyTime {
