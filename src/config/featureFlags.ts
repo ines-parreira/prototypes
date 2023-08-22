@@ -37,6 +37,7 @@ export enum FeatureFlagKey {
     RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
+    RevenueCampaignImprovements = 'revenue-campaign-improvements',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     SeparateSnoozeButton = 'separate-snooze-button',
     SpotlightGlobalSearch = 'spotlight-global-search',
