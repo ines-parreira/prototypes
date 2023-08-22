@@ -10,6 +10,7 @@ export enum FeatureFlagKey {
     ChatCreationWizard = 'chat-creation-wizard',
     ChatFontCustomization = 'chat-font-customization',
     ChatLauncherCustomization = 'chat-launcher-customization',
+    ChatMultiLanguages = 'chat-multi-languages',
     ChatRenameContactForm = 'chat-rename-contact-form',
     ChatSnippetV3Banner = 'chat-snippet-v3-banner',
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',
