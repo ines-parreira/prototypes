@@ -41,10 +41,12 @@ export type AgentPerformanceState = {
     }
 }
 
+export const DEFAULT_SORTING_DIRECTION = OrderDirection.Asc
+
 export const initialState: AgentPerformanceState = {
     sorting: {
         field: TableColumn.AgentName,
-        direction: OrderDirection.Asc,
+        direction: DEFAULT_SORTING_DIRECTION,
         isLoading: false,
         lastSortingMetric: null,
     },
@@ -130,9 +132,8 @@ export const getSortedAgents = createSelector(
             })
 
             sortedAgents = sortedAgents.filter(Boolean)
-            return direction === OrderDirection.Asc
-                ? [...noDataAgents, ...sortedAgents]
-                : [...sortedAgents, ...noDataAgents]
+
+            return [...sortedAgents, ...noDataAgents]
         }
         const sortedAgents = agents.sort(getSortByName)
         return direction === OrderDirection.Asc

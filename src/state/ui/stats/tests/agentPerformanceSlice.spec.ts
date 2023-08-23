@@ -329,7 +329,7 @@ describe('agentPerformanceSlice', () => {
             expect(getSortedAgents(state).pop()).toEqual(agents[0])
         })
 
-        it('should return agents with no data first in ascending order', () => {
+        it('should return agents with no data at the end of sorted agents in any selected order', () => {
             const agents = [
                 {id: 1, name: 'Adam'},
                 {id: 2, name: 'Zoey'},
@@ -340,26 +340,36 @@ describe('agentPerformanceSlice', () => {
                     [TicketMeasure.FirstResponseTime]: '10',
                 },
             ]
+            const noDataAgent = agents[0]
 
-            const state = {
-                agents: fromJS({all: fromJS(agents)}),
-                ui: {
-                    [agentPerformanceSlice.name]: {
-                        sorting: {
-                            field: TableColumn.ClosedTickets,
-                            direction: OrderDirection.Asc,
-                            isLoading: false,
-                            lastSortingMetric: metricData,
+            const getStateWithOrderDirection = (direction: OrderDirection) =>
+                ({
+                    agents: fromJS({all: fromJS(agents)}),
+                    ui: {
+                        [agentPerformanceSlice.name]: {
+                            sorting: {
+                                field: TableColumn.ClosedTickets,
+                                direction,
+                                isLoading: false,
+                                lastSortingMetric: metricData,
+                            },
                         },
+                        stats: initialUiStatsState,
                     },
-                    stats: initialUiStatsState,
-                },
-                stats: initialStatsFiltersState,
-            } as RootState
+                    stats: initialStatsFiltersState,
+                } as RootState)
 
-            expect(getSortedAgents(state).pop()).toEqual(
-                agents[agents.length - 1]
-            )
+            expect(
+                getSortedAgents(
+                    getStateWithOrderDirection(OrderDirection.Asc)
+                ).pop()
+            ).toEqual(noDataAgent)
+
+            expect(
+                getSortedAgents(
+                    getStateWithOrderDirection(OrderDirection.Desc)
+                ).pop()
+            ).toEqual(noDataAgent)
         })
         it('should not contain undefined or empty values throughout the result if the lastSortingMetric has more agents than the filtered ones', () => {
             const agents = personNames.map((name, idx) => ({id: idx, name}))

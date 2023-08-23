@@ -11,6 +11,7 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite} from 'models/api/types'
 import {
+    DEFAULT_SORTING_DIRECTION,
     getAgentSorting,
     getCleanStatsFiltersWithTimezone,
     sortingLoaded,
@@ -68,7 +69,10 @@ export const useSortingQueries = (column: TableColumn) => {
         dispatch(
             sortingSet({
                 field: column,
-                direction: opposite(sorting.direction),
+                direction:
+                    sorting.field === column
+                        ? opposite(sorting.direction)
+                        : DEFAULT_SORTING_DIRECTION,
             })
         )
     }

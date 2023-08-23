@@ -16,6 +16,7 @@ import {opposite, OrderDirection} from 'models/api/types'
 import {useSortingQueries} from 'hooks/reporting/useSortingQueries'
 import {RootState, StoreDispatch} from 'state/types'
 import {
+    DEFAULT_SORTING_DIRECTION,
     initialState,
     sortingLoaded,
     sortingSet,
@@ -24,6 +25,7 @@ import {initialState as filtersInitialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('hooks/reporting/metricsPerDimension')
@@ -86,24 +88,48 @@ describe('useSortingQueries', () => {
         jest.resetAllMocks()
     })
 
-    it('should return a sorting callback that dispatches sortingSet action in opposite direction', () => {
-        const store = mockStore(defaultState)
-        const column = TableColumn.AgentName
+    describe('sorting callback', () => {
+        it('should change the sorting column', () => {
+            const store = mockStore(defaultState)
+            const column = TableColumn.ClosedTickets
 
-        const {result} = renderHook(() => useSortingQueries(column), {
-            wrapper: ({children}) => (
-                <Provider store={store}>{children}</Provider>
-            ),
-        })
-        result.current.sortCallback()
-
-        expect(result.current.direction).toEqual(initialState.sorting.direction)
-        expect(store.getActions()).toContainEqual(
-            sortingSet({
-                direction: opposite(initialState.sorting.direction),
-                field: initialState.sorting.field,
+            const {result} = renderHook(() => useSortingQueries(column), {
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
             })
-        )
+
+            result.current.sortCallback()
+
+            expect(store.getActions()).toContainEqual(
+                sortingSet({
+                    direction: DEFAULT_SORTING_DIRECTION,
+                    field: column,
+                })
+            )
+        })
+
+        it('should flip the sorting direction on second call with same column', () => {
+            const store = mockStore(defaultState)
+            const column = initialState.sorting.field
+
+            const {result} = renderHook(() => useSortingQueries(column), {
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
+            })
+
+            result.current.sortCallback()
+
+            const expectedSortingDirection = opposite(DEFAULT_SORTING_DIRECTION)
+
+            expect(store.getActions()).toContainEqual(
+                sortingSet({
+                    direction: expectedSortingDirection,
+                    field: column,
+                })
+            )
+        })
     })
 
     const sortableMetrics = [
