@@ -147,7 +147,7 @@ const sendFeedback = async (
         query_context: context.toJS(),
         result_prediction_text: currentPrediction.predictionText,
         result_prediction_accepted:
-            predictionText.length === acceptedPredictionChars,
+            predictionText.length === acceptedPredictionChars && tabKeyUsed,
         result_number_accepted_characters:
             currentPrediction.numberAcceptedCharacters,
         diverged_phrase: null,

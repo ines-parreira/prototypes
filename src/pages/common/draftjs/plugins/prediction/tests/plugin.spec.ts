@@ -236,7 +236,7 @@ describe('prediction plugin', () => {
                 result_number_accepted_characters: 1,
                 query_text: 'Hi Mari',
                 result_prediction_text: 'e',
-                result_prediction_accepted: true,
+                result_prediction_accepted: false,
             })
         })
 
@@ -376,7 +376,7 @@ describe('prediction plugin', () => {
                     result_number_accepted_characters: 6,
                     query_text: 'Hi ',
                     result_prediction_text: 'Marie,',
-                    result_prediction_accepted: true,
+                    result_prediction_accepted: false,
                 })
             })
 
@@ -405,7 +405,7 @@ describe('prediction plugin', () => {
                     result_number_accepted_characters: 6,
                     query_text: 'Hi ',
                     result_prediction_text: 'Marie,',
-                    result_prediction_accepted: true,
+                    result_prediction_accepted: false,
                 })
             })
         })
