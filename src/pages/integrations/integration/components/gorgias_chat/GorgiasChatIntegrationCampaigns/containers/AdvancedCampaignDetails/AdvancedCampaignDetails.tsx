@@ -37,8 +37,6 @@ import {createTrigger} from '../../utils/createTrigger'
 
 import {useChatPreviewProps} from '../../hooks/useChatPreviewProps'
 
-import GorgiasChatIntegrationPreviewContainer from '../../../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
-
 import {CampaignTriggerMap} from '../../types/CampaignTriggerMap'
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 import {isDeviceTypeOperators} from '../../types/enums/DeviceTypeOperators.enum'
@@ -502,41 +500,17 @@ export const AdvancedCampaignDetails = memo(
                 chatIntegration={integration}
                 shopifyIntegration={shopifyIntegration}
             >
-                <div data-testid="advanced-campaign-details-page">
-                    <CampaignDetailsHeader
-                        backToHref={backUrl}
-                        isUpdate={isUpdate}
-                    />
+                <div
+                    className={css.pageContainer}
+                    data-testid="advanced-campaign-details-page"
+                >
+                    <div className={css.formWrapper}>
+                        <CampaignDetailsHeader
+                            backToHref={backUrl}
+                            isUpdate={isUpdate}
+                        />
 
-                    <GorgiasChatIntegrationPreviewContainer
-                        preview={
-                            richArea && (
-                                <CampaignPreview
-                                    {...chatPreviewProps}
-                                    className={css.campaignPreview}
-                                    products={shopifyProducts}
-                                    html={sanitizeHtmlDefault(
-                                        campaignMessageHTML
-                                    )}
-                                    authorName={campaignAgent?.name ?? ``}
-                                    authorAvatarUrl={
-                                        campaignAgent?.avatar_url ?? ''
-                                    }
-                                    avatar={avatar}
-                                    chatTitle={chatTitle}
-                                    mainFontFamily={
-                                        chatPreviewProps.mainFontFamily ??
-                                        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                                    }
-                                    shouldHideReplyInput={campaignWithNoReply}
-                                    onCampaignContentChange={
-                                        setShowContentWarning
-                                    }
-                                />
-                            )
-                        }
-                    >
-                        <div className={css.formWrapper}>
+                        <div className={css.formContainer}>
                             <div className="mb-4">
                                 <InputField
                                     isRequired
@@ -614,7 +588,25 @@ export const AdvancedCampaignDetails = memo(
                                 onDelete={handleDeleteCampaign}
                             />
                         </div>
-                    </GorgiasChatIntegrationPreviewContainer>
+                    </div>
+                    <div>
+                        <CampaignPreview
+                            {...chatPreviewProps}
+                            className={css.campaignPreview}
+                            products={shopifyProducts}
+                            html={sanitizeHtmlDefault(campaignMessageHTML)}
+                            authorName={campaignAgent?.name ?? ``}
+                            authorAvatarUrl={campaignAgent?.avatar_url ?? ''}
+                            avatar={avatar}
+                            chatTitle={chatTitle}
+                            mainFontFamily={
+                                chatPreviewProps.mainFontFamily ??
+                                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                            }
+                            shouldHideReplyInput={campaignWithNoReply}
+                            onCampaignContentChange={setShowContentWarning}
+                        />
+                    </div>
                 </div>
             </IntegrationProvider>
         )

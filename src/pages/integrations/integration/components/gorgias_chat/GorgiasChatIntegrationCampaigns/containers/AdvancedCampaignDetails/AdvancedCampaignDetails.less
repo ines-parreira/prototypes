@@ -1,17 +1,56 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/mixins';
+
 :local {
+    .pageContainer {
+        position: relative;
+
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+
+        background-color: var(--neutral-grey-1);
+
+        @media only screen and (min-width: 1024px) {
+            flex-direction: row;
+        }
+    }
+
     .formWrapper {
-        max-width: 680px;
+        width: 100%;
+
+        background-color: var(--neutral-grey-0);
 
         .section {
-            margin-top: 32px;
+            margin-top: @layout-spacing-l;
         }
 
         .addTriggerButton {
-            margin-top: 14px;
+            margin-top: @layout-spacing-s;
         }
+
+        @media @desktops {
+            max-width: 728px;
+        }
+    }
+
+    .formContainer {
+        padding: 0 @layout-spacing-l @layout-spacing-l;
     }
 
     .campaignPreview {
         width: 378px !important;
+        margin-left: auto;
+        margin-right: auto;
+
+        background: transparent;
+
+        @media @xlarge-desktops {
+            position: sticky;
+            top: @layout-spacing-m;
+
+            margin-left: @layout-spacing-l;
+        }
     }
 }

@@ -1,18 +1,19 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+
 :local {
     .backWrapper {
-        padding: 24px;
-        padding-bottom: 0;
+        display: inline-block;
+        margin: @layout-spacing-l;
 
         a {
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 20px;
+            .body-medium();
+
             color: var(--neutral-grey-5);
 
             img {
-                margin-right: 5px;
+                margin-right: @layout-spacing-xs;
             }
         }
-        margin-bottom: 8px;
     }
 }
