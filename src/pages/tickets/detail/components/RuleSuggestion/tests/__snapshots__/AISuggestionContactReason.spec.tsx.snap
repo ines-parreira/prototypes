@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AISuggestion should display AISuggestion 1`] = `
+exports[`<AISuggestionContactReason /> should match snapshot 1`] = `
 <div>
   <div
     class="container"
@@ -31,7 +31,7 @@ exports[`AISuggestion should display AISuggestion 1`] = `
     </div>
     <header
       class="container"
-      style="padding-bottom: 8px;"
+      style="padding-bottom: 0px;"
     >
       <div
         class="infoContainer"
@@ -47,7 +47,13 @@ exports[`AISuggestion should display AISuggestion 1`] = `
           </span>
         </div>
         <span>
-          Gorgias AI wrote a suggested answer for you!
+          Our AI detected
+           
+          <b>
+            Order::Request
+          </b>
+           
+          as the Contact reason.
         </span>
       </div>
       <div
@@ -58,42 +64,30 @@ exports[`AISuggestion should display AISuggestion 1`] = `
         >
           <button
             aria-disabled="false"
+            class="wrapper fill secondary small"
+            type="button"
+          >
+            Change reason
+          </button>
+          <button
+            aria-disabled="false"
             class="wrapper fill primary small"
             type="button"
           >
-            Copy suggestion & Edit
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft small"
+              >
+                check_circle
+              </i>
+              Confirm
+            </span>
           </button>
         </div>
       </div>
-      <div
-        class="chevron"
-      >
-        <i
-          class="material-icons-round"
-        >
-          expand_more
-        </i>
-      </div>
     </header>
-    <div
-      class="container collapse"
-      style="display: block; position: absolute; left: -999px;"
-    >
-      <div>
-        <div
-          class="text"
-        >
-          <div>
-            <div>
-              suggested text
-            </div>
-          </div>
-        </div>
-        <div />
-      </div>
-    </div>
   </div>
 </div>
 `;
-
-exports[`AISuggestion should not display AISuggestion (no suggestion) 1`] = `<div />`;

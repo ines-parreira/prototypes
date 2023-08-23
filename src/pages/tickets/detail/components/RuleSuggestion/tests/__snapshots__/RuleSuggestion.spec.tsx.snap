@@ -31,6 +31,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
     </div>
     <header
       class="container"
+      style="padding-bottom: 8px;"
     >
       <div
         class="infoContainer"
@@ -45,30 +46,27 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
             Only visible to you
           </span>
         </div>
-        <div
+        <span
           class="info"
         >
-          <span>
-            Automate this ticket with the
-             
-            <a
-              href="/app/automation/rules/library?rule-recipe-fixture"
-              rel="noreferrer"
-              target="_blank"
-            >
-              my rule
-            </a>
-             
-            rule!
-             
-          </span>
+          Automate this ticket with the
+           
+          <a
+            href="/app/automation/rules/library?rule-recipe-fixture"
+            rel="noreferrer"
+            target="_blank"
+          >
+            my rule
+          </a>
+           
+          rule! 
           <span>
             Here’s a preview:
           </span>
-        </div>
+        </span>
       </div>
       <div
-        class="buttonsContainer"
+        class="actionsContainer"
       >
         <div
           class="buttons"
@@ -223,6 +221,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
     </div>
     <header
       class="container"
+      style="padding-bottom: 8px;"
     >
       <div
         class="infoContainer"
@@ -237,30 +236,27 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
             Only visible to you
           </span>
         </div>
-        <div
+        <span
           class="info"
         >
-          <span>
-            Automate this ticket with the
-             
-            <a
-              href="/app/automation/rules/library?rule-recipe-fixture"
-              rel="noreferrer"
-              target="_blank"
-            >
-              my rule
-            </a>
-             
-            rule!
-             
-          </span>
+          Automate this ticket with the
+           
+          <a
+            href="/app/automation/rules/library?rule-recipe-fixture"
+            rel="noreferrer"
+            target="_blank"
+          >
+            my rule
+          </a>
+           
+          rule! 
           <span>
             Here’s a preview:
           </span>
-        </div>
+        </span>
       </div>
       <div
-        class="buttonsContainer"
+        class="actionsContainer"
       >
         <div
           class="buttons"

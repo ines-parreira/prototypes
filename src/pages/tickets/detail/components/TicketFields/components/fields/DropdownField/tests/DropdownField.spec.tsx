@@ -50,7 +50,7 @@ describe('<DropdownField />', () => {
     }
     const prediction = {
         confidence: 87,
-        confirmed: true,
+        confirmed: false,
         display: true,
         modified: false,
         predicted: 's1::ss2::c2',
@@ -265,6 +265,7 @@ describe('<DropdownField />', () => {
             ...initialProps,
             fieldState: {
                 ...fieldState,
+                hasError: undefined,
                 prediction,
             },
         }
@@ -281,7 +282,6 @@ describe('<DropdownField />', () => {
 
     it.each([
         {...prediction, predicted: 'not::the::value'},
-        {...prediction, confidence: 12},
         {...prediction, display: false},
     ])('should not display prediction icon', (wrongPrediction) => {
         const props = {

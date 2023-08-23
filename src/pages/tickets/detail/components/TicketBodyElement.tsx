@@ -9,6 +9,7 @@ import {
     isTicketEvent,
     isTicketRuleSuggestion,
     isTicketSatisfactionSurvey,
+    isTicketContactReasonSuggestion,
 } from 'models/ticket/predicates'
 import {TicketElement, TicketEvent, TicketMessage} from 'models/ticket/types'
 import AuditLogEvent, {
@@ -25,6 +26,7 @@ import {
 import PrivateReplyEvent from 'pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent'
 import AISuggestion from 'pages/tickets/detail/components/RuleSuggestion/AISuggestion'
 import RuleSuggestion from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
+import ContactReasonSuggestion from 'pages/tickets/detail/components/RuleSuggestion/AISuggestionContactReason'
 import SatisfactionSurvey from 'pages/tickets/detail/components/SatisfactionSurvey'
 import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -116,6 +118,10 @@ const TicketBodyElement = ({
                 satisfactionSurvey={elementMap}
             />
         )
+    }
+
+    if (isTicketContactReasonSuggestion(element)) {
+        return <ContactReasonSuggestion ticket={ticket.toJS()} />
     }
 
     if (isTicketRuleSuggestion(element)) {

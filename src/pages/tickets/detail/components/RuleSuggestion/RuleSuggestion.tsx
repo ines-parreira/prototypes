@@ -154,75 +154,48 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
         await dispatch(sendTicketMessage(getMomentNow(), message, null))
     }
 
-    const header = (
-        <>
-            <div className={css.infoContainer}>
-                <div className={css.title}>
-                    <span>Gorgias Tips</span>
-                    <span>Only visible to you</span>
-                </div>
-                <div className={css.info}>
-                    <span>
-                        Automate this ticket with the{' '}
-                        <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href={`/app/automation/rules/library?${suggestion.slug}`}
+    const actionsContent = (
+        <div className={css.buttons}>
+            <div id={tooltipId}>
+                {isLoadingRules ? (
+                    <Spinner color="dark" width="25px" />
+                ) : (
+                    (!rule || !!rule?.deactivated_datetime) && (
+                        <Button
+                            intent="secondary"
+                            size="small"
+                            onClick={() =>
+                                window.open(
+                                    `/app/automation/rules/library?${suggestion.slug}&install`,
+                                    '_blank'
+                                )
+                            }
+                            isDisabled={!canInstall}
                         >
-                            {ruleName}
-                        </a>{' '}
-                        rule!{' '}
-                    </span>
-                    <span>Here’s a preview:</span>
-                </div>
+                            {!!rule?.deactivated_datetime
+                                ? 'Activate Rule'
+                                : 'Install Rule'}
+                        </Button>
+                    )
+                )}
+                {!canInstall && (
+                    <Tooltip target={tooltipId} boundariesElement="viewport">
+                        Reach out to an admin to install this rule.
+                    </Tooltip>
+                )}
             </div>
-            <div className={css.buttonsContainer}>
-                <div className={css.buttons}>
-                    <div id={tooltipId}>
-                        {isLoadingRules ? (
-                            <Spinner color="dark" width="25px" />
-                        ) : (
-                            (!rule || !!rule?.deactivated_datetime) && (
-                                <Button
-                                    intent="secondary"
-                                    size="small"
-                                    onClick={() =>
-                                        window.open(
-                                            `/app/automation/rules/library?${suggestion.slug}&install`,
-                                            '_blank'
-                                        )
-                                    }
-                                    isDisabled={!canInstall}
-                                >
-                                    {!!rule?.deactivated_datetime
-                                        ? 'Activate Rule'
-                                        : 'Install Rule'}
-                                </Button>
-                            )
-                        )}
-                        {!canInstall && (
-                            <Tooltip
-                                target={tooltipId}
-                                boundariesElement="viewport"
-                            >
-                                Reach out to an admin to install this rule.
-                            </Tooltip>
-                        )}
-                    </div>
-                    <Button
-                        size="small"
-                        onClick={() => {
-                            if (isSending) return
-                            setIsSending(true)
-                            void applySuggestion()
-                        }}
-                        isDisabled={isSending}
-                    >
-                        Apply Rule & Send
-                    </Button>
-                </div>
-            </div>
-        </>
+            <Button
+                size="small"
+                onClick={() => {
+                    if (isSending) return
+                    setIsSending(true)
+                    void applySuggestion()
+                }}
+                isDisabled={isSending}
+            >
+                Apply Rule & Send
+            </Button>
+        </div>
     )
 
     return (
@@ -230,8 +203,21 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             ticket={ticket}
             isCollapsed={isCollapsed}
             text={text?.body_html}
-            actions={actions}
-            header={header}
+            macroActions={actions}
+            actionsContent={actionsContent}
+            infoContent={
+                <span className={css.info}>
+                    Automate this ticket with the{' '}
+                    <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href={`/app/automation/rules/library?${suggestion.slug}`}
+                    >
+                        {ruleName}
+                    </a>{' '}
+                    rule! <span>Here’s a preview:</span>
+                </span>
+            }
         />
     )
 }

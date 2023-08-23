@@ -36,18 +36,15 @@ export default function AISuggestion({ticket, isCollapsed: collapsed}: Props) {
         suggestion.body_text
     )
 
-    const header = (
-        <>
-            <div className={css.infoContainer}>
-                <div className={css.title}>
-                    <span>Gorgias Tips</span>
-                    <span>Only visible to you</span>
-                </div>
-                <div className={css.info}>
-                    <span>Gorgias AI wrote a suggested answer for you!</span>
-                </div>
-            </div>
-            <div className={css.buttonsContainer}>
+    return (
+        <InTicketSuggestion
+            ticket={ticket}
+            isCollapsed={isCollapsed}
+            text={textToHTML(suggestion.body_text)}
+            infoContent={
+                <span>Gorgias AI wrote a suggested answer for you!</span>
+            }
+            actionsContent={
                 <div className={css.buttons}>
                     <Button
                         size="small"
@@ -68,16 +65,7 @@ export default function AISuggestion({ticket, isCollapsed: collapsed}: Props) {
                         Copy suggestion & Edit
                     </Button>
                 </div>
-            </div>
-        </>
-    )
-
-    return (
-        <InTicketSuggestion
-            ticket={ticket}
-            isCollapsed={isCollapsed}
-            text={textToHTML(suggestion.body_text)}
-            header={header}
+            }
         />
     )
 }

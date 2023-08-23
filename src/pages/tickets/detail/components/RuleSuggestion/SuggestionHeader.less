@@ -1,9 +1,50 @@
+@import '~css/new/layout.less';
+@import '~css/new/typographyTokens';
+
 :local .container {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 8px;
+    padding-bottom: @layout-spacing-xs;
     z-index: 1;
     flex-wrap: wrap;
+
+    .infoContainer {
+        flex: 1;
+
+        .title {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+
+            span:first-child {
+                font-style: normal;
+                font-weight: @body-semibold-font-weight;
+                font-size: @body-link-font-size;
+                line-height: @body-link-line-height;
+                margin-right: @layout-spacing-xs;
+            }
+
+            span:last-child {
+                font-size: @caption-semibold-font-size;
+            }
+        }
+
+        .info {
+            span:last-child {
+                white-space: nowrap;
+            }
+        }
+
+        a {
+            font-weight: @body-link-font-weight;
+        }
+    }
+
+    .actionsContainer {
+        align-items: center;
+        display: flex;
+        margin-right: 5.35px;
+    }
 
     .chevron {
         cursor: pointer;

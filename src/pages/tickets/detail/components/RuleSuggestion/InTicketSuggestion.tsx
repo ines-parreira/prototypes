@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import classnames from 'classnames'
 import {useMeasure} from 'react-use'
-import {assetsUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
+import {setInTicketSuggestionState} from 'state/ticket/actions'
 import Button from 'pages/common/components/button/Button'
 import {Ticket} from 'models/ticket/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
 import {MacroAction} from 'models/macroAction/types'
-
+import useAppDispatch from 'hooks/useAppDispatch'
+import InTicketSuggestionContainer from './InTicketSuggestionContainer'
 import SuggestionHeader from './SuggestionHeader'
 import SuggestionBody from './SuggestionBody'
 
@@ -16,9 +15,10 @@ import css from './InTicketSuggestion.less'
 type Props = {
     ticket: Ticket
     text?: string
-    actions?: MacroAction[]
+    macroActions?: MacroAction[]
     isCollapsed?: boolean
-    header: React.ReactNode
+    actionsContent: React.ReactNode
+    infoContent: React.ReactNode
 }
 
 export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
@@ -27,9 +27,11 @@ export default function InTicketSuggestion({
     ticket,
     isCollapsed,
     text,
-    actions,
-    header,
+    macroActions,
+    actionsContent,
+    infoContent,
 }: Props) {
+    const dispatch = useAppDispatch()
     const [suggestionState, setSuggestionState] =
         useState<SuggestionStates>(null)
     const {isFocused} = useAppSelector((state) => state.ui.editor)
@@ -37,6 +39,14 @@ export default function InTicketSuggestion({
         (state) =>
             state.ticket.getIn(['_internal', 'isPartialUpdating']) as boolean
     )
+
+    useEffect(() => {
+        if (suggestionState === null) {
+            dispatch(setInTicketSuggestionState('pending'))
+        } else if (suggestionState === 'collapse') {
+            dispatch(setInTicketSuggestionState('ignored'))
+        }
+    }, [suggestionState, dispatch])
 
     const [headerRef, {height: headerHeight}] = useMeasure<HTMLDivElement>()
     useEffect(() => {
@@ -47,32 +57,25 @@ export default function InTicketSuggestion({
         if (isCollapsed) setSuggestionState('collapse')
     }, [isCollapsed])
 
-    if (!text && !actions?.length) return null
+    if (!text && !macroActions?.length) return null
 
     return (
-        <div className={classnames(css.container)}>
-            <div className={css.avatar}>
-                <Avatar
-                    name="Gorgias Tips"
-                    size={36}
-                    url={assetsUrl('/img/icons/gorgias-icon-logo-white.png')}
-                />
-            </div>
-
+        <InTicketSuggestionContainer>
             <SuggestionHeader
                 onChevronToggle={() =>
                     setSuggestionState((state) =>
                         state === 'collapse' ? 'expand' : 'collapse'
                     )
                 }
+                infoContent={infoContent}
                 innerRef={headerRef}
                 state={suggestionState}
-                content={header}
+                actionsContent={actionsContent}
             />
 
             <SuggestionBody
                 state={suggestionState}
-                actions={actions}
+                actions={macroActions}
                 __html={text}
                 ticketId={ticket.id}
                 setSuggestionState={setSuggestionState}
@@ -84,7 +87,7 @@ export default function InTicketSuggestion({
                     gradientStart={headerHeight}
                 />
             ) : null}
-        </div>
+        </InTicketSuggestionContainer>
     )
 }
 

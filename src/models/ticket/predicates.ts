@@ -21,6 +21,9 @@ export const isTicketEvent = (
     obj: Record<string, unknown>
 ): obj is TicketEvent => obj.isEvent as boolean
 
+export const isTicketContactReasonSuggestion = (obj: Record<string, unknown>) =>
+    obj.isContactReasonSuggestion as boolean
+
 export const isTicketSatisfactionSurvey = (obj: Record<string, unknown>) =>
     obj.isSatisfactionSurvey as boolean
 

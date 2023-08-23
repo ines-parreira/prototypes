@@ -177,6 +177,11 @@ export const getAISuggestion = createImmutableSelector(
     (state) => fromJS(state.getIn(['meta', 'ai_suggestion'])) as Map<any, any>
 )
 
+export const getTicketFieldState = createSelector(
+    getTicket,
+    (state) => state.custom_fields || {}
+)
+
 // return elements we display in the body of a ticket (messages, events, etc.)
 export const getBody = createImmutableSelector(
     getMessages,
@@ -185,13 +190,15 @@ export const getBody = createImmutableSelector(
     getSatisfactionSurveys,
     getRuleSuggestion,
     getAISuggestion,
+    getTicketFieldState,
     (
         messages,
         pendingMessages,
         events,
         satisfactionSurveys,
         ruleSuggestion,
-        aiSuggestion
+        aiSuggestion,
+        ticketFieldState
     ) => {
         const nextMessages = messages.map((message) => {
             return message!.set('isMessage', true)
@@ -269,6 +276,29 @@ export const getBody = createImmutableSelector(
                     getSuggestionPosition(),
                     aiSuggestion.set('isAISuggestion', true)
                 )
+        }
+
+        if (ticketFieldState) {
+            Object.values(ticketFieldState).forEach((customFieldState) => {
+                const customFieldValue = customFieldState.value
+                const hasErrorKey = 'hasError' in customFieldState // to prevent displaying Contact Reason Suggestion after modifying value
+
+                if (
+                    !hasErrorKey &&
+                    customFieldValue ===
+                        customFieldState.prediction?.predicted &&
+                    customFieldState.prediction?.display === true &&
+                    customFieldState.prediction?.modified === false &&
+                    customFieldState.prediction.confirmed === false
+                ) {
+                    body = body.insert(
+                        0,
+                        fromJS({
+                            isContactReasonSuggestion: true,
+                        })
+                    )
+                }
+            })
         }
 
         return body
@@ -360,11 +390,6 @@ export const getTicketBodyElements = createSelector(getBody, (body) => {
         [] as TicketElement[]
     )
 })
-
-export const getTicketFieldState = createSelector(
-    getTicket,
-    (state) => state.custom_fields || {}
-)
 
 export const getTicketCustomer = createImmutableSelector(
     getTicketState,

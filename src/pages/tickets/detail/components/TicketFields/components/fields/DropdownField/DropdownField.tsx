@@ -54,6 +54,9 @@ type Props = {
     isLarge?: boolean
 }
 
+export const createInputId = (ticketId: string | number, id: string | number) =>
+    `ticket-${ticketId}-custom-field-value-input-${id}`
+
 export default function DropdownField({
     id,
     label,
@@ -64,7 +67,7 @@ export default function DropdownField({
 }: Props) {
     const dispatch = useAppDispatch()
     const ticketId = useAppSelector(getTicket).id
-    const inputId = `ticket-${ticketId}-custom-field-value-input-${id}`
+    const inputId = createInputId(ticketId, id)
 
     const inputRef = useRef<HTMLInputElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
@@ -170,11 +173,15 @@ export default function DropdownField({
     const [containerWidth, setContainerWidth] = useState(maxWidth)
     const [inputWidth, setInputWidth] = useState(maxWidth)
     const prediction = fieldState?.prediction
+
     const isPredictionCorrect =
         prediction &&
+        fieldState?.hasError === undefined &&
         prediction.predicted === value &&
-        prediction.confidence >= 80 &&
-        prediction.display
+        prediction.display &&
+        ((prediction.confirmed === true && prediction.modified === true) ||
+            (prediction.confirmed === false && prediction.modified === false))
+
     const hiddenRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -343,14 +350,14 @@ export default function DropdownField({
                                             value: choice,
                                         }}
                                     >
-                                        {fullValue ===
-                                            prediction?.predicted && (
-                                            <i
-                                                className={`material-icons mr-2 ${css.predictionIcon}`}
-                                            >
-                                                auto_awesome
-                                            </i>
-                                        )}
+                                        {fullValue === prediction?.predicted &&
+                                            isPredictionCorrect && (
+                                                <i
+                                                    className={`material-icons mr-2 ${css.predictionIcon}`}
+                                                >
+                                                    auto_awesome
+                                                </i>
+                                            )}
                                         <span className={css.choiceButton}>
                                             <span className={css.ellipsis}>
                                                 {label}
