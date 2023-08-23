@@ -524,13 +524,12 @@ export const Infobar = ({
                                                 css.suggestedCustomer
                                             )}
                                         >
-                                            <h4>Is this the same person?</h4>
+                                            <h4>Merge customer profiles?</h4>
                                             <p>
-                                                'We have found someone similar
-                                                to the customer of this ticket.
-                                                If it is the same person, merge
-                                                them together to get a unified
-                                                view of this customer.
+                                                Another customer profile looks
+                                                similar to this one. Merging
+                                                customer profiles gives you a
+                                                unified customer view.
                                             </p>
                                             <Button
                                                 className="mr-2"

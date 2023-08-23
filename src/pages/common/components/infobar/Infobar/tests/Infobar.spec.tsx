@@ -287,9 +287,7 @@ describe('<Infobar/>', () => {
             />
         )
 
-        await waitFor(() =>
-            getByText(/We have found someone similar to the customer/)
-        )
+        await waitFor(() => getByText(/Another customer profile/))
         expect(container.firstChild).toMatchSnapshot()
     })
 
