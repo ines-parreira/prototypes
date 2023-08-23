@@ -41,8 +41,8 @@ describe('<CustomerSatisfactionCellContent>', () => {
             value: surveyScoreValue,
             allData: [
                 {
-                    [TicketMeasure.SurveyScore]: surveyScoreValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
+                    [TicketMeasure.SurveyScore]: String(surveyScoreValue),
+                    [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],
         },

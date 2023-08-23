@@ -45,8 +45,8 @@ describe('<ResolutionTimeCellContent>', () => {
             value: resolutionTimeValue,
             allData: [
                 {
-                    [TicketMeasure.ResolutionTime]: resolutionTimeValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
+                    [TicketMeasure.ResolutionTime]: String(resolutionTimeValue),
+                    [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],
         },

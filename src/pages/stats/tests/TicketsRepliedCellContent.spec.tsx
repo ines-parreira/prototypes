@@ -45,8 +45,9 @@ describe('<TicketsRepliedCellContent>', () => {
             value: ticketsRepliedValue,
             allData: [
                 {
-                    [HelpdeskMessageMeasure.TicketCount]: ticketsRepliedValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
+                    [HelpdeskMessageMeasure.TicketCount]:
+                        String(ticketsRepliedValue),
+                    [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],
         },

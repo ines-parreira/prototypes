@@ -21,6 +21,7 @@ import TagsStatsFilter from './TagsStatsFilter'
 import DashboardSection from './DashboardSection'
 import StatsPage from './StatsPage'
 import {DownloadAgentsPerformanceDataButton} from './DownloadAgentsPerformanceDataButton'
+import AgentsShoutouts from './AgentsShoutoutsGrid'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
 export const AGENT_PERFORMANCE_SECTION_TITLE = 'Agent Performance'
@@ -30,6 +31,8 @@ export default function SupportPerformanceAgents() {
         useFlags()[FeatureFlagKey.AnalyticsFilterByTags]
     const hasExportAgentsPerformance: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsExportAgentsPerformance]
+    const hasShoutoutsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformanceShoutouts]
 
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
@@ -75,6 +78,13 @@ export default function SupportPerformanceAgents() {
                     </>
                 }
             >
+                {hasShoutoutsEnabled && (
+                    <DashboardSection title="Top performers">
+                        <DashboardGridCell size={12}>
+                            <AgentsShoutouts />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                )}
                 <DashboardSection title="">
                     <DashboardGridCell size={12}>
                         <ChartCard

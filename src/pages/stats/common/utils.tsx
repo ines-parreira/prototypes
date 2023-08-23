@@ -13,11 +13,16 @@ import {
     EqualityOperator,
 } from 'state/rules/types'
 import {RootState} from 'state/types'
-import {ReportingGranularity} from 'models/reporting/types'
+import {
+    HelpdeskMessageMember,
+    ReportingGranularity,
+    TicketMember,
+} from 'models/reporting/types'
 import {TicketChannel} from 'business/types/ticket'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
+import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import StatsFiltersContext from '../StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
@@ -273,3 +278,11 @@ export const formatTimeSeriesData = (
         })),
     }))
 }
+
+export const isMetricForAgent = (
+    metric: ReportingMetricItem,
+    agentId: number | string
+) =>
+    metric[TicketMember.AssigneeUserId] === String(agentId) ||
+    metric[TicketMember.FirstHelpdeskMessageUserId] === String(agentId) ||
+    metric[HelpdeskMessageMember.SenderId] === String(agentId)

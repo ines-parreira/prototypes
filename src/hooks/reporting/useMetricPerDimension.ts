@@ -10,16 +10,18 @@ type Requested = {
     isError: boolean
 }
 
+export type ReportingMetricItem = Partial<
+    Record<ReportingMeasure | ReportingDimension, string | null>
+>
+
 export type Metric = Requested & {
     data: {
         value: number | null
-        allData: any
+        allData: QueryReturnType
     } | null
 }
 
-export type QueryReturnType = [
-    Record<ReportingMeasure | ReportingDimension, string | null>
-]
+export type QueryReturnType = ReportingMetricItem[]
 
 const selectMeasurePerDimension = (
     measure: ReportingMeasure,

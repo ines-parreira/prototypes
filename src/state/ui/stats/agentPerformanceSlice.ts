@@ -2,11 +2,6 @@ import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import _intersectionBy from 'lodash/intersectionBy'
 import {User} from 'config/types/user'
 import {OrderDirection} from 'models/api/types'
-import {
-    HelpdeskMessageMember,
-    ReportingMeasure,
-    TicketMember,
-} from 'models/reporting/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import {getAgentsJS} from 'state/agents/selectors'
 import {getTimezone} from 'state/currentUser/selectors'
@@ -16,24 +11,20 @@ import {RootState} from 'state/types'
 import {getCleanStatsFilters} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
+import {isMetricForAgent} from 'pages/stats/common/utils'
+import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 
 type AgentPerformanceSorting = {
     field: TableColumn
     direction: OrderDirection
 }
 
-type MetricData = {
-    [key in
-        | ReportingMeasure
-        | TicketMember.AssigneeUserId
-        | TicketMember.FirstHelpdeskMessageUserId
-        | HelpdeskMessageMember.SenderId]?: string
-}[]
+type MetricData = ReportingMetricItem[]
 
 export type AgentPerformanceState = {
     sorting: AgentPerformanceSorting & {
         isLoading: boolean
-        lastSortingMetric: null | MetricData
+        lastSortingMetric: Maybe<MetricData>
     }
     pagination: {
         currentPage: number
@@ -65,7 +56,7 @@ export const agentPerformanceSlice = createSlice({
             state.sorting.direction = action.payload.direction
             state.sorting.isLoading = true
         },
-        sortingLoaded(state, action: PayloadAction<MetricData | null>) {
+        sortingLoaded(state, action: PayloadAction<Maybe<MetricData>>) {
             state.sorting.isLoading = false
             state.sorting.lastSortingMetric = action.payload
         },
@@ -115,14 +106,8 @@ export const getSortedAgents = createSelector(
             let sortedAgents: User[] = []
             const noDataAgents: User[] = []
             agents.forEach((agent) => {
-                const agentIndex = lastSortingMetric.findIndex(
-                    (metric) =>
-                        metric[TicketMember.AssigneeUserId] ===
-                            String(agent.id) ||
-                        metric[TicketMember.FirstHelpdeskMessageUserId] ===
-                            String(agent.id) ||
-                        metric[HelpdeskMessageMember.SenderId] ===
-                            String(agent.id)
+                const agentIndex = lastSortingMetric.findIndex((metric) =>
+                    isMetricForAgent(metric, agent.id)
                 )
                 if (agentIndex >= 0) {
                     sortedAgents[agentIndex] = agent

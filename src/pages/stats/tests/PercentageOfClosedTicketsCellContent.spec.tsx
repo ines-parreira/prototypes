@@ -42,8 +42,10 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
             value: percentageOfClosedTicketsValue,
             allData: [
                 {
-                    [TicketMeasure.TicketCount]: percentageOfClosedTicketsValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
+                    [TicketMeasure.TicketCount]: String(
+                        percentageOfClosedTicketsValue
+                    ),
+                    [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],
         },

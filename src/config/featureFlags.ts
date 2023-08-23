@@ -3,6 +3,7 @@ export enum FeatureFlagKey {
     AnalyticsNewAgentPerformance = 'analytics-new-agent-performance',
     AnalyticsExportAgentsPerformance = 'analytics-export-agents-performance',
     AnalyticsPerformanceTips = 'analytics-performance-tips',
+    AnalyticsNewAgentPerformanceShoutouts = 'analytics-new-agent-performance-shoutouts',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',

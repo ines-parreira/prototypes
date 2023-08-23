@@ -45,8 +45,8 @@ describe('<ClosedTicketsCellContent>', () => {
             value: closedTicketsValue,
             allData: [
                 {
-                    [TicketMeasure.TicketCount]: closedTicketsValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
+                    [TicketMeasure.TicketCount]: String(closedTicketsValue),
+                    [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],
         },

@@ -45,8 +45,10 @@ describe('<FirstResponseTimeCellContent>', () => {
             value: firstResponseTimeValue,
             allData: [
                 {
-                    [TicketMeasure.FirstResponseTime]: firstResponseTimeValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
+                    [TicketMeasure.FirstResponseTime]: String(
+                        firstResponseTimeValue
+                    ),
+                    [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],
         },

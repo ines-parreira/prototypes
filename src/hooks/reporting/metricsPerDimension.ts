@@ -147,9 +147,11 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
                 ...item,
                 [TicketMeasure.TicketCount]:
                     item[TicketMeasure.TicketCount] && data?.value
-                        ? calculatePercentage(
-                              Number(item[TicketMeasure.TicketCount]),
-                              data.value
+                        ? String(
+                              calculatePercentage(
+                                  Number(item[TicketMeasure.TicketCount]),
+                                  data.value
+                              )
                           )
                         : item[TicketMeasure.TicketCount],
             })),

@@ -25,6 +25,7 @@ import {initialState as filtersInitialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
+import {TicketMeasure} from 'models/reporting/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -168,7 +169,7 @@ describe('useSortingQueries', () => {
         ({column, queryHook}) => {
             const metricData: Metric['data'] = {
                 value: 123,
-                allData: [{someDimension: 123}],
+                allData: [{[TicketMeasure.FirstResponseTime]: '123'}],
             }
             const store = mockStore({
                 ...defaultState,
@@ -207,7 +208,7 @@ describe('useSortingQueries', () => {
         ({column, queryHook}) => {
             const metricData: Metric['data'] = {
                 value: 123,
-                allData: [{someDimension: 123}],
+                allData: [{[TicketMeasure.FirstResponseTime]: '123'}],
             }
             const store = mockStore({
                 ...defaultState,

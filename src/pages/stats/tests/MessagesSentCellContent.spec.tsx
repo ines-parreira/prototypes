@@ -45,8 +45,9 @@ describe('<MessagesSentCellContent>', () => {
             value: messagesSentValue,
             allData: [
                 {
-                    [HelpdeskMessageMeasure.MessageCount]: messagesSentValue,
-                    [TicketDimension.AssigneeUserId]: agentId,
+                    [HelpdeskMessageMeasure.MessageCount]:
+                        String(messagesSentValue),
+                    [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],
         },
