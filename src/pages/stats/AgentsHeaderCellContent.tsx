@@ -14,7 +14,9 @@ const HeaderTooltipContent = ({title, link}: TooltipData) => {
         <span>
             {title}
             <br />
-            <a href={link}>{DOCUMENTATION_LINK_TEXT}</a>
+            <a href={link} target="_blank" rel="noopener noreferrer">
+                {DOCUMENTATION_LINK_TEXT}
+            </a>
         </span>
     )
 }
