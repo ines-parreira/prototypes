@@ -12,6 +12,8 @@ export const WORKLOAD_BY_CHANNEL_LABEL = 'workload by channel'
 export const NOT_AVAILABLE_LABEL = 'N/A'
 export const DATE_TIME_FORMAT = 'YYYY-MM-DD'
 export const EMPTY_LABEL = ' '
+export const CURRENT_PERIOD_LABEL = 'current period'
+export const PREVIOUS_PERIOD_LABEL = 'previous period'
 
 export enum MetricName {
     CustomerSatisfaction = 'customerSatisfaction',

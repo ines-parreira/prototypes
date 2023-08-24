@@ -3,6 +3,7 @@ import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {OneDimensionalDataItem} from 'pages/stats/types'
 import {
+    CURRENT_PERIOD_LABEL,
     CUSTOMER_SATISFACTION_LABEL,
     DATE_TIME_FORMAT,
     EMPTY_LABEL,
@@ -11,6 +12,7 @@ import {
     MESSAGES_SENT_LABEL,
     NOT_AVAILABLE_LABEL,
     OPEN_TICKETS_LABEL,
+    PREVIOUS_PERIOD_LABEL,
     RESOLUTION_TIME_LABEL,
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
@@ -69,8 +71,8 @@ export const saveReport = async (
         workloadPerChannelPrevious,
     } = data
 
-    const customerExperienceData = (startDate: string, endDate: string) => [
-        [EMPTY_LABEL, startDate, endDate],
+    const customerExperienceData = () => [
+        [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
         [
             CUSTOMER_SATISFACTION_LABEL,
             customerSatisfactionTrend.data?.value,
@@ -93,8 +95,8 @@ export const saveReport = async (
         ],
     ]
 
-    const workloadData = (startDate: string, endDate: string) => [
-        [EMPTY_LABEL, startDate, endDate],
+    const workloadData = () => [
+        [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
         [
             OPEN_TICKETS_LABEL,
             openTicketsTrend.data?.value,
@@ -161,9 +163,9 @@ export const saveReport = async (
     return saveZippedFiles(
         {
             [`${periodPrefix}-customer-experience-${export_datetime}.csv`]:
-                createCsv(customerExperienceData(startDate, endDate)),
+                createCsv(customerExperienceData()),
             [`${periodPrefix}-workload-${export_datetime}.csv`]: createCsv(
-                workloadData(startDate, endDate)
+                workloadData()
             ),
             [`${periodPrefix}-ticket-volume-${export_datetime}.csv`]:
                 createCsv(ticketVolumeData),
