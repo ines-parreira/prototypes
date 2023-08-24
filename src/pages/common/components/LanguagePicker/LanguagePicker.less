@@ -1,0 +1,68 @@
+:local {
+    .languagePickerWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .languagePickerContainer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        justify-content: space-between;
+
+        :first-child {
+            flex: 1;
+        }
+
+        .languagePickerDropdown {
+            align-self: flex-end;
+        }
+    }
+
+    .languageSelect :global(.dropdown-toggle) {
+        justify-content: space-between;
+    }
+
+    .languageSelectDropdownMenu {
+        width: 100%;
+        max-width: none;
+    }
+
+    .dropdown-header {
+        padding: 1px 4px 8px;
+        margin-bottom: 8px;
+    }
+
+    .languageDropdownItem {
+        padding: 8px 12px;
+    }
+
+    .languagePickerToggle {
+        background-color: transparent;
+        color: var(--neutral-grey-5, #6a6a6a);
+        display: flex;
+        gap: 4px;
+
+        &:hover,
+        &:active,
+        &:focus {
+            background: var(--neutral-grey-3, #ddd);
+            color: var(--neutral-grey-6);
+        }
+
+        &:disabled {
+            color: var(--neutral-grey-5);
+            background-color: transparent;
+            cursor: default;
+        }
+    }
+
+    .languageList {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        color: #161616;
+    }
+}

@@ -24,7 +24,7 @@ export const BadgeItem: React.FC<BadgeItemProps> = ({
     onClose,
 }: BadgeItemProps) => {
     return (
-        <Badge data-testid={`badge-${id}`} className={css.badge}>
+        <Badge data-testid={`badge-${id}`} className={css.badge} color="none">
             <span>{label}</span>
             {help && (
                 <span className={css['badge-suffix']}>

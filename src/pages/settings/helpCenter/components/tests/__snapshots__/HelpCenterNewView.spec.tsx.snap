@@ -138,7 +138,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
             class="wrapper"
           >
             <span
-              class="badge badge badge-secondary"
+              class="badge badge badge-none"
               data-testid="badge-en-US"
             >
               <span>
