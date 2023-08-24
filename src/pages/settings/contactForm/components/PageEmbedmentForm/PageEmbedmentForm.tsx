@@ -17,8 +17,9 @@ import InputField from 'pages/common/forms/input/InputField'
 import imageLayoutTop from 'assets/img/icons/layout-top.svg'
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 
+import {EmbeddablePage} from 'models/contactForm/types'
 import {slugify} from '../../utils/slugify'
-import {EmbedMode, PagePosition, EmbeddablePage} from './types'
+import {EmbedMode, PagePosition} from './types'
 
 import css from './PageEmbedmentForm.less'
 import {

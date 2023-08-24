@@ -76,6 +76,82 @@ exports[`createContactForm resolves with a created contact form on success 1`] =
 }
 `;
 
+exports[`createPageEmbedment rejects if the server returns an error 2`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": "{"shopify_page_id":"123456789","position":"TOP"}",
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "params": {},
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/help-center/contact-forms/1/page-embedments",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+}
+`;
+
+exports[`createPageEmbedment resolves with a created page embedment on success 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": "{"shopify_page_id":"123456789","position":"TOP"}",
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "params": {},
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/help-center/contact-forms/1/page-embedments",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+}
+`;
+
 exports[`getContactForms rejects if the server returns an error 2`] = `
 {
   "delete": [],

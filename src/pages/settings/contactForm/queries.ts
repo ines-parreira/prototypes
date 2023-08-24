@@ -13,6 +13,8 @@ import {
     getContactForms,
     getShopifyPages,
     getPageEmbedments,
+    createPageEmbedment,
+    updatePageEmbedment,
 } from './resources'
 
 /**
@@ -165,6 +167,30 @@ export const useCreateContactForm = (
     return useMutation({
         mutationFn: ([, newContactForm]) =>
             createContactForm(client, newContactForm),
+        ...overrides,
+    })
+}
+
+export const useCreatePageEmbedment = (
+    overrides?: MutationOverrides<typeof createPageEmbedment>
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([, pathParameters, newPageEmbedment]) =>
+            createPageEmbedment(client, pathParameters, newPageEmbedment),
+        ...overrides,
+    })
+}
+
+export const useUpdatePageEmbedment = (
+    overrides?: MutationOverrides<typeof updatePageEmbedment>
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([, pathParameters, newPageEmbedment]) =>
+            updatePageEmbedment(client, pathParameters, newPageEmbedment),
         ...overrides,
     })
 }

@@ -1,5 +1,16 @@
 import {Components} from 'rest_api/help_center_api/client.generated'
 
+export const PageEmbedmentFixture: Components.Schemas.ShopifyPageEmbedmentDto =
+    {
+        id: 1,
+        shopify_page_id: '229672878386',
+        shopify_page_title: 'My page title',
+        shopify_page_handle: 'my-page-title',
+        position: 'TOP',
+        created_datetime: '2023-08-11T14:00:22.283Z',
+        updated_datetime: '2023-08-11T14:00:22.283Z',
+    }
+
 export const PageEmbedmentsListFixture: Components.Schemas.ShopifyPageEmbedmentDto[] =
     [
         {

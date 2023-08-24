@@ -1,21 +1,32 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
-import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {MODAL_LABELS} from '../constants'
+import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
+
+const queryClient = createTestQueryClient()
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('state/notifications/actions')
 
 describe('<ContactFormAutoEmbedModalAssistant />', () => {
     it('it renders the component', () => {
         const isOpen = true
         const onClose = jest.fn()
         const pages = ShopifyPagesListFixture
+        const contactFormId = 1
 
         render(
-            <ContactFormAutoEmbedModalAssistant
-                isOpen={isOpen}
-                onClose={onClose}
-                pages={pages}
-            />
+            <QueryClientProvider client={queryClient}>
+                <ContactFormAutoEmbedModalAssistant
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    pages={pages}
+                    contactFormId={contactFormId}
+                />
+            </QueryClientProvider>
         )
 
         screen.getByText(MODAL_LABELS.TITLE)

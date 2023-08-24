@@ -24,7 +24,7 @@ import {
 import {getCurrentUser} from 'state/currentUser/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
-import {ErrorResponse, TicketPurpose} from 'state/billing/types'
+import {TicketPurpose} from 'state/billing/types'
 import {
     Notification,
     NotificationStatus,
@@ -36,6 +36,7 @@ import {
 } from 'state/currentAccount/actions'
 import {isStarterTierPrice} from 'models/billing/utils'
 import GorgiasApi from 'services/gorgiasApi'
+import {isGorgiasApiError} from 'models/api/types'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -515,11 +516,10 @@ export const useBillingPlans = ({
                 )
             }
         } catch (exception) {
-            const error = exception as ErrorResponse
-            const errorMsg =
-                error.response && error.response.data?.error
-                    ? error.response.data.error.msg
-                    : 'Failed to update credit card. Please try again in a few seconds.'
+            const error = exception as Record<string, unknown>
+            const errorMsg = isGorgiasApiError(error)
+                ? error.response.data.error.msg
+                : 'Failed to update credit card. Please try again in a few seconds.'
             await dispatch(
                 notify({
                     status: NotificationStatus.Error,

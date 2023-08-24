@@ -3,7 +3,10 @@ import {
     ContactFormGeneric500ErrorFixture,
     ContactFormListFixtures,
 } from '../fixtures/contacForm'
-import {PageEmbedmentsListFixture} from '../fixtures/pageEmbedment'
+import {
+    PageEmbedmentFixture,
+    PageEmbedmentsListFixture,
+} from '../fixtures/pageEmbedment'
 import {
     ShopifyPagesListFixture,
     ShopifyPagesGeneric500ErrorFixture,
@@ -171,6 +174,56 @@ describe('createContactForm', () => {
         await expect(
             contactFormResourceMethods.createContactForm(
                 sdkMocks.client,
+                payload
+            )
+        ).rejects.toMatchInlineSnapshot(
+            `[Error: Request failed with status code 500]`
+        )
+        expect(sdkMocks.mockedServer.history).toMatchSnapshot()
+    })
+})
+
+describe('createPageEmbedment', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const payload = {
+        shopify_page_id: '123456789',
+        position: 'TOP',
+    } as const
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+    })
+
+    it('resolves with a created page embedment on success', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            createPageEmbedment: 'success',
+        })
+        sdkMocks.mockedServer
+            .onPost('/api/help-center/contact-forms/1/page-embedments')
+            .reply(201, PageEmbedmentFixture)
+
+        const data = await contactFormResourceMethods.createPageEmbedment(
+            sdkMocks.client,
+            {contact_form_id: 1},
+            payload
+        )
+        expect(data).toEqual(PageEmbedmentFixture)
+        expect(sdkMocks.mockedServer.history).toMatchSnapshot()
+    })
+
+    it('rejects if the server returns an error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            createPageEmbedment: 'error',
+        })
+
+        sdkMocks.mockedServer
+            .onPost('/api/help-center/contact-forms/1/page-embedments')
+            .reply(500, ContactFormGeneric500ErrorFixture)
+
+        await expect(
+            contactFormResourceMethods.createPageEmbedment(
+                sdkMocks.client,
+                {contact_form_id: 1},
                 payload
             )
         ).rejects.toMatchInlineSnapshot(

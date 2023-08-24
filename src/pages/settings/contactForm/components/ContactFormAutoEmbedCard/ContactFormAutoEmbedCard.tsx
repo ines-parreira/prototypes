@@ -10,10 +10,9 @@ import {
     linkToShopifyIntegration,
 } from 'pages/settings/contactForm/utils/navigation'
 
-import {PageEmbedment} from 'models/contactForm/types'
+import {PageEmbedment, EmbeddablePage} from 'models/contactForm/types'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
 import {useGetShopifyPages} from '../../queries'
-import {EmbeddablePage} from '../PageEmbedmentForm'
 import {
     CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID,
     CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
@@ -222,6 +221,7 @@ const ContactFormAutoEmbedCard = ({
                     isOpen={isEmbedModalOpen && getShopifyPages.isFetched}
                     onClose={() => setIsEmbedModalOpen(false)}
                     pages={availablePages}
+                    contactFormId={contactFormId}
                 />
             </div>
         )

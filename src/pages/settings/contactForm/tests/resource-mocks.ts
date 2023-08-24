@@ -14,6 +14,7 @@ import {
     PageEmbedmentsListFixture,
     PageEmbedmentsEmptyListFixture,
     PageEmbedmentsGeneric500ErrorFixture,
+    PageEmbedmentFixture,
 } from '../fixtures/pageEmbedment'
 import * as contactFormResourceMethods from '../resources'
 
@@ -91,6 +92,30 @@ export const mockResourceServerReplies = (
             .reply(500, ContactFormGeneric500ErrorFixture)
     }
 
+    if (options.createPageEmbedment === 'success') {
+        mockedServer
+            .onPost('/api/help-center/contact-forms/1/page-embedments')
+            .reply(201, PageEmbedmentFixture)
+    }
+
+    if (options.createPageEmbedment === 'error') {
+        mockedServer
+            .onPost('/api/help-center/contact-forms/1/page-embedments')
+            .reply(500, PageEmbedmentsGeneric500ErrorFixture)
+    }
+
+    if (options.updatePageEmbedment === 'success') {
+        mockedServer
+            .onPut('/api/help-center/contact-forms/1/page-embedments/1')
+            .reply(200, PageEmbedmentFixture)
+    }
+
+    if (options.updatePageEmbedment === 'error') {
+        mockedServer
+            .onPut('/api/help-center/contact-forms/1/page-embedments/1')
+            .reply(500, PageEmbedmentsGeneric500ErrorFixture)
+    }
+
     return {
         fixtures: {
             ContactFormFixture,
@@ -100,6 +125,7 @@ export const mockResourceServerReplies = (
             ShopifyPagesListFixture,
             ShopifyPagesEmptyListFixture,
             ShopifyPagesGeneric500ErrorFixture,
+            PageEmbedmentFixture,
             PageEmbedmentsListFixture,
             PageEmbedmentsEmptyListFixture,
             PageEmbedmentsGeneric500ErrorFixture,

@@ -1,3 +1,7 @@
+import {
+    CreateShopifyPageEmbedmentDto,
+    UpdateShopifyPageEmbedmentDto,
+} from 'models/contactForm/types'
 import {HelpCenterClient} from '../../../rest_api/help_center_api'
 import {Paths} from '../../../rest_api/help_center_api/client.generated'
 
@@ -43,6 +47,36 @@ export const getPageEmbedments = async (
     const res = await client.listContactFormShopifyEmbedments(
         pathParameters,
         queryParameters
+    )
+
+    return res.data
+}
+
+export const createPageEmbedment = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.CreateContactFormShopifyEmbedment.PathParameters,
+    body: CreateShopifyPageEmbedmentDto
+) => {
+    if (!client) return null
+
+    const res = await client.createContactFormShopifyEmbedment(
+        pathParameters,
+        body
+    )
+
+    return res.data
+}
+
+export const updatePageEmbedment = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.UpdateContactFormShopifyEmbedment.PathParameters,
+    body: UpdateShopifyPageEmbedmentDto
+) => {
+    if (!client) return null
+
+    const res = await client.updateContactFormShopifyEmbedment(
+        pathParameters,
+        body
     )
 
     return res.data

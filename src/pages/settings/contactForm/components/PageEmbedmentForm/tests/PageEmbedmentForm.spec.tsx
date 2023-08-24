@@ -94,7 +94,7 @@ describe('<PageEmbedmentForm />', () => {
         expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
             [
               {
-                "payload": "bottom",
+                "payload": "BOTTOM",
                 "type": "setPagePosition",
               },
             ]
