@@ -16,6 +16,22 @@ import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm
 import {CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID} from 'pages/settings/contactForm/components/ContactFormAutoEmbedCard'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
+
+jest.mock('../../../../queries', () => {
+    const originalModule: Record<string, unknown> = jest.requireActual(
+        '../../../../queries'
+    )
+
+    return {
+        ...originalModule,
+        useGetPageEmbedments: jest.fn(() => ({
+            isLoading: false,
+            isFetched: true,
+            data: [],
+        })),
+    }
+})
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -27,7 +43,15 @@ describe('ContactFormPublish', () => {
 
     const queryClient = createTestQueryClient()
 
-    const renderView = ({state}: {state: Partial<RootState>}) => {
+    const renderView = ({
+        state,
+        path = CONTACT_FORM_PUBLISH_PATH,
+        route = CONTACT_FORM_PUBLISH_PATH,
+    }: {
+        state: Partial<RootState>
+        path?: string
+        route?: string
+    }) => {
         return renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <CurrentContactFormContext.Provider value={ContactFormFixture}>
@@ -35,12 +59,17 @@ describe('ContactFormPublish', () => {
                         <ContactFormPublish />,
                     </Provider>
                 </CurrentContactFormContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
+            {
+                path,
+                route,
+            }
         )
     }
 
     it('wording check', () => {
         renderView({state: defaultState})
+
         screen.getByText('Display the contact form anywhere on your website.')
         screen.getByText('Shareable link')
         screen.getByText('Manually embed with code')

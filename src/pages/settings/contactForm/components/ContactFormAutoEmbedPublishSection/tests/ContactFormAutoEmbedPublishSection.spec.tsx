@@ -13,6 +13,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
+import {PageEmbedmentFixture} from 'pages/settings/contactForm/fixtures/pageEmbedment'
 import ContactFormAutoEmbedPublishSection, {
     ContactFormAutoEmbedPublishSectionProps,
 } from '../ContactFormAutoEmbedPublishSection'
@@ -21,6 +22,7 @@ import {CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID} from '../../ContactFo
 const defaultProps: ContactFormAutoEmbedPublishSectionProps = {
     contactFormShopName: 'store-name',
     contactFormId: 1,
+    pageEmbedments: [],
 }
 
 const queryClient = createTestQueryClient()
@@ -96,6 +98,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
             <ContactFormAutoEmbedPublishSection
                 contactFormShopName={null}
                 contactFormId={1}
+                pageEmbedments={[]}
             />,
             {
                 state: defaultStateWithIntegrations,
@@ -120,6 +123,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
             <ContactFormAutoEmbedPublishSection
                 contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
                 contactFormId={1}
+                pageEmbedments={[]}
             />,
             {
                 state: defaultStateWithIntegrations,
@@ -146,6 +150,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
             <ContactFormAutoEmbedPublishSection
                 contactFormShopName={SHOPIFY_SHOP_NAME_UPDATE_NEEDED}
                 contactFormId={1}
+                pageEmbedments={[]}
             />,
             {
                 state: defaultStateWithIntegrations,
@@ -170,6 +175,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
             <ContactFormAutoEmbedPublishSection
                 contactFormShopName={'another-store'}
                 contactFormId={1}
+                pageEmbedments={[]}
             />,
             {
                 state: defaultStateWithIntegrations,
@@ -183,9 +189,24 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
         screen.getByText(/Gorgias will automatically embed/i)
     })
 
-    // It's already implemented but cannot be programmatically tested yet
-    // (cf. we'll mock the query to the list embedment endpoints)
-    it.todo(
-        'Contact Form - connected to a Shopify store with embedment already'
-    )
+    it('Contact Form - connected to a Shopify store with embedment already', () => {
+        mockFeatureFlagValue(true)
+
+        const {container} = renderView(
+            <ContactFormAutoEmbedPublishSection
+                contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
+                contactFormId={1}
+                pageEmbedments={[PageEmbedmentFixture]}
+            />,
+            {
+                state: defaultStateWithIntegrations,
+            }
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+
+        screen.getByText(/Automatically embed on your website/i)
+        screen.getByText(/Gorgias will automatically embed/i)
+        expect(screen.queryByText(/recommended/i)).toBeNull()
+    })
 })

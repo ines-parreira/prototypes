@@ -19,6 +19,7 @@ import {
     CONTACT_FORM_PAGE_TITLE,
     CONTACT_FORM_PREFERENCES_PATH,
     CONTACT_FORM_PUBLISH_PATH,
+    CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
 } from 'pages/settings/contactForm/constants'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {useContactFormIdParam} from 'pages/settings/contactForm/hooks/useCurrentContactFormId'
@@ -197,7 +198,6 @@ const ContactFormSettingsView = (): JSX.Element => {
             <SecondaryNavbar>
                 {Object.entries(navLinks).map(([name, to]) => (
                     <NavLink
-                        exact
                         key={name}
                         to={insertContactFormIdParam(to, contactFormId)}
                     >
@@ -219,7 +219,10 @@ const ContactFormSettingsView = (): JSX.Element => {
                     />
                     <Route
                         exact
-                        path={CONTACT_FORM_PUBLISH_PATH}
+                        path={[
+                            CONTACT_FORM_PUBLISH_PATH,
+                            CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
+                        ]}
                         component={ContactFormPublish}
                     />
                     {!isIdValid ? null : (

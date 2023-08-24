@@ -1,6 +1,6 @@
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ContactForm} from 'models/contactForm/types'
+import {ContactForm, PageEmbedment} from 'models/contactForm/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
@@ -8,7 +8,6 @@ import ContactFormAutoEmbedWarningBanner, {
     ContactFormAutoEmbedWarningBannerProps,
 } from '../ContactFormAutoEmbedWarningBanner'
 import ContactFormAutoEmbedCard from '../ContactFormAutoEmbedCard'
-import {useGetPageEmbedments} from '../../queries'
 import {ContactFormAutoEmbedReadinessStatus} from './types'
 
 /**
@@ -40,12 +39,13 @@ const useShopifyIntegrationAndScope = (
 export type ContactFormAutoEmbedPublishSectionProps = {
     contactFormShopName: ContactForm['shop_name']
     contactFormId: ContactForm['id']
+    pageEmbedments: PageEmbedment[]
 }
 
 const ContactFormAutoEmbedPublishSection = (
     props: ContactFormAutoEmbedPublishSectionProps
 ) => {
-    const {contactFormShopName, contactFormId} = props
+    const {contactFormShopName, contactFormId, pageEmbedments} = props
 
     const isAutoEmbedFlagActive =
         useFlags()[FeatureFlagKey.ContactFormAutoEmbed] ?? false
@@ -53,8 +53,6 @@ const ContactFormAutoEmbedPublishSection = (
     const {integrationId, needScopeUpdate} = useShopifyIntegrationAndScope(
         contactFormShopName ?? ''
     )
-
-    const getPageEmbedments = useGetPageEmbedments(contactFormId)
 
     // hide this entire section if the flag is not active
     if (!isAutoEmbedFlagActive) return null
@@ -86,12 +84,8 @@ const ContactFormAutoEmbedPublishSection = (
                 isNotConnected={contactFormShopName === null}
                 shopifyIntegrationId={integrationId}
                 needScopeUpdate={needScopeUpdate}
-                pageEmbedments={getPageEmbedments.data ?? []}
-                hasEmbeddedPages={
-                    // This is hardcoded for now, we need to update this logic
-                    // to perform a query to the list embedment endpoint
-                    false
-                }
+                pageEmbedments={pageEmbedments}
+                hasEmbeddedPages={pageEmbedments.length > 0}
                 contactFormId={contactFormId}
             />
         </section>

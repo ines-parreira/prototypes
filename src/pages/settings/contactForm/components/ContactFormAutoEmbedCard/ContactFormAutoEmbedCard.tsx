@@ -1,11 +1,12 @@
 import React from 'react'
 import classnames from 'classnames'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import _noop from 'lodash/noop'
 import Button from 'pages/common/components/button/Button'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Tooltip from 'pages/common/components/Tooltip'
 import {
+    insertContactFormIdParam,
     linkToContactFormPreferences,
     linkToShopifyIntegration,
 } from 'pages/settings/contactForm/utils/navigation'
@@ -13,6 +14,7 @@ import {
 import {PageEmbedment, EmbeddablePage} from 'models/contactForm/types'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
 import {useGetShopifyPages} from '../../queries'
+import {CONTACT_FORM_MANAGE_EMBEDMENTS_PATH} from '../../constants'
 import {
     CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID,
     CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
@@ -69,6 +71,7 @@ const ContactFormAutoEmbedCard = ({
     contactFormId,
     pageEmbedments,
 }: ContactFormAutoEmbedCardProps) => {
+    const history = useHistory()
     // Embed modal assistant state
     const [isEmbedModalOpen, setIsEmbedModalOpen] = React.useState(false)
 
@@ -145,7 +148,12 @@ const ContactFormAutoEmbedCard = ({
     if (shopifyIntegrationId) {
         if (hasEmbeddedPages) {
             const navigateToEmbedmentManagement = () => {
-                alert('Must navigate to the Embedment management view')
+                history.push(
+                    insertContactFormIdParam(
+                        CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
+                        contactFormId
+                    )
+                )
             }
             return (
                 <div
