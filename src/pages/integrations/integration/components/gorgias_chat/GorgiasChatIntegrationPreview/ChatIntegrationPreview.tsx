@@ -2,13 +2,12 @@
 import classnames from 'classnames'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import styled from '@emotion/styled'
-
 import {ThemeProvider} from '@emotion/react'
-import Collapse from 'pages/common/components/Collapse/Collapse'
+import {List} from 'immutable'
 
+import Collapse from 'pages/common/components/Collapse/Collapse'
 import useAppSelector from 'hooks/useAppSelector'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -17,6 +16,7 @@ import ConversationHeader, {
 } from 'gorgias-design-system/Header/ConversationHeader'
 import WidgetHeader from 'gorgias-design-system/Header/WidgetHeader'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
+import {Language} from 'constants/languages'
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
@@ -27,6 +27,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     isAutoresponderReply,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    LanguageItem,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
     GorgiasChatPosition,
@@ -57,6 +58,7 @@ type Props = {
     mainFontFamily: string
     isOnline: boolean
     language?: string
+    languages?: List<LanguageItem>
     children: ReactNode
     renderFooter?: boolean
     renderPoweredBy?: boolean

@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 import {renderHook} from '@testing-library/react-hooks'
 
-import {SPANISH_LANGUAGE} from 'constants/languages'
+import {Language} from 'constants/languages'
 
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -37,7 +37,7 @@ describe('useChatPreviewProps()', () => {
                 main_font_family: 'Impact',
             },
             meta: {
-                language: SPANISH_LANGUAGE,
+                language: Language.Spanish,
             },
         })
 
@@ -47,7 +47,7 @@ describe('useChatPreviewProps()', () => {
             expect(result.current).toEqual({
                 position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
                 mainColor: '#000',
-                translatedTexts: GORGIAS_CHAT_WIDGET_TEXTS[SPANISH_LANGUAGE],
+                translatedTexts: GORGIAS_CHAT_WIDGET_TEXTS[Language.Spanish],
                 mainFontFamily: 'Impact',
             })
         })

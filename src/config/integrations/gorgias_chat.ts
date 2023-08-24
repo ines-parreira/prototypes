@@ -1,18 +1,6 @@
 import {fromJS, List, Map} from 'immutable'
 
-import {
-    DANISH_LANGUAGE,
-    DUTCH_LANGUAGE,
-    ENGLISH_US_LANGUAGE,
-    FRENCH_FR_LANGUAGE,
-    FRENCH_CA_LANGUAGE,
-    ITALIAN_LANGUAGE,
-    SPANISH_LANGUAGE,
-    SWEDISH_LANGUAGE,
-    GERMAN_LANGUAGE,
-    CZECH_LANGUAGE,
-    NORWEGIAN_LANGUAGE,
-} from '../../constants/languages'
+import {Language} from '../../constants/languages'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
@@ -23,20 +11,34 @@ import {widgetTexts} from './widget'
 
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
-export const GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
+export const GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT = Language.EnglishUs
+
+export interface LanguageItem {
+    language: Language
+    primary?: boolean
+}
+export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT: List<LanguageItem> = fromJS(
+    [
+        {
+            language: Language.EnglishUs,
+            primary: true,
+        },
+    ]
+)
+
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
     fromJS([
-        {value: ENGLISH_US_LANGUAGE, label: 'English (US)'},
-        {value: FRENCH_FR_LANGUAGE, label: 'French (France)'},
-        {value: FRENCH_CA_LANGUAGE, label: 'French (Canada)'},
-        {value: SPANISH_LANGUAGE, label: 'Spanish'},
-        {value: DANISH_LANGUAGE, label: 'Danish'},
-        {value: SWEDISH_LANGUAGE, label: 'Swedish'},
-        {value: ITALIAN_LANGUAGE, label: 'Italian'},
-        {value: DUTCH_LANGUAGE, label: 'Dutch'},
-        {value: GERMAN_LANGUAGE, label: 'German'},
-        {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
-        {value: CZECH_LANGUAGE, label: 'Czech'},
+        {value: Language.EnglishUs, label: 'English (US)'},
+        {value: Language.FrenchFr, label: 'French (France)'},
+        {value: Language.FrenchCa, label: 'French (Canada)'},
+        {value: Language.Spanish, label: 'Spanish'},
+        {value: Language.Danish, label: 'Danish'},
+        {value: Language.Swedish, label: 'Swedish'},
+        {value: Language.Italian, label: 'Italian'},
+        {value: Language.Dutch, label: 'Dutch'},
+        {value: Language.German, label: 'German'},
+        {value: Language.Norwegian, label: 'Norwegian'},
+        {value: Language.Czech, label: 'Czech'},
     ])
 
 export const GORGIAS_CHAT_WIDGET_TEXTS: {

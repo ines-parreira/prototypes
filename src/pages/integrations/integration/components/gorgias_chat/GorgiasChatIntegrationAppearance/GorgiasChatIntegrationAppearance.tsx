@@ -38,8 +38,9 @@ import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_DEFAULT_FONTS,
+    GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT,
+    LanguageItem,
 } from 'config/integrations/gorgias_chat'
-import {Language} from 'constants/languages'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {
     GorgiasChatAvatarSettings,
@@ -99,6 +100,7 @@ export const defaultContent = {
     conversationColor: GORGIAS_CHAT_DEFAULT_COLOR,
     isOnline: true,
     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    languages: GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT,
     avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     avatarTeamPictureUrl: undefined,
     position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
@@ -162,6 +164,7 @@ type State = {
     conversationColor: string
     isOnline: boolean
     language: string
+    languages: List<LanguageItem>
     avatarType: string
     avatarTeamPictureUrl?: string
     showSelectStoreField: boolean
@@ -290,11 +293,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
                         ),
                     },
-                    language:
-                        integration.getIn(['meta', 'language']) ===
-                        Language.French
-                            ? Language.FrenchFr
-                            : integration.getIn(['meta', 'language']),
+                    language: integration.getIn(['meta', 'language']),
+                    languages: integration.getIn(['meta', 'languages']),
                     avatarType: integration.getIn(
                         ['decoration', 'avatar_type'],
                         GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT
@@ -388,6 +388,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             },
             meta: {
                 language: state.language,
+                languages: state.languages,
                 shop_name: storeIntegration
                     ? getShopNameFromStoreIntegration(storeIntegration.toJS())
                     : null,
@@ -437,6 +438,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             const integrationMeta: Map<any, any> = integration.get('meta')
             form.meta = integrationMeta
                 .set('language', state.language)
+                .set('languages', state.languages)
                 .set('position', state.position)
                 .toJS()
 
@@ -457,6 +459,14 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const setLanguage = (language: string) => {
         const newState: Partial<State> = {language}
+
+        // TODO. Temporary code. Drop me when implementing multi-language.
+        newState.languages = fromJS([
+            {
+                language: language,
+                primary: true,
+            },
+        ])
 
         const textFieldsToUpdate: [
             'introductionText',
@@ -495,6 +505,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         conversationColor,
         mainFontFamily,
         language,
+        languages,
         isOnline,
         position,
         editedPositionAxis,
@@ -559,6 +570,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 }
                 isOnline={isOnline}
                 language={language}
+                languages={languages}
                 position={position}
                 editedPositionAxis={editedPositionAxis}
                 autoResponderEnabled={autoResponderEnabled}

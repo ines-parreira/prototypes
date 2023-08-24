@@ -21,7 +21,7 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
 } from 'config/integrations/index'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
-import {SPANISH_LANGUAGE} from 'constants/languages'
+import {Language} from 'constants/languages'
 import {getLDClient} from 'utils/launchDarkly'
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -100,7 +100,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         display_campaigns_hidden_chat: false,
                     },
                     shop_integration_id: 1,
-                    language: SPANISH_LANGUAGE,
+                    language: Language.Spanish,
                 },
             })
 
@@ -133,7 +133,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                         },
                         shop_integration_id: 1,
-                        language: SPANISH_LANGUAGE,
+                        language: Language.Spanish,
                     },
                 })
 
@@ -161,7 +161,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                     },
                     shop_integration_id: 1,
-                    language: SPANISH_LANGUAGE,
+                    language: Language.Spanish,
                 },
             })
 

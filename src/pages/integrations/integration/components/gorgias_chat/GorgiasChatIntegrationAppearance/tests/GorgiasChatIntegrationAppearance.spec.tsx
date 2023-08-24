@@ -442,6 +442,12 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                     },
                     "meta": Immutable.Map {
                       "language": "en-US",
+                      "languages": Immutable.List [
+                        Immutable.Map {
+                          "language": "en-US",
+                          "primary": true,
+                        },
+                      ],
                       "shop_name": "myStore2",
                       "shop_type": "shopify",
                       "shop_integration_id": 2,
@@ -594,6 +600,12 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "shop_type": "shopify",
                       "shop_integration_id": 2,
                       "language": "en-US",
+                      "languages": Immutable.List [
+                        Immutable.Map {
+                          "language": "en-US",
+                          "primary": true,
+                        },
+                      ],
                       "position": Immutable.Map {
                         "alignment": "bottom-right",
                         "offsetX": 0,

@@ -9,7 +9,7 @@ import {RootState, StoreDispatch} from 'state/types'
 
 import {FACEBOOK_LANGUAGE_DEFAULT} from 'config/integrations/facebook'
 import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
-import {DANISH_LANGUAGE, SPANISH_LANGUAGE} from 'constants/languages'
+import {Language} from 'constants/languages'
 import {
     FacebookIntegrationSettings,
     FacebookIntegration,
@@ -201,7 +201,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         {...minProps}
                         integration={merge(baseIntegration, {
                             meta: {
-                                language: SPANISH_LANGUAGE,
+                                language: Language.Spanish,
                             },
                         })}
                     />
@@ -213,7 +213,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     .find(FacebookIntegrationDetail)
                     .dive()
                     .state('language')
-            ).toEqual(SPANISH_LANGUAGE)
+            ).toEqual(Language.Spanish)
         })
 
         it('should set both language and settings in the integration', () => {
@@ -238,7 +238,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         {...minProps}
                         integration={merge(baseIntegration, {
                             meta: {
-                                language: SPANISH_LANGUAGE,
+                                language: Language.Spanish,
                                 settings: newSettings,
                             },
                         })}
@@ -257,7 +257,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     .find(FacebookIntegrationDetail)
                     .dive()
                     .state('language')
-            ).toEqual(SPANISH_LANGUAGE)
+            ).toEqual(Language.Spanish)
         })
     })
 
@@ -274,7 +274,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     instagram: {
                         id: '178941234975',
                     },
-                    language: SPANISH_LANGUAGE,
+                    language: Language.Spanish,
                     name: 'My facebook page',
                     settings: {
                         posts_enabled: true,
@@ -324,7 +324,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     instagram: {
                         id: '178941234975',
                     },
-                    language: SPANISH_LANGUAGE,
+                    language: Language.Spanish,
                     name: 'My facebook page',
                     settings: {
                         import_history_enabled: true,
@@ -355,7 +355,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         recommendations_enabled: undefined,
                     })
                 )
-                .setIn(['meta', 'language'], DANISH_LANGUAGE)
+                .setIn(['meta', 'language'], Language.Danish)
 
             const component = shallow<FacebookIntegrationDetail>(
                 <Provider store={store}>
@@ -413,7 +413,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     instagram: {
                         id: '178941234975',
                     },
-                    language: SPANISH_LANGUAGE,
+                    language: Language.Spanish,
                     name: 'My facebook page',
                     settings: {
                         import_history_enabled: true,
@@ -484,7 +484,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     instagram: {
                         id: '178941234975',
                     },
-                    language: SPANISH_LANGUAGE,
+                    language: Language.Spanish,
                     name: 'My facebook page',
                     settings: {
                         posts_enabled: true,
@@ -511,7 +511,7 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             instance.setState({
                 settings: newSettings,
-                language: DANISH_LANGUAGE,
+                language: Language.Danish,
             })
 
             instance._handleSubmit({
@@ -523,7 +523,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 fromJS(
                     merge(integration, {
                         meta: {
-                            language: DANISH_LANGUAGE,
+                            language: Language.Danish,
                             settings: newSettings,
                         },
                     })
