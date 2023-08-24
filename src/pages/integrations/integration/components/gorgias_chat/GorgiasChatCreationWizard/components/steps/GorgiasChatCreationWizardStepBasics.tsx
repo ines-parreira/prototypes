@@ -482,8 +482,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                     liveChatAvailability ===
                                     GORGIAS_CHAT_LIVE_CHAT_OFFLINE
                                 }
-                                label="Allow only contact form messages"
-                                caption="Creates contact form tickets that you can respond to by email at any moment."
+                                label="Allow only offline capture messages"
+                                caption="Creates offline capture tickets that you can respond to by email at any moment."
                                 onClick={() =>
                                     setCurrentLiveChatAvailability(
                                         GORGIAS_CHAT_LIVE_CHAT_OFFLINE
