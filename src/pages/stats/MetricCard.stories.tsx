@@ -2,8 +2,8 @@ import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
 import MetricCard from './MetricCard'
-import MetricTip from './MetricTip'
 import TrendBadge from './TrendBadge'
+import PerformanceTip from './PerformanceTip'
 
 const storyConfig: Meta = {
     title: 'Stats/MetricCard',
@@ -19,7 +19,11 @@ const defaultProps: ComponentProps<typeof MetricCard> = {
     children: 'Value',
     hint: "I'm a hint",
     title: 'First response time',
-    tip: <MetricTip title="Tooltip title">Tooltip content</MetricTip>,
+    tip: (
+        <PerformanceTip avgMerchant={4.62} topTen={4.99}>
+            Tooltip content
+        </PerformanceTip>
+    ),
     trendBadge: <TrendBadge value={7} prevValue={2} />,
 }
 

@@ -8,7 +8,7 @@ import {OrderDirection} from 'models/api/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getPreviousPeriod} from 'hooks/reporting/createUseMetricTrend'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
-import {PerformanceTip} from 'pages/stats/PerformanceTip'
+import {DEPRECATED_PerformanceTip} from 'pages/stats/DEPRECATED_PerformanceTip'
 
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
@@ -464,7 +464,7 @@ export default function SupportPerformanceOverview() {
                                 hasPerformanceTips &&
                                 areTipsVisible &&
                                 (hasSatisfactionSurveyEnabledAndConfigured ? (
-                                    <PerformanceTip
+                                    <DEPRECATED_PerformanceTip
                                         metric={MetricName.CustomerSatisfaction}
                                         data={customerSatisfactionTrend.data}
                                     />
@@ -507,7 +507,7 @@ export default function SupportPerformanceOverview() {
                             tip={
                                 hasPerformanceTips &&
                                 areTipsVisible && (
-                                    <PerformanceTip
+                                    <DEPRECATED_PerformanceTip
                                         metric={MetricName.FirstResponseTime}
                                         data={firstResponseTimeTrend.data}
                                     />
@@ -544,7 +544,7 @@ export default function SupportPerformanceOverview() {
                             tip={
                                 hasPerformanceTips &&
                                 areTipsVisible && (
-                                    <PerformanceTip
+                                    <DEPRECATED_PerformanceTip
                                         metric={MetricName.ResolutionTime}
                                         data={resolutionTimeTrend.data}
                                     />
@@ -581,7 +581,7 @@ export default function SupportPerformanceOverview() {
                             tip={
                                 hasPerformanceTips &&
                                 areTipsVisible && (
-                                    <PerformanceTip
+                                    <DEPRECATED_PerformanceTip
                                         metric={MetricName.MessagesPerTicket}
                                         data={messagesPerTicketTrend.data}
                                     />
