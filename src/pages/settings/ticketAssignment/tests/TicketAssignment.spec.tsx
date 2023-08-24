@@ -92,10 +92,6 @@ const defaultState = {
 const mockStore = configureMockStore<RootState>([thunk])
 
 describe('<TicketAssignment/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should call `submitSetting` and call `fetchChats` on submit when the account has no `ticket-assignment` setting', async () => {
         const {getByText} = render(
             <Provider

@@ -34,10 +34,6 @@ const props: FieldRowProps = {
     preview: ['What is Gorgias?', 'Customer data privacy'],
 }
 
-beforeEach(() => {
-    jest.clearAllMocks()
-})
-
 describe('<FieldRow />', () => {
     it('renders field row', () => {
         const {container} = render(<FieldRow {...props} />)

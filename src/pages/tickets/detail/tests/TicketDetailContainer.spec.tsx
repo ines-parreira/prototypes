@@ -191,7 +191,6 @@ describe('TicketDetailContainer component', () => {
     })
 
     beforeEach(() => {
-        jest.clearAllMocks()
         mockedServer.reset()
         mockedStore = mockStore({
             ticket: fromJS({

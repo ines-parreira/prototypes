@@ -32,7 +32,6 @@ describe('<AddOnCard />', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore(defaultState)
     })
 

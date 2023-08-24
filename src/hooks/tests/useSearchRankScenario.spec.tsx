@@ -35,7 +35,6 @@ describe('useSearchRankScenario', () => {
     } as RootState
 
     beforeEach(() => {
-        jest.clearAllMocks()
         jest.useFakeTimers()
     })
 

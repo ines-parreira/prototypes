@@ -38,10 +38,6 @@ const getEllipsisButton = ({getByTitle}: RenderResult) =>
 describe('<EmailExtraButton />', () => {
     const replyThreadMessage = ticket.messages[0] as ReplyThreadMessage
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the email extra button', () => {
         const {container} = render(
             <EmailExtraButtonContainer {...defaultProps} />

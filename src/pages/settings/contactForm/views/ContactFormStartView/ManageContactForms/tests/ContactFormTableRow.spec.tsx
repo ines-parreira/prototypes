@@ -5,10 +5,6 @@ import {ContactFormTableRow} from '../ContactFormTableRow'
 import {ContactFormFixture} from '../../../../fixtures/contacForm'
 
 describe('<ContactFormTableRow />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display the name, ecom platform logo and store name, language, and arrow', () => {
         const form = {
             ...ContactFormFixture,

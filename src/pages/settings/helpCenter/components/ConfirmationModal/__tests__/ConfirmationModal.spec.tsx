@@ -7,10 +7,6 @@ describe('<ConfirmationModal />', () => {
     const handleOnClose = jest.fn()
     const handleOnConfirm = jest.fn()
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('matches snapshot', () => {
         const {container} = render(
             <ConfirmationModal

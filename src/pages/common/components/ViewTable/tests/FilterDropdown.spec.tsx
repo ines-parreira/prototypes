@@ -80,7 +80,6 @@ describe('FilterDropdown', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         mockSearchResults.mockReturnValue(fromJS(defaultSearchResults))
         mockClickedItem.mockReturnValue(defaultItem)
     })

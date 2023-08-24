@@ -11,10 +11,6 @@ jest.mock('@datadog/browser-rum')
 jest.mock('web-vitals')
 
 describe('datadog', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('initDatadogLogger', () => {
         it('should init datadog logger', () => {
             jest.spyOn(datadogLogs, 'init')

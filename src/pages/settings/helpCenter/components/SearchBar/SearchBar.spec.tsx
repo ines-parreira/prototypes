@@ -20,8 +20,6 @@ const search = jest.fn()
 
 describe('SearchBar', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
-
         search.mockImplementation(
             (): Promise<AlgoliaSearchResult<EntitiesBaseRecord>> =>
                 Promise.resolve({

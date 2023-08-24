@@ -16,10 +16,6 @@ const initialProps: Props = {
 jest.useFakeTimers()
 
 describe('RefundOrderFooter', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('snapshot renders the initial disabled state', () => {
         const {container} = render(
             <RefundOrderFooter {...initialProps} isLoading={true} />

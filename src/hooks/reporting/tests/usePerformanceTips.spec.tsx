@@ -28,10 +28,6 @@ describe('usePerformanceTips', () => {
         })
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should use planName from state and tipProvider', () => {
         const mock = jest.spyOn(tipProvider, 'getPerformanceTip')
         renderHook(() => usePerformanceTips(lowerIsBetterMetric, value), {

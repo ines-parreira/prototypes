@@ -40,10 +40,6 @@ describe('<BillingAddressInputs />', () => {
         },
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the billing address inputs', () => {
         const {container} = render(<BillingAddressInputs {...minProps} />)
 

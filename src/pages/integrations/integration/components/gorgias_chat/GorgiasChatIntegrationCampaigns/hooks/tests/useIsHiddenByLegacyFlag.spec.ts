@@ -15,10 +15,6 @@ const DT_BEFORE_CUTOFF = moment(CUTOFF_DATETIME).subtract(1, 'day')
 const DT_AFTER_CUTOFF = moment(CUTOFF_DATETIME).add(1, 'day')
 
 describe('useIsHiddenByLegacyFlag', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should return false if isHiddenLegacy is false', () => {
         useLocalStorageSpy.mockReturnValue([false])
         const integration = {get: jest.fn(() => DT_BEFORE_CUTOFF)}

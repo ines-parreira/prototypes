@@ -16,7 +16,6 @@ jest.spyOn(window, 'clearTimeout')
 describe('<LinkPopover />', () => {
     let store = mockStore({})
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore({isEditingLink: false})
     })
 

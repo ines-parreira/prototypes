@@ -6,10 +6,6 @@ import HeaderCell from '../HeaderCell'
 describe('<HeaderCell/>', () => {
     const mockOnClick = jest.fn()
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const component = shallow(<HeaderCell className="foo">Foo</HeaderCell>)
 

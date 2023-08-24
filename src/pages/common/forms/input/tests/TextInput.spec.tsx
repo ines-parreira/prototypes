@@ -11,10 +11,6 @@ describe('<TextInput />', () => {
         onChange: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render an enabled input', () => {
         const {container} = render(<TextInput {...minProps} />)
 

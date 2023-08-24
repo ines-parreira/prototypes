@@ -44,10 +44,6 @@ describe('AutomationSubscriptionButton', () => {
         onClick: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should pass the props to the upgrade button', () => {
         jest.spyOn(LD, 'useFlags').mockReturnValue({
             [FeatureFlagKey.NewBillingInterface]: true,

@@ -46,10 +46,6 @@ describe('<TicketField />', () => {
 
     const onChange = jest.fn()
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it.each(ticketFieldDefinitions)(
         'should render the appropriate field',
         (customField) => {

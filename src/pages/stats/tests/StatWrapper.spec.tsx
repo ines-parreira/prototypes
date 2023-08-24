@@ -67,7 +67,6 @@ describe('StatWrapper', () => {
     } as RootState
 
     beforeEach(() => {
-        jest.clearAllMocks()
         notifyMock.mockImplementation(
             (message) => () =>
                 message

@@ -12,10 +12,6 @@ const minProps = {
 }
 
 describe('<OrderTotals/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render not loading', () => {
         const {container} = render(<OrderTotals {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()

@@ -37,10 +37,6 @@ const minProps = {
 }
 
 describe('<TicketNavbarDropTarget/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const {container} = render(
             <WrappedTicketNavbarDropTarget {...minProps} />

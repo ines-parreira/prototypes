@@ -54,10 +54,6 @@ jest.mock('../../hooks/useHelpCenterIdParam', () => {
 describe('<HelpCenterCustomizationView />', () => {
     const props = {}
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the component', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>

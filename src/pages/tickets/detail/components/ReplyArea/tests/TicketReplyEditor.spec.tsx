@@ -23,7 +23,6 @@ jest.mock('draft-js/lib/generateRandomKey', () =>
 
 describe('TicketReplyEditor component', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
         const generateKey = createDraftJSKeyGeneratorMock()
         const generateRandomKeyFunction = generateRandomKey as jest.SpyInstance
         generateRandomKeyFunction.mockImplementation(generateKey)

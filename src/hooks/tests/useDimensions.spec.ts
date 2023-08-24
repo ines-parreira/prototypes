@@ -35,7 +35,6 @@ describe('useDimensions', () => {
 
     afterEach(() => {
         document.getElementById('foo')?.remove()
-        jest.clearAllMocks()
     })
 
     it('should return the element dimensions', () => {

@@ -30,7 +30,6 @@ describe('<ShopifyProductLine/>', () => {
     let mockServer: MockAdapter
     let store = mockStore({})
     beforeEach(() => {
-        jest.clearAllMocks()
         mockServer = new MockAdapter(client)
         store = mockStore({})
     })

@@ -42,7 +42,6 @@ const onInpMock = onINP as jest.MockedFunction<typeof onINP>
 
 describe('errors util', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
         userAgentMock.mockReturnValue(
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
         )

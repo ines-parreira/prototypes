@@ -27,10 +27,6 @@ describe('<ConfirmationPopover />', () => {
         onConfirm: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const {container} = render(
             <ConfirmationPopover {...defaultProps}>

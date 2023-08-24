@@ -27,10 +27,6 @@ describe('<Parameters/>', () => {
         ],
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should call onChange when adding a new parameter', () => {
         render(<Parameters {...{...props, value: []}} />)
 

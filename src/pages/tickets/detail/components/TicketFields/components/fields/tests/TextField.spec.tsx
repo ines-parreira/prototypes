@@ -46,7 +46,6 @@ describe('<TextField />', () => {
     let store = mockStore(defaultState)
 
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore(defaultState)
         store.dispatch = jest.fn()
         mockedServer.reset()

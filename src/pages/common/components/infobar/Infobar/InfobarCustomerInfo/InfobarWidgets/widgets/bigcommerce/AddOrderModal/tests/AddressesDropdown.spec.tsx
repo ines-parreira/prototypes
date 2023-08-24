@@ -54,10 +54,6 @@ const selectedShippingAddressProps: Props = {
 }
 
 describe('<ShippingAddressesDropdown/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display `No results` when shippingAddresses = [] & snapshot should render `Select from address book...`', () => {
         const {container, getByText} = render(
             <Provider store={store}>

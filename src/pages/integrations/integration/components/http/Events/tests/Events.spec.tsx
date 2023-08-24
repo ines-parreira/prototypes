@@ -41,7 +41,6 @@ describe('<Events />', () => {
             events: fromJS([]),
         }
         it('should fetch events when the component mounts', async () => {
-            jest.clearAllMocks()
             const {getByText} = render(<Events {...commonProps} />)
 
             await waitForElementToBeRemoved(() => getByText('Loader'))

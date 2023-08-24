@@ -67,7 +67,6 @@ describe('<HelpCenterNewView />', () => {
     const props = {}
 
     beforeEach(() => {
-        jest.clearAllMocks()
         history.push = jest.fn()
         mockFlags({})
         mockCheckHelpCenterWithSubdomainExists.mockResolvedValue(true)

@@ -11,10 +11,6 @@ jest.mock('lodash/debounce', () => (fn: {cancel: () => void}) => {
 const setSearch = jest.fn()
 
 describe('SearchInput', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render with a search icon and a clear icon when has a search value', () => {
         const {container, rerender} = render(
             <SearchInput setSearch={setSearch} />

@@ -52,10 +52,6 @@ const history = createMemoryHistory()
 describe('<RulesList/>', () => {
     const fetchRulesMock = fetchRules as jest.MockedFunction<typeof fetchRules>
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render create rule footer', async () => {
         render(
             <Router history={history}>

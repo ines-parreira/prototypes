@@ -12,7 +12,6 @@ jest.mock('../../../state/notifications/actions')
 describe('client resources', () => {
     beforeEach(() => {
         mockedServer.reset()
-        jest.clearAllMocks()
     })
 
     describe('resources axios instance', () => {

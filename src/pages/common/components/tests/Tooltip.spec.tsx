@@ -38,7 +38,6 @@ describe('<Tooltip />', () => {
 
     afterEach(() => {
         document.getElementById('target')?.remove()
-        jest.clearAllMocks()
     })
 
     describe('render', () => {
@@ -78,10 +77,6 @@ describe('<Tooltip />', () => {
                     ) as unknown as UncontrolledTooltip
                 }
             )
-        })
-
-        afterEach(() => {
-            jest.clearAllMocks()
         })
 
         it('should render with no delay by default', () => {

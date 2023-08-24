@@ -84,10 +84,6 @@ describe('<HelpCenterStartView />', () => {
     }
     const props = {}
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the About component', () => {
         const {container} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>

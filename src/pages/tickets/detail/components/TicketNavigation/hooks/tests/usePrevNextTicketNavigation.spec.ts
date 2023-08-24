@@ -28,10 +28,6 @@ describe('usePrevNextTicketNavigation', () => {
         useAppDispatchMock.mockReturnValue(dispatch)
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should test PREV navigation', () => {
         const {result} = renderHook(() =>
             usePrevNextTicketNavigation(prevDirection, ticketNumber)

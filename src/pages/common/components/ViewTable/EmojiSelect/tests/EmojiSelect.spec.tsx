@@ -36,10 +36,6 @@ const defaultProps = {
     onEmojiClear: _noop,
 }
 
-afterEach(() => {
-    jest.clearAllMocks()
-})
-
 // Hide popover by clicking the trigger.
 // Erasing the DOM freaks out Popper.js (used by Reactstrap)
 afterEach(() => {

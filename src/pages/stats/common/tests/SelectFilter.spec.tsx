@@ -29,10 +29,6 @@ describe('<SelectFilter />', () => {
         {label: 'Email', value: '3', type: 'email'},
     ]
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the component without any item', () => {
         const {container} = render(
             <Provider store={mockStore({})}>

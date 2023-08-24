@@ -31,10 +31,6 @@ describe('<Editor/>', () => {
         source: fromJS({}),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render with buttons and "add button" button', () => {
         const {container} = render(
             <Provider

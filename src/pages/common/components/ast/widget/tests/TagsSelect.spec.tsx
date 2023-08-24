@@ -95,10 +95,6 @@ describe('<TagsSelect />', () => {
         caseInsensitive: false,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('when multiple is set to true', () => {
         it('should render array as value', () => {
             const {container} = render(

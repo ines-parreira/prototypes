@@ -1736,14 +1736,14 @@ describe('actions', () => {
                     } as unknown as FileList)
                 )
 
-                expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
+                expect(mockedUploadFiles).not.toHaveBeenCalled()
                 setImmediate(() => {
                     expect(store.getActions()).toMatchSnapshot()
                     done()
                 })
             })
 
-            it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachement in a facebook comment', (done) => {
+            it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachment in a facebook comment', (done) => {
                 mockedUploadFiles.mockReturnValue(Promise.resolve([]))
                 store = mockStore({
                     newMessage: initialState.setIn(
@@ -1759,7 +1759,7 @@ describe('actions', () => {
                     } as unknown as FileList)
                 )
 
-                expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
+                expect(mockedUploadFiles).not.toHaveBeenCalled()
                 setImmediate(() => {
                     expect(store.getActions()).toMatchSnapshot()
                     done()

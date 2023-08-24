@@ -9,10 +9,6 @@ import {getMentionIds, upsertNewMessageAction} from '../utils'
 import {NewMessage} from '../types'
 
 describe('Utils', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('getMentionIds', () => {
         it('should return array of ids for internal note source type', () => {
             //@ts-ignore

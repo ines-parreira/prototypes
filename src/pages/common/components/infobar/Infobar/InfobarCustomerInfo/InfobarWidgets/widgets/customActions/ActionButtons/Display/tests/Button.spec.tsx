@@ -36,10 +36,6 @@ const propsWithEdit = {
 }
 
 describe('<Button/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render a basic button', () => {
         const {container} = render(
             <Provider

@@ -29,7 +29,6 @@ describe('current user actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore({
             currentUser: initialState,
             notifications: [],

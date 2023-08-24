@@ -86,10 +86,6 @@ describe('<HelpCenterPageWrapper />', () => {
         helpCenter: getSingleHelpCenterResponseFixture,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the component', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>

@@ -50,7 +50,6 @@ describe('ViewTable::Header', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         allFlagsMock.mockReturnValue({})
     })
 

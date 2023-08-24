@@ -207,10 +207,6 @@ const dependencyWrapper: React.ComponentType<any> = ({
 }) => <Provider store={mockStore(defaultState)}>{children}</Provider>
 
 describe('useCategoriesActions', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('fetchCategoryArticleCount', () => {
         it('calls the listArticles with correct params', async () => {
             const {result} = renderHook(useCategoriesActions, {

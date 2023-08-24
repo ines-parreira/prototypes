@@ -34,10 +34,6 @@ describe('<TeamCreationModal />', () => {
         thunk,
     ])
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should not render anything when the modal is closed', () => {
         const store = mockStore({})
         const {baseElement} = render(

@@ -23,10 +23,6 @@ function MockedImplementation(props: Partial<ComponentProps<typeof Dropdown>>) {
 }
 
 describe('<Dropdown />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render a dropdown', () => {
         const {container} = render(
             <MockedImplementation>Baz</MockedImplementation>

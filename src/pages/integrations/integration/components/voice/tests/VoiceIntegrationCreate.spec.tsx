@@ -24,10 +24,6 @@ store.dispatch = jest.fn()
 jest.mock('state/integrations/actions', () => ({
     updateOrCreateIntegration: jest.fn(),
 }))
-afterEach(() => {
-    jest.clearAllMocks()
-})
-
 const submittedPayload = {
     type: 'phone',
     name: 'My Voice integration',

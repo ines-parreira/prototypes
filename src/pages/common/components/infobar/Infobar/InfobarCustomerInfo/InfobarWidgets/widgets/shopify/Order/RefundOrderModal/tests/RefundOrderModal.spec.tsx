@@ -94,10 +94,6 @@ describe('<RefundOrderModal />', () => {
         setPayload: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should not render when the modal is closed', () => {
         const {container} = render(
             <IntegrationContext.Provider value={integrationContextValue}>

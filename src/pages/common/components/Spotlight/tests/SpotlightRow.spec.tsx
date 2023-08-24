@@ -19,10 +19,6 @@ describe('<SpotlightRow/>', () => {
         index: 1,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render with minimal props', () => {
         const {container} = render(<SpotlightRow {...minProps} />)
         expect(container).toMatchSnapshot()

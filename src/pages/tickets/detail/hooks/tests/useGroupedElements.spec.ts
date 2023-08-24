@@ -52,8 +52,6 @@ const mockUseAppSelector = assumeMock(useAppSelector)
 
 describe('useGroupedElements', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
-
         mockGetActionByName.mockReturnValue(undefined)
         mockIsTicketEvent.mockReturnValue(true)
         mockIsTicketRuleSuggestion.mockReturnValue(false)

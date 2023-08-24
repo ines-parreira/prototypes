@@ -13,10 +13,6 @@ describe('getEvent', () => {
         objectType: 'objectType',
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('Should return an empty event if the integration is empty', () => {
         const event = getEvent({
             integration: Map(),

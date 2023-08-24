@@ -44,10 +44,6 @@ describe('InfiniteScroll component', () => {
         )
     })
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     const minProps: ComponentProps<typeof InfiniteScroll> = {
         onLoad: jest.fn(),
         shouldLoadMore: true,

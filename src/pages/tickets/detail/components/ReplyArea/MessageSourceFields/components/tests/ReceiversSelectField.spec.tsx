@@ -58,7 +58,6 @@ describe('<ReceiversSelectField />', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         jest.useFakeTimers()
     })
 

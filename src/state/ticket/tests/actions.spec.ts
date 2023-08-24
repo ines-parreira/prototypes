@@ -101,7 +101,6 @@ describe('ticket actions', () => {
             newMessage: newMessageState,
         })
         mockServer = new MockAdapter(client)
-        jest.clearAllMocks()
     })
 
     const endpointMatchers = {
@@ -628,10 +627,6 @@ describe('ticket actions', () => {
                 })
             })
 
-            afterEach(() => {
-                jest.clearAllMocks()
-            })
-
             it('should redirect to the merged ticket if the current URL is of the old (merged) ticket', () => {
                 return store.dispatch(actions.fetchTicket('1')).finally(() => {
                     expect(isCurrentlyOnTicket).toHaveReturnedWith(true)
@@ -769,10 +764,6 @@ describe('ticket actions', () => {
     })
 
     describe('goToNextTicket()', () => {
-        afterEach(() => {
-            jest.clearAllMocks()
-        })
-
         it('should go to first view because there is no active view', (done) => {
             void store.dispatch(actions.goToNextTicket(1)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
@@ -935,10 +926,6 @@ describe('ticket actions', () => {
     })
 
     describe('goToPrevTicket()', () => {
-        afterEach(() => {
-            jest.clearAllMocks()
-        })
-
         it('should go to first view because there is no active view', (done) => {
             void store.dispatch(actions.goToPrevTicket(2)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()

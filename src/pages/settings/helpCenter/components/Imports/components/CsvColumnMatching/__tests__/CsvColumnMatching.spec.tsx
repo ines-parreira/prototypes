@@ -19,10 +19,6 @@ const props: CsvColumnMatchingProps = {
     csvColumns: analyseCsvResponse.columns,
 }
 
-beforeEach(() => {
-    jest.clearAllMocks()
-})
-
 describe('<CsvColumnMatching />', () => {
     it('renders initial mappings with default help center locale', () => {
         const {container} = render(<CsvColumnMatching {...props} />)

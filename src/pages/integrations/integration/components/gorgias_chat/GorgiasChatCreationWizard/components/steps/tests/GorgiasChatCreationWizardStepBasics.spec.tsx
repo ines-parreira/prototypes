@@ -41,10 +41,6 @@ const minProps: React.ComponentProps<
 }
 
 describe('<GorgiasChatCreationWizardStepBasics />', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('renders wizard with default options selected', () => {
         const {getByLabelText} = render(
             <MemoryRouter>

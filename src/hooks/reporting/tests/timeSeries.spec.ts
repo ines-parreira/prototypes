@@ -35,10 +35,6 @@ describe('time series', () => {
     const timezone = 'UTC'
     const granularity = ReportingGranularity.Day
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe.each([
         ['useTicketsCreatedTimeSeries', useTicketsCreatedTimeSeries],
         ['useTicketsClosedTimeSeries', useTicketsClosedTimeSeries],

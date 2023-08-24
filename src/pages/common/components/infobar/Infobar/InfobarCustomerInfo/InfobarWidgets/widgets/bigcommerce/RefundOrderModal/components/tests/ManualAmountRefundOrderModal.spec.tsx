@@ -74,10 +74,6 @@ const zeroAmountToRefundProps: Props = {
 jest.useFakeTimers()
 
 describe('ManualAmountRefundOrderModal', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('snapshot renders the initial disabled state', () => {
         const {container} = render(
             <ManualAmountRefundOrderModal {...initialDisabledProps} />

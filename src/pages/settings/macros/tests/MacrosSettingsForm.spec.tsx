@@ -95,7 +95,6 @@ describe('<MacrosSettingsForm/>', () => {
     mockUpdateMacro.mockResolvedValue(macrosFixtures[0])
 
     beforeEach(() => {
-        jest.clearAllMocks()
         mockUseParams.mockReturnValue({macroId: '1'})
     })
 

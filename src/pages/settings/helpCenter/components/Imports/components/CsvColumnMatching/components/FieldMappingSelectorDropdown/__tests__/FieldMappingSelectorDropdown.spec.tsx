@@ -18,10 +18,6 @@ const props: FieldMappingSelectorDropdownProps = {
     onClick: jest.fn(),
 }
 
-beforeEach(() => {
-    jest.clearAllMocks()
-})
-
 describe('<FieldMappingSelectorDropdown />', () => {
     it('renders options', () => {
         const {container} = render(<FieldMappingSelectorDropdown {...props} />)

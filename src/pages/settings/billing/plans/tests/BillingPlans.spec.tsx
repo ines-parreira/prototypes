@@ -47,7 +47,6 @@ describe('<BillingPlans/>', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         mockPreviousSubscription = fromJS({})
     })
 

@@ -63,10 +63,6 @@ describe('services', () => {
             return [messageId, messageToSend, action, resetMessage, ticketId]
         }
 
-        beforeEach(() => {
-            jest.clearAllMocks()
-        })
-
         it('should send deferred message', () => {
             pendingMessageManager.sendMessage(sendMessageArgs)
             jest.runAllTimers()

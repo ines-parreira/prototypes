@@ -17,10 +17,6 @@ function MockedImplementation(
 }
 
 describe('<UncontrolledDropdown />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render a closed dropdown', () => {
         const {container} = render(
             <MockedImplementation>Bar</MockedImplementation>

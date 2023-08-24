@@ -39,9 +39,6 @@ describe('<AutoReplyReturnEditor/>', () => {
         integrations: fromJS(integrationsState),
     } as RootState)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render component', () => {
         const {container} = render(
             <Provider store={store}>

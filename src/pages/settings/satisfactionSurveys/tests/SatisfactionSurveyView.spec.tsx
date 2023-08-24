@@ -37,7 +37,6 @@ describe('SatisfactionSurveyView', () => {
             submitSetting: mockSubmitSetting,
             integrations: fromJS(integrationsState),
         })
-        jest.clearAllMocks()
     })
 
     describe('render', () => {

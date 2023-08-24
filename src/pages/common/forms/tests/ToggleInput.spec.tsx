@@ -10,10 +10,6 @@ describe('ToggleInput', () => {
         isToggled: true,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the checkbox checked', () => {
         const {container} = render(<ToggleInput {...minProps} />)
 

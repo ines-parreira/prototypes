@@ -71,10 +71,6 @@ const defaultState: Partial<RootState> = {
 ).mockImplementation(() => () => ({}))
 
 describe('<ViewFilters />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should update active view on remove field', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>

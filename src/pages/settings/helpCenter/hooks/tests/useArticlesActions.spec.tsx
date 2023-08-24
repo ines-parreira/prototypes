@@ -256,10 +256,6 @@ const dependencyWrapper: React.ComponentType<any> = ({
 }) => <Provider store={mockStore(defaultState)}>{children}</Provider>
 
 describe('useArticlesActions()', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('fetchArticles()', () => {
         it('dispatches saveArticles action for uncategorized articles', async () => {
             const {result} = renderHook(useArticlesActions, {

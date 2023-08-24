@@ -62,7 +62,6 @@ describe('<BillingPlansComparison />', () => {
     let openChatSpy: jest.SpyInstance
     let makeGetIsAllowedToChangePriceSpy: jest.SpyInstance
     beforeEach(() => {
-        jest.clearAllMocks()
         openChatSpy = jest.spyOn(utils, 'openChat')
         makeGetIsAllowedToChangePriceSpy = jest.spyOn(
             billingSelectors,

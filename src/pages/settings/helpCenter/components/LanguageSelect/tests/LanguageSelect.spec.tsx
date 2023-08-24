@@ -42,9 +42,6 @@ jest.mock('../../../providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 describe('<LanguageSelect />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     const onChange = jest.fn()
     it('should render the component', () => {
         const {container} = render(

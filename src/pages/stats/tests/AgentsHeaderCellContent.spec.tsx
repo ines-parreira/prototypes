@@ -19,8 +19,6 @@ describe('<AgentsHeaderCellContent>', () => {
         field: TableColumn.AgentName,
     })
 
-    afterAll(jest.clearAllMocks)
-
     it('should render column label', () => {
         const column = TableColumn.AgentName
 

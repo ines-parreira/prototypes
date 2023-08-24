@@ -30,10 +30,6 @@ const MockedComponent = (
 }
 
 describe('<DropdownItem />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const {container} = render(MockedComponent(minProps, mockContext))
 

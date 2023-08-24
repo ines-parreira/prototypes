@@ -26,10 +26,6 @@ describe('<TicketReplyAction />', () => {
         updateActionArgsOnApplied: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should call updateActionArgsOnApplied when the internal note is updated', () => {
         const {container} = render(
             <Provider

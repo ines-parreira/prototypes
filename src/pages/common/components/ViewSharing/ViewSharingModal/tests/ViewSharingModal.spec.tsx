@@ -27,10 +27,6 @@ describe('<ViewSharingModal/>', () => {
         notify: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('render()', () => {
         it('should render as public', () => {
             const view = fromJS({visibility: ViewVisibility.Public})

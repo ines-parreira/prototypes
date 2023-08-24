@@ -42,7 +42,6 @@ describe('FallbackWorker', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         fallbackWorker = new FallbackWorker()
     })
 

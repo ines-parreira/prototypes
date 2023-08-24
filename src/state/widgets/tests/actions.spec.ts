@@ -14,7 +14,6 @@ const mockServer = new MockAdapter(client)
 beforeEach(() => {
     store.clearActions()
     mockServer.reset()
-    jest.clearAllMocks()
 })
 
 describe('actions', () => {

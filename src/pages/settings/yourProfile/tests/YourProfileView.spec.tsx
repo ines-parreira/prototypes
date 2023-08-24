@@ -24,7 +24,6 @@ describe('YourProfileView', () => {
 
     beforeEach(() => {
         global.Date.now = jest.fn(() => 1587000000000)
-        jest.clearAllMocks()
     })
 
     afterEach(() => {

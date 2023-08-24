@@ -98,10 +98,6 @@ const defaultState: Partial<RootState> = {
 const store = mockStore(defaultState)
 
 describe('SearchView', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('shows only search bar if search input is empty', () => {
         ;(useSearchContext as jest.Mock).mockReturnValue({
             searchInput: '',

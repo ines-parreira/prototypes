@@ -11,10 +11,6 @@ describe('<SelectInputBox />', () => {
         placeholder: 'bar',
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render a select input box', () => {
         const {container} = render(<SelectInputBox {...defaultProps} />)
 

@@ -66,7 +66,6 @@ const ticketChannelEqualChatFilter = "eq('ticket.channel', 'chat')"
 jest.mock('../../../../history')
 
 beforeEach(() => {
-    jest.clearAllMocks()
     mockedUseLocation.mockReturnValue(createLocation())
     ;(
         history.push as jest.MockedFunction<typeof history.push>

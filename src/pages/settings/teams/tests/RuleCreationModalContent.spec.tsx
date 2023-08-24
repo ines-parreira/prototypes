@@ -56,10 +56,6 @@ describe('<RuleCreationModalContent />', () => {
         } as any,
     })
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const {container} = render(
             <Provider store={store}>

@@ -62,7 +62,6 @@ describe('<BundleDetailView />', () => {
     })
 
     afterEach(() => {
-        jest.clearAllMocks()
         mockedServer.reset()
     })
 

@@ -88,8 +88,6 @@ describe('<TicketHeader />', () => {
     const useAppDispatchMock = useAppDispatch as jest.Mock
 
     beforeEach(() => {
-        jest.clearAllMocks()
-
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
     })

@@ -13,10 +13,6 @@ describe('<StealthInput />', () => {
         onBlur: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render correctly', () => {
         const {container} = render(<StealthInput {...initialProps} isActive />)
         expect(container.firstChild).toMatchSnapshot()

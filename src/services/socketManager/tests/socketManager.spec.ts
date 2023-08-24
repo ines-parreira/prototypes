@@ -36,7 +36,6 @@ describe('SocketManager', () => {
     const dismissNotificationSpy = jest.spyOn(reapop, 'dismissNotification')
 
     beforeEach(() => {
-        jest.clearAllMocks()
         jest.useFakeTimers()
     })
 

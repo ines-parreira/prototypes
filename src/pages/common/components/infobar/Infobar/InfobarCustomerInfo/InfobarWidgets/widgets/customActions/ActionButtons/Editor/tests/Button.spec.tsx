@@ -20,10 +20,6 @@ describe('<Button/>', () => {
         index: 2,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render with correct label', () => {
         const {container} = render(
             <Provider

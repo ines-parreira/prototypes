@@ -4,10 +4,6 @@ import {render, fireEvent, waitFor} from '@testing-library/react'
 import TicketSnooze from '../TicketSnooze'
 
 describe('<TicketSnooze/>', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('rendering', () => {
         it('should render an icon with a tooltip', async () => {
             const {container, getByText} = render(

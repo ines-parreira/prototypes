@@ -118,10 +118,6 @@ jest.mock('../../state/entities/views/actions')
 jest.mock('../../state/views/utils')
 
 describe('Config: socketEvents', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('sendEvents', () => {
         const {sendEvents} = socketEvents
 

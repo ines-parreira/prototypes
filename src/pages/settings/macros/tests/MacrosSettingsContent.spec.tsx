@@ -109,10 +109,6 @@ describe('<MacrosSettingsContent/>', () => {
         headers: {},
     })
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should match snapshot', () => {
         const component = shallow(
             <MacrosSettingsContentContainer {...minProps} />

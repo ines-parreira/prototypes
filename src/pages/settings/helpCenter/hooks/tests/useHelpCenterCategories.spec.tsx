@@ -46,10 +46,6 @@ const dependencyWrapper: React.ComponentType<any> = ({
 }) => <Provider store={mockStore(defaultState)}>{children}</Provider>
 
 describe('useHelpCenterCategories', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('finishes loading once the requests are done', async () => {
         const {result} = renderHook(
             () => useHelpCenterCategories({locale: 'en-US'}),

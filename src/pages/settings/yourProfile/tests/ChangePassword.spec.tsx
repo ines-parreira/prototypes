@@ -52,9 +52,6 @@ const fillInForm = ({
     }
 }
 
-beforeEach(() => {
-    jest.clearAllMocks()
-})
 describe('<ChangePassword />', () => {
     describe('render', () => {
         it('should render the password form', () => {

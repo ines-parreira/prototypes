@@ -95,10 +95,6 @@ describe('<HelpCenterEditModalHeader />', () => {
         domain,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display the component correctly - without the category selector', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>

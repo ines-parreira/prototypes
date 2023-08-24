@@ -129,8 +129,6 @@ describe('<AgentTable>', () => {
         metricCell.mockImplementation(cellMock)
     )
 
-    afterAll(jest.clearAllMocks)
-
     it('should render the table title, table header and rows', () => {
         render(
             <Provider store={mockStore({})}>

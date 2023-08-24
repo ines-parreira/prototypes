@@ -38,10 +38,6 @@ const refundMethodsProps: Props = {
 }
 
 describe('RefundMethodPickerSection', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('snapshot renders the initial disabled state', () => {
         const {container} = render(
             <RefundMethodPickerSection {...initialDisabledProps} />

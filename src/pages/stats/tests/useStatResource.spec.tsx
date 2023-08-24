@@ -65,7 +65,6 @@ describe('useStatResource', () => {
 
     beforeEach(() => {
         jest.useFakeTimers()
-        jest.clearAllMocks()
         fetchStatMock.mockResolvedValue(firstResponseTime)
         notifyMock.mockReturnValue(notificationMock)
     })

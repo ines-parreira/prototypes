@@ -36,10 +36,6 @@ describe('<SmileIntegrationDetail/>', () => {
             deleteIntegration: jest.fn(),
         }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('componentDidMount()', () => {
         it("should set the integration's name in the state", () => {
             const integration: Integration = fromJS({

@@ -27,7 +27,6 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
 describe('new message reducer', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
         expect.extend(immutableMatchers)
     })
 

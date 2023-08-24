@@ -60,10 +60,6 @@ const initialProps: Props = {
 jest.useFakeTimers()
 
 describe('EntireOrderRefundOrderModal', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('snapshot renders the initial disabled state', () => {
         const {container} = render(
             <EntireOrderRefundOrderModal {...initialDisabledProps} />

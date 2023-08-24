@@ -51,7 +51,6 @@ describe('<Navbar />', () => {
     }
 
     afterEach(() => {
-        jest.clearAllMocks()
         allFlagsMock.mockReturnValue({})
     })
 

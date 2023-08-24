@@ -11,10 +11,6 @@ describe('TimedeltaPicker component', () => {
         onChange: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render correct passed data', () => {
         const {container} = render(<TimedeltaPicker {...minProps} value="2w" />)
 

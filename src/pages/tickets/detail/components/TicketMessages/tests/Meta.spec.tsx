@@ -28,10 +28,6 @@ const store = mockStore({
 jest.mock('models/rule/resources')
 
 describe('ticket message meta', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should add a -sent via rule- label because the message was sent by a rule', async () => {
         render(
             <Provider store={store}>

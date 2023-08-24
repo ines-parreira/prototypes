@@ -46,10 +46,6 @@ describe('<FileField/>', () => {
         notify: mockNotify,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('handleRemove()', () => {
         it('should call onChange with an empty string when removing the file', () => {
             const removeFn = jest.fn()

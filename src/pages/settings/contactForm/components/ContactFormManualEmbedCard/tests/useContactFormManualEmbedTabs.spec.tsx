@@ -19,10 +19,6 @@ describe('useContactFormManualEmbedInstructionsCardState', () => {
     const code = '<Code snippet>'
     const shopName = 'the-store-name'
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('Contact auto embed flag is INACTIVE', () => {
         beforeEach(() => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({

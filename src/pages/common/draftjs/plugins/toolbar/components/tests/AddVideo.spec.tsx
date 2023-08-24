@@ -16,10 +16,6 @@ const minProps = {
 }
 
 describe('<AddVideo/>', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should not render when the popover is closed', () => {
         const {container} = render(<AddVideo {...minProps} />)
         expect(container).toMatchSnapshot()

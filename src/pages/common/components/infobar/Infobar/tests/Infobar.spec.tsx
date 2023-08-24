@@ -157,7 +157,6 @@ const defaultDateNowValue = 1487076708000
 
 describe('<Infobar/>', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => defaultDateNowValue)

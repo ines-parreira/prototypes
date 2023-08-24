@@ -9,10 +9,6 @@ import Search from '../Search'
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
 describe('Search component', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('handle change function', () => {
         const component = mount<Search>(<Search onChange={_noop} />)
         component.instance()._handleChange('text')

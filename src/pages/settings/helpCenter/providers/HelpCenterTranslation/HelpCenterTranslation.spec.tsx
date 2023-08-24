@@ -124,10 +124,6 @@ function renderTestHook({
 describe('useHelpCenterTranslation', () => {
     let state: Partial<RootState>
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('help center with contact forms linked to every translation', () => {
         beforeEach(() => {
             state = {

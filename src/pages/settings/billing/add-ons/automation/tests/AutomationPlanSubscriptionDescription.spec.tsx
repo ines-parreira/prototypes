@@ -36,10 +36,6 @@ describe('AutomationPlanSubscriptionDescription', () => {
         setIsSubscriptionEnabled: mockSetIsSubscriptionEnabled,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('displays correct plan options in select field', () => {
         render(
             <Provider store={mockedStore(defaultState)}>

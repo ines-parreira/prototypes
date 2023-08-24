@@ -104,10 +104,6 @@ const defaultState: Partial<RootState> = {
 const store = mockStore(defaultState)
 
 describe('SearchResults', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('displays article and category search results', async () => {
         const {container} = render(
             <Provider store={store}>

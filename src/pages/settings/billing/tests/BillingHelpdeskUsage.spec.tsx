@@ -54,7 +54,6 @@ describe('<BillingHelpdeskUsage />', () => {
     window.GORGIAS_SUPPORT_EMAIL = 'support@gorgias.com'
 
     beforeEach(() => {
-        jest.clearAllMocks()
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
     })
 

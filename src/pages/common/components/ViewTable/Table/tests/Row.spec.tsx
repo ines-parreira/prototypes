@@ -26,10 +26,6 @@ describe('ViewTable::Table::Row', () => {
         hasCursor: false,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('default row', () => {
         let component: ShallowWrapper<
             ComponentProps<typeof RowContainer>,

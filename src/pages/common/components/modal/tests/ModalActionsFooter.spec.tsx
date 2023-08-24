@@ -8,10 +8,6 @@ describe('<ModalActionsFooter />', () => {
         className: 'custom-class',
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render a modal footer', () => {
         const {container} = render(
             <ModalActionsFooter {...minProps}>

@@ -11,10 +11,6 @@ import PasswordAnd2FA from '../PasswordAnd2FA'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<PasswordAnd2FA />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('render()', () => {
         it.each([true, false])(
             'should render with or without change password based on if the user has or not a password',

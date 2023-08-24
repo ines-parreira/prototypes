@@ -120,7 +120,7 @@ describe('<HTTPIntegrationEvent />', () => {
                     }
                 />
             )
-            jest.clearAllMocks()
+            fetchHTTPIntegrationEventContainer.mockClear()
             component.instance().componentWillMount()
 
             setTimeout(() => {

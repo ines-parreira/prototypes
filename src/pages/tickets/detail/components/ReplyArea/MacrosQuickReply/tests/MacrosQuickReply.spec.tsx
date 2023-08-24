@@ -57,9 +57,6 @@ describe('<MacrosQuickReply />', () => {
 
     const store = mockStore(state)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render the macros quick reply area', () => {
         const {container} = render(
             <Provider store={store}>

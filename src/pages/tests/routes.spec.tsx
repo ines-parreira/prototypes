@@ -28,7 +28,6 @@ const mockStore = configureMockStore()
 
 describe('<Routes/>', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
         mockHistory.replace('/app')
     })
 

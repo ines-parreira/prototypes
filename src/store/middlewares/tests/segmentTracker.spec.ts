@@ -11,7 +11,6 @@ describe('segmentTracker', () => {
     })
 
     afterEach(() => {
-        jest.clearAllMocks()
         globalThis.analytics = analytics
         window.USER_IMPERSONATED = null
     })

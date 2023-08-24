@@ -34,7 +34,6 @@ describe('<TicketPrintContainer/>', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         window.document.title = 'Gorgias'
     })
 

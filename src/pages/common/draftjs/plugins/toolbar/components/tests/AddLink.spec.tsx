@@ -27,10 +27,6 @@ describe('<AddLink />', () => {
         onInsertVideoAddedFromInsertLink: jest.fn(),
     } as unknown as ComponentProps<typeof AddLinkContainer>
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should allow to submit a valid url', () => {
         const component = shallow(
             <AddLinkContainer

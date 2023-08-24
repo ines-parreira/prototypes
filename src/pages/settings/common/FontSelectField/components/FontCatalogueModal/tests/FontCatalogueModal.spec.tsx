@@ -148,8 +148,6 @@ describe('<FontCatalogueModal />', () => {
     beforeEach(() => {
         // to fully reset the state between tests, clear the storage
         localStorage.clear()
-        // and reset all mocks
-        jest.clearAllMocks()
     })
 
     jest.spyOn(hooks, 'useGoogleFonts').mockImplementation(() => ({

@@ -40,7 +40,6 @@ describe('<BundleInstallView />', () => {
     })
 
     afterEach(() => {
-        jest.clearAllMocks()
         mockedServer.reset()
     })
 

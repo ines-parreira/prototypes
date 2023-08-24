@@ -31,7 +31,6 @@ describe('<RuleTicketList/>', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         fetchTicketsByRuleIdMock.mockResolvedValue(defaultApiResponse)
     })
     it('should render the rule ticket list', async () => {

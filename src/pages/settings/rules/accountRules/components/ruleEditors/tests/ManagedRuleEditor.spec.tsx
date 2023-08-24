@@ -59,10 +59,6 @@ describe('<ManagedRuleEditor/>', () => {
         currentUser: fromJS(user),
     } as RootState)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it.each(Object.values(ManagedRulesSlugs))(
         '%s editor should render correctly',
         (slug) => {

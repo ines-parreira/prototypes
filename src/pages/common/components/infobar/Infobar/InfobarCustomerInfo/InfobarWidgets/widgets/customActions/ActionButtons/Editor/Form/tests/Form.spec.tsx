@@ -24,10 +24,6 @@ describe('<Form/>', () => {
     }
     const index = 2
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render without any data', () => {
         const {container} = render(
             <Form onClose={onClose} onSubmit={onSubmit} />

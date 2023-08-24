@@ -45,9 +45,6 @@ describe('<AutoresponderViewButton/>', () => {
         },
     } as RootState)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render correctly', async () => {
         const {container, getByText} = render(
             <Provider store={store}>

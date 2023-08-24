@@ -26,10 +26,6 @@ const notifySpy = jest.spyOn(actions, 'notify')
 const dismissNotificationSpy = jest.spyOn(reapop, 'dismissNotification')
 
 describe('statusPageManager', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     afterEach(() => {
         localStorage.clear()
     })

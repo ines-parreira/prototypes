@@ -111,10 +111,6 @@ const route = {
 }
 
 describe('<HelpCenterArticlesView />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the component', () => {
         const {container} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>

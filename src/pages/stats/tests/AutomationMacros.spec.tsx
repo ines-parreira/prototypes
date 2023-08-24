@@ -39,7 +39,6 @@ describe('AutomationMacros', () => {
     } as RootState
 
     beforeEach(() => {
-        jest.clearAllMocks()
         useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 

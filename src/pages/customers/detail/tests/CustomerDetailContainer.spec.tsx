@@ -62,7 +62,6 @@ describe('<CustomerDetailContainer />', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore(defaultStore)
     })
 

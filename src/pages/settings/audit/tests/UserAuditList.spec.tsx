@@ -64,7 +64,6 @@ const defaultState: Partial<RootState> = {
 describe('<UserAuditList/>', () => {
     beforeEach(() => {
         mockServer.reset()
-        jest.clearAllMocks()
     })
 
     afterEach(() => {

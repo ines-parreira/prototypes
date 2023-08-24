@@ -124,10 +124,6 @@ const DefaultProviders: FC = ({children}) => (
 )
 
 describe('<HelpCenterAppearanceView />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the component', () => {
         const {container} = renderWithRouter(
             <DefaultProviders>

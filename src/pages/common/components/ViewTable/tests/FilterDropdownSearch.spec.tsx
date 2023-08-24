@@ -48,7 +48,6 @@ describe('FilterDropdownSearch', () => {
     const defaultResults = fromJS([]) as List<any>
 
     beforeEach(() => {
-        jest.clearAllMocks()
         fieldEnumSearchMock.mockReturnValue(() =>
             Promise.resolve(defaultResults)
         )

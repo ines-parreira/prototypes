@@ -55,9 +55,6 @@ describe('<EditableListWidget/>', () => {
     }
     const integrationContextData = {integration: fromJS({}), integrationId: 1}
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render an empty list because no options has been given', () => {
         const {container} = render(
             <WidgetContext.Provider value={widgetContextValue}>

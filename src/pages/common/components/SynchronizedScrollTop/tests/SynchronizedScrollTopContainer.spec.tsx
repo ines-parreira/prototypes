@@ -34,7 +34,6 @@ describe('<SynchronizedScrollTopContainer />', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         useRefMock.mockReturnValue(containerRefMock)
     })
 

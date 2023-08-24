@@ -23,7 +23,6 @@ const mockedServer = new MockAdapter(client)
 describe('<CreditShopifyBillingIntegration />', () => {
     beforeEach(() => {
         mockedServer.onPost('/api/integrations/shopify/tasks').reply(200)
-        jest.clearAllMocks()
     })
 
     it('should render the form', () => {

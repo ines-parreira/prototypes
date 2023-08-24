@@ -24,10 +24,6 @@ describe('FilterDropdownItems', () => {
         onMeItemClick: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('it should render items', () => {
         const {container} = render(<FilterDropdownItems {...minProps} />)
         expect(container).toMatchSnapshot()

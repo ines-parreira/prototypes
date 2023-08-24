@@ -64,7 +64,6 @@ describe('<ContactFormCreateView />', () => {
             isReady: true,
         })
 
-        jest.clearAllMocks()
         jest.mocked(useSupportedLocales).mockReturnValue(
             getLocalesResponseFixture
         )

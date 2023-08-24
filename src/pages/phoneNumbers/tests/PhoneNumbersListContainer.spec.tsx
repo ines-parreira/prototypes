@@ -30,7 +30,6 @@ const storeNoNumbers = mockStore({
 describe('<PhoneNumberListContainer />', () => {
     beforeEach(() => {
         mockServer.reset()
-        jest.clearAllMocks()
     })
 
     afterEach(() => {

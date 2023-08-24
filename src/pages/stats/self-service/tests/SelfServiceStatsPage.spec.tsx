@@ -89,10 +89,6 @@ describe('<SelfServiceStatsPage />', () => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display the loader on loading', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>

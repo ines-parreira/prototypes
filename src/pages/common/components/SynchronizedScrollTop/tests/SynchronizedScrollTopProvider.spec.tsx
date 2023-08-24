@@ -16,7 +16,6 @@ describe('<SynchronizedScrollTopProvider />', () => {
     let windowAddEventListenerSpy: jest.SpyInstance
 
     beforeEach(() => {
-        jest.clearAllMocks()
         jest.useFakeTimers()
         windowAddEventListenerSpy = jest.spyOn(window, 'addEventListener')
     })

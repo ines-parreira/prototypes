@@ -68,7 +68,6 @@ const defaultDateNowValue = 1487076708000
 beforeEach(() => {
     store.clearActions()
     mockServer.reset()
-    jest.clearAllMocks()
     dateNowSpy = jest
         .spyOn(Date, 'now')
         .mockImplementation(() => defaultDateNowValue)

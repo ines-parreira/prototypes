@@ -111,7 +111,6 @@ describe('<SpotlightModal/>', () => {
     })
 
     afterEach(() => {
-        jest.clearAllMocks()
         jest.useRealTimers()
     })
 

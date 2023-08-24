@@ -32,7 +32,6 @@ describe('<ContactFormStartView />', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
 
     beforeEach(async () => {
-        jest.clearAllMocks()
         sdkMocks = await buildSDKMocks()
         // clearing the cache is better than using invalidateQueries because it has no effect
         // on hooks using the `enabled` option

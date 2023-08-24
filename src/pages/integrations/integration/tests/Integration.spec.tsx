@@ -147,10 +147,6 @@ jest.mock('../components/magento2/Magento2', () => () => (
 
 jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
 
-beforeEach(() => {
-    jest.clearAllMocks()
-})
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
 

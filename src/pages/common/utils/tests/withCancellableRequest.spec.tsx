@@ -52,7 +52,6 @@ describe('withCancellableRequest', () => {
 
     beforeEach(() => {
         mockApi.reset()
-        jest.clearAllMocks()
         store = mockStore({})
         mockApi.onAny().reply(200, 'success')
     })

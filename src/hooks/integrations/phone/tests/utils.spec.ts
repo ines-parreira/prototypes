@@ -46,10 +46,6 @@ const device = {
 } as unknown as Device
 
 describe('refreshToken', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should update the device token', async () => {
         jest.spyOn(api, 'getToken').mockReturnValue(
             Promise.resolve('valid-jwt')
@@ -72,7 +68,6 @@ describe('refreshToken', () => {
 
 describe('connectDevice', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
         jest.useFakeTimers()
         Object.defineProperty(window, 'location', {
             value: new URL('https://test'),
@@ -178,10 +173,6 @@ describe('disconnectDevice', () => {
         removeAllListeners: jest.fn(),
     } as unknown as Device
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should disconnect, unregister, destroy device and remove listeners', async () => {
         void disconnectDevice(dispatch, {
             ...device,
@@ -231,10 +222,6 @@ describe('disconnectDevice', () => {
 })
 
 describe('registerDevice', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should register the device and bind the event handlers', async () => {
         const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
 
@@ -259,10 +246,6 @@ describe('handleDeviceEvents', () => {
 
         beforeAll(() => {
             handleDeviceEvents(device as Device, dispatch)
-        })
-
-        beforeEach(() => {
-            jest.clearAllMocks()
         })
 
         it('should handle Device.EventName.Registered event', () => {
@@ -350,10 +333,6 @@ describe('handleCallEvents', () => {
 
         beforeAll(() => {
             handleCallEvents(call as Call, dispatch)
-        })
-
-        beforeEach(() => {
-            jest.clearAllMocks()
         })
 
         it('should handle "accept" event', () => {
@@ -477,10 +456,6 @@ describe('handleCallEvents', () => {
 describe('handleAcceptedCallEvent', () => {
     const cancelCall = jest.spyOn(api, 'cancelCall')
     const acceptCall = jest.spyOn(api, 'acceptCall')
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
 
     it('should be skipped if call is outgoing', () => {
         const call = {

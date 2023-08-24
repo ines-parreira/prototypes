@@ -45,7 +45,6 @@ describe('TagsStatsFilter', () => {
     } as RootState
 
     beforeEach(() => {
-        jest.clearAllMocks()
         tagsFetchedSpy = jest.spyOn(tagsActions, 'tagsFetched')
 
         fetchTagsMock.mockResolvedValue({

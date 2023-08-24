@@ -43,8 +43,6 @@ describe('ManageTags component', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
-
         fetchTagsMock.mockResolvedValue({
             config: {},
             data: {

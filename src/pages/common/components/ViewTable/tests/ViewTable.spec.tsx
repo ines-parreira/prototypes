@@ -67,7 +67,6 @@ const minProps = {
 
 beforeEach(() => {
     expect.extend(immutableMatchers)
-    jest.clearAllMocks()
     history.push = jest.fn()
     ;(
         minProps.getViewIdToDisplay as jest.MockedFunction<
@@ -299,7 +298,6 @@ describe('<ViewTable />', () => {
                         isOnFirstPage={false}
                     />
                 )
-                jest.clearAllMocks()
                 rerender(
                     <ViewTableContainer
                         {...minProps}
@@ -342,7 +340,6 @@ describe('<ViewTable />', () => {
                         isLoading={() => true}
                     />
                 )
-                jest.clearAllMocks()
                 rerender(
                     <ViewTableContainer
                         {...minProps}
@@ -366,7 +363,6 @@ describe('<ViewTable />', () => {
         it('should call fetchViewItems with the URL cursor when URL cursor changes', () => {
             const cursor = '1523467'
             const {rerender} = render(<ViewTableContainer {...minProps} />)
-            jest.clearAllMocks()
             rerender(
                 <ViewTableContainer
                     {...minProps}
@@ -392,7 +388,6 @@ describe('<ViewTable />', () => {
                 'and we are not currently on the first page',
             () => {
                 const {rerender} = render(<ViewTableContainer {...minProps} />)
-                jest.clearAllMocks()
                 rerender(
                     <ViewTableContainer
                         {...minProps}
@@ -414,7 +409,6 @@ describe('<ViewTable />', () => {
             const {rerender} = render(
                 <ViewTableContainer {...minProps} isSearch={false} />
             )
-            jest.clearAllMocks()
             rerender(<ViewTableContainer {...minProps} isSearch={true} />)
 
             expect(minProps.updateView).toHaveBeenLastCalledWith(
@@ -438,7 +432,6 @@ describe('<ViewTable />', () => {
                 const {rerender} = render(
                     <ViewTableContainer {...minProps} isUpdate />
                 )
-                jest.clearAllMocks()
                 rerender(
                     <ViewTableContainer
                         {...minProps}
@@ -470,7 +463,6 @@ describe('<ViewTable />', () => {
                 const {rerender} = render(
                     <ViewTableContainer {...minProps} isSearch />
                 )
-                jest.clearAllMocks()
                 rerender(<ViewTableContainer {...minProps} isSearch={false} />)
 
                 expect(minProps.setViewActive).toHaveBeenLastCalledWith(
@@ -496,7 +488,6 @@ describe('<ViewTable />', () => {
                 const {rerender} = render(
                     <ViewTableContainer {...minProps} isUpdate={false} />
                 )
-                jest.clearAllMocks()
                 rerender(<ViewTableContainer {...minProps} isUpdate />)
 
                 expect(minProps.setViewActive).toHaveBeenLastCalledWith(
@@ -514,7 +505,7 @@ describe('<ViewTable />', () => {
             () => {
                 const {rerender} = render(<ViewTableContainer {...minProps} />)
 
-                jest.clearAllMocks()
+                ;(minProps.setViewActive as jest.Mock).mockClear()
                 ;(
                     minProps.getViewIdToDisplay as jest.MockedFunction<
                         typeof minProps.getViewIdToDisplay
@@ -541,7 +532,6 @@ describe('<ViewTable />', () => {
                     )}
                 />
             )
-            jest.clearAllMocks()
             rerender(
                 <ViewTableContainer
                     {...minProps}
@@ -570,7 +560,6 @@ describe('<ViewTable />', () => {
                     )}
                 />
             )
-            jest.clearAllMocks()
             rerender(
                 <ViewTableContainer
                     {...minProps}
@@ -587,7 +576,6 @@ describe('<ViewTable />', () => {
                 'on the first page because a request is currently loading',
             () => {
                 const {rerender} = render(<ViewTableContainer {...minProps} />)
-                jest.clearAllMocks()
                 rerender(
                     <ViewTableContainer
                         {...minProps}
@@ -618,7 +606,6 @@ describe('<ViewTable />', () => {
                         navigation={fromJS({current_cursor: '1256'})}
                     />
                 )
-                jest.clearAllMocks()
                 rerender(
                     <ViewTableContainer
                         {...minProps}
@@ -640,7 +627,6 @@ describe('<ViewTable />', () => {
             const {rerender} = render(
                 <ViewTableContainer {...minProps} isSearch={true} />
             )
-            jest.clearAllMocks()
             rerender(
                 <ViewTableContainer
                     {...minProps}
@@ -666,7 +652,6 @@ describe('<ViewTable />', () => {
                     <ViewTableContainer {...minProps} isSearch={true} />
                 </SearchRankScenarioContext.Provider>
             )
-            jest.clearAllMocks()
             rerender(
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
                     <ViewTableContainer

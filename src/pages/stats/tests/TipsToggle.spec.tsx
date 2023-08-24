@@ -9,10 +9,6 @@ describe('<TipsToggle />', () => {
         onClick: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the tips toggle', () => {
         const {container} = render(<TipsToggle {...defaultProps} />)
 

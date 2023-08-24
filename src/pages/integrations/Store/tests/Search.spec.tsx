@@ -17,10 +17,6 @@ jest.spyOn(history, 'replace')
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 describe('<Search />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should reflect url search in the input at render', () => {
         const inputValue = 'random'
         renderWithRouter(

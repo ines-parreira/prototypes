@@ -48,10 +48,6 @@ describe('TicketNavigationArrowPagination', () => {
             .mockReturnValueOnce(goToNextTicketMock)
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render & test buttons: enabled PREV & enabled NEXT with tooltips', () => {
         useAppDispatchMock.mockReturnValue(jest.fn(() => true))
 

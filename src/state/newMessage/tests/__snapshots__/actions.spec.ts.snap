@@ -27,7 +27,7 @@ exports[`actions addProductCardAttachments() should dispatch NEW_MESSAGE_ADD_ATT
 
 exports[`actions addProductCardAttachments() should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket 1`] = `[]`;
 
-exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachement in a facebook comment 1`] = `
+exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachment in a facebook comment 1`] = `
 [
   {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",

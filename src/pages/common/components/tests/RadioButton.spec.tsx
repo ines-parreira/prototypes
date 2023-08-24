@@ -11,10 +11,6 @@ describe('<RadioButton />', () => {
         onChange: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render an enabled Radio field', () => {
         const {container} = render(<RadioButton {...minProps} />)
 

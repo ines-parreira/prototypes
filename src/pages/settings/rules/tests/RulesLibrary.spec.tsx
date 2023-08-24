@@ -76,10 +76,6 @@ describe('<RulesLibrary/>', () => {
         typeof fetchRuleRecipes
     >
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the rules library view', () => {
         const {container} = render(
             <Provider store={mockStore(populateStore(5))}>

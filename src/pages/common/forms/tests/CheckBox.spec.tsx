@@ -10,10 +10,6 @@ describe('<CheckBox />', () => {
         onChange: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render an enabled CheckBox', () => {
         const {container} = render(<CheckBox {...minProps}>Shopify</CheckBox>)
 

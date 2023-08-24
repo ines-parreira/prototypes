@@ -16,7 +16,6 @@ describe('<TeamList />', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
-        jest.clearAllMocks()
         mockServer = new MockAdapter(client)
     })
 

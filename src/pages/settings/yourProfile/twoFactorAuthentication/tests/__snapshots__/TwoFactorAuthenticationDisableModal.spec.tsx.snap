@@ -433,7 +433,27 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
             <div
               class="modal-body"
             >
-              
+              <div
+                class="alert error mb-3"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="icon"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="content"
+                >
+                  <span
+                    class="label"
+                  >
+                    foo error deleteTwoFASecretMock
+                  </span>
+                </div>
+              </div>
               Foo 
               <b>
                 body
@@ -470,8 +490,8 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
                 Cancel
               </button>
               <button
-                aria-disabled="true"
-                class="wrapper fill destructive medium isDisabled"
+                aria-disabled="false"
+                class="wrapper fill destructive medium"
                 type="button"
               >
                 Foo action button text

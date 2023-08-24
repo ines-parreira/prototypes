@@ -76,10 +76,6 @@ const renderView = (ui: JSX.Element, {state}: {state: Partial<RootState>}) => {
 }
 
 describe('<ContactFormAutoEmbedPublishSection />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('renders null if the feature flag is not active', () => {
         mockFeatureFlagValue(false)
 

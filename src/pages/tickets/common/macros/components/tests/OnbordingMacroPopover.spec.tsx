@@ -65,10 +65,6 @@ describe('<OnbordingMacroPopover />', () => {
         )
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display popover', () => {
         const userSettings: UserSetting[] = [
             {

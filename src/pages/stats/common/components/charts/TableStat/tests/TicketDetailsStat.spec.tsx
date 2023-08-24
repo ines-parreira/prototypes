@@ -70,10 +70,6 @@ describe('TicketDetailsStat', () => {
         ),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render a message when no assigned tickets', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>

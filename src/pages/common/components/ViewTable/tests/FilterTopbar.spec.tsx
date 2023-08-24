@@ -92,7 +92,6 @@ const globalDataNow = jest.spyOn(global.Date, 'now').mockImplementation(() => 0)
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 beforeEach(() => {
-    jest.clearAllMocks()
     jest.spyOn(utils, 'getDefaultOperator').mockImplementation(() => 'foo')
     submitViewMock.mockImplementation(() => () => Promise.resolve(viewFixture))
     deleteViewMock.mockImplementation(

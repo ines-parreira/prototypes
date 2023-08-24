@@ -21,10 +21,6 @@ describe('StatsNavbarView', () => {
         billing: fromJS(billingState),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const component = render(
             <Provider store={mockStore(defaultState)}>

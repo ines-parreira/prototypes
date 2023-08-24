@@ -23,7 +23,6 @@ const mockStore = configureMockStore(middlewares)
 describe('<AddDiscountCode/>', () => {
     let store = mockStore({})
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore({})
     })
 

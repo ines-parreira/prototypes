@@ -7,10 +7,6 @@ import Body from '../Body'
 describe('<Body/>', () => {
     const onChange = jest.fn()
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render with a json textarea', () => {
         const {container} = render(
             <Body

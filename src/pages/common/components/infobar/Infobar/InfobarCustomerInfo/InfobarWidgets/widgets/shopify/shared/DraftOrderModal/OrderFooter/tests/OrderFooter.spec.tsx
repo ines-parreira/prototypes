@@ -54,7 +54,6 @@ describe('<OrderFooterComponent/>', () => {
     >
 
     beforeEach(() => {
-        jest.clearAllMocks()
         onPayloadChange = jest.fn()
     })
 

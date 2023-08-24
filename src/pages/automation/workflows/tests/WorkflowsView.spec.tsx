@@ -38,7 +38,6 @@ function updateUseWorkflowApiMock(
 
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
-        jest.clearAllMocks()
         updateUseWorkflowApiMock({})
     })
 

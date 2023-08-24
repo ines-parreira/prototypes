@@ -125,7 +125,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
             })
             const user = userId ? ({id: userId} as User) : undefined
 
-            const {baseElement} = render(
+            const {baseElement, getByPlaceholderText} = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationDisableModal
                         {...minProps}
@@ -142,6 +142,14 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                     baseElement.getElementsByClassName('modal show').length
                 ).toBe(1)
             )
+
+            // Fill the verification code if not provided an user ID
+            if (!userId) {
+                const inputField = getByPlaceholderText(
+                    'Enter 6-digit verification code from app'
+                ) as HTMLInputElement
+                fireEvent.change(inputField, {target: {value: '123456'}})
+            }
 
             const continueButton = screen.getByText(minProps.actionButtonText)
             fireEvent.click(continueButton)

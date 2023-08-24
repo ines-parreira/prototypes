@@ -20,10 +20,6 @@ const mockStore = configureMockStore(middlewares)
 describe('<DiscountCodeCreateModal />', () => {
     const store = mockStore({})
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the component', () => {
         const {container} = render(
             <Provider store={store}>

@@ -44,7 +44,6 @@ describe('SupportPerformanceChannels', () => {
     } as RootState
 
     beforeEach(() => {
-        jest.clearAllMocks()
         useStatResourceMock.mockReturnValue([null, true, _noop])
         dateNowSpy = jest
             .spyOn(Date, 'now')

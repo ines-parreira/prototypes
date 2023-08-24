@@ -43,7 +43,6 @@ jest.mock('models/integration/resources', () => {
 describe(`App`, () => {
     beforeEach(() => {
         mockServer.reset()
-        jest.clearAllMocks()
     })
 
     it('should render', async () => {

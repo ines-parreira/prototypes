@@ -3,25 +3,6 @@
 exports[`Intents feedback segment utils should log a dropdown open event 1`] = `
 [
   [
-    "intent-feedback-user-submission",
-    {
-      "account_domain": "acme",
-      "message_id": 314,
-      "next_state": [
-        "other/no_reply",
-      ],
-      "previous_state": [],
-      "sub_events": [
-        {
-          "event_type": "add-intent",
-          "intent": "other/no_reply",
-        },
-      ],
-      "ticket_id": 42,
-      "user_id": 1,
-    },
-  ],
-  [
     "intent-feedback-dropdown-open",
     {
       "account_domain": "acme",

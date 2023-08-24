@@ -24,9 +24,6 @@ store.dispatch = jest.fn()
 jest.mock('state/integrations/actions', () => ({
     updateOrCreateIntegration: jest.fn(),
 }))
-afterEach(() => {
-    jest.clearAllMocks()
-})
 
 describe('<SmsIntegrationCreate/>', () => {
     describe('render()', () => {

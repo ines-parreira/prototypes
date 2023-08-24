@@ -14,10 +14,6 @@ const minProps = {
 }
 
 describe('<EditOrderForm/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const {container} = render(<EditOrderFormContainer {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()

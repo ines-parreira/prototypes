@@ -36,9 +36,6 @@ describe('<AutoReplyWismoEditor/>', () => {
         selfServiceConfigurations: {},
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render correctly', () => {
         const store = mockStore({
             entities: entities,

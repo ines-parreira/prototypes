@@ -29,7 +29,6 @@ describe('<SettingsNavbar />', () => {
     }
 
     afterEach(() => {
-        jest.clearAllMocks()
         mockFlags({})
     })
 

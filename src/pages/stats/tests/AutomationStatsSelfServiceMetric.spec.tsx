@@ -30,9 +30,6 @@ import {entitiesInitialState} from 'fixtures/entities'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AutomationStatsSelfServiceMetric />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     const data = fromJS([
         {
             delta: 100,

@@ -82,7 +82,6 @@ describe('DEPRECATED_SupportPerformanceOverview', () => {
     } as RootState
 
     beforeEach(() => {
-        jest.clearAllMocks()
         useStatResourceMock.mockReturnValue([null, true, _noop])
         dateNowSpy = jest
             .spyOn(Date, 'now')

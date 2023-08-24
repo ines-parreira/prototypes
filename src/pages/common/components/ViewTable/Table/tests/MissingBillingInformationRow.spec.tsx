@@ -45,10 +45,6 @@ describe('<MissingBillingInformationRow />', () => {
         }) as Map<any, any>,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render a row when conditions are met', () => {
         const store = mockStore(initialState)
         const {container} = render(

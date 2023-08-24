@@ -78,7 +78,6 @@ describe('<RuleDetailForm />', () => {
 
     beforeEach(() => {
         mockUseParams.mockReturnValue({ruleId: '1'})
-        jest.clearAllMocks()
     })
 
     afterEach(() => {

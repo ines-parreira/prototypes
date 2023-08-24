@@ -43,6 +43,6 @@ describe('MigrationEmailForwarding', () => {
                 name: /next/i,
             })
         )
-        expect(onNextClick).toHaveBeenCalled()
+        expect(onNextClick).not.toHaveBeenCalled()
     })
 })

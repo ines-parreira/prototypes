@@ -23,10 +23,6 @@ describe('MultiSelectAsyncField component', () => {
         onOptionSelect: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('empty items', () => {
         const component = shallow(<MultiSelectAsyncField {...minProps} />)
 

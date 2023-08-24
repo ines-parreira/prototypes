@@ -35,7 +35,6 @@ describe('<TwitterIntegrationDetail/>', () => {
     })
 
     afterEach(() => {
-        jest.clearAllMocks()
         ;(global.Date.now as unknown as jest.SpyInstance).mockRestore()
     })
 

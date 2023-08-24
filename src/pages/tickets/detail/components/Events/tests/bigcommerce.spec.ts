@@ -9,10 +9,6 @@ describe('bigcommerceEvent', () => {
         objectType: 'objectType',
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('Should return undefined if nothing match', () => {
         const event = bigcommerceEvent({
             integration: Map(),

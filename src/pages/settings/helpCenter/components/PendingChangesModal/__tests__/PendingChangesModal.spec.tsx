@@ -15,10 +15,6 @@ describe('<PendingChangesModal />', () => {
     const handleOnEdit = jest.fn()
     const handleOnDiscard = jest.fn()
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('matches snapshot', () => {
         const {container} = render(
             <PendingChangesModal

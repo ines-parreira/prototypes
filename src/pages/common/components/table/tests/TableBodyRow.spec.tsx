@@ -6,10 +6,6 @@ import TableBodyRow from '../TableBodyRow'
 describe('<TableBodyRow/>', () => {
     const mockOnClick = jest.fn()
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const component = shallow(
             <TableBodyRow className="foo">Foo</TableBodyRow>

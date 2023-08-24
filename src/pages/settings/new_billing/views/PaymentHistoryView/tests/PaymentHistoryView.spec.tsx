@@ -33,10 +33,6 @@ describe('PaymentsHistoryView', () => {
         mockConfirmInvoicePayment.mockReturnValue(Promise.resolve())
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('renders loader when loading', () => {
         render(
             <Provider store={store}>

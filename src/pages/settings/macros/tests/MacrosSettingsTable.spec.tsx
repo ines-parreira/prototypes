@@ -76,10 +76,6 @@ describe('<MacrosSettingsTable/>', () => {
     })
     mockDeleteMacro.mockResolvedValue(undefined)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display a loading when fetching macros', () => {
         const component = shallow(
             <MacrosSettingsTableContainer {...minProps} isLoading={true} />

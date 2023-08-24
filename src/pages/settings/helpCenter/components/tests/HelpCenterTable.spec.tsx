@@ -27,10 +27,6 @@ describe('<HelpCenterTable />', () => {
         deleteHelpCenter: mockedDeleteHelpCenter,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display the table correctly when loading', () => {
         const {container} = render(
             <HelpCenterTable {...props} isLoading={true} />

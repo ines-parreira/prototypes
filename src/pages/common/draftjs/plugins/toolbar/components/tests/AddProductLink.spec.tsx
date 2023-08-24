@@ -22,7 +22,6 @@ const mockStore = configureMockStore(middlewares)
 describe('<AddProductLink/>', () => {
     let store = mockStore({})
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore({})
     })
 

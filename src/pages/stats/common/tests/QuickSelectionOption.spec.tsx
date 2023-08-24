@@ -10,10 +10,6 @@ describe('QuickSelectionOption', () => {
         totalItemsCount: 10,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display label to select content', () => {
         const {container} = render(<QuickSelectionOption {...commonProps} />)
         expect(container.firstChild).toMatchSnapshot()

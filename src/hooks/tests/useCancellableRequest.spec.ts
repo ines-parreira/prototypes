@@ -13,7 +13,6 @@ describe('useCancellableRequest', () => {
 
     beforeEach(() => {
         mockApi.reset()
-        jest.clearAllMocks()
         mockApi.onAny().reply(200, 'success')
     })
 

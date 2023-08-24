@@ -37,10 +37,6 @@ describe('<Links/>', () => {
             }))
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render an empty component (no links, no button)', () => {
         const {container} = render(
             <Provider

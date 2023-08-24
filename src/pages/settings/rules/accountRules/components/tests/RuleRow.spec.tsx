@@ -65,9 +65,6 @@ describe('<RuleRow />', () => {
         },
     } as RootState)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render a row with a rule', () => {
         const {container} = render(
             <Provider store={store}>

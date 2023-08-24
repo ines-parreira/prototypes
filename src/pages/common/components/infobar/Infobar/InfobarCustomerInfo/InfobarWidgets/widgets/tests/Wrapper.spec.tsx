@@ -80,10 +80,6 @@ const customerExternalDataSource = fromJS({
 })
 
 describe('InfobarWidgets component', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display (without an edit or a remove icon)', () => {
         const {container} = render(
             <Provider store={store}>

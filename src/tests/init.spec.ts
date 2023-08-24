@@ -27,10 +27,6 @@ jest.mock('utils/datadog')
 describe('init', () => {
     let reduxStore: MockStoreEnhanced<unknown>
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('notifyDeprecatedTld()', () => {
         beforeEach(() => {
             reduxStore = mockStore({} as RootState)

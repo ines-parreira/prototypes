@@ -16,7 +16,6 @@ describe('<ActionEditor/>', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
         props.action = actionFixture()
         props.action.headers = [
             {

@@ -43,10 +43,6 @@ describe('<RulesList/>', () => {
         rules: [],
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the rule views', () => {
         const rules = createRuleFixtures(5)
         const {container} = render(

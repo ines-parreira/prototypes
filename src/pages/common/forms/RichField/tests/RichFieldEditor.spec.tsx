@@ -48,7 +48,6 @@ describe('RichFieldEditor', () => {
     let editorState: EditorState
 
     beforeEach(() => {
-        jest.clearAllMocks()
         contentState = convertFromHTML('<p>foo</p>')
         editorState = EditorState.createWithContent(contentState)
     })

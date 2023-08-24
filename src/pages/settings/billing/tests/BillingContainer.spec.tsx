@@ -35,7 +35,6 @@ describe('<BillingContainer />', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore(defaultState)
     })
 

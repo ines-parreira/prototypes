@@ -38,10 +38,6 @@ describe('useMetricPerDimension.spec.ts', () => {
         ],
     } as UseQueryResult<QueryReturnType>
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(mockedResponse)
 

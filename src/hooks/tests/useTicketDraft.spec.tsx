@@ -40,10 +40,6 @@ const defaultState = {
 } as RootState
 
 describe('useTicketDraft hook', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should not save draft when ticket is not new', () => {
         renderHook(() => useTicketDraft(false))
         expect(mockSetItem).not.toHaveBeenCalled()

@@ -47,7 +47,6 @@ describe('infobar reducers', () => {
         ).toMatchSnapshot()
 
         // success
-        jest.clearAllMocks()
         expect(
             reducer(
                 initialState.mergeDeep(
@@ -70,7 +69,6 @@ describe('infobar reducers', () => {
         expect(data.callback).toBeCalledWith(data)
 
         // fail
-        jest.clearAllMocks()
         expect(
             reducer(
                 initialState.mergeDeep(

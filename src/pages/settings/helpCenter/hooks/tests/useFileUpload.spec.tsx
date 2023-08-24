@@ -10,10 +10,6 @@ describe('useFileUpload()', () => {
         type: 'text/plain',
     })
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('is not touched in default state', () => {
         const {result} = renderHook(useFileUpload)
 

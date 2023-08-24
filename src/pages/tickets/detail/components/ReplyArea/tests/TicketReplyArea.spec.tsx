@@ -110,10 +110,6 @@ const minProps = {
 } as unknown as ComponentProps<typeof TicketReplyArea>
 
 describe('<TicketReplyArea/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render', () => {
         const {container} = render(<TicketReplyArea {...minProps} />)
 

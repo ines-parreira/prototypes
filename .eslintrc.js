@@ -91,6 +91,11 @@ module.exports = {
                 property: 'create',
                 message: 'Please use client from models/api/resources instead',
             },
+            {
+                object: 'jest',
+                property: 'clearAllMocks',
+                message: 'Mocks are cleared by default before every test',
+            },
         ],
         // TSLint rules
         '@typescript-eslint/no-unsafe-assignment': ['off'],

@@ -104,9 +104,6 @@ const DefaultProviders: FC = ({children}) => (
     </Provider>
 )
 describe('<PhoneContactInfoSection />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render the component', () => {
         const {container} = render(<PhoneContactInfoSection />, {
             wrapper: DefaultProviders,

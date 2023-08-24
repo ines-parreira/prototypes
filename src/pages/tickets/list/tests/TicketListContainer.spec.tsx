@@ -92,10 +92,6 @@ describe('<TicketListContainer />', () => {
         tickets: fromJS([]),
     } as unknown as ComponentProps<typeof TicketListContainer>
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should display with default props', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>

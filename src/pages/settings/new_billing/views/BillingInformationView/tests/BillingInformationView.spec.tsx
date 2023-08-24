@@ -74,10 +74,6 @@ describe('BillingInformationView', () => {
         )
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('renders the component', () => {
         // Check if the component renders without errors
         expect(screen.getByText('Billing Information')).toBeInTheDocument()

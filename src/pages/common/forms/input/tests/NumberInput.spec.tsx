@@ -9,10 +9,6 @@ describe('<NumberInput />', () => {
         value: 6,
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render a number input', () => {
         const {container} = render(<NumberInput {...defaultProps} />)
 

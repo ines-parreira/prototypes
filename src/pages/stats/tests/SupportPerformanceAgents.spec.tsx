@@ -85,10 +85,6 @@ describe('SupportPerformanceAgents', () => {
     ]
     AgentsTableMock.mockImplementation(cellMock)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render the page title and section title', () => {
         render(
             <MemoryRouter>

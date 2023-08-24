@@ -31,9 +31,6 @@ const selectedCurrencyProps: Props = {
 }
 
 describe('<CurrencyPickerDropdown/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should display the available currencies as options', () => {
         const {getByText} = render(
             <Provider store={store}>

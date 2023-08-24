@@ -12,10 +12,6 @@ describe('<Modal />', () => {
         onClose: jest.fn(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     afterAll(() => {
         jest.resetAllMocks()
     })

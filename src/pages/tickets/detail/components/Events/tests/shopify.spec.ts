@@ -9,10 +9,6 @@ describe('shopifyEvent', () => {
         objectType: 'objectType',
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('Should return undefined if nothing match', () => {
         const event = shopifyEvent({
             integration: Map(),

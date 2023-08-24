@@ -73,10 +73,6 @@ describe('<QuickResponsesView />', () => {
         window.HTMLElement.prototype.scrollTo = jest.fn()
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should not display content if quick responses are fetching', () => {
         useQuickResponsesMock.mockReturnValue({
             isFetchPending: true,

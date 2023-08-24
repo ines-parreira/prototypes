@@ -225,10 +225,6 @@ const minProps = {
 }
 
 describe('<DraftOrderModal/>', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should not render when the modal is closed', () => {
         const {container} = render(
             <CustomerContext.Provider value={{customerId: 2}}>

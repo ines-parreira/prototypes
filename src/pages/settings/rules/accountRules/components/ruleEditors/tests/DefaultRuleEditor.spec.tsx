@@ -28,9 +28,6 @@ describe('<DefaultRuleEditor/>', () => {
         currentUser: fromJS(user),
     } as RootState)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render correctly', () => {
         const {container} = render(
             <Provider store={store}>

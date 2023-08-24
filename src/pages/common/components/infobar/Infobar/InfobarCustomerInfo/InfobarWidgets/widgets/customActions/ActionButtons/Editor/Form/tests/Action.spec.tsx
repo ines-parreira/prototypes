@@ -11,10 +11,6 @@ describe('<Action/>', () => {
         action: actionFixture(),
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render without a Body component', () => {
         const {container} = render(<Action {...props} />)
         expect(container.firstChild).toMatchSnapshot()

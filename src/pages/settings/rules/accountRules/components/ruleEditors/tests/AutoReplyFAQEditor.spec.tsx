@@ -34,9 +34,6 @@ describe('<AutoReplyFAQEditor/>', () => {
         helpCenter: {articles: {}, categories: {}, helpCenters: {}},
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     it('should render correctly', () => {
         const store = mockStore({
             entities,

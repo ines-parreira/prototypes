@@ -40,7 +40,6 @@ describe('responseUtils', () => {
     let defaultMessageContext: MessageContext
 
     beforeEach(() => {
-        jest.clearAllMocks()
         // Context is mutable, some util functions will modify it directly
         defaultMessageContext = {
             forceFocus: false,

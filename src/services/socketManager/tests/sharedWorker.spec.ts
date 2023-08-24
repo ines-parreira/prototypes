@@ -55,7 +55,6 @@ describe('WebsocketSharedWorker', () => {
     let worker: WebsocketSharedWorker
 
     beforeEach(() => {
-        jest.clearAllMocks()
         jest.clearAllTimers()
         worker = new WebsocketSharedWorker()
     })

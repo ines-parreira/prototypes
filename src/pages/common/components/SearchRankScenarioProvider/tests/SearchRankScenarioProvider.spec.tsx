@@ -22,7 +22,6 @@ describe('SearchRankScenarioProvider', () => {
     >
 
     beforeEach(() => {
-        jest.clearAllMocks()
         useSearchRankScenarioMock.mockReturnValue(defaultSearchRankScenario)
     })
 

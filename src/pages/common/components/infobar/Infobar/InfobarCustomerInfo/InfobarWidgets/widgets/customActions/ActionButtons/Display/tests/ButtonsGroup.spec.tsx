@@ -44,10 +44,6 @@ describe('<ButtonsGroup/>', () => {
 
     const source = fromJS(_source)
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should render with correct label and without a dropdown ', () => {
         const {container} = render(
             <Provider

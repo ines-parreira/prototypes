@@ -35,7 +35,6 @@ describe('actions', () => {
             currentAccount: initialState,
         })
         mockServer = new MockAdapter(client)
-        jest.clearAllMocks()
     })
 
     describe('chats', () => {

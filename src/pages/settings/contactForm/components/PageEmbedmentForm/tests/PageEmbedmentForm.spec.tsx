@@ -14,10 +14,6 @@ const baseProps: PageEmbedmentFormProps = {
 }
 
 describe('<PageEmbedmentForm />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should dispatch the appropriate action for the new page mode', async () => {
         const dispatch = jest.fn()
 

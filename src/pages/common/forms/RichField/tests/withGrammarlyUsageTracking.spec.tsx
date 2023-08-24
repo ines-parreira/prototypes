@@ -12,9 +12,6 @@ jest.mock('../../../../../store/middlewares/segmentTracker')
 jest.useFakeTimers()
 
 describe('withGrammarlyUsageTracking', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
     describe('with grammarly extension present', () => {
         const domElement = document.createElement('div')
 

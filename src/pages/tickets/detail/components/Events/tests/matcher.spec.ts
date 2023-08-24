@@ -19,10 +19,6 @@ describe('eventMatcher', () => {
         objectType: 'objectType',
     }
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('Should return undefined if type does not match', () => {
         const event = eventMatcher({
             integration: Map(),
