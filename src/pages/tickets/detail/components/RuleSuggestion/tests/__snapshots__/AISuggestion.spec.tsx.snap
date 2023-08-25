@@ -3,7 +3,7 @@
 exports[`AISuggestion should display AISuggestion 1`] = `
 <div>
   <div
-    class="container collapse show"
+    class="container"
   >
     <div
       class="avatar"

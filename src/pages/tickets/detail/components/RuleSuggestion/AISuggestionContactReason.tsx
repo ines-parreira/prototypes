@@ -1,4 +1,5 @@
 import React, {useState, useMemo, useEffect} from 'react'
+import {Collapse} from 'reactstrap'
 import {updateCustomFieldState} from 'state/ticket/actions'
 import {createInputId} from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField/DropdownField'
 import {Ticket} from 'models/ticket/types'
@@ -82,56 +83,58 @@ export default function ContactReasonSuggestion({ticket}: Props) {
     }, [isConfirmed])
 
     return (
-        <InTicketSuggestionContainer
+        <Collapse
             className={css.container}
-            collapse={collapse}
-            onCollapse={confirmPrediction}
+            isOpen={!collapse}
+            onClosed={confirmPrediction}
         >
-            <SuggestionHeader
-                actionsContent={
-                    <div className={css.buttons}>
-                        {isConfirmed ? (
-                            <span className={css.feedback}>
-                                Thanks for the feedback!
-                            </span>
-                        ) : (
-                            <>
-                                <Button
-                                    size="small"
-                                    intent="secondary"
-                                    onClick={handleChangeReason}
-                                >
-                                    Change reason
-                                </Button>
-                                <Button
-                                    intent="primary"
-                                    size="small"
-                                    onClick={() => setConfirmed(true)}
-                                >
-                                    <ButtonIconLabel
-                                        icon="check_circle"
-                                        position="left"
+            <InTicketSuggestionContainer>
+                <SuggestionHeader
+                    actionsContent={
+                        <div className={css.buttons}>
+                            {isConfirmed ? (
+                                <span className={css.feedback}>
+                                    Thanks for the feedback!
+                                </span>
+                            ) : (
+                                <>
+                                    <Button
+                                        size="small"
+                                        intent="secondary"
+                                        onClick={handleChangeReason}
                                     >
-                                        Confirm
-                                    </ButtonIconLabel>
-                                </Button>
-                            </>
-                        )}
-                    </div>
-                }
-                infoContent={
-                    <span>
-                        Our AI detected{' '}
-                        <b>
-                            {contactReasonPrediction?.prediction?.predicted.replace(
-                                /::/g,
-                                ' - '
+                                        Change reason
+                                    </Button>
+                                    <Button
+                                        intent="primary"
+                                        size="small"
+                                        onClick={() => setConfirmed(true)}
+                                    >
+                                        <ButtonIconLabel
+                                            icon="check_circle"
+                                            position="left"
+                                        >
+                                            Confirm
+                                        </ButtonIconLabel>
+                                    </Button>
+                                </>
                             )}
-                        </b>{' '}
-                        as the Contact reason.
-                    </span>
-                }
-            />
-        </InTicketSuggestionContainer>
+                        </div>
+                    }
+                    infoContent={
+                        <span>
+                            Our AI detected{' '}
+                            <b>
+                                {contactReasonPrediction?.prediction?.predicted.replace(
+                                    /::/g,
+                                    ' - '
+                                )}
+                            </b>{' '}
+                            as the Contact reason.
+                        </span>
+                    }
+                />
+            </InTicketSuggestionContainer>
+        </Collapse>
     )
 }

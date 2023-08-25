@@ -3,91 +3,95 @@
 exports[`<AISuggestionContactReason /> should match snapshot 1`] = `
 <div>
   <div
-    class="container container collapse show"
+    class="container collapse show"
   >
     <div
-      class="avatar"
-    >
-      <div
-        class="component hasImage square"
-        style="width: 36px; height: 36px;"
-      >
-        <div
-          class="initials"
-          style="width: 36px; height: 36px; font-size: 15px;"
-        >
-          <span
-            style="line-height: 38px;"
-          >
-            GT
-          </span>
-        </div>
-        <img
-          alt="avatar"
-          class="gravatar"
-          src="/assets/img/icons/gorgias-icon-logo-white.png"
-        />
-      </div>
-    </div>
-    <header
       class="container"
-      style="padding-bottom: 0px;"
     >
       <div
-        class="infoContainer"
+        class="avatar"
       >
         <div
-          class="title"
+          class="component hasImage square"
+          style="width: 36px; height: 36px;"
         >
-          <span>
-            Gorgias Tips
-          </span>
-          <span>
-            Only visible to you
-          </span>
-        </div>
-        <span>
-          Our AI detected
-           
-          <b>
-            Order - Request
-          </b>
-           
-          as the Contact reason.
-        </span>
-      </div>
-      <div
-        class="actionsContainer"
-      >
-        <div
-          class="buttons"
-        >
-          <button
-            aria-disabled="false"
-            class="wrapper fill secondary small"
-            type="button"
-          >
-            Change reason
-          </button>
-          <button
-            aria-disabled="false"
-            class="wrapper fill primary small"
-            type="button"
+          <div
+            class="initials"
+            style="width: 36px; height: 36px; font-size: 15px;"
           >
             <span
-              class="wrapper"
+              style="line-height: 38px;"
             >
-              <i
-                class="material-icons icon isLeft small"
-              >
-                check_circle
-              </i>
-              Confirm
+              GT
             </span>
-          </button>
+          </div>
+          <img
+            alt="avatar"
+            class="gravatar"
+            src="/assets/img/icons/gorgias-icon-logo-white.png"
+          />
         </div>
       </div>
-    </header>
+      <header
+        class="container"
+        style="padding-bottom: 0px;"
+      >
+        <div
+          class="infoContainer"
+        >
+          <div
+            class="title"
+          >
+            <span>
+              Gorgias Tips
+            </span>
+            <span>
+              Only visible to you
+            </span>
+          </div>
+          <span>
+            Our AI detected
+             
+            <b>
+              Order - Request
+            </b>
+             
+            as the Contact reason.
+          </span>
+        </div>
+        <div
+          class="actionsContainer"
+        >
+          <div
+            class="buttons"
+          >
+            <button
+              aria-disabled="false"
+              class="wrapper fill secondary small"
+              type="button"
+            >
+              Change reason
+            </button>
+            <button
+              aria-disabled="false"
+              class="wrapper fill primary small"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft small"
+                >
+                  check_circle
+                </i>
+                Confirm
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+    </div>
   </div>
 </div>
 `;
