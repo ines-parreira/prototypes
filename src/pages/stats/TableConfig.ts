@@ -1,14 +1,25 @@
+import {
+    useClosedTicketsMetricPerAgent,
+    useCustomerSatisfactionMetricPerAgent,
+    useFirstResponseTimeMetricPerAgent,
+    useMessagesSentMetricPerAgent,
+    useResolutionTimeMetricPerAgent,
+    useTicketsRepliedMetricPerAgent,
+} from 'hooks/reporting/metricsPerDimension'
+import {Metric} from 'hooks/reporting/useMetricPerDimension'
+import {OrderDirection} from 'models/api/types'
+import {StatsFilters} from 'models/stat/types'
 import {TableColumn} from 'state/ui/stats/types'
 
 export const TableColumnsOrder: TableColumn[] = [
     TableColumn.AgentName,
-    TableColumn.CustomerSatisfaction,
-    TableColumn.FirstResponseTime,
-    TableColumn.ResolutionTime,
     TableColumn.ClosedTickets,
     TableColumn.PercentageOfClosedTickets,
+    TableColumn.CustomerSatisfaction,
     TableColumn.RepliedTickets,
     TableColumn.MessagesSent,
+    TableColumn.FirstResponseTime,
+    TableColumn.ResolutionTime,
 ]
 
 export const TableLabels: Record<TableColumn, string> = {
@@ -66,3 +77,34 @@ export const getColumnWidth = (column: TableColumn) =>
 
 export const getColumnAlignment = (column: TableColumn) =>
     column === TableColumn.AgentName ? 'left' : 'right'
+
+export const getQuery = (
+    column: TableColumn
+): ((
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string
+) => Metric) => {
+    switch (column) {
+        case TableColumn.AgentName:
+            return () => ({
+                isFetching: false,
+                isError: false,
+                data: null,
+            })
+        case TableColumn.FirstResponseTime:
+            return useFirstResponseTimeMetricPerAgent
+        case TableColumn.RepliedTickets:
+            return useTicketsRepliedMetricPerAgent
+        case TableColumn.PercentageOfClosedTickets:
+        case TableColumn.ClosedTickets:
+            return useClosedTicketsMetricPerAgent
+        case TableColumn.MessagesSent:
+            return useMessagesSentMetricPerAgent
+        case TableColumn.ResolutionTime:
+            return useResolutionTimeMetricPerAgent
+        case TableColumn.CustomerSatisfaction:
+            return useCustomerSatisfactionMetricPerAgent
+    }
+}

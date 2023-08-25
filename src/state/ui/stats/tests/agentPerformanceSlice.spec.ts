@@ -1,36 +1,37 @@
 import {fromJS} from 'immutable'
+import {personNames} from 'fixtures/personNames'
 import {user} from 'fixtures/users'
+import {OrderDirection} from 'models/api/types'
 import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
 } from 'models/reporting/types'
-import {OrderDirection} from 'models/api/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
+import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import {
     defaultStatsFilters,
     initialState as initialStatsFiltersState,
 } from 'state/stats/reducers'
 import {getPageStatsFilters} from 'state/stats/selectors'
-import {initialState as initialUiStatsState} from 'state/ui/stats/reducer'
+import {RootState} from 'state/types'
 import {
-    initialState,
     agentPerformanceSlice,
     getAgentSorting,
-    sortingSet,
-    sortingLoaded,
-    getSortedAgents,
-    isSortingMetricLoading,
-    getPaginatedAgents,
-    pageSet,
-    getFilteredAgents,
     getCleanStatsFiltersWithTimezone,
+    getFilteredAgents,
+    getPaginatedAgents,
+    getSortedAgents,
+    initialState,
+    isSortingMetricLoading,
+    pageSet,
+    sortingLoaded,
+    sortingLoading,
+    sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
-import {RootState} from 'state/types'
+import {initialState as initialUiStatsState} from 'state/ui/stats/reducer'
 import {TableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
-import {personNames} from 'fixtures/personNames'
 
 describe('agentPerformanceSlice', () => {
     const agents = [
@@ -80,6 +81,7 @@ describe('agentPerformanceSlice', () => {
                 isLoading: true,
                 lastSortingMetric: null,
             })
+            expect(newState.pagination.currentPage).toEqual(1)
         })
 
         it('should keep lastSortingMetric and disable isLoading on sortingLoaded action', () => {
@@ -134,6 +136,22 @@ describe('agentPerformanceSlice', () => {
             expect(newState.pagination.currentPage).toEqual(
                 initialState.pagination.currentPage
             )
+        })
+
+        it('should reset the page to first when new sorting data starts loading', () => {
+            const newState = agentPerformanceSlice.reducer(
+                {
+                    ...initialState,
+                    pagination: {
+                        ...initialState.pagination,
+                        currentPage: 5,
+                    },
+                },
+                sortingLoading()
+            )
+
+            expect(newState.sorting.isLoading).toEqual(true)
+            expect(newState.pagination.currentPage).toEqual(1)
         })
     })
 
@@ -228,7 +246,14 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    [agentPerformanceSlice.name]: initialState,
+                    [agentPerformanceSlice.name]: {
+                        ...initialState,
+                        sorting: {
+                            ...initialState.sorting,
+                            field: TableColumn.ClosedTickets,
+                            direction: OrderDirection.Asc,
+                        },
+                    },
                     stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
@@ -255,19 +280,6 @@ describe('agentPerformanceSlice', () => {
             expect(getSortedAgents(state)).toEqual(
                 [...agents.sort(getSortByName)].reverse()
             )
-        })
-
-        it('should return agents in alphabetical order if no sorting metric is declared', () => {
-            const state = {
-                agents: fromJS({all: fromJS(agents)}),
-                ui: {
-                    [agentPerformanceSlice.name]: initialState,
-                    stats: initialUiStatsState,
-                },
-                stats: initialStatsFiltersState,
-            } as RootState
-
-            expect(getSortedAgents(state)).toEqual(agents.sort(getSortByName))
         })
 
         it('should return agents sorted by selected metric', () => {
@@ -416,7 +428,10 @@ describe('agentPerformanceSlice', () => {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
                     [agentPerformanceSlice.name]: {
-                        sorting: initialState.sorting,
+                        sorting: {
+                            ...initialState.sorting,
+                            direction: OrderDirection.Asc,
+                        },
                         pagination: {
                             currentPage,
                             perPage,

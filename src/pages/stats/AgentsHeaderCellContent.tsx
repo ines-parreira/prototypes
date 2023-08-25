@@ -1,11 +1,16 @@
 import React, {useRef} from 'react'
-import {useSortingQueries} from 'hooks/reporting/useSortingQueries'
+import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
+import {OrderDirection} from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import Tooltip from 'pages/common/components/Tooltip'
 import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
-import {HeaderTooltips, TableLabels, TooltipData} from 'pages/stats/TableConfig'
+import {
+    getQuery,
+    HeaderTooltips,
+    TableLabels,
+    TooltipData,
+} from 'pages/stats/TableConfig'
 import {TableColumn} from 'state/ui/stats/types'
-import {OrderDirection} from 'models/api/types'
 
 const DOCUMENTATION_LINK_TEXT = 'How is it calculated?'
 
@@ -34,7 +39,10 @@ export const AgentsHeaderCellContent = ({
     width,
     justifyContent,
 }: AgentsHeaderCellContentProps) => {
-    const {sortCallback, direction, field} = useSortingQueries(column)
+    const {sortCallback, direction, field} = useSortingQuery(
+        column,
+        getQuery(column)
+    )
     const tooltip = HeaderTooltips[column]
     const isOrderedBy = column === field
     const tooltipRef = useRef<HTMLElement>(null)

@@ -36,8 +36,8 @@ export const DEFAULT_SORTING_DIRECTION = OrderDirection.Asc
 
 export const initialState: AgentPerformanceState = {
     sorting: {
-        field: TableColumn.AgentName,
-        direction: DEFAULT_SORTING_DIRECTION,
+        field: TableColumn.ClosedTickets,
+        direction: OrderDirection.Desc,
         isLoading: false,
         lastSortingMetric: null,
     },
@@ -55,10 +55,16 @@ export const agentPerformanceSlice = createSlice({
             state.sorting.field = action.payload.field
             state.sorting.direction = action.payload.direction
             state.sorting.isLoading = true
+            state.pagination.currentPage = 1
+        },
+        sortingLoading(state) {
+            state.sorting.isLoading = true
+            state.pagination.currentPage = 1
         },
         sortingLoaded(state, action: PayloadAction<Maybe<MetricData>>) {
             state.sorting.isLoading = false
             state.sorting.lastSortingMetric = action.payload
+            state.pagination.currentPage = 1
         },
         pageSet(state, action: PayloadAction<number>) {
             if (action.payload < 1) {
@@ -70,7 +76,7 @@ export const agentPerformanceSlice = createSlice({
     },
 })
 
-export const {sortingSet, sortingLoaded, pageSet} =
+export const {sortingSet, sortingLoading, sortingLoaded, pageSet} =
     agentPerformanceSlice.actions
 
 export const getAgentSorting = (state: RootState) =>
