@@ -36,12 +36,12 @@ export const computeEmailMigrationStatusBanner = (
         startDate ? 'Continue Migration' : 'Start Migration'
     )
 
-    if (daysLeft > 29) {
+    if (daysLeft > 14) {
         bannerStatus = NotificationStatus.Info
         message = `We're moving to a new email provider to improve stability.`
     } else if (daysLeft > 7) {
         bannerStatus = NotificationStatus.Warning
-        message = `You have <strong>less than 1 month</strong> left to migrate to our new email provider.`
+        message = `You have <strong>less than 2 weeks</strong> left to migrate to our new email provider.`
     } else {
         bannerStatus = NotificationStatus.Error
         message = `You have <strong>less than 1 week</strong> to migrate to our new email provider.`

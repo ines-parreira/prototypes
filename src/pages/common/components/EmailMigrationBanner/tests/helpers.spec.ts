@@ -172,17 +172,17 @@ describe('migration banner helpers', () => {
                 started_at: '2023-01-01T00:00',
             },
         ])(
-            `should display "You have less than 1 month" when there are between 30 and 7 days left`,
+            `should display "You have less than 2 weeks" when there are between 14 and 7 days left`,
             (migration) => {
                 const bannerSettings = computeEmailMigrationStatusBanner({
                     status: migration.status,
                     started_at: migration.started_at,
-                    due_at: '2023-01-20T00:00',
+                    due_at: '2023-01-18T00:00',
                 })
 
                 expect(
                     bannerSettings?.message?.startsWith(
-                        `<strong>Action required:</strong> You have <strong>less than 1 month</strong> left to migrate to our new email provider.`
+                        `<strong>Action required:</strong> You have <strong>less than 2 weeks</strong> left to migrate to our new email provider.`
                     )
                 ).toBeTruthy()
                 expect(bannerSettings?.status).toBe(NotificationStatus.Warning)
