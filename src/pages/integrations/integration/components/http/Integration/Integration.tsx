@@ -14,6 +14,7 @@ import {
     HttpIntegrationMeta,
     IntegrationType,
 } from 'models/integration/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -43,13 +44,13 @@ type Props = {
 
 type State = {
     description: string
-    form: HTTPForm
+    form?: HTTPForm
     headers: Field[]
     isTestShown: boolean
-    method: HttpMethod
+    method?: HttpMethod
     name: string
-    requestContentType: ContentType
-    responseContentType: ContentType
+    requestContentType?: ContentType
+    responseContentType?: ContentType
     ticketCreated: boolean
     ticketMessageCreated: boolean
     ticketUpdated: boolean
@@ -97,7 +98,7 @@ export class Integration extends Component<Props, State> {
     _mapIntegrationToState = (integration: HttpIntegration) => {
         const isJsonBody =
             integration.http?.request_content_type === ContentType.Json
-        let formData = integration.http.form
+        let formData = integration.http?.form
         if (
             !isJsonBody &&
             formData &&
@@ -106,19 +107,21 @@ export class Integration extends Component<Props, State> {
         ) {
             formData = this._objectToParameters(formData)
         }
-        const headers = integration.http.headers
+        const headers = integration.http?.headers
         return {
             name: integration.name,
             description: integration.description || '',
             headers: this._objectToParameters(headers || {}),
-            url: integration.http.url,
-            method: integration.http.method,
-            requestContentType: integration.http.request_content_type,
-            responseContentType: integration.http.response_content_type,
-            ticketCreated: integration.http.triggers['ticket-created'] || false,
-            ticketUpdated: integration.http.triggers['ticket-updated'] || false,
+            url: integration.http?.url || '',
+            method: integration.http?.method,
+            requestContentType: integration.http?.request_content_type,
+            responseContentType: integration.http?.response_content_type,
+            ticketCreated:
+                integration.http?.triggers['ticket-created'] || false,
+            ticketUpdated:
+                integration.http?.triggers['ticket-updated'] || false,
             ticketMessageCreated:
-                integration.http.triggers['ticket-message-created'] || false,
+                integration.http?.triggers['ticket-message-created'] || false,
             form: formData,
         }
     }
@@ -289,6 +292,8 @@ export class Integration extends Component<Props, State> {
 
         const isActive = !integration?.deactivated_datetime
 
+        const isIncomplete = isUpdate && !integration?.http
+
         if (isUpdate && !integration) {
             return <Loader />
         }
@@ -296,18 +301,26 @@ export class Integration extends Component<Props, State> {
         return (
             <div className="full-width">
                 <Container fluid className={css.pageContainer}>
-                    <p>
-                        Add the details about the HTTP integration you want to
-                        add below. If you need help, you can check our{' '}
-                        <a
-                            href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            docs
-                        </a>{' '}
-                        or contact us.
-                    </p>
+                    {isIncomplete ? (
+                        <Alert type={AlertType.Warning} icon className="mb-4">
+                            The settings for this HTTP integration are
+                            incomplete and it might not be working as expected.
+                            Edition mode has been disabled.
+                        </Alert>
+                    ) : (
+                        <p>
+                            Add the details about the HTTP integration you want
+                            to add below. If you need help, you can check our{' '}
+                            <a
+                                href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs
+                            </a>{' '}
+                            or contact us.
+                        </p>
+                    )}
                     <Form onSubmit={this._handleSubmit}>
                         <DEPRECATED_InputField
                             type="text"
@@ -316,6 +329,7 @@ export class Integration extends Component<Props, State> {
                             value={name}
                             onChange={(value) => this.setState({name: value})}
                             required
+                            disabled={isIncomplete}
                         />
                         <DEPRECATED_InputField
                             type="text"
@@ -325,187 +339,219 @@ export class Integration extends Component<Props, State> {
                             onChange={(value) =>
                                 this.setState({description: value})
                             }
+                            disabled={isIncomplete}
                         />
-                        <FormGroup>
-                            <Label className="control-label">Triggers</Label>
-                            <p>
-                                <FormText color="muted">
-                                    This HTTP integration will be executed when
-                                    any of the events below happens.
-                                </FormText>
-                            </p>
-                            <CheckBox
-                                className="mb-2"
-                                name="http.triggers.ticket-created"
-                                isChecked={ticketCreated}
-                                onChange={(value: boolean) =>
-                                    this.setState({ticketCreated: value})
-                                }
-                            >
-                                Ticket created
-                            </CheckBox>
-                            <CheckBox
-                                className="mb-2"
-                                name="http.triggers.ticket-updated"
-                                isChecked={ticketUpdated}
-                                onChange={(value: boolean) =>
-                                    this.setState({ticketUpdated: value})
-                                }
-                            >
-                                Ticket updated
-                            </CheckBox>
-                            <CheckBox
-                                className="mb-2"
-                                name="http.triggers.ticket-message-created"
-                                isChecked={ticketMessageCreated}
-                                onChange={(value: boolean) =>
-                                    this.setState({ticketMessageCreated: value})
-                                }
-                            >
-                                Ticket message created
-                            </CheckBox>
-                        </FormGroup>
-                        <DEPRECATED_InputField
-                            type="url"
-                            error={validateWebhookURL(url)}
-                            name="http.url"
-                            label="URL"
-                            title="Example: https://company.com/api"
-                            placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
-                            required
-                            pattern={validateWebhookURLToPattern(url)}
-                            help={
-                                <div>
-                                    You can use{' '}
-                                    <code>{'{{ticket.customer.email}}'}</code>{' '}
-                                    to pass the email of the ticket customer.
-                                    See other{' '}
-                                    <a
-                                        href="https://docs.gorgias.com/macros/macro-variables"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                        {!isIncomplete && (
+                            <>
+                                <FormGroup>
+                                    <Label className="control-label">
+                                        Triggers
+                                    </Label>
+                                    <p>
+                                        <FormText color="muted">
+                                            This HTTP integration will be
+                                            executed when any of the events
+                                            below happens.
+                                        </FormText>
+                                    </p>
+                                    <CheckBox
+                                        className="mb-2"
+                                        name="http.triggers.ticket-created"
+                                        isChecked={ticketCreated}
+                                        onChange={(value: boolean) =>
+                                            this.setState({
+                                                ticketCreated: value,
+                                            })
+                                        }
                                     >
-                                        variables
-                                    </a>
-                                    .
-                                </div>
-                            }
-                            value={url}
-                            onChange={(value) => this.setState({url: value})}
-                        />
-                        <DEPRECATED_InputField
-                            type="select"
-                            name="http.method"
-                            label="HTTP Method"
-                            value={method}
-                            onChange={this._setMethod}
-                            required
-                        >
-                            {Object.values(HttpMethod).map((method) => (
-                                <option key={method} value={method}>
-                                    {method}
-                                </option>
-                            ))}
-                        </DEPRECATED_InputField>
-                        {method !== HttpMethod.Get && (
-                            <DEPRECATED_InputField
-                                type="select"
-                                name="http.request_content_type"
-                                label="Request content type"
-                                required
-                                value={requestContentType}
-                                onChange={(value) =>
-                                    this._onRequestContentTypeChange(value)
-                                }
-                            >
-                                <option value={ContentType.Json}>
-                                    {ContentType.Json}
-                                </option>
-                                <option value={ContentType.Form}>
-                                    {ContentType.Form}
-                                </option>
-                            </DEPRECATED_InputField>
-                        )}
-                        <DEPRECATED_InputField
-                            type="select"
-                            name="http.response_content_type"
-                            label="Response content type"
-                            value={responseContentType}
-                            onChange={(value) =>
-                                this.setState({responseContentType: value})
-                            }
-                            required
-                        >
-                            <option value={ContentType.Json}>
-                                {ContentType.Json}
-                            </option>
-                        </DEPRECATED_InputField>
-                        <FormGroup>
-                            <ObjectListField
-                                title="Header"
-                                fieldName="header"
-                                fields={headers}
-                                validate={this._validateHeaderName}
-                                onChange={(value: Field[]) =>
-                                    this.setState({headers: value})
-                                }
-                            />
-                        </FormGroup>
-
-                        {method !== HttpMethod.Get &&
-                            (requestContentType === ContentType.Json ? (
-                                <JSONBody
-                                    form={form}
-                                    onChange={(form: HTTPForm) =>
-                                        this.setState({form})
+                                        Ticket created
+                                    </CheckBox>
+                                    <CheckBox
+                                        className="mb-2"
+                                        name="http.triggers.ticket-updated"
+                                        isChecked={ticketUpdated}
+                                        onChange={(value: boolean) =>
+                                            this.setState({
+                                                ticketUpdated: value,
+                                            })
+                                        }
+                                    >
+                                        Ticket updated
+                                    </CheckBox>
+                                    <CheckBox
+                                        className="mb-2"
+                                        name="http.triggers.ticket-message-created"
+                                        isChecked={ticketMessageCreated}
+                                        onChange={(value: boolean) =>
+                                            this.setState({
+                                                ticketMessageCreated: value,
+                                            })
+                                        }
+                                    >
+                                        Ticket message created
+                                    </CheckBox>
+                                </FormGroup>
+                                <DEPRECATED_InputField
+                                    type="url"
+                                    error={validateWebhookURL(url)}
+                                    name="http.url"
+                                    label="URL"
+                                    title="Example: https://company.com/api"
+                                    placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
+                                    required
+                                    pattern={validateWebhookURLToPattern(url)}
+                                    help={
+                                        <div>
+                                            You can use{' '}
+                                            <code>
+                                                {'{{ticket.customer.email}}'}
+                                            </code>{' '}
+                                            to pass the email of the ticket
+                                            customer. See other{' '}
+                                            <a
+                                                href="https://docs.gorgias.com/macros/macro-variables"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                variables
+                                            </a>
+                                            .
+                                        </div>
+                                    }
+                                    value={url}
+                                    onChange={(value) =>
+                                        this.setState({url: value})
                                     }
                                 />
-                            ) : (
+                                <DEPRECATED_InputField
+                                    type="select"
+                                    name="http.method"
+                                    label="HTTP Method"
+                                    value={method}
+                                    onChange={this._setMethod}
+                                    required
+                                >
+                                    {Object.values(HttpMethod).map((method) => (
+                                        <option key={method} value={method}>
+                                            {method}
+                                        </option>
+                                    ))}
+                                </DEPRECATED_InputField>
+                                {method !== HttpMethod.Get && (
+                                    <DEPRECATED_InputField
+                                        type="select"
+                                        name="http.request_content_type"
+                                        label="Request content type"
+                                        required
+                                        value={requestContentType}
+                                        onChange={(value) =>
+                                            this._onRequestContentTypeChange(
+                                                value
+                                            )
+                                        }
+                                    >
+                                        <option value={ContentType.Json}>
+                                            {ContentType.Json}
+                                        </option>
+                                        <option value={ContentType.Form}>
+                                            {ContentType.Form}
+                                        </option>
+                                    </DEPRECATED_InputField>
+                                )}
+                                <DEPRECATED_InputField
+                                    type="select"
+                                    name="http.response_content_type"
+                                    label="Response content type"
+                                    value={responseContentType}
+                                    onChange={(value) =>
+                                        this.setState({
+                                            responseContentType: value,
+                                        })
+                                    }
+                                    required
+                                >
+                                    <option value={ContentType.Json}>
+                                        {ContentType.Json}
+                                    </option>
+                                </DEPRECATED_InputField>
                                 <FormGroup>
                                     <ObjectListField
-                                        fieldName="field"
-                                        title="Form field"
-                                        fields={
-                                            form instanceof Array
-                                                ? (form as any)
-                                                : []
-                                        }
-                                        onChange={(form) =>
-                                            this.setState({form})
+                                        title="Header"
+                                        fieldName="header"
+                                        fields={headers}
+                                        validate={this._validateHeaderName}
+                                        onChange={(value: Field[]) =>
+                                            this.setState({headers: value})
                                         }
                                     />
                                 </FormGroup>
-                            ))}
+                                {method !== HttpMethod.Get &&
+                                    form &&
+                                    (requestContentType === ContentType.Json ? (
+                                        <JSONBody
+                                            form={form}
+                                            onChange={(form: HTTPForm) =>
+                                                this.setState({form})
+                                            }
+                                        />
+                                    ) : (
+                                        <FormGroup>
+                                            <ObjectListField
+                                                fieldName="field"
+                                                title="Form field"
+                                                fields={
+                                                    form instanceof Array
+                                                        ? (form as any)
+                                                        : []
+                                                }
+                                                onChange={(form) =>
+                                                    this.setState({form})
+                                                }
+                                            />
+                                        </FormGroup>
+                                    ))}
+                            </>
+                        )}
 
                         <div>
-                            <Button
-                                type="submit"
-                                className="mr-2"
-                                isLoading={isSubmitting}
-                            >
-                                {isUpdate ? 'Save changes' : 'Add integration'}
-                            </Button>
-                            {isUpdate && isActive && (
-                                <Button
-                                    isLoading={isSubmitting}
-                                    intent="destructive"
-                                    onClick={() =>
-                                        deactivateIntegration(integration!.id)
-                                    }
-                                >
-                                    Deactivate HTTP integration
-                                </Button>
-                            )}
+                            {!isIncomplete && (
+                                <>
+                                    <Button
+                                        type="submit"
+                                        className="mr-2"
+                                        isLoading={isSubmitting}
+                                    >
+                                        {isUpdate
+                                            ? 'Save changes'
+                                            : 'Add integration'}
+                                    </Button>
+                                    {isUpdate && isActive && (
+                                        <Button
+                                            isLoading={isSubmitting}
+                                            intent="destructive"
+                                            onClick={() =>
+                                                deactivateIntegration(
+                                                    integration!.id
+                                                )
+                                            }
+                                        >
+                                            Deactivate HTTP integration
+                                        </Button>
+                                    )}
 
-                            {isUpdate && !isActive && (
-                                <Button
-                                    isLoading={isSubmitting}
-                                    onClick={() =>
-                                        activateIntegration(integration!.id)
-                                    }
-                                >
-                                    Re-activate HTTP integration
-                                </Button>
+                                    {isUpdate && !isActive && (
+                                        <Button
+                                            isLoading={isSubmitting}
+                                            onClick={() =>
+                                                activateIntegration(
+                                                    integration!.id
+                                                )
+                                            }
+                                        >
+                                            Re-activate HTTP integration
+                                        </Button>
+                                    )}
+                                </>
                             )}
                             {isUpdate && (
                                 <ConfirmButton

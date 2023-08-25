@@ -59,6 +59,21 @@ describe('Integration', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should display minimal information because integration is incomplete', () => {
+        const component = shallow(
+            <Integration
+                {...minProps}
+                integration={{
+                    ...baseIntegration,
+                    http: null,
+                }}
+                isUpdate
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
     it('should display data about the integration', () => {
         const component = shallow(
             <Integration

@@ -27,6 +27,7 @@ exports[`Integration should display data about the integration 1`] = `
       tag="form"
     >
       <InputField
+        disabled={false}
         label="Integration name"
         name="name"
         onChange={[Function]}
@@ -35,6 +36,7 @@ exports[`Integration should display data about the integration 1`] = `
         value="foo"
       />
       <InputField
+        disabled={false}
         label="Description"
         name="description"
         onChange={[Function]}
@@ -283,6 +285,7 @@ exports[`Integration should display data with url-encoded format 1`] = `
       tag="form"
     >
       <InputField
+        disabled={false}
         label="Integration name"
         name="name"
         onChange={[Function]}
@@ -291,6 +294,7 @@ exports[`Integration should display data with url-encoded format 1`] = `
         value="foo"
       />
       <InputField
+        disabled={false}
         label="Description"
         name="description"
         onChange={[Function]}
@@ -551,6 +555,7 @@ exports[`Integration should display default values because there is no integrati
       tag="form"
     >
       <InputField
+        disabled={false}
         label="Integration name"
         name="name"
         onChange={[Function]}
@@ -559,6 +564,7 @@ exports[`Integration should display default values because there is no integrati
         value=""
       />
       <InputField
+        disabled={false}
         label="Description"
         name="description"
         onChange={[Function]}
@@ -726,4 +732,60 @@ exports[`Integration should display loading state because the integration is loa
   minHeight="500px"
   size="40px"
 />
+`;
+
+exports[`Integration should display minimal information because integration is incomplete 1`] = `
+<div
+  className="full-width"
+>
+  <Container
+    className="pageContainer"
+    fluid={true}
+    tag="div"
+  >
+    <Alert
+      className="mb-4"
+      icon={true}
+      type="warning"
+    >
+      The settings for this HTTP integration are incomplete and it might not be working as expected. Edition mode has been disabled.
+    </Alert>
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <InputField
+        disabled={true}
+        label="Integration name"
+        name="name"
+        onChange={[Function]}
+        required={true}
+        type="text"
+        value="foo"
+      />
+      <InputField
+        disabled={true}
+        label="Description"
+        name="description"
+        onChange={[Function]}
+        type="text"
+        value=""
+      />
+      <div>
+        <ConfirmButton
+          className="float-right"
+          confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+          intent="destructive"
+          onConfirm={[Function]}
+        >
+          <ButtonIconLabel
+            icon="delete"
+          >
+            Delete HTTP integration
+          </ButtonIconLabel>
+        </ConfirmButton>
+      </div>
+    </Form>
+  </Container>
+</div>
 `;

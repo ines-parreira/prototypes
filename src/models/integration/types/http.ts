@@ -10,7 +10,7 @@ import type {Integration} from './'
 export type HttpIntegration = IntegrationBase & {
     type: IntegrationType.Http
     meta: Record<string, unknown>
-    http: HttpIntegrationMeta
+    http: Maybe<HttpIntegrationMeta>
 }
 
 export type HttpIntegrationMeta = {
