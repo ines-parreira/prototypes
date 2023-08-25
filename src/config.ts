@@ -428,16 +428,21 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         type: IntegrationType.BigCommerce,
         title: 'BigCommerce',
         description:
-            'Display customer BigCommerce profile & orders next to their ticket.',
+            'Automate basic queries, display customer profiles, and manage BigCommerce orders without switching tabs.',
         image: '/img/integrations/bigcommerce.svg',
-        benefits: [],
+        benefits: [
+            'Stop asking for information you already have. View order history and customer data in rich customer profiles, right inside the ticket view. No more switching tabs to copy/paste, or asking customers for information you already have.',
+            'Personalize customer messages (even automated ones). Automatically insert customer data (like names, order numbers, and shipping addresses) into your responses. Never choose between a fast response or a personalized answer again.',
+            'Manage BigCommerce orders directly from your helpdesk. Create, duplicate, and refund BigCommerce orders within Gorgias. No need to keep BigCommerce open in another tab.',
+        ],
         categories: [Category.FEATURED, Category.ECOMMERCE],
         longDescription:
-            "<p>BigCommerce is an ecommerce platform that provides 'software as a service' services to retailers. The company’s platform includes online store creation, search engine optimization, hosting, marketing and security.</p><p>With Gorgias, you can:</p><ul><li>View BigCommerce customer and order information in a customer's ticket.</li><li>Easily access links to customer and order profile.</li></ul>",
+            'Connect to BigCommerce in under a minute to harness the power of customer data and automated customer service.',
         screenshots: [
-            '/img/integrations/screenshots/bigcommerce-1.png',
-            '/img/integrations/screenshots/bigcommerce-2.png',
-            '/img/integrations/screenshots/bigcommerce-3.png',
+            '/img/integrations/screenshots/bigcommerce-1.jpg',
+            '/img/integrations/screenshots/bigcommerce-2.jpg',
+            '/img/integrations/screenshots/bigcommerce-3.jpg',
+            '/img/integrations/screenshots/bigcommerce-4.jpg',
         ],
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails: 'Contact BigCommerce for pricing details.',
