@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react'
+import React, {useState, useMemo, useEffect} from 'react'
 import {updateCustomFieldState} from 'state/ticket/actions'
 import {createInputId} from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField/DropdownField'
 import {Ticket} from 'models/ticket/types'
@@ -9,7 +9,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import InTicketSuggestionContainer from './InTicketSuggestionContainer'
 import SuggestionHeader from './SuggestionHeader'
 
-import css from './RuleSuggestion.less'
+import css from './AISuggestionContactReason.less'
 
 type Props = {
     ticket: Ticket
@@ -19,6 +19,7 @@ export default function ContactReasonSuggestion({ticket}: Props) {
     const dispatch = useAppDispatch()
     const {mutate} = useUpdateOrDeleteTicketFieldValue()
     const [isConfirmed, setConfirmed] = useState(false)
+    const [collapse, setCollapse] = useState(false)
 
     const contactReasonPrediction = useMemo(
         () =>
@@ -48,40 +49,51 @@ export default function ContactReasonSuggestion({ticket}: Props) {
         contactReasonElement?.focus()
     }
 
-    const handleConfirm = () => {
-        setConfirmed(true)
-        setTimeout(() => {
-            if (!contactReasonPrediction || !contactReasonPrediction.prediction)
-                return
-            dispatch(
-                updateCustomFieldState({
-                    id: contactReasonPrediction.id,
-                    value: contactReasonPrediction.value,
-                    prediction: {
-                        ...contactReasonPrediction.prediction,
-                        confirmed: true,
-                        modified: true,
-                    },
-                })
-            )
-            mutate([
-                {
-                    fieldType: 'Ticket',
-                    holderId: ticket.id,
-                    fieldId: contactReasonPrediction.id,
-                    value: contactReasonPrediction.value,
+    const confirmPrediction = () => {
+        if (!contactReasonPrediction || !contactReasonPrediction.prediction)
+            return
+        dispatch(
+            updateCustomFieldState({
+                id: contactReasonPrediction.id,
+                value: contactReasonPrediction.value,
+                prediction: {
+                    ...contactReasonPrediction.prediction,
+                    confirmed: true,
+                    modified: true,
                 },
-            ])
-        }, 1500)
+            })
+        )
+        mutate([
+            {
+                fieldType: 'Ticket',
+                holderId: ticket.id,
+                fieldId: contactReasonPrediction.id,
+                value: contactReasonPrediction.value,
+            },
+        ])
     }
 
+    useEffect(() => {
+        if (isConfirmed) {
+            setTimeout(() => {
+                setCollapse(true)
+            }, 1500)
+        }
+    }, [isConfirmed])
+
     return (
-        <InTicketSuggestionContainer>
+        <InTicketSuggestionContainer
+            className={css.container}
+            collapse={collapse}
+            onCollapse={confirmPrediction}
+        >
             <SuggestionHeader
                 actionsContent={
                     <div className={css.buttons}>
                         {isConfirmed ? (
-                            <span>Thanks for the feedback!</span>
+                            <span className={css.feedback}>
+                                Thanks for the feedback!
+                            </span>
                         ) : (
                             <>
                                 <Button
@@ -94,7 +106,7 @@ export default function ContactReasonSuggestion({ticket}: Props) {
                                 <Button
                                     intent="primary"
                                     size="small"
-                                    onClick={handleConfirm}
+                                    onClick={() => setConfirmed(true)}
                                 >
                                     <ButtonIconLabel
                                         icon="check_circle"
@@ -110,7 +122,12 @@ export default function ContactReasonSuggestion({ticket}: Props) {
                 infoContent={
                     <span>
                         Our AI detected{' '}
-                        <b>{contactReasonPrediction?.prediction?.predicted}</b>{' '}
+                        <b>
+                            {contactReasonPrediction?.prediction?.predicted.replace(
+                                /::/g,
+                                ' - '
+                            )}
+                        </b>{' '}
                         as the Contact reason.
                     </span>
                 }

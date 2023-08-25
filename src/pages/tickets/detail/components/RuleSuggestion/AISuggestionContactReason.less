@@ -1,12 +1,18 @@
-:local {
-    .buttonsContainer {
-        align-items: center;
-        display: flex;
-        margin-right: 5.35px;
+@import '~css/new/layout.less';
+@import '~css/new/typographyTokens';
 
-        .buttons {
-            display: flex;
-            gap: 4px;
-        }
+:local {
+    .container {
+        margin: -16px 0 16px; // 16px is the size of the TicketHeaderWrapper parent container
+    }
+
+    .buttons {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        padding-bottom: @layout-spacing-xxs;
+    }
+
+    .feedback {
+        font-size: @component-button-small-font-size;
     }
 }

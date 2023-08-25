@@ -3,7 +3,7 @@
 exports[`RuleSuggestion should display RuleSuggestion 1`] = `
 <div>
   <div
-    class="container"
+    class="container collapse show"
   >
     <div
       class="avatar"
@@ -193,7 +193,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
 exports[`RuleSuggestion should display in preview for large suggestion body 1`] = `
 <div>
   <div
-    class="container"
+    class="container collapse show"
   >
     <div
       class="avatar"

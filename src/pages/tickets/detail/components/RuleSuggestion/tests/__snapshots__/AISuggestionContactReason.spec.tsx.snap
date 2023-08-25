@@ -3,7 +3,7 @@
 exports[`<AISuggestionContactReason /> should match snapshot 1`] = `
 <div>
   <div
-    class="container"
+    class="container container collapse show"
   >
     <div
       class="avatar"
@@ -50,7 +50,7 @@ exports[`<AISuggestionContactReason /> should match snapshot 1`] = `
           Our AI detected
            
           <b>
-            Order::Request
+            Order - Request
           </b>
            
           as the Contact reason.
