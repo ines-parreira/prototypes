@@ -2,9 +2,9 @@ import React from 'react'
 
 import PageHeader from 'pages/common/components/PageHeader'
 
-import css from './TicketFieldsStatsPage.less'
+import css from './TicketFieldsStatsPagePlaceholder.less'
 
-export default function TicketFieldStatsPage() {
+export default function TicketFieldsStatsPagePlaceholder() {
     return (
         <div className={css.layout}>
             <PageHeader title="Ticket fields" />

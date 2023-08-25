@@ -22,6 +22,9 @@ export default function StatsNavbarView() {
     const hasAnalyticsNewAgentPerformance: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
 
+    const hasAnalyticsTicketInsights: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsTicketInsights]
+
     const [
         isAutomationSubscriptionModalOpen,
         setIsAutomationSubscriptionModal,
@@ -71,12 +74,21 @@ export default function StatsNavbarView() {
                     >
                         Busiest times of days
                     </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/ticket-fields"
-                    >
-                        Ticket Fields
-                    </NavbarLink>
+                    {hasAnalyticsTicketInsights ? (
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/ticket-insights"
+                        >
+                            Ticket insights
+                        </NavbarLink>
+                    ) : (
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/ticket-fields"
+                        >
+                            Ticket Fields
+                        </NavbarLink>
+                    )}
                     <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/tags">
                         Tags
                     </NavbarLink>

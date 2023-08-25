@@ -101,7 +101,7 @@ import CurrentHelpCenter from './settings/helpCenter/providers/CurrentHelpCenter
 import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from './settings/helpCenter/providers/SupportedLocales'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
-import TicketFieldsStats from './stats/TicketFieldsStatsPage'
+import TicketFieldsStatsPagePlaceholder from './stats/TicketFieldsStatsPagePlaceholder'
 import SupportPerformanceTags from './stats/SupportPerformanceTags'
 import ImportPhoneNumber from './tasks/detail/ImportPhoneNumber'
 import SupportPerformanceChannels from './stats/SupportPerformanceChannels'
@@ -150,6 +150,7 @@ import ConnectedChannelsViewContainer from './automation/connectedChannels/Conne
 import WorkflowsPaywallView from './automation/workflows/WorkflowsPaywallView'
 import WorkflowTemplatesViewContainer from './automation/workflows/WorkflowTemplatesViewContainer'
 import SelfServiceContactFormsProvider from './automation/common/providers/SelfServiceContactFormsProvider'
+import SupportPerformanceTicketInsights from './stats/SupportPerformanceTicketInsights'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -459,6 +460,8 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     )
     const hasAnalyticsNewAgentPerformance: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
+    const hasAnalyticsTicketInsights: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsTicketInsights]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -527,14 +530,25 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                         navbar: StatsNavbarContainer,
                     })}
                 />
-                <Route
-                    exact
-                    path={`${path}/ticket-fields`}
-                    render={appRender({
-                        content: TicketFieldsStats,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
+                {hasAnalyticsTicketInsights ? (
+                    <Route
+                        exact
+                        path={`${path}/ticket-insights`}
+                        render={appRender({
+                            content: SupportPerformanceTicketInsights,
+                            navbar: StatsNavbarContainer,
+                        })}
+                    />
+                ) : (
+                    <Route
+                        exact
+                        path={`${path}/ticket-fields`}
+                        render={appRender({
+                            content: TicketFieldsStatsPagePlaceholder,
+                            navbar: StatsNavbarContainer,
+                        })}
+                    />
+                )}
                 <Route
                     exact
                     path={`${path}/tags`}
