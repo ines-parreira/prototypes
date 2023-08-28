@@ -1,8 +1,6 @@
 import React, {useMemo} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Tooltip from 'pages/common/components/Tooltip'
 import {
     logEvent,
@@ -52,8 +50,6 @@ export const PreviewChannelButton = ({
     url,
     channel,
 }: PreviewChannelButtonProps) => {
-    const isAAOPreviewModeEnabled = useFlags()[FeatureFlagKey.AAOPreviewMode]
-
     const onPreview = () => {
         logEvent(SegmentEvent.PreviewModeClicked, {
             channel: channel?.type ?? DEFAULT_CHANNEL_TYPE,
@@ -85,7 +81,7 @@ export const PreviewChannelButton = ({
         }
     }, [channel])
 
-    return isAAOPreviewModeEnabled ? (
+    return (
         <>
             <Tooltip
                 placement="bottom"
@@ -122,5 +118,5 @@ export const PreviewChannelButton = ({
                 </ButtonIconLabel>
             </Button>
         </>
-    ) : null
+    )
 }

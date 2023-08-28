@@ -47,7 +47,6 @@ export enum FeatureFlagKey {
     SpotlightGlobalSearch = 'spotlight-global-search',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
-    AAOPreviewMode = 'aao-preview-mode',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     TicketNavigationArrows = 'ticket-navigation-arrows',
 }
