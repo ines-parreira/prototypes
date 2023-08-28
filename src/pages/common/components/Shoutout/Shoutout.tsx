@@ -28,7 +28,6 @@ interface ShoutoutPerson {
 
 export const SHOUTOUT_MAX_PERSONS = 5
 export const SHOUTOUT_HEIGHT_PX = 82
-export const SHOUTOUT_NO_PERSONS_PLACEHOLDER = 'N/A'
 export const SHOUTOUT_NO_VALUE_PLACEHOLDER = '-'
 
 export default function Shoutout({
@@ -46,7 +45,7 @@ export default function Shoutout({
     const firstPerson: ShoutoutPerson | undefined = persons[0]
 
     const getLabel = () => {
-        if (persons.length === 0) return SHOUTOUT_NO_PERSONS_PLACEHOLDER
+        if (persons.length === 0) return SHOUTOUT_NO_VALUE_PLACEHOLDER
         if (moreThanOnePerson)
             return multiplePersonsLabel instanceof Function
                 ? multiplePersonsLabel(persons.length)
@@ -65,7 +64,13 @@ export default function Shoutout({
         <div className={classNames(css.card, className)} data-testid={testId}>
             {persons.length !== 1 ? (
                 <div className={css.avatarPlaceholder}>
-                    <i className="material-icons">people</i>
+                    {!persons.length ? (
+                        <span className={css.noValuePlaceholder}>
+                            {SHOUTOUT_NO_VALUE_PLACEHOLDER}
+                        </span>
+                    ) : (
+                        <i className="material-icons">people</i>
+                    )}
                 </div>
             ) : (
                 <Avatar

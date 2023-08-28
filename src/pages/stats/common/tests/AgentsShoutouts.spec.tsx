@@ -16,10 +16,7 @@ import {Metric} from 'hooks/reporting/useMetricPerDimension'
 import {TicketDimension, TicketMeasure} from 'models/reporting/types'
 import {initialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {
-    SHOUTOUT_NO_PERSONS_PLACEHOLDER,
-    SHOUTOUT_NO_VALUE_PLACEHOLDER,
-} from 'pages/common/components/Shoutout/Shoutout'
+import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
 import {TableLabels} from '../../TableConfig'
 import AgentsShoutouts from '../../AgentsShoutoutsGrid'
 
@@ -185,10 +182,7 @@ describe('<AgentsShoutouts />', () => {
             screen.getByTestId(`shoutout-for-${TicketMeasure.SurveyScore}`)
         )
         expect(
-            satisfactionShoutout.getByText(SHOUTOUT_NO_PERSONS_PLACEHOLDER)
-        ).toBeInTheDocument()
-        expect(
-            satisfactionShoutout.getByText(SHOUTOUT_NO_VALUE_PLACEHOLDER)
-        ).toBeInTheDocument()
+            satisfactionShoutout.getAllByText(SHOUTOUT_NO_VALUE_PLACEHOLDER)
+        ).toHaveLength(3)
     })
 })
