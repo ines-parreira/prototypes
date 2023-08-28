@@ -86,7 +86,7 @@ export default function ColorPicker({
                 className={css.input}
                 value={value}
                 onChange={(evt) => {
-                    onChange(evt.target.value)
+                    onChange(evt.target.value.trim())
                 }}
                 placeholder="ex: #eeeeee"
             />

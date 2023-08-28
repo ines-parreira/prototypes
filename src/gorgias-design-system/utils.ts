@@ -9,13 +9,17 @@ import {gorgiasColors} from './styles'
  * @param amount The amount to set the lightness for. A number between 0 and 1.
  */
 export const setLightness = (color = '#000000', amount = 0.95) => {
-    const [_hue, _saturation, lightness] = parseToHsla(color)
+    try {
+        const [_hue, _saturation, lightness] = parseToHsla(color)
 
-    if (lightness > amount) {
-        return darken(color, lightness - amount)
+        if (lightness > amount) {
+            return darken(color, lightness - amount)
+        }
+
+        return lighten(color, amount - lightness)
+    } catch (err) {
+        return gorgiasColors.hoverColor
     }
-
-    return lighten(color, amount - lightness)
 }
 
 /**
@@ -24,9 +28,12 @@ export const setLightness = (color = '#000000', amount = 0.95) => {
  * @param amount The amount to lighten the color by. A number between 0 and 1.
  */
 export const relativeLighten = (color = '#000000', amount = 0.2) => {
-    const [_hue, _saturation, lightness] = parseToHsla(color)
-
-    return lighten(color, lightness * amount)
+    try {
+        const [_hue, _saturation, lightness] = parseToHsla(color)
+        return lighten(color, lightness * amount)
+    } catch (err) {
+        return gorgiasColors.white
+    }
 }
 
 /**
@@ -35,9 +42,12 @@ export const relativeLighten = (color = '#000000', amount = 0.2) => {
  * @param amount The amount to lighten the color by. A number between 0 and 1.
  */
 export const relativeDarken = (color = '#000000', amount = 0.2) => {
-    const [_hue, _saturation, lightness] = parseToHsla(color)
-
-    return darken(color, lightness * amount)
+    try {
+        const [_hue, _saturation, lightness] = parseToHsla(color)
+        return darken(color, lightness * amount)
+    } catch (err) {
+        return gorgiasColors.dark
+    }
 }
 
 /**
