@@ -22,7 +22,6 @@ describe('UsageAndPlansView', () => {
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={currentProductsUsage}
-                    isCurrentSubscriptionCanceled={false}
                 />
             </Provider>
         )

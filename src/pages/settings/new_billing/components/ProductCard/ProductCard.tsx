@@ -15,11 +15,7 @@ import {
     getCheapestProductPrices,
     getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
-import {
-    BillingBanner,
-    CurrentUsagePerProduct,
-    TicketPurpose,
-} from 'state/billing/types'
+import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {isAAOLegacyPrice, isTrialVoiceOrSMSPrice} from 'models/billing/utils'
@@ -34,8 +30,6 @@ export type ProductCardProps = {
     usage?: CurrentUsagePerProduct | null
     banner?: BillingBanner
     isDisabled: boolean
-    isCurrentSubscriptionCanceled: boolean
-    contactBilling: (ticketPurpose: TicketPurpose) => void
 }
 
 const ProductCard = ({
@@ -44,8 +38,6 @@ const ProductCard = ({
     usage,
     banner,
     isDisabled,
-    isCurrentSubscriptionCanceled,
-    contactBilling,
 }: ProductCardProps) => {
     const cheapestPrices = useAppSelector(getCheapestProductPrices)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
@@ -134,7 +126,7 @@ const ProductCard = ({
                 )}
                 <Button
                     intent="primary"
-                    isDisabled={isDisabled || isCurrentSubscriptionCanceled}
+                    isDisabled={isDisabled}
                     onClick={() =>
                         history.push(`${BILLING_PROCESS_PATH}/${type}`)
                     }
@@ -144,28 +136,19 @@ const ProductCard = ({
                 </Button>
             </div>
         )
-    }, [
-        cheapestPrices,
-        type,
-        currency,
-        interval,
-        history,
-        isDisabled,
-        isCurrentSubscriptionCanceled,
-    ])
+    }, [cheapestPrices, type, currency, interval, history, isDisabled])
 
     const updateContainer = useMemo(
         () => (
             <Button
                 intent="primary"
                 onClick={() => history.push(`${BILLING_PROCESS_PATH}/${type}`)}
-                isDisabled={isCurrentSubscriptionCanceled}
                 id={`productCardButton_${type}`}
             >
                 Update Plan
             </Button>
         ),
-        [history, type, isCurrentSubscriptionCanceled]
+        [history, type]
     )
 
     const counter = useMemo(() => {
@@ -275,22 +258,6 @@ const ProductCard = ({
                     {isActive && extraCost}
                 </div>
             </div>
-            {isCurrentSubscriptionCanceled && (
-                <Tooltip
-                    target={`productCardButton_${type}`}
-                    placement="top-end"
-                    className={css.tooltip}
-                    autohide={false}
-                >
-                    Your subscription is cancelled. To reactivate, please{' '}
-                    <span
-                        className={classNames('text-primary', css.contactUs)}
-                        onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
-                    >
-                        contact us
-                    </span>
-                </Tooltip>
-            )}
         </div>
     )
 }

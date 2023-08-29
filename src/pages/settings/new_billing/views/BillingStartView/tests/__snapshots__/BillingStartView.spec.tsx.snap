@@ -51,16 +51,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
           <div
             class="generalInfoItem"
           >
-            Your trial has ended. Please
-             
-            <a
-              class="trialEndedAnchor"
-              to="/app/settings/billing/payment"
-            >
-              add a payment method
-            </a>
-             
-            and select a plan to continue using Gorgias.
+            Your trial has ended. Please select a plan and add a payment method.
           </div>
           <div
             class="generalInfoItem"
@@ -120,8 +111,8 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   class="subscribeContainer"
                 >
                   <button
-                    aria-disabled="true"
-                    class="wrapper fill primary medium isDisabled"
+                    aria-disabled="false"
+                    class="wrapper fill primary medium"
                     id="productCardButton_helpdesk"
                     type="button"
                   >
@@ -173,8 +164,8 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   class="subscribeContainer"
                 >
                   <button
-                    aria-disabled="true"
-                    class="wrapper fill primary medium isDisabled"
+                    aria-disabled="false"
+                    class="wrapper fill primary medium"
                     id="productCardButton_automation"
                     type="button"
                   >
@@ -226,8 +217,8 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   class="subscribeContainer"
                 >
                   <button
-                    aria-disabled="true"
-                    class="wrapper fill primary medium isDisabled"
+                    aria-disabled="false"
+                    class="wrapper fill primary medium"
                     id="productCardButton_voice"
                     type="button"
                   >
@@ -279,8 +270,8 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   class="subscribeContainer"
                 >
                   <button
-                    aria-disabled="true"
-                    class="wrapper fill primary medium isDisabled"
+                    aria-disabled="false"
+                    class="wrapper fill primary medium"
                     id="productCardButton_sms"
                     type="button"
                   >

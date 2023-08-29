@@ -11,16 +11,7 @@ exports[`UsageAndPlansView should render 1`] = `
       <div
         class="generalInfoItem"
       >
-        Your trial has ended. Please
-         
-        <a
-          class="trialEndedAnchor"
-          to="/app/settings/billing/payment"
-        >
-          add a payment method
-        </a>
-         
-        and select a plan to continue using Gorgias.
+        Your trial has ended. Please select a plan and add a payment method.
       </div>
       <div
         class="generalInfoItem"

@@ -302,9 +302,6 @@ const BillingStartView = () => {
                                 voiceBanner={voiceBanner}
                                 smsBanner={smsBanner}
                                 helpdeskBanner={helpdeskBanner}
-                                isCurrentSubscriptionCanceled={
-                                    isCurrentSubscriptionCanceled
-                                }
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENT_PATH}>

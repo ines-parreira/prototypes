@@ -8,6 +8,12 @@ export const BILLING_PAYMENT_FREQUENCY_PATH = `${BILLING_PAYMENT_PATH}/frequency
 export const BILLING_INFORMATION_PATH = `${BILLING_PAYMENT_PATH}/billing-information`
 export const BILLING_PAYMENTS_HISTORY_PATH = `${BILLING_BASE_PATH}/payment-history`
 
+export const SELECTED_PRODUCTS_SESSION_STORAGE_KEY =
+    'billing:trialOrCanceledSubscription:selectedProducts'
+
+export const ACTIVATE_PAYMENT_WITH_SHOPIFY_URL =
+    '/integrations/shopify/billing/activate/'
+
 export const INTERVAL = {
     Month: 'month',
     Year: 'year',

@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
 import {createStripeCardToken} from 'utils/stripe'
+import {account} from 'fixtures/account'
 
 import {
     HELPDESK_PRODUCT_ID,
@@ -12,6 +13,7 @@ import {
     products,
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
+import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from 'pages/settings/new_billing/constants'
 import PaymentMethodView from '../PaymentMethodView'
 
 const mockedDispatch = jest.fn()
@@ -67,16 +69,17 @@ jest.mock('utils', () => {
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
 const store = mockedStore({
+    currentAccount: fromJS({
+        ...account,
+        current_subscription: {
+            products: {
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+            },
+        },
+    }),
     billing: fromJS({
         invoices: [],
         products,
-        currentAccount: fromJS({
-            current_subscription: {
-                products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-                },
-            },
-        }),
         contact: {
             email: 'hello@example.com',
             shipping: {
@@ -118,6 +121,28 @@ const store = mockedStore({
 })
 
 describe('PaymentMethodView', () => {
+    beforeEach(() => {
+        const selectedPlans = {
+            helpdesk: {
+                plan: basicMonthlyHelpdeskPrice,
+                isSelected: true,
+            },
+            automation: {
+                isSelected: false,
+            },
+            voice: {
+                isSelected: false,
+            },
+            sms: {
+                isSelected: false,
+            },
+        }
+        window.sessionStorage.setItem(
+            SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
+            JSON.stringify(selectedPlans)
+        )
+    })
+
     it('renders the component', () => {
         const {getByText} = renderWithRouter(
             <Provider store={store}>

@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
 
 import classNames from 'classnames'
@@ -22,7 +22,6 @@ import SummaryTotal from '../../components/SummaryTotal'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection'
 import SummaryFooter from '../../components/SummaryFooter'
 import {
-    BILLING_BASE_PATH,
     ENTERPRISE_PRICE_ID,
     PRICING_DETAILS_URL,
     PRODUCT_INFO,
@@ -30,6 +29,7 @@ import {
 
 import {formatNumTickets} from '../../utils/formatAmount'
 import {useBillingPlans} from '../../hooks/useBillingPlan'
+import {useCreditCard} from '../../hooks/useCreditCard'
 import css from './BillingProcessView.less'
 
 type Params = {
@@ -75,7 +75,6 @@ const BillingProcessView = ({
     isCurrentSubscriptionCanceled,
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
-    const history = useHistory()
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
 
@@ -104,12 +103,25 @@ const BillingProcessView = ({
         totalProductAmount,
         interval,
         updateSubscription,
+        startSubscription,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
         selectedProduct,
         filterByInterval: true,
     })
+
+    const {hasCreditCard, shouldPayWithShopify} = useCreditCard({
+        contactBilling,
+        dispatchBillingError,
+    })
+
+    const ctaText = useMemo(() => {
+        if (isCurrentSubscriptionCanceled && hasCreditCard) {
+            return 'Subscribe now'
+        }
+        return 'Update Subscription'
+    }, [isCurrentSubscriptionCanceled, hasCreditCard])
 
     const voiceOrSMSChanged =
         (selectedPlans[ProductType.Voice].isSelected &&
@@ -135,13 +147,6 @@ const BillingProcessView = ({
             dispatch(dismissNotification('billing-error'))
         }
     }, [dispatch])
-
-    // if subscription is canceled, return to billing base path
-    useEffect(() => {
-        if (isCurrentSubscriptionCanceled) {
-            history.push(BILLING_BASE_PATH)
-        }
-    }, [isCurrentSubscriptionCanceled, history])
 
     const messageForEnterprise = useMemo(() => {
         let message =
@@ -310,7 +315,7 @@ const BillingProcessView = ({
                                 currency={helpdeskPrices?.[0].currency}
                             />
                         </div>
-                        {!isTrialing && (
+                        {!isTrialing && !isCurrentSubscriptionCanceled && (
                             <SummaryPaymentSection
                                 setIsPaymentEnabled={setIsPaymentEnabled}
                                 isCreditCardFetched={isCreditCardFetched}
@@ -319,14 +324,21 @@ const BillingProcessView = ({
                         <SummaryFooter
                             isPaymentEnabled={isPaymentEnabled}
                             isTrialing={isTrialing}
+                            isCurrentSubscriptionCanceled={
+                                isCurrentSubscriptionCanceled
+                            }
                             anyProductChanged={anyProductChanged}
                             anyNewProductSelected={anyNewProductSelected}
                             anyDowngradedPlanSelected={
                                 !!anyDowngradedPlanSelected
                             }
                             updateSubscription={updateSubscription}
+                            startSubscription={startSubscription}
                             periodEnd={periodEnd}
-                            ctaText="Update Subscription"
+                            selectedPlans={selectedPlans}
+                            ctaText={ctaText}
+                            hasCreditCard={hasCreditCard}
+                            shouldPayWithShopify={shouldPayWithShopify}
                         />
                     </Card>
                 )}

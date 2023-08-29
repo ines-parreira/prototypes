@@ -1,57 +1,98 @@
 import React, {useMemo, useState} from 'react'
 import classNames from 'classnames'
+import {useSessionStorage} from 'react-use'
 
 import {Link, useHistory} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 
 import {reportError} from 'utils/errors'
-import {BILLING_BASE_PATH, BILLING_PAYMENT_CARD_PATH} from '../../constants'
+import {ShopifyBillingStatus} from 'state/currentAccount/types'
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_CARD_PATH,
+    SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
+} from '../../constants'
+import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import css from './SummaryFooter.less'
 
 export type SummaryFooterProps = {
     isPaymentEnabled: boolean
     isTrialing: boolean
+    isCurrentSubscriptionCanceled?: boolean
     anyProductChanged: boolean
     anyNewProductSelected: boolean
     anyDowngradedPlanSelected: boolean
     updateSubscription?: () => Promise<void | [void, void]>
+    startSubscription?: () => Promise<void | [void, void]>
     periodEnd: string
     hideSubscribeButton?: boolean
     isPaymentMethodFooter?: boolean
     isPaymentMethodValid?: boolean
     handleConfirmTerms?: (termsChecked: boolean) => void
     ctaText: string
+    selectedPlans?: SelectedPlans
+    hasCreditCard?: boolean
+    shouldPayWithShopify?: boolean
+    shopifyBillingStatus?: ShopifyBillingStatus
 }
 
 const SummaryFooter = ({
     isPaymentEnabled,
     isTrialing,
+    isCurrentSubscriptionCanceled = false,
     anyProductChanged,
     anyNewProductSelected,
     anyDowngradedPlanSelected,
     updateSubscription,
+    startSubscription,
     periodEnd,
     hideSubscribeButton = false,
     isPaymentMethodFooter = false,
     isPaymentMethodValid = true,
     handleConfirmTerms,
     ctaText,
+    selectedPlans,
+    hasCreditCard = true,
+    shouldPayWithShopify = false,
+    shopifyBillingStatus,
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const [isSubscriptionUpdating, setIsSubscriptionUpdating] = useState(false)
+    const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
+        SELECTED_PRODUCTS_SESSION_STORAGE_KEY
+    )
     const history = useHistory()
 
     const handleUpdateSubscription = async () => {
         setIsSubscriptionUpdating(true)
         try {
             await updateSubscription?.()
+
+            // Start the subscription if it was previously canceled and the customer has the payment method set
+            if (
+                isCurrentSubscriptionCanceled &&
+                (hasCreditCard ||
+                    (shouldPayWithShopify &&
+                        shopifyBillingStatus === ShopifyBillingStatus.Active))
+            ) {
+                await startSubscription?.()
+            }
         } catch (error) {
             reportError(error as Error)
         } finally {
             setIsSubscriptionUpdating(false)
+            if (selectedPlans) {
+                setSessionSelectedPlans(selectedPlans)
+            }
 
             if (isTrialing && !isPaymentMethodFooter) {
                 history.push(BILLING_PAYMENT_CARD_PATH)
+            } else if (
+                shouldPayWithShopify &&
+                shopifyBillingStatus !== ShopifyBillingStatus.Active
+            ) {
+                history.push(ACTIVATE_PAYMENT_WITH_SHOPIFY_URL)
             } else {
                 history.push(BILLING_BASE_PATH)
             }
@@ -61,7 +102,7 @@ const SummaryFooter = ({
     const legalText = useMemo(() => {
         let text
 
-        if (isTrialing) {
+        if (isTrialing || isCurrentSubscriptionCanceled) {
             if (!isPaymentMethodFooter) {
                 return null
             }
@@ -83,25 +124,33 @@ const SummaryFooter = ({
                 {text}
             </div>
         )
-    }, [isTrialing, isPaymentMethodFooter])
+    }, [isTrialing, isCurrentSubscriptionCanceled, isPaymentMethodFooter])
 
     return (
         <div
             className={classNames(css.container, {
-                [css.disabled]: !isTrialing && !isPaymentEnabled,
+                [css.disabled]:
+                    !isTrialing &&
+                    !isCurrentSubscriptionCanceled &&
+                    !isPaymentEnabled,
             })}
         >
             {anyProductChanged && (
                 <>
                     {legalText}
-                    {(!isTrialing || isPaymentMethodFooter) &&
+                    {((!isTrialing && !isCurrentSubscriptionCanceled) ||
+                        isPaymentMethodFooter) &&
                         anyNewProductSelected && (
                             <div className={css.checkboxLegalTerms}>
                                 <input
                                     type="checkbox"
                                     className={css.checkbox}
                                     id="terms"
-                                    disabled={!isTrialing && !isPaymentEnabled}
+                                    disabled={
+                                        !isTrialing &&
+                                        !isCurrentSubscriptionCanceled &&
+                                        !isPaymentEnabled
+                                    }
                                     checked={isTermsChecked}
                                     onChange={() => {
                                         setIsTermsChecked(!isTermsChecked)
@@ -157,7 +206,7 @@ const SummaryFooter = ({
                 <div className={css.button}>
                     <Button
                         isDisabled={
-                            isTrialing
+                            isTrialing || isCurrentSubscriptionCanceled
                                 ? !isPaymentMethodValid ||
                                   (!isTermsChecked &&
                                       anyNewProductSelected &&

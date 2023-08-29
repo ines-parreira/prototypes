@@ -15,7 +15,10 @@ import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/common/components/Loader/Loader'
-import {BILLING_PAYMENT_CARD_PATH} from '../../constants'
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_PAYMENT_CARD_PATH,
+} from '../../constants'
 import css from './SummaryPaymentSection.less'
 
 export type SummaryPaymentSectionProps = {
@@ -116,7 +119,7 @@ const SummaryPaymentSection = ({
                         allowHTML: true,
                         actionHTML: (
                             <Link
-                                to="/integrations/shopify/billing/activate/"
+                                to={ACTIVATE_PAYMENT_WITH_SHOPIFY_URL}
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -137,7 +140,7 @@ const SummaryPaymentSection = ({
                         allowHTML: true,
                         actionHTML: (
                             <Link
-                                to="/integrations/shopify/billing/activate/"
+                                to={ACTIVATE_PAYMENT_WITH_SHOPIFY_URL}
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -217,7 +220,7 @@ const SummaryPaymentSection = ({
                             Payment with Shopify is canceled.
                         </div>
                         <Link
-                            to="/integrations/shopify/billing/activate/"
+                            to={ACTIVATE_PAYMENT_WITH_SHOPIFY_URL}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -252,7 +255,7 @@ const SummaryPaymentSection = ({
                             Payment with Shopify is inactive.
                         </div>
                         <Link
-                            to="/integrations/shopify/billing/activate/"
+                            to={ACTIVATE_PAYMENT_WITH_SHOPIFY_URL}
                             target="_blank"
                             rel="noopener noreferrer"
                         >

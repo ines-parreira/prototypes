@@ -475,7 +475,7 @@ export const useBillingPlans = ({
     }, [handleHelpdeskAndAutomationPlansChange, handleSMSAndVoicePlansChange])
 
     const startSubscription = useCallback(async () => {
-        if (!isFreeTrial) return
+        if (!isFreeTrial && !isSubscriptionCanceled) return
 
         const gorgiasApi = new GorgiasApi()
 
@@ -527,7 +527,7 @@ export const useBillingPlans = ({
                 })
             )
         }
-    }, [dispatch, history, isFreeTrial])
+    }, [dispatch, history, isFreeTrial, isSubscriptionCanceled])
 
     return {
         updateSubscription,

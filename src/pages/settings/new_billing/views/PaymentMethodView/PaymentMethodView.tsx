@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {Form} from 'reactstrap'
+import {useSessionStorage} from 'react-use'
 import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -17,6 +18,8 @@ import {ProductType} from '../../../../../models/billing/types'
 import SummaryTotal from '../../components/SummaryTotal'
 import SummaryFooter from '../../components/SummaryFooter'
 import {useBillingPlans} from '../../hooks/useBillingPlan'
+import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from '../../constants'
+import {SelectedPlans} from '../BillingProcessView/BillingProcessView'
 import {
     creditCardCVCNormalizer,
     creditCardExpDateNormalizer,
@@ -52,7 +55,6 @@ const PaymentMethodView = ({
     } = useCreditCard({contactBilling, dispatchBillingError})
 
     const {
-        selectedPlans,
         helpdeskProduct,
         helpdeskPrices,
         automationProduct,
@@ -64,11 +66,16 @@ const PaymentMethodView = ({
         anyDowngradedPlanSelected,
         totalProductAmount,
         interval,
+        isSubscriptionCanceled,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
         filterByInterval: true,
     })
+
+    const [selectedPlans] = useSessionStorage<SelectedPlans>(
+        SELECTED_PRODUCTS_SESSION_STORAGE_KEY
+    )
 
     const currentMonth = new Date().getMonth() + 1
 
@@ -188,7 +195,7 @@ const PaymentMethodView = ({
                                 setBillingContact={setBillingContact}
                             />
                         )}
-                        {!isTrialingSubscription && (
+                        {!isTrialingSubscription && !isSubscriptionCanceled && (
                             <Button
                                 type="submit"
                                 isLoading={isSubmitting}
@@ -205,7 +212,7 @@ const PaymentMethodView = ({
                         )}
                     </Form>
                 </Card>
-                {isTrialing && (
+                {(isTrialing || isSubscriptionCanceled) && (
                     <Card title="Summary">
                         <div className={css.summary}>
                             <div className={css.summaryHeader}>
@@ -253,6 +260,9 @@ const PaymentMethodView = ({
                         <SummaryFooter
                             isPaymentEnabled={true}
                             isTrialing={isTrialing}
+                            isCurrentSubscriptionCanceled={
+                                isSubscriptionCanceled
+                            }
                             isPaymentMethodFooter={true}
                             isPaymentMethodValid={
                                 isCardValid &&

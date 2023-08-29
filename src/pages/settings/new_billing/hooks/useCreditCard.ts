@@ -20,7 +20,11 @@ import {
 } from 'state/billing/actions'
 import {
     getCurrentAccountState,
+    getCurrentSubscription,
+    hasCreditCard as getHasCreditCard,
+    getShopifyBillingStatus,
     isTrialing,
+    shouldPayWithShopify,
 } from 'state/currentAccount/selectors'
 import GorgiasApi from 'services/gorgiasApi'
 import {createStripeCardToken} from 'utils/stripe'
@@ -42,10 +46,16 @@ export const useCreditCard = ({
 }: useCreditCardProps) => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const hasCreditCard = useAppSelector(getHasCreditCard)
+    const payWithShopify = useAppSelector(shouldPayWithShopify)
+    const shopifyBillingStatus = useAppSelector(getShopifyBillingStatus)
+
     const dispatch = useAppDispatch()
     const history = useHistory()
     const card = useAppSelector(creditCard)
     const isTrialingSubscription = useAppSelector(isTrialing)
+    const currentSubscription = useAppSelector(getCurrentSubscription)
+    const isSubscriptionCanceled = currentSubscription.isEmpty()
     const gorgiasApi = new GorgiasApi()
 
     const [fields, setFields] = useState<CreditCard>({
@@ -220,7 +230,7 @@ export const useCreditCard = ({
                 })
             )
 
-            if (isTrialingSubscription) {
+            if (isTrialingSubscription || isSubscriptionCanceled) {
                 await startSubscription()
                 history.push(`${BILLING_BASE_PATH}`)
             } else {
@@ -266,5 +276,8 @@ export const useCreditCard = ({
         updateField,
         billingContact,
         setBillingContact,
+        hasCreditCard,
+        shouldPayWithShopify: payWithShopify,
+        shopifyBillingStatus,
     }
 }

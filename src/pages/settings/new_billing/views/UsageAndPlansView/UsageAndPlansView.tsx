@@ -29,9 +29,9 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {isAAOLegacyPrice} from 'models/billing/utils'
 import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_FREQUENCY_PATH,
-    BILLING_PAYMENT_PATH,
     BILLING_PROCESS_PATH,
     DATE_FORMAT,
     INTERVAL,
@@ -48,7 +48,6 @@ type UsageAndPlansViewProps = {
     voiceBanner?: BillingBanner
     smsBanner?: BillingBanner
     helpdeskBanner?: BillingBanner
-    isCurrentSubscriptionCanceled: boolean
 }
 
 const UsageAndPlansView = ({
@@ -58,7 +57,6 @@ const UsageAndPlansView = ({
     smsBanner,
     voiceBanner,
     helpdeskBanner,
-    isCurrentSubscriptionCanceled,
 }: UsageAndPlansViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -143,7 +141,7 @@ const UsageAndPlansView = ({
                 )
             } else if (showTrialBanner) {
                 const cta = shouldPayWithShopify
-                    ? `<a href="/integrations/shopify/billing/activate/" target="_blank" rel="noopener noreferrer"> activate Billing with Shopify</a>`
+                    ? `<a href=${ACTIVATE_PAYMENT_WITH_SHOPIFY_URL} target="_blank" rel="noopener noreferrer"> activate Billing with Shopify</a>`
                     : `<a href=${BILLING_PAYMENT_CARD_PATH}>add a payment method</a>`
 
                 void dispatch(
@@ -188,14 +186,8 @@ const UsageAndPlansView = ({
                         </>
                     ) : (
                         <>
-                            Your trial has ended. Please{' '}
-                            <Link
-                                className={css.trialEndedAnchor}
-                                to={BILLING_PAYMENT_PATH}
-                            >
-                                add a payment method
-                            </Link>{' '}
-                            and select a plan to continue using Gorgias.
+                            Your trial has ended. Please select a plan and add a
+                            payment method.
                         </>
                     )}
                 </div>
@@ -281,20 +273,12 @@ const UsageAndPlansView = ({
                     usage={currentUsage?.helpdesk}
                     banner={helpdeskBanner}
                     isDisabled={isSubscribedToHelpdeskStarter}
-                    isCurrentSubscriptionCanceled={
-                        isCurrentSubscriptionCanceled
-                    }
-                    contactBilling={contactBilling}
                 />
                 <ProductCard
                     type={ProductType.Automation}
                     product={automationProduct}
                     usage={currentUsage?.automation}
                     isDisabled={isSubscribedToHelpdeskStarter}
-                    isCurrentSubscriptionCanceled={
-                        isCurrentSubscriptionCanceled
-                    }
-                    contactBilling={contactBilling}
                 />
                 <ProductCard
                     type={ProductType.Voice}
@@ -302,10 +286,6 @@ const UsageAndPlansView = ({
                     usage={currentUsage?.voice}
                     banner={voiceBanner}
                     isDisabled={isSubscribedToHelpdeskStarter}
-                    isCurrentSubscriptionCanceled={
-                        isCurrentSubscriptionCanceled
-                    }
-                    contactBilling={contactBilling}
                 />
                 <ProductCard
                     type={ProductType.SMS}
@@ -313,10 +293,6 @@ const UsageAndPlansView = ({
                     usage={currentUsage?.sms}
                     banner={smsBanner}
                     isDisabled={isSubscribedToHelpdeskStarter}
-                    isCurrentSubscriptionCanceled={
-                        isCurrentSubscriptionCanceled
-                    }
-                    contactBilling={contactBilling}
                 />
             </div>
             <div className={css.unsubscribe}>
