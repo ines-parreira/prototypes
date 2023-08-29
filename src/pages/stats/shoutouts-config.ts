@@ -24,6 +24,7 @@ export interface ShoutoutConfig {
         sorting?: OrderDirection,
         agentAssigneeId?: string
     ) => MetricWithDecile
+    queryOrder: OrderDirection
     metricName: string
     formatValue: (
         value: number | null | undefined,
@@ -49,24 +50,28 @@ const formatDuration = _partial(
 export const shoutoutsConfig: ShoutoutConfig[] = [
     {
         useQuery: useCustomerSatisfactionMetricPerAgent,
+        queryOrder: OrderDirection.Desc,
         metricName: TableLabels[TableColumn.CustomerSatisfaction],
         formatValue: formatDecimals,
         measure: TicketMeasure.SurveyScore,
     },
     {
         useQuery: useFirstResponseTimeMetricPerAgent,
+        queryOrder: OrderDirection.Asc,
         metricName: TableLabels[TableColumn.FirstResponseTime],
         formatValue: formatDuration,
         measure: TicketMeasure.FirstResponseTime,
     },
     {
         useQuery: useResolutionTimeMetricPerAgent,
+        queryOrder: OrderDirection.Asc,
         metricName: TableLabels[TableColumn.ResolutionTime],
         formatValue: formatDuration,
         measure: TicketMeasure.ResolutionTime,
     },
     {
         useQuery: useClosedTicketsMetricPerAgent,
+        queryOrder: OrderDirection.Desc,
         metricName: TableLabels[TableColumn.ClosedTickets],
         formatValue: formatDecimals,
         measure: TicketMeasure.TicketCount,

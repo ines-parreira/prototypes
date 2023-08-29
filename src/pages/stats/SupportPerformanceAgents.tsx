@@ -82,13 +82,13 @@ export default function SupportPerformanceAgents() {
                 }
             >
                 {hasShoutoutsEnabled && (
-                    <DashboardSection title="Top performers">
+                    <DashboardSection title="Top performers" className="pb-0">
                         <DashboardGridCell size={12}>
                             <AgentsShoutouts />
                         </DashboardGridCell>
                     </DashboardSection>
                 )}
-                <DashboardSection title="">
+                <DashboardSection>
                     <DashboardGridCell size={12}>
                         <ChartCard
                             title={AGENT_PERFORMANCE_SECTION_TITLE}
@@ -97,7 +97,6 @@ export default function SupportPerformanceAgents() {
                                     <HeatmapSwitch />
                                 )
                             }
-                            hint={'ASDFFDG'}
                             noPadding
                         >
                             <AgentsTable />
