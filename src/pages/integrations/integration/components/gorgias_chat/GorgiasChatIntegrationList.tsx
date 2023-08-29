@@ -105,7 +105,7 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
             >
                 <div className="mb-3">{longTypeDescription}</div>
 
-                {integrations.isEmpty() && (
+                {chats.isEmpty() && (
                     <div className="mt-3">
                         <NoIntegration
                             loading={loading.get('integrations', false)}
