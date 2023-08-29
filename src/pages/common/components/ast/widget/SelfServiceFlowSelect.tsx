@@ -91,11 +91,18 @@ export function SelfServiceFlowSelect({
                                     (opt) => opt.value === reason.reasonKey
                                 )
                             if (reasonSpecs) {
+                                const TOOLTIP_WORDS_THRESHOLD = 50
+                                const label = `Report issue: ${
+                                    reasonSpecs['label'] as string
+                                } (${issue.title})`
+
                                 options = options.push({
                                     value: reason.reasonKey,
-                                    label: `Report issue: ${
-                                        reasonSpecs['label'] as string
-                                    }`,
+                                    label,
+                                    tooltipText:
+                                        label.length > TOOLTIP_WORDS_THRESHOLD
+                                            ? label
+                                            : undefined,
                                 })
                             }
                         }

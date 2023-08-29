@@ -614,7 +614,7 @@ export default class SelectField extends Component<Props, State> {
 
                                     const wrapperId = `dropdown_item_${
                                         item.value !== null
-                                            ? item.value
+                                            ? `${item.value}_${index}`
                                             : 'null'
                                     }`
                                     const WrapperComponent = item.tooltipText
@@ -638,7 +638,7 @@ export default class SelectField extends Component<Props, State> {
 
                                     return (
                                         <WrapperComponent
-                                            key={item.value}
+                                            key={`${item.value}_${index}`}
                                             {...wrapperProps}
                                         >
                                             <DropdownItem
