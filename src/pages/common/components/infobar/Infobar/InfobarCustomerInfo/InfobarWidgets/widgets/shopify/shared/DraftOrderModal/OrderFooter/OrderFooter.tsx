@@ -10,7 +10,6 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import OrderTotals from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/OrderFooter/OrderTotals/OrderTotals'
-import {reportError} from 'utils/errors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {RootState} from 'state/types'
@@ -116,12 +115,12 @@ export class OrderFooterComponent extends Component<Props, State> {
             try {
                 tags = await fetchShopTags(integrationId, ShopifyTags.orders)
             } catch (e) {
-                reportError(e)
+                // silent fail
+                return
             }
 
-            const tagsOptions = getOptionsFromTags(tags)
             this.setState({
-                options: tagsOptions,
+                options: getOptionsFromTags(tags),
             })
         }
     }

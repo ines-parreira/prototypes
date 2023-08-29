@@ -5,7 +5,6 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {WidgetContext} from 'providers/infobar/WidgetContext'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
-import {reportError} from 'utils/errors'
 import useId from 'hooks/useId'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getActiveCustomerId} from 'state/customers/selectors'
@@ -68,7 +67,7 @@ export function EditableListWidget({
         setSelectedValues(tags)
     }
 
-    const _onFocus = () => {
+    const _onFocus = async () => {
         let tagsType = null
 
         if (data_source === 'Customer') {
@@ -87,18 +86,14 @@ export function EditableListWidget({
         }
 
         if (integrationId && tagsType) {
+            let tags: string[] = []
             try {
-                fetchShopTags(integrationId, tagsType)
-                    .then((tags) => {
-                        const tagsOptions: Option[] = getOptionsFromTags(tags)
-                        setOptions(tagsOptions)
-                    })
-                    .catch((err) => {
-                        reportError(err)
-                    })
+                tags = await fetchShopTags(integrationId, tagsType)
             } catch (err) {
-                reportError(err)
+                // silent fail
+                return
             }
+            setOptions(getOptionsFromTags(tags))
         }
     }
 
