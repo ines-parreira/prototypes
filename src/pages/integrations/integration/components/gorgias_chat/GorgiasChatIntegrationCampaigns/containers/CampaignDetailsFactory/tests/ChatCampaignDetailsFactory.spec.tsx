@@ -20,6 +20,11 @@ const integration = fromJS({
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
+jest.mock('../../../utils/canSeeCampaignImprovements', () => {
+    return {
+        canSeeCampaignImprovements: jest.fn(() => false),
+    }
+})
 
 describe('<ChatCampaignDetailsFactory />', () => {
     const defaultState = {
@@ -27,46 +32,33 @@ describe('<ChatCampaignDetailsFactory />', () => {
         integrations: fromJS(integrationsState),
     } as RootState
 
-    describe('Merchant is an alpha tester', () => {
-        beforeAll(() => {
-            jest.spyOn(
-                revenueBetaHook,
-                'useIsRevenueBetaTester'
-            ).mockImplementation(() => true)
-        })
+    it('renders the "AdvancedCampaignDetails" component if merchant is not a revenue subscriber', () => {
+        jest.spyOn(
+            revenueBetaHook,
+            'useIsRevenueBetaTester'
+        ).mockImplementation(() => true)
 
-        it('renders the "AdvancedCampaignDetails" component', () => {
-            const {getByTestId} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <ChatCampaignDetailsFactory
-                        integration={integration}
-                        id="1"
-                    />
-                </Provider>
-            )
+        const {getByTestId} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ChatCampaignDetailsFactory integration={integration} id="1" />
+            </Provider>
+        )
 
-            getByTestId('advanced-campaign-details-page')
-        })
+        getByTestId('advanced-campaign-details-page')
     })
 
-    describe('Merchant is not an alpha tester', () => {
-        beforeAll(() => {
-            jest.spyOn(
-                revenueBetaHook,
-                'useIsRevenueBetaTester'
-            ).mockImplementation(() => false)
-        })
-        it('renders the "AdvancedCampaignDetails" component', () => {
-            const {getByTestId} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <ChatCampaignDetailsFactory
-                        integration={integration}
-                        id="1"
-                    />
-                </Provider>
-            )
+    it('renders the "AdvancedCampaignDetails" component if merchant is a revenue subscriber', () => {
+        jest.spyOn(
+            revenueBetaHook,
+            'useIsRevenueBetaTester'
+        ).mockImplementation(() => false)
 
-            getByTestId('advanced-campaign-details-page')
-        })
+        const {getByTestId} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ChatCampaignDetailsFactory integration={integration} id="1" />
+            </Provider>
+        )
+
+        getByTestId('advanced-campaign-details-page')
     })
 })

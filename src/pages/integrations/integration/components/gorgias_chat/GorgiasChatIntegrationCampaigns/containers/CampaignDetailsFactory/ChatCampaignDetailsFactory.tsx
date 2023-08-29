@@ -20,6 +20,11 @@ import {
 
 import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
 
+import {canSeeCampaignImprovements} from '../../utils/canSeeCampaignImprovements'
+import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
+
+import {CampaignDetailsForm} from '../../providers/CampaignDetailsForm'
+
 import {ChatCampaign} from '../../types/Campaign'
 
 import {BaseCampaignDetails} from '../BaseCampaignDetails'
@@ -80,17 +85,31 @@ export const ChatCampaignDetailsFactory = ({
 
     return (
         <BaseCampaignDetails integration={integration}>
-            <AdvancedCampaignDetails
-                agents={memoAgents}
-                id={id}
-                integration={integration}
-                shopifyIntegration={shopify}
-                isRevenueBetaTester={isRevenueBetaTester}
-                campaign={memoCampaign}
-                createCampaign={handleCreateCampaign}
-                updateCampaign={handleUpdateCampaign}
-                deleteCampaign={handleDeleteCampaign}
-            />
+            {canSeeCampaignImprovements() ? (
+                <CampaignDetailsForm
+                    agents={memoAgents}
+                    campaign={memoCampaign}
+                    isEditMode={id !== 'new'}
+                    isShopifyStore={chatIsShopifyStore(integration)}
+                    integration={integration}
+                    shopifyIntegration={shopify}
+                    createCampaign={handleCreateCampaign}
+                    updateCampaign={handleUpdateCampaign}
+                    deleteCampaign={handleDeleteCampaign}
+                />
+            ) : (
+                <AdvancedCampaignDetails
+                    agents={memoAgents}
+                    id={id}
+                    integration={integration}
+                    shopifyIntegration={shopify}
+                    isRevenueBetaTester={isRevenueBetaTester}
+                    campaign={memoCampaign}
+                    createCampaign={handleCreateCampaign}
+                    updateCampaign={handleUpdateCampaign}
+                    deleteCampaign={handleDeleteCampaign}
+                />
+            )}
         </BaseCampaignDetails>
     )
 }

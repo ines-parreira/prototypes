@@ -13,6 +13,7 @@ import css from './style.less'
 type Props = {
     children: ReactNode
     count?: number
+    id?: string
     isValid?: boolean
     isInvalid?: boolean
     title: string
@@ -21,6 +22,7 @@ type Props = {
 export const StatefulAccordion = ({
     children,
     count,
+    id,
     isValid,
     isInvalid,
     title,
@@ -48,7 +50,7 @@ export const StatefulAccordion = ({
     }
 
     return (
-        <AccordionItem>
+        <AccordionItem id={id}>
             <AccordionHeader>
                 <div className={css.header}>
                     {state}
