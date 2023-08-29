@@ -6,7 +6,7 @@ import {
     useResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
-import {Metric} from 'hooks/reporting/useMetricPerDimension'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
 import {TableColumn} from 'state/ui/stats/types'
@@ -85,7 +85,7 @@ export const getQuery = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-) => Metric) => {
+) => MetricWithDecile) => {
     switch (column) {
         case TableColumn.AgentName:
             return () => ({

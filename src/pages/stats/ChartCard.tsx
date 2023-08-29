@@ -11,6 +11,7 @@ type Props = {
     className?: string
     hint?: ReactNode
     title: ReactNode
+    titleExtra?: ReactNode
     noPadding?: boolean
 }
 
@@ -19,6 +20,7 @@ export default function ChartCard({
     className,
     hint,
     title,
+    titleExtra,
     noPadding = false,
 }: Props) {
     return (
@@ -27,12 +29,17 @@ export default function ChartCard({
                 [css.noPadding]: noPadding,
             })}
         >
-            <div className={css.title}>
-                <span>{title}</span>
+            <div className={css.titleWrapper}>
+                <div className={css.title}>
+                    <span>{title}</span>
+                    {hint && (
+                        <IconTooltip className={css.tooltip}>
+                            {hint}
+                        </IconTooltip>
+                    )}
+                </div>
 
-                {hint && (
-                    <IconTooltip className={css.tooltip}>{hint}</IconTooltip>
-                )}
+                {titleExtra}
             </div>
 
             {children}

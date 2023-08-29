@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {getQuery} from 'pages/stats/TableConfig'
-import {Metric} from 'hooks/reporting/useMetricPerDimension'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {opposite, OrderDirection} from 'models/api/types'
 import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
 import {RootState, StoreDispatch} from 'state/types'
@@ -99,8 +99,9 @@ describe('useSortingQueries', () => {
 
     it('should dispatch query result on sorting isLoading and data fetched', () => {
         const column = TableColumn.ClosedTickets
-        const metricData: Metric['data'] = {
+        const metricData: MetricWithDecile['data'] = {
             value: 123,
+            decile: 5,
             allData: [{[TicketMeasure.FirstResponseTime]: '123'}],
         }
         const store = mockStore({
@@ -136,8 +137,9 @@ describe('useSortingQueries', () => {
 
     it('should not dispatch query result on sorting isLoading and data is fetching', () => {
         const column = TableColumn.ClosedTickets
-        const metricData: Metric['data'] = {
+        const metricData: MetricWithDecile['data'] = {
             value: 123,
+            decile: 5,
             allData: [{[TicketMeasure.FirstResponseTime]: '123'}],
         }
         const store = mockStore({

@@ -5,20 +5,24 @@ exports[`<ChartCard /> should render the chart card 1`] = `
   class="wrapper card"
 >
   <div
-    class="title"
+    class="titleWrapper"
   >
-    <span>
-      Metric title
-    </span>
     <div
-      class="wrapper tooltip"
+      class="title"
     >
-      <i
-        class="material-icons-outlined icon"
-        id="tooltip-1"
+      <span>
+        Metric title
+      </span>
+      <div
+        class="wrapper tooltip"
       >
-        info
-      </i>
+        <i
+          class="material-icons-outlined icon"
+          id="tooltip-1"
+        >
+          info
+        </i>
+      </div>
     </div>
   </div>
   Metric

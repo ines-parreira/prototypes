@@ -148,9 +148,9 @@ describe('<AgentTable>', () => {
 
         metricCells.forEach((metricCell) => {
             expect(metricCell).toHaveBeenCalledWith(
-                {
+                expect.objectContaining({
                     agentId: paginatedAgents[0].id,
-                },
+                }),
                 {}
             )
         })

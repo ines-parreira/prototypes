@@ -11,13 +11,20 @@
         }
     }
 
+    .titleWrapper {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: @layout-spacing-m;
+    }
+
     .title {
         .heading-section-semibold();
         align-items: center;
         display: flex;
-        margin-bottom: @layout-spacing-m;
     }
-    .noPadding .title {
+
+    .noPadding .titleWrapper {
         padding: @layout-spacing-m;
         margin-bottom: 0;
     }

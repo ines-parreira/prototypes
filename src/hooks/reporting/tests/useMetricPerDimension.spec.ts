@@ -25,23 +25,26 @@ describe('useMetricPerDimension.spec.ts', () => {
         },
         'timezone'
     )
-    const agentId = 'someId'
+    const agentId = 456
     const metricValue = 4567
+
+    const data = Array.from(Array(150).keys()).map((index) => ({
+        [TicketDimension.FirstHelpdeskMessageUserId]: String(agentId + index),
+        [TicketMeasure.FirstResponseTime]: String(metricValue + index),
+    }))
+
     const mockedResponse = {
         isFetching: false,
         isError: false,
-        data: [
-            {
-                [TicketDimension.FirstHelpdeskMessageUserId]: agentId,
-                [TicketMeasure.FirstResponseTime]: String(metricValue),
-            },
-        ],
+        data: data,
     } as UseQueryResult<QueryReturnType>
 
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(mockedResponse)
 
-        const {result} = renderHook(() => useMetricPerDimension(query, agentId))
+        const {result} = renderHook(() =>
+            useMetricPerDimension(query, String(agentId))
+        )
 
         expect(result.current).toEqual({
             isFetching: mockedResponse.isFetching,
@@ -49,6 +52,7 @@ describe('useMetricPerDimension.spec.ts', () => {
             data: {
                 value: metricValue,
                 allData: mockedResponse.data,
+                decile: null,
             },
         })
     })
@@ -104,7 +108,9 @@ describe('useMetricPerDimension.spec.ts', () => {
                 )
         )
 
-        const {result} = renderHook(() => useMetricPerDimension(query, agentId))
+        const {result} = renderHook(() =>
+            useMetricPerDimension(query, String(agentId))
+        )
 
         expect(result.current?.data?.allData).toEqual(mockedResponse.data)
     })

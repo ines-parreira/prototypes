@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import css from './BodyCell.less'
 import BodyCellContent from './BodyCellContent'
 
-type Props = Omit<HTMLProps<HTMLTableDataCellElement>, 'size'> & {
+export type Props = Omit<HTMLProps<HTMLTableDataCellElement>, 'size'> & {
     children?: ReactNode
     className?: string
     isHighlighted?: boolean

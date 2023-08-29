@@ -1,5 +1,5 @@
 import moment from 'moment/moment'
-import {Metric as DimensionMetric} from 'hooks/reporting/useMetricPerDimension'
+import {MetricWithDecile as DimensionMetric} from 'hooks/reporting/useMetricPerDimension'
 import {Metric} from 'hooks/reporting/metrics'
 import {TableLabels} from 'pages/stats/TableConfig'
 import {User} from 'config/types/user'

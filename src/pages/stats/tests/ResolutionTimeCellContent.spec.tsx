@@ -43,6 +43,7 @@ describe('<ResolutionTimeCellContent>', () => {
     const useResolutionTimeMetricPerAgentReturnValue = {
         data: {
             value: resolutionTimeValue,
+            decile: 5,
             allData: [
                 {
                     [TicketMeasure.ResolutionTime]: String(resolutionTimeValue),

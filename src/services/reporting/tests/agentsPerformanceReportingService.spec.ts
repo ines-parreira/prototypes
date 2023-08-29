@@ -7,6 +7,7 @@ jest.mock('utils/file')
 
 const reportData = {
     value: 1,
+    decile: 0,
     allData: [],
 }
 

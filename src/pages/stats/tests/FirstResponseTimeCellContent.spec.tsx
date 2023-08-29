@@ -43,6 +43,7 @@ describe('<FirstResponseTimeCellContent>', () => {
     const useFirstResponseTimeMetricPerAgentReturnValue = {
         data: {
             value: firstResponseTimeValue,
+            decile: 5,
             allData: [
                 {
                     [TicketMeasure.FirstResponseTime]: String(

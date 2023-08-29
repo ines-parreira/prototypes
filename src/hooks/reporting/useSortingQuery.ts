@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
-import {Metric} from 'hooks/reporting/useMetricPerDimension'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite, OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
@@ -22,7 +22,7 @@ export const useSortingQuery = (
         timezone: string,
         sorting?: OrderDirection,
         agentAssigneeId?: string
-    ) => Metric
+    ) => MetricWithDecile
 ) => {
     const dispatch = useDispatch()
     const {cleanStatsFilters, userTimezone} = useAppSelector(

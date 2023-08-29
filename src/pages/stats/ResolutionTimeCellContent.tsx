@@ -1,4 +1,9 @@
-import React from 'react'
+import classNames from 'classnames'
+import React, {PropsWithRef} from 'react'
+import BodyCell, {
+    Props as BodyCellProps,
+} from 'pages/common/components/table/cells/BodyCell'
+import css from 'pages/stats/heatmap.less'
 import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
 import {useResolutionTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
@@ -6,10 +11,17 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
     getCleanStatsFiltersWithTimezone,
     isSortingMetricLoading,
+    selectHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
-export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
+export const ResolutionTimeCellContent = ({
+    agentId,
+    bodyCellProps,
+}: {
+    agentId: number
+    bodyCellProps?: PropsWithRef<BodyCellProps>
+}) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -21,10 +33,22 @@ export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
         String(agentId)
     )
     const metricValue = data?.value
+    const isLoading = isFetching || isMetricLoading
+    const isHeatmapMode = useAppSelector(selectHeatmapMode)
 
     return (
-        <>
-            {isFetching || isMetricLoading ? (
+        <BodyCell
+            {...bodyCellProps}
+            className={classNames(
+                [css.heatmap],
+                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
+            )}
+            innerClassName={classNames(
+                [css.heatmap],
+                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
+            )}
+        >
+            {isLoading ? (
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
                 formatMetricValue(
@@ -33,6 +57,6 @@ export const ResolutionTimeCellContent = ({agentId}: {agentId: number}) => {
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )}
-        </>
+        </BodyCell>
     )
 }

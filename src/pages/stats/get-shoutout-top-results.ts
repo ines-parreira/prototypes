@@ -1,13 +1,13 @@
 import _takeWhile from 'lodash/takeWhile'
 import {User} from 'config/types/user'
-import {Metric} from 'hooks/reporting/useMetricPerDimension'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {notUndefined} from 'utils/types'
 import {isMetricForAgent} from './common/utils'
 import {ShoutoutConfig} from './shoutouts-config'
 
 interface GetShoutoutTopResultsArgs {
     filteredAgents: User[]
-    queryResult: Metric
+    queryResult: MetricWithDecile
     config: ShoutoutConfig
 }
 

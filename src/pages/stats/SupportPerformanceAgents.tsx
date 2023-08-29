@@ -1,5 +1,6 @@
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {HeatmapSwitch} from 'pages/stats/HeatmapSwitch'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import ChartCard from 'pages/stats/ChartCard'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
@@ -33,6 +34,8 @@ export default function SupportPerformanceAgents() {
         useFlags()[FeatureFlagKey.AnalyticsExportAgentsPerformance]
     const hasShoutoutsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformanceShoutouts]
+    const hasAgentsPerformanceHeatmaps: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformanceHeatmaps]
 
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
@@ -89,6 +92,12 @@ export default function SupportPerformanceAgents() {
                     <DashboardGridCell size={12}>
                         <ChartCard
                             title={AGENT_PERFORMANCE_SECTION_TITLE}
+                            titleExtra={
+                                hasAgentsPerformanceHeatmaps && (
+                                    <HeatmapSwitch />
+                                )
+                            }
+                            hint={'ASDFFDG'}
                             noPadding
                         >
                             <AgentsTable />

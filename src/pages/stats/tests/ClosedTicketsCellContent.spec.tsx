@@ -43,6 +43,7 @@ describe('<ClosedTicketsCellContent>', () => {
     const useClosedTicketsMetricPerAgentMockReturnValue = {
         data: {
             value: closedTicketsValue,
+            decile: 5,
             allData: [
                 {
                     [TicketMeasure.TicketCount]: String(closedTicketsValue),

@@ -30,6 +30,7 @@ export type AgentPerformanceState = {
         currentPage: number
         perPage: number
     }
+    heatmapMode: boolean
 }
 
 export const DEFAULT_SORTING_DIRECTION = OrderDirection.Asc
@@ -45,6 +46,7 @@ export const initialState: AgentPerformanceState = {
         currentPage: 1,
         perPage: 10,
     },
+    heatmapMode: false,
 }
 
 export const agentPerformanceSlice = createSlice({
@@ -73,11 +75,19 @@ export const agentPerformanceSlice = createSlice({
                 state.pagination.currentPage = action.payload
             }
         },
+        toggleHeatmapMode(state) {
+            state.heatmapMode = !state.heatmapMode
+        },
     },
 })
 
-export const {sortingSet, sortingLoading, sortingLoaded, pageSet} =
-    agentPerformanceSlice.actions
+export const {
+    sortingSet,
+    sortingLoading,
+    sortingLoaded,
+    pageSet,
+    toggleHeatmapMode,
+} = agentPerformanceSlice.actions
 
 export const getAgentSorting = (state: RootState) =>
     state.ui[agentPerformanceSlice.name].sorting
@@ -87,6 +97,9 @@ export const isSortingMetricLoading = (state: RootState) =>
 
 export const getAgentsPagination = (state: RootState) =>
     state.ui[agentPerformanceSlice.name].pagination
+
+export const selectHeatmapMode = (state: RootState) =>
+    state.ui[agentPerformanceSlice.name].heatmapMode
 
 export const getFilteredAgents = createSelector(
     getAgentsJS,

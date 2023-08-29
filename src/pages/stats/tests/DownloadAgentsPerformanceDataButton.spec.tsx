@@ -19,7 +19,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
     const metricReturnValue = {
         isFetching: false,
         isError: false,
-        data: {allData: [], value: null},
+        data: {allData: [], value: null, decile: null},
     }
     const summaryMetricReturnValue = {
         ...metricReturnValue,

@@ -39,6 +39,7 @@ describe('<CustomerSatisfactionCellContent>', () => {
     const useCustomerSatisfactionMetricPerAgentMockReturnValue = {
         data: {
             value: surveyScoreValue,
+            decile: 5,
             allData: [
                 {
                     [TicketMeasure.SurveyScore]: String(surveyScoreValue),

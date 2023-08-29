@@ -7,7 +7,7 @@ import {
     firstResponseTimeQueryFactory,
 } from 'hooks/reporting/metricTrends'
 import {
-    Metric,
+    MetricWithDecile,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
@@ -40,7 +40,7 @@ export const useFirstResponseTimeMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): Metric =>
+): MetricWithDecile =>
     useMetricPerDimension(
         firstResponseTimeMetricPerAgentQueryFactory(
             statsFilters,
@@ -69,7 +69,7 @@ export const useTicketsRepliedMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): Metric =>
+): MetricWithDecile =>
     useMetricPerDimension(
         ticketsRepliedMetricPerAgentQueryFactory(
             statsFilters,
@@ -99,7 +99,7 @@ export const useClosedTicketsMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): Metric =>
+): MetricWithDecile =>
     useMetricPerDimension(
         closedTicketsPerAgentQueryFactory(statsFilters, timezone, sorting),
         agentAssigneeId
@@ -110,7 +110,7 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): Metric => {
+): MetricWithDecile => {
     const closedTicketsPerAgent = useClosedTicketsMetricPerAgent(
         statsFilters,
         timezone,
@@ -138,6 +138,7 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
         isError: isError || closedTicketsPerAgent.isError,
         data: {
             value: metricValue,
+            decile: closedTicketsPerAgent.data?.decile || null,
             allData: (
                 closedTicketsPerAgent.data?.allData as {
                     [TicketDimension.AssigneeUserId]: string
@@ -178,7 +179,7 @@ export const useMessagesSentMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): Metric =>
+): MetricWithDecile =>
     useMetricPerDimension(
         messagesSentMetricPerAgentQueryFactory(statsFilters, timezone, sorting),
         agentAssigneeId
@@ -203,7 +204,7 @@ export const useResolutionTimeMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): Metric =>
+): MetricWithDecile =>
     useMetricPerDimension(
         resolutionTimeMetricPerAgentQueryFactory(
             statsFilters,
@@ -232,7 +233,7 @@ export const useCustomerSatisfactionMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): Metric =>
+): MetricWithDecile =>
     useMetricPerDimension(
         customerSatisfactionMetricPerAgentQueryFactory(
             statsFilters,

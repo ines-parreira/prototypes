@@ -1414,20 +1414,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 class="wrapper card"
               >
                 <div
-                  class="title"
+                  class="titleWrapper"
                 >
-                  <span>
-                    Tickets created
-                  </span>
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    <span>
+                      Tickets created
+                    </span>
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1443,20 +1447,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 class="wrapper card"
               >
                 <div
-                  class="title"
+                  class="titleWrapper"
                 >
-                  <span>
-                    Closed tickets
-                  </span>
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    <span>
+                      Closed tickets
+                    </span>
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1472,20 +1480,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 class="wrapper card"
               >
                 <div
-                  class="title"
+                  class="titleWrapper"
                 >
-                  <span>
-                    Tickets replied
-                  </span>
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    <span>
+                      Tickets replied
+                    </span>
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1501,20 +1513,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 class="wrapper card"
               >
                 <div
-                  class="title"
+                  class="titleWrapper"
                 >
-                  <span>
-                    Messages sent
-                  </span>
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    <span>
+                      Messages sent
+                    </span>
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1530,20 +1546,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 class="wrapper card"
               >
                 <div
-                  class="title"
+                  class="titleWrapper"
                 >
-                  <span>
-                    Total workload by channel
-                  </span>
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    <span>
+                      Total workload by channel
+                    </span>
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
                 <div>

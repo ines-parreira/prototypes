@@ -12,7 +12,7 @@ import {
     useResolutionTimeMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {assumeMock, mockStore} from 'utils/testing'
-import {Metric} from 'hooks/reporting/useMetricPerDimension'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {TicketDimension, TicketMeasure} from 'models/reporting/types'
 import {initialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -52,11 +52,12 @@ describe('<AgentsShoutouts />', () => {
         },
     } as RootState
 
-    const allDataMockedMetric: Metric = {
+    const allDataMockedMetric: MetricWithDecile = {
         isError: false,
         isFetching: false,
         data: {
             value: null,
+            decile: 5,
             allData: agents.map((agent, idx) => ({
                 [TicketDimension.AssigneeUserId]: String(agent.id),
                 [TicketMeasure.SurveyScore]: String(10 + idx),
@@ -67,11 +68,12 @@ describe('<AgentsShoutouts />', () => {
         },
     }
 
-    const noDataMockedMetric: Metric = {
+    const noDataMockedMetric: MetricWithDecile = {
         isError: false,
         isFetching: false,
         data: {
             value: null,
+            decile: null,
             allData: [],
         },
     }
@@ -100,11 +102,12 @@ describe('<AgentsShoutouts />', () => {
     })
 
     it('should show the name of the user if there is only one to shoutout and {count} agents if there are more with the same value', () => {
-        const mockedMetric: Metric = {
+        const mockedMetric: MetricWithDecile = {
             isError: false,
             isFetching: false,
             data: {
                 value: null,
+                decile: 5,
                 allData: agents.map((agent, idx) => ({
                     [TicketDimension.AssigneeUserId]: String(agent.id),
                     /**
@@ -118,7 +121,7 @@ describe('<AgentsShoutouts />', () => {
                 })),
             },
         }
-        const loadingMetric: Metric = {
+        const loadingMetric: MetricWithDecile = {
             isError: false,
             isFetching: true,
             data: null,

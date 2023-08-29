@@ -15,6 +15,7 @@ describe('useAgentsMetric', () => {
         isError: false,
         data: {
             value: 2,
+            decile: 0,
             allData: [],
         },
     }

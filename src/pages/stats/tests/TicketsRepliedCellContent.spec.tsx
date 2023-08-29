@@ -43,6 +43,7 @@ describe('<TicketsRepliedCellContent>', () => {
     const useTicketsRepliedMetricPerAgentReturnValue = {
         data: {
             value: ticketsRepliedValue,
+            decile: 5,
             allData: [
                 {
                     [HelpdeskMessageMeasure.TicketCount]:

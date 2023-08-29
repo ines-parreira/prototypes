@@ -1,4 +1,9 @@
-import React from 'react'
+import classNames from 'classnames'
+import React, {PropsWithRef} from 'react'
+import BodyCell, {
+    Props as BodyCellProps,
+} from 'pages/common/components/table/cells/BodyCell'
+import css from 'pages/stats/heatmap.less'
 import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
 import {
     formatMetricValue,
@@ -8,11 +13,18 @@ import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimensio
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    selectHeatmapMode,
     getCleanStatsFiltersWithTimezone,
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
 
-export const ClosedTicketsCellContent = ({agentId}: {agentId: number}) => {
+export const ClosedTicketsCellContent = ({
+    agentId,
+    bodyCellProps,
+}: {
+    agentId: number
+    bodyCellProps?: PropsWithRef<BodyCellProps>
+}) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -24,10 +36,22 @@ export const ClosedTicketsCellContent = ({agentId}: {agentId: number}) => {
         String(agentId)
     )
     const metricValue = data?.value
+    const isLoading = isFetching || isMetricLoading
+    const isHeatmapMode = useAppSelector(selectHeatmapMode)
 
     return (
-        <>
-            {isFetching || isMetricLoading ? (
+        <BodyCell
+            {...bodyCellProps}
+            className={classNames(
+                [css.heatmap],
+                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
+            )}
+            innerClassName={classNames(
+                [css.heatmap],
+                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
+            )}
+        >
+            {isLoading ? (
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
                 formatMetricValue(
@@ -36,6 +60,6 @@ export const ClosedTicketsCellContent = ({agentId}: {agentId: number}) => {
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )}
-        </>
+        </BodyCell>
     )
 }

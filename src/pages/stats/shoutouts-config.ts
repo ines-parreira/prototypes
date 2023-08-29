@@ -1,5 +1,5 @@
 import _partial from 'lodash/partial'
-import {Metric} from 'hooks/reporting/useMetricPerDimension'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
@@ -23,7 +23,7 @@ export interface ShoutoutConfig {
         timezone: string,
         sorting?: OrderDirection,
         agentAssigneeId?: string
-    ) => Metric
+    ) => MetricWithDecile
     metricName: string
     formatValue: (
         value: number | null | undefined,

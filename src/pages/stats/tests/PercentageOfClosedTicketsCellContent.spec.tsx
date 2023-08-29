@@ -40,6 +40,7 @@ describe('<PercentageOfClosedTicketsCellContent>', () => {
     const usePercentageOfClosedTicketsMetricPerAgentMockReturnValue = {
         data: {
             value: percentageOfClosedTicketsValue,
+            decile: 5,
             allData: [
                 {
                     [TicketMeasure.TicketCount]: String(

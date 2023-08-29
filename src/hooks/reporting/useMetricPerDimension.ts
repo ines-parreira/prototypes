@@ -1,4 +1,6 @@
+import {withDeciles} from 'hooks/reporting/withDeciles'
 import {usePostReporting} from 'models/reporting/queries'
+import {postReporting} from 'models/reporting/resources'
 import {
     ReportingDimension,
     ReportingMeasure,
@@ -11,12 +13,13 @@ type Requested = {
 }
 
 export type ReportingMetricItem = Partial<
-    Record<ReportingMeasure | ReportingDimension, string | null>
+    Record<ReportingMeasure | ReportingDimension | 'decile', string | null>
 >
 
-export type Metric = Requested & {
+export type MetricWithDecile = Requested & {
     data: {
         value: number | null
+        decile: number | null
         allData: QueryReturnType
     } | null
 }
@@ -28,12 +31,17 @@ const selectMeasurePerDimension = (
     dimension: ReportingDimension,
     dimensionId: string,
     data?: QueryReturnType
-): number | null => {
+): {value: number | null; decile: number | null} => {
     const dataMeasure =
-        (data?.find((row) => row[dimension] === dimensionId) || {})[measure] ||
-        null
+        data?.find((row) => row[dimension] === dimensionId) || null
 
-    return dataMeasure != null ? parseFloat(dataMeasure) : null
+    const metric = (dataMeasure && dataMeasure[measure]) || null
+    const decile = (dataMeasure && dataMeasure['decile']) || null
+
+    return {
+        value: metric !== null ? parseFloat(metric) : null,
+        decile: decile !== null ? parseFloat(decile) : null,
+    }
 }
 
 const selectMetric =
@@ -48,11 +56,13 @@ const selectMetric =
 export function useMetricPerDimension(
     query: ReportingQuery,
     dimensionId?: string
-): Metric {
+): MetricWithDecile {
     const metricData = usePostReporting<QueryReturnType, QueryReturnType>(
         [query],
         {
             select: (data) => data.data.data,
+            queryFn: () =>
+                postReporting<QueryReturnType>([query]).then(withDeciles),
         }
     )
 
@@ -62,9 +72,9 @@ export function useMetricPerDimension(
         data:
             metricData.data !== undefined
                 ? {
-                      value: dimensionId
+                      ...(dimensionId
                           ? selectMetric(query, dimensionId)(metricData.data)
-                          : null,
+                          : {value: null, decile: null}),
                       allData: metricData?.data,
                   }
                 : null,

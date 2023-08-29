@@ -43,6 +43,7 @@ describe('<MessagesSentCellContent>', () => {
     const useMessagesSentMetricPerAgentReturnValue = {
         data: {
             value: messagesSentValue,
+            decile: 5,
             allData: [
                 {
                     [HelpdeskMessageMeasure.MessageCount]:

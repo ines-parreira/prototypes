@@ -1,11 +1,13 @@
 import classNames from 'classnames'
-import React, {UIEventHandler, useState} from 'react'
+import React, {PropsWithRef, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
 import useMeasure from 'react-use/lib/useMeasure'
 import {User} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {NumberedPagination} from 'pages/common/components/Paginations'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import BodyCell, {
+    Props as BodyCellProps,
+} from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -43,7 +45,10 @@ import {TableColumn} from 'state/ui/stats/types'
 
 const getCell = (
     column: TableColumn
-): React.FunctionComponent<{agentId: number}> => {
+): React.FunctionComponent<{
+    agentId: number
+    bodyCellProps: PropsWithRef<BodyCellProps>
+}> => {
     switch (column) {
         case TableColumn.RepliedTickets:
             return TicketsRepliedCellContent
@@ -148,23 +153,22 @@ export const AgentsTable = () => {
                         {paginatedAgents.map((agent) => (
                             <TableBodyRow key={agent.id}>
                                 {TableColumnsOrder.map((column) => (
-                                    <BodyCell
-                                        key={column}
-                                        width={getColumnWidth(column)}
-                                        justifyContent={getColumnAlignment(
-                                            column
-                                        )}
-                                        className={classNames({
-                                            [css.withShadow]:
-                                                column ===
-                                                    TableColumn.AgentName &&
-                                                isTableScrolled,
-                                        })}
-                                    >
+                                    <React.Fragment key={column}>
                                         {React.createElement(getCell(column), {
                                             agentId: agent.id,
+                                            bodyCellProps: {
+                                                width: getColumnWidth(column),
+                                                justifyContent:
+                                                    getColumnAlignment(column),
+                                                className: classNames({
+                                                    [css.withShadow]:
+                                                        column ===
+                                                            TableColumn.AgentName &&
+                                                        isTableScrolled,
+                                                }),
+                                            },
                                         })}
-                                    </BodyCell>
+                                    </React.Fragment>
                                 ))}
                             </TableBodyRow>
                         ))}
