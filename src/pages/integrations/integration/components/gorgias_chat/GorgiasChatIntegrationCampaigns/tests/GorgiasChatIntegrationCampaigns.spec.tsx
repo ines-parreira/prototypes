@@ -10,14 +10,12 @@ import {billingState} from 'fixtures/billing'
 import * as actions from 'state/integrations/actions'
 import * as betaTesterHook from 'pages/common/hooks/useIsRevenueBetaTester'
 import useSearch from 'hooks/useSearch'
-
 import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator'
+
 import GorgiasChatIntegrationCampaigns, {
     GorgiasChatIntegrationCampaignsComponent,
 } from '../GorgiasChatIntegrationCampaigns'
-
 import {createTrigger} from '../utils/createTrigger'
-
 import {CampaignTriggerKey} from '../types/enums/CampaignTriggerKey.enum'
 
 jest.mock('utils/launchDarkly')
@@ -26,6 +24,12 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const updateOrCreateIntegrationRequest = jest.spyOn(
     actions,
     'updateOrCreateIntegrationRequest'
+)
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
+    () => () => {
+        return <div data-testid="GorgiasChatIntegrationHeader" />
+    }
 )
 
 describe('<GorgiasChatIntegrationCampaigns/>', () => {

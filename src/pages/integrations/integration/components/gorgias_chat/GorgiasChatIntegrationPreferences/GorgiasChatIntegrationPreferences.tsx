@@ -19,9 +19,7 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-
 import {FeatureFlagKey} from 'config/featureFlags'
-
 import Button from 'pages/common/components/button/Button'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
@@ -31,6 +29,8 @@ import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModa
 import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {TagLabel} from 'pages/common/utils/labels'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+
 import {isRevenueAddonSubscriber} from '../GorgiasChatIntegrationCampaigns/utils/isRevenueAddonSubscriber'
 
 import {
@@ -60,11 +60,9 @@ import {RootState} from '../../../../../../state/types'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import {ChatIntegrationPreviewProvider} from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewProvider'
-
 import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
 import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
 import ConversationTimestamp from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
-import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import DisabledEmailCaptureMessagePreview from '../GorgiasChatIntegrationPreview/DisabledEmailCaptureMessage'
 import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'

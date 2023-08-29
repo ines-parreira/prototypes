@@ -14,9 +14,12 @@ import GorgiasChatIntegrationQuickReplies, {
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../GorgiasChatIntegrationNavigation', () => () => {
-    return <div data-testid="GorgiasChatIntegrationNavigation" />
-})
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
+    () => () => {
+        return <div data-testid="GorgiasChatIntegrationHeader" />
+    }
+)
 
 jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />

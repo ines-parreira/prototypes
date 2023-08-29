@@ -6,7 +6,7 @@ import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 
-import GorgiasChatIntegrationHeader from '../../../GorgiasChatIntegrationHeader'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
 type OwnProps = {
     children: ReactNode

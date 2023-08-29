@@ -6,7 +6,6 @@ import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import {removeLinksFromHtml} from 'utils/html'
-
 import {
     createCampaign,
     deleteCampaign,
@@ -14,18 +13,13 @@ import {
 } from 'state/campaigns/actions'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-
 import {IntegrationType} from 'models/integration/constants'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
-import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
-
 import {CampaignsList} from './containers/CampaignsList'
-
 import {CampaignListOptions} from './providers/CampaignListOptions'
-
 import {ChatCampaign} from './types/Campaign'
-
 import css from './GorgiasChatIntegrationCampaigns.less'
 
 type Props = {

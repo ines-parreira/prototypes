@@ -28,6 +28,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {notify} from 'state/notifications/actions'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -38,9 +39,7 @@ import {IntegrationType} from '../../../../../../../models/integration/types'
 import * as integrationSelectors from '../../../../../../../state/integrations/selectors'
 import {NotificationStatus} from '../../../../../../../state/notifications/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
-import GorgiasChatIntegrationHeader from '../../GorgiasChatIntegrationHeader'
 import useIntegrationPageViewLogEvent from '../../../../hooks/useIntegrationPageViewLogEvent'
-
 import {
     Texts,
     Translations,

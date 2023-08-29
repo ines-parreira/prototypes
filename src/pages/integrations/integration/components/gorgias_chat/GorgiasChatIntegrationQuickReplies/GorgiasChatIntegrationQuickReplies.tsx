@@ -17,11 +17,10 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import {IntegrationType} from 'models/integration/constants'
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 
-import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'

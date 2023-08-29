@@ -32,49 +32,9 @@ exports[`<BaseCampaignDetails /> matches snapshot 1`] = `
         </ol>
       </nav>
     </div>
-    <nav
-      class="navbar navbar"
-    >
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/settings/channels/gorgias_chat/1/campaigns"
-      >
-        Campaigns
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/1/quick_replies"
-      >
-        Quick replies
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/1/appearance"
-      >
-        Appearance
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/1/preferences"
-      >
-        Preferences
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/1/installation"
-      >
-        Installation
-      </a>
-    </nav>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
     <div>
       content
     </div>

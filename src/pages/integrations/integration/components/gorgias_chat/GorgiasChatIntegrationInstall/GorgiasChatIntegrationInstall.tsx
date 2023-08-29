@@ -1,9 +1,7 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useLocalStorage, usePrevious} from 'react-use'
 
 import {deleteIntegration} from 'state/integrations/actions'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -19,11 +17,11 @@ import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModa
 import {Tab} from 'pages/integrations/integration/Integration'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import warningIcon from 'assets/img/icons/warning.svg'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
-import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
+import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
 import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
@@ -69,124 +67,7 @@ const GorgiasChatIntegrationInstall = ({
         ? shopifyIntegrationIds.includes(shopIntegrationId)
         : undefined
 
-    const hasShopifyScriptTagScope = useMemo(
-        () =>
-            ['read_script_tags', 'write_script_tags'].every((scope) => {
-                if (
-                    !storeIntegration ||
-                    storeIntegration?.type !== IntegrationType.Shopify
-                ) {
-                    return []
-                }
-
-                return storeIntegration?.meta.oauth.scope?.includes(scope)
-            }),
-        [storeIntegration]
-    )
-    const hasScriptTagFeatureFlagOn: boolean =
-        useFlags()[FeatureFlagKey.ShopifyIntegrationScopeScriptTag] ?? false
-    const [showScriptTagMigrateNotice, setShowScriptTagMigrateNotice] =
-        useState(false)
-    const oneClickInstallationDate: string =
-        integration.getIn(['meta', 'one_click_installation_datetime']) ??
-        undefined
-    const oneClickUninstallationDate: string =
-        integration.getIn(['meta', 'one_click_uninstallation_datetime']) ??
-        undefined
-    const oneClickInstallationMethod: string =
-        integration.getIn(['meta', 'one_click_installation_method']) ?? 'asset'
-    const fiveDays = 1000 * 60 * 60 * 24 * 5
-    // We are missing the oneClickInstallation metadata during the PUT (create) request.
-    const justCreated: boolean =
-        new Date().getTime() -
-            new Date(integration.get('created_datetime')).getTime() <
-        1000 * 60 * 60
-    const previousIsOneClickInstallation = usePrevious(isOneClickInstallation)
-    // We are storing the deducted new installation method dynamically, because
-    // the integration data does not get updated immediately upon an 1-click
-    // installation. We need this to dynamically hide the migration banner.
-    // useLocalStorage to persist over tab switching.
-    const [oneClickInstallationMethodNew, setOneClickInstallationMethodNew] =
-        useLocalStorage<string>(
-            `gorgias.one-click-installation-new-${applicationId}`
-        )
-
-    useEffect(() => {
-        if (
-            previousIsOneClickInstallation === false &&
-            isOneClickInstallation
-        ) {
-            if (hasShopifyScriptTagScope && hasScriptTagFeatureFlagOn) {
-                setOneClickInstallationMethodNew('script_tag')
-            } else {
-                setOneClickInstallationMethodNew('asset')
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOneClickInstallation])
-
-    const activeOrRecentOneClickUsage = useMemo(() => {
-        // `one_click_installation_datetime` can be null despite oneClick installation to true,
-        // because we only introduced this datetime tracking in the past months.
-        if (isOneClickInstallation) {
-            return true
-        }
-
-        return [oneClickInstallationDate, oneClickUninstallationDate].some(
-            (clickDate) => {
-                if (clickDate) {
-                    const diff =
-                        new Date().getTime() - new Date(clickDate).getTime()
-                    return diff < fiveDays
-                }
-                return false
-            }
-        )
-    }, [
-        fiveDays,
-        isOneClickInstallation,
-        oneClickInstallationDate,
-        oneClickUninstallationDate,
-    ])
-
-    useEffect(() => {
-        // Feature flag early return.
-        if (!hasScriptTagFeatureFlagOn) {
-            setShowScriptTagMigrateNotice(false)
-            return
-        }
-
-        // Quick workaround for just created integrations.
-        if (justCreated) {
-            setShowScriptTagMigrateNotice(
-                isConnectedToShopify &&
-                    activeOrRecentOneClickUsage &&
-                    !hasShopifyScriptTagScope
-            )
-            return
-        }
-
-        const installationMethod =
-            oneClickInstallationMethodNew && isOneClickInstallation
-                ? oneClickInstallationMethodNew
-                : oneClickInstallationMethod
-
-        setShowScriptTagMigrateNotice(
-            isConnectedToShopify &&
-                activeOrRecentOneClickUsage &&
-                (!hasShopifyScriptTagScope ||
-                    installationMethod !== 'script_tag')
-        )
-    }, [
-        activeOrRecentOneClickUsage,
-        hasScriptTagFeatureFlagOn,
-        hasShopifyScriptTagScope,
-        isConnectedToShopify,
-        isOneClickInstallation,
-        justCreated,
-        oneClickInstallationMethod,
-        oneClickInstallationMethodNew,
-    ])
+    const {showScriptTagMigrationBanner} = useChatMigrationBanner(integration)
 
     return (
         <>
@@ -230,7 +111,7 @@ const GorgiasChatIntegrationInstall = ({
 
                 <Container fluid className={css.container}>
                     <div className={css.content}>
-                        {showScriptTagMigrateNotice && (
+                        {showScriptTagMigrationBanner && (
                             <Alert type={AlertType.Warning}>
                                 <p
                                     style={{

@@ -320,7 +320,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         }
       />
     </PageHeader>
-    <GorgiasChatIntegrationHeader
+    <Component
       integration={
         Immutable.Map {
           "id": 2,
@@ -868,7 +868,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         }
       />
     </PageHeader>
-    <GorgiasChatIntegrationHeader
+    <Component
       integration={
         Immutable.Map {
           "id": 2,

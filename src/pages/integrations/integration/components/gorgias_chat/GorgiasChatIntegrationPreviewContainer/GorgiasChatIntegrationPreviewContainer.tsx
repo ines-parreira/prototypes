@@ -9,10 +9,7 @@ type Props = {
     children: ReactNode
 }
 
-export const GorgiasChatIntegrationPreviewContainer = ({
-    children,
-    preview,
-}: Props) => (
+const GorgiasChatIntegrationPreviewContainer = ({children, preview}: Props) => (
     <Container fluid className={settingsCss.pageContainer}>
         <Row>
             <Col>{children}</Col>

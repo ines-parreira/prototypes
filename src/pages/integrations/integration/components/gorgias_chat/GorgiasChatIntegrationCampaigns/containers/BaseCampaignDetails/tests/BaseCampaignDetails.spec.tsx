@@ -20,6 +20,13 @@ const defaultState = {
 } as RootState
 const store = mockStore(defaultState)
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
+    () => () => {
+        return <div data-testid="GorgiasChatIntegrationHeader" />
+    }
+)
+
 describe('<BaseCampaignDetails />', () => {
     it('matches snapshot', () => {
         const {container} = render(

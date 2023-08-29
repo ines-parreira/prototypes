@@ -74,49 +74,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
         </a>
       </div>
     </div>
-    <nav
-      class="navbar navbar"
-    >
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/settings/channels/gorgias_chat/118/campaigns"
-      >
-        Campaigns
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/quick_replies"
-      >
-        Quick replies
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/appearance"
-      >
-        Appearance
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/preferences"
-      >
-        Preferences
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/installation"
-      >
-        Installation
-      </a>
-    </nav>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
     <div
       class="pageContainer container-fluid"
     >
@@ -628,49 +588,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
         </a>
       </div>
     </div>
-    <nav
-      class="navbar navbar"
-    >
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/settings/channels/gorgias_chat/118/campaigns"
-      >
-        Campaigns
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/quick_replies"
-      >
-        Quick replies
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/appearance"
-      >
-        Appearance
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/preferences"
-      >
-        Preferences
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/installation"
-      >
-        Installation
-      </a>
-    </nav>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
     <div
       class="pageContainer container-fluid"
     >
@@ -1200,49 +1120,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the empty state corre
         </a>
       </div>
     </div>
-    <nav
-      class="navbar navbar"
-    >
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/settings/channels/gorgias_chat/118/campaigns"
-      >
-        Campaigns
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/quick_replies"
-      >
-        Quick replies
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/appearance"
-      >
-        Appearance
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/preferences"
-      >
-        Preferences
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/installation"
-      >
-        Installation
-      </a>
-    </nav>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
     <div
       class="pageContainer container-fluid"
     >
@@ -1420,49 +1300,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
         </a>
       </div>
     </div>
-    <nav
-      class="navbar navbar"
-    >
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/settings/channels/gorgias_chat/118/campaigns"
-      >
-        Campaigns
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/quick_replies"
-      >
-        Quick replies
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/appearance"
-      >
-        Appearance
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/preferences"
-      >
-        Preferences
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/channels/gorgias_chat/118/installation"
-      >
-        Installation
-      </a>
-    </nav>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
     <div
       class="pageContainer container-fluid"
     >

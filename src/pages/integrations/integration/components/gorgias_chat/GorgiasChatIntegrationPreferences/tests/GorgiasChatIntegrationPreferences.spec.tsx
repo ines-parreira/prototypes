@@ -49,9 +49,12 @@ jest.mock('models/selfServiceConfiguration/resources')
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
 
-jest.mock('../../GorgiasChatIntegrationNavigation', () => () => {
-    return <div data-testid="GorgiasChatIntegrationNavigation" />
-})
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
+    () => () => {
+        return <div data-testid="GorgiasChatIntegrationHeader" />
+    }
+)
 
 jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />

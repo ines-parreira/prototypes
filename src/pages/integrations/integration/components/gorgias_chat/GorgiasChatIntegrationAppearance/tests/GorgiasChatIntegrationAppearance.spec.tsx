@@ -65,10 +65,6 @@ jest.mock('pages/common/forms/FileField', () => {
 
 type Props = ComponentProps<typeof GorgiasChatIntegrationAppearanceComponent>
 
-jest.mock('../../GorgiasChatIntegrationNavigation', () => () => {
-    return <div data-testid="GorgiasChatIntegrationNavigation" />
-})
-
 jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 })
@@ -78,6 +74,13 @@ const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({
     [FeatureFlagKey.ChatFontCustomization]: true,
 })
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
+    () => () => {
+        return <div data-testid="GorgiasChatIntegrationHeader" />
+    }
+)
 
 describe('<GorgiasChatIntegrationAppearance/>', () => {
     const realCSS = global.CSS
