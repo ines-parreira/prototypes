@@ -123,7 +123,12 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                             settingsCss.mb32
                                         )}
                                     >
-                                        <Label className="control-label">
+                                        <Label
+                                            className={classnames(
+                                                'control-label',
+                                                css.businessHoursLabelWrapper
+                                            )}
+                                        >
                                             Business hours
                                         </Label>
                                         {items.map((item, idx) => (

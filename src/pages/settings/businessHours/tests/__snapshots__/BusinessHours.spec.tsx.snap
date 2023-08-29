@@ -67,7 +67,7 @@ exports[`BusinessHours component should render default values 1`] = `
               className="inputField mb32"
             >
               <Label
-                className="control-label"
+                className="control-label businessHoursLabelWrapper"
                 tag="label"
                 widths={
                   [
@@ -289,7 +289,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                             className="inputField mb32"
                           >
                             <Label
-                              className="control-label"
+                              className="control-label businessHoursLabelWrapper"
                               tag="label"
                               widths={
                                 [
@@ -302,7 +302,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                               }
                             >
                               <label
-                                className="control-label"
+                                className="control-label businessHoursLabelWrapper"
                               >
                                 Business hours
                               </label>
