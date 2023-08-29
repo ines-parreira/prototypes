@@ -67,15 +67,19 @@ const PaymentMethodView = ({
         totalProductAmount,
         interval,
         isSubscriptionCanceled,
+        selectedPlans: selectedPlansFromState,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
         filterByInterval: true,
     })
 
-    const [selectedPlans] = useSessionStorage<SelectedPlans>(
+    const [selectedPlansFromSessionStorage] = useSessionStorage<SelectedPlans>(
         SELECTED_PRODUCTS_SESSION_STORAGE_KEY
     )
+
+    const selectedPlans =
+        selectedPlansFromSessionStorage ?? selectedPlansFromState
 
     const currentMonth = new Date().getMonth() + 1
 
@@ -212,7 +216,9 @@ const PaymentMethodView = ({
                         )}
                     </Form>
                 </Card>
-                {(isTrialing || isSubscriptionCanceled) && (
+                {(isTrialing ||
+                    (isSubscriptionCanceled &&
+                        !!selectedPlansFromSessionStorage)) && (
                     <Card title="Summary">
                         <div className={css.summary}>
                             <div className={css.summaryHeader}>
