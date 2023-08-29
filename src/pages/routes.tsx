@@ -635,7 +635,7 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                 />
                 <Route
                     exact
-                    path={`${path}/automation-add-on`}
+                    path={`${path}/automation-add-on-features`}
                     render={appRender({
                         content: SelfServiceStatsPage,
                         navbar: StatsNavbarContainer,

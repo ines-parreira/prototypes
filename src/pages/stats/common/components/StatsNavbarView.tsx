@@ -13,6 +13,10 @@ import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {
+    AUTOMATION_ADD_ON_PATH,
+    AUTOMATION_ADD_ON_TITLE,
+} from 'pages/stats/self-service/constants'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -140,13 +144,13 @@ export default function StatsNavbarView() {
                     {!hasAutomationAddOn ? (
                         <>
                             <AutomationNavbarAddOnPaywallNavbarLink
-                                to="/app/stats/automation-add-on"
+                                to={AUTOMATION_ADD_ON_PATH}
                                 exact
                                 onSubscribeToAutomationAddOnClick={() => {
                                     setIsAutomationSubscriptionModal(true)
                                 }}
                             >
-                                Automation Add-on
+                                {AUTOMATION_ADD_ON_TITLE}
                             </AutomationNavbarAddOnPaywallNavbarLink>
                             <AutomationSubscriptionModal
                                 confirmLabel="Subscribe"
@@ -159,9 +163,9 @@ export default function StatsNavbarView() {
                     ) : (
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/automation-add-on"
+                            to={AUTOMATION_ADD_ON_PATH}
                         >
-                            Automation Add-on
+                            {AUTOMATION_ADD_ON_TITLE}
                         </NavbarLink>
                     )}
                 </div>

@@ -6,6 +6,7 @@ import {act, fireEvent, screen, within} from '@testing-library/react'
 import {v4 as uuidv4} from 'uuid'
 import _times from 'lodash/times'
 
+import routerDom from 'react-router-dom'
 import {renderWithRouterAndDnD} from 'utils/testing'
 import {getLDClient} from 'utils/launchDarkly'
 import {RootState, StoreDispatch} from 'state/types'
@@ -24,6 +25,11 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 jest.mock('pages/automation/common/hooks/useSelfServiceChatChannels')
 jest.mock('utils/launchDarkly')
 jest.mock('../hooks/useQuickResponses')
+jest.mock('react-router-dom', () => ({
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    ...(jest.requireActual('react-router-dom') as typeof routerDom),
+    useHistory: jest.fn(),
+}))
 
 const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
     ReturnType<typeof getLDClient>['allFlags']
@@ -37,6 +43,14 @@ const useSelfServiceChatChannelsMock =
     >
 
 allFlagsMock.mockReturnValue({})
+
+const useHistoryMock = routerDom.useHistory as jest.MockedFunction<
+    typeof routerDom.useHistory
+>
+
+useHistoryMock.mockReturnValue({
+    push: jest.fn(),
+} as unknown as ReturnType<typeof useHistoryMock>)
 
 describe('<QuickResponsesView />', () => {
     const defaultState = {
@@ -401,5 +415,92 @@ describe('<QuickResponsesView />', () => {
                     .parentElement!.parentElement!
             ).getByRole('switch')
         ).toHaveClass('isDisabled')
+    })
+
+    it('should expand a quick response by id from url', () => {
+        const quickResponse2 = {
+            id: '57b4828f-c846-4b70-a7a8-b4186f967795',
+            deactivated_datetime: null,
+            title: 'What is your shipping policy?',
+            response_message_content: {
+                html: '',
+                text: '',
+                attachments: fromJS([]),
+            },
+        }
+
+        useQuickResponsesMock.mockReturnValue({
+            isFetchPending: false,
+            isUpdatePending: false,
+            storeIntegration: undefined,
+            selfServiceConfiguration: {
+                ...selfServiceConfiguration1,
+                quick_response_policies: [quickResponse1, quickResponse2],
+            },
+            quickResponses: [quickResponse1, quickResponse2],
+            handleQuickResponsesUpdate: jest.fn(),
+            handleQuickResponsesDelete: jest.fn(),
+        })
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />,
+            </Provider>,
+            {
+                route: '/app/automation/quick-responses?quickResponseId=57b4828f-c846-4b70-a7a8-b4186f967795',
+            }
+        )
+
+        expect(
+            screen.getByDisplayValue(quickResponse2.title)
+        ).toBeInTheDocument()
+    })
+
+    it('should change the url when quick response is expanded', () => {
+        const quickResponse2 = {
+            id: '57b4828f-c846-4b70-a7a8-b4186f967795',
+            deactivated_datetime: null,
+            title: 'What is your shipping policy?',
+            response_message_content: {
+                html: '',
+                text: '',
+                attachments: fromJS([]),
+            },
+        }
+
+        useQuickResponsesMock.mockReturnValue({
+            isFetchPending: false,
+            isUpdatePending: false,
+            storeIntegration: undefined,
+            selfServiceConfiguration: {
+                ...selfServiceConfiguration1,
+                quick_response_policies: [quickResponse1, quickResponse2],
+            },
+            quickResponses: [quickResponse1, quickResponse2],
+            handleQuickResponsesUpdate: jest.fn(),
+            handleQuickResponsesDelete: jest.fn(),
+        })
+
+        useHistoryMock.mockReturnValue({
+            push: jest.fn(),
+        } as unknown as ReturnType<typeof useHistoryMock>)
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />,
+            </Provider>,
+            {
+                route: '/app/automation/quick-responses',
+            }
+        )
+
+        act(() => {
+            const textarea = screen.getByDisplayValue(quickResponse2.title)
+            fireEvent.click(textarea)
+        })
+
+        expect(useHistoryMock().push).toBeCalledWith({
+            search: '?quickResponseId=57b4828f-c846-4b70-a7a8-b4186f967795',
+        })
     })
 })

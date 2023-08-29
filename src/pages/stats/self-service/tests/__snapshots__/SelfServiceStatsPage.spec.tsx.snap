@@ -33,7 +33,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
         class="align-items-center"
       >
         <span>
-          Automation Add-on
+          Automation add-on features
         </span>
         <button
           aria-disabled="false"
@@ -1428,7 +1428,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
         class="align-items-center"
       >
         <span>
-          Automation Add-on
+          Automation add-on features
         </span>
         <button
           aria-disabled="false"

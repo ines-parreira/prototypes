@@ -1,5 +1,5 @@
 import React, {useMemo, useRef, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
 import {v4 as uuidv4} from 'uuid'
@@ -12,6 +12,7 @@ import useApplicationsAutomationSettings from 'pages/automation/common/hooks/use
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
+import useSearch from 'hooks/useSearch'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../common/components/constants'
 import QuickResponsesAccordionCaption from './components/QuickResponsesAccordionCaption'
 import QuickResponsesAccordion from './components/QuickResponsesAccordion'
@@ -29,6 +30,10 @@ const QuickResponsesView = () => {
         shopType: string
         shopName: string
     }>()
+    const searchParams = useSearch<Record<string, string>>()
+    const queryParamExpandedQuickResponseId =
+        searchParams.quickResponseId ?? null
+    const history = useHistory()
     const {
         isUpdatePending,
         quickResponses,
@@ -44,7 +49,7 @@ const QuickResponsesView = () => {
         useState(quickResponses)
     const [expandedQuickResponseId, setExpandedQuickResponseId] = useState<
         QuickResponsePolicy['id'] | null
-    >(null)
+    >(queryParamExpandedQuickResponseId)
     const [hoveredQuickResponseId, setHoveredQuickResponseId] = useState<
         QuickResponsePolicy['id'] | null
     >(null)
@@ -155,6 +160,17 @@ const QuickResponsesView = () => {
         setDirtyQuickResponses([...dirtyQuickResponses, newQuickResponse])
         setExpandedQuickResponseId(newQuickResponse.id)
     }
+    const handleQuickResponseExpandChange = (
+        quickResponseId: string | null
+    ) => {
+        setExpandedQuickResponseId(quickResponseId)
+
+        history.push({
+            search: quickResponseId
+                ? `?quickResponseId=${quickResponseId}`
+                : '',
+        })
+    }
     const handleSubmit = () => {
         handleQuickResponsesUpdate(dirtyQuickResponses)
     }
@@ -171,6 +187,7 @@ const QuickResponsesView = () => {
         (dirtyQuickResponse) =>
             dirtyQuickResponse.id === expandedQuickResponseId
     )
+
     const isLoading =
         !selfServiceConfiguration ||
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
@@ -197,7 +214,7 @@ const QuickResponsesView = () => {
                     <QuickResponsesAccordion
                         items={dirtyQuickResponses}
                         expandedItem={expandedQuickResponseId}
-                        onExpandedItemChange={setExpandedQuickResponseId}
+                        onExpandedItemChange={handleQuickResponseExpandChange}
                         onHoveredItemChange={setHoveredQuickResponseId}
                         onPreviewChange={setDirtyQuickResponses}
                         onChange={handleQuickResponsesUpdate}

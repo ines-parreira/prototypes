@@ -344,16 +344,16 @@ export class TableStat extends Component<
                 )
 
                 return (
-                    <>
-                        {value}%{' '}
+                    <div className={css.flexAlignCenter}>
+                        <div className={css.percentageValue}>{value}% </div>
                         {isQuickResponseEnabled && (
                             <Link
-                                to={`/app/automation/${shopType}/${shopName}/quick-responses`}
+                                to={`/app/automation/${shopType}/${shopName}/quick-responses?quickResponseId=${flowId}`}
                             >
                                 Edit quick response
                             </Link>
                         )}
-                    </>
+                    </div>
                 )
             }
             case StatValueType.ArticleRecommendationAutomationRate: {
@@ -361,6 +361,7 @@ export class TableStat extends Component<
                 // TODO: Put threshold again when defined
                 const hasLowAutomationRate = false // value < 40
                 const tooltipId = `${StatValueType.ArticleRecommendationAutomationRate}-${lineIndex}-tooltip`
+
                 return (
                     <>
                         {value}%{' '}
@@ -409,14 +410,14 @@ export class TableStat extends Component<
                 }
 
                 return (
-                    <>
-                        {value}%&nbsp;
+                    <div className={css.flexAlignCenter}>
+                        <span className={css.percentageValue}>{value}%</span>
                         <Link
                             to={`/app/automation/${shopType}/${shopName}/flows/edit/${configurationId}`}
                         >
                             Edit flow
                         </Link>
-                    </>
+                    </div>
                 )
             }
             case StatValueType.Date: {

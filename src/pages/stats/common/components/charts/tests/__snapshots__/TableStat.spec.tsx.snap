@@ -501,14 +501,21 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           <span
             className="cell-wrapper cell-content"
           >
-            30
-            %
-             
-            <Link
-              to="/app/automation/shopify/test-shop/quick-responses"
+            <div
+              className="flexAlignCenter"
             >
-              Edit quick response
-            </Link>
+              <div
+                className="percentageValue"
+              >
+                30
+                % 
+              </div>
+              <Link
+                to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+              >
+                Edit quick response
+              </Link>
+            </div>
           </span>
         </td>
         <td
@@ -822,14 +829,21 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           <span
             className="cell-wrapper cell-content"
           >
-            30
-            %
-             
-            <Link
-              to="/app/automation/shopify/test-shop/quick-responses"
+            <div
+              className="flexAlignCenter"
             >
-              Edit quick response
-            </Link>
+              <div
+                className="percentageValue"
+              >
+                30
+                % 
+              </div>
+              <Link
+                to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+              >
+                Edit quick response
+              </Link>
+            </div>
           </span>
         </td>
         <td
@@ -1364,14 +1378,21 @@ exports[`TableStat should render a table chart 1`] = `
           <span
             className="cell-wrapper cell-content"
           >
-            30
-            %
-             
-            <Link
-              to="/app/automation/shopify/test-shop/quick-responses"
+            <div
+              className="flexAlignCenter"
             >
-              Edit quick response
-            </Link>
+              <div
+                className="percentageValue"
+              >
+                30
+                % 
+              </div>
+              <Link
+                to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+              >
+                Edit quick response
+              </Link>
+            </div>
           </span>
         </td>
         <td
@@ -1901,14 +1922,21 @@ exports[`TableStat should render a table with the expand button and one line vis
           <span
             className="cell-wrapper cell-content"
           >
-            30
-            %
-             
-            <Link
-              to="/app/automation/shopify/test-shop/quick-responses"
+            <div
+              className="flexAlignCenter"
             >
-              Edit quick response
-            </Link>
+              <div
+                className="percentageValue"
+              >
+                30
+                % 
+              </div>
+              <Link
+                to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+              >
+                Edit quick response
+              </Link>
+            </div>
           </span>
         </td>
         <td

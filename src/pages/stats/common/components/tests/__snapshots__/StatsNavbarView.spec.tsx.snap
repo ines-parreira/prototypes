@@ -156,12 +156,12 @@ exports[`StatsNavbarView should render 1`] = `
           <a
             class="link item"
             data-active-class-name="active"
-            href="/app/stats/automation-add-on"
+            href="/app/stats/automation-add-on-features"
           >
             <div
               class="name"
             >
-              Automation Add-on
+              Automation add-on features
             </div>
             <i
               class="material-icons md-2 icon"
@@ -325,12 +325,12 @@ exports[`StatsNavbarView should render 1`] = `
         <a
           class="link item"
           data-active-class-name="active"
-          href="/app/stats/automation-add-on"
+          href="/app/stats/automation-add-on-features"
         >
           <div
             class="name"
           >
-            Automation Add-on
+            Automation add-on features
           </div>
           <i
             class="material-icons md-2 icon"

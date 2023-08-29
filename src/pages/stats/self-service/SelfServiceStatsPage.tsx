@@ -61,7 +61,7 @@ import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallC
 import {
     AUTOMATION_SELF_SERVICE_STAT_NAME,
     HELP_URL,
-    PAGE_TITLE,
+    AUTOMATION_ADD_ON_TITLE,
     PAGE_DESCRIPTION,
 } from './constants'
 
@@ -281,7 +281,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     return (
         <StatsPage
-            title={PAGE_TITLE}
+            title={AUTOMATION_ADD_ON_TITLE}
             description={PAGE_DESCRIPTION}
             helpUrl={HELP_URL}
             filters={
@@ -591,7 +591,7 @@ export default withFeaturePaywall(
                 <PageHeader
                     title={
                         <HeaderTitle
-                            title={PAGE_TITLE}
+                            title={AUTOMATION_ADD_ON_TITLE}
                             description={PAGE_DESCRIPTION}
                             helpUrl={HELP_URL}
                         />
