@@ -3,13 +3,13 @@ import {produce} from 'immer'
 
 import {CampaignStepsKeys, isCampaignStepsKeys} from '../types/CampaignSteps'
 
-export function usePristineSteps() {
+export function usePristineSteps(defaultOpenedStep?: CampaignStepsKeys) {
     const [pristine, setPristine] = useState<
         Record<CampaignStepsKeys, boolean>
     >({
-        basics: true,
-        audience: true,
-        message: true,
+        basics: defaultOpenedStep !== CampaignStepsKeys.Basics,
+        audience: defaultOpenedStep !== CampaignStepsKeys.Audience,
+        message: defaultOpenedStep !== CampaignStepsKeys.Message,
     })
 
     const onChangePristine = useCallback(

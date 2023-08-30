@@ -81,9 +81,12 @@ export const CampaignDetailsForm = ({
     deleteCampaign,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const defaultOpenedStep = isEditMode
+        ? CampaignStepsKeys.Audience
+        : CampaignStepsKeys.Basics
 
     const isRevenueBetaTester = useIsRevenueBetaTester()
-    const {pristine, onChangePristine} = usePristineSteps()
+    const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
 
     const attachments = useAppSelector(getNewMessageAttachments)
@@ -427,11 +430,7 @@ export const CampaignDetailsForm = ({
                         />
                         <div className={css.formContainer}>
                             <Accordion
-                                defaultExpandedItem={
-                                    isEditMode
-                                        ? CampaignStepsKeys.Audience
-                                        : CampaignStepsKeys.Basics
-                                }
+                                defaultExpandedItem={defaultOpenedStep}
                                 onChange={onChangePristine}
                             >
                                 <CampaignBasicStep

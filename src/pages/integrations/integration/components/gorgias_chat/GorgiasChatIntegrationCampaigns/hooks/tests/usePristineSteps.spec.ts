@@ -2,6 +2,8 @@ import {act, renderHook} from '@testing-library/react-hooks'
 
 import {usePristineSteps} from '../usePristineSteps'
 
+import {CampaignStepsKeys} from '../../types/CampaignSteps'
+
 describe('usePristineSteps()', () => {
     it('returns the initial state', () => {
         const {result} = renderHook(() => usePristineSteps())
@@ -19,6 +21,18 @@ describe('usePristineSteps()', () => {
         act(() => {
             result.current.onChangePristine('basics')
         })
+
+        expect(result.current.pristine).toEqual({
+            basics: false,
+            audience: true,
+            message: true,
+        })
+    })
+
+    it('sets the default step as not pristine', () => {
+        const {result} = renderHook(() =>
+            usePristineSteps(CampaignStepsKeys.Basics)
+        )
 
         expect(result.current.pristine).toEqual({
             basics: false,
