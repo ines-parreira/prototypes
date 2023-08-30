@@ -8,7 +8,10 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
-import {PolicyKey} from 'models/selfServiceConfiguration/types'
+import {
+    PolicyKey,
+    ReturnActionType,
+} from 'models/selfServiceConfiguration/types'
 import {TicketChannel} from 'business/types/ticket'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
@@ -90,17 +93,40 @@ const OrderManagementView = () => {
         setHoveredOrderManagementFlow(undefined)
     }
 
-    const shouldDisplayTrackOrderAlert = useMemo(() => {
-        if (
-            !hasAutomationAddOn ||
-            !selfServiceConfiguration?.track_order_policy.enabled ||
-            selfServiceConfiguration?.track_order_policy.unfulfilled_message
-                ?.text
-        )
-            return false
+    const isResponseMessageEmpty = (flow: PolicyKey) => {
+        switch (flow) {
+            case 'track_order_policy':
+                return !selfServiceConfiguration?.track_order_policy
+                    .unfulfilled_message?.text
+            case 'return_order_policy':
+                return (
+                    selfServiceConfiguration?.return_order_policy?.action
+                        ?.type !== ReturnActionType.LoopReturns &&
+                    !selfServiceConfiguration?.return_order_policy?.action
+                        ?.response_message_content?.text
+                )
+            case 'cancel_order_policy':
+                return !selfServiceConfiguration?.cancel_order_policy?.action
+                    ?.response_message_content?.text
+            case 'report_issue_policy':
+                return selfServiceConfiguration?.report_issue_policy?.cases?.some(
+                    ({reasons}) =>
+                        reasons.some(
+                            (reason) =>
+                                !reason.action?.responseMessageContent.text
+                        )
+                )
+        }
+    }
+    const getAlert = (flow: PolicyKey) => {
+        if (!hasAutomationAddOn || !selfServiceConfiguration?.[flow].enabled) {
+            return null
+        }
 
-        return true
-    }, [selfServiceConfiguration, hasAutomationAddOn])
+        return isResponseMessageEmpty(flow) ? (
+            <EmptyResponseMessageContentError />
+        ) : null
+    }
 
     const isLoading =
         !selfServiceConfiguration ||
@@ -130,11 +156,7 @@ const OrderManagementView = () => {
                         setHoveredOrderManagementFlow('track_order_policy')
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
-                    alert={
-                        shouldDisplayTrackOrderAlert && (
-                            <EmptyResponseMessageContentError />
-                        )
-                    }
+                    alert={getAlert('track_order_policy')}
                     {...(!hasAutomationAddOn
                         ? {action: <AutomationSubscriptionAction />}
                         : {
@@ -163,6 +185,7 @@ const OrderManagementView = () => {
                     onClick={() => {
                         history.push(`${pathname}/return`)
                     }}
+                    alert={getAlert('return_order_policy')}
                 />
                 <OrderManagementFlowItem
                     isEnabled={
@@ -184,6 +207,7 @@ const OrderManagementView = () => {
                     onClick={() => {
                         history.push(`${pathname}/cancel`)
                     }}
+                    alert={getAlert('cancel_order_policy')}
                 />
                 <OrderManagementFlowItem
                     isEnabled={
@@ -202,6 +226,7 @@ const OrderManagementView = () => {
                         setHoveredOrderManagementFlow('report_issue_policy')
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
+                    alert={getAlert('report_issue_policy')}
                     {...(!hasAutomationAddOn
                         ? {action: <AutomationSubscriptionAction />}
                         : {
