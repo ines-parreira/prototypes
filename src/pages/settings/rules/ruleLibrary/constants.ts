@@ -31,4 +31,5 @@ export enum RuleTemplateRecipeSlugs {
     AutoTagPotentialCustomer = 'auto-tag-potential-customer-recipe',
     AutoTagSocialTags = 'auto-tag-social-tags',
     AutoTagShippingStatus = 'auto-tag-shipping-status',
+    AutoTagOfflineCapture = 'auto-tag-offline-capture',
 }

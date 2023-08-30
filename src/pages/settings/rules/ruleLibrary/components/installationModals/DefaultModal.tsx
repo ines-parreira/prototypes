@@ -28,6 +28,8 @@ const howItWorksText: Record<RuleTemplateRecipeSlugs, string> = {
         'This rule tags tickets from social channels as questions or leads when the ticket content contains questions or purchase intention. Use this rule to prioritize important requests and organize tickets of similar intent to simplify reporting.',
     [RuleTemplateRecipeSlugs.AutoTagShippingStatus]:
         'This rule tags order status requests as shipped or not shipped based on a shopper’s last Shopify order. Use this rule to save response time by proactively identifying order status and inform the response.',
+    [RuleTemplateRecipeSlugs.AutoTagOfflineCapture]:
+        'Tags chat tickets coming from the offline capture so that you can create views to separate them from live chat tickets.',
 }
 
 export const DefaultModal = ({
