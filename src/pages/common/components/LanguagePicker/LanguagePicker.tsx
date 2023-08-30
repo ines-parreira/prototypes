@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react'
-import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
-import InputField from 'pages/common/forms/input/InputField'
+import DropdownButtonWithSearch from '../DropdownButtonWithSearch/DropdownButtonWithSearch'
 import css from './LanguagePicker.less'
 
 type Language = {
@@ -20,8 +19,6 @@ export interface LanguagePicker {
 }
 
 const LanguagePicker: React.FC<LanguagePicker> = ({...props}) => {
-    const [isOpen, setOpen] = React.useState(false)
-    const [search, setSearch] = React.useState('')
     const [defaultLanguage, setDefaultLanguage] = React.useState(
         props.languages.find((language) => language.isDefault) as Language
     )
@@ -35,10 +32,6 @@ const LanguagePicker: React.FC<LanguagePicker> = ({...props}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedLanguages])
 
-    const handleOnSearchItem = (value: string) => {
-        setSearch(value)
-    }
-
     const isNotDefaultLanguage = (language: Language) =>
         language.value !== defaultLanguage.value
 
@@ -46,22 +39,11 @@ const LanguagePicker: React.FC<LanguagePicker> = ({...props}) => {
         !selectedLanguages.some(
             (selectedLang) => selectedLang.value === language.value
         )
-    const matchesSearchQuery = (language: Language) =>
-        language.label.toLowerCase().includes(search.toLowerCase())
 
     const filteredList = props.availableLanguages.filter(
         (language) =>
-            isNotDefaultLanguage(language) &&
-            isNotSelectedLanguage(language) &&
-            matchesSearchQuery(language)
+            isNotDefaultLanguage(language) && isNotSelectedLanguage(language)
     )
-
-    const handleOnToggle = () => {
-        if (isOpen) {
-            setSearch('')
-        }
-        setOpen(!isOpen)
-    }
 
     const onDefaultLanguageChange = (value: Value) => {
         const lang = props.availableLanguages.find(
@@ -71,7 +53,10 @@ const LanguagePicker: React.FC<LanguagePicker> = ({...props}) => {
         onRemoveLanguage(null, lang)
     }
 
-    const onSelectLanguage = (ev: React.MouseEvent, language: Language) => {
+    const onSelectLanguage = (
+        ev: React.MouseEvent | null,
+        language: Language
+    ) => {
         setSelectedLanguages([...selectedLanguages, language])
     }
 
@@ -97,80 +82,18 @@ const LanguagePicker: React.FC<LanguagePicker> = ({...props}) => {
                 />
 
                 {props.availableLanguages.length > 1 && (
-                    <Dropdown
-                        isOpen={isOpen}
-                        toggle={handleOnToggle}
-                        setActiveFromChild
-                        className={css.languagePickerDropdown}
-                    >
-                        <DropdownToggle
-                            className={css.languagePickerToggle}
-                            type="button"
-                            color="none"
-                            disabled={!filteredList.length}
-                        >
-                            <i
-                                className="material-icons"
-                                style={{fontSize: 20}}
-                            >
-                                add
-                            </i>{' '}
-                            Add more languages
-                        </DropdownToggle>
-                        <DropdownMenu
-                            modifiers={{
-                                setMaxHeight: {
-                                    enabled: true,
-                                    order: 890,
-                                    fn: (data) => {
-                                        return {
-                                            ...data,
-                                            styles: {
-                                                ...data.styles,
-                                                overflow: 'auto',
-                                                maxHeight: `300px`,
-                                            },
-                                        }
-                                    },
-                                },
-                            }}
-                        >
-                            <div className={css['dropdown-header']}>
-                                <InputField
-                                    value={search}
-                                    autoFocus
-                                    placeholder="Search"
-                                    onChange={handleOnSearchItem}
-                                    prefix={
-                                        <i
-                                            className="material-icons"
-                                            style={{
-                                                fontSize: 20,
-                                                color: '#AFAFAF',
-                                            }}
-                                        >
-                                            search
-                                        </i>
-                                    }
-                                />
-                            </div>
-                            {filteredList.map((language) => (
-                                <DropdownItem
-                                    key={language.value}
-                                    onClick={(ev) =>
-                                        onSelectLanguage(ev, language)
-                                    }
-                                    toggle={false}
-                                    className={css.languageDropdownItem}
-                                >
-                                    {language.label}
-                                </DropdownItem>
-                            ))}
-                            {!filteredList.length && (
-                                <DropdownItem>No language found</DropdownItem>
-                            )}
-                        </DropdownMenu>
-                    </Dropdown>
+                    <DropdownButtonWithSearch
+                        label="Add More Languages"
+                        materialIconLabel="add"
+                        options={filteredList}
+                        variant="none"
+                        persist
+                        placeholder="Search"
+                        textNotFound="No languages found"
+                        onSelectOptionChange={(language) =>
+                            onSelectLanguage(null, language)
+                        }
+                    />
                 )}
             </div>
 
