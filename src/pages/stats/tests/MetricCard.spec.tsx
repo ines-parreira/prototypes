@@ -6,7 +6,7 @@ import MetricCard from '../MetricCard'
 describe('<MetricCard />', () => {
     it('should render the metric card', () => {
         const {container} = render(
-            <MetricCard hint="metric hint" title="Metric title">
+            <MetricCard hint={{title: 'metric hint'}} title="Metric title">
                 MetricCard
             </MetricCard>
         )

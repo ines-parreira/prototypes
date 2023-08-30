@@ -1,30 +1,10 @@
-import React, {useRef} from 'react'
+import React from 'react'
 import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
-import {OrderDirection} from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import Tooltip from 'pages/common/components/Tooltip'
-import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
-import {
-    getQuery,
-    HeaderTooltips,
-    TableLabels,
-    TooltipData,
-} from 'pages/stats/TableConfig'
+import {HeaderTooltips, TableLabels, getQuery} from 'pages/stats/TableConfig'
 import {TableColumn} from 'state/ui/stats/types'
-
-const DOCUMENTATION_LINK_TEXT = 'How is it calculated?'
-
-const HeaderTooltipContent = ({title, link}: TooltipData) => {
-    return (
-        <span>
-            {title}
-            <br />
-            <a href={link} target="_blank" rel="noopener noreferrer">
-                {DOCUMENTATION_LINK_TEXT}
-            </a>
-        </span>
-    )
-}
+import {OrderDirection} from 'models/api/types'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
 type AgentsHeaderCellContentProps = {
     width?: number | string
@@ -45,7 +25,6 @@ export const AgentsHeaderCellContent = ({
     )
     const tooltip = HeaderTooltips[column]
     const isOrderedBy = column === field
-    const tooltipRef = useRef<HTMLElement>(null)
 
     return (
         <HeaderCellProperty
@@ -62,20 +41,7 @@ export const AgentsHeaderCellContent = ({
             justifyContent={justifyContent}
             className={className}
         >
-            {tooltip && (
-                <span>
-                    <StatsHelpIcon ref={tooltipRef} className={'mr-2'} />
-                    <Tooltip
-                        boundariesElement={'window'}
-                        target={tooltipRef}
-                        autohide={false}
-                        placement={'top-start'}
-                        delay={{show: 0, hide: 500}}
-                    >
-                        <HeaderTooltipContent {...tooltip} />
-                    </Tooltip>
-                </span>
-            )}
+            {tooltip && <HintTooltip {...tooltip} />}
         </HeaderCellProperty>
     )
 }

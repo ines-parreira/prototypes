@@ -10,6 +10,7 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
 import {TableColumn} from 'state/ui/stats/types'
+import {TooltipData} from './types'
 
 export const TableColumnsOrder: TableColumn[] = [
     TableColumn.AgentName,
@@ -32,8 +33,6 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.RepliedTickets]: 'Tickets Replied',
     [TableColumn.MessagesSent]: 'Messages Sent',
 }
-
-export type TooltipData = {title: string; link: string}
 
 export const AGENT_NAME_COLUMN_WIDTH = 200
 export const METRIC_COLUMN_WIDTH = 160

@@ -1,17 +1,18 @@
 import {data} from 'browserslist'
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
 import Card from './Card'
 import css from './MetricCard.less'
+import {TooltipData} from './types'
 
 type Props = {
     children: ReactNode
     className?: string
-    hint?: ReactNode
+    hint?: TooltipData
     isLoading?: boolean
     title: ReactNode
     tip?: ReactNode
@@ -31,9 +32,7 @@ export default function MetricCard({
         <Card className={classnames(css.card, className)}>
             <div className={css.title}>
                 {title}
-
-                {hint && <IconTooltip>{hint}</IconTooltip>}
-
+                {hint && <HintTooltip {...hint} />}
                 <div className={css.trendBadge}>{trendBadge}</div>
             </div>
 
@@ -41,9 +40,9 @@ export default function MetricCard({
 
             {tip &&
                 (!data || isLoading ? (
-                    <Skeleton height={132} className={css.tooltip} inline />
+                    <Skeleton height={132} className={css.tip} inline />
                 ) : (
-                    <div className={css.tooltip}>{tip}</div>
+                    <div className={css.tip}>{tip}</div>
                 ))}
         </Card>
     )

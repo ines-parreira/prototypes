@@ -82,7 +82,7 @@ export const CampaignTotalsStat = () => {
                 {statsVisible && (
                     <MetricCard
                         title={METRICS.revenue.title}
-                        hint={METRICS.revenue.hint}
+                        hint={{title: METRICS.revenue.hint}}
                     >
                         <div className={css.wrapper}>
                             <BigNumberMetric className={css.metric}>
@@ -102,7 +102,7 @@ export const CampaignTotalsStat = () => {
                 {statsVisible && (
                     <MetricCard
                         title={METRICS.influencedRevenueShare.title}
-                        hint={METRICS.influencedRevenueShare.hint}
+                        hint={{title: METRICS.influencedRevenueShare.hint}}
                     >
                         <BigNumberMetric>
                             {data?.influencedRevenueShare}
@@ -115,7 +115,7 @@ export const CampaignTotalsStat = () => {
                 {statsVisible && (
                     <MetricCard
                         title={METRICS.impressions.title}
-                        hint={METRICS.impressions.hint}
+                        hint={{title: METRICS.impressions.hint}}
                     >
                         <BigNumberMetric>{data?.impressions}</BigNumberMetric>
                     </MetricCard>
@@ -126,7 +126,7 @@ export const CampaignTotalsStat = () => {
                 {statsVisible && (
                     <MetricCard
                         title={METRICS.engagement.title}
-                        hint={METRICS.engagement.hint}
+                        hint={{title: METRICS.engagement.hint}}
                     >
                         <BigNumberMetric>{data?.engagement}</BigNumberMetric>
                     </MetricCard>
@@ -137,7 +137,7 @@ export const CampaignTotalsStat = () => {
                 {statsVisible && (
                     <MetricCard
                         title={METRICS.campaignSalesCount.title}
-                        hint={METRICS.campaignSalesCount.hint}
+                        hint={{title: METRICS.campaignSalesCount.hint}}
                     >
                         <BigNumberMetric>
                             {data?.campaignSalesCount}

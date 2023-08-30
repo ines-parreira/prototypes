@@ -19,7 +19,7 @@ describe('<IconTooltip />', () => {
             <IconTooltip icon="cross">Content when hovering</IconTooltip>
         )
 
-        expect(getByText('cross')).toBeTruthy()
+        expect(getByText('cross')).toBeInTheDocument()
     })
 
     it('should render a tooltip when hovering over the icon', async () => {
@@ -27,6 +27,6 @@ describe('<IconTooltip />', () => {
         const {getByText} = render(<IconTooltip>{content}</IconTooltip>)
 
         fireEvent.mouseOver(getByText('info'))
-        await waitFor(() => expect(getByText(content)))
+        await waitFor(() => expect(getByText(content)).toBeInTheDocument())
     })
 })

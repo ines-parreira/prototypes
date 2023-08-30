@@ -970,7 +970,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   Customer satisfaction
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"
@@ -998,7 +998,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   />
                 </div>
                 <div
-                  class="tooltip"
+                  class="tip"
                 >
                   <div
                     class="wrapper success"
@@ -1029,7 +1029,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   First response time
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"
@@ -1052,7 +1052,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   1m 36s
                 </div>
                 <div
-                  class="tooltip"
+                  class="tip"
                 >
                   <div
                     class="wrapper success"
@@ -1083,7 +1083,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   Resolution time
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"
@@ -1106,7 +1106,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   1m 37s
                 </div>
                 <div
-                  class="tooltip"
+                  class="tip"
                 >
                   <div
                     class="wrapper success"
@@ -1137,7 +1137,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   Messages per ticket
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"
@@ -1160,7 +1160,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   98
                 </div>
                 <div
-                  class="tooltip"
+                  class="tip"
                 >
                   <div
                     class="wrapper success"
@@ -1208,7 +1208,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   Open tickets
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"
@@ -1250,7 +1250,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   Closed tickets
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"
@@ -1292,7 +1292,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   Tickets created
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"
@@ -1334,7 +1334,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   Tickets replied
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"
@@ -1376,7 +1376,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   Messages sent
                   <div
-                    class="wrapper"
+                    class="wrapper tooltip"
                   >
                     <i
                       class="material-icons-outlined icon"

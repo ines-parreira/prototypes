@@ -98,6 +98,7 @@ import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
 import {OneDimensionalDataItem} from './types'
 import TagsStatsFilter from './TagsStatsFilter'
+import {statsHintsTooltipsConfig} from './stats-hints-config'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
@@ -443,7 +444,11 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={3}>
                         <MetricCard
                             title={CUSTOMER_SATISFACTION_LABEL}
-                            hint="Average CSAT score for tickets which received a survey during the period"
+                            hint={
+                                statsHintsTooltipsConfig[
+                                    CUSTOMER_SATISFACTION_LABEL
+                                ]
+                            }
                             isLoading={customerSatisfactionTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
@@ -490,7 +495,11 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={3}>
                         <MetricCard
                             title={FIRST_RESPONSE_TIME_LABEL}
-                            hint="Median time between 1st customer message and 1st human agent response"
+                            hint={
+                                statsHintsTooltipsConfig[
+                                    FIRST_RESPONSE_TIME_LABEL
+                                ]
+                            }
                             isLoading={firstResponseTimeTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
@@ -527,7 +536,9 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={3}>
                         <MetricCard
                             title={RESOLUTION_TIME_LABEL}
-                            hint="Median time between the 1st customer message and the last time the ticket was closed"
+                            hint={
+                                statsHintsTooltipsConfig[RESOLUTION_TIME_LABEL]
+                            }
                             isLoading={resolutionTimeTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
@@ -564,7 +575,11 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={3}>
                         <MetricCard
                             title={MESSAGES_PER_TICKET_LABEL}
-                            hint="Average number of messages exchanged per closed ticket"
+                            hint={
+                                statsHintsTooltipsConfig[
+                                    MESSAGES_PER_TICKET_LABEL
+                                ]
+                            }
                             isLoading={messagesPerTicketTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
@@ -602,7 +617,7 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={6}>
                         <MetricCard
                             title={OPEN_TICKETS_LABEL}
-                            hint="Number of tickets with the status “open” at the end of the period"
+                            hint={statsHintsTooltipsConfig[OPEN_TICKETS_LABEL]}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -629,7 +644,9 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={6}>
                         <MetricCard
                             title={TICKETS_CLOSED_LABEL}
-                            hint="Number of unique tickets closed during the period (and that did not reopen)"
+                            hint={
+                                statsHintsTooltipsConfig[TICKETS_CLOSED_LABEL]
+                            }
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -658,7 +675,9 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={4}>
                         <MetricCard
                             title={TICKETS_CREATED_LABEL}
-                            hint="Number of new tickets to handle"
+                            hint={
+                                statsHintsTooltipsConfig[TICKETS_CREATED_LABEL]
+                            }
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -687,7 +706,9 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={4}>
                         <MetricCard
                             title={TICKETS_REPLIED_LABEL}
-                            hint="Number of tickets where the customer got a response"
+                            hint={
+                                statsHintsTooltipsConfig[TICKETS_REPLIED_LABEL]
+                            }
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -716,7 +737,7 @@ export default function SupportPerformanceOverview() {
                     <DashboardGridCell size={4}>
                         <MetricCard
                             title={MESSAGES_SENT_LABEL}
-                            hint="Number of messages received by your customer"
+                            hint={statsHintsTooltipsConfig[MESSAGES_SENT_LABEL]}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"

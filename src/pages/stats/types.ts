@@ -10,3 +10,8 @@ export type TwoDimensionalDataItem = {
         y: number
     }[]
 }
+
+export type TooltipData = {
+    title: string
+    link?: string
+}

@@ -30,7 +30,13 @@ export default function MetricTip({
             <div className={classnames('body-semibold', css.title)}>
                 {title}
                 {hint && (
-                    <IconTooltip placement={'top-start'}>{hint}</IconTooltip>
+                    <IconTooltip
+                        tooltipProps={{
+                            placement: 'top-start',
+                        }}
+                    >
+                        {hint}
+                    </IconTooltip>
                 )}
             </div>
             {children}

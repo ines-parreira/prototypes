@@ -7,13 +7,22 @@ import useId from 'hooks/useId'
 
 import css from './IconTooltip.less'
 
+type TooltipProps = ComponentProps<typeof Tooltip>
+
 type Props = {
     children: ReactNode
     className?: string
     icon?: string
-} & Pick<ComponentProps<typeof Tooltip>, 'placement'>
+    tooltipProps?: Partial<TooltipProps>
+    interactive?: boolean
+}
 
-const IconTooltip = ({children, className, icon, placement}: Props) => {
+const IconTooltip = ({
+    children,
+    className,
+    icon = 'info',
+    tooltipProps,
+}: Props) => {
     const {id: contextId} = useContext(InputFieldContext)
     const id = useId()
     const tooltipId = (contextId && `${contextId}-tooltip`) || 'tooltip-' + id
@@ -24,12 +33,12 @@ const IconTooltip = ({children, className, icon, placement}: Props) => {
                 id={tooltipId}
                 className={classnames('material-icons-outlined', css.icon)}
             >
-                {icon || 'info'}
+                {icon}
             </i>
             <Tooltip
                 target={tooltipId}
                 style={{textAlign: 'left'}}
-                placement={placement}
+                {...tooltipProps}
             >
                 {children}
             </Tooltip>

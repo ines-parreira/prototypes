@@ -17,7 +17,7 @@ const Template: Story<ComponentProps<typeof MetricCard>> = (props) => (
 const defaultProps: ComponentProps<typeof MetricCard> = {
     className: '',
     children: 'Value',
-    hint: "I'm a hint",
+    hint: {title: "I'm a hint"},
     title: 'First response time',
     tip: (
         <PerformanceTip avgMerchant={4.62} topTen={4.99}>

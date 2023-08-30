@@ -9,7 +9,7 @@ exports[`<MetricCard /> should render the metric card 1`] = `
   >
     Metric title
     <div
-      class="wrapper"
+      class="wrapper tooltip"
     >
       <i
         class="material-icons-outlined icon"
