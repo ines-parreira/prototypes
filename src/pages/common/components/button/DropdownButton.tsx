@@ -43,6 +43,7 @@ const DropdownButton = forwardRef(
                     onClick={onToggleClick}
                     ref={toggleRef}
                     size={size}
+                    isDisabled={others.isDisabled}
                 >
                     arrow_drop_down
                 </IconButton>

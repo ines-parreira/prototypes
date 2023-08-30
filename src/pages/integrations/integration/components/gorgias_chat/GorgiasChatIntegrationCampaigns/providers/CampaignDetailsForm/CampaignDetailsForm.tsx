@@ -8,7 +8,7 @@ import _isEmpty from 'lodash/isEmpty'
 
 import history from 'pages/history'
 import {convertToHTML} from 'utils/editor'
-import {sanitizeHtmlDefault} from 'utils/html'
+import {removeLinksFromHtml, sanitizeHtmlDefault} from 'utils/html'
 
 import {User} from 'config/types/user'
 import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
@@ -89,7 +89,7 @@ export const CampaignDetailsForm = ({
     const attachments = useAppSelector(getNewMessageAttachments)
 
     const [showContentWarning, setShowContentWarning] = useState<boolean>(false)
-    const [isActionInProgress, setIsActionInProgress] = useState<boolean>(false)
+    const [actionInProgress, setActionInProgress] = useState<string>('')
     const [campaignData, setCampaignData] = useState<ChatCampaign>({
         id: campaign?.id,
         name: campaign.name ?? 'Untitled campaign',
@@ -105,7 +105,7 @@ export const CampaignDetailsForm = ({
         useManageTriggers(campaign.triggers)
 
     useEffect(() => {
-        if (isActionInProgress) {
+        if (actionInProgress !== '') {
             return
         }
 
@@ -156,7 +156,7 @@ export const CampaignDetailsForm = ({
         return () => {
             dispatch(setNewMessageForChatCampaign({}))
         }
-    }, [campaign, dispatch, isActionInProgress])
+    }, [campaign, dispatch, actionInProgress])
 
     const shopifyProducts = useMemo<CampaignProduct[]>(() => {
         return transformAttachmentToProduct(attachments, {
@@ -250,8 +250,10 @@ export const CampaignDetailsForm = ({
         [agents]
     )
 
-    const handleSaveCampaign = async () => {
-        setIsActionInProgress(true)
+    const handleSaveCampaign = async (activate = false) => {
+        if (!isCampaignValid) return
+
+        setActionInProgress(isEditMode ? 'edit' : 'create')
 
         try {
             const payload: ChatCampaign = produce(campaignData, (draft) => {
@@ -277,6 +279,14 @@ export const CampaignDetailsForm = ({
                 } else {
                     draft.attachments = []
                 }
+
+                if (!isEditMode) {
+                    if (!activate) {
+                        draft.deactivated_datetime = new Date().toISOString()
+                    } else {
+                        draft.deactivated_datetime = undefined
+                    }
+                }
             })
 
             if (isEditMode) {
@@ -285,7 +295,7 @@ export const CampaignDetailsForm = ({
                 await createCampaign(fromJS(payload), integration)
             }
         } finally {
-            setIsActionInProgress(false)
+            setActionInProgress('')
 
             dispatch(
                 setNewMessageForChatCampaign({
@@ -295,18 +305,45 @@ export const CampaignDetailsForm = ({
         }
     }
 
+    const handleDuplicateCampaign = async () => {
+        setActionInProgress('duplicate')
+        const duplicate = {
+            ...campaignData,
+            id: '',
+            name: `${campaignData.name} (copy)`,
+            created_datetime: new Date().toISOString(),
+            deactivated_datetime:
+                campaignData.deactivated_datetime ?? new Date().toISOString(),
+            message: {
+                text: campaignData.message.text ?? '',
+                html: removeLinksFromHtml(campaignData.message.html) ?? '',
+            },
+        }
+
+        await createCampaign(fromJS(duplicate), integration).then(() =>
+            setActionInProgress('')
+        )
+    }
+
     const handleDeleteAttachment = (index: number) => {
         dispatch(deleteAttachment(index))
     }
 
     const handleDeleteCampaign = async () => {
-        await deleteCampaign(fromJS(campaign), integration)
+        setActionInProgress('delete')
+        await deleteCampaign(fromJS(campaign), integration).then(() =>
+            setActionInProgress('')
+        )
 
         history.push(
             `/app/settings/integrations/${integration.get('type') as string}/${
                 integration.get('id') as string
             }/campaigns`
         )
+    }
+
+    const handleDiscardChanges = () => {
+        history.push(backUrl)
     }
 
     const isStepValid = (step: CampaignStepsKeys) => {
@@ -322,6 +359,11 @@ export const CampaignDetailsForm = ({
             return campaignData.message.text !== ''
         }
     }
+
+    const isCampaignValid =
+        isStepValid(CampaignStepsKeys.Basics) &&
+        isStepValid(CampaignStepsKeys.Audience) &&
+        isStepValid(CampaignStepsKeys.Message)
 
     const avatar: GorgiasChatAvatarSettings = useMemo(
         () => ({
@@ -423,17 +465,13 @@ export const CampaignDetailsForm = ({
                             </Accordion>
                             <div className="mt-4">
                                 <CampaignFooter
-                                    isActionInProgress={isActionInProgress}
-                                    isCampaignValid={
-                                        isStepValid(CampaignStepsKeys.Basics) &&
-                                        isStepValid(
-                                            CampaignStepsKeys.Audience
-                                        ) &&
-                                        isStepValid(CampaignStepsKeys.Message)
-                                    }
+                                    actionInProgress={actionInProgress}
+                                    isCampaignValid={isCampaignValid}
                                     isUpdate={isEditMode}
                                     onSave={handleSaveCampaign}
+                                    onDiscard={handleDiscardChanges}
                                     onDelete={handleDeleteCampaign}
+                                    onDuplicate={handleDuplicateCampaign}
                                 />
                             </div>
                         </div>
