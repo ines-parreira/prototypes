@@ -50,7 +50,7 @@ const ReportOrderIssueFlowView = () => {
         >
             <AutomationViewContent
                 description="Customize scenarios and the corresponding options customers can select when reporting order issues."
-                helpUrl="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
+                helpUrl="https://docs.gorgias.com/en-US/how-to-customize-the-report-order-issue-flow-81863"
                 helpTitle="How to Customize The Report Order Issue Flow"
             >
                 <div className={css.captionContainer}>
