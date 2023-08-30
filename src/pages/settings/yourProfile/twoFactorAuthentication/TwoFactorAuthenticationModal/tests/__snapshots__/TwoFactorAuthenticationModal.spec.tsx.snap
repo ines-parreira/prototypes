@@ -356,10 +356,29 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-5"
+                    id="input-text-9"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter your password.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-11"
+                    name="userPassword"
+                    placeholder="Enter your password"
+                    type="password"
                     value=""
                   />
                 </div>
@@ -461,10 +480,29 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-5"
+                    id="input-text-9"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter your password.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-11"
+                    name="userPassword"
+                    placeholder="Enter your password"
+                    type="password"
                     value=""
                   />
                 </div>
@@ -581,10 +619,29 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-3"
+                    id="input-text-5"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter your password.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-7"
+                    name="userPassword"
+                    placeholder="Enter your password"
+                    type="password"
                     value=""
                   />
                 </div>
@@ -686,10 +743,29 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-3"
+                    id="input-text-5"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter your password.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-7"
+                    name="userPassword"
+                    placeholder="Enter your password"
+                    type="password"
                     value=""
                   />
                 </div>
@@ -1377,6 +1453,25 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                   />
                 </div>
               </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter your password.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-3"
+                    name="userPassword"
+                    placeholder="Enter your password"
+                    type="password"
+                    value=""
+                  />
+                </div>
+              </div>
             </div>
             <div
               class="modal-footer"
@@ -1617,10 +1712,29 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-18"
+                    id="input-text-30"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter your password.
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-32"
+                    name="userPassword"
+                    placeholder="Enter your password"
+                    type="password"
                     value=""
                   />
                 </div>
@@ -1697,22 +1811,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             <div
               class="modal-body"
             >
-              <div
-                class="banner bannerError"
-              >
-                <img
-                  alt="icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
-                <div
-                  class="bannerText"
-                >
-                  <span>
-                    Test error invalid code
-                  </span>
-                </div>
-              </div>
+              
               <div
                 class="headingBold"
               >
@@ -1729,7 +1828,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-20"
+                    id="input-text-34"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
@@ -1742,8 +1841,8 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               class="modal-footer"
             >
               <button
-                aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                aria-disabled="false"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Continue
@@ -1826,7 +1925,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-20"
+                    id="input-text-34"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"

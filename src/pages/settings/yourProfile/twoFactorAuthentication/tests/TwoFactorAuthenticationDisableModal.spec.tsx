@@ -3,6 +3,7 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
 import {deleteTwoFASecret} from '../../../../../models/twoFactorAuthentication/resources'
 import TwoFactorAuthenticationDisableModal from '../TwoFactorAuthenticationDisableModal'
 import {User} from '../../../../../config/types/user'
@@ -23,7 +24,12 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
         onClose: jest.fn(),
         onSuccess: jest.fn(),
     }
-    const store = configureMockStore([thunk])()
+    const store = configureMockStore([thunk])({
+        currentUser: fromJS({
+            has_2fa_enabled: false,
+            has_password: true,
+        }),
+    })
 
     it.each([undefined, 1])('should render the modal', async (userId) => {
         const user = userId ? ({id: userId} as User) : undefined
@@ -63,6 +69,8 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
         'should call the delete function',
         async (userId) => {
             const user = userId ? ({id: userId} as User) : undefined
+            const twofa_code = '123456'
+            const password = 'abcde'
 
             const {baseElement, getByPlaceholderText} = render(
                 <Provider store={store}>
@@ -87,7 +95,12 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                 const inputField = getByPlaceholderText(
                     'Enter 6-digit verification code from app'
                 ) as HTMLInputElement
-                fireEvent.change(inputField, {target: {value: '123456'}})
+                fireEvent.change(inputField, {target: {value: twofa_code}})
+
+                const passwordField = getByPlaceholderText(
+                    'Enter your password'
+                ) as HTMLInputElement
+                fireEvent.change(passwordField, {target: {value: password}})
             }
 
             const continueButton = screen.getByText(minProps.actionButtonText)
@@ -105,7 +118,8 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
             } else {
                 expect(deleteTwoFASecretMock).toHaveBeenCalledWith(
                     undefined,
-                    '123456'
+                    twofa_code,
+                    password
                 )
             }
 

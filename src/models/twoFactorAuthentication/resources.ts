@@ -17,6 +17,7 @@ export const fetchAuthenticatorDataRenewed =
 
 export const validateVerificationCode = async (
     verificationCode: string,
+    userPassword: string,
     existing = false
 ): Promise<void> => {
     const params: Record<string, any> = {}
@@ -24,9 +25,15 @@ export const validateVerificationCode = async (
         params['existing'] = existing
     }
 
-    await client.get<void>(`/api/2fa/verification-code/${verificationCode}`, {
-        params,
-    })
+    await client.post<void>(
+        `/api/2fa/verification-code/${verificationCode}`,
+        {
+            user_password: userPassword,
+        },
+        {
+            params,
+        }
+    )
 }
 
 export const saveTwoFASecret = async (): Promise<void> => {
@@ -35,18 +42,20 @@ export const saveTwoFASecret = async (): Promise<void> => {
 
 export const deleteTwoFASecret = async (
     userId?: number,
-    verificationCode?: string
+    verificationCode?: string,
+    userPassword?: string
 ): Promise<void> => {
     const params: Record<string, any> = {}
 
     if (userId) {
         params['user_id'] = userId
     }
-    if (verificationCode) {
-        params['verification_code'] = verificationCode
+    const data = {
+        ...(userPassword && {user_password: userPassword}),
+        ...(verificationCode && {verification_code: verificationCode}),
     }
 
-    await client.delete<void>('/api/2fa/secret', {params})
+    await client.post<void>('/api/2fa/secret/delete', data, {params})
 }
 
 export const createRecoveryCodes = async (

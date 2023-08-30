@@ -50,25 +50,31 @@ describe('twoFactorAuthentication resources', () => {
     describe('validateVerificationCode', () => {
         it('should resolve with a valid verification code', async () => {
             const code = '123456'
+            const password = 'abcde'
 
             mockedServer
-                .onGet(`/api/2fa/verification-code/${code}`)
-                .reply(200, {})
+                .onPost(`/api/2fa/verification-code/${code}`, {
+                    user_password: password,
+                })
+                .reply(201, {})
 
-            await expect(validateVerificationCode(code)).resolves.not.toThrow()
+            await expect(
+                validateVerificationCode(code, password)
+            ).resolves.not.toThrow()
         })
 
         it('should resolve with an invalid verification code', async () => {
             const code = '123456'
+            const password = 'abcde'
 
             mockedServer
-                .onGet(`/api/2fa/verification-code/${code}`)
+                .onPost(`/api/2fa/verification-code/${code}`)
                 .reply(400, {
                     error: {msg: 'foo error'},
                 })
 
             try {
-                await validateVerificationCode(code)
+                await validateVerificationCode(code, password)
             } catch (error) {
                 const {response} = error as AxiosError<{error: {msg: string}}>
                 if (response) {
@@ -79,14 +85,15 @@ describe('twoFactorAuthentication resources', () => {
 
         it('should reject an error on fail', async () => {
             const code = '123456'
+            const password = 'abcde'
 
             mockedServer
-                .onGet(`/api/2fa/verification-code/${code}`)
+                .onPost(`/api/2fa/verification-code/${code}`)
                 .reply(503, {message: 'error'})
 
-            await expect(validateVerificationCode(code)).rejects.toThrow(
-                new Error('Request failed with status code 503')
-            )
+            await expect(
+                validateVerificationCode(code, password)
+            ).rejects.toThrow(new Error('Request failed with status code 503'))
         })
     })
 
@@ -110,31 +117,31 @@ describe('twoFactorAuthentication resources', () => {
 
     describe('deleteTwoFASecret', () => {
         it.each([
-            [1, undefined],
-            [undefined, '123456'],
+            [1, undefined, undefined],
+            [undefined, '123456', 'abcde'],
         ])(
             'should resolve with 204 code and empty body on success',
-            async (userId, verificationCode) => {
-                mockedServer.onDelete('/api/2fa/secret').reply(204, {})
+            async (userId, verificationCode, password) => {
+                mockedServer.onPost('/api/2fa/secret/delete').reply(201, {})
 
                 await expect(
-                    deleteTwoFASecret(userId, verificationCode)
+                    deleteTwoFASecret(userId, verificationCode, password)
                 ).resolves.not.toThrow()
             }
         )
 
         it.each([
-            [1, undefined],
-            [undefined, '123456'],
+            [1, undefined, 'abcde'],
+            [undefined, '123456', 'abcde'],
         ])(
             'should reject an error on fail',
-            async (userId, verificationCode) => {
+            async (userId, verificationCode, password) => {
                 mockedServer
-                    .onDelete('/api/2fa/secret')
+                    .onPost('/api/2fa/secret/delete')
                     .reply(503, {message: 'error'})
 
                 await expect(
-                    deleteTwoFASecret(userId, verificationCode)
+                    deleteTwoFASecret(userId, verificationCode, password)
                 ).rejects.toThrow('Request failed with status code 503')
             }
         )

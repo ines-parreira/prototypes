@@ -7,10 +7,12 @@ import css from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyMod
 import {deleteTwoFASecret} from 'models/twoFactorAuthentication/resources'
 import Button from 'pages/common/components/button/Button'
 import {update2FAEnabled} from 'state/currentUser/actions'
+import {hasPassword as hasPasswordSelector} from 'state/currentUser/selectors'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import InputField from 'pages/common/forms/DEPRECATED_InputField'
+import useAppSelector from 'hooks/useAppSelector'
 
 export type OwnProps = {
     user?: User
@@ -33,7 +35,10 @@ export default function TwoFactorAuthenticationDisableModal({
 }: OwnProps) {
     const dispatch = useAppDispatch()
 
+    const hasPassword = useAppSelector(hasPasswordSelector)
+
     const [verificationCode, setVerificationCode] = useState('')
+    const [userPassword, setUserPassword] = useState('')
     const [errorText, setErrorText] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
@@ -43,7 +48,11 @@ export default function TwoFactorAuthenticationDisableModal({
             setErrorText('')
 
             if (!user) {
-                await deleteTwoFASecret(undefined, verificationCode)
+                await deleteTwoFASecret(
+                    undefined,
+                    verificationCode,
+                    userPassword
+                )
                 void dispatch(update2FAEnabled(false))
             } else {
                 await deleteTwoFASecret(user.id)
@@ -66,7 +75,7 @@ export default function TwoFactorAuthenticationDisableModal({
         } finally {
             setIsLoading(false)
         }
-    }, [dispatch, onSuccess, user, verificationCode])
+    }, [dispatch, onSuccess, user, verificationCode, userPassword])
 
     return (
         <DEPRECATED_Modal
@@ -115,6 +124,18 @@ export default function TwoFactorAuthenticationDisableModal({
                         onChange={setVerificationCode}
                         className="mb-0"
                     />
+                    {hasPassword && (
+                        <>
+                            <p className="mb-2 mt-3">Enter your password.</p>
+                            <InputField
+                                type="password"
+                                name="userPassword"
+                                placeholder="Enter your password"
+                                onChange={setUserPassword}
+                                className="mb-0"
+                            />
+                        </>
+                    )}
                 </>
             )}
         </DEPRECATED_Modal>

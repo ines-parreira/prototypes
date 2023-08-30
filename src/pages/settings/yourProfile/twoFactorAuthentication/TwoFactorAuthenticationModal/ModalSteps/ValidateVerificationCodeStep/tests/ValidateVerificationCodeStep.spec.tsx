@@ -5,13 +5,29 @@ import ValidateVerificationCodeStep from '../ValidateVerificationCodeStep'
 describe('<ValidateVerificationCodeStep />', () => {
     const setVerificationCodeMock = jest.fn()
     const setErrorTextMock = jest.fn()
+    const setPasswordMock = jest.fn()
 
     describe('render()', () => {
-        it('should render the component with the verification code validation', () => {
+        it('should render the component with the verification code validation and password if user has one set', () => {
             const {container} = render(
                 <ValidateVerificationCodeStep
                     setVerificationCode={setVerificationCodeMock}
                     setErrorText={setErrorTextMock}
+                    setUserPassword={setPasswordMock}
+                    hasPassword={true}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should render the component with the verification code validation and without password none set', () => {
+            const {container} = render(
+                <ValidateVerificationCodeStep
+                    setVerificationCode={setVerificationCodeMock}
+                    setErrorText={setErrorTextMock}
+                    setUserPassword={setPasswordMock}
+                    hasPassword={false}
                 />
             )
 
@@ -23,6 +39,7 @@ describe('<ValidateVerificationCodeStep />', () => {
                 <ValidateVerificationCodeStep
                     setVerificationCode={setVerificationCodeMock}
                     setErrorText={setErrorTextMock}
+                    setUserPassword={setPasswordMock}
                 />
             )
 
@@ -41,6 +58,7 @@ describe('<ValidateVerificationCodeStep />', () => {
                 <ValidateVerificationCodeStep
                     setVerificationCode={setVerificationCodeMock}
                     setErrorText={setErrorTextMock}
+                    setUserPassword={setPasswordMock}
                     isUpdate={true}
                 />
             )

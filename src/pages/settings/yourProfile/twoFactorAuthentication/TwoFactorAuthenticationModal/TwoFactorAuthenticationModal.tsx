@@ -19,7 +19,10 @@ import {
     RecoveryCode,
 } from 'models/twoFactorAuthentication/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
+import {
+    has2FaEnabled as has2FaEnabledSelector,
+    hasPassword as hasPasswordSelector,
+} from 'state/currentUser/selectors'
 import {getTwoFAEnforcedDatetime} from 'state/currentAccount/selectors'
 import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import {TWO_FA_REQUIRED_NOTIFICATION_ID} from 'state/currentUser/constants'
@@ -49,6 +52,7 @@ export default function TwoFactorAuthenticationModal({
 
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
     const has2FAEnabled = useAppSelector(has2FaEnabledSelector)
+    const hasPassword = useAppSelector(hasPasswordSelector)
     const is2FARequired = useMemo(() => {
         return check2FARequired(twoFAEnforcedDatetime, has2FAEnabled)
     }, [twoFAEnforcedDatetime, has2FAEnabled])
@@ -59,6 +63,7 @@ export default function TwoFactorAuthenticationModal({
     )
     const [errorText, setErrorText] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
+    const [userPassword, setUserPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [recoveryCodes, setRecoveryCodes] = useState([] as RecoveryCode[])
     const [isRecoveryCodesSaved, setIsRecoveryCodesSaved] = useState(false)
@@ -108,6 +113,7 @@ export default function TwoFactorAuthenticationModal({
 
                 await validateVerificationCodeResource(
                     verificationCode,
+                    userPassword,
                     useExistingSecret
                 )
 
@@ -122,7 +128,7 @@ export default function TwoFactorAuthenticationModal({
                 return
             }
         },
-        [verificationCode]
+        [verificationCode, userPassword]
     )
 
     const createRecoveryCodes = useCallback(async () => {
@@ -298,6 +304,8 @@ export default function TwoFactorAuthenticationModal({
                 errorText={errorText}
                 setErrorText={setErrorText}
                 setVerificationCode={setVerificationCode}
+                setUserPassword={setUserPassword}
+                userHasPassword={hasPassword}
                 setIsLoading={setIsLoading}
                 recoveryCodes={recoveryCodes}
                 isRecoveryCodesSaved={isRecoveryCodesSaved}

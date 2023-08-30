@@ -7,12 +7,16 @@ import css from '../ModalSteps.less'
 
 type OwnProps = {
     setVerificationCode: Dispatch<SetStateAction<string>>
+    setUserPassword: Dispatch<SetStateAction<string>>
     setErrorText: Dispatch<SetStateAction<string>>
+    hasPassword?: boolean
     isUpdate?: boolean
 }
 
 export default function ValidateVerificationCodeStep({
     setVerificationCode,
+    hasPassword = false,
+    setUserPassword,
     setErrorText,
     isUpdate,
 }: OwnProps) {
@@ -38,6 +42,28 @@ export default function ValidateVerificationCodeStep({
                     setErrorText('')
                 }}
             />
+
+            {hasPassword && (
+                <>
+                    <div
+                        className={classnames(
+                            css.textSection,
+                            settingsCss.mb16
+                        )}
+                    >
+                        Enter your password.
+                    </div>
+                    <InputField
+                        type="password"
+                        name="userPassword"
+                        placeholder="Enter your password"
+                        onChange={(value) => {
+                            setUserPassword(value)
+                            setErrorText('')
+                        }}
+                    />
+                </>
+            )}
         </>
     )
 }

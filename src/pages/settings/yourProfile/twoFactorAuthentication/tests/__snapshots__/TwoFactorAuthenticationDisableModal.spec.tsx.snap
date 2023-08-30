@@ -74,6 +74,26 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
                   />
                 </div>
               </div>
+              <p
+                class="mb-2 mt-3"
+              >
+                Enter your password.
+              </p>
+              <div
+                class="InputField mb-0 form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-userPassword"
+                    placeholder="Enter your password"
+                    type="password"
+                  />
+                </div>
+              </div>
             </div>
             <div
               class="modalFooter modal-footer"
@@ -267,6 +287,26 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
                     id="id-verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
+                  />
+                </div>
+              </div>
+              <p
+                class="mb-2 mt-3"
+              >
+                Enter your password.
+              </p>
+              <div
+                class="InputField mb-0 form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-userPassword"
+                    placeholder="Enter your password"
+                    type="password"
                   />
                 </div>
               </div>
@@ -475,6 +515,26 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
                     id="id-verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
+                  />
+                </div>
+              </div>
+              <p
+                class="mb-2 mt-3"
+              >
+                Enter your password.
+              </p>
+              <div
+                class="InputField mb-0 form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-userPassword"
+                    placeholder="Enter your password"
+                    type="password"
                   />
                 </div>
               </div>

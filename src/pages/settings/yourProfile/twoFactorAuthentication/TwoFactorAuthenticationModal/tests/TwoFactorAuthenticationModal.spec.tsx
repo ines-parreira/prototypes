@@ -72,15 +72,26 @@ const validateInput = async (baseElement: HTMLElement) => {
     const continueButton = screen.getByText(/Continue/)
     fireEvent.click(continueButton)
 
-    await fillVerificationCode()
+    fillVerificationCode()
+    fillPassword()
+    await continueToNextStep()
 }
 
-const fillVerificationCode = async () => {
+const fillVerificationCode = () => {
     const inputField = screen.getByPlaceholderText<HTMLInputElement>(
         'Enter 6-digit verification code from app'
     )
     fireEvent.change(inputField, {target: {value: '123456'}})
+}
 
+const fillPassword = () => {
+    const inputField = screen.getByPlaceholderText<HTMLInputElement>(
+        'Enter your password'
+    )
+    fireEvent.change(inputField, {target: {value: 'abcde'}})
+}
+
+const continueToNextStep = async () => {
     // Try to navigate to step 3 in order to trigger validation
     const continueButton = screen.getByText(/Continue/)
     fireEvent.click(continueButton)
@@ -205,9 +216,15 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
         it('should render modal with Validate authenticator code step', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
+            const store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                    has_password: true,
+                }),
+            })
 
             const {baseElement} = render(
-                <Provider store={mockStore()}>
+                <Provider store={store}>
                     <TwoFactorAuthenticationModal {...minProps} />
                 </Provider>
             )
@@ -242,8 +259,15 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 })
                 saveTwoFASecretMock.mockResolvedValue()
 
+                const store = mockStore({
+                    currentUser: fromJS({
+                        has_2fa_enabled: false,
+                        has_password: true,
+                    }),
+                })
+
                 const {baseElement} = render(
-                    <Provider store={mockStore()}>
+                    <Provider store={store}>
                         <TwoFactorAuthenticationModal {...minProps} />
                     </Provider>
                 )
@@ -262,8 +286,15 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     },
                 })
 
+                const store = mockStore({
+                    currentUser: fromJS({
+                        has_2fa_enabled: false,
+                        has_password: true,
+                    }),
+                })
+
                 const {baseElement} = render(
-                    <Provider store={mockStore()}>
+                    <Provider store={store}>
                         <TwoFactorAuthenticationModal {...minProps} />
                     </Provider>
                 )
@@ -277,8 +308,15 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 saveTwoFASecretMock.mockResolvedValue()
                 createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
 
+                const store = mockStore({
+                    currentUser: fromJS({
+                        has_2fa_enabled: false,
+                        has_password: true,
+                    }),
+                })
+
                 const {baseElement} = render(
-                    <Provider store={mockStore()}>
+                    <Provider store={store}>
                         <TwoFactorAuthenticationModal {...minProps} />
                     </Provider>
                 )
@@ -294,8 +332,15 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 saveTwoFASecretMock.mockResolvedValue()
                 createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
 
+                const store = mockStore({
+                    currentUser: fromJS({
+                        has_2fa_enabled: false,
+                        has_password: true,
+                    }),
+                })
+
                 const {baseElement} = render(
-                    <Provider store={mockStore()}>
+                    <Provider store={store}>
                         <TwoFactorAuthenticationModal
                             {...minProps}
                             onFinish={onFinishMock}
@@ -328,8 +373,15 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 saveTwoFASecretMock.mockResolvedValue()
                 createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
 
+                const store = mockStore({
+                    currentUser: fromJS({
+                        has_2fa_enabled: false,
+                        has_password: true,
+                    }),
+                })
+
                 const {baseElement} = render(
-                    <Provider store={mockStore()}>
+                    <Provider store={store}>
                         <TwoFactorAuthenticationModal
                             {...minProps}
                             onFinish={onFinish}
@@ -441,8 +493,14 @@ describe('<TwoFactorAuthenticationModal />', () => {
         })
 
         it('should render the modal with a validation code step first on update before other steps', async () => {
+            const store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                    has_password: true,
+                }),
+            })
             const {baseElement} = render(
-                <Provider store={mockStore()}>
+                <Provider store={store}>
                     <TwoFactorAuthenticationModal
                         {...minProps}
                         isUpdate={true}
@@ -475,7 +533,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
             )
 
             await waitForModal(baseElement)
-            await fillVerificationCode()
+            fillVerificationCode()
 
             await handleInputValidationFailed(baseElement)
         })
@@ -483,8 +541,15 @@ describe('<TwoFactorAuthenticationModal />', () => {
         it('should render modal with the QR code step because the code is valid', async () => {
             validateVerificationCodeMock.mockResolvedValue()
 
+            const store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                    has_password: true,
+                }),
+            })
+
             const {baseElement} = render(
-                <Provider store={mockStore()}>
+                <Provider store={store}>
                     <TwoFactorAuthenticationModal
                         {...minProps}
                         isUpdate={true}
@@ -493,7 +558,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             )
 
             await waitForModal(baseElement)
-            await fillVerificationCode()
+            fillVerificationCode()
+            fillPassword()
+            await continueToNextStep()
 
             // Wait for the qrcode library to render the image
             await screen.findByAltText('The QR Code to scan')

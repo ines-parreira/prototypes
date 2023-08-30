@@ -108,6 +108,11 @@ export const has2FaEnabled = createSelector(
     (state) => !!state.get('has_2fa_enabled')
 )
 
+export const hasPassword = createSelector(
+    getCurrentUserState,
+    (state) => !!state.get('has_password')
+)
+
 export const getTimezone = createSelector(
     getCurrentUserState,
     (state) => (state.get('timezone') as Maybe<string>) || null
