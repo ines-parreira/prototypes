@@ -1,10 +1,8 @@
 import React, {ReactNode, useCallback, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _intersection from 'lodash/intersection'
 import _difference from 'lodash/difference'
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {SelfServiceChannelType} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {ChannelLanguage} from 'pages/automation/common/types'
@@ -48,7 +46,6 @@ export default function useLanguagesMismatchWarnings(
     integrationId: number,
     channelLanguages: ChannelLanguage[]
 ) {
-    const shouldDisplayWarnings = useFlags()[FeatureFlagKey.FlowsMultiLanguages]
     const chatLanguageSettingsLink = `/app/settings/channels/gorgias_chat/${integrationId}/appearance`
     const helpCenterLanguageSettingsLink = `/app/settings/help-center/${integrationId}/preferences`
     const contactFormLanguageSettingsLink = `/app/settings/contact-form/${integrationId}/preferences`
@@ -73,7 +70,6 @@ export default function useLanguagesMismatchWarnings(
         ) => {message: ReactNode; type: 'error' | 'warning'} | void
     >(
         (workflowId: string) => {
-            if (!shouldDisplayWarnings) return
             const workflow = workflows.find((w) => w.id === workflowId)
             if (!workflow) return
             // we align the workflow languages with the channel languages
@@ -186,13 +182,7 @@ export default function useLanguagesMismatchWarnings(
                 }
             }
         },
-        [
-            channelLanguages,
-            channelType,
-            channelLanguageSettingsLink,
-            workflows,
-            shouldDisplayWarnings,
-        ]
+        [channelLanguages, channelType, channelLanguageSettingsLink, workflows]
     )
 
     return {getLanguagesMismatchWarning}

@@ -1,7 +1,5 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -47,8 +45,6 @@ const WorkflowsList = ({
     goToEditWorkflowPage,
     isUpdatePending,
 }: Props) => {
-    const shouldDisplayLanguageList =
-        useFlags()[FeatureFlagKey.FlowsMultiLanguages]
     return (
         <TableWrapper className={css.container}>
             <TableBody>
@@ -62,26 +58,25 @@ const WorkflowsList = ({
                         >
                             {entrypoint.name}
                         </BodyCell>
-                        {shouldDisplayLanguageList && (
-                            <BodyCell
-                                size="smallest"
-                                onClick={() => {
-                                    goToEditWorkflowPage(entrypoint.workflow_id)
-                                }}
-                            >
-                                <LanguageList
-                                    id={`workflow-${entrypoint.workflow_id}-language-list`}
-                                    defaultLanguage={
-                                        getLanguageList(
-                                            entrypoint.available_languages
-                                        )[0]
-                                    }
-                                    languageList={getLanguageList(
+                        (
+                        <BodyCell
+                            size="smallest"
+                            onClick={() => {
+                                goToEditWorkflowPage(entrypoint.workflow_id)
+                            }}
+                        >
+                            <LanguageList
+                                id={`workflow-${entrypoint.workflow_id}-language-list`}
+                                defaultLanguage={
+                                    getLanguageList(
                                         entrypoint.available_languages
-                                    ).reverse()}
-                                />
-                            </BodyCell>
-                        )}
+                                    )[0]
+                                }
+                                languageList={getLanguageList(
+                                    entrypoint.available_languages
+                                ).reverse()}
+                            />
+                        </BodyCell>
                         <BodyCell size="smallest">
                             <IconButton
                                 className="mr-1"

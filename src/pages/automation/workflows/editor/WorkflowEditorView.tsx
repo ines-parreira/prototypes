@@ -1,7 +1,6 @@
 import React, {PropsWithChildren, ReactNode, useCallback, useRef} from 'react'
 import {Container} from 'reactstrap'
 import {useEffectOnce} from 'react-use'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import axios from 'axios'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -13,7 +12,6 @@ import {withSelfServiceStoreIntegrationContext} from 'pages/automation/common/ho
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import useSearch from 'hooks/useSearch'
 import {Notification, NotificationStatus} from 'state/notifications/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {supportedLanguages} from '../models/workflowConfiguration.types'
 import {WORKFLOW_TEMPLATES} from '../constants'
@@ -59,8 +57,6 @@ function WorkflowEditorViewWrapped({
     shopName,
     shopType,
 }: WorkflowEditorViewProps) {
-    const isMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.FlowsMultiLanguages]
     const {template: templateSlug} = useSearch<{template: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
     const {handleSelfServiceConfigurationUpdate} = useSelfServiceConfiguration(
@@ -232,35 +228,29 @@ function WorkflowEditorViewWrapped({
                 >
                     <div className={css.headerRight}>
                         <>
-                            {isMultiLanguagesEnabled && (
-                                <WorkflowLanguageSelect
-                                    available={
-                                        workflowEditorContext.visualBuilderGraph
-                                            .available_languages || ['en-US']
-                                    }
-                                    selected={
-                                        workflowEditorContext.currentLanguage
-                                    }
-                                    onSelect={(lang) => {
-                                        workflowEditorContext.switchLanguage(
-                                            lang
-                                        )
-                                    }}
-                                    onDelete={(lang) => {
-                                        workflowEditorContext.deleteTranslation(
-                                            lang
-                                        )
-                                        notifyMerchant({
-                                            message: `${
-                                                supportedLanguages.find(
-                                                    ({code}) => code === lang
-                                                )?.label ?? ''
-                                            } language was successfully deleted`,
-                                            status: NotificationStatus.Success,
-                                        })
-                                    }}
-                                />
-                            )}
+                            <WorkflowLanguageSelect
+                                available={
+                                    workflowEditorContext.visualBuilderGraph
+                                        .available_languages || ['en-US']
+                                }
+                                selected={workflowEditorContext.currentLanguage}
+                                onSelect={(lang) => {
+                                    workflowEditorContext.switchLanguage(lang)
+                                }}
+                                onDelete={(lang) => {
+                                    workflowEditorContext.deleteTranslation(
+                                        lang
+                                    )
+                                    notifyMerchant({
+                                        message: `${
+                                            supportedLanguages.find(
+                                                ({code}) => code === lang
+                                            )?.label ?? ''
+                                        } language was successfully deleted`,
+                                        status: NotificationStatus.Success,
+                                    })
+                                }}
+                            />
                             {isNewWorkflow ? (
                                 <>
                                     <Button
