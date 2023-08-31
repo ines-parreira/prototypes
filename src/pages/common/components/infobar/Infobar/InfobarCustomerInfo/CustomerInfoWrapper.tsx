@@ -23,19 +23,18 @@ export default function CustomerInfoWrapper({
             {isOpen ? children : array.slice(0, displayedElementsCount)}
             {count <= displayedElementsCount ? null : (
                 <Button
-                    intent="secondary"
+                    intent="primary"
+                    fillStyle="ghost"
+                    size="small"
                     className={css.container}
                     onClick={() => setOpen((prevState) => !prevState)}
                 >
-                    {isOpen ? (
-                        <ButtonIconLabel icon="keyboard_double_arrow_up">
-                            Less info
-                        </ButtonIconLabel>
-                    ) : (
-                        <ButtonIconLabel icon="keyboard_double_arrow_down">
-                            More info
-                        </ButtonIconLabel>
-                    )}
+                    <ButtonIconLabel
+                        icon={isOpen ? 'expand_less' : 'expand_more'}
+                        position="right"
+                    >
+                        Show {isOpen ? 'less' : 'more'}
+                    </ButtonIconLabel>
                 </Button>
             )}
         </div>

@@ -14,9 +14,6 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
 }))
 
-jest.mock('pages/tickets/detail/components/HistoryButton', () => () => (
-    <div>HistoryButton</div>
-))
 jest.mock('pages/tickets/detail/components/TicketHeader', () => () => (
     <div>TicketHeader</div>
 ))
@@ -32,7 +29,6 @@ const useFlagsMock = useFlags as jest.Mock
 describe('<TicketHeaderWrapper/>', () => {
     const minProps: ComponentProps<typeof TicketHeaderWrapper> = {
         hideTicket: jest.fn(),
-        handleHistoryToggle: jest.fn(),
         setStatus: jest.fn(),
     }
     const defaultState = {

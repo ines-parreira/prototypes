@@ -191,35 +191,41 @@ exports[`CustomerChannels component should display all passed channels (includin
     </div>
     <ForwardRef
       className="container"
-      intent="secondary"
+      fillStyle="ghost"
+      intent="primary"
       onClick={[Function]}
+      size="small"
     >
       <BaseButton
         className="container"
-        intent="secondary"
+        fillStyle="ghost"
+        intent="primary"
+        size="small"
       >
         <button
           aria-disabled={false}
-          className="wrapper container fill secondary medium"
+          className="wrapper container ghost primary small"
           onClick={[Function]}
           type="button"
         >
           <ButtonIconLabel
-            icon="keyboard_double_arrow_down"
+            icon="expand_more"
+            position="right"
           >
             <span
               className="wrapper"
             >
+              Show 
+              more
               <Icon
-                className="icon isLeft"
+                className="icon isRight"
               >
                 <i
-                  className="material-icons icon isLeft medium"
+                  className="material-icons icon isRight small"
                 >
-                  keyboard_double_arrow_down
+                  expand_more
                 </i>
               </Icon>
-              More info
             </span>
           </ButtonIconLabel>
         </button>
@@ -833,35 +839,41 @@ exports[`CustomerChannels component should display all passed channels (includin
     </p>
     <ForwardRef
       className="container"
-      intent="secondary"
+      fillStyle="ghost"
+      intent="primary"
       onClick={[Function]}
+      size="small"
     >
       <BaseButton
         className="container"
-        intent="secondary"
+        fillStyle="ghost"
+        intent="primary"
+        size="small"
       >
         <button
           aria-disabled={false}
-          className="wrapper container fill secondary medium"
+          className="wrapper container ghost primary small"
           onClick={[Function]}
           type="button"
         >
           <ButtonIconLabel
-            icon="keyboard_double_arrow_up"
+            icon="expand_less"
+            position="right"
           >
             <span
               className="wrapper"
             >
+              Show 
+              less
               <Icon
-                className="icon isLeft"
+                className="icon isRight"
               >
                 <i
-                  className="material-icons icon isLeft medium"
+                  className="material-icons icon isRight small"
                 >
-                  keyboard_double_arrow_up
+                  expand_less
                 </i>
               </Icon>
-              Less info
             </span>
           </ButtonIconLabel>
         </button>

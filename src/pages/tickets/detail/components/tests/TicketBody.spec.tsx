@@ -61,7 +61,6 @@ describe('TicketBody', () => {
             >
                 <TicketBody
                     elements={fromJS([])}
-                    handleHistoryToggle={_noop}
                     hideTicket={() => Promise.resolve()}
                     isShopperTyping={false}
                     setStatus={_noop}
@@ -87,7 +86,6 @@ describe('TicketBody', () => {
             >
                 <TicketBody
                     elements={fromJS([defaultMessage, defaultMessage])}
-                    handleHistoryToggle={_noop}
                     hideTicket={() => Promise.resolve()}
                     isShopperTyping={false}
                     setStatus={_noop}
