@@ -58,7 +58,6 @@ const WorkflowsList = ({
                         >
                             {entrypoint.name}
                         </BodyCell>
-                        (
                         <BodyCell
                             size="smallest"
                             onClick={() => {
