@@ -106,10 +106,12 @@ const AutomationSubscriptionModal = ({
     const history = useHistory()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const interval = useAppSelector(getCurrentHelpdeskInterval)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const helpdeskPriceIds = useAppSelector(getHelpdeskPrices).map(
-        (price) => price.price_id
-    )
+    const helpdeskPrices = useAppSelector(getHelpdeskPrices)
+    const helpdeskPriceIds = helpdeskPrices
+        .filter((price) => price.interval === interval)
+        .map((price) => price.price_id)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
@@ -171,15 +173,17 @@ const AutomationSubscriptionModal = ({
 
     const hasAccessToNewBilling: boolean | undefined =
         useFlags()[FeatureFlagKey.NewBillingInterface]
-    const interval = useAppSelector(getCurrentHelpdeskInterval)
 
     const automationPrices = useAppSelector(
         getAutomationProduct
-    )?.prices.filter((price) => price.num_quota_tickets)
+    )?.prices.filter(
+        (price) => price.num_quota_tickets && price.interval === interval
+    )
     const helpdeskOptionIndex = Math.max(
         helpdeskPriceIds.indexOf(helpdeskPrice?.price_id || ''),
         0
     )
+
     const aaoPreselectedOption = Math.min(5, helpdeskOptionIndex)
     const [selectedPrice, setSelectedPrice] = useState(
         automationPrices?.[aaoPreselectedOption]

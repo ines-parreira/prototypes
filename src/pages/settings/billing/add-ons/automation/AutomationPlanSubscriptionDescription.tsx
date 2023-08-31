@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 import {AutomationPrice, PlanInterval} from 'models/billing/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -43,6 +43,7 @@ const AutomationPlanSubscriptionDescription = ({
     setIsSubscriptionEnabled,
 }: AutomationPlanSubscriptionDescriptionProps) => {
     const dispatch = useAppDispatch()
+    const ref = useRef(null)
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
     const [isTermsChecked, setIsTermsChecked] = useState(false)
@@ -166,7 +167,7 @@ const AutomationPlanSubscriptionDescription = ({
                             showSelectedOption
                             disabled={isStarterPlan}
                         />
-                        <div className={css.counter}>
+                        <div className={css.counter} ref={ref}>
                             <div>
                                 {PRODUCT_INFO.automation.counter}/{interval}
                             </div>
@@ -176,6 +177,8 @@ const AutomationPlanSubscriptionDescription = ({
                             <Tooltip
                                 placement="top-start"
                                 target="priceSelectInfo"
+                                className={css.tooltip}
+                                container={ref}
                             >
                                 {PRODUCT_INFO.automation.tooltip}
                             </Tooltip>
