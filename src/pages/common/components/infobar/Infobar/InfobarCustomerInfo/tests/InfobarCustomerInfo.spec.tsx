@@ -4,7 +4,6 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {StoreDispatch, RootState} from 'state/types'
 
 import {
@@ -16,7 +15,6 @@ import {
     BIGCOMMERCE_INTEGRATION_TYPE,
 } from 'constants/integration'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import InfobarCustomerInfo, {
     InfobarCustomerInfoContainer,
 } from '../InfobarCustomerInfo'
@@ -25,18 +23,6 @@ jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
 jest.mock('../InfobarWidgets/InfobarWidgets', () => () => (
     <div>InfobarWidgets</div>
 ))
-
-const defaultState = {
-    ticket: fromJS({id: 123, _internal: {displayHistory: false}}),
-    customers: fromJS({
-        _internal: {
-            loading: {
-                history: false,
-            },
-        },
-        customerHistory: {hasHistory: true},
-    }),
-} as RootState
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -69,10 +55,6 @@ const containerMinProps: ComponentProps<typeof InfobarCustomerInfoContainer> = {
 describe('<InfobarCustomerInfo/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-
-        mockFlags({
-            [FeatureFlagKey.CustomerTimelineButton]: true,
-        })
     })
 
     it('should not render because there is no passed customer', () => {
@@ -209,15 +191,10 @@ describe('<InfobarCustomerInfo/>', () => {
         }
     )
 
-    it.each([true, false])(
+    it(
         'sources render basic customer info and widgets because there is customer data, the user is not editing ' +
             'widgets and current widgets are not empty',
-        (hasCustomerTimelineButton) => {
-            mockFlags({
-                [FeatureFlagKey.CustomerTimelineButton]:
-                    hasCustomerTimelineButton,
-            })
-
+        () => {
             const sources = fromJS({
                 ticket: {
                     customer: {
@@ -245,20 +222,12 @@ describe('<InfobarCustomerInfo/>', () => {
             })
 
             const component = mount(
-                <Provider store={mockStore(defaultState)}>
-                    <InfobarCustomerInfoContainer
-                        {...containerMinProps}
-                        sources={sources}
-                        widgets={widgets}
-                    />
-                </Provider>
+                <InfobarCustomerInfoContainer
+                    {...containerMinProps}
+                    sources={sources}
+                    widgets={widgets}
+                />
             )
-
-            if (hasCustomerTimelineButton) {
-                expect(component.text()).toContain('Customer timeline')
-            } else {
-                expect(component.text()).not.toContain('Customer timeline')
-            }
 
             expect(component).toMatchSnapshot()
         }

@@ -4,8 +4,11 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import HistoryButton from 'pages/tickets/detail/components/HistoryButton'
 import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
 import useAppSelector from 'hooks/useAppSelector'
+import {getDisplayHistory} from 'state/ticket/selectors'
+import {getCustomersState, makeIsLoading} from 'state/customers/selectors'
 import {AgentLabel} from 'pages/common/utils/labels'
 import {
     getOtherAgentsOnTicket,
@@ -95,29 +98,60 @@ const CollisionDetection = () => {
 
 type Props = {
     hideTicket: () => Promise<void>
+    handleHistoryToggle: () => void
     setStatus: (status: string) => any
 }
 
-const TicketHeaderWrapper = ({hideTicket, setStatus}: Props) => {
+const TicketHeaderWrapper = ({
+    hideTicket,
+    handleHistoryToggle,
+    setStatus,
+}: Props) => {
     const hasSeparateSnooze =
         useFlags()[FeatureFlagKey.SeparateSnoozeButton] || false
     const hasTicketNavigationArrows =
         useFlags()[FeatureFlagKey.TicketNavigationArrows] || false
     const ticket = useAppSelector((state) => state.ticket)
+    const customers = useAppSelector(getCustomersState)
+    const isHistoryDisplayed = useAppSelector(getDisplayHistory)
+    const customersIsLoading = useAppSelector(makeIsLoading)
 
     const isExistingTicket = !!ticket.get('id')
+    const hideHistoryButton = !ticket.get('id')
+    const customerHistory = useMemo(
+        () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
+        [customers]
+    )
 
     return (
         <>
             <div className={classnames(css.headerContainer)}>
-                <TicketHeader
-                    hasSeparateSnooze={hasSeparateSnooze}
-                    hasTicketNavigationArrows={hasTicketNavigationArrows}
-                    ticket={ticket}
-                    hideTicket={hideTicket}
-                    setStatus={setStatus}
-                    className="flex-grow"
-                />
+                <div className="d-flex">
+                    {!hideHistoryButton && (
+                        <div
+                            className={classnames(
+                                css.historyButtonContainer,
+                                'd-none d-md-flex align-items-top mt-4'
+                            )}
+                        >
+                            <HistoryButton
+                                isHistoryDisplayed={isHistoryDisplayed}
+                                customerHistory={customerHistory}
+                                toggleHistory={handleHistoryToggle}
+                                ticket={ticket}
+                                customersIsLoading={customersIsLoading}
+                            />
+                        </div>
+                    )}
+                    <TicketHeader
+                        hasSeparateSnooze={hasSeparateSnooze}
+                        hasTicketNavigationArrows={hasTicketNavigationArrows}
+                        ticket={ticket}
+                        hideTicket={hideTicket}
+                        setStatus={setStatus}
+                        className="flex-grow"
+                    />
+                </div>
                 <TicketFields />
                 <CollisionDetection />
             </div>

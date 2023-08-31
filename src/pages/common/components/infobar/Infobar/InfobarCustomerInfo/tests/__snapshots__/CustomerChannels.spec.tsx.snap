@@ -191,41 +191,35 @@ exports[`CustomerChannels component should display all passed channels (includin
     </div>
     <ForwardRef
       className="container"
-      fillStyle="ghost"
-      intent="primary"
+      intent="secondary"
       onClick={[Function]}
-      size="small"
     >
       <BaseButton
         className="container"
-        fillStyle="ghost"
-        intent="primary"
-        size="small"
+        intent="secondary"
       >
         <button
           aria-disabled={false}
-          className="wrapper container ghost primary small"
+          className="wrapper container fill secondary medium"
           onClick={[Function]}
           type="button"
         >
           <ButtonIconLabel
-            icon="expand_more"
-            position="right"
+            icon="keyboard_double_arrow_down"
           >
             <span
               className="wrapper"
             >
-              Show 
-              more
               <Icon
-                className="icon isRight"
+                className="icon isLeft"
               >
                 <i
-                  className="material-icons icon isRight small"
+                  className="material-icons icon isLeft medium"
                 >
-                  expand_more
+                  keyboard_double_arrow_down
                 </i>
               </Icon>
+              More info
             </span>
           </ButtonIconLabel>
         </button>
@@ -839,41 +833,35 @@ exports[`CustomerChannels component should display all passed channels (includin
     </p>
     <ForwardRef
       className="container"
-      fillStyle="ghost"
-      intent="primary"
+      intent="secondary"
       onClick={[Function]}
-      size="small"
     >
       <BaseButton
         className="container"
-        fillStyle="ghost"
-        intent="primary"
-        size="small"
+        intent="secondary"
       >
         <button
           aria-disabled={false}
-          className="wrapper container ghost primary small"
+          className="wrapper container fill secondary medium"
           onClick={[Function]}
           type="button"
         >
           <ButtonIconLabel
-            icon="expand_less"
-            position="right"
+            icon="keyboard_double_arrow_up"
           >
             <span
               className="wrapper"
             >
-              Show 
-              less
               <Icon
-                className="icon isRight"
+                className="icon isLeft"
               >
                 <i
-                  className="material-icons icon isRight small"
+                  className="material-icons icon isLeft medium"
                 >
-                  expand_less
+                  keyboard_double_arrow_up
                 </i>
               </Icon>
+              Less info
             </span>
           </ButtonIconLabel>
         </button>

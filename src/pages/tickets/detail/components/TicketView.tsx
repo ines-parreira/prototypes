@@ -133,6 +133,7 @@ export const TicketViewContainer = ({
                     customScrollParentRef={pageRef}
                     submit={submit}
                     hideTicket={hideTicket}
+                    handleHistoryToggle={handleHistoryToggle}
                     isShopperTyping={isShopperTyping}
                     shopperName={
                         (ticket.getIn(['customer', 'name']) as string) ??

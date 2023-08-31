@@ -26,6 +26,7 @@ import css from './TicketBody.less'
 interface Props {
     customScrollParentRef?: React.RefObject<HTMLDivElement>
     elements: List<any>
+    handleHistoryToggle: () => void
     hideTicket: () => Promise<void>
     isShopperTyping: boolean
     setStatus: (s: string) => void
@@ -36,6 +37,7 @@ interface Props {
 export default function TicketBody({
     customScrollParentRef,
     elements,
+    handleHistoryToggle,
     hideTicket,
     isShopperTyping,
     setStatus,
@@ -78,6 +80,7 @@ export default function TicketBody({
         (index, element) =>
             element === 'header' ? (
                 <TicketHeaderWrapper
+                    handleHistoryToggle={handleHistoryToggle}
                     hideTicket={hideTicket}
                     setStatus={setStatus}
                 />
@@ -97,6 +100,7 @@ export default function TicketBody({
             ),
         [
             elements,
+            handleHistoryToggle,
             hideTicket,
             highlightedElements,
             lastMessageDatetimeAfterMount,

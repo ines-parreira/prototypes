@@ -5,8 +5,6 @@ import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import Clipboard from 'clipboard'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import Button from 'pages/common/components/button/Button'
 import {RootState} from 'state/types'
@@ -25,7 +23,6 @@ import {
 import {WidgetsActionsType} from 'pages/common/components/infobar/Infobar/Infobar'
 
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
 import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote/CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
@@ -95,9 +92,6 @@ export const InfobarCustomerInfoContainer = ({
     sources,
     widgets,
 }: OwnProps & ConnectedProps<typeof connector>) => {
-    const hasCustomerTimelineButton =
-        useFlags()[FeatureFlagKey.CustomerTimelineButton] || false
-
     const [contextWidgets, setContextWidgets] = useState<List<any>>(fromJS([]))
     const [isInitialized, setIsInitialized] = useState(false)
 
@@ -282,7 +276,6 @@ export const InfobarCustomerInfoContainer = ({
                         name={customer.get('name', '')}
                         email={customer.get('email', '')}
                         url={customer.getIn(['meta', 'profile_picture_url'])}
-                        size={36}
                     />
                     <Link
                         to={`/app/customer/${customer.get('id') as string}`}
@@ -305,9 +298,6 @@ export const InfobarCustomerInfoContainer = ({
                         <CustomerNote customer={customer} />
                     </CustomerChannels>
                 </div>
-                {hasCustomerTimelineButton && (
-                    <CustomerTimelineButton isEditing={isEditing} />
-                )}
             </div>
             {areSourcesReady(sources, widgets.get('currentContext', ''))
                 ? renderWidgets()
