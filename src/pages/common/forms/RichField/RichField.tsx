@@ -16,6 +16,7 @@ export type Props = {
     }
     defaultContentState?: ContentState
     onChange: (arg: EditorState) => void
+    noAutoScroll?: boolean
 } & Partial<Omit<RichFieldEditorProps, 'editorState'>>
 
 type State = {

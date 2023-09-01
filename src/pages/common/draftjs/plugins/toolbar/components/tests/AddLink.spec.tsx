@@ -10,6 +10,20 @@ import * as draftjsPluginsUtils from '../../../utils'
 
 import {AddLinkContainer} from '../AddLink'
 
+function AddLinkWithIsOpenState(
+    props: ComponentProps<typeof AddLinkContainer>
+) {
+    const [isOpen, setIsOpen] = React.useState(false)
+    return (
+        <AddLinkContainer
+            {...props}
+            onClose={() => setIsOpen(false)}
+            onOpen={() => setIsOpen(true)}
+            isOpen={isOpen}
+        />
+    )
+}
+
 describe('<AddLink />', () => {
     const defaultProps = {
         isOpen: true,
@@ -76,17 +90,19 @@ describe('<AddLink />', () => {
             .spyOn(draftjsPluginsUtils, 'addVideo')
             .mockImplementation((editorState) => editorState)
 
-        render(
-            <AddLinkContainer
+        const {getByText} = render(
+            <AddLinkWithIsOpenState
                 {...defaultProps}
                 canAddVideoPlayer
                 text="foo"
                 url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
-            />
+            />,
+            {
+                container: document.body,
+            }
         )
         fireEvent.click(screen.getByText(/link/))
-
-        fireEvent.click(screen.getByText(/Insert Link/))
+        fireEvent.click(getByText(/Insert Link/))
         expect(addVideoSpy).toHaveBeenCalled()
     })
 
@@ -100,7 +116,7 @@ describe('<AddLink />', () => {
         )
 
         render(
-            <AddLinkContainer
+            <AddLinkWithIsOpenState
                 {...defaultProps}
                 canAddVideoPlayer={false}
                 text="foo"

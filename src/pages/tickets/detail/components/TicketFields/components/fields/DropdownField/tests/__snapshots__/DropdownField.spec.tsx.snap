@@ -38,7 +38,7 @@ exports[`<DropdownField /> should display display results when searching 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-9"
+    id="floating-ui-19"
   >
     <div
       class="overlay"
@@ -47,7 +47,7 @@ exports[`<DropdownField /> should display display results when searching 1`] = `
     >
       <div
         class="wrapper dropdown"
-        style="position: absolute;"
+        style="left: 0px; position: absolute; top: 0px;"
       >
         <div
           class="wrapper isFocused searchInput"
@@ -290,7 +290,7 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
     >
       <div
         class="wrapper dropdown"
-        style="position: absolute;"
+        style="left: 0px; position: absolute; top: 0px;"
       >
         <div
           class="wrapper searchInput"

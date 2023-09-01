@@ -1,192 +1,207 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AddProductLink/> should not render when the popover is closed 1`] = `
-<div>
-  <span
-    class="popoverWrapper"
+<body>
+  <button
+    aria-disabled="false"
+    class="wrapper button wrapper small fill secondary small"
+    id="toolbar-button-1"
+    type="button"
   >
-    <button
-      aria-disabled="false"
-      class="wrapper button wrapper small fill secondary small"
-      id="toolbar-button-1"
-      type="button"
+    <i
+      class="material-icons icon"
     >
-      <i
-        class="material-icons icon"
-      >
-        shopify
-      </i>
-    </button>
-    <div
-      class="productLinkToolTip p-0 d-flex popover top-left hidden"
-    />
-  </span>
-</div>
+      shopify
+    </i>
+  </button>
+</body>
 `;
 
 exports[`<AddProductLink/> should render the product picker when the popover is clicked and only one integration 1`] = `
-<div>
-  <span
-    class="popoverWrapper"
+<body>
+  <button
+    aria-disabled="false"
+    class="wrapper button wrapper small fill secondary small"
+    id="toolbar-button-2"
+    type="button"
   >
-    <button
-      aria-disabled="false"
-      class="wrapper button wrapper small fill secondary small"
-      id="toolbar-button-2"
-      type="button"
+    <i
+      class="material-icons icon"
     >
-      <i
-        class="material-icons icon"
-      >
-        shopify
-      </i>
-    </button>
+      shopify
+    </i>
+  </button>
+  <div>
     <div
-      class="productLinkToolTip p-0 d-flex popover top-left"
+      class="popover fade"
     >
       <div
-        class="productLineContainer"
+        class="popover show bs-popover-auto"
+        style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
       >
         <div
-          class="input-icon input-icon-left searchInput"
-        >
-          <i
-            class="icon material-icons md-2"
-          >
-            more_horiz
-          </i>
-          <input
-            class="form-control"
-            placeholder="Search products"
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          class="headerResult"
-        >
-          <div>
-            <img
-              alt="Shopify logo"
-              class="shopifyLogo"
-              src="/assets/img/integrations/shopify.png"
-            />
-            <span
-              class="headerText"
-            >
-              My Shop
-            </span>
-          </div>
-          <div
-            class="itemCount"
-          >
-            <span
-              class="resultTotal"
-            >
-              0
-              
-               PRODUCTS
-            </span>
-          </div>
-        </div>
-        <div
-          class="listGroupContainer"
+          class="popover-inner"
+          role="tooltip"
         >
           <div
-            class="noResultContainer"
+            class="productLineContainer"
           >
-            <p
-              class="noResultText"
+            <div
+              class="input-icon input-icon-left searchInput"
             >
-              No results found
-            </p>
+              <i
+                class="icon material-icons md-2"
+              >
+                more_horiz
+              </i>
+              <input
+                class="form-control"
+                placeholder="Search products"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="headerResult"
+            >
+              <div>
+                <img
+                  alt="Shopify logo"
+                  class="shopifyLogo"
+                  src="/assets/img/integrations/shopify.png"
+                />
+                <span
+                  class="headerText"
+                >
+                  My Shop
+                </span>
+              </div>
+              <div
+                class="itemCount"
+              >
+                <span
+                  class="resultTotal"
+                >
+                  0
+                  
+                   PRODUCTS
+                </span>
+              </div>
+            </div>
+            <div
+              class="listGroupContainer"
+            >
+              <div
+                class="noResultContainer"
+              >
+                <p
+                  class="noResultText"
+                >
+                  No results found
+                </p>
+              </div>
+            </div>
           </div>
         </div>
+        <span
+          class="arrow"
+        />
       </div>
     </div>
-  </span>
-</div>
+  </div>
+</body>
 `;
 
 exports[`<AddProductLink/> should render the store picker because of multiple integrations 1`] = `
-<div>
-  <span
-    class="popoverWrapper"
+<body>
+  <button
+    aria-disabled="false"
+    class="wrapper button wrapper small fill secondary small"
+    id="toolbar-button-3"
+    type="button"
   >
-    <button
-      aria-disabled="false"
-      class="wrapper button wrapper small fill secondary small"
-      id="toolbar-button-3"
-      type="button"
+    <i
+      class="material-icons icon"
     >
-      <i
-        class="material-icons icon"
-      >
-        shopify
-      </i>
-    </button>
+      shopify
+    </i>
+  </button>
+  <div>
     <div
-      class="productLinkToolTip p-0 d-flex popover top-left"
+      class="popover fade"
     >
       <div
-        class="productLineContainer"
+        class="popover show bs-popover-auto"
+        style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
       >
-        <ul
-          class="list-group list-group-flush"
+        <div
+          class="popover-inner"
+          role="tooltip"
         >
-          <button
-            class="customListGroup list-group-item-action list-group-item"
+          <div
+            class="productLineContainer"
           >
-            <div
-              class="integrationRowContainer"
+            <ul
+              class="list-group list-group-flush"
             >
-              <div
-                class="integrationRow"
+              <button
+                class="customListGroup list-group-item-action list-group-item"
               >
-                <img
-                  alt="Shopify logo"
-                  class="shopifyLogo"
-                  src="/assets/img/integrations/shopify.png"
-                />
-                <span>
-                  My Shop
-                </span>
-              </div>
-              <i
-                class="material-icons arrowIcon"
+                <div
+                  class="integrationRowContainer"
+                >
+                  <div
+                    class="integrationRow"
+                  >
+                    <img
+                      alt="Shopify logo"
+                      class="shopifyLogo"
+                      src="/assets/img/integrations/shopify.png"
+                    />
+                    <span>
+                      My Shop
+                    </span>
+                  </div>
+                  <i
+                    class="material-icons arrowIcon"
+                  >
+                    keyboard_arrow_right
+                  </i>
+                </div>
+              </button>
+              <button
+                class="customListGroup list-group-item-action list-group-item"
               >
-                keyboard_arrow_right
-              </i>
-            </div>
-          </button>
-          <button
-            class="customListGroup list-group-item-action list-group-item"
-          >
-            <div
-              class="integrationRowContainer"
-            >
-              <div
-                class="integrationRow"
-              >
-                <img
-                  alt="Shopify logo"
-                  class="shopifyLogo"
-                  src="/assets/img/integrations/shopify.png"
-                />
-                <span>
-                  My Shop
-                </span>
-              </div>
-              <i
-                class="material-icons arrowIcon"
-              >
-                keyboard_arrow_right
-              </i>
-            </div>
-          </button>
-        </ul>
+                <div
+                  class="integrationRowContainer"
+                >
+                  <div
+                    class="integrationRow"
+                  >
+                    <img
+                      alt="Shopify logo"
+                      class="shopifyLogo"
+                      src="/assets/img/integrations/shopify.png"
+                    />
+                    <span>
+                      My Shop
+                    </span>
+                  </div>
+                  <i
+                    class="material-icons arrowIcon"
+                  >
+                    keyboard_arrow_right
+                  </i>
+                </div>
+              </button>
+            </ul>
+          </div>
+        </div>
+        <span
+          class="arrow"
+        />
       </div>
     </div>
-  </span>
-</div>
+  </div>
+</body>
 `;

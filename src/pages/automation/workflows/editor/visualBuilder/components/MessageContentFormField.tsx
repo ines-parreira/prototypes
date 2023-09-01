@@ -85,7 +85,7 @@ export default function MessageContentFormField({
                 )}
             >
                 <RichField
-                    minHeight={250}
+                    minHeight={169}
                     maxLength={textLimit}
                     ref={textareaRef}
                     value={richFieldValue}
@@ -102,6 +102,7 @@ export default function MessageContentFormField({
                     allowExternalChanges
                     onChange={handleChange}
                     attachments={Immutable.fromJS(content.attachments ?? [])}
+                    noAutoScroll
                 />
 
                 <TicketAttachments

@@ -2,98 +2,17 @@
 
 exports[`<AddVideo/> should not render when the popover is closed 1`] = `
 <div>
-  <span
-    class="popoverWrapper"
+  <button
+    aria-disabled="false"
+    class="wrapper button wrapper small fill secondary small"
+    id="toolbar-button-1"
+    type="button"
   >
-    <button
-      aria-disabled="false"
-      class="wrapper button wrapper small fill secondary small"
-      id="toolbar-button-1"
-      type="button"
+    <i
+      class="material-icons icon"
     >
-      <i
-        class="material-icons icon"
-      >
-        video_library
-      </i>
-    </button>
-    <div
-      class="popover popover top-left hidden"
-    />
-  </span>
-</div>
-`;
-
-exports[`<AddVideo/> should render the popover when the button is clicked 1`] = `
-<div>
-  <span
-    class="popoverWrapper"
-  >
-    <button
-      aria-disabled="false"
-      class="wrapper button wrapper small fill secondary small"
-      id="toolbar-button-2"
-      type="button"
-    >
-      <i
-        class="material-icons icon"
-      >
-        video_library
-      </i>
-    </button>
-    <div
-      class="popover popover top-left"
-    >
-      <div>
-        <h4
-          class="title"
-        >
-          Video URL
-        </h4>
-        <div
-          class="inputDiv"
-        >
-          <div
-            class="wrapper hasError isFocused input"
-          >
-            <input
-              class="input"
-              id="input-text-3"
-              name="input-text-3"
-              placeholder="External video URL"
-              type="text"
-              value=""
-            />
-          </div>
-        </div>
-        <div
-          class="buttons"
-        >
-          <button
-            aria-disabled="true"
-            class="wrapper fill primary medium isDisabled"
-            type="button"
-          >
-            Insert Video
-          </button>
-          <button
-            aria-disabled="false"
-            class="wrapper ml-2 fill secondary medium"
-            type="button"
-          >
-            Cancel
-          </button>
-          <a
-            class="helpLink"
-            href="https://docs.gorgias.com/en-US/gorgias-chat---video-171049"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            See supported providers
-          </a>
-        </div>
-      </div>
-    </div>
-  </span>
+      video_library
+    </i>
+  </button>
 </div>
 `;

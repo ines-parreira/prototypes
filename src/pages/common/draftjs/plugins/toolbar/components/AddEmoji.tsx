@@ -9,6 +9,8 @@ import EmojiPicker from '../../../../components/EmojiPicker/EmojiPicker'
 
 import Popover from './ButtonPopover'
 
+import './AddEmoji.less'
+
 type Props = ActionInjectedProps
 
 type State = {
@@ -45,7 +47,6 @@ export default class AddEmoji extends Component<Props, State> {
             <Popover
                 icon="insert_emoticon"
                 name="Insert emoji"
-                className="p-0 d-flex"
                 isOpen={this.state.isOpen}
                 onOpen={this._onPopoverOpen}
                 onClose={this._onPopoverClose}

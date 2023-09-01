@@ -114,7 +114,7 @@ const AddVideo = ({getEditorState, setEditorState}: Props) => {
             onClose={handlePopoverClose}
             className={css.popover}
         >
-            <div>
+            <div className={css.container}>
                 <h4 className={css.title}>Video URL</h4>
                 <div className={css.inputDiv}>
                     <TextInput

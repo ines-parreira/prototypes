@@ -1,0 +1,55 @@
+:global {
+    .emoji-mart {
+        border: none !important;
+        border-radius: 4px !important;
+        width: 300px !important;
+
+        .emoji-mart-search {
+            margin-bottom: 6px;
+
+            input {
+                // copied from Bootstrap style
+                padding: 0.5rem 0.75rem;
+                font-size: 1rem;
+                line-height: 1.25;
+                color: var(--neutral-grey-6);
+                background-color: var(--neutral-grey-0);
+                background-image: none;
+                border: 1px solid fade(black, 15%);
+                border-radius: 0.25rem;
+                transition: border-color ease-in-out 0.15s,
+                    box-shadow ease-in-out 0.15s;
+            }
+        }
+
+        .emoji-mart-bar:last-child {
+            // preview
+            display: none;
+        }
+
+        .emoji-mart-anchor {
+            cursor: pointer;
+        }
+
+        .emoji-mart-emoji span {
+            @size: 21px;
+            cursor: pointer;
+            font-size: @size !important;
+            width: @size !important;
+            height: @size !important;
+        }
+
+        .emoji-mart-scroll {
+            overflow-x: hidden;
+            height: 180px;
+        }
+
+        .emoji-mart-category-label {
+            position: relative;
+
+            span {
+                font-size: 14px;
+            }
+        }
+    }
+}

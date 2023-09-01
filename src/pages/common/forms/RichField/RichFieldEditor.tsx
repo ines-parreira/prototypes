@@ -94,6 +94,7 @@ export type Props = {
     maxLength?: number
     countCharacters?: boolean
     minHeight?: string | number
+    noAutoScroll?: boolean
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -252,7 +253,7 @@ export class RichFieldEditor extends Component<Props, State> {
     _getCanInsertInlineImages = () => this.props.canInsertInlineImages
 
     _focusEditor = () => {
-        const {editorState} = this.props
+        const {editorState, noAutoScroll} = this.props
         const {wasEverFocused} = this.state
 
         if (!wasEverFocused) {
@@ -262,10 +263,11 @@ export class RichFieldEditor extends Component<Props, State> {
         setTimeout(() => {
             if (this.editor) {
                 this.editor.focus()
-                scrollToReactNode(this.editor as any, {
-                    block: 'start',
-                    scrollMode: 'always',
-                })
+                if (!noAutoScroll)
+                    scrollToReactNode(this.editor as any, {
+                        block: 'start',
+                        scrollMode: 'always',
+                    })
                 shortcutManager.denylist(['SpotlightModal'])
             }
         }, 0)

@@ -204,7 +204,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-1"
+    id="floating-ui-3"
   />
   <div
     aria-describedby="modal-8-desc"
@@ -1214,7 +1214,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-2"
+    id="floating-ui-5"
   />
   <div
     aria-describedby="modal-11-desc"

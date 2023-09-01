@@ -105,55 +105,59 @@ export default class AddImage extends Component<Props, State> {
                 onOpen={this._onPopoverOpen}
                 onClose={this._onPopoverClose}
             >
-                <div className={css.menu}>
-                    <span
-                        onClick={() => this._changeMode('upload')}
-                        className={classnames({
-                            [css.selected]: this.state.mode === 'upload',
-                        })}
-                    >
-                        Upload
-                    </span>
-                    <span
-                        onClick={() => this._changeMode('url')}
-                        className={classnames({
-                            [css.selected]: this.state.mode === 'url',
-                        })}
-                    >
-                        URL
-                    </span>
-                </div>
-                {this.state.mode === 'upload' ? (
-                    <FileField
-                        key="file"
-                        accept="image/*"
-                        placeholder="Select image..."
-                        onClick={this._updateMaxSize}
-                        onChange={this._handleImage}
-                        maxSize={this.state.maxSize}
-                        returnFiles
-                        inline
-                        noPreview
-                    />
-                ) : (
-                    <div className="flex">
-                        <TextInput
-                            ref={this.inputRef}
-                            placeholder="External image url..."
-                            onChange={(value) => this.setState({url: value})}
-                            value={this.state.url}
-                            onKeyDown={this._onKeyDown}
-                            autoFocus
-                        />
-                        <Button
-                            className="ml-2"
-                            isDisabled={!this.state.url}
-                            onClick={this._submit}
+                <div className={css.container}>
+                    <div className={css.menu}>
+                        <span
+                            onClick={() => this._changeMode('upload')}
+                            className={classnames({
+                                [css.selected]: this.state.mode === 'upload',
+                            })}
                         >
-                            Insert
-                        </Button>
+                            Upload
+                        </span>
+                        <span
+                            onClick={() => this._changeMode('url')}
+                            className={classnames({
+                                [css.selected]: this.state.mode === 'url',
+                            })}
+                        >
+                            URL
+                        </span>
                     </div>
-                )}
+                    {this.state.mode === 'upload' ? (
+                        <FileField
+                            key="file"
+                            accept="image/*"
+                            placeholder="Select image..."
+                            onClick={this._updateMaxSize}
+                            onChange={this._handleImage}
+                            maxSize={this.state.maxSize}
+                            returnFiles
+                            inline
+                            noPreview
+                        />
+                    ) : (
+                        <div className="flex">
+                            <TextInput
+                                ref={this.inputRef}
+                                placeholder="External image url..."
+                                onChange={(value) =>
+                                    this.setState({url: value})
+                                }
+                                value={this.state.url}
+                                onKeyDown={this._onKeyDown}
+                                autoFocus
+                            />
+                            <Button
+                                className="ml-2"
+                                isDisabled={!this.state.url}
+                                onClick={this._submit}
+                            >
+                                Insert
+                            </Button>
+                        </div>
+                    )}
+                </div>
             </Popover>
         )
     }

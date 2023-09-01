@@ -21,12 +21,6 @@ describe('<AddVideo/>', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should render the popover when the button is clicked', () => {
-        const {container} = render(<AddVideo {...minProps} />)
-        fireEvent.click(screen.getByText(/video/i))
-        expect(container).toMatchSnapshot()
-    })
-
     it('should enable the submit button only when providing a valid url', () => {
         render(<AddVideo {...minProps} />)
         fireEvent.click(screen.getByText(/video/i))

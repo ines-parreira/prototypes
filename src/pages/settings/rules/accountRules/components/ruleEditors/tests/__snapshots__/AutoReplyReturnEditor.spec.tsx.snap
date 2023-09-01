@@ -444,63 +444,42 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                   format_underline
                 </i>
               </button>
-              <span
-                class="popoverWrapper"
+              <button
+                aria-disabled="false"
+                class="wrapper button wrapper small fill secondary small"
+                id="toolbar-button-6"
+                type="button"
               >
-                <button
-                  aria-disabled="false"
-                  class="wrapper button wrapper small fill secondary small"
-                  id="toolbar-button-6"
-                  type="button"
+                <i
+                  class="material-icons icon"
                 >
-                  <i
-                    class="material-icons icon"
-                  >
-                    link
-                  </i>
-                </button>
-                <div
-                  class="popover top-left hidden"
-                />
-              </span>
-              <span
-                class="popoverWrapper"
+                  link
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper button wrapper small fill secondary small"
+                id="toolbar-button-7"
+                type="button"
               >
-                <button
-                  aria-disabled="false"
-                  class="wrapper button wrapper small fill secondary small"
-                  id="toolbar-button-7"
-                  type="button"
+                <i
+                  class="material-icons icon"
                 >
-                  <i
-                    class="material-icons icon"
-                  >
-                    insert_photo
-                  </i>
-                </button>
-                <div
-                  class="popover top-left hidden"
-                />
-              </span>
-              <span
-                class="popoverWrapper"
+                  insert_photo
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper button wrapper small fill secondary small"
+                id="toolbar-button-8"
+                type="button"
               >
-                <button
-                  aria-disabled="false"
-                  class="wrapper button wrapper small fill secondary small"
-                  id="toolbar-button-8"
-                  type="button"
+                <i
+                  class="material-icons icon"
                 >
-                  <i
-                    class="material-icons icon"
-                  >
-                    insert_emoticon
-                  </i>
-                </button>
-                <div
-                  class="p-0 d-flex popover top-left hidden"
-                />
-              </span>
+                  insert_emoticon
+                </i>
+              </button>
               <div
                 class="rightSection"
               />
@@ -853,63 +832,42 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                   format_underline
                 </i>
               </button>
-              <span
-                class="popoverWrapper"
+              <button
+                aria-disabled="false"
+                class="wrapper button wrapper small fill secondary small"
+                id="toolbar-button-12"
+                type="button"
               >
-                <button
-                  aria-disabled="false"
-                  class="wrapper button wrapper small fill secondary small"
-                  id="toolbar-button-12"
-                  type="button"
+                <i
+                  class="material-icons icon"
                 >
-                  <i
-                    class="material-icons icon"
-                  >
-                    link
-                  </i>
-                </button>
-                <div
-                  class="popover top-left hidden"
-                />
-              </span>
-              <span
-                class="popoverWrapper"
+                  link
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper button wrapper small fill secondary small"
+                id="toolbar-button-13"
+                type="button"
               >
-                <button
-                  aria-disabled="false"
-                  class="wrapper button wrapper small fill secondary small"
-                  id="toolbar-button-13"
-                  type="button"
+                <i
+                  class="material-icons icon"
                 >
-                  <i
-                    class="material-icons icon"
-                  >
-                    insert_photo
-                  </i>
-                </button>
-                <div
-                  class="popover top-left hidden"
-                />
-              </span>
-              <span
-                class="popoverWrapper"
+                  insert_photo
+                </i>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper button wrapper small fill secondary small"
+                id="toolbar-button-14"
+                type="button"
               >
-                <button
-                  aria-disabled="false"
-                  class="wrapper button wrapper small fill secondary small"
-                  id="toolbar-button-14"
-                  type="button"
+                <i
+                  class="material-icons icon"
                 >
-                  <i
-                    class="material-icons icon"
-                  >
-                    insert_emoticon
-                  </i>
-                </button>
-                <div
-                  class="p-0 d-flex popover top-left hidden"
-                />
-              </span>
+                  insert_emoticon
+                </i>
+              </button>
               <div
                 class="rightSection"
               />

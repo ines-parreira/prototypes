@@ -75,29 +75,27 @@ const Dropdown = forwardRef(
         }: Props,
         ref: Ref<HTMLElement> | null | undefined
     ) => {
-        const {x, y, reference, floating, refs, strategy, update} =
-            useFloating<HTMLElement>({
-                placement,
-                middleware: [
-                    shift(),
-                    offsetMiddleware(offset),
-                    flip({
-                        fallbackPlacements: ['right', 'bottom', 'top', 'left'],
-                        padding: safeDistance,
-                    }),
-                    size({
-                        apply({elements}) {
-                            Object.assign(elements.floating.style ?? {}, {
-                                [contained ? 'width' : 'minWidth']: `${
-                                    elements.reference.getBoundingClientRect()
-                                        .width
-                                }px`,
-                            })
-                        },
-                        padding: safeDistance,
-                    }),
-                ],
-            })
+        const {x, y, refs, strategy, update} = useFloating<HTMLElement>({
+            placement,
+            middleware: [
+                shift(),
+                offsetMiddleware(offset),
+                flip({
+                    fallbackPlacements: ['right', 'bottom', 'top', 'left'],
+                    padding: safeDistance,
+                }),
+                size({
+                    apply({elements}) {
+                        Object.assign(elements.floating.style ?? {}, {
+                            [contained ? 'width' : 'minWidth']: `${
+                                elements.reference.getBoundingClientRect().width
+                            }px`,
+                        })
+                    },
+                    padding: safeDistance,
+                }),
+            ],
+        })
         const currentFloatingElement = refs.floating.current!
         useImperativeHandle(ref, () => currentFloatingElement, [
             currentFloatingElement,
@@ -113,8 +111,8 @@ const Dropdown = forwardRef(
         )
 
         useLayoutEffect(() => {
-            reference(currentTarget)
-        }, [currentTarget, reference])
+            refs.setReference(currentTarget)
+        }, [currentTarget, refs])
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
         const handleUpdate = useCallback(
@@ -235,7 +233,7 @@ const Dropdown = forwardRef(
                         >
                             <div
                                 className={classnames(css.wrapper, className)}
-                                ref={floating}
+                                ref={refs.setFloating}
                                 style={{
                                     left: x ?? '',
                                     position: strategy,

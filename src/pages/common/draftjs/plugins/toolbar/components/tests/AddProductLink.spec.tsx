@@ -37,13 +37,14 @@ describe('<AddProductLink/>', () => {
                 >
                     <AddProductLink {...minProps} />
                 </ToolbarProvider>
-            </Provider>
+            </Provider>,
+            {container: document.body}
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should render the product picker when the popover is clicked and only one integration', () => {
-        const {getByText, container} = render(
+        const {getByText, container, unmount} = render(
             <Provider store={store}>
                 <ToolbarProvider
                     shopifyIntegrations={
@@ -54,10 +55,12 @@ describe('<AddProductLink/>', () => {
                 >
                     <AddProductLink {...minProps} />
                 </ToolbarProvider>
-            </Provider>
+            </Provider>,
+            {container: document.body}
         )
         fireEvent.click(getByText(/shopify/i))
         expect(container).toMatchSnapshot()
+        unmount()
     })
 
     it('should render the store picker because of multiple integrations', () => {
@@ -65,7 +68,7 @@ describe('<AddProductLink/>', () => {
             'integrations'
         ) as List<any>
         integrations = integrations.push(integrations.toArray()[0])
-        const {getByText, container} = render(
+        const {getByText, container, unmount} = render(
             <Provider store={store}>
                 <ToolbarProvider shopifyIntegrations={integrations}>
                     <AddProductLink
@@ -73,9 +76,11 @@ describe('<AddProductLink/>', () => {
                         setEditorState={minProps.setEditorState}
                     />
                 </ToolbarProvider>
-            </Provider>
+            </Provider>,
+            {container: document.body}
         )
         fireEvent.click(getByText(/shopify/i))
         expect(container).toMatchSnapshot()
+        unmount()
     })
 })

@@ -1,7 +1,10 @@
 import React, {ReactNode, useCallback, useEffect, useRef} from 'react'
+import {Popover} from 'reactstrap'
+
+import {ModalContext} from 'pages/common/components/modal/Modal'
 
 import Button from './Button'
-import Popover from './Popover'
+import css from './ButtonPopover.less'
 
 type Props = {
     name: string
@@ -18,7 +21,6 @@ type Props = {
 export default function ButtonPopover({
     isActive = false,
     isDisabled = false,
-    className,
     isOpen = false,
     children,
     icon,
@@ -26,63 +28,57 @@ export default function ButtonPopover({
     onClose,
     onOpen,
 }: Props) {
-    const popoverRef = useRef<HTMLSpanElement>(null)
-    const handleDocumentPointer = useCallback(
-        (e: MouseEvent | TouchEvent) => {
-            const target = e.target
-            const popoverEl = popoverRef.current
-            if (
-                isOpen &&
-                target &&
-                popoverEl &&
-                !popoverEl.contains(target as Node)
-            ) {
-                onClose()
-            }
-        },
-        [isOpen, onClose]
-    )
-    useEffect(() => {
-        if (isOpen) {
-            // consider using pointer events
-            document.body.addEventListener('mousedown', handleDocumentPointer)
-            document.body.addEventListener('touchstart', handleDocumentPointer)
-        }
-        return function cleanUp() {
-            document.body.removeEventListener(
-                'mousedown',
-                handleDocumentPointer
-            )
-            document.body.removeEventListener(
-                'touchstart',
-                handleDocumentPointer
-            )
-        }
-    }, [isOpen, handleDocumentPointer])
-
-    const handleButtonToggle = () => {
+    const handleButtonToggle = useCallback(() => {
         if (isOpen) {
             onClose()
         } else {
             onOpen()
         }
-    }
-    return (
-        <Popover
-            trigger={
-                <Button
-                    name={name}
-                    isActive={isActive}
-                    isDisabled={isDisabled}
-                    icon={icon}
-                    onToggle={handleButtonToggle}
-                />
+    }, [isOpen, onClose, onOpen])
+    const buttonRef = useRef<HTMLButtonElement>(null)
+
+    // on mobile size the editor toolbar becomes hidden, we force closing the popover if opened
+    useEffect(() => {
+        function closePopoverIfToolbarHidden() {
+            // https://stackoverflow.com/a/53068496/19941479
+            const toolbarIsVisible = !!buttonRef.current?.offsetParent
+            if (!toolbarIsVisible && isOpen) {
+                onClose()
             }
-            className={className}
-            isOpen={isOpen}
-            ref={popoverRef}
-        >
-            {children}
-        </Popover>
+        }
+        window.addEventListener('resize', closePopoverIfToolbarHidden)
+        return () => {
+            window.removeEventListener('resize', closePopoverIfToolbarHidden)
+        }
+    }, [isOpen, onClose, buttonRef])
+
+    return (
+        <>
+            <Button
+                ref={buttonRef}
+                name={name}
+                isActive={isActive}
+                isDisabled={isDisabled}
+                icon={icon}
+                onToggle={handleButtonToggle}
+            />
+            <ModalContext.Consumer>
+                {(context) => (
+                    <Popover
+                        isOpen={isOpen}
+                        toggle={() => {
+                            handleButtonToggle()
+                        }}
+                        target={buttonRef}
+                        className={css.popover}
+                        container={context.ref}
+                        trigger="legacy"
+                        placement="right-end"
+                    >
+                        {children}
+                    </Popover>
+                )}
+            </ModalContext.Consumer>
+        </>
     )
 }

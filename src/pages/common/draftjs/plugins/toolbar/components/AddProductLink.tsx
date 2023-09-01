@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
@@ -7,7 +7,6 @@ import {fromJS, Map} from 'immutable'
 import {IntegrationType} from 'models/integration/constants'
 import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
 import {ProductCardDetails} from 'models/integration/types'
-import shortcutManager from 'services/shortcutManager'
 import {insertLink, insertText} from 'utils'
 import {getIconFromType} from 'state/integrations/helpers'
 
@@ -141,23 +140,10 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
         ]
     )
 
-    useEffect(() => {
-        shortcutManager.bind('AddProductLink', {
-            CLOSE_POPOVER: {
-                key: 'esc',
-                action: () => handlePopoverClose(),
-            },
-        })
-        return () => {
-            shortcutManager.unbind('AddProductLink')
-        }
-    }, [handlePopoverClose])
-
     return (
         <Popover
             icon="shopify"
             name="Insert Shopify Product"
-            className={classnames(css.productLinkToolTip, 'p-0', 'd-flex')}
             isOpen={isOpen}
             onOpen={handlePopoverOpen}
             onClose={handlePopoverClose}

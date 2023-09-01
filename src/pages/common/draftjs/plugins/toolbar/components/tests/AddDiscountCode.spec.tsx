@@ -27,7 +27,9 @@ describe('<AddDiscountCode/>', () => {
     })
 
     it('should not render when the popover is closed', () => {
-        const {container} = render(<AddDiscountCode {...minProps} />)
+        const {container} = render(<AddDiscountCode {...minProps} />, {
+            container: document.body,
+        })
         expect(container).toMatchSnapshot()
     })
 
@@ -43,7 +45,10 @@ describe('<AddDiscountCode/>', () => {
                 >
                     <AddDiscountCode {...minProps} />
                 </ToolbarProvider>
-            </Provider>
+            </Provider>,
+            {
+                container: document.body,
+            }
         )
         fireEvent.click(getByText(/discount/i))
         expect(container).toMatchSnapshot()
@@ -59,7 +64,10 @@ describe('<AddDiscountCode/>', () => {
                 <ToolbarProvider shopifyIntegrations={integrations}>
                     <AddDiscountCode {...minProps} />
                 </ToolbarProvider>
-            </Provider>
+            </Provider>,
+            {
+                container: document.body,
+            }
         )
         fireEvent.click(getByText(/discount/i))
         expect(container).toMatchSnapshot()

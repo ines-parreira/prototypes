@@ -321,82 +321,54 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       format_underline
                     </i>
                   </button>
-                  <span
-                    class="popoverWrapper"
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-36"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-36"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      link
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-37"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-37"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_photo
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_photo
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-38"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-38"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_emoticon
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-39"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-39"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        shopify
-                      </i>
-                    </button>
-                    <div
-                      class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
+                      shopify
+                    </i>
+                  </button>
                   <div
                     class="rightSection"
                   />
@@ -643,82 +615,54 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       format_underline
                     </i>
                   </button>
-                  <span
-                    class="popoverWrapper"
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-43"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-43"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      link
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-44"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-44"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_photo
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_photo
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-45"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-45"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_emoticon
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-46"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-46"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        shopify
-                      </i>
-                    </button>
-                    <div
-                      class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
+                      shopify
+                    </i>
+                  </button>
                   <div
                     class="rightSection"
                   />
@@ -932,63 +876,42 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                           format_underline
                         </i>
                       </button>
-                      <span
-                        class="popoverWrapper"
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-50"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-50"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            link
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          link
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-51"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-51"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_photo
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          insert_photo
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-52"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-52"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_emoticon
-                          </i>
-                        </button>
-                        <div
-                          class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
+                          insert_emoticon
+                        </i>
+                      </button>
                       <div
                         class="rightSection"
                       />
@@ -1164,63 +1087,42 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                           format_underline
                         </i>
                       </button>
-                      <span
-                        class="popoverWrapper"
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-56"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-56"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            link
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          link
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-57"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-57"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_photo
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          insert_photo
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-58"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-58"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_emoticon
-                          </i>
-                        </button>
-                        <div
-                          class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
+                          insert_emoticon
+                        </i>
+                      </button>
                       <div
                         class="rightSection"
                       />
@@ -1577,82 +1479,54 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       format_underline
                     </i>
                   </button>
-                  <span
-                    class="popoverWrapper"
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-66"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-66"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      link
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-67"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-67"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_photo
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_photo
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-68"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-68"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_emoticon
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-69"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-69"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        shopify
-                      </i>
-                    </button>
-                    <div
-                      class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
+                      shopify
+                    </i>
+                  </button>
                   <div
                     class="rightSection"
                   />
@@ -1899,82 +1773,54 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       format_underline
                     </i>
                   </button>
-                  <span
-                    class="popoverWrapper"
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-73"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-73"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      link
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-74"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-74"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_photo
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_photo
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-75"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-75"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_emoticon
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-76"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-76"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        shopify
-                      </i>
-                    </button>
-                    <div
-                      class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
+                      shopify
+                    </i>
+                  </button>
                   <div
                     class="rightSection"
                   />
@@ -2188,63 +2034,42 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                           format_underline
                         </i>
                       </button>
-                      <span
-                        class="popoverWrapper"
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-80"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-80"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            link
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          link
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-81"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-81"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_photo
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          insert_photo
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-82"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-82"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_emoticon
-                          </i>
-                        </button>
-                        <div
-                          class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
+                          insert_emoticon
+                        </i>
+                      </button>
                       <div
                         class="rightSection"
                       />
@@ -2370,63 +2195,42 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                           format_underline
                         </i>
                       </button>
-                      <span
-                        class="popoverWrapper"
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-86"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-86"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            link
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          link
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-87"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-87"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_photo
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          insert_photo
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-88"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-88"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_emoticon
-                          </i>
-                        </button>
-                        <div
-                          class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
+                          insert_emoticon
+                        </i>
+                      </button>
                       <div
                         class="rightSection"
                       />
@@ -2745,82 +2549,54 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       format_underline
                     </i>
                   </button>
-                  <span
-                    class="popoverWrapper"
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-8"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-8"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      link
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-9"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-9"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_photo
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_photo
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-10"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-10"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_emoticon
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-11"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-11"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        shopify
-                      </i>
-                    </button>
-                    <div
-                      class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
+                      shopify
+                    </i>
+                  </button>
                   <div
                     class="rightSection"
                   />
@@ -3067,82 +2843,54 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       format_underline
                     </i>
                   </button>
-                  <span
-                    class="popoverWrapper"
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-15"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-15"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      link
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-16"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-16"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_photo
-                      </i>
-                    </button>
-                    <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_photo
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-17"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-17"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
+                      insert_emoticon
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-18"
+                    type="button"
                   >
-                    <button
-                      aria-disabled="false"
-                      class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-18"
-                      type="button"
+                    <i
+                      class="material-icons icon"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        shopify
-                      </i>
-                    </button>
-                    <div
-                      class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
+                      shopify
+                    </i>
+                  </button>
                   <div
                     class="rightSection"
                   />
@@ -3356,63 +3104,42 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                           format_underline
                         </i>
                       </button>
-                      <span
-                        class="popoverWrapper"
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-22"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-22"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            link
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          link
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-23"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-23"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_photo
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          insert_photo
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-24"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-24"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_emoticon
-                          </i>
-                        </button>
-                        <div
-                          class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
+                          insert_emoticon
+                        </i>
+                      </button>
                       <div
                         class="rightSection"
                       />
@@ -3609,63 +3336,42 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                           format_underline
                         </i>
                       </button>
-                      <span
-                        class="popoverWrapper"
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-28"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-28"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            link
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          link
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-29"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-29"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_photo
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
+                          insert_photo
+                        </i>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-30"
+                        type="button"
                       >
-                        <button
-                          aria-disabled="false"
-                          class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-30"
-                          type="button"
+                        <i
+                          class="material-icons icon"
                         >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_emoticon
-                          </i>
-                        </button>
-                        <div
-                          class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
+                          insert_emoticon
+                        </i>
+                      </button>
                       <div
                         class="rightSection"
                       />

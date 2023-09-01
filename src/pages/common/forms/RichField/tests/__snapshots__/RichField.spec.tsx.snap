@@ -2517,7 +2517,7 @@ exports[`RichField should render default content state 1`] = `
                           setEditorState={[Function]}
                           style="BOLD"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_bold"
                             isActive={false}
                             isDisabled={false}
@@ -2604,7 +2604,7 @@ exports[`RichField should render default content state 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -2618,7 +2618,7 @@ exports[`RichField should render default content state 1`] = `
                           setEditorState={[Function]}
                           style="ITALIC"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_italic"
                             isActive={false}
                             isDisabled={false}
@@ -2705,7 +2705,7 @@ exports[`RichField should render default content state 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -2719,7 +2719,7 @@ exports[`RichField should render default content state 1`] = `
                           setEditorState={[Function]}
                           style="UNDERLINE"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_underline"
                             isActive={false}
                             isDisabled={false}
@@ -2806,7 +2806,7 @@ exports[`RichField should render default content state 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Connect(Component)
@@ -2869,113 +2869,153 @@ exports[`RichField should render default content state 1`] = `
                               onOpen={[Function]}
                             >
                               <ForwardRef
-                                isOpen={false}
-                                trigger={
-                                  <Button
-                                    icon="link"
-                                    isActive={false}
-                                    isDisabled={false}
-                                    name="Insert link"
-                                    onToggle={[Function]}
-                                  />
-                                }
+                                icon="link"
+                                isActive={false}
+                                isDisabled={false}
+                                name="Insert link"
+                                onToggle={[Function]}
                               >
-                                <span
-                                  className="popoverWrapper"
+                                <ForwardRef
+                                  className="button"
+                                  id="toolbar-button-16"
+                                  intent="secondary"
+                                  onClick={[Function]}
+                                  onMouseDown={[Function]}
+                                  size="small"
                                 >
-                                  <Button
-                                    icon="link"
-                                    isActive={false}
-                                    isDisabled={false}
-                                    name="Insert link"
-                                    onToggle={[Function]}
+                                  <ForwardRef
+                                    className="button wrapper small"
+                                    id="toolbar-button-16"
+                                    intent="secondary"
+                                    onClick={[Function]}
+                                    onMouseDown={[Function]}
+                                    size="small"
                                   >
-                                    <ForwardRef
-                                      className="button"
-                                      id="toolbar-button-16"
+                                    <BaseButton
+                                      className="button wrapper small"
                                       intent="secondary"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
                                       size="small"
                                     >
-                                      <ForwardRef
-                                        className="button wrapper small"
+                                      <button
+                                        aria-disabled={false}
+                                        className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-16"
-                                        intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
-                                        size="small"
+                                        type="button"
                                       >
-                                        <BaseButton
-                                          className="button wrapper small"
-                                          intent="secondary"
-                                          size="small"
+                                        <i
+                                          className="material-icons icon"
                                         >
-                                          <button
-                                            aria-disabled={false}
-                                            className="wrapper button wrapper small fill secondary small"
-                                            id="toolbar-button-16"
-                                            onClick={[Function]}
-                                            onMouseDown={[Function]}
-                                            type="button"
-                                          >
-                                            <i
-                                              className="material-icons icon"
-                                            >
-                                              link
-                                            </i>
-                                          </button>
-                                        </BaseButton>
-                                      </ForwardRef>
-                                    </ForwardRef>
+                                          link
+                                        </i>
+                                      </button>
+                                    </BaseButton>
+                                  </ForwardRef>
+                                </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="toolbar-button-16"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="toolbar-button-16"
+                                  >
                                     <Tooltip
                                       autohide={false}
+                                      className="tooltip"
                                       delay={100}
+                                      isOpen={false}
                                       placement="bottom"
+                                      placementPrefix="bs-tooltip"
                                       target="toolbar-button-16"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
                                     >
-                                      <UncontrolledTooltip
+                                      <TooltipPopoverWrapper
                                         autohide={false}
                                         className="tooltip"
                                         delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
                                         placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
                                         target="toolbar-button-16"
-                                      >
-                                        <Tooltip
-                                          autohide={false}
-                                          className="tooltip"
-                                          delay={100}
-                                          isOpen={false}
-                                          placement="bottom"
-                                          placementPrefix="bs-tooltip"
-                                          target="toolbar-button-16"
-                                          toggle={[Function]}
-                                          trigger="hover focus"
-                                        >
-                                          <TooltipPopoverWrapper
-                                            autohide={false}
-                                            className="tooltip"
-                                            delay={100}
-                                            fade={true}
-                                            hideArrow={false}
-                                            innerClassName="tooltip-inner"
-                                            isOpen={false}
-                                            placement="bottom"
-                                            placementPrefix="bs-tooltip"
-                                            popperClassName="tooltip show"
-                                            target="toolbar-button-16"
-                                            toggle={[Function]}
-                                            trigger="hover focus"
-                                          />
-                                        </Tooltip>
-                                      </UncontrolledTooltip>
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
                                     </Tooltip>
-                                  </Button>
-                                  <div
-                                    className="popover top-left hidden"
-                                  />
-                                </span>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </ForwardRef>
+                              <Popover
+                                className="popover"
+                                isOpen={false}
+                                placement="right-end"
+                                placementPrefix="bs-popover"
+                                target={
+                                  {
+                                    "current": <button
+                                      aria-disabled="false"
+                                      class="wrapper button wrapper small fill secondary small"
+                                      id="toolbar-button-16"
+                                      type="button"
+                                    >
+                                      <i
+                                        class="material-icons icon"
+                                      >
+                                        link
+                                      </i>
+                                    </button>,
+                                  }
+                                }
+                                toggle={[Function]}
+                                trigger="legacy"
+                              >
+                                <TooltipPopoverWrapper
+                                  autohide={false}
+                                  className="popover"
+                                  delay={
+                                    {
+                                      "hide": 50,
+                                      "show": 0,
+                                    }
+                                  }
+                                  fade={true}
+                                  hideArrow={false}
+                                  innerClassName="popover-inner"
+                                  isOpen={false}
+                                  placement="right-end"
+                                  placementPrefix="bs-popover"
+                                  popperClassName="popover show"
+                                  target={
+                                    {
+                                      "current": <button
+                                        aria-disabled="false"
+                                        class="wrapper button wrapper small fill secondary small"
+                                        id="toolbar-button-16"
+                                        type="button"
+                                      >
+                                        <i
+                                          class="material-icons icon"
+                                        >
+                                          link
+                                        </i>
+                                      </button>,
+                                    }
+                                  }
+                                  toggle={[Function]}
+                                  trigger="legacy"
+                                />
+                              </Popover>
                             </ButtonPopover>
                           </AddLinkContainer>
                         </Component>
@@ -2992,113 +3032,153 @@ exports[`RichField should render default content state 1`] = `
                           onOpen={[Function]}
                         >
                           <ForwardRef
-                            isOpen={false}
-                            trigger={
-                              <Button
-                                icon="insert_photo"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert image"
-                                onToggle={[Function]}
-                              />
-                            }
+                            icon="insert_photo"
+                            isActive={false}
+                            isDisabled={false}
+                            name="Insert image"
+                            onToggle={[Function]}
                           >
-                            <span
-                              className="popoverWrapper"
+                            <ForwardRef
+                              className="button"
+                              id="toolbar-button-17"
+                              intent="secondary"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              size="small"
                             >
-                              <Button
-                                icon="insert_photo"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert image"
-                                onToggle={[Function]}
+                              <ForwardRef
+                                className="button wrapper small"
+                                id="toolbar-button-17"
+                                intent="secondary"
+                                onClick={[Function]}
+                                onMouseDown={[Function]}
+                                size="small"
                               >
-                                <ForwardRef
-                                  className="button"
-                                  id="toolbar-button-17"
+                                <BaseButton
+                                  className="button wrapper small"
                                   intent="secondary"
-                                  onClick={[Function]}
-                                  onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
-                                    className="button wrapper small"
+                                  <button
+                                    aria-disabled={false}
+                                    className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-17"
-                                    intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
-                                    size="small"
+                                    type="button"
                                   >
-                                    <BaseButton
-                                      className="button wrapper small"
-                                      intent="secondary"
-                                      size="small"
+                                    <i
+                                      className="material-icons icon"
                                     >
-                                      <button
-                                        aria-disabled={false}
-                                        className="wrapper button wrapper small fill secondary small"
-                                        id="toolbar-button-17"
-                                        onClick={[Function]}
-                                        onMouseDown={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          insert_photo
-                                        </i>
-                                      </button>
-                                    </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                      insert_photo
+                                    </i>
+                                  </button>
+                                </BaseButton>
+                              </ForwardRef>
+                            </ForwardRef>
+                            <Tooltip
+                              autohide={false}
+                              delay={100}
+                              placement="bottom"
+                              target="toolbar-button-17"
+                            >
+                              <UncontrolledTooltip
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                placement="bottom"
+                                target="toolbar-button-17"
+                              >
                                 <Tooltip
                                   autohide={false}
+                                  className="tooltip"
                                   delay={100}
+                                  isOpen={false}
                                   placement="bottom"
+                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-17"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
                                 >
-                                  <UncontrolledTooltip
+                                  <TooltipPopoverWrapper
                                     autohide={false}
                                     className="tooltip"
                                     delay={100}
+                                    fade={true}
+                                    hideArrow={false}
+                                    innerClassName="tooltip-inner"
+                                    isOpen={false}
                                     placement="bottom"
+                                    placementPrefix="bs-tooltip"
+                                    popperClassName="tooltip show"
                                     target="toolbar-button-17"
-                                  >
-                                    <Tooltip
-                                      autohide={false}
-                                      className="tooltip"
-                                      delay={100}
-                                      isOpen={false}
-                                      placement="bottom"
-                                      placementPrefix="bs-tooltip"
-                                      target="toolbar-button-17"
-                                      toggle={[Function]}
-                                      trigger="hover focus"
-                                    >
-                                      <TooltipPopoverWrapper
-                                        autohide={false}
-                                        className="tooltip"
-                                        delay={100}
-                                        fade={true}
-                                        hideArrow={false}
-                                        innerClassName="tooltip-inner"
-                                        isOpen={false}
-                                        placement="bottom"
-                                        placementPrefix="bs-tooltip"
-                                        popperClassName="tooltip show"
-                                        target="toolbar-button-17"
-                                        toggle={[Function]}
-                                        trigger="hover focus"
-                                      />
-                                    </Tooltip>
-                                  </UncontrolledTooltip>
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  />
                                 </Tooltip>
-                              </Button>
-                              <div
-                                className="popover top-left hidden"
-                              />
-                            </span>
+                              </UncontrolledTooltip>
+                            </Tooltip>
                           </ForwardRef>
+                          <Popover
+                            className="popover"
+                            isOpen={false}
+                            placement="right-end"
+                            placementPrefix="bs-popover"
+                            target={
+                              {
+                                "current": <button
+                                  aria-disabled="false"
+                                  class="wrapper button wrapper small fill secondary small"
+                                  id="toolbar-button-17"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons icon"
+                                  >
+                                    insert_photo
+                                  </i>
+                                </button>,
+                              }
+                            }
+                            toggle={[Function]}
+                            trigger="legacy"
+                          >
+                            <TooltipPopoverWrapper
+                              autohide={false}
+                              className="popover"
+                              delay={
+                                {
+                                  "hide": 50,
+                                  "show": 0,
+                                }
+                              }
+                              fade={true}
+                              hideArrow={false}
+                              innerClassName="popover-inner"
+                              isOpen={false}
+                              placement="right-end"
+                              placementPrefix="bs-popover"
+                              popperClassName="popover show"
+                              target={
+                                {
+                                  "current": <button
+                                    aria-disabled="false"
+                                    class="wrapper button wrapper small fill secondary small"
+                                    id="toolbar-button-17"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons icon"
+                                    >
+                                      insert_photo
+                                    </i>
+                                  </button>,
+                                }
+                              }
+                              toggle={[Function]}
+                              trigger="legacy"
+                            />
+                          </Popover>
                         </ButtonPopover>
                       </AddImage>
                       <AddEmoji
@@ -3106,7 +3186,6 @@ exports[`RichField should render default content state 1`] = `
                         setEditorState={[Function]}
                       >
                         <ButtonPopover
-                          className="p-0 d-flex"
                           icon="insert_emoticon"
                           isOpen={false}
                           name="Insert emoji"
@@ -3114,114 +3193,153 @@ exports[`RichField should render default content state 1`] = `
                           onOpen={[Function]}
                         >
                           <ForwardRef
-                            className="p-0 d-flex"
-                            isOpen={false}
-                            trigger={
-                              <Button
-                                icon="insert_emoticon"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert emoji"
-                                onToggle={[Function]}
-                              />
-                            }
+                            icon="insert_emoticon"
+                            isActive={false}
+                            isDisabled={false}
+                            name="Insert emoji"
+                            onToggle={[Function]}
                           >
-                            <span
-                              className="popoverWrapper"
+                            <ForwardRef
+                              className="button"
+                              id="toolbar-button-18"
+                              intent="secondary"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              size="small"
                             >
-                              <Button
-                                icon="insert_emoticon"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert emoji"
-                                onToggle={[Function]}
+                              <ForwardRef
+                                className="button wrapper small"
+                                id="toolbar-button-18"
+                                intent="secondary"
+                                onClick={[Function]}
+                                onMouseDown={[Function]}
+                                size="small"
                               >
-                                <ForwardRef
-                                  className="button"
-                                  id="toolbar-button-18"
+                                <BaseButton
+                                  className="button wrapper small"
                                   intent="secondary"
-                                  onClick={[Function]}
-                                  onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
-                                    className="button wrapper small"
+                                  <button
+                                    aria-disabled={false}
+                                    className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-18"
-                                    intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
-                                    size="small"
+                                    type="button"
                                   >
-                                    <BaseButton
-                                      className="button wrapper small"
-                                      intent="secondary"
-                                      size="small"
+                                    <i
+                                      className="material-icons icon"
                                     >
-                                      <button
-                                        aria-disabled={false}
-                                        className="wrapper button wrapper small fill secondary small"
-                                        id="toolbar-button-18"
-                                        onClick={[Function]}
-                                        onMouseDown={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          insert_emoticon
-                                        </i>
-                                      </button>
-                                    </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                      insert_emoticon
+                                    </i>
+                                  </button>
+                                </BaseButton>
+                              </ForwardRef>
+                            </ForwardRef>
+                            <Tooltip
+                              autohide={false}
+                              delay={100}
+                              placement="bottom"
+                              target="toolbar-button-18"
+                            >
+                              <UncontrolledTooltip
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                placement="bottom"
+                                target="toolbar-button-18"
+                              >
                                 <Tooltip
                                   autohide={false}
+                                  className="tooltip"
                                   delay={100}
+                                  isOpen={false}
                                   placement="bottom"
+                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-18"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
                                 >
-                                  <UncontrolledTooltip
+                                  <TooltipPopoverWrapper
                                     autohide={false}
                                     className="tooltip"
                                     delay={100}
+                                    fade={true}
+                                    hideArrow={false}
+                                    innerClassName="tooltip-inner"
+                                    isOpen={false}
                                     placement="bottom"
+                                    placementPrefix="bs-tooltip"
+                                    popperClassName="tooltip show"
                                     target="toolbar-button-18"
-                                  >
-                                    <Tooltip
-                                      autohide={false}
-                                      className="tooltip"
-                                      delay={100}
-                                      isOpen={false}
-                                      placement="bottom"
-                                      placementPrefix="bs-tooltip"
-                                      target="toolbar-button-18"
-                                      toggle={[Function]}
-                                      trigger="hover focus"
-                                    >
-                                      <TooltipPopoverWrapper
-                                        autohide={false}
-                                        className="tooltip"
-                                        delay={100}
-                                        fade={true}
-                                        hideArrow={false}
-                                        innerClassName="tooltip-inner"
-                                        isOpen={false}
-                                        placement="bottom"
-                                        placementPrefix="bs-tooltip"
-                                        popperClassName="tooltip show"
-                                        target="toolbar-button-18"
-                                        toggle={[Function]}
-                                        trigger="hover focus"
-                                      />
-                                    </Tooltip>
-                                  </UncontrolledTooltip>
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  />
                                 </Tooltip>
-                              </Button>
-                              <div
-                                className="p-0 d-flex popover top-left hidden"
-                              />
-                            </span>
+                              </UncontrolledTooltip>
+                            </Tooltip>
                           </ForwardRef>
+                          <Popover
+                            className="popover"
+                            isOpen={false}
+                            placement="right-end"
+                            placementPrefix="bs-popover"
+                            target={
+                              {
+                                "current": <button
+                                  aria-disabled="false"
+                                  class="wrapper button wrapper small fill secondary small"
+                                  id="toolbar-button-18"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons icon"
+                                  >
+                                    insert_emoticon
+                                  </i>
+                                </button>,
+                              }
+                            }
+                            toggle={[Function]}
+                            trigger="legacy"
+                          >
+                            <TooltipPopoverWrapper
+                              autohide={false}
+                              className="popover"
+                              delay={
+                                {
+                                  "hide": 50,
+                                  "show": 0,
+                                }
+                              }
+                              fade={true}
+                              hideArrow={false}
+                              innerClassName="popover-inner"
+                              isOpen={false}
+                              placement="right-end"
+                              placementPrefix="bs-popover"
+                              popperClassName="popover show"
+                              target={
+                                {
+                                  "current": <button
+                                    aria-disabled="false"
+                                    class="wrapper button wrapper small fill secondary small"
+                                    id="toolbar-button-18"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons icon"
+                                    >
+                                      insert_emoticon
+                                    </i>
+                                  </button>,
+                                }
+                              }
+                              toggle={[Function]}
+                              trigger="legacy"
+                            />
+                          </Popover>
                         </ButtonPopover>
                       </AddEmoji>
                       <div
@@ -8467,7 +8585,7 @@ exports[`RichField should render immutable variable 1`] = `
                           setEditorState={[Function]}
                           style="BOLD"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_bold"
                             isActive={false}
                             isDisabled={false}
@@ -8554,7 +8672,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -8568,7 +8686,7 @@ exports[`RichField should render immutable variable 1`] = `
                           setEditorState={[Function]}
                           style="ITALIC"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_italic"
                             isActive={false}
                             isDisabled={false}
@@ -8655,7 +8773,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -8669,7 +8787,7 @@ exports[`RichField should render immutable variable 1`] = `
                           setEditorState={[Function]}
                           style="UNDERLINE"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_underline"
                             isActive={false}
                             isDisabled={false}
@@ -8756,7 +8874,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Connect(Component)
@@ -8819,113 +8937,153 @@ exports[`RichField should render immutable variable 1`] = `
                               onOpen={[Function]}
                             >
                               <ForwardRef
-                                isOpen={false}
-                                trigger={
-                                  <Button
-                                    icon="link"
-                                    isActive={false}
-                                    isDisabled={false}
-                                    name="Insert link"
-                                    onToggle={[Function]}
-                                  />
-                                }
+                                icon="link"
+                                isActive={false}
+                                isDisabled={false}
+                                name="Insert link"
+                                onToggle={[Function]}
                               >
-                                <span
-                                  className="popoverWrapper"
+                                <ForwardRef
+                                  className="button"
+                                  id="toolbar-button-4"
+                                  intent="secondary"
+                                  onClick={[Function]}
+                                  onMouseDown={[Function]}
+                                  size="small"
                                 >
-                                  <Button
-                                    icon="link"
-                                    isActive={false}
-                                    isDisabled={false}
-                                    name="Insert link"
-                                    onToggle={[Function]}
+                                  <ForwardRef
+                                    className="button wrapper small"
+                                    id="toolbar-button-4"
+                                    intent="secondary"
+                                    onClick={[Function]}
+                                    onMouseDown={[Function]}
+                                    size="small"
                                   >
-                                    <ForwardRef
-                                      className="button"
-                                      id="toolbar-button-4"
+                                    <BaseButton
+                                      className="button wrapper small"
                                       intent="secondary"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
                                       size="small"
                                     >
-                                      <ForwardRef
-                                        className="button wrapper small"
+                                      <button
+                                        aria-disabled={false}
+                                        className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-4"
-                                        intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
-                                        size="small"
+                                        type="button"
                                       >
-                                        <BaseButton
-                                          className="button wrapper small"
-                                          intent="secondary"
-                                          size="small"
+                                        <i
+                                          className="material-icons icon"
                                         >
-                                          <button
-                                            aria-disabled={false}
-                                            className="wrapper button wrapper small fill secondary small"
-                                            id="toolbar-button-4"
-                                            onClick={[Function]}
-                                            onMouseDown={[Function]}
-                                            type="button"
-                                          >
-                                            <i
-                                              className="material-icons icon"
-                                            >
-                                              link
-                                            </i>
-                                          </button>
-                                        </BaseButton>
-                                      </ForwardRef>
-                                    </ForwardRef>
+                                          link
+                                        </i>
+                                      </button>
+                                    </BaseButton>
+                                  </ForwardRef>
+                                </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="toolbar-button-4"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="toolbar-button-4"
+                                  >
                                     <Tooltip
                                       autohide={false}
+                                      className="tooltip"
                                       delay={100}
+                                      isOpen={false}
                                       placement="bottom"
+                                      placementPrefix="bs-tooltip"
                                       target="toolbar-button-4"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
                                     >
-                                      <UncontrolledTooltip
+                                      <TooltipPopoverWrapper
                                         autohide={false}
                                         className="tooltip"
                                         delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
                                         placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
                                         target="toolbar-button-4"
-                                      >
-                                        <Tooltip
-                                          autohide={false}
-                                          className="tooltip"
-                                          delay={100}
-                                          isOpen={false}
-                                          placement="bottom"
-                                          placementPrefix="bs-tooltip"
-                                          target="toolbar-button-4"
-                                          toggle={[Function]}
-                                          trigger="hover focus"
-                                        >
-                                          <TooltipPopoverWrapper
-                                            autohide={false}
-                                            className="tooltip"
-                                            delay={100}
-                                            fade={true}
-                                            hideArrow={false}
-                                            innerClassName="tooltip-inner"
-                                            isOpen={false}
-                                            placement="bottom"
-                                            placementPrefix="bs-tooltip"
-                                            popperClassName="tooltip show"
-                                            target="toolbar-button-4"
-                                            toggle={[Function]}
-                                            trigger="hover focus"
-                                          />
-                                        </Tooltip>
-                                      </UncontrolledTooltip>
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
                                     </Tooltip>
-                                  </Button>
-                                  <div
-                                    className="popover top-left hidden"
-                                  />
-                                </span>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </ForwardRef>
+                              <Popover
+                                className="popover"
+                                isOpen={false}
+                                placement="right-end"
+                                placementPrefix="bs-popover"
+                                target={
+                                  {
+                                    "current": <button
+                                      aria-disabled="false"
+                                      class="wrapper button wrapper small fill secondary small"
+                                      id="toolbar-button-4"
+                                      type="button"
+                                    >
+                                      <i
+                                        class="material-icons icon"
+                                      >
+                                        link
+                                      </i>
+                                    </button>,
+                                  }
+                                }
+                                toggle={[Function]}
+                                trigger="legacy"
+                              >
+                                <TooltipPopoverWrapper
+                                  autohide={false}
+                                  className="popover"
+                                  delay={
+                                    {
+                                      "hide": 50,
+                                      "show": 0,
+                                    }
+                                  }
+                                  fade={true}
+                                  hideArrow={false}
+                                  innerClassName="popover-inner"
+                                  isOpen={false}
+                                  placement="right-end"
+                                  placementPrefix="bs-popover"
+                                  popperClassName="popover show"
+                                  target={
+                                    {
+                                      "current": <button
+                                        aria-disabled="false"
+                                        class="wrapper button wrapper small fill secondary small"
+                                        id="toolbar-button-4"
+                                        type="button"
+                                      >
+                                        <i
+                                          class="material-icons icon"
+                                        >
+                                          link
+                                        </i>
+                                      </button>,
+                                    }
+                                  }
+                                  toggle={[Function]}
+                                  trigger="legacy"
+                                />
+                              </Popover>
                             </ButtonPopover>
                           </AddLinkContainer>
                         </Component>
@@ -8942,113 +9100,153 @@ exports[`RichField should render immutable variable 1`] = `
                           onOpen={[Function]}
                         >
                           <ForwardRef
-                            isOpen={false}
-                            trigger={
-                              <Button
-                                icon="insert_photo"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert image"
-                                onToggle={[Function]}
-                              />
-                            }
+                            icon="insert_photo"
+                            isActive={false}
+                            isDisabled={false}
+                            name="Insert image"
+                            onToggle={[Function]}
                           >
-                            <span
-                              className="popoverWrapper"
+                            <ForwardRef
+                              className="button"
+                              id="toolbar-button-5"
+                              intent="secondary"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              size="small"
                             >
-                              <Button
-                                icon="insert_photo"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert image"
-                                onToggle={[Function]}
+                              <ForwardRef
+                                className="button wrapper small"
+                                id="toolbar-button-5"
+                                intent="secondary"
+                                onClick={[Function]}
+                                onMouseDown={[Function]}
+                                size="small"
                               >
-                                <ForwardRef
-                                  className="button"
-                                  id="toolbar-button-5"
+                                <BaseButton
+                                  className="button wrapper small"
                                   intent="secondary"
-                                  onClick={[Function]}
-                                  onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
-                                    className="button wrapper small"
+                                  <button
+                                    aria-disabled={false}
+                                    className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-5"
-                                    intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
-                                    size="small"
+                                    type="button"
                                   >
-                                    <BaseButton
-                                      className="button wrapper small"
-                                      intent="secondary"
-                                      size="small"
+                                    <i
+                                      className="material-icons icon"
                                     >
-                                      <button
-                                        aria-disabled={false}
-                                        className="wrapper button wrapper small fill secondary small"
-                                        id="toolbar-button-5"
-                                        onClick={[Function]}
-                                        onMouseDown={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          insert_photo
-                                        </i>
-                                      </button>
-                                    </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                      insert_photo
+                                    </i>
+                                  </button>
+                                </BaseButton>
+                              </ForwardRef>
+                            </ForwardRef>
+                            <Tooltip
+                              autohide={false}
+                              delay={100}
+                              placement="bottom"
+                              target="toolbar-button-5"
+                            >
+                              <UncontrolledTooltip
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                placement="bottom"
+                                target="toolbar-button-5"
+                              >
                                 <Tooltip
                                   autohide={false}
+                                  className="tooltip"
                                   delay={100}
+                                  isOpen={false}
                                   placement="bottom"
+                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-5"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
                                 >
-                                  <UncontrolledTooltip
+                                  <TooltipPopoverWrapper
                                     autohide={false}
                                     className="tooltip"
                                     delay={100}
+                                    fade={true}
+                                    hideArrow={false}
+                                    innerClassName="tooltip-inner"
+                                    isOpen={false}
                                     placement="bottom"
+                                    placementPrefix="bs-tooltip"
+                                    popperClassName="tooltip show"
                                     target="toolbar-button-5"
-                                  >
-                                    <Tooltip
-                                      autohide={false}
-                                      className="tooltip"
-                                      delay={100}
-                                      isOpen={false}
-                                      placement="bottom"
-                                      placementPrefix="bs-tooltip"
-                                      target="toolbar-button-5"
-                                      toggle={[Function]}
-                                      trigger="hover focus"
-                                    >
-                                      <TooltipPopoverWrapper
-                                        autohide={false}
-                                        className="tooltip"
-                                        delay={100}
-                                        fade={true}
-                                        hideArrow={false}
-                                        innerClassName="tooltip-inner"
-                                        isOpen={false}
-                                        placement="bottom"
-                                        placementPrefix="bs-tooltip"
-                                        popperClassName="tooltip show"
-                                        target="toolbar-button-5"
-                                        toggle={[Function]}
-                                        trigger="hover focus"
-                                      />
-                                    </Tooltip>
-                                  </UncontrolledTooltip>
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  />
                                 </Tooltip>
-                              </Button>
-                              <div
-                                className="popover top-left hidden"
-                              />
-                            </span>
+                              </UncontrolledTooltip>
+                            </Tooltip>
                           </ForwardRef>
+                          <Popover
+                            className="popover"
+                            isOpen={false}
+                            placement="right-end"
+                            placementPrefix="bs-popover"
+                            target={
+                              {
+                                "current": <button
+                                  aria-disabled="false"
+                                  class="wrapper button wrapper small fill secondary small"
+                                  id="toolbar-button-5"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons icon"
+                                  >
+                                    insert_photo
+                                  </i>
+                                </button>,
+                              }
+                            }
+                            toggle={[Function]}
+                            trigger="legacy"
+                          >
+                            <TooltipPopoverWrapper
+                              autohide={false}
+                              className="popover"
+                              delay={
+                                {
+                                  "hide": 50,
+                                  "show": 0,
+                                }
+                              }
+                              fade={true}
+                              hideArrow={false}
+                              innerClassName="popover-inner"
+                              isOpen={false}
+                              placement="right-end"
+                              placementPrefix="bs-popover"
+                              popperClassName="popover show"
+                              target={
+                                {
+                                  "current": <button
+                                    aria-disabled="false"
+                                    class="wrapper button wrapper small fill secondary small"
+                                    id="toolbar-button-5"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons icon"
+                                    >
+                                      insert_photo
+                                    </i>
+                                  </button>,
+                                }
+                              }
+                              toggle={[Function]}
+                              trigger="legacy"
+                            />
+                          </Popover>
                         </ButtonPopover>
                       </AddImage>
                       <AddEmoji
@@ -9056,7 +9254,6 @@ exports[`RichField should render immutable variable 1`] = `
                         setEditorState={[Function]}
                       >
                         <ButtonPopover
-                          className="p-0 d-flex"
                           icon="insert_emoticon"
                           isOpen={false}
                           name="Insert emoji"
@@ -9064,114 +9261,153 @@ exports[`RichField should render immutable variable 1`] = `
                           onOpen={[Function]}
                         >
                           <ForwardRef
-                            className="p-0 d-flex"
-                            isOpen={false}
-                            trigger={
-                              <Button
-                                icon="insert_emoticon"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert emoji"
-                                onToggle={[Function]}
-                              />
-                            }
+                            icon="insert_emoticon"
+                            isActive={false}
+                            isDisabled={false}
+                            name="Insert emoji"
+                            onToggle={[Function]}
                           >
-                            <span
-                              className="popoverWrapper"
+                            <ForwardRef
+                              className="button"
+                              id="toolbar-button-6"
+                              intent="secondary"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              size="small"
                             >
-                              <Button
-                                icon="insert_emoticon"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert emoji"
-                                onToggle={[Function]}
+                              <ForwardRef
+                                className="button wrapper small"
+                                id="toolbar-button-6"
+                                intent="secondary"
+                                onClick={[Function]}
+                                onMouseDown={[Function]}
+                                size="small"
                               >
-                                <ForwardRef
-                                  className="button"
-                                  id="toolbar-button-6"
+                                <BaseButton
+                                  className="button wrapper small"
                                   intent="secondary"
-                                  onClick={[Function]}
-                                  onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
-                                    className="button wrapper small"
+                                  <button
+                                    aria-disabled={false}
+                                    className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-6"
-                                    intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
-                                    size="small"
+                                    type="button"
                                   >
-                                    <BaseButton
-                                      className="button wrapper small"
-                                      intent="secondary"
-                                      size="small"
+                                    <i
+                                      className="material-icons icon"
                                     >
-                                      <button
-                                        aria-disabled={false}
-                                        className="wrapper button wrapper small fill secondary small"
-                                        id="toolbar-button-6"
-                                        onClick={[Function]}
-                                        onMouseDown={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          insert_emoticon
-                                        </i>
-                                      </button>
-                                    </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                      insert_emoticon
+                                    </i>
+                                  </button>
+                                </BaseButton>
+                              </ForwardRef>
+                            </ForwardRef>
+                            <Tooltip
+                              autohide={false}
+                              delay={100}
+                              placement="bottom"
+                              target="toolbar-button-6"
+                            >
+                              <UncontrolledTooltip
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                placement="bottom"
+                                target="toolbar-button-6"
+                              >
                                 <Tooltip
                                   autohide={false}
+                                  className="tooltip"
                                   delay={100}
+                                  isOpen={false}
                                   placement="bottom"
+                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-6"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
                                 >
-                                  <UncontrolledTooltip
+                                  <TooltipPopoverWrapper
                                     autohide={false}
                                     className="tooltip"
                                     delay={100}
+                                    fade={true}
+                                    hideArrow={false}
+                                    innerClassName="tooltip-inner"
+                                    isOpen={false}
                                     placement="bottom"
+                                    placementPrefix="bs-tooltip"
+                                    popperClassName="tooltip show"
                                     target="toolbar-button-6"
-                                  >
-                                    <Tooltip
-                                      autohide={false}
-                                      className="tooltip"
-                                      delay={100}
-                                      isOpen={false}
-                                      placement="bottom"
-                                      placementPrefix="bs-tooltip"
-                                      target="toolbar-button-6"
-                                      toggle={[Function]}
-                                      trigger="hover focus"
-                                    >
-                                      <TooltipPopoverWrapper
-                                        autohide={false}
-                                        className="tooltip"
-                                        delay={100}
-                                        fade={true}
-                                        hideArrow={false}
-                                        innerClassName="tooltip-inner"
-                                        isOpen={false}
-                                        placement="bottom"
-                                        placementPrefix="bs-tooltip"
-                                        popperClassName="tooltip show"
-                                        target="toolbar-button-6"
-                                        toggle={[Function]}
-                                        trigger="hover focus"
-                                      />
-                                    </Tooltip>
-                                  </UncontrolledTooltip>
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  />
                                 </Tooltip>
-                              </Button>
-                              <div
-                                className="p-0 d-flex popover top-left hidden"
-                              />
-                            </span>
+                              </UncontrolledTooltip>
+                            </Tooltip>
                           </ForwardRef>
+                          <Popover
+                            className="popover"
+                            isOpen={false}
+                            placement="right-end"
+                            placementPrefix="bs-popover"
+                            target={
+                              {
+                                "current": <button
+                                  aria-disabled="false"
+                                  class="wrapper button wrapper small fill secondary small"
+                                  id="toolbar-button-6"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons icon"
+                                  >
+                                    insert_emoticon
+                                  </i>
+                                </button>,
+                              }
+                            }
+                            toggle={[Function]}
+                            trigger="legacy"
+                          >
+                            <TooltipPopoverWrapper
+                              autohide={false}
+                              className="popover"
+                              delay={
+                                {
+                                  "hide": 50,
+                                  "show": 0,
+                                }
+                              }
+                              fade={true}
+                              hideArrow={false}
+                              innerClassName="popover-inner"
+                              isOpen={false}
+                              placement="right-end"
+                              placementPrefix="bs-popover"
+                              popperClassName="popover show"
+                              target={
+                                {
+                                  "current": <button
+                                    aria-disabled="false"
+                                    class="wrapper button wrapper small fill secondary small"
+                                    id="toolbar-button-6"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons icon"
+                                    >
+                                      insert_emoticon
+                                    </i>
+                                  </button>,
+                                }
+                              }
+                              toggle={[Function]}
+                              trigger="legacy"
+                            />
+                          </Popover>
                         </ButtonPopover>
                       </AddEmoji>
                       <div
@@ -11655,7 +11891,7 @@ exports[`RichField should render mutable variable 1`] = `
                           setEditorState={[Function]}
                           style="BOLD"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_bold"
                             isActive={false}
                             isDisabled={false}
@@ -11742,7 +11978,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -11756,7 +11992,7 @@ exports[`RichField should render mutable variable 1`] = `
                           setEditorState={[Function]}
                           style="ITALIC"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_italic"
                             isActive={false}
                             isDisabled={false}
@@ -11843,7 +12079,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -11857,7 +12093,7 @@ exports[`RichField should render mutable variable 1`] = `
                           setEditorState={[Function]}
                           style="UNDERLINE"
                         >
-                          <Button
+                          <ForwardRef
                             icon="format_underline"
                             isActive={false}
                             isDisabled={false}
@@ -11944,7 +12180,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </Button>
+                          </ForwardRef>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Connect(Component)
@@ -12007,113 +12243,153 @@ exports[`RichField should render mutable variable 1`] = `
                               onOpen={[Function]}
                             >
                               <ForwardRef
-                                isOpen={false}
-                                trigger={
-                                  <Button
-                                    icon="link"
-                                    isActive={false}
-                                    isDisabled={false}
-                                    name="Insert link"
-                                    onToggle={[Function]}
-                                  />
-                                }
+                                icon="link"
+                                isActive={false}
+                                isDisabled={false}
+                                name="Insert link"
+                                onToggle={[Function]}
                               >
-                                <span
-                                  className="popoverWrapper"
+                                <ForwardRef
+                                  className="button"
+                                  id="toolbar-button-10"
+                                  intent="secondary"
+                                  onClick={[Function]}
+                                  onMouseDown={[Function]}
+                                  size="small"
                                 >
-                                  <Button
-                                    icon="link"
-                                    isActive={false}
-                                    isDisabled={false}
-                                    name="Insert link"
-                                    onToggle={[Function]}
+                                  <ForwardRef
+                                    className="button wrapper small"
+                                    id="toolbar-button-10"
+                                    intent="secondary"
+                                    onClick={[Function]}
+                                    onMouseDown={[Function]}
+                                    size="small"
                                   >
-                                    <ForwardRef
-                                      className="button"
-                                      id="toolbar-button-10"
+                                    <BaseButton
+                                      className="button wrapper small"
                                       intent="secondary"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
                                       size="small"
                                     >
-                                      <ForwardRef
-                                        className="button wrapper small"
+                                      <button
+                                        aria-disabled={false}
+                                        className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-10"
-                                        intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
-                                        size="small"
+                                        type="button"
                                       >
-                                        <BaseButton
-                                          className="button wrapper small"
-                                          intent="secondary"
-                                          size="small"
+                                        <i
+                                          className="material-icons icon"
                                         >
-                                          <button
-                                            aria-disabled={false}
-                                            className="wrapper button wrapper small fill secondary small"
-                                            id="toolbar-button-10"
-                                            onClick={[Function]}
-                                            onMouseDown={[Function]}
-                                            type="button"
-                                          >
-                                            <i
-                                              className="material-icons icon"
-                                            >
-                                              link
-                                            </i>
-                                          </button>
-                                        </BaseButton>
-                                      </ForwardRef>
-                                    </ForwardRef>
+                                          link
+                                        </i>
+                                      </button>
+                                    </BaseButton>
+                                  </ForwardRef>
+                                </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="toolbar-button-10"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="toolbar-button-10"
+                                  >
                                     <Tooltip
                                       autohide={false}
+                                      className="tooltip"
                                       delay={100}
+                                      isOpen={false}
                                       placement="bottom"
+                                      placementPrefix="bs-tooltip"
                                       target="toolbar-button-10"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
                                     >
-                                      <UncontrolledTooltip
+                                      <TooltipPopoverWrapper
                                         autohide={false}
                                         className="tooltip"
                                         delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
                                         placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
                                         target="toolbar-button-10"
-                                      >
-                                        <Tooltip
-                                          autohide={false}
-                                          className="tooltip"
-                                          delay={100}
-                                          isOpen={false}
-                                          placement="bottom"
-                                          placementPrefix="bs-tooltip"
-                                          target="toolbar-button-10"
-                                          toggle={[Function]}
-                                          trigger="hover focus"
-                                        >
-                                          <TooltipPopoverWrapper
-                                            autohide={false}
-                                            className="tooltip"
-                                            delay={100}
-                                            fade={true}
-                                            hideArrow={false}
-                                            innerClassName="tooltip-inner"
-                                            isOpen={false}
-                                            placement="bottom"
-                                            placementPrefix="bs-tooltip"
-                                            popperClassName="tooltip show"
-                                            target="toolbar-button-10"
-                                            toggle={[Function]}
-                                            trigger="hover focus"
-                                          />
-                                        </Tooltip>
-                                      </UncontrolledTooltip>
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
                                     </Tooltip>
-                                  </Button>
-                                  <div
-                                    className="popover top-left hidden"
-                                  />
-                                </span>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </ForwardRef>
+                              <Popover
+                                className="popover"
+                                isOpen={false}
+                                placement="right-end"
+                                placementPrefix="bs-popover"
+                                target={
+                                  {
+                                    "current": <button
+                                      aria-disabled="false"
+                                      class="wrapper button wrapper small fill secondary small"
+                                      id="toolbar-button-10"
+                                      type="button"
+                                    >
+                                      <i
+                                        class="material-icons icon"
+                                      >
+                                        link
+                                      </i>
+                                    </button>,
+                                  }
+                                }
+                                toggle={[Function]}
+                                trigger="legacy"
+                              >
+                                <TooltipPopoverWrapper
+                                  autohide={false}
+                                  className="popover"
+                                  delay={
+                                    {
+                                      "hide": 50,
+                                      "show": 0,
+                                    }
+                                  }
+                                  fade={true}
+                                  hideArrow={false}
+                                  innerClassName="popover-inner"
+                                  isOpen={false}
+                                  placement="right-end"
+                                  placementPrefix="bs-popover"
+                                  popperClassName="popover show"
+                                  target={
+                                    {
+                                      "current": <button
+                                        aria-disabled="false"
+                                        class="wrapper button wrapper small fill secondary small"
+                                        id="toolbar-button-10"
+                                        type="button"
+                                      >
+                                        <i
+                                          class="material-icons icon"
+                                        >
+                                          link
+                                        </i>
+                                      </button>,
+                                    }
+                                  }
+                                  toggle={[Function]}
+                                  trigger="legacy"
+                                />
+                              </Popover>
                             </ButtonPopover>
                           </AddLinkContainer>
                         </Component>
@@ -12130,113 +12406,153 @@ exports[`RichField should render mutable variable 1`] = `
                           onOpen={[Function]}
                         >
                           <ForwardRef
-                            isOpen={false}
-                            trigger={
-                              <Button
-                                icon="insert_photo"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert image"
-                                onToggle={[Function]}
-                              />
-                            }
+                            icon="insert_photo"
+                            isActive={false}
+                            isDisabled={false}
+                            name="Insert image"
+                            onToggle={[Function]}
                           >
-                            <span
-                              className="popoverWrapper"
+                            <ForwardRef
+                              className="button"
+                              id="toolbar-button-11"
+                              intent="secondary"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              size="small"
                             >
-                              <Button
-                                icon="insert_photo"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert image"
-                                onToggle={[Function]}
+                              <ForwardRef
+                                className="button wrapper small"
+                                id="toolbar-button-11"
+                                intent="secondary"
+                                onClick={[Function]}
+                                onMouseDown={[Function]}
+                                size="small"
                               >
-                                <ForwardRef
-                                  className="button"
-                                  id="toolbar-button-11"
+                                <BaseButton
+                                  className="button wrapper small"
                                   intent="secondary"
-                                  onClick={[Function]}
-                                  onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
-                                    className="button wrapper small"
+                                  <button
+                                    aria-disabled={false}
+                                    className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-11"
-                                    intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
-                                    size="small"
+                                    type="button"
                                   >
-                                    <BaseButton
-                                      className="button wrapper small"
-                                      intent="secondary"
-                                      size="small"
+                                    <i
+                                      className="material-icons icon"
                                     >
-                                      <button
-                                        aria-disabled={false}
-                                        className="wrapper button wrapper small fill secondary small"
-                                        id="toolbar-button-11"
-                                        onClick={[Function]}
-                                        onMouseDown={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          insert_photo
-                                        </i>
-                                      </button>
-                                    </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                      insert_photo
+                                    </i>
+                                  </button>
+                                </BaseButton>
+                              </ForwardRef>
+                            </ForwardRef>
+                            <Tooltip
+                              autohide={false}
+                              delay={100}
+                              placement="bottom"
+                              target="toolbar-button-11"
+                            >
+                              <UncontrolledTooltip
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                placement="bottom"
+                                target="toolbar-button-11"
+                              >
                                 <Tooltip
                                   autohide={false}
+                                  className="tooltip"
                                   delay={100}
+                                  isOpen={false}
                                   placement="bottom"
+                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-11"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
                                 >
-                                  <UncontrolledTooltip
+                                  <TooltipPopoverWrapper
                                     autohide={false}
                                     className="tooltip"
                                     delay={100}
+                                    fade={true}
+                                    hideArrow={false}
+                                    innerClassName="tooltip-inner"
+                                    isOpen={false}
                                     placement="bottom"
+                                    placementPrefix="bs-tooltip"
+                                    popperClassName="tooltip show"
                                     target="toolbar-button-11"
-                                  >
-                                    <Tooltip
-                                      autohide={false}
-                                      className="tooltip"
-                                      delay={100}
-                                      isOpen={false}
-                                      placement="bottom"
-                                      placementPrefix="bs-tooltip"
-                                      target="toolbar-button-11"
-                                      toggle={[Function]}
-                                      trigger="hover focus"
-                                    >
-                                      <TooltipPopoverWrapper
-                                        autohide={false}
-                                        className="tooltip"
-                                        delay={100}
-                                        fade={true}
-                                        hideArrow={false}
-                                        innerClassName="tooltip-inner"
-                                        isOpen={false}
-                                        placement="bottom"
-                                        placementPrefix="bs-tooltip"
-                                        popperClassName="tooltip show"
-                                        target="toolbar-button-11"
-                                        toggle={[Function]}
-                                        trigger="hover focus"
-                                      />
-                                    </Tooltip>
-                                  </UncontrolledTooltip>
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  />
                                 </Tooltip>
-                              </Button>
-                              <div
-                                className="popover top-left hidden"
-                              />
-                            </span>
+                              </UncontrolledTooltip>
+                            </Tooltip>
                           </ForwardRef>
+                          <Popover
+                            className="popover"
+                            isOpen={false}
+                            placement="right-end"
+                            placementPrefix="bs-popover"
+                            target={
+                              {
+                                "current": <button
+                                  aria-disabled="false"
+                                  class="wrapper button wrapper small fill secondary small"
+                                  id="toolbar-button-11"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons icon"
+                                  >
+                                    insert_photo
+                                  </i>
+                                </button>,
+                              }
+                            }
+                            toggle={[Function]}
+                            trigger="legacy"
+                          >
+                            <TooltipPopoverWrapper
+                              autohide={false}
+                              className="popover"
+                              delay={
+                                {
+                                  "hide": 50,
+                                  "show": 0,
+                                }
+                              }
+                              fade={true}
+                              hideArrow={false}
+                              innerClassName="popover-inner"
+                              isOpen={false}
+                              placement="right-end"
+                              placementPrefix="bs-popover"
+                              popperClassName="popover show"
+                              target={
+                                {
+                                  "current": <button
+                                    aria-disabled="false"
+                                    class="wrapper button wrapper small fill secondary small"
+                                    id="toolbar-button-11"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons icon"
+                                    >
+                                      insert_photo
+                                    </i>
+                                  </button>,
+                                }
+                              }
+                              toggle={[Function]}
+                              trigger="legacy"
+                            />
+                          </Popover>
                         </ButtonPopover>
                       </AddImage>
                       <AddEmoji
@@ -12244,7 +12560,6 @@ exports[`RichField should render mutable variable 1`] = `
                         setEditorState={[Function]}
                       >
                         <ButtonPopover
-                          className="p-0 d-flex"
                           icon="insert_emoticon"
                           isOpen={false}
                           name="Insert emoji"
@@ -12252,114 +12567,153 @@ exports[`RichField should render mutable variable 1`] = `
                           onOpen={[Function]}
                         >
                           <ForwardRef
-                            className="p-0 d-flex"
-                            isOpen={false}
-                            trigger={
-                              <Button
-                                icon="insert_emoticon"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert emoji"
-                                onToggle={[Function]}
-                              />
-                            }
+                            icon="insert_emoticon"
+                            isActive={false}
+                            isDisabled={false}
+                            name="Insert emoji"
+                            onToggle={[Function]}
                           >
-                            <span
-                              className="popoverWrapper"
+                            <ForwardRef
+                              className="button"
+                              id="toolbar-button-12"
+                              intent="secondary"
+                              onClick={[Function]}
+                              onMouseDown={[Function]}
+                              size="small"
                             >
-                              <Button
-                                icon="insert_emoticon"
-                                isActive={false}
-                                isDisabled={false}
-                                name="Insert emoji"
-                                onToggle={[Function]}
+                              <ForwardRef
+                                className="button wrapper small"
+                                id="toolbar-button-12"
+                                intent="secondary"
+                                onClick={[Function]}
+                                onMouseDown={[Function]}
+                                size="small"
                               >
-                                <ForwardRef
-                                  className="button"
-                                  id="toolbar-button-12"
+                                <BaseButton
+                                  className="button wrapper small"
                                   intent="secondary"
-                                  onClick={[Function]}
-                                  onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
-                                    className="button wrapper small"
+                                  <button
+                                    aria-disabled={false}
+                                    className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-12"
-                                    intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
-                                    size="small"
+                                    type="button"
                                   >
-                                    <BaseButton
-                                      className="button wrapper small"
-                                      intent="secondary"
-                                      size="small"
+                                    <i
+                                      className="material-icons icon"
                                     >
-                                      <button
-                                        aria-disabled={false}
-                                        className="wrapper button wrapper small fill secondary small"
-                                        id="toolbar-button-12"
-                                        onClick={[Function]}
-                                        onMouseDown={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          insert_emoticon
-                                        </i>
-                                      </button>
-                                    </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                      insert_emoticon
+                                    </i>
+                                  </button>
+                                </BaseButton>
+                              </ForwardRef>
+                            </ForwardRef>
+                            <Tooltip
+                              autohide={false}
+                              delay={100}
+                              placement="bottom"
+                              target="toolbar-button-12"
+                            >
+                              <UncontrolledTooltip
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                placement="bottom"
+                                target="toolbar-button-12"
+                              >
                                 <Tooltip
                                   autohide={false}
+                                  className="tooltip"
                                   delay={100}
+                                  isOpen={false}
                                   placement="bottom"
+                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-12"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
                                 >
-                                  <UncontrolledTooltip
+                                  <TooltipPopoverWrapper
                                     autohide={false}
                                     className="tooltip"
                                     delay={100}
+                                    fade={true}
+                                    hideArrow={false}
+                                    innerClassName="tooltip-inner"
+                                    isOpen={false}
                                     placement="bottom"
+                                    placementPrefix="bs-tooltip"
+                                    popperClassName="tooltip show"
                                     target="toolbar-button-12"
-                                  >
-                                    <Tooltip
-                                      autohide={false}
-                                      className="tooltip"
-                                      delay={100}
-                                      isOpen={false}
-                                      placement="bottom"
-                                      placementPrefix="bs-tooltip"
-                                      target="toolbar-button-12"
-                                      toggle={[Function]}
-                                      trigger="hover focus"
-                                    >
-                                      <TooltipPopoverWrapper
-                                        autohide={false}
-                                        className="tooltip"
-                                        delay={100}
-                                        fade={true}
-                                        hideArrow={false}
-                                        innerClassName="tooltip-inner"
-                                        isOpen={false}
-                                        placement="bottom"
-                                        placementPrefix="bs-tooltip"
-                                        popperClassName="tooltip show"
-                                        target="toolbar-button-12"
-                                        toggle={[Function]}
-                                        trigger="hover focus"
-                                      />
-                                    </Tooltip>
-                                  </UncontrolledTooltip>
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  />
                                 </Tooltip>
-                              </Button>
-                              <div
-                                className="p-0 d-flex popover top-left hidden"
-                              />
-                            </span>
+                              </UncontrolledTooltip>
+                            </Tooltip>
                           </ForwardRef>
+                          <Popover
+                            className="popover"
+                            isOpen={false}
+                            placement="right-end"
+                            placementPrefix="bs-popover"
+                            target={
+                              {
+                                "current": <button
+                                  aria-disabled="false"
+                                  class="wrapper button wrapper small fill secondary small"
+                                  id="toolbar-button-12"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons icon"
+                                  >
+                                    insert_emoticon
+                                  </i>
+                                </button>,
+                              }
+                            }
+                            toggle={[Function]}
+                            trigger="legacy"
+                          >
+                            <TooltipPopoverWrapper
+                              autohide={false}
+                              className="popover"
+                              delay={
+                                {
+                                  "hide": 50,
+                                  "show": 0,
+                                }
+                              }
+                              fade={true}
+                              hideArrow={false}
+                              innerClassName="popover-inner"
+                              isOpen={false}
+                              placement="right-end"
+                              placementPrefix="bs-popover"
+                              popperClassName="popover show"
+                              target={
+                                {
+                                  "current": <button
+                                    aria-disabled="false"
+                                    class="wrapper button wrapper small fill secondary small"
+                                    id="toolbar-button-12"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons icon"
+                                    >
+                                      insert_emoticon
+                                    </i>
+                                  </button>,
+                                }
+                              }
+                              toggle={[Function]}
+                              trigger="legacy"
+                            />
+                          </Popover>
                         </ButtonPopover>
                       </AddEmoji>
                       <div

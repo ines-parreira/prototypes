@@ -120,7 +120,6 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         <Popover
             icon="discount"
             name="Insert Discount Code"
-            className={classnames(css.discountCodeToolTip, 'p-0', 'd-flex')}
             isOpen={isOpen}
             onOpen={handlePopoverOpen}
             onClose={handlePopoverClose}

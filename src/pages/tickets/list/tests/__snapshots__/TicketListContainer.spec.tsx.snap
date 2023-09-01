@@ -177,7 +177,7 @@ HTMLCollection [
     >
       <div
         class="wrapper"
-        style="position: absolute;"
+        style="left: 0px; position: absolute; top: 0px;"
       >
         <div
           class="wrapper"

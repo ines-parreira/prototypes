@@ -21,7 +21,7 @@ exports[`<Dropdown /> should render a dropdown 1`] = `
     >
       <div
         class="wrapper"
-        style="position: absolute;"
+        style="left: 0px; position: absolute; top: 0px;"
       >
         Baz
       </div>

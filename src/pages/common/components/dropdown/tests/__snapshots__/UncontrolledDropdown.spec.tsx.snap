@@ -9,7 +9,7 @@ exports[`<UncontrolledDropdown /> should open the dropdown when clicking the tar
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-1"
+    id="floating-ui-3"
   >
     <div
       class="overlay"
@@ -18,7 +18,7 @@ exports[`<UncontrolledDropdown /> should open the dropdown when clicking the tar
     >
       <div
         class="wrapper"
-        style="position: absolute;"
+        style="left: 0px; position: absolute; top: 0px;"
       >
         Bar
       </div>
