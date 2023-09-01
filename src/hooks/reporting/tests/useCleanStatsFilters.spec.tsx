@@ -1,9 +1,11 @@
+import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import React from 'react'
+import {statFiltersCleanWithPayload} from 'state/ui/stats/actions'
 import {getCleanStatsFilters, isCleanStatsDirty} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
@@ -88,7 +90,7 @@ describe('useCleanStatsFilters', () => {
         expect(result.current).toBe(defaultStatsFilters)
     })
 
-    it('should return the passed stats filters when the after they are clean again', () => {
+    it('should return the passed stats filters after they are clean again', () => {
         getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         const {result, rerender} = renderHook<
             {
@@ -122,5 +124,35 @@ describe('useCleanStatsFilters', () => {
         })
 
         expect(result.current.channels).toEqual([TicketChannel.Facebook])
+    })
+
+    it('should return passed statsFilters if the clean filters update is triggered', async () => {
+        const store = mockStore({})
+        const updatingFilters = {
+            period: {
+                ...defaultStatsFilters.period,
+                end_datetime: '2021-07-04T23:59:59+02:00',
+            },
+        }
+        isCleanStatsDirtyMock.mockReturnValue(false)
+        getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        const {result} = renderHook<
+            {
+                statsFilters: StatsFilters
+            },
+            StatsFilters
+        >(({statsFilters}) => useCleanStatsFilters(statsFilters), {
+            initialProps: {statsFilters: updatingFilters},
+            wrapper: ({children}) => (
+                <Provider store={store}>{children}</Provider>
+            ),
+        })
+
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(
+                statFiltersCleanWithPayload(updatingFilters)
+            )
+            expect(result.current).toEqual(updatingFilters)
+        })
     })
 })

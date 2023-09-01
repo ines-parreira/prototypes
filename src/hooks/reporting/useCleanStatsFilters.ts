@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import {useEffect, useMemo} from 'react'
 import _isEqual from 'lodash/isEqual'
 import {useDispatch} from 'react-redux'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,12 +10,17 @@ export function useCleanStatsFilters(statsFilters: StatsFilters) {
     const cleanStatsFilters = useAppSelector(getCleanStatsFilters)
     const isFilterDirty = useAppSelector(isCleanStatsDirty)
     const dispatch = useDispatch()
+    const cleanStatsShouldUpdate = useMemo(() => {
+        return !isFilterDirty && !_isEqual(cleanStatsFilters, statsFilters)
+    }, [cleanStatsFilters, isFilterDirty, statsFilters])
 
     useEffect(() => {
-        if (!isFilterDirty && !_isEqual(cleanStatsFilters, statsFilters)) {
+        if (cleanStatsShouldUpdate) {
             dispatch(statFiltersCleanWithPayload(statsFilters))
         }
-    }, [cleanStatsFilters, dispatch, isFilterDirty, statsFilters])
+    }, [cleanStatsShouldUpdate, dispatch, statsFilters])
 
-    return cleanStatsFilters ?? statsFilters
+    return cleanStatsShouldUpdate
+        ? statsFilters
+        : cleanStatsFilters ?? statsFilters
 }
