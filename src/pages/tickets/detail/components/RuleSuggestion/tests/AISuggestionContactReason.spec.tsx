@@ -17,61 +17,128 @@ const mockStore = configureMockStore([thunk])
 const ticketId = 1
 const customFieldId = 1
 
-const customFields = {
-    customFieldId: {
-        value: 'Order::Request',
-        prediction: {
-            predicted: 'Order::Request',
-            confidence: 80,
-            display: true,
-            confirmed: false,
-            modified: false,
-        },
-        id: customFieldId,
-    },
-}
-
-const ticket = {
-    ...emailTicket.toJS(),
-    id: ticketId,
-    custom_fields: customFields,
-}
-
-const defaultState = {
-    ticket: fromJS(ticket),
-    state: fromJS({custom_fields: customFields}),
-}
-
-const minProps = {
-    ticket,
-}
-
-let store = mockStore(defaultState)
-
 describe('<AISuggestionContactReason />', () => {
-    beforeEach(() => {
-        store = mockStore(defaultState)
-        store.dispatch = jest.fn()
-        queryClient.clear()
-    })
-
-    it('should match snapshot', () => {
+    it.each([
+        {
+            customFieldId: {
+                value: 'Order::Request',
+                prediction: {
+                    predicted: 'Order::Request',
+                    confidence: 80,
+                    display: true,
+                    confirmed: false,
+                    modified: false,
+                },
+                id: customFieldId,
+            },
+        },
+        {
+            customFieldId: {
+                value: 'Order::Request',
+                prediction: {
+                    predicted: 'Order::Cancel',
+                    confidence: 80,
+                    display: true,
+                    confirmed: false,
+                    modified: false,
+                },
+                id: customFieldId,
+            },
+        },
+        {
+            customFieldId: {
+                value: 'Order::Request',
+                prediction: {
+                    predicted: 'Order::Request',
+                    confidence: 80,
+                    display: false,
+                    confirmed: false,
+                    modified: false,
+                },
+                id: customFieldId,
+            },
+        },
+        {
+            customFieldId: {
+                value: 'Order::Request',
+                prediction: {
+                    predicted: 'Order::Request',
+                    confidence: 80,
+                    display: true,
+                    confirmed: true,
+                    modified: false,
+                },
+                id: customFieldId,
+            },
+        },
+        {
+            customFieldId: {
+                value: 'Order::Request',
+                prediction: {
+                    predicted: 'Order::Request',
+                    confidence: 80,
+                    display: true,
+                    confirmed: false,
+                    modified: true,
+                },
+                id: customFieldId,
+            },
+        },
+    ])('should match snapshot for prediction ', (customFields) => {
+        const ticket = {
+            ...emailTicket.toJS(),
+            id: ticketId,
+            custom_fields: customFields,
+        }
+        const store = mockStore({
+            ticket: fromJS(ticket),
+            state: fromJS({custom_fields: customFields}),
+        })
         const {container} = render(
             <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(store)}>
-                    <AISuggestionContactReason {...minProps} />
+                <Provider store={store}>
+                    <AISuggestionContactReason
+                        ticket={{
+                            ...emailTicket.toJS(),
+                            id: ticketId,
+                            custom_fields: customFields,
+                        }}
+                    />
                 </Provider>
             </QueryClientProvider>
         )
         expect(container).toMatchSnapshot()
+        expect(mockStore)
     })
 
     it('should display feeback message ', async () => {
+        const customFields = {
+            customFieldId: {
+                value: 'Order::Request',
+                prediction: {
+                    predicted: 'Order::Request',
+                    confidence: 80,
+                    display: true,
+                    confirmed: false,
+                    modified: false,
+                },
+                id: customFieldId,
+            },
+        }
+        const ticket = {
+            ...emailTicket.toJS(),
+            id: ticketId,
+            custom_fields: customFields,
+        }
+        const store = mockStore({
+            ticket: fromJS(ticket),
+            state: fromJS({custom_fields: customFields}),
+        })
         jest.useFakeTimers()
-        render(
+        const {container} = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(store)}>
-                    <AISuggestionContactReason {...minProps} />
+                    <AISuggestionContactReason ticket={ticket} />
                 </Provider>
             </QueryClientProvider>
         )
@@ -82,5 +149,6 @@ describe('<AISuggestionContactReason />', () => {
                 screen.getByText('Thanks for the feedback!')
             ).toBeInTheDocument()
         )
+        expect(container).toMatchSnapshot()
     })
 })

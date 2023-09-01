@@ -3,7 +3,13 @@
 
 :local {
     .container {
-        margin: -16px 0 16px; // 16px is the size of the TicketHeaderWrapper parent container
+        // 16px is the size of the TicketHeaderWrapper parent container
+        top: -16px;
+        bottom: 16px;
+        position: relative;
+
+        // Prevents React Virtuoso from complaining about Element been empty @see: https://virtuoso.dev/troubleshooting/#i-get-error-zero-sized-element-this-should-not-happen
+        min-height: 1px;
     }
 
     .buttons {

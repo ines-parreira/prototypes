@@ -761,6 +761,17 @@ export default function reducer(
             )
         }
 
+        case types.UPDATE_CUSTOM_FIELD_PREDICTION: {
+            const {id, prediction} = action.payload as {
+                id: CustomFieldState['id']
+                prediction: CustomFieldState['prediction']
+            }
+            return state.mergeIn(
+                ['custom_fields', String(id)],
+                fromJS({id, prediction})
+            )
+        }
+
         case types.UPDATE_CUSTOM_FIELD_ERROR: {
             const {id, hasError} = action.payload as {
                 id: CustomFieldState['id']

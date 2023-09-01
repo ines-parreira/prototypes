@@ -280,17 +280,7 @@ export const getBody = createImmutableSelector(
 
         if (ticketFieldState) {
             Object.values(ticketFieldState).forEach((customFieldState) => {
-                const customFieldValue = customFieldState.value
-                const hasErrorKey = 'hasError' in customFieldState // to prevent displaying Contact Reason Suggestion after modifying value
-
-                if (
-                    !hasErrorKey &&
-                    customFieldValue ===
-                        customFieldState.prediction?.predicted &&
-                    customFieldState.prediction?.display === true &&
-                    customFieldState.prediction?.modified === false &&
-                    customFieldState.prediction.confirmed === false
-                ) {
+                if (customFieldState.prediction?.display === true) {
                     body = body.insert(
                         0,
                         fromJS({

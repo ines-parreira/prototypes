@@ -1396,6 +1396,14 @@ export const updateCustomFieldValue = (
     payload: {id, value},
 })
 
+export const updateCustomFieldPrediction = (
+    id: CustomFieldState['id'],
+    prediction: CustomFieldState['prediction']
+) => ({
+    type: types.UPDATE_CUSTOM_FIELD_PREDICTION,
+    payload: {id, prediction},
+})
+
 export const updateCustomFieldError = (
     id: CustomFieldState['id'],
     hasError: CustomFieldState['hasError']

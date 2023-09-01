@@ -65,6 +65,7 @@ export async function updateCustomFieldValue({
     const response = await client.put<{
         field: CustomField
         value: CustomFieldState['value']
+        prediction: CustomFieldState['prediction'] | null
     }>(
         `/api/${
             fieldType === 'Ticket' ? 'tickets' : 'customers'

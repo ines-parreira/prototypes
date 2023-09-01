@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useUpdateOrDeleteTicketFieldValue should update the prediction value when the value is mutated 1`] = `
+{
+  "payload": {
+    "id": 2,
+    "prediction": {
+      "confidence": 80,
+      "confirmed": false,
+      "display": true,
+      "modified": false,
+      "predicted": "Subscription::Cancel",
+    },
+  },
+  "type": "UPDATE_CUSTOM_FIELD_PREDICTION",
+}
+`;

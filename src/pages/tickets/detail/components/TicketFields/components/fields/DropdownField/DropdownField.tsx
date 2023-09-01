@@ -175,11 +175,9 @@ export default function DropdownField({
     const prediction = fieldState?.prediction
 
     const isPredictionCorrect =
-        prediction &&
-        fieldState?.hasError === undefined &&
+        prediction?.display === true &&
         prediction.predicted === value &&
-        prediction.display &&
-        ((prediction.confirmed === true && prediction.modified === true) ||
+        ((prediction.confirmed === true && prediction.modified === false) ||
             (prediction.confirmed === false && prediction.modified === false))
 
     const hiddenRef = useRef<HTMLInputElement>(null)

@@ -1,5 +1,6 @@
 import {useQueryClient} from '@tanstack/react-query'
 
+import {useEffect} from 'react'
 import {errorToChildren} from 'utils'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -10,6 +11,7 @@ import {
     deleteCustomFieldValue,
     updateCustomFieldValue,
 } from 'models/customField/resources'
+import {updateCustomFieldPrediction} from 'state/ticket/actions'
 import {MutationOverrides} from 'types/query'
 import {
     customFieldValueKeys,
@@ -61,8 +63,16 @@ export const useUpdateOrDeleteTicketFieldValue = (
         },
     }
 
-    const {mutate: updateMutate} = useUpdateCustomFieldValue(overrides)
+    const {mutate: updateMutate, data: updateData} =
+        useUpdateCustomFieldValue(overrides)
     const {mutate: deleteMutate} = useDeleteCustomFieldValue(overrides)
+
+    useEffect(() => {
+        if (updateData?.data.prediction) {
+            const {field, prediction} = updateData.data
+            dispatch(updateCustomFieldPrediction(field.id, prediction))
+        }
+    }, [updateData, dispatch])
 
     return {
         mutate: (

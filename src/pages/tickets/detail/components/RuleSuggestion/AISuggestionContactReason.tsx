@@ -21,21 +21,31 @@ export default function ContactReasonSuggestion({ticket}: Props) {
     const {mutate} = useUpdateOrDeleteTicketFieldValue()
     const [isConfirmed, setConfirmed] = useState(false)
     const [collapse, setCollapse] = useState(false)
+    const [isCollpsed, setIsCollpsed] = useState(false)
 
     const contactReasonPrediction = useMemo(
         () =>
-            Object.values(ticket.custom_fields || {}).find(
-                ({prediction, value}) => {
-                    return (
-                        prediction?.predicted === value &&
-                        prediction?.display &&
-                        prediction?.modified === false &&
-                        prediction?.confirmed === false
-                    )
-                }
-            ),
+            Object.values(ticket.custom_fields || {}).find(({prediction}) => {
+                return prediction?.display
+            }),
         [ticket]
     )
+
+    useEffect(() => {
+        if (!contactReasonPrediction?.prediction) return
+        const {prediction, hasError, value} = contactReasonPrediction
+
+        if (
+            !prediction.confirmed &&
+            !prediction.modified &&
+            value === prediction.predicted
+        )
+            return
+
+        // Collapse when dropdown value change
+        setIsCollpsed(hasError === undefined)
+        setCollapse(true)
+    }, [contactReasonPrediction])
 
     const contactReasonDropdownInputId = createInputId(
         ticket.id,
@@ -60,7 +70,6 @@ export default function ContactReasonSuggestion({ticket}: Props) {
                 prediction: {
                     ...contactReasonPrediction.prediction,
                     confirmed: true,
-                    modified: true,
                 },
             })
         )
@@ -75,66 +84,83 @@ export default function ContactReasonSuggestion({ticket}: Props) {
     }
 
     useEffect(() => {
-        if (isConfirmed) {
-            setTimeout(() => {
-                setCollapse(true)
-            }, 1500)
-        }
+        if (!isConfirmed) return
+        const timer = setTimeout(() => {
+            setCollapse(true)
+        }, 1500)
+        return () => clearTimeout(timer)
     }, [isConfirmed])
 
     return (
-        <Collapse
+        <div
             className={css.container}
-            isOpen={!collapse}
-            onClosed={confirmPrediction}
+            // Prevents React Virtuoso from complaining about Element been empty @see: https://virtuoso.dev/troubleshooting/#i-get-error-zero-sized-element-this-should-not-happen
+            style={
+                isCollpsed
+                    ? {
+                          height: '0px',
+                          visibility: 'hidden',
+                      }
+                    : {}
+            }
         >
-            <InTicketSuggestionContainer>
-                <SuggestionHeader
-                    actionsContent={
-                        <div className={css.buttons}>
-                            {isConfirmed ? (
-                                <span className={css.feedback}>
-                                    Thanks for the feedback!
-                                </span>
-                            ) : (
-                                <>
-                                    <Button
-                                        size="small"
-                                        intent="secondary"
-                                        onClick={handleChangeReason}
-                                    >
-                                        Change reason
-                                    </Button>
-                                    <Button
-                                        intent="primary"
-                                        size="small"
-                                        onClick={() => setConfirmed(true)}
-                                    >
-                                        <ButtonIconLabel
-                                            icon="check_circle"
-                                            position="left"
+            <Collapse
+                isOpen={!collapse}
+                onExited={() => {
+                    setIsCollpsed(true)
+                    if (isConfirmed) {
+                        confirmPrediction()
+                    }
+                }}
+            >
+                <InTicketSuggestionContainer>
+                    <SuggestionHeader
+                        actionsContent={
+                            <div className={css.buttons}>
+                                {isConfirmed ? (
+                                    <span className={css.feedback}>
+                                        Thanks for the feedback!
+                                    </span>
+                                ) : (
+                                    <>
+                                        <Button
+                                            size="small"
+                                            intent="secondary"
+                                            onClick={handleChangeReason}
                                         >
-                                            Confirm
-                                        </ButtonIconLabel>
-                                    </Button>
-                                </>
-                            )}
-                        </div>
-                    }
-                    infoContent={
-                        <span>
-                            Our AI detected{' '}
-                            <b>
-                                {contactReasonPrediction?.prediction?.predicted.replace(
-                                    /::/g,
-                                    ' - '
+                                            Change reason
+                                        </Button>
+                                        <Button
+                                            intent="primary"
+                                            size="small"
+                                            onClick={() => setConfirmed(true)}
+                                        >
+                                            <ButtonIconLabel
+                                                icon="check_circle"
+                                                position="left"
+                                            >
+                                                Confirm
+                                            </ButtonIconLabel>
+                                        </Button>
+                                    </>
                                 )}
-                            </b>{' '}
-                            as the Contact reason.
-                        </span>
-                    }
-                />
-            </InTicketSuggestionContainer>
-        </Collapse>
+                            </div>
+                        }
+                        infoContent={
+                            <span>
+                                Our AI detected{' '}
+                                <b>
+                                    {contactReasonPrediction?.prediction?.predicted.replace(
+                                        /::/g,
+                                        ' - '
+                                    )}
+                                </b>{' '}
+                                as the Contact reason.
+                            </span>
+                        }
+                    />
+                </InTicketSuggestionContainer>
+            </Collapse>
+        </div>
     )
 }

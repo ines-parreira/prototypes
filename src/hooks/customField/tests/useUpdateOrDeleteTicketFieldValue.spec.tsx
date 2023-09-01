@@ -142,6 +142,7 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
             axiosSuccessResponse({
                 field: ticketDropdownFieldDefinition,
                 value: undefined,
+                prediction: null,
             }),
             [dataToMutate],
             undefined
@@ -178,5 +179,33 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
                 },
             },
         ])
+    })
+    it('should update the prediction value when the value is mutated', () => {
+        useUpdateCustomFieldValueMock.mockImplementation(() => {
+            return {
+                mutate: updateMutateMock,
+                data: axiosSuccessResponse({
+                    field: ticketDropdownFieldDefinition,
+                    value: undefined,
+                    prediction: {
+                        predicted: 'Subscription::Cancel',
+                        confidence: 80,
+                        display: true,
+                        confirmed: false,
+                        modified: false,
+                    },
+                }),
+            } as unknown as ReturnType<typeof useUpdateCustomFieldValue>
+        })
+
+        renderHook(() => useUpdateOrDeleteTicketFieldValue(), {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        expect(mockStore.getActions()[1]).toMatchSnapshot()
     })
 })
