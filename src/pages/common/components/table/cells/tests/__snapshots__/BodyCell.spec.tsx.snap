@@ -60,6 +60,7 @@ exports[`<BodyCell/> should render with custom width 1`] = `
 <tr>
   <td
     class="wrapper foo normal"
+    width="200"
   >
     <div
       class="cellContent"

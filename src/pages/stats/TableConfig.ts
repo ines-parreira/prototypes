@@ -10,6 +10,7 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
 import {TableColumn} from 'state/ui/stats/types'
+import {isExtraLargeScreen} from 'pages/common/utils/mobile'
 import {TooltipData} from './types'
 
 export const TableColumnsOrder: TableColumn[] = [
@@ -34,7 +35,7 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.MessagesSent]: 'Messages Sent',
 }
 
-export const AGENT_NAME_COLUMN_WIDTH = 200
+export const AGENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 200 : 300
 export const METRIC_COLUMN_WIDTH = 160
 
 export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {

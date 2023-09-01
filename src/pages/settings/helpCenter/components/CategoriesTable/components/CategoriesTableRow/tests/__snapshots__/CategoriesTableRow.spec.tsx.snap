@@ -46,6 +46,7 @@ exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when 
     </td>
     <td
       class="wrapper normal"
+      width="104"
     >
       <div
         class="cellContent"
@@ -54,6 +55,7 @@ exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when 
     </td>
     <td
       class="wrapper normal"
+      width="104"
     >
       <div
         class="cellContent"
@@ -62,6 +64,7 @@ exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when 
     </td>
     <td
       class="wrapper normal"
+      width="146"
     >
       <div
         class="cellContent"

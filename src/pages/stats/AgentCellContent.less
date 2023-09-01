@@ -4,6 +4,7 @@
     .container {
         display: inline-flex;
         align-items: center;
+        overflow: hidden;
     }
 
     .avatar {
@@ -13,5 +14,8 @@
 
     .agent {
         .body-medium();
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 }

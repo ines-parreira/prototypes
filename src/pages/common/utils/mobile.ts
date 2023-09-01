@@ -12,12 +12,20 @@ export function isTouchDevice(): boolean {
 const screens = {
     small: 768,
     medium: 1024,
+    large: 1200,
+    xlarge: 1450,
 }
 
-function screenUnder(size: 'small' | 'medium' = 'small'): boolean {
+function screenUnder(
+    size: 'small' | 'medium' | 'large' | 'xlarge' = 'small'
+): boolean {
     return window.innerWidth <= screens[size]
 }
 
 export function isMediumOrSmallScreen(): boolean {
     return screenUnder('medium')
+}
+
+export function isExtraLargeScreen() {
+    return screenUnder('xlarge')
 }

@@ -35,6 +35,7 @@ const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
                 className={classNames(css.wrapper, className, css[size], {
                     [css.highlight]: isHighlighted,
                 })}
+                width={width}
             >
                 <BodyCellContent
                     className={innerClassName}
