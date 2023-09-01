@@ -5,7 +5,7 @@ import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferen
 import DropdownButtonWithSearch from '../DropdownButtonWithSearch/DropdownButtonWithSearch'
 import css from './LanguagePicker.less'
 
-type Language = {
+export type Language = {
     value: string
     label: string
     isDefault?: boolean

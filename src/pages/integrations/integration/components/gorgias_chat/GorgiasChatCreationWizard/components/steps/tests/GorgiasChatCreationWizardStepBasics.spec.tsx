@@ -7,6 +7,7 @@ import {fireEvent, render} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
 import * as actions from 'state/integrations/actions'
 
 import {
@@ -16,6 +17,7 @@ import {
 
 import Wizard from 'pages/common/components/wizard/Wizard'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import GorgiasChatCreationWizardStepBasics from '../GorgiasChatCreationWizardStepBasics'
 
 jest.mock(
@@ -28,7 +30,7 @@ const mockStore = configureMockStore([thunk])
 const integration = fromJS({
     id: 1,
     name: 'Test Integration',
-    meta: {shop_integration_id: 1},
+    meta: {shop_integration_id: 1, language: 'en-US'},
     decoration: {},
 })
 
@@ -192,5 +194,68 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         expect(getByText('Save & Customize Later')).toHaveClass('isDisabled')
         expect(getByText('Next')).toHaveClass('isDisabled')
+    })
+
+    it('should include languages when creating chat', () => {
+        mockFlags({
+            [FeatureFlagKey.ChatMultiLanguages]: true,
+        })
+        const {getByText, getByLabelText} = render(
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
+        )
+
+        fireEvent.change(getByLabelText('Chat title*', {selector: 'input'}), {
+            target: {value: 'Test Chat Title'},
+        })
+
+        fireEvent.click(
+            getByLabelText('Any other website', {selector: 'input'})
+        )
+
+        const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+        fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
+
+        expect(spy.mock.calls).toMatchSnapshot()
+    })
+
+    it('should include languages when updating chat', () => {
+        mockFlags({
+            [FeatureFlagKey.ChatMultiLanguages]: true,
+        })
+
+        const {getByText, getByLabelText} = render(
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics
+                            {...minProps}
+                            integration={integration}
+                            isUpdate
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
+        )
+
+        fireEvent.change(getByLabelText('Chat title*', {selector: 'input'}), {
+            target: {value: 'Test Chat Title'},
+        })
+
+        fireEvent.click(
+            getByLabelText('Any other website', {selector: 'input'})
+        )
+
+        const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+        fireEvent.click(getByText('Next', {selector: 'button'}))
+
+        expect(spy.mock.calls).toMatchSnapshot()
     })
 })

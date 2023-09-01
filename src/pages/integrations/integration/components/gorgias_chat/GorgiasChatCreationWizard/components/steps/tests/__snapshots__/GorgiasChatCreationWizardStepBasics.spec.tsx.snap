@@ -1,5 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<GorgiasChatCreationWizardStepBasics /> should include languages when creating chat 1`] = `
+[
+  [
+    Immutable.Map {
+      "type": "gorgias_chat",
+      "name": "Test Chat Title",
+      "decoration": Immutable.Map {
+        "conversation_color": "#115cb5",
+        "main_color": "#115cb5",
+        "introduction_text": "How can we help?",
+        "offline_introduction_text": "We'll be back tomorrow",
+        "avatar_type": "team-members",
+        "position": Immutable.Map {
+          "alignment": "bottom-right",
+          "offsetX": 0,
+          "offsetY": 0,
+        },
+        "avatar": Immutable.Map {
+          "image_type": "agent-picture",
+          "name_type": "agent-first-name",
+        },
+      },
+      "meta": Immutable.Map {
+        "language": "en-US",
+        "preferences": Immutable.Map {
+          "live_chat_availability": "auto-based-on-agent-availability",
+          "email_capture_enforcement": "optional",
+          "auto_responder": Immutable.Map {
+            "enabled": true,
+            "reply": "reply-dynamic",
+          },
+          "offline_mode_enabled_datetime": null,
+        },
+        "wizard": Immutable.Map {
+          "status": "draft",
+          "step": "branding",
+          "installation_method": "manual",
+        },
+        "languages": Immutable.List [
+          Immutable.Map {
+            "language": "en-US",
+            "primary": true,
+          },
+        ],
+        "shop_name": null,
+        "shop_type": null,
+        "shop_integration_id": null,
+      },
+    },
+    undefined,
+    true,
+    [Function],
+    true,
+    "Changes saved",
+  ],
+]
+`;
+
+exports[`<GorgiasChatCreationWizardStepBasics /> should include languages when updating chat 1`] = `
+[
+  [
+    Immutable.Map {
+      "type": "gorgias_chat",
+      "name": "Test Chat Title",
+      "id": 1,
+      "meta": Immutable.Map {
+        "shop_integration_id": null,
+        "language": "en-US",
+        "preferences": Immutable.Map {
+          "live_chat_availability": "auto-based-on-agent-availability",
+        },
+        "wizard": Immutable.Map {
+          "step": "branding",
+          "installation_method": "manual",
+        },
+        "languages": Immutable.List [
+          Immutable.Map {
+            "language": "en-US",
+            "primary": true,
+          },
+        ],
+        "shop_name": null,
+        "shop_type": null,
+      },
+      "decoration": Immutable.Map {
+        "introduction_text": "How can we help?",
+        "offline_introduction_text": "We'll be back tomorrow",
+      },
+    },
+    undefined,
+    true,
+    [Function],
+    true,
+    "Changes saved",
+  ],
+]
+`;
+
 exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat 1`] = `
 [
   [
@@ -9,10 +107,10 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat
       "id": 1,
       "meta": Immutable.Map {
         "shop_integration_id": null,
+        "language": "en-US",
         "preferences": Immutable.Map {
           "live_chat_availability": "auto-based-on-agent-availability",
         },
-        "language": "en-US",
         "wizard": Immutable.Map {
           "step": "branding",
           "installation_method": "manual",

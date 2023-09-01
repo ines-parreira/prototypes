@@ -10,6 +10,13 @@
         margin-bottom: @layout-spacing-m;
     }
 
+    .defaultLanguageGroup {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
     .connectStoreDescription {
         margin-bottom: @layout-spacing-s;
     }
@@ -51,5 +58,17 @@
     .languageSelectDropdownMenu {
         width: 100%;
         max-width: none;
+    }
+
+    .label {
+        font-weight: 600 !important;
+    }
+
+    .tooltipIcon {
+        color: var(--neutral-grey-4);
+
+        &:hover {
+            color: var(--neutral-grey-5);
+        }
     }
 }

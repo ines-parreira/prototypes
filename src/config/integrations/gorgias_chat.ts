@@ -1,5 +1,6 @@
 import {fromJS, List, Map} from 'immutable'
 
+import {Language as LanguagePickerItem} from 'pages/common/components/LanguagePicker/LanguagePicker'
 import {Language} from '../../constants/languages'
 import {
     GorgiasChatPosition,
@@ -25,6 +26,12 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT: List<LanguageItem> = fromJS(
         },
     ]
 )
+
+export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT_UI: List<
+    Map<string, string>
+> = fromJS([
+    {value: Language.EnglishUs, label: 'English (US)', isDefault: true},
+])
 
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
     fromJS([
@@ -197,3 +204,60 @@ export const CAMPAIGNS_TRIGGER_KEYS: List<any> = fromJS([
         },
     },
 ])
+
+export const mapIntegrationLanguagesToLanguagePicker = (
+    integration: Map<any, any>
+): LanguagePickerItem[] => {
+    const languages: LanguageItem[] = (
+        integration.getIn(['meta', 'languages']) as List<Map<string, string>>
+    )?.toJS()
+    const languageOptions: LanguagePickerItem[] =
+        GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()
+
+    const language = integration.getIn(['meta', 'language']) as string
+
+    if (!languages && !language)
+        return GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT_UI.toJS() as LanguagePickerItem[]
+
+    const newLanguages =
+        languages?.map((language: LanguageItem) => {
+            const matchedLanguage: LanguagePickerItem | undefined =
+                languageOptions.find(
+                    (lang: LanguagePickerItem) =>
+                        lang.value === language.language
+                )
+
+            return {
+                value: language.language,
+                label: matchedLanguage?.label as string,
+                isDefault: language.primary ?? false,
+            }
+        }) || []
+
+    // fallback to language if languages is not set
+    if (newLanguages.length === 0) {
+        const matchedLanguage: LanguagePickerItem | undefined =
+            languageOptions.find(
+                (lang: LanguagePickerItem) => lang.value === language
+            )
+        newLanguages.push({
+            value: language as Language,
+            label: matchedLanguage?.label as string,
+            isDefault: true,
+        })
+    }
+    return newLanguages
+}
+
+export const mapLanguagePickerToIntegrationLanguages = (
+    languages: LanguagePickerItem[]
+) => {
+    const integrationLanguages: LanguageItem[] = languages.map(
+        (language: LanguagePickerItem) => ({
+            language: language.value as Language,
+            ...(language.isDefault ? {primary: language.isDefault} : {}),
+        })
+    )
+
+    return integrationLanguages
+}

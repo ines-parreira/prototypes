@@ -1,7 +1,9 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import classNames from 'classnames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -18,6 +20,9 @@ import {
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
+    LanguageItem,
+    mapIntegrationLanguagesToLanguagePicker,
+    mapLanguagePickerToIntegrationLanguages,
 } from 'config/integrations/gorgias_chat'
 
 import {
@@ -47,6 +52,12 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
+import {Label as DesignSystemLabel} from 'gorgias-design-system/Input/Label'
+import LanguagePicker, {
+    Language,
+} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import {FeatureFlagKey} from 'config/featureFlags'
+import Tooltip from 'pages/common/components/Tooltip'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
@@ -87,6 +98,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const [currentName, setCurrentName] = useState<string>()
     const [currentLanguage, setCurrentLanguage] = useState<string>()
+    const [currentLanguages, setCurrentLanguages] = useState<LanguageItem[]>()
 
     const gorgiasChatIntegrations = useAppSelector(
         DEPRECATED_getIntegrationsByTypes([IntegrationType.GorgiasChat])
@@ -99,6 +111,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             IntegrationType.Magento2,
         ])
     )
+
+    const chatMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages]
 
     const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
 
@@ -126,6 +141,17 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             ['meta', 'language'],
             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
         )
+
+    const languagePickerLanguages = useMemo(
+        () => mapIntegrationLanguagesToLanguagePicker(integration),
+        [integration]
+    )
+
+    const handleLanguageChange = (languages: Language[]) => {
+        const integrationLanguages =
+            mapLanguagePickerToIntegrationLanguages(languages)
+        setCurrentLanguages(integrationLanguages)
+    }
 
     const storeIntegration =
         currentStoreIntegration ??
@@ -254,6 +280,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
         form.meta = {
             ...form.meta,
+            ...(chatMultiLanguagesEnabled ? {languages: currentLanguages} : {}),
             shop_name: storeIntegration
                 ? getShopNameFromStoreIntegration(storeIntegration?.toJS())
                 : null,
@@ -367,22 +394,63 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                     : undefined
                             }
                         />
-                        <div className={css.inputGroup}>
-                            <Label className={css.inputLabel}>Language</Label>
-                            <SelectField
-                                value={language}
-                                onChange={
-                                    setCurrentLanguage as React.ComponentProps<
-                                        typeof SelectField
-                                    >['onChange']
-                                }
-                                options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
-                                className={css.languageSelect}
-                                dropdownMenuClassName={
-                                    css.languageSelectDropdownMenu
-                                }
-                            />
-                        </div>
+                        {chatMultiLanguagesEnabled ? (
+                            <div className={css.inputGroup}>
+                                <div className={css.defaultLanguageGroup}>
+                                    <DesignSystemLabel
+                                        className={css.label}
+                                        label="Default language"
+                                        required
+                                    />
+                                    <Tooltip
+                                        aria-label="Tooltip for default language"
+                                        placement="top-start"
+                                        target="default-language-icon"
+                                        trigger={['hover']}
+                                    >
+                                        Used whenever the customer's language is
+                                        not automatically detected or
+                                        unavailable.
+                                    </Tooltip>
+                                    <i
+                                        aria-label="Icon for default language info"
+                                        id="default-language-icon"
+                                        className={classNames(
+                                            'material-icons-outlined',
+                                            css.tooltipIcon
+                                        )}
+                                    >
+                                        info
+                                    </i>
+                                </div>
+                                <LanguagePicker
+                                    languages={languagePickerLanguages}
+                                    availableLanguages={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                    onSelectLanguageChange={(languages) =>
+                                        handleLanguageChange(languages)
+                                    }
+                                />
+                            </div>
+                        ) : (
+                            <div className={css.inputGroup}>
+                                <Label className={css.inputLabel}>
+                                    Language
+                                </Label>
+                                <SelectField
+                                    value={language}
+                                    onChange={
+                                        setCurrentLanguage as React.ComponentProps<
+                                            typeof SelectField
+                                        >['onChange']
+                                    }
+                                    options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                    className={css.languageSelect}
+                                    dropdownMenuClassName={
+                                        css.languageSelectDropdownMenu
+                                    }
+                                />
+                            </div>
+                        )}
                     </div>
                     <div className={css.section}>
                         <div className={css.sectionHeading}>
