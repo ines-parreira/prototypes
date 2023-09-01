@@ -111,6 +111,8 @@ const TicketHeaderWrapper = ({
         useFlags()[FeatureFlagKey.SeparateSnoozeButton] || false
     const hasTicketNavigationArrows =
         useFlags()[FeatureFlagKey.TicketNavigationArrows] || false
+    const hasCustomerTimelineButton =
+        useFlags()[FeatureFlagKey.CustomerTimelineButton] || false
     const ticket = useAppSelector((state) => state.ticket)
     const customers = useAppSelector(getCustomersState)
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)
@@ -127,7 +129,7 @@ const TicketHeaderWrapper = ({
         <>
             <div className={classnames(css.headerContainer)}>
                 <div className="d-flex">
-                    {!hideHistoryButton && (
+                    {!hideHistoryButton && !hasCustomerTimelineButton && (
                         <div
                             className={classnames(
                                 css.historyButtonContainer,

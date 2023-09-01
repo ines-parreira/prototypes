@@ -471,7 +471,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
         email=""
         name="foo"
         shape="square"
-        size={50}
+        size={36}
         style={{}}
       />
       <Link
@@ -499,6 +499,9 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
         />
       </Component>
     </div>
+    <CustomerTimelineButton
+      isEditing={true}
+    />
   </div>
   <GenerateButton
     setEditedWidgets={[MockFunction]}
@@ -553,7 +556,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
         email=""
         name="foo"
         shape="square"
-        size={50}
+        size={36}
         style={{}}
       />
       <Link
@@ -581,6 +584,9 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
         />
       </Component>
     </div>
+    <CustomerTimelineButton
+      isEditing={true}
+    />
   </div>
   <ContextProvider
     value={
@@ -676,7 +682,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
         email=""
         name="foo"
         shape="square"
-        size={50}
+        size={36}
         style={{}}
       />
       <Link
@@ -704,6 +710,9 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
         />
       </Component>
     </div>
+    <CustomerTimelineButton
+      isEditing={false}
+    />
   </div>
   <AddAppSuggestion />
 </div>
@@ -725,7 +734,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
         email=""
         name="foo"
         shape="square"
-        size={50}
+        size={36}
         style={{}}
       />
       <Link
@@ -753,6 +762,9 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
         />
       </Component>
     </div>
+    <CustomerTimelineButton
+      isEditing={false}
+    />
   </div>
 </div>
 `;
@@ -773,7 +785,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
         email=""
         name="foo"
         shape="square"
-        size={50}
+        size={36}
         style={{}}
       />
       <Link
@@ -801,160 +813,71 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
         />
       </Component>
     </div>
+    <CustomerTimelineButton
+      isEditing={false}
+    />
   </div>
 </div>
 `;
 
 exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets because there is customer data, the user is not editing widgets and current widgets are not empty 1`] = `
-<InfobarCustomerInfoContainer
-  actions={
+<Provider
+  store={
     {
-      "cancelDrag": [MockFunction],
-      "drag": [MockFunction],
-      "drop": [MockFunction],
-      "generateAndSetWidgets": [MockFunction],
-      "removeEditedWidget": [MockFunction],
-      "resetWidgets": [MockFunction],
-      "setEditedWidgets": [MockFunction],
-      "setEditionAsDirty": [MockFunction],
-      "startWidgetEdition": [MockFunction],
-      "stopWidgetEdition": [MockFunction],
-      "updateEditedWidget": [MockFunction],
-    }
-  }
-  customer={
-    Immutable.Map {
-      "id": 1,
-      "name": "foo",
-    }
-  }
-  dispatch={[MockFunction]}
-  hasIntegrations={true}
-  isEditing={false}
-  sources={
-    Immutable.Map {
-      "ticket": Immutable.Map {
-        "customer": Immutable.Map {
-          "integrations": Immutable.Map {
-            "118": Immutable.Map {
-              "foo": "bar",
-            },
-          },
-        },
-      },
-    }
-  }
-  widgets={
-    Immutable.Map {
-      "currentContext": "ticket",
-      "_internal": Immutable.Map {
-        "hasFetchedWidgets": true,
-      },
-      "items": Immutable.List [
-        Immutable.Map {
-          "id": 1,
-          "context": "ticket",
-          "template": Immutable.Map {
-            "foo": "bar",
-          },
-        },
-      ],
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
     }
   }
 >
-  <div
-    className="widgetsList d-flex flex-column"
-    data-candu-id="infobar-widgets-list-view"
-  >
-    <div
-      className="customerInfo"
-    >
-      <div
-        className="customerProfile"
-      >
-        <Avatar
-          className="mr-3 rounded"
-          email=""
-          name="foo"
-          shape="square"
-          size={50}
-          style={{}}
-        >
-          <div
-            className="component square mr-3 rounded"
-            style={
-              {
-                "height": "50px",
-                "width": "50px",
-              }
-            }
-          >
-            <div
-              className="initials"
-              style={
-                {
-                  "fontSize": "20.833333333333336px",
-                  "height": "50px",
-                  "width": "50px",
-                }
-              }
-            >
-              <span
-                style={
-                  {
-                    "lineHeight": "52px",
-                  }
-                }
-              >
-                f
-              </span>
-            </div>
-          </div>
-        </Avatar>
-        <Link
-          className="displayName"
-          to="/app/customer/1"
-        >
-          <a
-            className="displayName"
-            to="/app/customer/1"
-          >
-            foo
-          </a>
-        </Link>
-      </div>
-      <div
-        className="detail"
-      >
-        <Component
-          channels={Immutable.List []}
-          customerId={1}
-          customerName="foo"
-        >
-          <div>
-            CustomerChannels
-          </div>
-        </Component>
-      </div>
-    </div>
-    <Component
-      context="ticket"
-      displayTabs={true}
-      source={
-        Immutable.Map {
-          "ticket": Immutable.Map {
-            "customer": Immutable.Map {
-              "integrations": Immutable.Map {
-                "118": Immutable.Map {
-                  "foo": "bar",
-                },
+  <InfobarCustomerInfoContainer
+    actions={
+      {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
+        "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
+        "resetWidgets": [MockFunction],
+        "setEditedWidgets": [MockFunction],
+        "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
+      }
+    }
+    customer={
+      Immutable.Map {
+        "id": 1,
+        "name": "foo",
+      }
+    }
+    dispatch={[MockFunction]}
+    hasIntegrations={true}
+    isEditing={false}
+    sources={
+      Immutable.Map {
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.Map {
+              "118": Immutable.Map {
+                "foo": "bar",
               },
             },
           },
-        }
+        },
       }
-      widgets={
-        Immutable.List [
+    }
+    widgets={
+      Immutable.Map {
+        "currentContext": "ticket",
+        "_internal": Immutable.Map {
+          "hasFetchedWidgets": true,
+        },
+        "items": Immutable.List [
           Immutable.Map {
             "id": 1,
             "context": "ticket",
@@ -962,13 +885,342 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
               "foo": "bar",
             },
           },
-        ]
+        ],
       }
+    }
+  >
+    <div
+      className="widgetsList d-flex flex-column"
+      data-candu-id="infobar-widgets-list-view"
     >
-      <div>
-        InfobarWidgets
+      <div
+        className="customerInfo"
+      >
+        <div
+          className="customerProfile"
+        >
+          <Avatar
+            className="mr-3 rounded"
+            email=""
+            name="foo"
+            shape="square"
+            size={36}
+            style={{}}
+          >
+            <div
+              className="component square mr-3 rounded"
+              style={
+                {
+                  "height": "36px",
+                  "width": "36px",
+                }
+              }
+            >
+              <div
+                className="initials"
+                style={
+                  {
+                    "fontSize": "15px",
+                    "height": "36px",
+                    "width": "36px",
+                  }
+                }
+              >
+                <span
+                  style={
+                    {
+                      "lineHeight": "38px",
+                    }
+                  }
+                >
+                  f
+                </span>
+              </div>
+            </div>
+          </Avatar>
+          <Link
+            className="displayName"
+            to="/app/customer/1"
+          >
+            <a
+              className="displayName"
+              to="/app/customer/1"
+            >
+              foo
+            </a>
+          </Link>
+        </div>
+        <div
+          className="detail"
+        >
+          <Component
+            channels={Immutable.List []}
+            customerId={1}
+            customerName="foo"
+          >
+            <div>
+              CustomerChannels
+            </div>
+          </Component>
+        </div>
+        <CustomerTimelineButton
+          isEditing={false}
+        >
+          <ForwardRef
+            className="customerTimelineButtonWrapper"
+            id="customer-timeline-button"
+            intent="secondary"
+            isDisabled={false}
+            onClick={[Function]}
+          >
+            <BaseButton
+              className="customerTimelineButtonWrapper"
+              intent="secondary"
+            >
+              <button
+                aria-disabled={false}
+                className="wrapper customerTimelineButtonWrapper fill secondary medium"
+                id="customer-timeline-button"
+                onClick={[Function]}
+                type="button"
+              >
+                <ButtonIconLabel
+                  icon="format_list_bulleted"
+                >
+                  <span
+                    className="wrapper"
+                  >
+                    <Icon
+                      className="icon isLeft"
+                    >
+                      <i
+                        className="material-icons icon isLeft medium"
+                      >
+                        format_list_bulleted
+                      </i>
+                    </Icon>
+                    Customer timeline
+                  </span>
+                </ButtonIconLabel>
+              </button>
+            </BaseButton>
+          </ForwardRef>
+        </CustomerTimelineButton>
       </div>
-    </Component>
-  </div>
-</InfobarCustomerInfoContainer>
+      <Component
+        context="ticket"
+        displayTabs={true}
+        source={
+          Immutable.Map {
+            "ticket": Immutable.Map {
+              "customer": Immutable.Map {
+                "integrations": Immutable.Map {
+                  "118": Immutable.Map {
+                    "foo": "bar",
+                  },
+                },
+              },
+            },
+          }
+        }
+        widgets={
+          Immutable.List [
+            Immutable.Map {
+              "id": 1,
+              "context": "ticket",
+              "template": Immutable.Map {
+                "foo": "bar",
+              },
+            },
+          ]
+        }
+      >
+        <div>
+          InfobarWidgets
+        </div>
+      </Component>
+    </div>
+  </InfobarCustomerInfoContainer>
+</Provider>
+`;
+
+exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets because there is customer data, the user is not editing widgets and current widgets are not empty 2`] = `
+<Provider
+  store={
+    {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <InfobarCustomerInfoContainer
+    actions={
+      {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
+        "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
+        "resetWidgets": [MockFunction],
+        "setEditedWidgets": [MockFunction],
+        "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
+      }
+    }
+    customer={
+      Immutable.Map {
+        "id": 1,
+        "name": "foo",
+      }
+    }
+    dispatch={[MockFunction]}
+    hasIntegrations={true}
+    isEditing={false}
+    sources={
+      Immutable.Map {
+        "ticket": Immutable.Map {
+          "customer": Immutable.Map {
+            "integrations": Immutable.Map {
+              "118": Immutable.Map {
+                "foo": "bar",
+              },
+            },
+          },
+        },
+      }
+    }
+    widgets={
+      Immutable.Map {
+        "currentContext": "ticket",
+        "_internal": Immutable.Map {
+          "hasFetchedWidgets": true,
+        },
+        "items": Immutable.List [
+          Immutable.Map {
+            "id": 1,
+            "context": "ticket",
+            "template": Immutable.Map {
+              "foo": "bar",
+            },
+          },
+        ],
+      }
+    }
+  >
+    <div
+      className="widgetsList d-flex flex-column"
+      data-candu-id="infobar-widgets-list-view"
+    >
+      <div
+        className="customerInfo"
+      >
+        <div
+          className="customerProfile"
+        >
+          <Avatar
+            className="mr-3 rounded"
+            email=""
+            name="foo"
+            shape="square"
+            size={36}
+            style={{}}
+          >
+            <div
+              className="component square mr-3 rounded"
+              style={
+                {
+                  "height": "36px",
+                  "width": "36px",
+                }
+              }
+            >
+              <div
+                className="initials"
+                style={
+                  {
+                    "fontSize": "15px",
+                    "height": "36px",
+                    "width": "36px",
+                  }
+                }
+              >
+                <span
+                  style={
+                    {
+                      "lineHeight": "38px",
+                    }
+                  }
+                >
+                  f
+                </span>
+              </div>
+            </div>
+          </Avatar>
+          <Link
+            className="displayName"
+            to="/app/customer/1"
+          >
+            <a
+              className="displayName"
+              to="/app/customer/1"
+            >
+              foo
+            </a>
+          </Link>
+        </div>
+        <div
+          className="detail"
+        >
+          <Component
+            channels={Immutable.List []}
+            customerId={1}
+            customerName="foo"
+          >
+            <div>
+              CustomerChannels
+            </div>
+          </Component>
+        </div>
+      </div>
+      <Component
+        context="ticket"
+        displayTabs={true}
+        source={
+          Immutable.Map {
+            "ticket": Immutable.Map {
+              "customer": Immutable.Map {
+                "integrations": Immutable.Map {
+                  "118": Immutable.Map {
+                    "foo": "bar",
+                  },
+                },
+              },
+            },
+          }
+        }
+        widgets={
+          Immutable.List [
+            Immutable.Map {
+              "id": 1,
+              "context": "ticket",
+              "template": Immutable.Map {
+                "foo": "bar",
+              },
+            },
+          ]
+        }
+      >
+        <div>
+          InfobarWidgets
+        </div>
+      </Component>
+    </div>
+  </InfobarCustomerInfoContainer>
+</Provider>
 `;

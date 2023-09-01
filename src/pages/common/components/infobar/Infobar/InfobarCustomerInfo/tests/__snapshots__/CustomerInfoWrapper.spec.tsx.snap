@@ -10,18 +10,19 @@ exports[`CustomerInfoWrapper component should only 2 children and a Show More bu
   </p>
   <button
     aria-disabled="false"
-    class="wrapper container fill secondary medium"
+    class="wrapper container ghost primary small"
     type="button"
   >
     <span
       class="wrapper"
     >
+      Show 
+      more
       <i
-        class="material-icons icon isLeft medium"
+        class="material-icons icon isRight small"
       >
-        keyboard_double_arrow_down
+        expand_more
       </i>
-      More info
     </span>
   </button>
 </div>
@@ -43,18 +44,19 @@ exports[`CustomerInfoWrapper component should render all 4 children and a Show L
   </p>
   <button
     aria-disabled="false"
-    class="wrapper container fill secondary medium"
+    class="wrapper container ghost primary small"
     type="button"
   >
     <span
       class="wrapper"
     >
+      Show 
+      less
       <i
-        class="material-icons icon isLeft medium"
+        class="material-icons icon isRight small"
       >
-        keyboard_double_arrow_up
+        expand_less
       </i>
-      Less info
     </span>
   </button>
 </div>
@@ -70,18 +72,19 @@ exports[`CustomerInfoWrapper component should render child a and child b with th
   </p>
   <button
     aria-disabled="false"
-    class="wrapper container fill secondary medium"
+    class="wrapper container ghost primary small"
     type="button"
   >
     <span
       class="wrapper"
     >
+      Show 
+      more
       <i
-        class="material-icons icon isLeft medium"
+        class="material-icons icon isRight small"
       >
-        keyboard_double_arrow_down
+        expand_more
       </i>
-      More info
     </span>
   </button>
 </div>
