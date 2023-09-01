@@ -3224,6 +3224,9 @@ exports[`RichField should render default content state 1`] = `
                           </ForwardRef>
                         </ButtonPopover>
                       </AddEmoji>
+                      <div
+                        className="rightSection"
+                      />
                     </div>
                     <div
                       className="hoverOverlay"
@@ -9171,6 +9174,9 @@ exports[`RichField should render immutable variable 1`] = `
                           </ForwardRef>
                         </ButtonPopover>
                       </AddEmoji>
+                      <div
+                        className="rightSection"
+                      />
                     </div>
                     <div
                       className="hoverOverlay"
@@ -12356,6 +12362,9 @@ exports[`RichField should render mutable variable 1`] = `
                           </ForwardRef>
                         </ButtonPopover>
                       </AddEmoji>
+                      <div
+                        className="rightSection"
+                      />
                     </div>
                     <div
                       className="hoverOverlay"

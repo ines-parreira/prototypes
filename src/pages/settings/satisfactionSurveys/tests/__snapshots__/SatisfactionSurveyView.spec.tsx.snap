@@ -4187,6 +4187,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       </ForwardRef>
                                                     </ButtonPopover>
                                                   </AddEmoji>
+                                                  <div
+                                                    className="rightSection"
+                                                  />
                                                 </div>
                                                 <div
                                                   className="hoverOverlay"

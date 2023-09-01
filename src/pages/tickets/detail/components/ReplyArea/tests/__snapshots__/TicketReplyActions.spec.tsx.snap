@@ -222,6 +222,9 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                           class="p-0 d-flex popover top-left hidden"
                         />
                       </span>
+                      <div
+                        class="rightSection"
+                      />
                     </div>
                     <div
                       class="hoverOverlay"
@@ -466,6 +469,9 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                           class="p-0 d-flex popover top-left hidden"
                         />
                       </span>
+                      <div
+                        class="rightSection"
+                      />
                     </div>
                     <div
                       class="hoverOverlay"
@@ -676,6 +682,9 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                           class="p-0 d-flex popover top-left hidden"
                         />
                       </span>
+                      <div
+                        class="rightSection"
+                      />
                     </div>
                     <div
                       class="hoverOverlay"
@@ -1313,6 +1322,9 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                           class="p-0 d-flex popover top-left hidden"
                         />
                       </span>
+                      <div
+                        class="rightSection"
+                      />
                     </div>
                     <div
                       class="hoverOverlay"

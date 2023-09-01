@@ -1,4 +1,5 @@
 @import '~css/new/mixins';
+@import (reference) '~css/typography.less';
 
 .editor-toolbar {
     .icon {
@@ -34,10 +35,28 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        width: 100%;
 
         @media @mobiles {
             display: none !important;
         }
+    }
+
+    .maxLength {
+        .caption-regular();
+        color: var(--neutral-grey-4);
+        display: flex;
+        align-items: center;
+        height: 24px;
+    }
+
+    .rightSection {
+        display: flex;
+        gap: 8px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        flex: 1;
     }
 
     .button {

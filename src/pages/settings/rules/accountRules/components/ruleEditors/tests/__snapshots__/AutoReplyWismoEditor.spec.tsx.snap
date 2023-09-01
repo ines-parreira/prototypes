@@ -382,6 +382,9 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
                   class="productLinkToolTip p-0 d-flex popover top-left hidden"
                 />
               </span>
+              <div
+                class="rightSection"
+              />
             </div>
             <div
               class="hoverOverlay"
@@ -724,6 +727,9 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
                   class="productLinkToolTip p-0 d-flex popover top-left hidden"
                 />
               </span>
+              <div
+                class="rightSection"
+              />
             </div>
             <div
               class="hoverOverlay"

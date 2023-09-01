@@ -10,6 +10,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
 
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import {MessageContent} from '../../../models/workflowConfiguration.types'
 
 import css from './MessageContentFormField.less'
@@ -88,10 +89,21 @@ export default function MessageContentFormField({
                     maxLength={textLimit}
                     ref={textareaRef}
                     value={richFieldValue}
+                    displayedActions={[
+                        ActionName.Bold,
+                        ActionName.Italic,
+                        ActionName.Underline,
+                        ActionName.Link,
+                        ActionName.Image,
+                        ActionName.Emoji,
+                        ActionName.ProductPicker,
+                        // ActionName.FlowVariable, -> action is not implemented yet
+                    ]}
                     allowExternalChanges
                     onChange={handleChange}
                     attachments={Immutable.fromJS(content.attachments ?? [])}
                 />
+
                 <TicketAttachments
                     className={css.attachments}
                     removable

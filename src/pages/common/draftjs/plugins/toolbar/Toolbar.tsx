@@ -1,6 +1,7 @@
 import React, {DragEvent, ReactNode, useState} from 'react'
 import classnames from 'classnames'
 
+import {EditorState} from 'draft-js'
 import Button from 'pages/common/components/button/Button'
 
 import {
@@ -19,6 +20,7 @@ import {useToolbarContext} from './ToolbarContext'
 
 import css from './Toolbar.less'
 
+import FlowVariablePicker from './components/FlowVariablePicker'
 import {isDisplayedAction} from './index'
 
 type Props = {
@@ -29,6 +31,9 @@ type Props = {
     quickReply: ReactNode
     attachments?: File[]
     linkEntityKey?: string
+    maxLength?: number
+    countCharacters?: boolean
+    editorState: EditorState
     linkIsOpen: boolean
     linkUrl: string
     linkText: string
@@ -56,6 +61,9 @@ const Toolbar = ({
     linkEntityKey,
     linkIsOpen,
     linkUrl,
+    countCharacters,
+    maxLength,
+    editorState,
     linkText,
     onLinkUrlChange,
     onLinkTextChange,
@@ -143,6 +151,29 @@ const Toolbar = ({
                         shopifyIntegrations.size > 0 && (
                             <AddDiscountCode {...actionsProps} />
                         )}
+                    <div className={css.rightSection}>
+                        {countCharacters && (
+                            <span className={css.maxLength}>
+                                {`${
+                                    editorState
+                                        .getCurrentContent()
+                                        .getPlainText().length
+                                } characters`}
+                            </span>
+                        )}
+                        {typeof maxLength === 'number' && (
+                            <span className={css.maxLength}>
+                                {
+                                    editorState
+                                        .getCurrentContent()
+                                        .getPlainText().length
+                                }
+                                /{maxLength}
+                            </span>
+                        )}
+                        {isActionDisplayed(ActionName.FlowVariable) &&
+                            displayedActions && <FlowVariablePicker />}
+                    </div>
                 </div>
                 {buttons?.map(renderButton)}
 

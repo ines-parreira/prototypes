@@ -501,6 +501,9 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                   class="p-0 d-flex popover top-left hidden"
                 />
               </span>
+              <div
+                class="rightSection"
+              />
             </div>
             <div
               class="hoverOverlay"
@@ -907,6 +910,9 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                   class="p-0 d-flex popover top-left hidden"
                 />
               </span>
+              <div
+                class="rightSection"
+              />
             </div>
             <div
               class="hoverOverlay"
