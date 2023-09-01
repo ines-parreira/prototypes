@@ -202,13 +202,13 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -428,13 +428,13 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -620,13 +620,13 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -1239,13 +1239,13 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>

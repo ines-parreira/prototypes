@@ -151,6 +151,12 @@ const Toolbar = ({
                         shopifyIntegrations.size > 0 && (
                             <AddDiscountCode {...actionsProps} />
                         )}
+                    {buttons?.map(renderButton)}
+
+                    <div className={css.hoverOverlay}>
+                        Add files as attachments
+                    </div>
+
                     <div className={css.rightSection}>
                         {countCharacters && (
                             <span className={css.maxLength}>
@@ -175,9 +181,6 @@ const Toolbar = ({
                             displayedActions && <FlowVariablePicker />}
                     </div>
                 </div>
-                {buttons?.map(renderButton)}
-
-                <div className={css.hoverOverlay}>Add files as attachments</div>
             </div>
         </div>
     )

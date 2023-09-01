@@ -435,13 +435,13 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
                 </i>
               </button>
               <div
+                class="hoverOverlay"
+              >
+                Add files as attachments
+              </div>
+              <div
                 class="rightSection"
               />
-            </div>
-            <div
-              class="hoverOverlay"
-            >
-              Add files as attachments
             </div>
           </div>
         </div>
@@ -800,13 +800,13 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
                 </i>
               </button>
               <div
+                class="hoverOverlay"
+              >
+                Add files as attachments
+              </div>
+              <div
                 class="rightSection"
               />
-            </div>
-            <div
-              class="hoverOverlay"
-            >
-              Add files as attachments
             </div>
           </div>
         </div>

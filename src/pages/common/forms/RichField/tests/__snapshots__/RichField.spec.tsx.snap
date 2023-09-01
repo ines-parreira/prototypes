@@ -3343,13 +3343,13 @@ exports[`RichField should render default content state 1`] = `
                         </ButtonPopover>
                       </AddEmoji>
                       <div
+                        className="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         className="rightSection"
                       />
-                    </div>
-                    <div
-                      className="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -9411,13 +9411,13 @@ exports[`RichField should render immutable variable 1`] = `
                         </ButtonPopover>
                       </AddEmoji>
                       <div
+                        className="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         className="rightSection"
                       />
-                    </div>
-                    <div
-                      className="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -12717,13 +12717,13 @@ exports[`RichField should render mutable variable 1`] = `
                         </ButtonPopover>
                       </AddEmoji>
                       <div
+                        className="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         className="rightSection"
                       />
-                    </div>
-                    <div
-                      className="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>

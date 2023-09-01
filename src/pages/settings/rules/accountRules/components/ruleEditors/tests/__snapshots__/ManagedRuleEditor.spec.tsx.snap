@@ -370,13 +370,13 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     </i>
                   </button>
                   <div
+                    class="hoverOverlay"
+                  >
+                    Add files as attachments
+                  </div>
+                  <div
                     class="rightSection"
                   />
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
                 </div>
               </div>
             </div>
@@ -664,13 +664,13 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     </i>
                   </button>
                   <div
+                    class="hoverOverlay"
+                  >
+                    Add files as attachments
+                  </div>
+                  <div
                     class="rightSection"
                   />
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
                 </div>
               </div>
             </div>
@@ -913,13 +913,13 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -1124,13 +1124,13 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -1528,13 +1528,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     </i>
                   </button>
                   <div
+                    class="hoverOverlay"
+                  >
+                    Add files as attachments
+                  </div>
+                  <div
                     class="rightSection"
                   />
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
                 </div>
               </div>
             </div>
@@ -1822,13 +1822,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     </i>
                   </button>
                   <div
+                    class="hoverOverlay"
+                  >
+                    Add files as attachments
+                  </div>
+                  <div
                     class="rightSection"
                   />
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
                 </div>
               </div>
             </div>
@@ -2071,13 +2071,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -2232,13 +2232,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -2598,13 +2598,13 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     </i>
                   </button>
                   <div
+                    class="hoverOverlay"
+                  >
+                    Add files as attachments
+                  </div>
+                  <div
                     class="rightSection"
                   />
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
                 </div>
               </div>
             </div>
@@ -2892,13 +2892,13 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     </i>
                   </button>
                   <div
+                    class="hoverOverlay"
+                  >
+                    Add files as attachments
+                  </div>
+                  <div
                     class="rightSection"
                   />
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
                 </div>
               </div>
             </div>
@@ -3141,13 +3141,13 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>
@@ -3373,13 +3373,13 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         </i>
                       </button>
                       <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                      <div
                         class="rightSection"
                       />
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
                     </div>
                   </div>
                 </div>

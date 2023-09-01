@@ -4408,13 +4408,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     </ButtonPopover>
                                                   </AddEmoji>
                                                   <div
+                                                    className="hoverOverlay"
+                                                  >
+                                                    Add files as attachments
+                                                  </div>
+                                                  <div
                                                     className="rightSection"
                                                   />
-                                                </div>
-                                                <div
-                                                  className="hoverOverlay"
-                                                >
-                                                  Add files as attachments
                                                 </div>
                                               </div>
                                             </div>
