@@ -1,6 +1,6 @@
 import React, {memo} from 'react'
 import {NavLink, Link} from 'react-router-dom'
-import {List, Map} from 'immutable'
+import {List, Map, fromJS} from 'immutable'
 import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
@@ -13,6 +13,15 @@ import {getIconFromType} from 'state/integrations/helpers'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
+import {
+    getGorgiasChatLanguageByCode,
+    getPrimaryLanguageUI,
+    getSecondaryLanguages,
+    getSecondaryLanguagesAsTooltipContent,
+} from 'config/integrations/gorgias_chat'
+import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
+import {LanguageBullet} from 'pages/common/components/LanguageBulletList'
+import {Language} from 'constants/languages'
 import Tooltip from '../../../../common/components/Tooltip'
 import history from '../../../../history'
 import {
@@ -25,9 +34,7 @@ import {Tab} from '../../Integration'
 
 import BodyCell from '../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../common/components/table/TableBodyRow'
-import {LanguageBullet} from '../../../../common/components/LanguageBulletList'
 import ForwardIcon from '../../../common/components/ForwardIcon'
-
 import css from './GorgiasChatIntegrationListRow.less'
 
 export const GorgiasChatIntegrationStatusFeedbackMapping = {
@@ -80,7 +87,21 @@ const GorgiasChatIntegrationListRow = ({
     const isStoreDisconnected =
         !storeIntegration || storeIntegration.get('deactivated_datetime')
 
+    const chatMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+
     const language: string = chat.getIn(['meta', 'language'])
+
+    const languages: List<Map<string, string>> = chat.getIn(
+        ['meta', 'languages'],
+        fromJS([])
+    )
+
+    const primaryLanguage =
+        getPrimaryLanguageUI(languages) ??
+        getGorgiasChatLanguageByCode(language as Language)
+
+    const secondaryLanguages = getSecondaryLanguages(languages)
 
     const goToChat = () => history.push(editLink)
 
@@ -230,7 +251,47 @@ const GorgiasChatIntegrationListRow = ({
                 )}
             </BodyCell>
             <BodyCell size="small">
-                <LanguageBullet code={language} />
+                {chatMultiLanguagesEnabled ? (
+                    <>
+                        {primaryLanguage && (
+                            <BadgeItem
+                                customClass={css.languageBadge}
+                                key={primaryLanguage.value}
+                                id={primaryLanguage.value as any}
+                                label={`${primaryLanguage.label} (Default)`}
+                            />
+                        )}
+                        {!!secondaryLanguages.length && (
+                            <>
+                                <Tooltip
+                                    aria-label="Tooltip for more languages"
+                                    placement="bottom"
+                                    target={`more-languages-${integrationId}`}
+                                >
+                                    <span
+                                        dangerouslySetInnerHTML={{
+                                            __html: getSecondaryLanguagesAsTooltipContent(
+                                                secondaryLanguages
+                                            ),
+                                        }}
+                                    ></span>
+                                </Tooltip>
+                                <span id={`more-languages-${integrationId}`}>
+                                    <BadgeItem
+                                        customClass={css.languageBadge}
+                                        key="more-languages"
+                                        id={
+                                            `more-languages-${integrationId}` as any
+                                        }
+                                        label={`+${secondaryLanguages.length} more`}
+                                    />
+                                </span>
+                            </>
+                        )}
+                    </>
+                ) : (
+                    <LanguageBullet code={language} />
+                )}
             </BodyCell>
             <BodyCell size="smallest" innerClassName={css.lastColumn}>
                 {isChatCreationWizardEnabled &&

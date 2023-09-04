@@ -13,6 +13,7 @@ export type BadgeItemProps = {
     label: string | React.ReactNode
     isClosable?: boolean
     help?: string | React.ReactNode
+    customClass?: string
     onClose?: (ev: React.MouseEvent) => void
 }
 
@@ -21,10 +22,15 @@ export const BadgeItem: React.FC<BadgeItemProps> = ({
     label,
     isClosable,
     help,
+    customClass,
     onClose,
 }: BadgeItemProps) => {
     return (
-        <Badge data-testid={`badge-${id}`} className={css.badge} color="none">
+        <Badge
+            data-testid={`badge-${id}`}
+            className={classnames(css.badge, customClass ?? '')}
+            color="none"
+        >
             <span>{label}</span>
             {help && (
                 <span className={css['badge-suffix']}>

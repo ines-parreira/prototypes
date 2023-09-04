@@ -255,17 +255,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -1169,17 +1169,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -2199,17 +2199,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -3200,17 +3200,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -4209,17 +4209,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -5210,17 +5210,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -6358,17 +6358,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -7272,17 +7272,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -8577,17 +8577,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"
@@ -9491,17 +9491,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <option
                         value="en-US"
                       >
-                        English (US)
+                        English - US
                       </option>
                       <option
                         value="fr-FR"
                       >
-                        French (France)
+                        French - FR
                       </option>
                       <option
                         value="fr-CA"
                       >
-                        French (Canada)
+                        French - CA
                       </option>
                       <option
                         value="es"

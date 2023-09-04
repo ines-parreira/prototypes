@@ -112,7 +112,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
                   <span>
                     testchat
                      
-                    (English (US))
+                    (English - US)
                   </span>
                 </span>
               </button>
@@ -126,7 +126,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
                   <span>
                     another chat
                      
-                    (English (US))
+                    (English - US)
                   </span>
                 </span>
               </button>

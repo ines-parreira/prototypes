@@ -18,6 +18,12 @@ export interface LanguageItem {
     language: Language
     primary?: boolean
 }
+
+interface LanguageUI {
+    value: string
+    label: string
+}
+
 export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT: List<LanguageItem> = fromJS(
     [
         {
@@ -35,9 +41,9 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT_UI: List<
 
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
     fromJS([
-        {value: Language.EnglishUs, label: 'English (US)'},
-        {value: Language.FrenchFr, label: 'French (France)'},
-        {value: Language.FrenchCa, label: 'French (Canada)'},
+        {value: Language.EnglishUs, label: 'English - US'},
+        {value: Language.FrenchFr, label: 'French - FR'},
+        {value: Language.FrenchCa, label: 'French - CA'},
         {value: Language.Spanish, label: 'Spanish'},
         {value: Language.Danish, label: 'Danish'},
         {value: Language.Swedish, label: 'Swedish'},
@@ -204,6 +210,40 @@ export const CAMPAIGNS_TRIGGER_KEYS: List<any> = fromJS([
         },
     },
 ])
+
+// util functions for gorgias chat languages
+export const getGorgiasChatLanguageByCode = (language: Language) =>
+    (GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS() as LanguageUI[]).find(
+        (item: LanguageUI) => item.value === language
+    )
+
+export const getPrimaryLanguage = (
+    languages: List<Map<string, string>>
+): LanguageItem =>
+    languages
+        .find((lang) => !!lang?.get('primary') === true)
+        ?.toJS() as LanguageItem
+
+export const getPrimaryLanguageUI = (languages: List<Map<string, string>>) => {
+    const primaryLanguage = getPrimaryLanguage(languages)
+    if (!primaryLanguage) return null
+    return getGorgiasChatLanguageByCode(primaryLanguage.language)
+}
+
+export const getSecondaryLanguages = (
+    languages: List<Map<string, string>>
+): LanguageItem[] =>
+    languages
+        .filter((lang) => !!lang?.get('primary') === false)
+        ?.toJS() as LanguageItem[]
+
+export const getSecondaryLanguagesAsTooltipContent = (
+    languages: LanguageItem[]
+): string => {
+    return languages
+        .map((lang) => getGorgiasChatLanguageByCode(lang.language)?.label)
+        .join('<br>')
+}
 
 export const mapIntegrationLanguagesToLanguagePicker = (
     integration: Map<any, any>

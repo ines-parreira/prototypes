@@ -67,6 +67,9 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
         IntegrationType.GorgiasChat
     )!.title
 
+    const chatMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+
     return (
         <div className="w-100">
             <PageHeader
@@ -120,7 +123,13 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                         <HeaderCellProperty title="Chat name" />
                         <HeaderCellProperty title="Store" />
                         <HeaderCellProperty title="Status" />
-                        <HeaderCellProperty title="Language" />
+                        <HeaderCellProperty
+                            title={
+                                chatMultiLanguagesEnabled
+                                    ? 'Languages'
+                                    : 'Language'
+                            }
+                        />
                         <HeaderCell />
                     </TableHead>
                     <TableBody>
