@@ -213,7 +213,15 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                             <h4>Quick replies</h4>
                             <p className={css.mb16}>
                                 When a customer opens the chat, select the quick
-                                replies the customer can click on.
+                                replies the customer can click on.<br></br>
+                                <a
+                                    href="https://docs.gorgias.com/en-US/quick-replies-81794"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                >
+                                    Learn more
+                                </a>{' '}
+                                about quick replies in our Help Center.
                             </p>
 
                             <div

@@ -244,6 +244,16 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                               className="mb16"
                             >
                               When a customer opens the chat, select the quick replies the customer can click on.
+                              <br />
+                              <a
+                                href="https://docs.gorgias.com/en-US/quick-replies-81794"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                Learn more
+                              </a>
+                               
+                              about quick replies in our Help Center.
                             </p>
                             <div
                               className="d-flex align-items-center mb16"
@@ -1335,6 +1345,16 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                               className="mb16"
                             >
                               When a customer opens the chat, select the quick replies the customer can click on.
+                              <br />
+                              <a
+                                href="https://docs.gorgias.com/en-US/quick-replies-81794"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                Learn more
+                              </a>
+                               
+                              about quick replies in our Help Center.
                             </p>
                             <div
                               className="d-flex align-items-center mb16"
