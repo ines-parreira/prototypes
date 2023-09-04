@@ -281,10 +281,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
               </div>
             </div>
-            <div>
-              TagsStatsFilterMock, value: 
-              [1]
-            </div>
             <div
               class="dropdown"
             >
@@ -872,6 +868,10 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   </div>
                 </div>
               </div>
+            </div>
+            <div>
+              TagsStatsFilterMock, value: 
+              [1]
             </div>
             <div>
               <button

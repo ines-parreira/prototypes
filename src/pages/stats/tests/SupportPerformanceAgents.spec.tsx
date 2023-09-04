@@ -1,27 +1,10 @@
 import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {AgentsTable} from 'pages/stats/AgentsTable'
-import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {tags} from 'fixtures/tag'
-import {teams} from 'fixtures/teams'
-import {agentsStatsFilterLabels} from 'pages/stats/AgentsStatsFilter'
-import {channelsStatsFilterLabels} from 'pages/stats/ChannelsStatsFilter'
-import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
-import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter'
-
-import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {useAgentsMetrics} from 'pages/stats/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'pages/stats/useAgentsSummaryMetrics'
@@ -37,60 +20,22 @@ jest.mock('state/ui/stats/agentPerformanceSlice')
 jest.mock('pages/stats/useAgentsMetrics')
 jest.mock('pages/stats/useAgentsSummaryMetrics')
 jest.mock('pages/stats/AgentsTable.tsx')
+jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const AgentsTableMock = assumeMock(AgentsTable)
+const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const cellMock = () => <div />
 
 describe('SupportPerformanceAgents', () => {
-    const tag = tags[0]
-    const defaultState = {
-        currentAccount: fromJS(account),
-        integrations: fromJS(integrationsState),
-        stats: fromJS({
-            filters: {
-                integrations: [integrationsState.integrations[1].id],
-                channels: [TicketChannel.Chat],
-                agents: [agents[0].id],
-                tags: [1],
-                period: {
-                    start_datetime: '2021-02-03T00:00:00.000Z',
-                    end_datetime: '2021-02-03T23:59:59.999Z',
-                },
-            },
-        }),
-        agents: fromJS({
-            all: agents,
-        }),
-        teams: fromJS({
-            all: teams,
-        }),
-        entities: {
-            tags: {
-                [tag.id]: tag,
-            },
-        },
-        ui: {
-            stats: uiStatsInitialState,
-        },
-    } as RootState
-
-    const filtersLabels = [
-        agentsStatsFilterLabels,
-        channelsStatsFilterLabels,
-        integrationsStatsFilterLabels,
-        tagsStatsFilterLabels,
-    ]
     AgentsTableMock.mockImplementation(cellMock)
+    SupportPerformanceFiltersMock.mockImplementation(cellMock)
 
     it('should render the page title and section title', () => {
         render(
             <MemoryRouter>
-                <Provider store={mockStore(defaultState)}>
-                    <SupportPerformanceAgents />
-                </Provider>
+                <SupportPerformanceAgents />
             </MemoryRouter>
         )
 
@@ -98,68 +43,6 @@ describe('SupportPerformanceAgents', () => {
         expect(
             screen.getByText(AGENT_PERFORMANCE_SECTION_TITLE)
         ).toBeInTheDocument()
-    })
-
-    it('should render the filters with no selected value', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsFilterByTags]: true,
-        }))
-
-        render(
-            <MemoryRouter>
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        stats: fromJS({
-                            filters: {
-                                integrations: [],
-                                channels: [],
-                                agents: [],
-                                tags: [],
-                                period: {
-                                    start_datetime: '',
-                                    end_datetime: '',
-                                },
-                            },
-                        }),
-                    })}
-                >
-                    <SupportPerformanceAgents />
-                </Provider>
-            </MemoryRouter>
-        )
-
-        filtersLabels.forEach((filterLabels) => {
-            expect(
-                screen.getByText(`All ${filterLabels.plural}`, {
-                    exact: false,
-                })
-            ).toBeInTheDocument()
-        })
-
-        expect(screen.getByText(CALENDAR_ICON)).toBeInTheDocument()
-    })
-
-    it('should render the filters with one selected value', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsFilterByTags]: true,
-        }))
-
-        render(
-            <MemoryRouter>
-                <Provider store={mockStore(defaultState)}>
-                    <SupportPerformanceAgents />
-                </Provider>
-            </MemoryRouter>
-        )
-
-        filtersLabels.forEach((filterLabels) => {
-            expect(
-                screen.getByText(`1 ${filterLabels.singular}`, {
-                    exact: false,
-                })
-            ).toBeInTheDocument()
-        })
     })
 
     it('should render the export data button', () => {
@@ -188,9 +71,7 @@ describe('SupportPerformanceAgents', () => {
 
         render(
             <MemoryRouter>
-                <Provider store={mockStore(defaultState)}>
-                    <SupportPerformanceAgents />
-                </Provider>
+                <SupportPerformanceAgents />
             </MemoryRouter>
         )
 

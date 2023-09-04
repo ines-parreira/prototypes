@@ -4,6 +4,7 @@ import React, {useMemo, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
+import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {OrderDirection} from 'models/api/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getPreviousPeriod} from 'hooks/reporting/createUseMetricTrend'
@@ -13,10 +14,6 @@ import {DEPRECATED_PerformanceTip} from 'pages/stats/DEPRECATED_PerformanceTip'
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
-import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import StatsPage from 'pages/stats/StatsPage'
 import {
     currentAccountHasFeature,
@@ -24,11 +21,7 @@ import {
     getSurveysSettingsJS,
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
-import {
-    getMessagingIntegrationsStatsFilter,
-    getStatsFilters,
-    getStatsMessagingIntegrations,
-} from 'state/stats/selectors'
+import {getPageStatsFilters, getStatsFilters} from 'state/stats/selectors'
 import blueStar from 'assets/img/icons/blue-star.svg'
 import {
     useClosedTicketsTrend,
@@ -98,7 +91,6 @@ import ChartCard from './ChartCard'
 import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
 import {OneDimensionalDataItem} from './types'
-import TagsStatsFilter from './TagsStatsFilter'
 import {statsHintsTooltipsConfig} from './stats-hints-config'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
@@ -135,11 +127,9 @@ export default function SupportPerformanceOverview() {
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
 
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const hasPerformanceTips: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsPerformanceTips]
-    const hasFilterByTags: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsFilterByTags]
+
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
@@ -149,26 +139,16 @@ export default function SupportPerformanceOverview() {
         (surveySettings?.data.send_survey_for_chat ||
             surveySettings?.data.send_survey_for_email)
     const statsFilters = useAppSelector(getStatsFilters)
-    const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
-    )
+
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
         true
     )
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
-        const {channels, agents, period, tags} = statsFilters
-        return {
-            channels,
-            agents,
-            period,
-            integrations: integrationsStatsFilter,
-            tags,
-        }
-    }, [integrationsStatsFilter, statsFilters])
-
+    const pageStatsFilters = useAppSelector(getPageStatsFilters)
     const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
+    const hasFilterByTags: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsFilterByTags]
     if (!hasFilterByTags) {
         delete requestStatsFilters['tags']
     }
@@ -392,34 +372,7 @@ export default function SupportPerformanceOverview() {
                 title="Overview"
                 filters={
                     <>
-                        <IntegrationsStatsFilter
-                            value={pageStatsFilters.integrations}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                            variant="ghost"
-                        />
-                        {hasFilterByTags && (
-                            <TagsStatsFilter
-                                value={pageStatsFilters.tags}
-                                variant={'ghost'}
-                            />
-                        )}
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
-                            variant="ghost"
-                        />
-                        <AgentsStatsFilter
-                            value={pageStatsFilters.agents}
-                            variant="ghost"
-                        />
-                        <PeriodStatsFilter
-                            initialSettings={{
-                                maxSpan: 365,
-                            }}
-                            value={pageStatsFilters.period}
-                            variant="ghost"
-                        />
+                        <SupportPerformanceFilters />
                         <DownloadOverviewDataButton
                             onClick={async () => {
                                 logEvent(SegmentEvent.StatDownloadClicked, {
