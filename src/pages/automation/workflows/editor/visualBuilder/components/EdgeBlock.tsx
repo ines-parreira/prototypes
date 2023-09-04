@@ -3,7 +3,6 @@ import {NodeProps} from 'reactflow'
 import classNames from 'classnames'
 import {produce, Draft} from 'immer'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -29,6 +28,7 @@ import {useSelfServiceStoreIntegrationContext} from 'pages/automation/common/hoo
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection.svg'
 
 import EdgeIconButton from './EdgeIconButton'
+import EdgeLabel from './EdgeLabel'
 import css from './EdgeBlock.less'
 
 type MenuItem = {
@@ -45,7 +45,7 @@ type MenuItem = {
     disabledText?: string
 }
 
-function getIncomingChoiceLabel(
+function getIncomingChoice(
     visualBuilderGraph: VisualBuilderGraph,
     currentNodeId: string
 ) {
@@ -68,10 +68,12 @@ function getIncomingChoiceLabel(
         previousNode &&
         isMultipleChoicesNodeType(previousNode)
     ) {
-        return (
-            previousNode.data.choices[choiceIndex].label ||
-            `Option ${choiceIndex + 1}`
-        )
+        const choice = previousNode.data.choices[choiceIndex]
+        return {
+            label: choice.label || `Option ${choiceIndex + 1}`,
+            eventId: choice.event_id,
+            nodeId: previousNode.id,
+        }
     }
     return undefined
 }
@@ -225,12 +227,15 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
         setFloatingRef(node)
     }, [])
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
-    const {dispatch, visualBuilderGraph, configuration} =
-        useWorkflowEditorContext()
-    const incomingChoiceLabel = getIncomingChoiceLabel(
+    const {
+        dispatch,
         visualBuilderGraph,
-        node.id
-    )
+        configuration,
+        visualBuilderNodeIdEditing,
+        setVisualBuilderChoiceEventIdEditing,
+        setVisualBuilderNodeIdEditing,
+    } = useWorkflowEditorContext()
+    const incomingChoice = getIncomingChoice(visualBuilderGraph, node.id)
     const menuItems = useMenuItemsForConnectedChannels(
         node.id,
         dispatch,
@@ -244,13 +249,23 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
                 e.stopPropagation()
             }}
             style={{
-                top: incomingChoiceLabel != null ? -48 : -46,
+                top: incomingChoice != null ? -48 : -46,
             }}
         >
-            {incomingChoiceLabel && (
-                <Badge type={ColorType.Blue} className={css.edgeLabel}>
-                    {incomingChoiceLabel}
-                </Badge>
+            {incomingChoice && (
+                <EdgeLabel
+                    onClick={() => {
+                        setVisualBuilderChoiceEventIdEditing(
+                            incomingChoice.eventId
+                        )
+                        setVisualBuilderNodeIdEditing(incomingChoice.nodeId)
+                    }}
+                    isSelected={
+                        visualBuilderNodeIdEditing === incomingChoice.nodeId
+                    }
+                >
+                    {incomingChoice.label}
+                </EdgeLabel>
             )}
             <EdgeIconButton
                 ref={edgeRef}

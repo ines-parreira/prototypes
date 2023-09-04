@@ -1,0 +1,27 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/layout.less';
+
+:local {
+    .container {
+        .caption-semibold();
+
+        padding: 2px @layout-spacing-xs;
+        border-radius: 4px;
+        color: var(--main-primary-4);
+        background: var(--accessory-blue-bg);
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+
+        &:hover {
+            box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
+        }
+
+        &.isSelected {
+            outline: 1px solid var(--main-primary);
+            box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
+        }
+    }
+}

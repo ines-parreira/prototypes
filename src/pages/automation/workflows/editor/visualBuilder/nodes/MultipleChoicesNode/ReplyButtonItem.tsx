@@ -1,4 +1,4 @@
-import React, {RefObject} from 'react'
+import React, {RefObject, useEffect, useState} from 'react'
 import classNames from 'classnames'
 
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
@@ -6,6 +6,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 
 import Tooltip from 'pages/common/components/Tooltip'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 
 import css from './ReplyButtonItem.less'
 
@@ -14,6 +15,7 @@ type ReplyButtonItemProps = {
     onDrop: () => void
     onCancel: () => void
     index: number
+    eventId: string
     label: string
     onChangeLabel: (label: string) => void
     onDeleteChoiceClick: (index: number) => void
@@ -30,6 +32,7 @@ export default function ReplyButtonItem({
     onDrop,
     onCancel,
     index,
+    eventId,
     label,
     onChangeLabel,
     onDeleteChoiceClick,
@@ -38,12 +41,23 @@ export default function ReplyButtonItem({
     disabledTooltip,
     placeholder,
 }: ReplyButtonItemProps) {
+    const [ref, setRef] = useState<HTMLInputElement | null>(null)
+    const {
+        visualBuilderChoiceEventIdEditing,
+        setVisualBuilderChoiceEventIdEditing,
+    } = useWorkflowEditorContext()
     const dndType = 'workflow-multiple-choices-reply-button'
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {position: index, type: dndType},
         [dndType],
         {onHover: onMove, onDrop, onCancel}
     )
+
+    useEffect(() => {
+        if (eventId === visualBuilderChoiceEventIdEditing) {
+            ref?.focus({preventScroll: true})
+        }
+    }, [ref, eventId, visualBuilderChoiceEventIdEditing])
 
     return (
         <div
@@ -59,11 +73,18 @@ export default function ReplyButtonItem({
                 drag_indicator
             </i>
             <TextInput
+                ref={setRef}
                 value={label}
                 onChange={onChangeLabel}
                 className={css.textInput}
                 maxLength={choiceTextLimit}
                 placeholder={placeholder}
+                onFocus={() => {
+                    setVisualBuilderChoiceEventIdEditing(eventId)
+                }}
+                onBlur={() => {
+                    setVisualBuilderChoiceEventIdEditing(null)
+                }}
             />
             <ConfirmationPopover
                 placement="top"

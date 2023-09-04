@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 
 import {EditorState} from 'draft-js'
 import Immutable from 'immutable'
@@ -9,6 +9,7 @@ import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketA
 import {IntegrationType} from 'models/integration/constants'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
+import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import {MessageContent} from '../../../models/workflowConfiguration.types'
@@ -27,13 +28,14 @@ export default function MessageContentFormField({
     handleUpdateContent,
 }: MessageContentFormFieldProps) {
     const storeIntegration = useSelfServiceStoreIntegrationContext()
-    const textareaRef = useRef<RichField>(null)
+    const {visualBuilderChoiceEventIdEditing} = useWorkflowEditorContext()
+    const [textareaRef, setTextareaRef] = useState<RichField | null>(null)
     useEffect(() => {
-        const t = setTimeout(() => {
-            textareaRef.current?.focusEditor()
-        }, 300)
-        return () => clearTimeout(t)
-    }, [])
+        if (!visualBuilderChoiceEventIdEditing) {
+            textareaRef?.focusEditor()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [textareaRef])
     const richFieldValue = useMemo(
         () => ({
             html: content.html,
@@ -87,7 +89,7 @@ export default function MessageContentFormField({
                 <RichField
                     minHeight={169}
                     maxLength={textLimit}
-                    ref={textareaRef}
+                    ref={setTextareaRef}
                     value={richFieldValue}
                     displayedActions={[
                         ActionName.Bold,

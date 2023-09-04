@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import Label from 'pages/common/forms/Label/Label'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {useTranslationsPreviewContext} from 'pages/automation/workflows/hooks/useTranslationsPreviewContext'
@@ -20,14 +20,10 @@ export default function TriggerButtonEditor({
     onClose: () => void
 }) {
     const {previewLanguage} = useTranslationsPreviewContext()
-    const inputRef = useRef<HTMLInputElement>(null)
+    const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null)
     useEffect(() => {
-        if (!nodeInEdition) return
-        const t = setTimeout(() => {
-            inputRef.current?.focus()
-        }, 300)
-        return () => clearTimeout(t)
-    }, [nodeInEdition])
+        inputRef?.focus({preventScroll: true})
+    }, [inputRef])
     const {dispatch, isFetchPending, isSavePending} = useWorkflowEditorContext()
 
     return (
@@ -44,7 +40,7 @@ export default function TriggerButtonEditor({
                 <div className={css.withDescription}>
                     <TextInput
                         className={css.textInput}
-                        ref={inputRef}
+                        ref={setInputRef}
                         isRequired
                         maxLength={textLimit}
                         onChange={(inputValue) =>

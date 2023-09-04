@@ -14,6 +14,7 @@ import {
 } from '../models/workflowConfiguration.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {
+    MultipleChoicesNodeType,
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../models/visualBuilderGraph.types'
@@ -53,6 +54,15 @@ type WorkflowEditorContext = {
     deleteTranslation: (lang: LanguageCode) => void
     shouldShowErrors: boolean
     setShouldShowErrors: (b: boolean) => void
+    visualBuilderChoiceEventIdEditing:
+        | MultipleChoicesNodeType['data']['choices'][number]['event_id']
+        | null
+    setVisualBuilderChoiceEventIdEditing: React.Dispatch<
+        React.SetStateAction<
+            | MultipleChoicesNodeType['data']['choices'][number]['event_id']
+            | null
+        >
+    >
 }
 
 export const WorkflowEditorContext = createContext<
@@ -106,6 +116,12 @@ export function useWorkflowEditor(
     const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
         useState<VisualBuilderNode['id'] | null>(null)
+    const [
+        visualBuilderChoiceEventIdEditing,
+        setVisualBuilderChoiceEventIdEditing,
+    ] = useState<
+        MultipleChoicesNodeType['data']['choices'][number]['event_id'] | null
+    >(null)
     const [remoteConfiguration, setRemoteConfiguration] =
         useState<Maybe<WorkflowConfiguration>>(null)
     const workflowFactoryInstance = useRef(
@@ -333,6 +349,8 @@ export function useWorkflowEditor(
         ),
         shouldShowErrors,
         setShouldShowErrors,
+        visualBuilderChoiceEventIdEditing,
+        setVisualBuilderChoiceEventIdEditing,
     }
 }
 
@@ -387,5 +405,7 @@ export function createWorkflowEditorContextForPreview(
         setShouldShowErrors: () => {
             // noop
         },
+        visualBuilderChoiceEventIdEditing: null,
+        setVisualBuilderChoiceEventIdEditing: () => null,
     }
 }

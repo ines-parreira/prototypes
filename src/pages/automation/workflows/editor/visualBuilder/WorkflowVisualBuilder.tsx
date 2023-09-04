@@ -43,6 +43,7 @@ export function WorkflowVisualBuilderWrapped() {
         visualBuilderGraph,
         visualBuilderNodeIdEditing,
         setVisualBuilderNodeIdEditing,
+        setVisualBuilderChoiceEventIdEditing,
     } = useWorkflowEditorContext()
     const visualBuilderNodeEditing = visualBuilderNodeIdEditing
         ? visualBuilderGraph.nodes.find(
@@ -72,7 +73,8 @@ export function WorkflowVisualBuilderWrapped() {
 
     const onDrawerEditorClose = useCallback(() => {
         setVisualBuilderNodeIdEditing(null)
-    }, [setVisualBuilderNodeIdEditing])
+        setVisualBuilderChoiceEventIdEditing(null)
+    }, [setVisualBuilderNodeIdEditing, setVisualBuilderChoiceEventIdEditing])
 
     if (isFetchPending) return <Loader />
 

@@ -109,7 +109,7 @@ export default function NodeEditorDrawer({
                 </div>
             </Drawer.Header>
             <Drawer.Content>
-                <TranslationsPreviewProvider>
+                <TranslationsPreviewProvider key={nodeInEdition?.id}>
                     {memoizedNodeInEdition?.type === 'trigger_button' && (
                         <TriggerButtonEditor
                             nodeInEdition={memoizedNodeInEdition}

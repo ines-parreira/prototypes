@@ -88,6 +88,7 @@ export default function ReplyButtonList({
                     onMove={handleMove}
                     onDrop={handleDrop}
                     onCancel={handleCancel}
+                    eventId={event_id}
                     label={label}
                     placeholder={`Option ${index + 1}`}
                     onChangeLabel={(nextLabel) => {
