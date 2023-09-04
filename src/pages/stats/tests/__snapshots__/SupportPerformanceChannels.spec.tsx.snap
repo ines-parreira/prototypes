@@ -607,9 +607,9 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
               >
                 <span
                   class="circle mr-2"
-                  style="background: rgb(254, 193, 140);"
+                  style="background: rgb(79, 151, 235);"
                 />
-                facebook-mention
+                Facebook Mention
               </span>
               <span
                 class="label mr-4 mb-2"

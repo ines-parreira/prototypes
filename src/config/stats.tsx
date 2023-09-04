@@ -679,6 +679,10 @@ export const stats = toImmutable<
                 label: 'Facebook Recommendations',
                 color: '#4887cd',
             },
+            'facebook-mention': {
+                label: 'Facebook Mention',
+                color: '#4f97eb',
+            },
             'help-center': {
                 label: 'Help Center',
                 color: '#9ce0e0',
@@ -698,6 +702,14 @@ export const stats = toImmutable<
             email: {
                 label: 'Email',
                 color: '#ff5eab',
+            },
+            contact_form: {
+                label: 'Contact Form',
+                color: '#9411b5',
+            },
+            'internal-note': {
+                label: 'Internal Note',
+                color: '#d89238',
             },
             api: {
                 label: 'Gorgias API',
