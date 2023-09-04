@@ -1,4 +1,3 @@
-import {data} from 'browserslist'
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
@@ -33,13 +32,15 @@ export default function MetricCard({
             <div className={css.title}>
                 {title}
                 {hint && <HintTooltip {...hint} />}
-                <div className={css.trendBadge}>{trendBadge}</div>
+                {trendBadge && (
+                    <div className={css.trendBadge}>{trendBadge}</div>
+                )}
             </div>
 
             {children}
 
             {tip &&
-                (!data || isLoading ? (
+                (isLoading ? (
                     <Skeleton height={132} className={css.tip} inline />
                 ) : (
                     <div className={css.tip}>{tip}</div>

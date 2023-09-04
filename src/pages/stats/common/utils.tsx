@@ -209,7 +209,7 @@ export const formatMetricValue = (
     format: MetricValueFormat = 'decimal',
     notAvailableText: string = NOT_AVAILABLE_TEXT
 ) => {
-    if (value == null) {
+    if (value === null || value === undefined) {
         return notAvailableText
     }
 

@@ -9,6 +9,12 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 describe('<TrendBadge />', () => {
+    it('should not render the badge when no values provided', () => {
+        const {container} = render(<TrendBadge />)
+
+        expect(container).toBeEmpty()
+    })
+
     it('should render the loading skeleton', () => {
         const {getAllByTestId} = render(<TrendBadge isLoading />)
 

@@ -82,6 +82,7 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
                 },
             },
             suggestedMin: 0,
+            beginAtZero: true,
         },
     },
     plugins: {

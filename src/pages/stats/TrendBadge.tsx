@@ -5,11 +5,7 @@ import useId from 'hooks/useId'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import Tooltip from 'pages/common/components/Tooltip'
-import {
-    formatMetricTrend,
-    MetricTrendFormat,
-    NOT_AVAILABLE_TEXT,
-} from './common/utils'
+import {formatMetricTrend, MetricTrendFormat} from './common/utils'
 import css from './TrendBadge.less'
 
 type Props = {
@@ -37,7 +33,7 @@ export default function TrendBadge({
     const {formattedTrend, sign = 0} =
         value != null && prevValue != null
             ? formatMetricTrend(value, prevValue, format)
-            : {formattedTrend: NOT_AVAILABLE_TEXT}
+            : {formattedTrend: null}
 
     let trendColor = 'neutral'
     if (interpretAs === 'more-is-better') {

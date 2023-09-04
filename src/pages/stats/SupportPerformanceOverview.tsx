@@ -80,12 +80,13 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
+import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {
-    SHORT_FORMAT,
     formatMetricValue,
     formatTimeSeriesData,
-} from 'pages/stats/common/utils'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+    SHORT_FORMAT,
+} from './common/utils'
 import MetricCard from './MetricCard'
 import TrendBadge from './TrendBadge'
 import BigNumberMetric from './BigNumberMetric'
@@ -112,6 +113,12 @@ function getBadgeTooltipForPreviousPeriod(statsFilters: StatsFilters) {
         SHORT_FORMAT
     )} - ${moment(period.end_datetime).format(SHORT_FORMAT)}`
 }
+
+const NoDataTooltip = () => (
+    <IconTooltip icon={'help_outline'} className={css.tooltipIcon}>
+        No data available for the selected period.
+    </IconTooltip>
+)
 
 export default function SupportPerformanceOverview() {
     const accountCreatedDatetime = useAppSelector(
@@ -484,11 +491,15 @@ export default function SupportPerformanceOverview() {
                                 {formatMetricValue(
                                     customerSatisfactionTrend.data?.value
                                 )}
-                                <img
-                                    className={css.customerSatisfactionStar}
-                                    src={blueStar}
-                                    alt="Blue star"
-                                />
+                                {!customerSatisfactionTrend.data?.value ? (
+                                    <NoDataTooltip />
+                                ) : (
+                                    <img
+                                        className={css.customerSatisfactionStar}
+                                        src={blueStar}
+                                        alt="Blue star"
+                                    />
+                                )}
                             </BigNumberMetric>
                         </MetricCard>
                     </DashboardGridCell>
@@ -530,6 +541,9 @@ export default function SupportPerformanceOverview() {
                                     firstResponseTimeTrend.data?.value,
                                     'duration'
                                 )}
+                                {!firstResponseTimeTrend.data?.value && (
+                                    <NoDataTooltip />
+                                )}
                             </BigNumberMetric>
                         </MetricCard>
                     </DashboardGridCell>
@@ -568,6 +582,9 @@ export default function SupportPerformanceOverview() {
                                 {formatMetricValue(
                                     resolutionTimeTrend.data?.value,
                                     'duration'
+                                )}
+                                {!resolutionTimeTrend.data?.value && (
+                                    <NoDataTooltip />
                                 )}
                             </BigNumberMetric>
                         </MetricCard>
@@ -609,6 +626,9 @@ export default function SupportPerformanceOverview() {
                                 {formatMetricValue(
                                     messagesPerTicketTrend.data?.value
                                 )}
+                                {!messagesPerTicketTrend.data?.value && (
+                                    <NoDataTooltip />
+                                )}
                             </BigNumberMetric>
                         </MetricCard>
                     </DashboardGridCell>
@@ -637,6 +657,9 @@ export default function SupportPerformanceOverview() {
                             >
                                 {formatMetricValue(
                                     openTicketsTrend.data?.value
+                                )}
+                                {!openTicketsTrend.data?.value && (
+                                    <NoDataTooltip />
                                 )}
                             </BigNumberMetric>
                         </MetricCard>
@@ -669,6 +692,9 @@ export default function SupportPerformanceOverview() {
                                 {formatMetricValue(
                                     closedTicketsTrend.data?.value
                                 )}
+                                {!closedTicketsTrend.data?.value && (
+                                    <NoDataTooltip />
+                                )}
                             </BigNumberMetric>
                         </MetricCard>
                     </DashboardGridCell>
@@ -699,6 +725,9 @@ export default function SupportPerformanceOverview() {
                             >
                                 {formatMetricValue(
                                     ticketsCreatedTrend.data?.value
+                                )}
+                                {!ticketsCreatedTrend.data?.value && (
+                                    <NoDataTooltip />
                                 )}
                             </BigNumberMetric>
                         </MetricCard>
@@ -731,6 +760,9 @@ export default function SupportPerformanceOverview() {
                                 {formatMetricValue(
                                     ticketsRepliedTrend.data?.value
                                 )}
+                                {!ticketsRepliedTrend.data?.value && (
+                                    <NoDataTooltip />
+                                )}
                             </BigNumberMetric>
                         </MetricCard>
                     </DashboardGridCell>
@@ -759,6 +791,9 @@ export default function SupportPerformanceOverview() {
                             >
                                 {formatMetricValue(
                                     messagesSentTrend.data?.value
+                                )}
+                                {!messagesSentTrend.data?.value && (
+                                    <NoDataTooltip />
                                 )}
                             </BigNumberMetric>
                         </MetricCard>
