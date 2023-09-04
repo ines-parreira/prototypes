@@ -1,8 +1,13 @@
-import React, {ReactNode, useState} from 'react'
+import React, {ReactNode, useRef, useState} from 'react'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import classnames from 'classnames'
+import {useDrag} from 'react-dnd'
 
 import navbarCss from 'assets/css/navbar.less'
+
+import {ViewCategoryNavbar} from 'models/view/types'
+import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 
 import css from './NavbarBlock.less'
 
@@ -15,6 +20,7 @@ type Props = {
     className?: string
     icon?: string
     title: string
+    value?: ViewCategoryNavbar
 }
 
 export default function NavbarBlock({
@@ -23,54 +29,87 @@ export default function NavbarBlock({
     className,
     icon,
     title,
+    value,
 }: Props) {
     const [isOpen, setOpen] = useState(false)
+    const categoryRef = useRef<HTMLHeadingElement>(null)
+
+    const [{isDragging}, drag] = useDrag({
+        item: {
+            id: value,
+            type: TicketNavbarElementType.Category,
+        },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    })
+
+    if (value !== undefined) {
+        drag(categoryRef)
+    }
 
     return (
-        <div className={classnames(navbarCss.category, className)}>
-            <h4 className={navbarCss['category-title']}>
-                <div className={css.title}>
-                    {icon && (
-                        <i
-                            className={classnames(
-                                'material-icons',
-                                navbarCss.icon
-                            )}
+        <TicketNavbarDropTarget
+            accept={TicketNavbarElementType.Category}
+            canDrop={(item) => item.type === TicketNavbarElementType.Category}
+            className={classnames(css.section, {
+                [css.isDragged]: isDragging,
+            })}
+            onDrop={(item, monitor, direction) => ({
+                sectionId: null,
+                viewId: null,
+                categoryId: value,
+                direction,
+            })}
+        >
+            <div className={classnames(navbarCss.category, className)}>
+                <h4 ref={categoryRef} className={navbarCss['category-title']}>
+                    <div className={css.title}>
+                        {icon && (
+                            <i
+                                className={classnames(
+                                    'material-icons',
+                                    navbarCss.icon
+                                )}
+                            >
+                                {icon}
+                            </i>
+                        )}
+                        {title}
+                    </div>
+                    {!!actions && (
+                        <Dropdown
+                            isOpen={isOpen}
+                            toggle={() => setOpen(!isOpen)}
                         >
-                            {icon}
-                        </i>
+                            <DropdownToggle
+                                className={classnames(
+                                    css.toggle,
+                                    'btn-transparent'
+                                )}
+                                color="secondary"
+                                type="button"
+                            >
+                                <i className="material-icons">add</i>
+                            </DropdownToggle>
+                            <DropdownMenu right>
+                                {actions.map((action) => {
+                                    return (
+                                        <DropdownItem
+                                            className={css.action}
+                                            key={action.label}
+                                            onClick={action.onClick}
+                                        >
+                                            {action.label}
+                                        </DropdownItem>
+                                    )
+                                })}
+                            </DropdownMenu>
+                        </Dropdown>
                     )}
-                    {title}
-                </div>
-                {actions && actions.length > 0 && (
-                    <Dropdown isOpen={isOpen} toggle={() => setOpen(!isOpen)}>
-                        <DropdownToggle
-                            className={classnames(
-                                css.toggle,
-                                'btn-transparent'
-                            )}
-                            color="secondary"
-                            type="button"
-                        >
-                            <i className="material-icons">add</i>
-                        </DropdownToggle>
-                        <DropdownMenu right>
-                            {actions.map((action) => {
-                                return (
-                                    <DropdownItem
-                                        className={css.action}
-                                        key={action.label}
-                                        onClick={action.onClick}
-                                    >
-                                        {action.label}
-                                    </DropdownItem>
-                                )
-                            })}
-                        </DropdownMenu>
-                    </Dropdown>
-                )}
-            </h4>
-            {children}
-        </div>
+                </h4>
+                {children}
+            </div>
+        </TicketNavbarDropTarget>
     )
 }

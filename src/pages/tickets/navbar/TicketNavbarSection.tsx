@@ -67,9 +67,7 @@ export function TicketNavbarSectionContainer({
     return (
         <TicketNavbarDropTarget
             accept={TicketNavbarElementType.Section}
-            canDrop={(item) => {
-                return sections[item.id].private === section.private
-            }}
+            canDrop={(item) => sections[item.id].private === section.private}
             className={classnames(css.section, {[css.isDragged]: isDragging})}
             onDrop={handleDrop}
             shallow={false}

@@ -141,186 +141,190 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Ticket assignment
         </a>
         <div
-          class="category"
+          class="wrapper section"
         >
-          <h4
-            class="category-title"
-          >
-            <div
-              class="title"
-            >
-              <i
-                class="material-icons icon"
-              >
-                auto_awesome
-              </i>
-              automation add-on
-            </div>
-          </h4>
           <div
-            class="mt-3"
+            class="category"
           >
-            <div
-              class="section d-flex align-items-center flex-grow"
+            <h4
+              class="category-title"
             >
               <div
-                class="toggleSectionIconWrapper"
+                class="title"
               >
                 <i
-                  class="toggleSectionIcon material-icons"
+                  class="material-icons icon"
                 >
-                  arrow_drop_down
+                  auto_awesome
                 </i>
+                automation add-on
               </div>
-              <div
-                class="nameWrapper d-flex align-items-center flex-grow"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <img
-                    alt="shopify logo"
-                    role="presentation"
-                    src="/assets/img/integrations/shopify.png"
-                  />
-                </div>
-                <span
-                  class="name"
-                >
-                  gorgiastest
-                </span>
-              </div>
-            </div>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/flows"
-            >
-              <span
-                class="item-name"
-              >
-                Flow builder
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/quick-responses"
-            >
-              <span
-                class="item-name"
-              >
-                Quick response flows
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/order-management"
-            >
-              <span
-                class="item-name"
-              >
-                Order management flows
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/article-recommendation"
-            >
-              <span
-                class="item-name"
-              >
-                Article recommendation
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/connected-channels"
-            >
-              <span
-                class="item-name"
-              >
-                Connected channels
-              </span>
-            </a>
+            </h4>
             <div
-              class="section d-flex align-items-center flex-grow"
+              class="mt-3"
             >
               <div
-                class="toggleSectionIconWrapper"
-              >
-                <i
-                  class="toggleSectionIcon material-icons"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
-              <div
-                class="nameWrapper d-flex align-items-center flex-grow"
+                class="section d-flex align-items-center flex-grow"
               >
                 <div
-                  class="iconWrapper"
+                  class="toggleSectionIconWrapper"
                 >
-                  <img
-                    alt="bigcommerce logo"
-                    role="presentation"
-                    src="/assets/img/integrations/bigcommerce-white.svg"
-                  />
+                  <i
+                    class="toggleSectionIcon material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
                 </div>
-                <span
-                  class="name"
+                <div
+                  class="nameWrapper d-flex align-items-center flex-grow"
                 >
-                  gorgiastest.mybigcommerce.com
-                </span>
+                  <div
+                    class="iconWrapper"
+                  >
+                    <img
+                      alt="shopify logo"
+                      role="presentation"
+                      src="/assets/img/integrations/shopify.png"
+                    />
+                  </div>
+                  <span
+                    class="name"
+                  >
+                    gorgiastest
+                  </span>
+                </div>
               </div>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/flows"
+              >
+                <span
+                  class="item-name"
+                >
+                  Flow builder
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/quick-responses"
+              >
+                <span
+                  class="item-name"
+                >
+                  Quick response flows
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/order-management"
+              >
+                <span
+                  class="item-name"
+                >
+                  Order management flows
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/article-recommendation"
+              >
+                <span
+                  class="item-name"
+                >
+                  Article recommendation
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/connected-channels"
+              >
+                <span
+                  class="item-name"
+                >
+                  Connected channels
+                </span>
+              </a>
+              <div
+                class="section d-flex align-items-center flex-grow"
+              >
+                <div
+                  class="toggleSectionIconWrapper"
+                >
+                  <i
+                    class="toggleSectionIcon material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
+                </div>
+                <div
+                  class="nameWrapper d-flex align-items-center flex-grow"
+                >
+                  <div
+                    class="iconWrapper"
+                  >
+                    <img
+                      alt="bigcommerce logo"
+                      role="presentation"
+                      src="/assets/img/integrations/bigcommerce-white.svg"
+                    />
+                  </div>
+                  <span
+                    class="name"
+                  >
+                    gorgiastest.mybigcommerce.com
+                  </span>
+                </div>
+              </div>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/bigcommerce/xb107iaz1n/flows"
+              >
+                <span
+                  class="item-name"
+                >
+                  Flow builder
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
+              >
+                <span
+                  class="item-name"
+                >
+                  Quick response flows
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
+              >
+                <span
+                  class="item-name"
+                >
+                  Article recommendation
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
+              >
+                <span
+                  class="item-name"
+                >
+                  Connected channels
+                </span>
+              </a>
             </div>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/bigcommerce/xb107iaz1n/flows"
-            >
-              <span
-                class="item-name"
-              >
-                Flow builder
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
-            >
-              <span
-                class="item-name"
-              >
-                Quick response flows
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
-            >
-              <span
-                class="item-name"
-              >
-                Article recommendation
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
-            >
-              <span
-                class="item-name"
-              >
-                Connected channels
-              </span>
-            </a>
           </div>
         </div>
       </div>
@@ -508,138 +512,142 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Ticket assignment
         </a>
         <div
-          class="category"
+          class="wrapper section"
         >
-          <h4
-            class="category-title"
-          >
-            <div
-              class="title"
-            >
-              <i
-                class="material-icons icon"
-              >
-                auto_awesome
-              </i>
-              automation add-on
-            </div>
-          </h4>
           <div
-            class="mt-3"
+            class="category"
           >
-            <div
-              class="section d-flex align-items-center flex-grow"
+            <h4
+              class="category-title"
             >
               <div
-                class="toggleSectionIconWrapper"
+                class="title"
               >
                 <i
-                  class="toggleSectionIcon material-icons"
+                  class="material-icons icon"
                 >
-                  arrow_drop_down
+                  auto_awesome
                 </i>
+                automation add-on
               </div>
+            </h4>
+            <div
+              class="mt-3"
+            >
               <div
-                class="nameWrapper d-flex align-items-center flex-grow"
+                class="section d-flex align-items-center flex-grow"
               >
                 <div
-                  class="iconWrapper"
+                  class="toggleSectionIconWrapper"
                 >
-                  <img
-                    alt="shopify logo"
-                    role="presentation"
-                    src="/assets/img/integrations/shopify.png"
-                  />
+                  <i
+                    class="toggleSectionIcon material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
                 </div>
-                <span
+                <div
+                  class="nameWrapper d-flex align-items-center flex-grow"
+                >
+                  <div
+                    class="iconWrapper"
+                  >
+                    <img
+                      alt="shopify logo"
+                      role="presentation"
+                      src="/assets/img/integrations/shopify.png"
+                    />
+                  </div>
+                  <span
+                    class="name"
+                  >
+                    gorgiastest
+                  </span>
+                </div>
+              </div>
+              <a
+                class="link isNested item"
+                data-active-class-name="active"
+                href="/app/automation/flows"
+              >
+                <div
                   class="name"
                 >
-                  gorgiastest
+                  <span
+                    class="item-name"
+                  >
+                    Flow builder
+                  </span>
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link isNested item"
+                data-active-class-name="active"
+                href="/app/automation/quick-responses"
+              >
+                <div
+                  class="name"
+                >
+                  <span
+                    class="item-name"
+                  >
+                    Quick response flows
+                  </span>
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/order-management"
+              >
+                <span
+                  class="item-name"
+                >
+                  Order management flows
                 </span>
-              </div>
+              </a>
+              <a
+                class="link isNested item"
+                data-active-class-name="active"
+                href="/app/automation/article-recommendation"
+              >
+                <div
+                  class="name"
+                >
+                  <span
+                    class="item-name"
+                  >
+                    Article recommendation
+                  </span>
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/connected-channels"
+              >
+                <span
+                  class="item-name"
+                >
+                  Connected channels
+                </span>
+              </a>
             </div>
-            <a
-              class="link isNested item"
-              data-active-class-name="active"
-              href="/app/automation/flows"
-            >
-              <div
-                class="name"
-              >
-                <span
-                  class="item-name"
-                >
-                  Flow builder
-                </span>
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
-            <a
-              class="link isNested item"
-              data-active-class-name="active"
-              href="/app/automation/quick-responses"
-            >
-              <div
-                class="name"
-              >
-                <span
-                  class="item-name"
-                >
-                  Quick response flows
-                </span>
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/order-management"
-            >
-              <span
-                class="item-name"
-              >
-                Order management flows
-              </span>
-            </a>
-            <a
-              class="link isNested item"
-              data-active-class-name="active"
-              href="/app/automation/article-recommendation"
-            >
-              <div
-                class="name"
-              >
-                <span
-                  class="item-name"
-                >
-                  Article recommendation
-                </span>
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/connected-channels"
-            >
-              <span
-                class="item-name"
-              >
-                Connected channels
-              </span>
-            </a>
           </div>
         </div>
       </div>
@@ -827,89 +835,93 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Ticket assignment
         </a>
         <div
-          class="category"
+          class="wrapper section"
         >
-          <h4
-            class="category-title"
-          >
-            <div
-              class="title"
-            >
-              <i
-                class="material-icons icon"
-              >
-                auto_awesome
-              </i>
-              automation add-on
-            </div>
-          </h4>
           <div
-            class="mt-4"
+            class="category"
           >
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/flows"
+            <h4
+              class="category-title"
             >
               <div
-                class="name"
+                class="title"
               >
-                Flow builder
+                <i
+                  class="material-icons icon"
+                >
+                  auto_awesome
+                </i>
+                automation add-on
               </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/quick-responses"
+            </h4>
+            <div
+              class="mt-4"
             >
-              <div
-                class="name"
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="/app/automation/flows"
               >
-                Quick response flows
-              </div>
-              <i
-                class="material-icons md-2 icon"
+                <div
+                  class="name"
+                >
+                  Flow builder
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="/app/automation/quick-responses"
               >
-                lock
-              </i>
-            </a>
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/order-management"
-            >
-              <div
-                class="name"
+                <div
+                  class="name"
+                >
+                  Quick response flows
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="/app/automation/order-management"
               >
-                Order management flows
-              </div>
-              <i
-                class="material-icons md-2 icon"
+                <div
+                  class="name"
+                >
+                  Order management flows
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="/app/automation/article-recommendation"
               >
-                lock
-              </i>
-            </a>
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/article-recommendation"
-            >
-              <div
-                class="name"
-              >
-                Article recommendation
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
+                <div
+                  class="name"
+                >
+                  Article recommendation
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -1097,186 +1109,190 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Ticket assignment
         </a>
         <div
-          class="category"
+          class="wrapper section"
         >
-          <h4
-            class="category-title"
-          >
-            <div
-              class="title"
-            >
-              <i
-                class="material-icons icon"
-              >
-                auto_awesome
-              </i>
-              automation add-on
-            </div>
-          </h4>
           <div
-            class="mt-3"
+            class="category"
           >
-            <div
-              class="section d-flex align-items-center flex-grow"
+            <h4
+              class="category-title"
             >
               <div
-                class="toggleSectionIconWrapper"
+                class="title"
               >
                 <i
-                  class="toggleSectionIcon material-icons"
+                  class="material-icons icon"
                 >
-                  arrow_drop_down
+                  auto_awesome
                 </i>
+                automation add-on
               </div>
-              <div
-                class="nameWrapper d-flex align-items-center flex-grow"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <img
-                    alt="shopify logo"
-                    role="presentation"
-                    src="/assets/img/integrations/shopify.png"
-                  />
-                </div>
-                <span
-                  class="name"
-                >
-                  gorgiastest
-                </span>
-              </div>
-            </div>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/flows"
-            >
-              <span
-                class="item-name"
-              >
-                Flow builder
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/quick-responses"
-            >
-              <span
-                class="item-name"
-              >
-                Quick response flows
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/order-management"
-            >
-              <span
-                class="item-name"
-              >
-                Order management flows
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/article-recommendation"
-            >
-              <span
-                class="item-name"
-              >
-                Article recommendation
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/connected-channels"
-            >
-              <span
-                class="item-name"
-              >
-                Connected channels
-              </span>
-            </a>
+            </h4>
             <div
-              class="section d-flex align-items-center flex-grow"
+              class="mt-3"
             >
               <div
-                class="toggleSectionIconWrapper"
-              >
-                <i
-                  class="toggleSectionIcon material-icons"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
-              <div
-                class="nameWrapper d-flex align-items-center flex-grow"
+                class="section d-flex align-items-center flex-grow"
               >
                 <div
-                  class="iconWrapper"
+                  class="toggleSectionIconWrapper"
                 >
-                  <img
-                    alt="bigcommerce logo"
-                    role="presentation"
-                    src="/assets/img/integrations/bigcommerce-white.svg"
-                  />
+                  <i
+                    class="toggleSectionIcon material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
                 </div>
-                <span
-                  class="name"
+                <div
+                  class="nameWrapper d-flex align-items-center flex-grow"
                 >
-                  gorgiastest.mybigcommerce.com
-                </span>
+                  <div
+                    class="iconWrapper"
+                  >
+                    <img
+                      alt="shopify logo"
+                      role="presentation"
+                      src="/assets/img/integrations/shopify.png"
+                    />
+                  </div>
+                  <span
+                    class="name"
+                  >
+                    gorgiastest
+                  </span>
+                </div>
               </div>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/flows"
+              >
+                <span
+                  class="item-name"
+                >
+                  Flow builder
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/quick-responses"
+              >
+                <span
+                  class="item-name"
+                >
+                  Quick response flows
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/order-management"
+              >
+                <span
+                  class="item-name"
+                >
+                  Order management flows
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/article-recommendation"
+              >
+                <span
+                  class="item-name"
+                >
+                  Article recommendation
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/connected-channels"
+              >
+                <span
+                  class="item-name"
+                >
+                  Connected channels
+                </span>
+              </a>
+              <div
+                class="section d-flex align-items-center flex-grow"
+              >
+                <div
+                  class="toggleSectionIconWrapper"
+                >
+                  <i
+                    class="toggleSectionIcon material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
+                </div>
+                <div
+                  class="nameWrapper d-flex align-items-center flex-grow"
+                >
+                  <div
+                    class="iconWrapper"
+                  >
+                    <img
+                      alt="bigcommerce logo"
+                      role="presentation"
+                      src="/assets/img/integrations/bigcommerce-white.svg"
+                    />
+                  </div>
+                  <span
+                    class="name"
+                  >
+                    gorgiastest.mybigcommerce.com
+                  </span>
+                </div>
+              </div>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/bigcommerce/xb107iaz1n/flows"
+              >
+                <span
+                  class="item-name"
+                >
+                  Flow builder
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
+              >
+                <span
+                  class="item-name"
+                >
+                  Quick response flows
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
+              >
+                <span
+                  class="item-name"
+                >
+                  Article recommendation
+                </span>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
+              >
+                <span
+                  class="item-name"
+                >
+                  Connected channels
+                </span>
+              </a>
             </div>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/bigcommerce/xb107iaz1n/flows"
-            >
-              <span
-                class="item-name"
-              >
-                Flow builder
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
-            >
-              <span
-                class="item-name"
-              >
-                Quick response flows
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
-            >
-              <span
-                class="item-name"
-              >
-                Article recommendation
-              </span>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
-            >
-              <span
-                class="item-name"
-              >
-                Connected channels
-              </span>
-            </a>
           </div>
         </div>
       </div>
@@ -1464,138 +1480,142 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Ticket assignment
         </a>
         <div
-          class="category"
+          class="wrapper section"
         >
-          <h4
-            class="category-title"
-          >
-            <div
-              class="title"
-            >
-              <i
-                class="material-icons icon"
-              >
-                auto_awesome
-              </i>
-              automation add-on
-            </div>
-          </h4>
           <div
-            class="mt-3"
+            class="category"
           >
-            <div
-              class="section d-flex align-items-center flex-grow"
+            <h4
+              class="category-title"
             >
               <div
-                class="toggleSectionIconWrapper"
+                class="title"
               >
                 <i
-                  class="toggleSectionIcon material-icons"
+                  class="material-icons icon"
                 >
-                  arrow_drop_down
+                  auto_awesome
                 </i>
+                automation add-on
               </div>
+            </h4>
+            <div
+              class="mt-3"
+            >
               <div
-                class="nameWrapper d-flex align-items-center flex-grow"
+                class="section d-flex align-items-center flex-grow"
               >
                 <div
-                  class="iconWrapper"
+                  class="toggleSectionIconWrapper"
                 >
-                  <img
-                    alt="shopify logo"
-                    role="presentation"
-                    src="/assets/img/integrations/shopify.png"
-                  />
+                  <i
+                    class="toggleSectionIcon material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
                 </div>
-                <span
+                <div
+                  class="nameWrapper d-flex align-items-center flex-grow"
+                >
+                  <div
+                    class="iconWrapper"
+                  >
+                    <img
+                      alt="shopify logo"
+                      role="presentation"
+                      src="/assets/img/integrations/shopify.png"
+                    />
+                  </div>
+                  <span
+                    class="name"
+                  >
+                    gorgiastest
+                  </span>
+                </div>
+              </div>
+              <a
+                class="link isNested item"
+                data-active-class-name="active"
+                href="/app/automation/flows"
+              >
+                <div
                   class="name"
                 >
-                  gorgiastest
+                  <span
+                    class="item-name"
+                  >
+                    Flow builder
+                  </span>
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link isNested item"
+                data-active-class-name="active"
+                href="/app/automation/quick-responses"
+              >
+                <div
+                  class="name"
+                >
+                  <span
+                    class="item-name"
+                  >
+                    Quick response flows
+                  </span>
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/order-management"
+              >
+                <span
+                  class="item-name"
+                >
+                  Order management flows
                 </span>
-              </div>
+              </a>
+              <a
+                class="link isNested item"
+                data-active-class-name="active"
+                href="/app/automation/article-recommendation"
+              >
+                <div
+                  class="name"
+                >
+                  <span
+                    class="item-name"
+                  >
+                    Article recommendation
+                  </span>
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link isNested"
+                data-active-class-name="active"
+                href="/app/automation/shopify/gorgiastest/connected-channels"
+              >
+                <span
+                  class="item-name"
+                >
+                  Connected channels
+                </span>
+              </a>
             </div>
-            <a
-              class="link isNested item"
-              data-active-class-name="active"
-              href="/app/automation/flows"
-            >
-              <div
-                class="name"
-              >
-                <span
-                  class="item-name"
-                >
-                  Flow builder
-                </span>
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
-            <a
-              class="link isNested item"
-              data-active-class-name="active"
-              href="/app/automation/quick-responses"
-            >
-              <div
-                class="name"
-              >
-                <span
-                  class="item-name"
-                >
-                  Quick response flows
-                </span>
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/order-management"
-            >
-              <span
-                class="item-name"
-              >
-                Order management flows
-              </span>
-            </a>
-            <a
-              class="link isNested item"
-              data-active-class-name="active"
-              href="/app/automation/article-recommendation"
-            >
-              <div
-                class="name"
-              >
-                <span
-                  class="item-name"
-                >
-                  Article recommendation
-                </span>
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
-            <a
-              class="link isNested"
-              data-active-class-name="active"
-              href="/app/automation/shopify/gorgiastest/connected-channels"
-            >
-              <span
-                class="item-name"
-              >
-                Connected channels
-              </span>
-            </a>
           </div>
         </div>
       </div>
@@ -1783,89 +1803,93 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Ticket assignment
         </a>
         <div
-          class="category"
+          class="wrapper section"
         >
-          <h4
-            class="category-title"
-          >
-            <div
-              class="title"
-            >
-              <i
-                class="material-icons icon"
-              >
-                auto_awesome
-              </i>
-              automation add-on
-            </div>
-          </h4>
           <div
-            class="mt-4"
+            class="category"
           >
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/flows"
+            <h4
+              class="category-title"
             >
               <div
-                class="name"
+                class="title"
               >
-                Flow builder
+                <i
+                  class="material-icons icon"
+                >
+                  auto_awesome
+                </i>
+                automation add-on
               </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/quick-responses"
+            </h4>
+            <div
+              class="mt-4"
             >
-              <div
-                class="name"
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="/app/automation/flows"
               >
-                Quick response flows
-              </div>
-              <i
-                class="material-icons md-2 icon"
+                <div
+                  class="name"
+                >
+                  Flow builder
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="/app/automation/quick-responses"
               >
-                lock
-              </i>
-            </a>
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/order-management"
-            >
-              <div
-                class="name"
+                <div
+                  class="name"
+                >
+                  Quick response flows
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="/app/automation/order-management"
               >
-                Order management flows
-              </div>
-              <i
-                class="material-icons md-2 icon"
+                <div
+                  class="name"
+                >
+                  Order management flows
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="/app/automation/article-recommendation"
               >
-                lock
-              </i>
-            </a>
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="/app/automation/article-recommendation"
-            >
-              <div
-                class="name"
-              >
-                Article recommendation
-              </div>
-              <i
-                class="material-icons md-2 icon"
-              >
-                lock
-              </i>
-            </a>
+                <div
+                  class="name"
+                >
+                  Article recommendation
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  lock
+                </i>
+              </a>
+            </div>
           </div>
         </div>
       </div>

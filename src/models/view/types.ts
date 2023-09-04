@@ -37,6 +37,11 @@ export enum ViewVisibility {
     Private = 'private',
 }
 
+export type ViewCategoryNavbar = Extract<
+    ViewVisibility,
+    ViewVisibility.Public | ViewVisibility.Private
+>
+
 export type ViewDecoration = {
     emoji?: string
 }

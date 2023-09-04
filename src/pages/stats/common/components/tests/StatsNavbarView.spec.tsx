@@ -5,6 +5,8 @@ import thunk from 'redux-thunk'
 import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {DndProvider} from 'react-dnd'
 
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -24,7 +26,9 @@ describe('StatsNavbarView', () => {
     it('should render', () => {
         const component = render(
             <Provider store={mockStore(defaultState)}>
-                <StatsNavbarView />
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
             </Provider>
         )
         expect(component).toMatchSnapshot()
@@ -33,7 +37,9 @@ describe('StatsNavbarView', () => {
     it('should render the link to busiest times of days', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <StatsNavbarView />
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
             </Provider>
         )
 
@@ -47,7 +53,9 @@ describe('StatsNavbarView', () => {
             }))
             render(
                 <Provider store={mockStore(defaultState)}>
-                    <StatsNavbarView />
+                    <DndProvider backend={HTML5Backend}>
+                        <StatsNavbarView />
+                    </DndProvider>
                 </Provider>
             )
 
@@ -63,7 +71,9 @@ describe('StatsNavbarView', () => {
         }))
         render(
             <Provider store={mockStore(defaultState)}>
-                <StatsNavbarView />
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
             </Provider>
         )
 

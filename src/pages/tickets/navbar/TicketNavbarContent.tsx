@@ -155,7 +155,10 @@ export function TicketNavbarContentContainer({
 
     return (
         <TicketNavbarDropTarget
-            accept={Object.values(TicketNavbarElementType)}
+            accept={[
+                TicketNavbarElementType.View,
+                TicketNavbarElementType.Section,
+            ]}
             canDrop={(item) => {
                 if (isMovingItem) {
                     return false

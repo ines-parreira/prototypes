@@ -9,4 +9,5 @@ export type TicketNavbarState = {
 export enum TicketNavbarElementType {
     View = 'view',
     Section = 'section',
+    Category = 'category',
 }

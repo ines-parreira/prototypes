@@ -6,6 +6,190 @@ exports[`StatsNavbarView should render 1`] = `
   "baseElement": <body>
     <div>
       <div
+        class="wrapper section"
+      >
+        <div
+          class="category"
+        >
+          <h4
+            class="category-title"
+          >
+            <div
+              class="title"
+            >
+              <i
+                class="material-icons icon"
+              >
+                adjust
+              </i>
+              Live
+            </div>
+          </h4>
+          <div
+            class="menu"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/live-overview"
+            >
+              Overview
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/live-agents"
+            >
+              Agents
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper section"
+      >
+        <div
+          class="category"
+        >
+          <h4
+            class="category-title"
+          >
+            <div
+              class="title"
+            >
+              <i
+                class="material-icons icon"
+              >
+                insights
+              </i>
+              Support Performance
+            </div>
+          </h4>
+          <div
+            class="menu"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/support-performance-overview"
+            >
+              Overview
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/support-performance-agents"
+            >
+              Agents
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/busiest-times-of-days"
+            >
+              Busiest times of days
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/ticket-fields"
+            >
+              Ticket Fields
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/tags"
+            >
+              Tags
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/channels"
+            >
+              Channels
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/satisfaction"
+            >
+              Satisfaction
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/revenue"
+            >
+              Revenue
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper section"
+      >
+        <div
+          class="category"
+        >
+          <h4
+            class="category-title"
+          >
+            <div
+              class="title"
+            >
+              <i
+                class="material-icons icon"
+              >
+                bolt
+              </i>
+              Automation
+            </div>
+          </h4>
+          <div
+            class="menu"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/macros"
+            >
+              Macros
+            </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/intents"
+            >
+              Intents
+            </a>
+            <a
+              class="link item"
+              data-active-class-name="active"
+              href="/app/stats/automation-add-on-features"
+            >
+              <div
+                class="name"
+              >
+                Automation add-on features
+              </div>
+              <i
+                class="material-icons md-2 icon"
+              >
+                lock
+              </i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="wrapper section"
+    >
+      <div
         class="category"
       >
         <h4
@@ -41,6 +225,10 @@ exports[`StatsNavbarView should render 1`] = `
           </a>
         </div>
       </div>
+    </div>
+    <div
+      class="wrapper section"
+    >
       <div
         class="category"
       >
@@ -119,6 +307,10 @@ exports[`StatsNavbarView should render 1`] = `
           </a>
         </div>
       </div>
+    </div>
+    <div
+      class="wrapper section"
+    >
       <div
         class="category"
       >
@@ -170,174 +362,6 @@ exports[`StatsNavbarView should render 1`] = `
             </i>
           </a>
         </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <div
-      class="category"
-    >
-      <h4
-        class="category-title"
-      >
-        <div
-          class="title"
-        >
-          <i
-            class="material-icons icon"
-          >
-            adjust
-          </i>
-          Live
-        </div>
-      </h4>
-      <div
-        class="menu"
-      >
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/live-overview"
-        >
-          Overview
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/live-agents"
-        >
-          Agents
-        </a>
-      </div>
-    </div>
-    <div
-      class="category"
-    >
-      <h4
-        class="category-title"
-      >
-        <div
-          class="title"
-        >
-          <i
-            class="material-icons icon"
-          >
-            insights
-          </i>
-          Support Performance
-        </div>
-      </h4>
-      <div
-        class="menu"
-      >
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/support-performance-overview"
-        >
-          Overview
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/support-performance-agents"
-        >
-          Agents
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/busiest-times-of-days"
-        >
-          Busiest times of days
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/ticket-fields"
-        >
-          Ticket Fields
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/tags"
-        >
-          Tags
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/channels"
-        >
-          Channels
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/satisfaction"
-        >
-          Satisfaction
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/revenue"
-        >
-          Revenue
-        </a>
-      </div>
-    </div>
-    <div
-      class="category"
-    >
-      <h4
-        class="category-title"
-      >
-        <div
-          class="title"
-        >
-          <i
-            class="material-icons icon"
-          >
-            bolt
-          </i>
-          Automation
-        </div>
-      </h4>
-      <div
-        class="menu"
-      >
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/macros"
-        >
-          Macros
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/stats/intents"
-        >
-          Intents
-        </a>
-        <a
-          class="link item"
-          data-active-class-name="active"
-          href="/app/stats/automation-add-on-features"
-        >
-          <div
-            class="name"
-          >
-            Automation add-on features
-          </div>
-          <i
-            class="material-icons md-2 icon"
-          >
-            lock
-          </i>
-        </a>
       </div>
     </div>
   </div>,

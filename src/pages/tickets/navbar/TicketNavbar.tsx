@@ -3,73 +3,83 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useHistory, useParams} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
+import {DropTargetMonitor} from 'react-dnd'
 
 import GorgiasApi from 'services/gorgiasApi'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import useSearch from '../../../hooks/useSearch'
+import {tryLocalStorage} from 'services/common/utils'
+
 import {
     UserRole,
     UserSetting,
     UserSettingType,
     UserViewsOrderingSettingData,
-} from '../../../config/types/user'
+} from 'config/types/user'
+import useSearch from 'hooks/useSearch'
+import {createAccountSetting, updateAccountSetting} from 'models/account'
 import {
     fetchSections,
     updateSection,
     createSection,
     deleteSection,
-} from '../../../models/section/resources'
-import {SectionDraft, Section} from '../../../models/section/types'
-import {fetchViewsPaginated, updateView} from '../../../models/view/resources'
-import {View} from '../../../models/view/types'
-import shortcutManager from '../../../services/shortcutManager/shortcutManager'
+} from 'models/section/resources'
+import {Section, SectionDraft} from 'models/section/types'
+import {createUserSetting, updateUserSetting} from 'models/user/resources'
+import {fetchViewsPaginated, updateView} from 'models/view/resources'
+import {View, ViewCategoryNavbar, ViewVisibility} from 'models/view/types'
+import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
+import Navbar from 'pages/common/components/Navbar'
+import RecentChats from 'pages/common/components/RecentChats'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+
+import {submitSettingSuccess as submitAccountSettingSuccess} from 'state/currentAccount/actions'
+import {
+    AccountSetting,
+    AccountSettingType,
+    AccountViewsOrderingSettingData,
+} from 'state/currentAccount/types'
+import {submitSettingSuccess} from 'state/currentUser/actions'
+import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
+import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
 import {
     sectionUpdated,
     sectionCreated,
     sectionsFetched,
     sectionDeleted,
-} from '../../../state/entities/sections/actions'
-import {viewsFetched, viewUpdated} from '../../../state/entities/views/actions'
+} from 'state/entities/sections/actions'
+import {viewsFetched, viewUpdated} from 'state/entities/views/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
 import {
     getPrivateTicketNavbarElements,
     getPublicTicketNavbarElements,
-} from '../../../state/ui/ticketNavbar/selectors'
-import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
-import {RootState} from '../../../state/types'
-import {activeViewIdSet} from '../../../state/ui/views/actions'
-import {fetchViewsSuccess} from '../../../state/views/actions'
-import {hasRole} from '../../../utils'
-import Navbar from '../../common/components/Navbar'
-import NavbarBlock from '../../common/components/navbar/NavbarBlock'
-import RecentChats from '../../common/components/RecentChats'
+} from 'state/ui/ticketNavbar/selectors'
+import {activeViewIdSet} from 'state/ui/views/actions'
 import {
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,
-} from '../../../state/ui/ticketNavbar/actions'
-import {
-    createUserSetting,
-    updateUserSetting,
-} from '../../../models/user/resources'
-import {submitSettingSuccess} from '../../../state/currentUser/actions'
-import {getViewsOrderingUserSetting} from '../../../state/currentUser/selectors'
-import {
-    AccountSetting,
-    AccountSettingType,
-    AccountViewsOrderingSettingData,
-} from '../../../state/currentAccount/types'
-import {getViewsOrderingSetting} from '../../../state/currentAccount/selectors'
-import {
-    createAccountSetting,
-    updateAccountSetting,
-} from '../../../models/account'
-import {submitSettingSuccess as submitAccountSettingSuccess} from '../../../state/currentAccount/actions'
+} from 'state/ui/ticketNavbar/actions'
+import {fetchViewsSuccess} from 'state/views/actions'
+
+import {hasRole} from 'utils'
 
 import DeleteSectionModal from './DeleteSectionModal'
 import SectionFormModal from './SectionFormModal'
 import TicketNavbarContent, {TicketNavbarElement} from './TicketNavbarContent'
+import TicketNavbarDropTarget, {
+    TicketNavbarDragObject,
+    TicketNavbarDropDirection,
+    TicketNavbarDropResult,
+} from './TicketNavbarDropTarget'
+
 import css from './TicketNavbar.less'
+
+const viewCategories = {
+    public: 'Shared views',
+    private: 'Private views',
+}
 
 export function TicketNavbarContainer({
     activeViewId,
@@ -371,67 +381,102 @@ export function TicketNavbarContainer({
         [accountSetting, userSetting]
     )
 
+    const [categories, setCategories] = useState<ViewCategoryNavbar[]>(() => {
+        const viewCategories = window.localStorage.getItem('viewCategories')
+
+        if (!viewCategories) {
+            return [ViewVisibility.Public, ViewVisibility.Private]
+        }
+        return JSON.parse(viewCategories) as ViewCategoryNavbar[]
+    })
+
+    const handleCategoryDrop = useCallback(
+        (item: TicketNavbarDragObject, monitor: DropTargetMonitor) => {
+            const {categoryId, direction} =
+                monitor.getDropResult() as TicketNavbarDropResult
+            const id = item.id as ViewCategoryNavbar
+            let categories: ViewCategoryNavbar[]
+            if (categoryId === item.id) {
+                return
+            } else if (direction === TicketNavbarDropDirection.Up) {
+                categories = [id, categoryId!]
+            } else {
+                categories = [categoryId!, id]
+            }
+            tryLocalStorage(() =>
+                window.localStorage.setItem(
+                    'viewCategories',
+                    JSON.stringify(categories)
+                )
+            )
+            setCategories(categories)
+        },
+        []
+    )
+
     const {scrollableAreaRef} = useAutoScrollOnDragging()
 
     return (
         <Navbar activeContent="tickets" navbarContentRef={scrollableAreaRef}>
             <RecentChats />
-            <NavbarBlock
-                actions={
-                    isAgent
-                        ? [
-                              {
-                                  label: 'Create view',
-                                  onClick: () =>
-                                      history.push('/app/tickets/new/public'),
-                              },
-                              {
-                                  label: 'Create section',
-                                  onClick: () =>
-                                      handleCreateSectionClick(false),
-                              },
-                          ]
-                        : []
-                }
-                title="Shared views"
-                className={css.navbarBlock}
-            >
-                <TicketNavbarContent
-                    {...(isAgent
-                        ? {
-                              onSectionDeleteClick: handleSectionDeleteClick,
-                              onSectionRenameClick: handleSectionRenameClick,
-                          }
-                        : {})}
-                    elements={sharedElements}
-                    isMovingItem={isMovingItem}
-                    onSubmitMoveItem={handleSubmitMoveItem}
-                />
-            </NavbarBlock>
-            <NavbarBlock
-                actions={[
-                    {
-                        label: 'Create view',
-                        onClick: () => history.push('/app/tickets/new/private'),
-                    },
-                    {
-                        label: 'Create section',
-                        onClick: () => handleCreateSectionClick(true),
-                    },
-                ]}
-                title="Private views"
-                className={css.navbarBlock}
-            >
-                <TicketNavbarContent
-                    elements={privateElements}
-                    isMovingItem={isMovingItem}
-                    isPrivate
-                    onSectionDeleteClick={handleSectionDeleteClick}
-                    onSectionRenameClick={handleSectionRenameClick}
-                    onSubmitMoveItem={handleSubmitMoveItem}
-                />
-            </NavbarBlock>
-
+            {categories.map((category) => (
+                <TicketNavbarDropTarget
+                    type={TicketNavbarElementType.Category}
+                    key={category}
+                    accept={TicketNavbarElementType.Category}
+                    canDrop={(item) =>
+                        item.type === TicketNavbarElementType.Category
+                    }
+                    onDrop={handleCategoryDrop}
+                >
+                    <NavbarBlock
+                        actions={
+                            (category === 'public' && isAgent) ||
+                            category === 'private'
+                                ? [
+                                      {
+                                          label: 'Create view',
+                                          onClick: () =>
+                                              history.push(
+                                                  `/app/tickets/new/${category}`
+                                              ),
+                                      },
+                                      {
+                                          label: 'Create section',
+                                          onClick: () =>
+                                              handleCreateSectionClick(
+                                                  category === 'private'
+                                              ),
+                                      },
+                                  ]
+                                : undefined
+                        }
+                        title={viewCategories[category]}
+                        value={category}
+                        className={css.navbarBlock}
+                    >
+                        <TicketNavbarContent
+                            {...((category === 'public' && isAgent) ||
+                            category === 'private'
+                                ? {
+                                      onSectionDeleteClick:
+                                          handleSectionDeleteClick,
+                                      onSectionRenameClick:
+                                          handleSectionRenameClick,
+                                  }
+                                : {})}
+                            elements={
+                                category === 'public'
+                                    ? sharedElements
+                                    : privateElements
+                            }
+                            isMovingItem={isMovingItem}
+                            onSubmitMoveItem={handleSubmitMoveItem}
+                            isPrivate={category === 'private'}
+                        />
+                    </NavbarBlock>
+                </TicketNavbarDropTarget>
+            ))}
             <SectionFormModal
                 isNewSection={isNewSection}
                 isOpen={isSectionFormModalOpened}

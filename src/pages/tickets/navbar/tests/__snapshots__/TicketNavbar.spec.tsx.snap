@@ -6,51 +6,61 @@ exports[`<TicketNavbar/> should close a new section modal when clicking close se
     RecentChats
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
-      </div>
-      <div>
-        element: 
-        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      NavbarBlock:
+       
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+        </div>
+        <div>
+          element: 
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+        </div>
       </div>
     </div>
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
-    <span
-      data-testid="NavbarBlock-Create view"
-    >
-      Create view
-    </span>
-    <span
-      data-testid="NavbarBlock-Create section"
-    >
-      Create section
-    </span>
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      NavbarBlock:
+       
+      <span
+        data-testid="NavbarBlock-Create view"
+      >
+        Create view
+      </span>
+      <span
+        data-testid="NavbarBlock-Create section"
+      >
+        Create section
+      </span>
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+        </div>
+        <div
+          data-testid="TicketNavbarContent-delete"
+        />
+        <div
+          data-testid="TicketNavbarContent-rename"
+        />
       </div>
-      <div
-        data-testid="TicketNavbarContent-delete"
-      />
-      <div
-        data-testid="TicketNavbarContent-rename"
-      />
     </div>
   </div>
   <div
@@ -114,67 +124,77 @@ exports[`<TicketNavbar/> should display shared actions for lead-agent/admin 1`] 
     RecentChats
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
-    <span
-      data-testid="NavbarBlock-Create view"
-    >
-      Create view
-    </span>
-    <span
-      data-testid="NavbarBlock-Create section"
-    >
-      Create section
-    </span>
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
-      </div>
-      <div>
-        element: 
-        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
-      </div>
+      NavbarBlock:
+       
+      <span
+        data-testid="NavbarBlock-Create view"
+      >
+        Create view
+      </span>
+      <span
+        data-testid="NavbarBlock-Create section"
+      >
+        Create section
+      </span>
       <div
-        data-testid="TicketNavbarContent-delete"
-      />
-      <div
-        data-testid="TicketNavbarContent-rename"
-      />
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+        </div>
+        <div>
+          element: 
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+        </div>
+        <div
+          data-testid="TicketNavbarContent-delete"
+        />
+        <div
+          data-testid="TicketNavbarContent-rename"
+        />
+      </div>
     </div>
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
-    <span
-      data-testid="NavbarBlock-Create view"
-    >
-      Create view
-    </span>
-    <span
-      data-testid="NavbarBlock-Create section"
-    >
-      Create section
-    </span>
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      NavbarBlock:
+       
+      <span
+        data-testid="NavbarBlock-Create view"
+      >
+        Create view
+      </span>
+      <span
+        data-testid="NavbarBlock-Create section"
+      >
+        Create section
+      </span>
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+        </div>
+        <div
+          data-testid="TicketNavbarContent-delete"
+        />
+        <div
+          data-testid="TicketNavbarContent-rename"
+        />
       </div>
-      <div
-        data-testid="TicketNavbarContent-delete"
-      />
-      <div
-        data-testid="TicketNavbarContent-rename"
-      />
     </div>
   </div>
   <div
@@ -238,51 +258,61 @@ exports[`<TicketNavbar/> should open a new section modal when clicking create se
     RecentChats
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
-      </div>
-      <div>
-        element: 
-        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      NavbarBlock:
+       
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+        </div>
+        <div>
+          element: 
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+        </div>
       </div>
     </div>
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
-    <span
-      data-testid="NavbarBlock-Create view"
-    >
-      Create view
-    </span>
-    <span
-      data-testid="NavbarBlock-Create section"
-    >
-      Create section
-    </span>
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      NavbarBlock:
+       
+      <span
+        data-testid="NavbarBlock-Create view"
+      >
+        Create view
+      </span>
+      <span
+        data-testid="NavbarBlock-Create section"
+      >
+        Create section
+      </span>
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+        </div>
+        <div
+          data-testid="TicketNavbarContent-delete"
+        />
+        <div
+          data-testid="TicketNavbarContent-rename"
+        />
       </div>
-      <div
-        data-testid="TicketNavbarContent-delete"
-      />
-      <div
-        data-testid="TicketNavbarContent-rename"
-      />
     </div>
   </div>
   <div
@@ -346,51 +376,61 @@ exports[`<TicketNavbar/> should render 1`] = `
     RecentChats
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
-      </div>
-      <div>
-        element: 
-        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      NavbarBlock:
+       
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+        </div>
+        <div>
+          element: 
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+        </div>
       </div>
     </div>
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
-    <span
-      data-testid="NavbarBlock-Create view"
-    >
-      Create view
-    </span>
-    <span
-      data-testid="NavbarBlock-Create section"
-    >
-      Create section
-    </span>
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      NavbarBlock:
+       
+      <span
+        data-testid="NavbarBlock-Create view"
+      >
+        Create view
+      </span>
+      <span
+        data-testid="NavbarBlock-Create section"
+      >
+        Create section
+      </span>
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+        </div>
+        <div
+          data-testid="TicketNavbarContent-delete"
+        />
+        <div
+          data-testid="TicketNavbarContent-rename"
+        />
       </div>
-      <div
-        data-testid="TicketNavbarContent-delete"
-      />
-      <div
-        data-testid="TicketNavbarContent-rename"
-      />
     </div>
   </div>
   <div
@@ -454,51 +494,61 @@ exports[`<TicketNavbar/> should update the draft form on change 1`] = `
     RecentChats
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
-      </div>
-      <div>
-        element: 
-        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      NavbarBlock:
+       
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+        </div>
+        <div>
+          element: 
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+        </div>
       </div>
     </div>
   </div>
   <div
-    data-testid="NavbarBlock"
+    class="wrapper"
+    type="category"
   >
-    NavbarBlock:
-     
-    <span
-      data-testid="NavbarBlock-Create view"
-    >
-      Create view
-    </span>
-    <span
-      data-testid="NavbarBlock-Create section"
-    >
-      Create section
-    </span>
     <div
-      data-testid="TicketNavbarContent"
+      data-testid="NavbarBlock"
     >
-      <div>
-        element: 
-        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      NavbarBlock:
+       
+      <span
+        data-testid="NavbarBlock-Create view"
+      >
+        Create view
+      </span>
+      <span
+        data-testid="NavbarBlock-Create section"
+      >
+        Create section
+      </span>
+      <div
+        data-testid="TicketNavbarContent"
+      >
+        <div>
+          element: 
+          {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+        </div>
+        <div
+          data-testid="TicketNavbarContent-delete"
+        />
+        <div
+          data-testid="TicketNavbarContent-rename"
+        />
       </div>
-      <div
-        data-testid="TicketNavbarContent-delete"
-      />
-      <div
-        data-testid="TicketNavbarContent-rename"
-      />
     </div>
   </div>
   <div

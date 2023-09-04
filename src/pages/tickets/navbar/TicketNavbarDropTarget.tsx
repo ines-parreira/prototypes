@@ -7,10 +7,12 @@ import {
     useDrop,
 } from 'react-dnd'
 
+import {ViewCategoryNavbar} from 'models/view/types'
+
 import css from './TicketNavbarDropTarget.less'
 
 export interface TicketNavbarDragObject extends DragObjectWithType {
-    id: number
+    id: number | ViewCategoryNavbar
 }
 
 export enum TicketNavbarDropDirection {
@@ -22,6 +24,7 @@ export type TicketNavbarDropResult = {
     sectionId: number | null
     viewId: number | null
     direction: TicketNavbarDropDirection | null
+    categoryId?: ViewCategoryNavbar
 }
 
 type TicketNavbarDropTargetHookSpec = DropTargetHookSpec<

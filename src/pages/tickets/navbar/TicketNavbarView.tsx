@@ -56,7 +56,10 @@ export function TicketNavbarViewContainer({
     drag(wrapperRef)
     return (
         <TicketNavbarDropTarget
-            accept={Object.values(TicketNavbarElementType)}
+            accept={[
+                TicketNavbarElementType.View,
+                TicketNavbarElementType.Section,
+            ]}
             canDrop={(item) => {
                 if (
                     item.type === TicketNavbarElementType.Section &&

@@ -1,6 +1,5 @@
 import querystring from 'querystring'
 import url from 'url'
-
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios/index'
 import {fromJS, List} from 'immutable'
@@ -9,19 +8,19 @@ import {
     basicMonthlyHelpdeskPrice,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import {
+    shopifyCancelOrderPayloadFixture,
+    shopifyInvoicePayloadFixture,
+} from 'fixtures/shopify'
+import client from 'models/api/resources'
+import {ApiListResponseCursorPagination} from 'models/api/types'
 import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
 import {
     IntegrationDataItem,
     IntegrationType,
     IntegrationDataItemType,
 } from 'models/integration/types'
-import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
 import {ViewVisibility} from 'models/view/types'
-import {
-    shopifyCancelOrderPayloadFixture,
-    shopifyInvoicePayloadFixture,
-} from 'fixtures/shopify'
 import GorgiasApi from 'services/gorgiasApi'
 
 describe('services', () => {

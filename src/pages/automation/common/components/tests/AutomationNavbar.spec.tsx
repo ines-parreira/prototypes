@@ -4,6 +4,8 @@ import {Provider} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {useParams} from 'react-router-dom'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {DndProvider} from 'react-dnd'
 
 import {user} from 'fixtures/users'
 import {
@@ -67,7 +69,9 @@ describe('<AutomationNavbar />', () => {
                         }),
                     })}
                 >
-                    <AutomationNavbar />
+                    <DndProvider backend={HTML5Backend}>
+                        <AutomationNavbar />
+                    </DndProvider>
                 </Provider>
             )
 
@@ -93,7 +97,9 @@ describe('<AutomationNavbar />', () => {
                         }),
                     })}
                 >
-                    <AutomationNavbar />
+                    <DndProvider backend={HTML5Backend}>
+                        <AutomationNavbar />
+                    </DndProvider>
                 </Provider>
             )
 
@@ -116,7 +122,9 @@ describe('<AutomationNavbar />', () => {
                         }),
                     })}
                 >
-                    <AutomationNavbar />
+                    <DndProvider backend={HTML5Backend}>
+                        <AutomationNavbar />
+                    </DndProvider>
                 </Provider>
             )
 
@@ -162,7 +170,9 @@ describe('<AutomationNavbar />', () => {
                         }),
                     })}
                 >
-                    <AutomationNavbar />
+                    <DndProvider backend={HTML5Backend}>
+                        <AutomationNavbar />
+                    </DndProvider>
                 </Provider>
             )
 
@@ -188,7 +198,9 @@ describe('<AutomationNavbar />', () => {
                         }),
                     })}
                 >
-                    <AutomationNavbar />
+                    <DndProvider backend={HTML5Backend}>
+                        <AutomationNavbar />
+                    </DndProvider>
                 </Provider>
             )
 
@@ -207,7 +219,9 @@ describe('<AutomationNavbar />', () => {
                         }),
                     })}
                 >
-                    <AutomationNavbar />
+                    <DndProvider backend={HTML5Backend}>
+                        <AutomationNavbar />
+                    </DndProvider>
                 </Provider>
             )
 
@@ -249,7 +263,9 @@ describe('<AutomationNavbar />', () => {
                         }),
                     })}
                 >
-                    <AutomationNavbar />
+                    <DndProvider backend={HTML5Backend}>
+                        <AutomationNavbar />
+                    </DndProvider>
                 </Provider>
             )
 
@@ -271,7 +287,9 @@ describe('<AutomationNavbar />', () => {
                         }),
                     })}
                 >
-                    <AutomationNavbar />
+                    <DndProvider backend={HTML5Backend}>
+                        <AutomationNavbar />
+                    </DndProvider>
                 </Provider>
             )
 
