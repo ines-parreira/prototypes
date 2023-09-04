@@ -88,9 +88,17 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     }
 
     const maxActiveWorkflows = Math.max(
-        MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS - enabledQuickResponsesCount,
+        MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS -
+            enabledQuickResponsesCount * Number(quickResponses.enabled),
         0
     )
+
+    const enabledEntrypointsCount =
+        workflows.entrypoints?.filter((entrypoint) => entrypoint.enabled)
+            .length ?? 0
+    const cantReactivateQuickResponses =
+        enabledEntrypointsCount + enabledQuickResponsesCount >
+            MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS && !quickResponses.enabled
 
     return (
         <>
@@ -126,8 +134,17 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 name="Quick response flows"
                 value={quickResponses.enabled}
                 onChange={updateSettings('quickResponses')}
-                disabled={isUpdatePending || !hasAutomationAddOn}
+                disabled={
+                    isUpdatePending ||
+                    !hasAutomationAddOn ||
+                    cantReactivateQuickResponses
+                }
                 action={!hasAutomationAddOn && <AutomationSubscriptionAction />}
+                tooltipMessage={
+                    cantReactivateQuickResponses
+                        ? 'Disable individual Flows and Quick response flows to have a maximum of 6 flows between them in order to turn on Quick response flows again.'
+                        : undefined
+                }
             />
 
             {isOrderManagementAvailable && (

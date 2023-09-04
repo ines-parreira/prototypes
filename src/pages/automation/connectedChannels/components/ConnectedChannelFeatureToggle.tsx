@@ -1,6 +1,8 @@
 import React, {ReactNode} from 'react'
 
+import useId from 'hooks/useId'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './ConnectedChannelFeatureToggle.less'
 
@@ -11,6 +13,7 @@ type Props = {
     onChange: (value: boolean) => void
     disabled?: boolean
     action?: ReactNode
+    tooltipMessage?: string
 }
 
 const ConnectedChannelFeatureToggle = ({
@@ -20,7 +23,9 @@ const ConnectedChannelFeatureToggle = ({
     onChange,
     disabled,
     action,
+    tooltipMessage,
 }: Props) => {
+    const toggleInputId = `feature-toggle-${useId()}`
     return (
         <div className={css.feature}>
             <ToggleInput
@@ -29,9 +34,15 @@ const ConnectedChannelFeatureToggle = ({
                 isDisabled={disabled}
                 onClick={onChange}
                 caption={description}
+                name={toggleInputId}
             >
                 {name}
             </ToggleInput>
+            {tooltipMessage && (
+                <Tooltip target={`${toggleInputId} + div`}>
+                    {tooltipMessage}
+                </Tooltip>
+            )}
             {action}
         </div>
     )
