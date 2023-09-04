@@ -3,12 +3,12 @@ import {connect, ConnectedProps} from 'react-redux'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
 
-import {RootState} from '../../../../state/types'
-import {hasRole} from '../../../../utils'
-import {AGENT_ROLE} from '../../../../config/user'
-import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
-import Button from '../button/Button'
-import ButtonIconLabel from '../button/ButtonIconLabel'
+import {RootState} from 'state/types'
+import {hasRole} from 'utils'
+import {AGENT_ROLE} from 'config/user'
+import {ViewCategory} from 'models/view/types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
 import ViewSharingModal from './ViewSharingModal/ViewSharingModal'
@@ -21,7 +21,7 @@ type OwnProps = {
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export function ViewSharingButtonContainer({currentUser, view}: Props) {
-    const isSystem = view.get('category') === SYSTEM_VIEW_CATEGORY
+    const isSystem = view.get('category') === ViewCategory.System
     const label = _capitalize(view.get('visibility'))
     const [isOpen, setOpen] = useState(false)
     const isAllowed = hasRole(currentUser, AGENT_ROLE)

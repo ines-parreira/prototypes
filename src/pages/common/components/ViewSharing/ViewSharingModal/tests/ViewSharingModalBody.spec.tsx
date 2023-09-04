@@ -2,8 +2,8 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
+import {ViewVisibility} from 'models/view/types'
 import {ViewSharingModalBodyContainer} from '../ViewSharingModalBody'
-import {ViewVisibility} from '../../../../../../constants/view'
 
 describe('<ViewSharingModalBody/>', () => {
     const minProps = {
@@ -24,7 +24,7 @@ describe('<ViewSharingModalBody/>', () => {
             const component = shallow(
                 <ViewSharingModalBodyContainer
                     {...minProps}
-                    visibility={ViewVisibility.PUBLIC}
+                    visibility={ViewVisibility.Public}
                     isLoading
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
@@ -40,7 +40,7 @@ describe('<ViewSharingModalBody/>', () => {
             const component = shallow(
                 <ViewSharingModalBodyContainer
                     {...minProps}
-                    visibility={ViewVisibility.PUBLIC}
+                    visibility={ViewVisibility.Public}
                     error={new Error('foo bar')}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
@@ -56,7 +56,7 @@ describe('<ViewSharingModalBody/>', () => {
             const component = shallow(
                 <ViewSharingModalBodyContainer
                     {...minProps}
-                    visibility={ViewVisibility.PUBLIC}
+                    visibility={ViewVisibility.Public}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
@@ -71,7 +71,7 @@ describe('<ViewSharingModalBody/>', () => {
             const component = shallow(
                 <ViewSharingModalBodyContainer
                     {...minProps}
-                    visibility={ViewVisibility.SHARED}
+                    visibility={ViewVisibility.Shared}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
@@ -86,7 +86,7 @@ describe('<ViewSharingModalBody/>', () => {
             const component = shallow(
                 <ViewSharingModalBodyContainer
                     {...minProps}
-                    visibility={ViewVisibility.PRIVATE}
+                    visibility={ViewVisibility.Private}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}

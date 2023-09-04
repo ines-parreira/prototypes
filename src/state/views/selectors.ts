@@ -15,6 +15,7 @@ import {RootState} from 'state/types'
 import {createImmutableSelector, isCurrentlyOnView} from 'utils'
 import {BASE_VIEW_ID} from 'constants/view'
 
+import {getDefaultTicketView} from 'state/ui/ticketNavbar/selectors'
 import {sortViews} from './utils'
 import {ViewsState} from './types'
 
@@ -222,28 +223,35 @@ const getViewsByType = (type: ViewType) =>
             _getViewsByType(views, currentUserSettings, accountSettings, type)
     )
 
-export const getViewIdToDisplay = (type: ViewType, urlViewId?: Maybe<string>) =>
-    createSelector(getViewsByType(type), (views) => {
-        if (urlViewId) {
-            // Prevent suggesting a view with the wrong type
-            const matchingView = views.find(
-                (view: Map<any, any>) => view.get('id') === parseInt(urlViewId)
-            )
-            if (matchingView) {
-                return parseInt(urlViewId)
+export const getViewIdToDisplay =
+    (state: RootState) => (type: ViewType, urlViewId?: string | null) =>
+        createSelector(
+            getViewsByType(type),
+            getDefaultTicketView,
+            (views, defaultTicketView) => {
+                if (urlViewId) {
+                    // Prevent suggesting a view with the wrong type
+                    const matchingView = views.find(
+                        (view: Map<any, any>) =>
+                            view.get('id') === parseInt(urlViewId)
+                    )
+                    if (matchingView) {
+                        return parseInt(urlViewId)
+                    }
+                }
+
+                if (views.isEmpty()) {
+                    return null
+                }
+                if (type === ViewType.TicketList) {
+                    return defaultTicketView?.id
+                }
+
+                return parseInt(
+                    (views.first() as Map<any, any>).get('id') as string
+                )
             }
-        }
-
-        if (views.isEmpty()) {
-            return null
-        }
-
-        return parseInt((views.first() as Map<any, any>).get('id') as string)
-    })
-
-export const makeGetViewIdToDisplay =
-    (state: RootState) => (type: ViewType, urlViewId: Maybe<string>) =>
-        getViewIdToDisplay(type, urlViewId)(state)
+        )(state)
 
 /**
  * Return view of asked id, if id is 'new' it generates a new view according to config

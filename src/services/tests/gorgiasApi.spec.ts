@@ -17,11 +17,11 @@ import {
 } from 'models/integration/types'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
+import {ViewVisibility} from 'models/view/types'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyInvoicePayloadFixture,
 } from 'fixtures/shopify'
-import {ViewVisibility} from 'constants/view'
 import GorgiasApi from 'services/gorgiasApi'
 
 describe('services', () => {
@@ -577,7 +577,7 @@ describe('services', () => {
                 const viewId = 1
                 const expectedData = {
                     id: viewId,
-                    visibility: ViewVisibility.PUBLIC,
+                    visibility: ViewVisibility.Public,
                     shared_with_teams: [],
                     shared_with_users: [],
                 }
@@ -595,7 +595,7 @@ describe('services', () => {
         describe('setViewSharing()', () => {
             it("should update view's sharing options", async () => {
                 const viewId = 1
-                const visibility = ViewVisibility.PUBLIC
+                const visibility = ViewVisibility.Public
                 const teams = fromJS([{id: 2}]) as List<any>
                 const users = fromJS([{id: 3}]) as List<any>
                 const expectedResult = {

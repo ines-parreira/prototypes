@@ -4,15 +4,15 @@ import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {useDrag} from 'react-dnd'
 
-import {hasRole} from '../../../utils'
-import {RootState} from '../../../state/types'
-import {UserRole} from '../../../config/types/user'
-import {ViewVisibility} from '../../../models/view/types'
+import {UserRole} from 'config/types/user'
+import {ViewVisibility} from 'models/view/types'
+import {RootState} from 'state/types'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+import {hasRole} from 'utils'
 
 import {TicketNavbarSectionElement} from './TicketNavbarContent'
 import css from './TicketNavbarSection.less'
 import TicketNavbarView from './TicketNavbarView'
-import {TicketNavbarElementType} from './TicketNavbar'
 import TicketNavbarDropTarget from './TicketNavbarDropTarget'
 
 type OwnProps = {

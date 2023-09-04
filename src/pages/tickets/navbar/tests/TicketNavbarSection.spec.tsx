@@ -4,12 +4,13 @@ import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {fromJS} from 'immutable'
 
-import {section} from '../../../../fixtures/section'
-import {user} from '../../../../fixtures/users'
-import {view} from '../../../../fixtures/views'
+import {section} from 'fixtures/section'
+import {user} from 'fixtures/users'
+import {view} from 'fixtures/views'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+
 import {TicketNavbarSectionContainer} from '../TicketNavbarSection'
 import TicketNavbarView from '../TicketNavbarView'
-import {TicketNavbarElementType} from '../TicketNavbar'
 
 jest.mock(
     '../TicketNavbarView',

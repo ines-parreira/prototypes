@@ -2,16 +2,16 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {SYSTEM_VIEW_CATEGORY, ViewVisibility} from '../../../constants/view'
-import {UserSettingType} from '../../../config/types/user'
-import {getExpirationTimeForCount} from '../../../config/views'
-import {user} from '../../../fixtures/users'
-import {account} from '../../../fixtures/account'
-import {ViewType} from '../../../models/view/types'
-import {AccountSettingType} from '../../currentAccount/types'
-import {initialState as currentAccountInitialState} from '../../currentAccount/reducers'
-import {initialState as currentUserInitialState} from '../../currentUser/reducers'
-import {RootState} from '../../types'
+import {UserSettingType} from 'config/types/user'
+import {getExpirationTimeForCount} from 'config/views'
+import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
+import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
+import {initialState as currentAccountInitialState} from 'state/currentAccount/reducers'
+import {AccountSettingType} from 'state/currentAccount/types'
+import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
+import {RootState} from 'state/types'
+
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
 
@@ -30,7 +30,7 @@ describe('selectors', () => {
                 views: initialState.set(
                     'active',
                     fromJS({
-                        category: SYSTEM_VIEW_CATEGORY,
+                        category: ViewCategory.System,
                         name: 'Trash',
                     })
                 ),
@@ -56,7 +56,7 @@ describe('selectors', () => {
                 views: initialState.set(
                     'active',
                     fromJS({
-                        category: SYSTEM_VIEW_CATEGORY,
+                        category: ViewCategory.System,
                         name: 'Spam',
                     })
                 ),
@@ -162,39 +162,59 @@ describe('selectors', () => {
     describe('getViewIdToDisplay()', () => {
         it('should return null because there is no views', () => {
             const state = {
+                currentUser: fromJS({settings: []}),
+                entities: {
+                    sections: {},
+                    views: {},
+                },
+                ui: {ticketNavbar: {}},
                 views: initialState.set('items', fromJS([])),
             } as RootState
             expect(
-                selectors.getViewIdToDisplay(ViewType.TicketList)(state)
+                selectors.getViewIdToDisplay(state)(ViewType.TicketList)
             ).toEqual(null)
         })
 
         it('should return the id of the first view of matching type because no urlViewId was passed', () => {
             const viewId = 7
+            const views = [{id: viewId, type: ViewType.TicketList}]
             const state = {
-                views: initialState.set(
-                    'items',
-                    fromJS([{id: viewId, type: ViewType.TicketList}])
-                ),
+                currentUser: fromJS({settings: []}),
+                entities: {
+                    sections: {},
+                    views: views.reduce((acc, view) => {
+                        acc[view.id] = view as View
+                        return acc
+                    }, {} as Record<number, View>),
+                },
+                ui: {ticketNavbar: {}},
+                views: initialState.set('items', fromJS(views)),
             } as RootState
             expect(
-                selectors.getViewIdToDisplay(ViewType.TicketList)(state)
+                selectors.getViewIdToDisplay(state)(ViewType.TicketList)
             ).toEqual(viewId)
         })
 
         it('should return the passed urlViewId because there is a matching view of the same type', () => {
             const viewId = 7
+            const views = [{id: viewId, type: ViewType.TicketList}]
             const state = {
-                views: initialState.set(
-                    'items',
-                    fromJS([{id: viewId, type: ViewType.TicketList}])
-                ),
+                currentUser: fromJS({settings: []}),
+                entities: {
+                    sections: {},
+                    views: views.reduce((acc, view) => {
+                        acc[view.id] = view as View
+                        return acc
+                    }, {} as Record<number, View>),
+                },
+                ui: {ticketNavbar: {}},
+                views: initialState.set('items', fromJS(views)),
             } as RootState
             expect(
-                selectors.getViewIdToDisplay(
+                selectors.getViewIdToDisplay(state)(
                     ViewType.TicketList,
                     viewId.toString()
-                )(state)
+                )
             ).toEqual(viewId)
         })
 
@@ -204,20 +224,28 @@ describe('selectors', () => {
             () => {
                 const viewId = 7
                 const ticketViewId = 9
+                const views = [
+                    {id: viewId, type: ViewType.CustomerList},
+                    {id: ticketViewId, type: ViewType.TicketList},
+                ]
+
                 const state = {
-                    views: initialState.set(
-                        'items',
-                        fromJS([
-                            {id: viewId, type: ViewType.CustomerList},
-                            {id: ticketViewId, type: ViewType.TicketList},
-                        ])
-                    ),
+                    currentUser: fromJS({settings: []}),
+                    entities: {
+                        sections: {},
+                        views: views.reduce((acc, view) => {
+                            acc[view.id] = view as View
+                            return acc
+                        }, {} as Record<number, View>),
+                    },
+                    ui: {ticketNavbar: {}},
+                    views: initialState.set('items', fromJS(views)),
                 } as RootState
                 expect(
-                    selectors.getViewIdToDisplay(
+                    selectors.getViewIdToDisplay(state)(
                         ViewType.TicketList,
                         viewId.toString()
-                    )(state)
+                    )
                 ).toEqual(ticketViewId)
             }
         )
@@ -340,22 +368,22 @@ describe('selectors', () => {
             const view1 = {
                 id: 1,
                 type: 'ticket-list',
-                visibility: ViewVisibility.PRIVATE,
+                visibility: ViewVisibility.Private,
             }
             const view2 = {
                 id: 2,
                 type: 'ticket-list',
-                visibility: ViewVisibility.PUBLIC,
+                visibility: ViewVisibility.Public,
             }
             const view3 = {
                 id: 3,
                 type: 'ticket-list',
-                visibility: ViewVisibility.PUBLIC,
+                visibility: ViewVisibility.Public,
             }
             const view4 = {
                 id: 4,
                 type: 'ticket-list',
-                visibility: ViewVisibility.PRIVATE,
+                visibility: ViewVisibility.Private,
             }
             const viewSetting1 = {
                 display_order: 1,

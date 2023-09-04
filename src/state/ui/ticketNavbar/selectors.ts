@@ -1,13 +1,14 @@
 import {createSelector} from 'reselect'
 
-import {View, ViewType, ViewVisibility} from '../../../models/view/types'
-import {getViewsOrderingUserSetting} from '../../currentUser/selectors'
-import {RootState} from '../../types'
-import {TicketNavbarElement} from '../../../pages/tickets/navbar/TicketNavbarContent'
-import {UserViewsOrderingSettingData} from '../../../config/types/user'
-import {TicketNavbarElementType} from '../../../pages/tickets/navbar/TicketNavbar'
-import {AccountViewsOrderingSettingData} from '../../currentAccount/types'
-import {getViewsOrderingSetting} from '../../currentAccount/selectors'
+import {UserViewsOrderingSettingData} from 'config/types/user'
+import {View, ViewType, ViewVisibility} from 'models/view/types'
+import {TicketNavbarElement} from 'pages/tickets/navbar/TicketNavbarContent'
+import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
+import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
+import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
+
+import {TicketNavbarElementType} from './types'
 
 const createTicketNavbarElementsSelector = (visibility: ViewVisibility) => {
     const emptyViewsOrdering = {
@@ -103,4 +104,19 @@ export const getPrivateTicketNavbarElements =
 
 export const getPublicTicketNavbarElements = createTicketNavbarElementsSelector(
     ViewVisibility.Public
+)
+
+export const getDefaultTicketView = createSelector(
+    getPublicTicketNavbarElements,
+    (publicTicketNavbarElements) => {
+        const firstElement = publicTicketNavbarElements[0]
+
+        if (!firstElement) return null
+
+        if (firstElement.type === TicketNavbarElementType.View) {
+            return firstElement.data
+        }
+
+        return firstElement.children[0] || null
+    }
 )

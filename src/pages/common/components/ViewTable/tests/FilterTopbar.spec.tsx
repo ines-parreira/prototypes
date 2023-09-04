@@ -28,7 +28,9 @@ import {
 import * as viewSelectors from 'state/views/selectors'
 import * as utils from 'utils'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
 
+import {View} from 'models/view/types'
 import {FilterTopbar} from '../FilterTopbar'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
@@ -38,26 +40,34 @@ jest.mock('state/entities/views/actions')
 jest.mock('state/views/actions')
 jest.mock('store/middlewares/segmentTracker')
 
-const createViewWithFilters = (filters: string) =>
-    fromJS({
-        ...viewFixture,
-        editMode: true,
-        filters,
-        filters_ast: utils.getAST(filters),
-    }) as Map<any, any>
+const createViewWithFilters = (filters: string) => ({
+    ...viewFixture,
+    editMode: true,
+    filters,
+    filters_ast: utils.getAST(filters) as unknown as Record<string, unknown>,
+})
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const defaultState: Partial<RootState> = {
+const views = [
+    createViewWithFilters(ticketChannelEqualsEmailFilter),
+    {...createViewWithFilters(ticketChannelEqualsEmailFilter), id: 3},
+]
+
+const defaultState = {
     agents: fromJS({}),
-    currentUser: fromJS({first_name: 'Steve', id: 2}),
+    currentUser: fromJS({first_name: 'Steve', id: 2, settings: []}),
+    entities: {
+        sections: {},
+        views: views.reduce((acc, view) => {
+            acc[view.id] = view
+            return acc
+        }, {} as Record<number, View>),
+    },
     schemas: fromJS({}),
     teams: fromJS({}),
     views: fromJS({
         active: createViewWithFilters(ticketChannelEqualsEmailFilter),
-        items: [
-            createViewWithFilters(ticketChannelEqualsEmailFilter),
-            createViewWithFilters(ticketChannelEqualsEmailFilter).set('id', 3),
-        ],
+        items: views,
         _internal: {
             lastViewId: 3,
         },
@@ -65,7 +75,10 @@ const defaultState: Partial<RootState> = {
     tickets: fromJS({
         items: [{id: 1}],
     }),
-}
+    ui: {
+        ticketNavbar: ticketNavbarInitialState,
+    },
+} as Partial<RootState>
 
 const submitViewMock: jest.SpyInstance = submitView as jest.MockedFunction<
     typeof submitView
@@ -252,7 +265,7 @@ describe('<FilterTopbar />', () => {
                         ...defaultState,
                         views: defaultState.views!.set(
                             'active',
-                            createViewWithFilters('')
+                            fromJS(createViewWithFilters(''))
                         ),
                     })}
                 >
@@ -283,7 +296,7 @@ describe('<FilterTopbar />', () => {
                             ...defaultState,
                             views: defaultState.views!.set(
                                 'active',
-                                createViewWithFilters('')
+                                fromJS(createViewWithFilters(''))
                             ),
                         })}
                     >
@@ -312,9 +325,12 @@ describe('<FilterTopbar />', () => {
                         ...defaultState,
                         views: fromJS({
                             ...defaultState.views,
-                            active: createViewWithFilters(
-                                ticketChannelEqualsEmailFilter
-                            ).set('name', viewFixture.name + ' foo'),
+                            active: {
+                                ...createViewWithFilters(
+                                    ticketChannelEqualsEmailFilter
+                                ),
+                                name: `${viewFixture.name} foo`,
+                            },
                         }),
                     })}
                 >
@@ -336,9 +352,12 @@ describe('<FilterTopbar />', () => {
                         ...defaultState,
                         views: fromJS({
                             ...defaultState.views,
-                            active: createViewWithFilters(
-                                ticketChannelEqualsEmailFilter
-                            ).set('id', viewFixture.id + 1),
+                            active: {
+                                ...createViewWithFilters(
+                                    ticketChannelEqualsEmailFilter
+                                ),
+                                id: viewFixture.id + 1,
+                            },
                         }),
                     })}
                 >
@@ -431,15 +450,17 @@ describe('<FilterTopbar />', () => {
                     reason: 'Failed to submit view. Please try again',
                 })
         )
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {id, ...activeView} = createViewWithFilters(
+            ticketChannelEqualsEmailFilter
+        )
         const {getByText} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     views: fromJS({
                         ...defaultState.views,
-                        active: createViewWithFilters(
-                            ticketChannelEqualsEmailFilter
-                        ).delete('id'),
+                        active: activeView,
                     }),
                 })}
             >
@@ -622,7 +643,7 @@ describe('<FilterTopbar />', () => {
         ).toHaveAttribute('aria-disabled', 'true')
 
         expect(createJobMock).toHaveBeenCalledWith(
-            createViewWithFilters(ticketChannelEqualsEmailFilter),
+            fromJS(createViewWithFilters(ticketChannelEqualsEmailFilter)),
             JobType.ExportTicket,
             {}
         )

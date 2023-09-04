@@ -23,10 +23,10 @@ import {
     getActiveView,
     getNavigation,
     getSelectedItemsIds,
+    getViewIdToDisplay,
     hasActiveViewOfType,
     isOnFirstPage,
     makeGetView,
-    makeGetViewIdToDisplay,
     makeIsLoading,
 } from 'state/views/selectors'
 import withRouter from 'pages/common/utils/withRouter'
@@ -367,7 +367,7 @@ const connector = connect(
             activeView: getActiveView(state),
             config,
             getView: makeGetView(state),
-            getViewIdToDisplay: makeGetViewIdToDisplay(state),
+            getViewIdToDisplay: getViewIdToDisplay(state),
             hasActiveView: hasActiveViewOfType(config.get('type'))(state),
             isLoading: makeIsLoading(state),
             isOnFirstPage: isOnFirstPage(state),

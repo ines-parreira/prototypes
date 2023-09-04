@@ -1,16 +1,18 @@
 import {fromJS} from 'immutable'
 
-import {UserSettingType} from '../../../../config/types/user'
-import {account} from '../../../../fixtures/account'
-import {user} from '../../../../fixtures/users'
-import {ViewType, ViewVisibility} from '../../../../models/view/types'
-import {RootState} from '../../../types'
+import {UserSettingType} from 'config/types/user'
+import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
+import {ViewType, ViewVisibility} from 'models/view/types'
+import {AccountSettingType} from 'state/currentAccount/types'
+import {RootState} from 'state/types'
+
+import {initialState} from '../reducer'
 import {
+    getDefaultTicketView,
     getPrivateTicketNavbarElements,
     getPublicTicketNavbarElements,
 } from '../selectors'
-import {AccountSettingType} from '../../../currentAccount/types'
-import {initialState} from '../reducer'
 
 describe('selectors', () => {
     const state: RootState = {
@@ -143,6 +145,23 @@ describe('selectors', () => {
                     entities: {...state.entities, sections: {}},
                 })
             ).toMatchSnapshot()
+        })
+    })
+
+    describe('getDefaultTicketView', () => {
+        it('should return null when no view is available', () => {
+            expect(
+                getDefaultTicketView({
+                    ...state,
+                    entities: {...state.entities, views: {}},
+                })
+            ).toBeNull()
+        })
+
+        it('should return the first view', () => {
+            expect(getDefaultTicketView(state)).toMatchObject(
+                state.entities.views['10']
+            )
         })
     })
 })

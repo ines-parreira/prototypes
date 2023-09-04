@@ -10,10 +10,10 @@ import {View, ViewVisibility} from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import {RootState} from 'state/types'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {activeViewIdSet} from 'state/ui/views/actions'
 import {hasRole} from 'utils'
 
-import {TicketNavbarElementType} from './TicketNavbar'
 import css from './TicketNavbarView.less'
 import TicketNavbarDropTarget from './TicketNavbarDropTarget'
 

@@ -14,11 +14,12 @@ import client from 'models/api/resources'
 import {ViewType, ViewVisibility} from 'models/view/types'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import {NotificationStatus} from 'state/notifications/types'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {renderWithRouter} from 'utils/testing'
 
 import DeleteSectionModal from '../DeleteSectionModal'
 import SectionFormModal from '../SectionFormModal'
-import {TicketNavbarContainer, TicketNavbarElementType} from '../TicketNavbar'
+import {TicketNavbarContainer} from '../TicketNavbar'
 import TicketNavbarContent from '../TicketNavbarContent'
 
 jest.mock(

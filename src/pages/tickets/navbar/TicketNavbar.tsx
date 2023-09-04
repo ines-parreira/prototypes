@@ -6,6 +6,7 @@ import {useAsyncFn} from 'react-use'
 
 import GorgiasApi from 'services/gorgiasApi'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import useSearch from '../../../hooks/useSearch'
 import {
     UserRole,
@@ -69,11 +70,6 @@ import DeleteSectionModal from './DeleteSectionModal'
 import SectionFormModal from './SectionFormModal'
 import TicketNavbarContent, {TicketNavbarElement} from './TicketNavbarContent'
 import css from './TicketNavbar.less'
-
-export enum TicketNavbarElementType {
-    View = 'view',
-    Section = 'section',
-}
 
 export function TicketNavbarContainer({
     activeViewId,

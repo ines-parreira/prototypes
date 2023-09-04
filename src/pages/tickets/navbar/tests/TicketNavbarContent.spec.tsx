@@ -4,10 +4,11 @@ import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {fromJS} from 'immutable'
 
-import {section} from '../../../../fixtures/section'
-import {user} from '../../../../fixtures/users'
-import {view} from '../../../../fixtures/views'
-import {TicketNavbarElementType} from '../TicketNavbar'
+import {section} from 'fixtures/section'
+import {user} from 'fixtures/users'
+import {view} from 'fixtures/views'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+
 import {
     TicketNavbarContentContainer,
     TicketNavbarElement,

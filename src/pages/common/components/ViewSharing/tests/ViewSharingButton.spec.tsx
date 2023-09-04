@@ -2,11 +2,11 @@ import React from 'react'
 import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
 
+import {BASIC_AGENT_ROLE} from 'config/user'
+import {user} from 'fixtures/users'
+import {ViewCategory, ViewVisibility} from 'models/view/types'
+
 import {ViewSharingButtonContainer} from '../ViewSharingButton'
-import {user} from '../../../../../fixtures/users'
-import {BASIC_AGENT_ROLE} from '../../../../../config/user'
-import {SYSTEM_VIEW_CATEGORY} from '../../../../../constants/view'
-import {ViewVisibility} from '../../../../../models/view/types'
 
 const minProps = {
     currentUser: fromJS(user),
@@ -69,7 +69,7 @@ describe('<ViewSharingButton/>', () => {
                     {...minProps}
                     view={fromJS({
                         visibility: ViewVisibility.Public,
-                        category: SYSTEM_VIEW_CATEGORY,
+                        category: ViewCategory.System,
                     })}
                 />
             )

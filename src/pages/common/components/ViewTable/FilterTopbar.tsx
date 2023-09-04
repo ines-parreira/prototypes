@@ -23,11 +23,10 @@ import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 import * as Sentry from '@sentry/react'
 
 import {getConfigByName} from 'config/views'
-import {SYSTEM_VIEW_CATEGORY} from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {JobType} from 'models/job/types'
-import {View, ViewType, ViewVisibility} from 'models/view/types'
+import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -112,8 +111,8 @@ export const FilterTopbar = ({
     const pristineActiveView = useAppSelector(getPristineActiveView)
     const schemas = useAppSelector(getSchemas)
     const tickets = useAppSelector(getTickets)
-    const suggestedPreviousViewId = useAppSelector(
-        getViewIdToDisplay(ViewType.TicketList, lastViewId?.toString())
+    const suggestedPreviousViewId = useAppSelector((state) =>
+        getViewIdToDisplay(state)(ViewType.TicketList, lastViewId?.toString())
     )
     const searchRank = useContext(SearchRankScenarioContext)
     const orderBy = activeView.get('order_by') as string
@@ -278,7 +277,7 @@ export const FilterTopbar = ({
         [isViewDirty]
     )
 
-    const isSystemView = activeView.get('category') === SYSTEM_VIEW_CATEGORY
+    const isSystemView = activeView.get('category') === ViewCategory.System
 
     useUnmount(cancelFetchViewItemsCancellable)
 

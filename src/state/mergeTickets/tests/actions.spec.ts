@@ -3,16 +3,14 @@ import thunk from 'redux-thunk'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
+import {BASE_VIEW_ID} from 'constants/view'
+import client from 'models/api/resources'
+import {CursorDirection} from 'models/api/types'
 import {searchTickets as modelSearchTickets} from 'models/ticket/resources'
+import {Ticket} from 'models/ticket/types'
+import {StoreDispatch} from 'state/types'
 import {getLDClient} from 'utils/launchDarkly'
-import {
-    BASE_VIEW_ID,
-    NEXT_VIEW_NAV_DIRECTION,
-    PREV_VIEW_NAV_DIRECTION,
-} from '../../../constants/view'
-import client from '../../../models/api/resources'
-import {Ticket} from '../../../models/ticket/types'
-import {StoreDispatch} from '../../types'
+
 import {mergeTickets, searchTickets} from '../actions'
 
 jest.mock('models/ticket/resources', () => ({
@@ -125,7 +123,7 @@ describe('mergeTickets actions', () => {
                         '',
                         1,
                         null,
-                        NEXT_VIEW_NAV_DIRECTION,
+                        CursorDirection.NextCursor,
                         fromJS({next_items: url})
                     )
                 )
@@ -147,7 +145,7 @@ describe('mergeTickets actions', () => {
                         '',
                         1,
                         null,
-                        PREV_VIEW_NAV_DIRECTION,
+                        CursorDirection.PrevCursor,
                         fromJS({prev_items: url})
                     )
                 )
