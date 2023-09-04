@@ -6,6 +6,7 @@ import _isEqual from 'lodash/isEqual'
 import Label from 'pages/common/forms/Label/Label'
 import VisualBuilderActionTag from 'pages/automation/workflows/components/VisualBuilderActionTag'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
+import {flowVariableRegex} from 'pages/automation/workflows/models/variables.model'
 
 import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
@@ -44,7 +45,7 @@ function AutomatedMessageNode(
                     </VisualBuilderActionTag>
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
-                            content.text
+                            content.text.replace(flowVariableRegex, '{...}')
                         ) : (
                             <span className={css.clickToAdd}>Message</span>
                         )}

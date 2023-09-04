@@ -1,0 +1,40 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 50ch;
+        padding: 4px 8px;
+        align-items: center;
+        gap: 4px;
+        border-radius: 4px;
+        background: var(--neutral-grey-3);
+        .caption-semibold();
+        color: var(--neutral-grey-6);
+
+        &::before {
+            content: attr(aria-label);
+        }
+    }
+
+    .copyPlaceholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .invalid {
+        background: var(--accessory-red-bg);
+        .caption-semibold();
+        color: var(--feedback-variations-error-4);
+    }
+}

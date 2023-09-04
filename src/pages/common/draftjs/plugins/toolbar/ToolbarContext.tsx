@@ -2,6 +2,7 @@ import React, {ComponentType, createContext, useContext} from 'react'
 import _noop from 'lodash/noop'
 import {List} from 'immutable'
 
+import {FlowVariableList} from 'pages/automation/workflows/models/variables.types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {ProductCardDetails} from 'models/integration/types'
 
@@ -27,6 +28,7 @@ export type ToolbarContextType = {
     onInsertProductLinkOpen: () => void
     onInsertProductLinkAdded: (productCardDetails: ProductCardDetails) => void
     shopifyIntegrations: List<any>
+    availableFlowVariables?: FlowVariableList
 }
 
 const ToolbarContext = createContext<ToolbarContextType>({

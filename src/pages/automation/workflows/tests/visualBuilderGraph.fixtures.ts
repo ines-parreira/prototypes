@@ -22,8 +22,8 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             type: 'multiple_choices',
             data: {
                 content: {
-                    html: 'html',
-                    text: 'text',
+                    html: 'Choices html',
+                    text: 'Choices text',
                 },
                 choices: [
                     {
@@ -79,8 +79,8 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             type: 'text_reply',
             data: {
                 content: {
-                    html: 'html',
-                    text: 'text',
+                    html: 'Text reply html',
+                    text: 'Text reply text',
                 },
                 wfConfigurationRef: {
                     wfConfigurationMessagesStepId: 'messages4',

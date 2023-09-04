@@ -2,6 +2,9 @@ import React, {useEffect, useMemo, useState} from 'react'
 
 import {EditorState} from 'draft-js'
 import Immutable from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {convertToHTML} from 'utils/editor'
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -9,9 +12,10 @@ import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketA
 import {IntegrationType} from 'models/integration/constants'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import {FlowVariableList} from 'pages/automation/workflows/models/variables.types'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import {MessageContent} from '../../../models/workflowConfiguration.types'
 
 import css from './MessageContentFormField.less'
@@ -19,6 +23,7 @@ import css from './MessageContentFormField.less'
 type MessageContentFormFieldProps = {
     content: MessageContent
     handleUpdateContent: (content: MessageContent) => void
+    availableFlowVariables?: FlowVariableList
 }
 
 const textLimit = 5000
@@ -26,6 +31,7 @@ const textLimit = 5000
 export default function MessageContentFormField({
     content,
     handleUpdateContent,
+    availableFlowVariables,
 }: MessageContentFormFieldProps) {
     const storeIntegration = useSelfServiceStoreIntegrationContext()
     const {visualBuilderChoiceEventIdEditing} = useWorkflowEditorContext()
@@ -72,6 +78,27 @@ export default function MessageContentFormField({
             ),
         })
     }
+    const areVariablesEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.FlowsVariables]
+
+    const toolbarActions = useMemo(
+        () => [
+            ActionName.Bold,
+            ActionName.Italic,
+            ActionName.Underline,
+            ActionName.Link,
+            ActionName.Image,
+            ActionName.Emoji,
+            ActionName.ProductPicker,
+            ...(areVariablesEnabled ? [ActionName.FlowVariable] : []),
+        ],
+        [areVariablesEnabled]
+    )
+    const attachments = useMemo(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        () => Immutable.fromJS(content.attachments ?? []),
+        [content.attachments]
+    )
 
     return (
         <div>
@@ -85,25 +112,17 @@ export default function MessageContentFormField({
                         ? [storeIntegration]
                         : []
                 )}
+                availableFlowVariables={availableFlowVariables}
             >
                 <RichField
                     minHeight={169}
                     maxLength={textLimit}
                     ref={setTextareaRef}
                     value={richFieldValue}
-                    displayedActions={[
-                        ActionName.Bold,
-                        ActionName.Italic,
-                        ActionName.Underline,
-                        ActionName.Link,
-                        ActionName.Image,
-                        ActionName.Emoji,
-                        ActionName.ProductPicker,
-                        // ActionName.FlowVariable, -> action is not implemented yet
-                    ]}
                     allowExternalChanges
                     onChange={handleChange}
-                    attachments={Immutable.fromJS(content.attachments ?? [])}
+                    attachments={attachments}
+                    displayedActions={toolbarActions}
                     noAutoScroll
                 />
 

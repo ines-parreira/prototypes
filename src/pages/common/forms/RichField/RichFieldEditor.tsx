@@ -20,6 +20,7 @@ import React, {
 
 import {extractUrlsFromString} from 'utils'
 import {addVideo} from 'pages/common/draftjs/plugins/utils'
+import createFlowVariablesPlugin from 'pages/automation/workflows/draftjs/plugins/variables'
 import shortcutManager from 'services/shortcutManager'
 
 import {ConnectedAction} from '../../../../state/types'
@@ -141,6 +142,7 @@ export class RichFieldEditor extends Component<Props, State> {
     variablesPlugin?: ReturnType<typeof createVariablesPlugin>
     quotesPlugin?: ReturnType<typeof createQuotesPlugin>
     predictionPlugin?: ReturnType<typeof createPredictionPlugin>
+    flowVariablesPlugin?: ReturnType<typeof createFlowVariablesPlugin>
 
     state: State = {
         isDragging: false,
@@ -194,6 +196,10 @@ export class RichFieldEditor extends Component<Props, State> {
             this.pasteImage,
             this.quotesPlugin,
         ]
+        if (props.displayedActions?.includes(ActionName.FlowVariable)) {
+            this.flowVariablesPlugin = createFlowVariablesPlugin()
+            plugins.push(this.flowVariablesPlugin)
+        }
 
         if (this.props.predictionContext) {
             this.predictionPlugin = createPredictionPlugin({
