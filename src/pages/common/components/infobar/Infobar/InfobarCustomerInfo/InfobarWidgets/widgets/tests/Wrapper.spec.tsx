@@ -11,6 +11,7 @@ import * as actions from 'state/widgets/actions'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import Wrapper from '../Wrapper'
 
@@ -32,6 +33,11 @@ const store = mockStore({
                 id: 2,
                 type: 'shopify',
                 name: 'my little shopify integration',
+            },
+            {
+                id: 3,
+                type: IntegrationType.Ecommerce,
+                name: 'my little ecommerce integration',
             },
         ],
     }),
@@ -77,6 +83,24 @@ const customerExternalDataWidget = {
 const customerExternalDataSource = fromJS({
     bar: 'bar value',
     [THIRD_PARTY_APP_NAME_KEY]: 'my-wonderful-app-name',
+})
+
+const woocommerceDataWidget = {
+    id: 6,
+    type: WOOCOMMERCE_WIDGET_TYPE,
+    integration_id: 3,
+    template: {
+        type: 'wrapper',
+        widgets: [],
+    },
+    order: 3,
+}
+
+const woocommerceDataSource = fromJS({
+    foo: 'bar',
+    store: {
+        helpdesk_integration_id: 3,
+    },
 })
 
 describe('InfobarWidgets component', () => {
@@ -174,7 +198,7 @@ describe('InfobarWidgets component', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should render customer external data widget with a the proper id', () => {
+    it('should render customer external data widget with the proper id', () => {
         const {container} = render(
             <Provider store={store}>
                 <EditionContext.Provider value={{isEditing: false}}>
@@ -186,6 +210,27 @@ describe('InfobarWidgets component', () => {
                         })}
                         widget={fromJS(customerExternalDataWidget)}
                         source={customerExternalDataSource}
+                        editing={undefined}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render woocommerce widget with the proper id', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: false}}>
+                    <Wrapper
+                        template={fromJS({
+                            ...woocommerceDataWidget.template,
+                            templatePath: 'templatePath',
+                            absolutePath: ['absolute', 'path'],
+                        })}
+                        widget={fromJS(woocommerceDataWidget)}
+                        source={woocommerceDataSource}
                         editing={undefined}
                     />
                 </EditionContext.Provider>

@@ -21,9 +21,14 @@ import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch, RootState} from 'state/types'
 import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
 
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import * as types from './constants'
 import {Widget, WidgetContextType} from './types'
-import {CUSTOMER_EXTERNAL_DATA_KEY} from './constants'
+import {
+    CUSTOMER_ECOMMERCE_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_KEY,
+    WOOCOMMERCE_WIDGET_TYPE,
+} from './constants'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {
@@ -142,12 +147,21 @@ export function drop(
         const state = getState()
         const splitKey = key.split('.')
         // TODO(@Manuel): default to standalone when custom is removed
-        let type = types.CUSTOM_WIDGET_TYPE
+        let widgetType = types.CUSTOM_WIDGET_TYPE
         if (splitKey.length && splitKey[0] === '') {
-            type = types.STANDALONE_WIDGET_TYPE
+            widgetType = types.STANDALONE_WIDGET_TYPE
         }
         let integrationId = null
         let appId = null
+
+        let source = getSources(state)
+        // edit-widgets for new tickets
+        if (
+            source.get('ticket') &&
+            _isUndefined(source.getIn(['ticket', 'id']))
+        ) {
+            source = getSourcesWithCustomer(state)
+        }
 
         // If there's an integration matching the `sourcePath` of the object we just dropped, then we want to
         // include its id in the call to the reducer; this way we can set the `integration_id` correctly in the new
@@ -162,24 +176,31 @@ export function drop(
                     )(state)
 
                 if (integration) {
-                    type = integration.get('type')
+                    widgetType = integration.get('type')
                     integrationId = currentIntegrationId
                 }
             }
         }
 
         if (splitKey.includes(CUSTOMER_EXTERNAL_DATA_KEY)) {
-            type = types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+            widgetType = types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
             appId = _last(splitKey) || ''
         }
 
-        let source = getSources(state)
-        // edit-widgets for new tickets
-        if (
-            source.get('ticket') &&
-            _isUndefined(source.getIn(['ticket', 'id']))
-        ) {
-            source = getSourcesWithCustomer(state)
+        if (splitKey.includes(CUSTOMER_ECOMMERCE_DATA_KEY)) {
+            const customerEcommerceData: CustomerEcommerceData | undefined = (
+                source.getIn(splitKey) as Map<any, any> | undefined
+            )?.toJS()
+            if (customerEcommerceData) {
+                integrationId =
+                    customerEcommerceData.store.helpdesk_integration_id
+
+                if (
+                    customerEcommerceData.store.type === WOOCOMMERCE_WIDGET_TYPE
+                ) {
+                    widgetType = types.WOOCOMMERCE_WIDGET_TYPE
+                }
+            }
         }
 
         dispatch({
@@ -190,7 +211,7 @@ export function drop(
             fromIndex,
             targetParentTemplatePath,
             source,
-            widgetType: type,
+            widgetType: widgetType,
             integrationId,
             appId,
         })

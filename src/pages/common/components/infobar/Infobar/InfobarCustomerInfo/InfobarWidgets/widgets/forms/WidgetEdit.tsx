@@ -23,6 +23,7 @@ import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetType} from 'state/widgets/types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
@@ -163,6 +164,7 @@ const WidgetEdit = ({
                         CUSTOM_WIDGET_TYPE,
                         CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
                         STANDALONE_WIDGET_TYPE,
+                        WOOCOMMERCE_WIDGET_TYPE,
                     ].includes(widgetType) && (
                         <>
                             <FileField

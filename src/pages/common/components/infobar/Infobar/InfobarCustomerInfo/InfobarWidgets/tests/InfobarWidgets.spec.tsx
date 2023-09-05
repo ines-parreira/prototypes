@@ -13,6 +13,9 @@ import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_KEY,
+    CUSTOMER_ECOMMERCE_DATA_KEY,
 } from 'state/widgets/constants'
 import {WidgetContextType} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
@@ -26,6 +29,9 @@ describe('InfobarWidgets component', () => {
     const rechargeIntegrationId = 3
     const bigcommerceIntegrationId = 4
     const appId = '5dfgsadsasad'
+
+    const ecommerceIntegrationId = 5
+    const ecommerceStoreUUID = 'foo-bar-uuid'
 
     const store = mockStore({
         customers: fromJS({active: {name: 'Johanna'}}),
@@ -53,6 +59,11 @@ describe('InfobarWidgets component', () => {
                     type: IntegrationType.BigCommerce,
                     name: 'my little bigcommerce integration',
                 },
+                {
+                    id: ecommerceIntegrationId,
+                    type: IntegrationType.Ecommerce,
+                    name: 'my little ecommerce integration',
+                },
             ],
         }),
     })
@@ -72,10 +83,18 @@ describe('InfobarWidgets component', () => {
                     [httpIntegrationId]: {foo: httpIntegrationId},
                     [shopifyIntegrationId]: {bar: shopifyIntegrationId},
                 },
-                external_data: {
+                [CUSTOMER_EXTERNAL_DATA_KEY]: {
                     [appId]: {
                         fizz: appId,
                         [THIRD_PARTY_APP_NAME_KEY]: 'My 3rd party awesome app',
+                    },
+                },
+                [CUSTOMER_ECOMMERCE_DATA_KEY]: {
+                    [ecommerceStoreUUID]: {
+                        foo: 'bar',
+                        store: {
+                            helpdesk_integration_id: ecommerceIntegrationId,
+                        },
                     },
                 },
             },
@@ -232,6 +251,31 @@ describe('InfobarWidgets component', () => {
             },
             order: 5,
         },
+        {
+            id: 9,
+            type: WOOCOMMERCE_WIDGET_TYPE,
+            integration_id: ecommerceIntegrationId,
+            context: WidgetContextType.Ticket,
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: '',
+                        type: 'card',
+                        title: 'WooCommerce Data',
+                        widgets: [
+                            {
+                                path: 'foo',
+                                type: 'text',
+                                title: 'Foo',
+                                order: 1,
+                            },
+                        ],
+                    },
+                ],
+            },
+            order: 6,
+        },
     ]
 
     const baseWidgets = fromJS(widgets) as List<Map<string, unknown>>
@@ -267,8 +311,8 @@ describe('InfobarWidgets component', () => {
         expect(screen.getAllByText(/shopify/i))
         expect(screen.getAllByText(/http/i))
         expect(screen.getAllByText(/standalone/i))
-        expect(screen.getAllByText(/standalone/i))
         expect(screen.getAllByText(/3rd party/i))
+        expect(screen.getAllByText(/WooCommerce Data/i))
 
         expect(screen.queryAllByText(/recharge/i).length).toBeFalsy()
         expect(screen.queryAllByText(/bigcommerce/i).length).toBeFalsy()

@@ -15,6 +15,7 @@ import {
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {getWidgetName} from 'state/widgets/predicates'
 import {WidgetType} from 'state/widgets/types'
@@ -188,9 +189,11 @@ export default class Card extends React.Component<
 
         if (
             !title &&
-            [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE, HTTP_WIDGET_TYPE].includes(
-                widgetType
-            )
+            [
+                CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                HTTP_WIDGET_TYPE,
+                WOOCOMMERCE_WIDGET_TYPE,
+            ].includes(widgetType)
         ) {
             title = getWidgetName({
                 source: fromJS(source),

@@ -73,7 +73,7 @@ exports[`InfobarWidgets component should have the proper color set 1`] = `
 </div>
 `;
 
-exports[`InfobarWidgets component should render customer external data widget with a the proper id 1`] = `
+exports[`InfobarWidgets component should render customer external data widget with the proper id 1`] = `
 <div>
   <div
     class="draggable widgetWrapper customer_external_data adjustedPadding"
@@ -81,6 +81,19 @@ exports[`InfobarWidgets component should render customer external data widget wi
     <div
       class="anchor"
       id="my_wonderful_app_name"
+    />
+  </div>
+</div>
+`;
+
+exports[`InfobarWidgets component should render woocommerce widget with the proper id 1`] = `
+<div>
+  <div
+    class="draggable widgetWrapper woocommerce adjustedPadding"
+  >
+    <div
+      class="anchor"
+      id="woocommerce"
     />
   </div>
 </div>

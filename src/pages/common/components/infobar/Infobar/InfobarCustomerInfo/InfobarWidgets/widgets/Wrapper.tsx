@@ -24,6 +24,7 @@ import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
@@ -116,6 +117,7 @@ export default function Wrapper({widget, template, source, editing}: Props) {
                                 CUSTOM_WIDGET_TYPE,
                                 CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
                                 STANDALONE_WIDGET_TYPE,
+                                WOOCOMMERCE_WIDGET_TYPE,
                             ].includes(widgetType) && (
                                 <Button
                                     type="button"

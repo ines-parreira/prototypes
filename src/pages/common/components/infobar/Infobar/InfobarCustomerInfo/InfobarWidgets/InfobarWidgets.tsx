@@ -11,6 +11,7 @@ import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetContextType, WidgetType} from 'state/widgets/types'
 import {getWidgetName} from 'state/widgets/predicates'
@@ -18,6 +19,7 @@ import {canDisplayWidget} from 'pages/common/components/infobar/utils'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
 import Placeholder from './widgets/Placeholder'
@@ -65,6 +67,7 @@ const InfobarWidgets = ({
         [
             CUSTOM_WIDGET_TYPE,
             CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+            WOOCOMMERCE_WIDGET_TYPE,
             STANDALONE_WIDGET_TYPE,
         ].includes(widget?.get('type') as string)
     )
@@ -266,6 +269,34 @@ function getPreparedDisplayList({
                 if (source.getIn([...sourcePath, appId])) {
                     sourcePath.push(appId as string[] & string)
                 } else return
+            } else if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
+                sourcePath = getSourcePathFromContext(
+                    widget.get('context') as WidgetContextType,
+                    widgetType
+                ) as string[]
+                const integrationId = widget.get('integration_id') as number
+                const ecommerceData: Record<string, CustomerEcommerceData> = (
+                    source.getIn(sourcePath) as Map<
+                        string,
+                        CustomerEcommerceData
+                    >
+                )?.toJS()
+                if (!ecommerceData) {
+                    return
+                }
+
+                const currentEcommerceDataEntry = Object.entries(
+                    ecommerceData
+                ).find(
+                    ([, customerEcommerceData]) =>
+                        customerEcommerceData.store.helpdesk_integration_id ===
+                        integrationId
+                )
+                if (!currentEcommerceDataEntry) {
+                    return
+                }
+                const [currentStoreUUID] = currentEcommerceDataEntry
+                sourcePath.push(currentStoreUUID)
             } else {
                 let selectedIntegrations: Integration[] = []
 

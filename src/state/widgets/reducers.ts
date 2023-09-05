@@ -257,27 +257,36 @@ export default function reducer(
                     ).forEach((widget: Map<any, any>) => {
                         const type = element.get('type')
                         const integrationId = element.get('integration_id')
-                        const typeIsAlreadyPresent =
-                            // not includes
+                        const typeAlreadyPresent =
+                            // Allow a single widget of each type excluding the mentioned
                             ![
                                 types.HTTP_WIDGET_TYPE,
                                 types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
                                 types.STANDALONE_WIDGET_TYPE,
+                                types.WOOCOMMERCE_WIDGET_TYPE,
                             ].includes(type) && widget.get('type') === type
-                        const integrationIdIsAlreadyPresent =
-                            type === types.HTTP_WIDGET_TYPE &&
-                            widget.get('type') === type &&
-                            widget.get('integration_id') === integrationId
 
-                        const appIdIsAlreadyPresent =
+                        // For third party apps, we allow to have several widgets
+                        // of the same type if they don't have the same app_id
+                        const thirdPartyAppAlreadyPresent =
                             type === types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE &&
                             widget.get('type') === type &&
                             widget.get('app_id') === appId
 
+                        // For the following types, we allow to have several widgets
+                        // of the same type if they don't have the same integration_id
+                        const integrationIdAlreadyPresent =
+                            [
+                                types.HTTP_WIDGET_TYPE,
+                                types.WOOCOMMERCE_WIDGET_TYPE,
+                            ].includes(type) &&
+                            widget.get('type') === type &&
+                            widget.get('integration_id') === integrationId
+
                         if (
-                            typeIsAlreadyPresent ||
-                            integrationIdIsAlreadyPresent ||
-                            appIdIsAlreadyPresent
+                            typeAlreadyPresent ||
+                            thirdPartyAppAlreadyPresent ||
+                            integrationIdAlreadyPresent
                         ) {
                             shouldAddWidget = false
                         }

@@ -307,7 +307,7 @@ export function makeWrapper({
     // we don't want to display a card around data in wrapper (unnecessary nesting)
     // if there is only a card in the wrapper and no simple widget in this card (ie. only cards or lists) we move those
     // children into the wrapper directly instead of letting them in the card
-    if (widgetType !== STANDALONE_WIDGET_TYPE) {
+    if (type !== STANDALONE_WIDGET_TYPE) {
         const firstWidget = (
             wrapperWidget.get('widgets', fromJS([])) as List<any>
         ).first() as Map<any, any>
