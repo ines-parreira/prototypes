@@ -78,8 +78,9 @@ const PaymentMethodView = ({
         SELECTED_PRODUCTS_SESSION_STORAGE_KEY
     )
 
-    const selectedPlans =
-        selectedPlansFromSessionStorage ?? selectedPlansFromState
+    const selectedPlans = isSubscriptionCanceled
+        ? selectedPlansFromSessionStorage
+        : selectedPlansFromState
 
     const currentMonth = new Date().getMonth() + 1
 

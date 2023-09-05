@@ -86,7 +86,11 @@ const SummaryFooter = ({
                 setSessionSelectedPlans(selectedPlans)
             }
 
-            if (isTrialing && !isPaymentMethodFooter) {
+            if (
+                (isTrialing ||
+                    (isCurrentSubscriptionCanceled && !hasCreditCard)) &&
+                !isPaymentMethodFooter
+            ) {
                 history.push(BILLING_PAYMENT_CARD_PATH)
             } else if (
                 shouldPayWithShopify &&

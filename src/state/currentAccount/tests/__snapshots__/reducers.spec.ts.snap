@@ -30,6 +30,24 @@ Immutable.Map {
 }
 `;
 
+exports[`current account reducers UPDATE_SUBSCRIPTION_PRODUCTS should set the credit card (initial state). 1`] = `
+Immutable.Map {
+  "settings": Immutable.List [],
+  "_internal": Immutable.Map {
+    "loading": Immutable.Map {},
+  },
+}
+`;
+
+exports[`current account reducers UPDATE_SUBSCRIPTION_PRODUCTS should set the credit card and override the previous one. 1`] = `
+Immutable.Map {
+  "settings": Immutable.List [],
+  "_internal": Immutable.Map {
+    "loading": Immutable.Map {},
+  },
+}
+`;
+
 exports[`current account reducers update account 1`] = `
 {
   "_internal": {

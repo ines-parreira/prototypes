@@ -121,6 +121,10 @@ export type BillingBanner = {
     description: string | JSX.Element
     type: AlertType
 }
+
+export type ProductData = {
+    [key: string]: string
+}
 export interface ErrorResponse {
     response?: {
         data?: {

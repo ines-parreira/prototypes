@@ -24,7 +24,7 @@ import {
 import {getCurrentUser} from 'state/currentUser/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
-import {TicketPurpose} from 'state/billing/types'
+import {ProductData, TicketPurpose} from 'state/billing/types'
 import {
     Notification,
     NotificationStatus,
@@ -350,7 +350,7 @@ export const useBillingPlans = ({
     ])
 
     const handleHelpdeskAndAutomationPlansChange = useCallback(async () => {
-        const plansToBeUpdated: string[] = []
+        const plansToBeUpdated: ProductData = {}
         const notifications: Notification[] = []
 
         const isNewHelpdeskProduct =
@@ -392,9 +392,12 @@ export const useBillingPlans = ({
             !!notification && notifications.push(notification)
         }
 
-        plansToBeUpdated.push(
-            selectedPlans[ProductType.Helpdesk].plan?.price_id ?? ''
-        )
+        if (selectedPlans[ProductType.Helpdesk]?.plan?.product_id) {
+            const plan = selectedPlans[ProductType.Helpdesk]?.plan
+            if (plan) {
+                plansToBeUpdated[plan.product_id] = plan?.price_id ?? ''
+            }
+        }
 
         // handle subscribe for Automation plan
         if (selectedPlans[ProductType.Automation].isSelected) {
@@ -414,13 +417,17 @@ export const useBillingPlans = ({
                 !!notification && notifications.push(notification)
             }
 
-            plansToBeUpdated.push(
-                selectedPlans[ProductType.Automation].plan?.price_id ?? ''
-            )
+            if (selectedPlans[ProductType.Automation]?.plan?.product_id) {
+                const plan = selectedPlans[ProductType.Automation]?.plan
+
+                if (plan) {
+                    plansToBeUpdated[plan.product_id] = plan?.price_id ?? ''
+                }
+            }
         }
 
         // update subscription for Helpdesk and Automation plans
-        if (plansToBeUpdated.length > 0) {
+        if (Object.keys(plansToBeUpdated).length > 0) {
             // Automation has been removed while in free trial
             if (
                 notifications.length === 0 &&
@@ -441,9 +448,7 @@ export const useBillingPlans = ({
                 if (anyProductChanged) {
                     await dispatch(
                         updateSubscriptionsForPlans(
-                            {
-                                prices: plansToBeUpdated,
-                            },
+                            plansToBeUpdated,
                             notifications
                         )
                     )

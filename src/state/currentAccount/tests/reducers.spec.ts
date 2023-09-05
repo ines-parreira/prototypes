@@ -167,4 +167,40 @@ describe('current account reducers', () => {
             expect(reducer(state, newAction as GorgiasAction)).toMatchSnapshot()
         })
     })
+
+    describe('UPDATE_SUBSCRIPTION_PRODUCTS', () => {
+        const subscription = fromJS({
+            products: {
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+            },
+            status: 'active',
+        })
+
+        it('should set the credit card (initial state).', () => {
+            const action = {
+                type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
+                subscription,
+            }
+            expect(reducer(initialState, action)).toMatchSnapshot()
+        })
+
+        it('should set the credit card and override the previous one.', () => {
+            const action = {
+                type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
+                subscription,
+            }
+            const state = reducer(initialState, action)
+            const newSubscription = {
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                },
+                staus: 'past_due',
+            }
+            const newAction = {
+                type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
+                subscription: newSubscription,
+            }
+            expect(reducer(state, newAction as GorgiasAction)).toMatchSnapshot()
+        })
+    })
 })

@@ -2,7 +2,7 @@ import {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
 
-import {Subscription} from '../billing/types'
+import {ProductData, Subscription} from '../billing/types'
 import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../notifications/actions'
 import {Notification, NotificationStatus} from '../notifications/types'
@@ -123,14 +123,18 @@ export function updateSubscription(subscription: Subscription) {
 }
 
 export function updateSubscriptionsForPlans(
-    subscription: Subscription,
+    products: ProductData,
     notifications: Notification[]
 ) {
     return async (dispatch: StoreDispatch): Promise<void> => {
-        await client.put<Record<string, string>>(
-            '/api/billing/subscription/',
-            subscription
-        )
+        await client.put<Record<string, string>>('/api/billing/subscription/', {
+            prices: Object.values(products),
+        })
+
+        dispatch({
+            type: constants.UPDATE_SUBSCRIPTION_PRODUCTS,
+            products,
+        })
 
         notifications.forEach((notification) => {
             void dispatch(notify(notification))
