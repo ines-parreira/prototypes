@@ -20,7 +20,7 @@ describe('utils.ts', () => {
             [null, true, false],
             ['2022-03-24T14:17:05', true, false],
             ['2022-03-24T14:17:05', false, true],
-            [new Date().toString(), false, false],
+            [new Date(Date.now() + 3600).toString(), false, false],
         ])(
             'should build the text as expected',
             (

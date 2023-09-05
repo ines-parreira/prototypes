@@ -90,7 +90,8 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
             const toggle = screen.getByLabelText('Require 2FA for all users')
             fireEvent.click(toggle)
 
-            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-02T12:34:56')
+            // current date plus 14 days
+            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-16T12:34:56')
         })
 
         it('should open 2fa setup modal because user does not have it enabled and enforce 2fa on finish', async () => {
@@ -116,7 +117,8 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
             // mock finish 2fa setup
             fireEvent.click(screen.getByText('Finish action mocked'))
 
-            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-02T12:34:56')
+            // current date plus 14 days
+            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-16T12:34:56')
         })
     })
 
@@ -172,8 +174,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
         const apply = screen.getByText('Apply')
         fireEvent.click(apply)
 
-        // It should send the day 21 - 14 = 7
         // The seconds are lost since we don't show a second selector in the datetime picker
-        expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-07T12:34:00')
+        expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-21T12:34:00')
     })
 })

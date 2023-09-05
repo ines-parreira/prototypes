@@ -21,7 +21,6 @@ import history from 'pages/history'
 import {formatDatetime} from 'utils'
 import {
     OPEN_TWO_FA_MODAL_URL,
-    TWO_FA_REQUIRED_AFTER_DAYS,
     TWO_FA_REQUIRED_NOTIFICATION_ID,
 } from 'state/currentUser/constants'
 import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
@@ -251,10 +250,7 @@ export const handle2FAEnforced =
         // Show a global banner if the 2fa is not required yet (see check2FARequired util function to see the condition on that)
         if (!!twoFAEnforcedDatetime && !has2FAEnabled) {
             const twoFASetupDueDate = formatDatetime(
-                moment
-                    .utc(twoFAEnforcedDatetime)
-                    .add(TWO_FA_REQUIRED_AFTER_DAYS, 'days')
-                    .format(),
+                moment.utc(twoFAEnforcedDatetime).format(),
                 userTimezone,
                 'L'
             )

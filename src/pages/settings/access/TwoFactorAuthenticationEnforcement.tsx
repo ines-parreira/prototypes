@@ -13,33 +13,20 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import Label from 'pages/common/forms/Label/Label'
 
 /**
- * Convert an "enforced" date to an "enforcement" date by adding 14 days to it.
- * @see https://linear.app/gorgias/issue/APPED-1805/build-an-enforce-2fa-now-mechanism
+ * Generate a moment datetime based on a string and timezone.
  */
-function enforcedToEnforcementDatetime(
+function setTimezone(
     enforcedDatetime: string | null,
     timezone: string | null
 ): moment.Moment | undefined {
     if (!enforcedDatetime) {
         return undefined
     }
-    const enforcementDatetime = moment
-        .utc(enforcedDatetime)
-        .add(TWO_FA_REQUIRED_AFTER_DAYS, 'days')
+    const enforcementDatetime = moment.utc(enforcedDatetime)
     if (timezone) {
         return enforcementDatetime.tz(timezone)
     }
     return enforcementDatetime
-}
-
-/**
- * Convert an "enforcement" date to an "enforced" date by substracting 14 days from it.
- * @see https://linear.app/gorgias/issue/APPED-1805/build-an-enforce-2fa-now-mechanism
- */
-function enforcementToEnforcedDatetime(enforcementDatetime: moment.Moment) {
-    return enforcementDatetime
-        .subtract(TWO_FA_REQUIRED_AFTER_DAYS, 'days')
-        .utc()
 }
 
 type OwnProps = {
@@ -61,10 +48,7 @@ export default function TwoFactorAuthenticationEnforcement({
     const userTimezone = useAppSelector(getTimezone)
 
     const is2FAEnforced = !!twoFAEnforcedDatetime
-    const enforcementDatetime = enforcedToEnforcementDatetime(
-        twoFAEnforcedDatetime,
-        userTimezone
-    )
+    const enforcementDatetime = setTimezone(twoFAEnforcedDatetime, userTimezone)
 
     const set2FAEnforced = useCallback(
         (value: moment.Moment | null) => {
@@ -80,15 +64,11 @@ export default function TwoFactorAuthenticationEnforcement({
                 return
             }
 
-            set2FAEnforced(value ? moment() : null)
+            set2FAEnforced(
+                value ? moment().add(TWO_FA_REQUIRED_AFTER_DAYS, 'days') : null
+            )
         },
         [has2FAEnabled, set2FAEnforced]
-    )
-    const handleSetEnforcementDatetime = useCallback(
-        (value: moment.Moment) => {
-            set2FAEnforced(enforcementToEnforcedDatetime(value))
-        },
-        [set2FAEnforced]
     )
 
     return (
@@ -129,7 +109,7 @@ export default function TwoFactorAuthenticationEnforcement({
                                 endDate: enforcementDatetime,
                                 startDate: enforcementDatetime,
                             }}
-                            onSubmit={handleSetEnforcementDatetime}
+                            onSubmit={set2FAEnforced}
                         >
                             <div>
                                 <TextInput
@@ -153,7 +133,9 @@ export default function TwoFactorAuthenticationEnforcement({
                     }}
                     onFinish={() => {
                         set2FAModalVisible(false)
-                        set2FAEnforced(moment())
+                        set2FAEnforced(
+                            moment().add(TWO_FA_REQUIRED_AFTER_DAYS, 'days')
+                        )
                     }}
                     initialBannerText="Set up two-factor authentication (2FA) for your own account. Once enabled, 2FA will be enforced for all helpdesk users."
                     initialBannerType="info"

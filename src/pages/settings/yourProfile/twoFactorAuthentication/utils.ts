@@ -1,5 +1,4 @@
 import moment from 'moment'
-import {TWO_FA_REQUIRED_AFTER_DAYS} from 'state/currentUser/constants'
 
 export function buildPasswordAnd2FaText(hasPassword: boolean) {
     let passwordAnd2FaText = 'Password & 2FA'
@@ -23,8 +22,5 @@ export function check2FARequired(
         return false
     }
 
-    return (
-        moment().diff(moment.utc(twoFAEnforcedDatetime), 'days') >=
-        TWO_FA_REQUIRED_AFTER_DAYS
-    )
+    return moment().isAfter(moment.utc(twoFAEnforcedDatetime))
 }
