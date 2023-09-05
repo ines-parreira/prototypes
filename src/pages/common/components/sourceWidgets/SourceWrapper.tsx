@@ -10,13 +10,17 @@ import history from 'pages/history'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_KEY,
     STANDALONE_WIDGET_TYPE,
+    CUSTOMER_ECOMMERCE_DATA_KEY,
 } from 'state/widgets/constants'
 import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
 
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import css from './SourceWrapper.less'
 import Widgets from './Widgets'
 
@@ -132,6 +136,13 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
+        type: WOOCOMMERCE_WIDGET_TYPE,
+        title: 'WooCommerce data',
+        description: (
+            <div>The following data comes from your WooCommerce stores</div>
+        ),
+    },
+    {
         type: CUSTOM_WIDGET_TYPE,
         title: 'Customer data (Deprecated)',
         description: (
@@ -224,12 +235,11 @@ export default function SourceWrapper({
         newWidgetsTemplate = (
             newWidgetsTemplate.map((widgetsTemplate: Map<any, any>) => {
                 let ret = widgetsTemplate
+                const sourcePath = widgetsTemplate.get(
+                    'sourcePath'
+                ) as List<string>
 
-                if (
-                    (widgetsTemplate.get('sourcePath') as List<any>).includes(
-                        'integrations'
-                    )
-                ) {
+                if (sourcePath.includes('integrations')) {
                     const integrationId = (
                         widgetsTemplate.get('sourcePath') as List<any>
                     ).last() as string
@@ -256,14 +266,23 @@ export default function SourceWrapper({
 
                     typesAlreadyDisplayed.push(integration.get('type'))
                     ret = widgetsTemplate.set('type', integration.get('type'))
-                } else if (
-                    (widgetsTemplate.get('sourcePath') as List<any>).includes(
-                        'external_data'
-                    )
-                ) {
+                } else if (sourcePath.includes(CUSTOMER_EXTERNAL_DATA_KEY)) {
                     typesAlreadyDisplayed.push(
                         CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
                     )
+                } else if (sourcePath.includes(CUSTOMER_ECOMMERCE_DATA_KEY)) {
+                    const customerEcommerceData = (
+                        sources.getIn(sourcePath) as Map<any, any> | undefined
+                    )?.toJS() as CustomerEcommerceData | undefined
+                    if (
+                        customerEcommerceData &&
+                        customerEcommerceData.store.type ===
+                            WOOCOMMERCE_WIDGET_TYPE
+                    ) {
+                        typesAlreadyDisplayed.push(WOOCOMMERCE_WIDGET_TYPE)
+                    } else {
+                        return false
+                    }
                 } else {
                     typesAlreadyDisplayed.push(CUSTOM_WIDGET_TYPE)
                 }

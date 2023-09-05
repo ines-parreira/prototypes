@@ -18,6 +18,10 @@ import {
     setSubjectAction,
     shopifyAction,
 } from 'fixtures/macro'
+import {
+    CUSTOMER_ECOMMERCE_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_KEY,
+} from 'state/widgets/constants'
 import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 
@@ -945,16 +949,19 @@ describe('ticket reducers', () => {
             ).toMatchSnapshot()
         })
 
-        it('should keep old ticket.customer.external_data', () => {
-            expect(
-                reducer(
+        it.each([CUSTOMER_EXTERNAL_DATA_KEY, CUSTOMER_ECOMMERCE_DATA_KEY])(
+            `should keep old ticket.customer.%s`,
+            (dataKey) => {
+                const dataNewValue = {
+                    'my-awesome-id-1': {
+                        foo: 'Bar',
+                    },
+                }
+
+                const newState = reducer(
                     initialState.mergeDeep(ticket).mergeDeep({
                         customer: {
-                            external_data: {
-                                'my-awesome-app-id-1': {
-                                    badge: 'Best customer',
-                                },
-                            },
+                            [dataKey]: dataNewValue,
                         },
                     }),
                     {
@@ -962,18 +969,32 @@ describe('ticket reducers', () => {
                         ticket,
                         messagesDifference: 1,
                     } as unknown as GorgiasAction
-                ).toJS()
-            ).toMatchSnapshot()
-        })
+                )
 
-        it('should update ticket.customer.external_data', () => {
-            expect(
-                reducer(
+                expect(newState.getIn(['customer', dataKey])).toEqual(
+                    fromJS(dataNewValue)
+                )
+            }
+        )
+
+        it.each([CUSTOMER_EXTERNAL_DATA_KEY, CUSTOMER_ECOMMERCE_DATA_KEY])(
+            `should update ticket.customer.%s`,
+            (dataKey) => {
+                const dataNewValue = {
+                    'my-awesome-id-1': {
+                        foo: 'New BAR',
+                    },
+                    'my-awesome-id-2': {
+                        foo: 'Bar',
+                    },
+                }
+
+                const newState = reducer(
                     initialState.mergeDeep(ticket).mergeDeep({
                         customer: {
-                            external_data: {
-                                'my-awesome-app-id-1': {
-                                    badge: 'Best customer',
+                            [dataKey]: {
+                                'my-awesome-id-1': {
+                                    foo: 'Bar',
                                 },
                             },
                         },
@@ -982,21 +1003,18 @@ describe('ticket reducers', () => {
                         type: types.MERGE_TICKET,
                         ticket: ticket.mergeDeep({
                             customer: {
-                                external_data: {
-                                    'my-awesome-app-id-1': {
-                                        badge: 'WORST customer',
-                                    },
-                                    'my-awesome-app-id-2': {
-                                        points: 500,
-                                    },
-                                },
+                                [dataKey]: dataNewValue,
                             },
                         }),
                         messagesDifference: 1,
                     } as unknown as GorgiasAction
-                ).toJS()
-            ).toMatchSnapshot()
-        })
+                )
+
+                expect(newState.getIn(['customer', dataKey])).toEqual(
+                    fromJS(dataNewValue)
+                )
+            }
+        )
 
         it('should deep merge ticket.custom_fields', () => {
             const customFieldsInitialState = {
@@ -1042,61 +1060,83 @@ describe('ticket reducers', () => {
                 } as unknown as GorgiasAction).toJS()
             ).toMatchSnapshot()
         })
-        it('should update customer and no change to the external_data as there is no old external_data', () => {
-            expect(
-                reducer(
-                    initialState.mergeDeep({
-                        customer: {
-                            id: 1,
-                            name: 'Romain',
-                        },
-                    }),
-                    {
-                        type: types.MERGE_CUSTOMER,
-                        customer: {
-                            id: 1,
-                            name: 'Alex',
-                        },
-                    } as unknown as GorgiasAction
-                ).toJS()
-            ).toMatchSnapshot()
+        it('should update customer', () => {
+            const newName = 'Alex'
+
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                    },
+                }),
+                {
+                    type: types.MERGE_CUSTOMER,
+                    customer: {
+                        id: 1,
+                        name: newName,
+                    },
+                } as unknown as GorgiasAction
+            )
+
+            expect(newState.getIn(['customer', 'name'])).toEqual(newName)
         })
 
-        it('should update customer keeping the old external_data', () => {
-            expect(
-                reducer(
-                    initialState.mergeDeep({
-                        customer: {
-                            id: 1,
-                            name: 'Romain',
-                            external_data: {
-                                'my-awesome-app-id-1': {
-                                    badge: 'Best customer',
-                                },
-                            },
-                        },
-                    }),
-                    {
-                        type: types.MERGE_CUSTOMER,
-                        customer: {
-                            id: 1,
-                            name: 'Alex',
-                        },
-                    } as unknown as GorgiasAction
-                ).toJS()
-            ).toMatchSnapshot()
-        })
+        it.each([CUSTOMER_EXTERNAL_DATA_KEY, CUSTOMER_ECOMMERCE_DATA_KEY])(
+            `should update customer keeping the old %s`,
+            (dataKey) => {
+                const newName = 'Alex'
+                const dataValue = {
+                    'my-awesome-id-1': {
+                        foo: 'Bar',
+                    },
+                }
 
-        it('should update customer and the external_data', () => {
-            expect(
-                reducer(
+                const newState = reducer(
                     initialState.mergeDeep({
                         customer: {
                             id: 1,
                             name: 'Romain',
-                            external_data: {
-                                'my-awesome-app-id-1': {
-                                    badge: 'Best customer',
+                            [dataKey]: dataValue,
+                        },
+                    }),
+                    {
+                        type: types.MERGE_CUSTOMER,
+                        customer: {
+                            id: 1,
+                            name: newName,
+                        },
+                    } as unknown as GorgiasAction
+                )
+
+                expect(newState.getIn(['customer', 'name'])).toEqual(newName)
+                expect(newState.getIn(['customer', dataKey])).toEqual(
+                    fromJS(dataValue)
+                )
+            }
+        )
+
+        it.each([CUSTOMER_EXTERNAL_DATA_KEY, CUSTOMER_ECOMMERCE_DATA_KEY])(
+            `should update customer and the %s`,
+            (dataKey) => {
+                const newName = 'Alex'
+                const dataNewValue = {
+                    'my-awesome-id-1': {
+                        foo: 'New BAR',
+                    },
+                    'my-awesome-id-2': {
+                        foo: 'Bar',
+                    },
+                }
+
+                const newState = reducer(
+                    initialState.mergeDeep({
+                        customer: {
+                            id: 1,
+                            name: 'Romain',
+                            [dataKey]: {
+                                'my-awesome-id-1': {
+                                    foo: 'Bar',
                                 },
                             },
                         },
@@ -1105,63 +1145,64 @@ describe('ticket reducers', () => {
                         type: types.MERGE_CUSTOMER,
                         customer: {
                             id: 1,
-                            name: 'Alex',
-                            external_data: {
-                                'my-awesome-app-id-1': {
-                                    badge: 'WORST customer',
-                                },
-                                'my-awesome-app-id-2': {
-                                    points: 500,
-                                },
-                            },
+                            name: newName,
+                            [dataKey]: dataNewValue,
                         },
                     } as unknown as GorgiasAction
-                ).toJS()
-            ).toMatchSnapshot()
-        })
+                )
+
+                expect(newState.getIn(['customer', 'name'])).toEqual(newName)
+                expect(newState.getIn(['customer', dataKey])).toEqual(
+                    fromJS(dataNewValue)
+                )
+            }
+        )
     })
 
     describe('handle MERGE_CUSTOMER_EXTERNAL_DATA', () => {
         it('should do nothing since there is no customer in state', () => {
-            expect(
-                reducer(initialState, {
-                    type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
-                    customer: {
-                        id: 1,
-                        name: 'Alex',
-                    },
-                } as unknown as GorgiasAction).toJS()
-            ).toMatchSnapshot()
+            const newState = reducer(initialState, {
+                type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
+                customer: {
+                    id: 1,
+                    name: 'Alex',
+                },
+            } as unknown as GorgiasAction)
+            expect(newState.get('customer')).toBeNull()
         })
 
         it('should update the external_data of the customer', () => {
-            expect(
-                reducer(
-                    initialState.mergeDeep({
-                        customer: {
-                            id: 1,
-                            name: 'Romain',
-                            external_data: {
-                                'my-awesome-app-id-1': {
-                                    badge: 'Best customer',
-                                },
-                            },
-                        },
-                    }),
-                    {
-                        type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
-                        customerId: 1,
-                        externalData: {
+            const externalDataNewValue = {
+                'my-awesome-app-id-1': {
+                    badge: 'WORST customer',
+                },
+                'my-awesome-app-id-2': {
+                    points: 500,
+                },
+            }
+
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                        external_data: {
                             'my-awesome-app-id-1': {
-                                badge: 'WORST customer',
-                            },
-                            'my-awesome-app-id-2': {
-                                points: 500,
+                                badge: 'Best customer',
                             },
                         },
-                    } as unknown as GorgiasAction
-                ).toJS()
-            ).toMatchSnapshot()
+                    },
+                }),
+                {
+                    type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
+                    customerId: 1,
+                    externalData: externalDataNewValue,
+                } as unknown as GorgiasAction
+            )
+
+            expect(
+                newState.getIn(['customer', CUSTOMER_EXTERNAL_DATA_KEY])
+            ).toEqual(fromJS(externalDataNewValue))
         })
     })
 

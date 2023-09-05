@@ -5,6 +5,7 @@ import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
 export enum WidgetContextType {
@@ -20,6 +21,7 @@ export type WidgetType =
     | typeof CUSTOM_WIDGET_TYPE
     | typeof CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
     | typeof STANDALONE_WIDGET_TYPE
+    | typeof WOOCOMMERCE_WIDGET_TYPE
 
 export type Widget = {
     order: number

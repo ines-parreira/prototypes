@@ -23,6 +23,7 @@ import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
 
 import * as types from './constants'
 import {Widget, WidgetContextType} from './types'
+import {CUSTOMER_EXTERNAL_DATA_KEY} from './constants'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {
@@ -167,7 +168,7 @@ export function drop(
             }
         }
 
-        if (splitKey.includes('external_data')) {
+        if (splitKey.includes(CUSTOMER_EXTERNAL_DATA_KEY)) {
             type = types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
             appId = _last(splitKey) || ''
         }

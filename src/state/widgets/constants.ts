@@ -41,4 +41,8 @@ export const BIGCOMMERCE_WIDGET_TYPE = 'bigcommerce'
 export const CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE = 'customer_external_data'
 export const STANDALONE_WIDGET_TYPE = 'standalone'
 
+export const WOOCOMMERCE_WIDGET_TYPE = 'woocommerce'
+
 export const THIRD_PARTY_APP_NAME_KEY = '__app_name__'
+export const CUSTOMER_EXTERNAL_DATA_KEY = 'external_data'
+export const CUSTOMER_ECOMMERCE_DATA_KEY = 'ecommerce_data'

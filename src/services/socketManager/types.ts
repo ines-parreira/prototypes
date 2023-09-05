@@ -2,7 +2,7 @@ import {Map} from 'immutable'
 
 import {TicketChannel} from 'business/types/ticket'
 import {MacrosProperties} from 'models/macro/types'
-import {CustomerExternalData} from 'state/customers/types'
+import {CustomerExternalData} from 'models/customerExternalData/types'
 import {RecentChatTicket} from '../../business/types/recentChats'
 import {Ticket} from '../../models/ticket/types'
 import {View} from '../../models/view/types'

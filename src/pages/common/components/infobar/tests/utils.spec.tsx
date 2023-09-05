@@ -5,6 +5,7 @@ import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 import {WidgetContextType} from 'state/widgets/types'
 
+import {jsonToCovertToWidgets} from 'pages/common/components/infobar/tests/fixtures'
 import * as utils from '../utils'
 
 jest.mock('../../../utils/labels', () => ({
@@ -795,5 +796,16 @@ describe('widgets infobar utils', () => {
                 expect(utils.stringifyRawData(data, type)).toBeNull()
             }
         )
+    })
+
+    describe('jsonToWidgets()', () => {
+        it('should convert json to widgets', () => {
+            expect(
+                utils.jsonToWidgets(
+                    jsonToCovertToWidgets,
+                    WidgetContextType.Customer
+                )
+            ).toMatchSnapshot()
+        })
     })
 })

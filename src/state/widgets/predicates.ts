@@ -1,8 +1,10 @@
 import _snakeCase from 'lodash/snakeCase'
 import {List, Map} from 'immutable'
+import _last from 'lodash/last'
 import {IntegrationType} from 'models/integration/constants'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
@@ -64,6 +66,36 @@ function getWidgetNameForThirdPartyApp(
     }
 }
 
+function getWidgetNameForEcommerceWidget(
+    source: List<Map<string, unknown>> | Map<string, unknown>,
+    widgetType: WidgetType,
+    templatePath: string[]
+) {
+    let widgetName = source.getIn(['store', 'display_name']) as
+        | string
+        | undefined
+    if (widgetName) {
+        return widgetName
+    }
+
+    if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
+        widgetName = source.getIn([
+            ...templatePath,
+            'store',
+            'display_name',
+        ]) as string | undefined
+
+        // If we can't find the store name then use the storeUUID.
+        // Can be the case for Placeholder names.
+        const storeUUID = _last(templatePath)
+        if (!widgetName && storeUUID) {
+            widgetName = storeUUID
+        }
+
+        return widgetName
+    }
+}
+
 function getWidgetNameForIntegration(integration: Integration) {
     if (integration.type === IntegrationType.Http) {
         return integration.name
@@ -96,13 +128,18 @@ export function getWidgetName({
     if (
         widgetTitle &&
         [
+            WOOCOMMERCE_WIDGET_TYPE,
             CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
             HTTP_WIDGET_TYPE,
             STANDALONE_WIDGET_TYPE,
         ].includes(widgetType)
     ) {
         let context = source.getIn(templatePath)
-        if (!context && source.getIn([THIRD_PARTY_APP_NAME_KEY])) {
+        if (
+            !context &&
+            (source.getIn([THIRD_PARTY_APP_NAME_KEY]) ||
+                source.getIn(['store', 'display_name']))
+        ) {
             context = source
         }
 
@@ -114,14 +151,23 @@ export function getWidgetName({
             : widgetTitle
     }
 
-    const thirdPartyAppName = getWidgetNameForThirdPartyApp(
+    const thirdPartyAppWidgetName = getWidgetNameForThirdPartyApp(
         source,
         widgetType,
         widgetAppId,
         templatePath
     )
-    if (thirdPartyAppName) {
-        return thirdPartyAppName
+    if (thirdPartyAppWidgetName) {
+        return thirdPartyAppWidgetName
+    }
+
+    const ecommerceWidgetName = getWidgetNameForEcommerceWidget(
+        source,
+        widgetType,
+        templatePath
+    )
+    if (ecommerceWidgetName) {
+        return ecommerceWidgetName
     }
 
     if (integration?.id) {

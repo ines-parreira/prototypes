@@ -5,11 +5,14 @@ import {Integration, IntegrationType} from 'models/integration/types'
 import {getWidgetId, getWidgetLabel, getWidgetName} from '../predicates'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_KEY,
     HTTP_WIDGET_TYPE,
     SHOPIFY_WIDGET_TYPE,
     SMOOCH_INSIDE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
+    WOOCOMMERCE_WIDGET_TYPE,
+    CUSTOMER_ECOMMERCE_DATA_KEY,
 } from '../constants'
 
 describe('predicates tests', () => {
@@ -81,7 +84,12 @@ describe('predicates tests', () => {
             const widget = {
                 type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE as WidgetType,
             } as Widget
-            const templatePath = ['ticket', 'customer', 'external_data', '123']
+            const templatePath = [
+                'ticket',
+                'customer',
+                CUSTOMER_EXTERNAL_DATA_KEY,
+                '123',
+            ]
 
             const widgetName = getWidgetName({
                 source,
@@ -112,7 +120,12 @@ describe('predicates tests', () => {
             const widget = {
                 type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE as WidgetType,
             } as Widget
-            const templatePath = ['ticket', 'customer', 'external_data', '123']
+            const templatePath = [
+                'ticket',
+                'customer',
+                CUSTOMER_EXTERNAL_DATA_KEY,
+                '123',
+            ]
 
             const widgetName = getWidgetName({
                 source,
@@ -160,7 +173,12 @@ describe('predicates tests', () => {
             const widget = {
                 type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
             } as Widget
-            const templatePath = ['ticket', 'customer', 'external_data', '123']
+            const templatePath = [
+                'ticket',
+                'customer',
+                CUSTOMER_EXTERNAL_DATA_KEY,
+                '123',
+            ]
 
             const widgetName = getWidgetName({
                 source,
@@ -189,7 +207,12 @@ describe('predicates tests', () => {
                 type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
                 app_id: appId,
             } as Widget
-            const templatePath = ['ticket', 'customer', 'external_data', '123']
+            const templatePath = [
+                'ticket',
+                'customer',
+                CUSTOMER_EXTERNAL_DATA_KEY,
+                '123',
+            ]
 
             const widgetName = getWidgetName({
                 source,
@@ -200,6 +223,71 @@ describe('predicates tests', () => {
 
             expect(widgetName).toEqual(appId)
         })
+
+        it.each([
+            [
+                {
+                    ticket: {
+                        customer: {
+                            ecommerce_data: {
+                                'foo-bar-store-uuid': {
+                                    store: {display_name: 'My awesome store'},
+                                },
+                            },
+                        },
+                    },
+                },
+                [
+                    'ticket',
+                    'customer',
+                    CUSTOMER_ECOMMERCE_DATA_KEY,
+                    'foo-bar-store-uuid',
+                ],
+                'My awesome store',
+            ],
+            [
+                {
+                    customer: {
+                        ecommerce_data: {
+                            'foo-bar-store-uuid': {
+                                store: {display_name: 'My awesome store'},
+                            },
+                        },
+                    },
+                },
+                ['customer', CUSTOMER_ECOMMERCE_DATA_KEY, 'foo-bar-store-uuid'],
+                'My awesome store',
+            ],
+            [
+                {
+                    store: {display_name: 'My awesome store'},
+                },
+                ['doesnt', 'matter'],
+                'My awesome store',
+            ],
+            [
+                {},
+                ['customer', CUSTOMER_ECOMMERCE_DATA_KEY, 'foo-bar-store-uuid'],
+                'foo-bar-store-uuid',
+            ],
+        ])(
+            'should render store name or uuid for ecommerce widgets',
+            (source, templatePath, expected) => {
+                const sourceMap = fromJS(source)
+                const widget = {
+                    type: WOOCOMMERCE_WIDGET_TYPE,
+                } as Widget
+
+                const widgetName = getWidgetName({
+                    source: sourceMap,
+                    widgetType: widget.type,
+                    widgetAppId: null,
+                    templatePath,
+                })
+
+                expect(widgetName).toEqual(expected)
+            }
+        )
 
         it('should render http integration name', () => {
             const source = fromJS({doesnt: 'matter'})

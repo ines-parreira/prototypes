@@ -9,6 +9,7 @@ import {ACTION_TEMPLATES} from 'config'
 import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
 import {assumeMock} from 'utils/testing'
 
+import {CUSTOMER_EXTERNAL_DATA_KEY} from 'state/widgets/constants'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
@@ -162,10 +163,11 @@ describe('ticket selectors', () => {
     it('getAppDataByAppId', () => {
         expect(selectors.getAppDataByAppId('foo')(state)).toEqual(
             (
-                state.ticket.getIn(['customer', 'external_data', 'foo']) as Map<
-                    any,
-                    any
-                >
+                state.ticket.getIn([
+                    'customer',
+                    CUSTOMER_EXTERNAL_DATA_KEY,
+                    'foo',
+                ]) as Map<any, any>
             ).toJS()
         )
     })

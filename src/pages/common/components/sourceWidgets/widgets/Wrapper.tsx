@@ -4,14 +4,17 @@ import {fromJS, List, Map} from 'immutable'
 import _last from 'lodash/last'
 
 import {getWidgetName} from 'state/widgets/predicates'
-import {Integration} from 'models/integration/types'
-import {STANDALONE_WIDGET_TYPE} from 'state/widgets/constants'
+import {
+    WOOCOMMERCE_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
+} from 'state/widgets/constants'
 import {getIntegrationById} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
 import infobarWidgetCss from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Wrapper.less'
 
+import {WidgetType} from 'state/widgets/types'
 import SourceWidget from '../Widget'
 import css from './Wrapper.less'
 
@@ -28,8 +31,15 @@ export default function Wrapper({widget, template, source, parent}: Props) {
     const children = template.get('widgets', fromJS([])) as List<
         Map<string, unknown>
     >
+    const widgetType = widget.get('type') as WidgetType
 
-    const integrationId = parseInt(_last(absolutePath) || '', 10)
+    let integrationId
+    if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
+        integrationId = source.getIn(['store', 'helpdesk_integration_id'])
+    } else {
+        integrationId = parseInt(_last(absolutePath) || '', 10)
+    }
+
     const integration = useAppSelector(getIntegrationById(integrationId))
 
     if (children.isEmpty() && widget.get('type') !== STANDALONE_WIDGET_TYPE) {
@@ -38,7 +48,7 @@ export default function Wrapper({widget, template, source, parent}: Props) {
 
     const displayName = getWidgetName({
         source,
-        widgetType: widget.get('type') as Integration['type'],
+        widgetType: widgetType,
         widgetAppId: widget.get('app_id') as Maybe<string>,
         templatePath: template.get('path') as string[],
         integration: integration?.toJS(),

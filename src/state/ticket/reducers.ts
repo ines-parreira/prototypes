@@ -13,6 +13,10 @@ import {compare} from 'utils'
 import {Ticket} from 'models/ticket/types'
 
 import {
+    CUSTOMER_ECOMMERCE_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_KEY,
+} from 'state/widgets/constants'
+import {
     getPendingMessageIndex,
     injectAISuggestionEvents,
     mergeActions,
@@ -466,24 +470,26 @@ export default function reducer(
             let newState = state.merge(ticket as Map<any, any>)
             newState = newState.set('custom_fields', mergedCustomFields)
 
-            // keep the old ticket.customer.external_data
-            // if the new ticket.customer doesn't have an external_data key
-            // for example, this could happen when we receive
+            // Keep the old ticket.customer.{dataKey}
+            // if the new ticket.customer doesn't have a {dataKey}.
+            // This could happen, for example, when we receive
             // `ticket-updated` event having attached a ticket.customer object
-            // that did not have loaded the external_data to it
-            if (!ticket?.getIn(['customer', 'external_data'])) {
+            // that did not have loaded the external_data or ecommerce_data
+            for (const dataKey of [
+                CUSTOMER_EXTERNAL_DATA_KEY,
+                CUSTOMER_ECOMMERCE_DATA_KEY,
+            ]) {
+                if (ticket?.getIn(['customer', dataKey])) continue
+
                 const newCustomerId = ticket?.getIn(['customer', 'id'])
                 const oldCustomerId = state.getIn(['customer', 'id'])
 
                 if (newCustomerId === oldCustomerId) {
-                    const oldExternalData = state.getIn([
-                        'customer',
-                        'external_data',
-                    ])
-                    if (oldExternalData) {
+                    const oldData = state.getIn(['customer', dataKey])
+                    if (oldData) {
                         newState = newState.setIn(
-                            ['customer', 'external_data'],
-                            oldExternalData
+                            ['customer', dataKey],
+                            oldData
                         )
                     }
                 }
@@ -559,21 +565,20 @@ export default function reducer(
                 return state
             }
 
-            // keep the old customer.external_data
-            // if the new customer doesn't have an external_data key
-            // for example, this could happen when we receive
+            // Keep the old customer.{dataKey}
+            // if the new customer doesn't have a {dataKey}.
+            // This could happen, for example, when we receive
             // `customer-updated` event having attached a Customer object
-            // that did not have loaded the external_data to it
-            if (!customerData.get('external_data')) {
-                const oldExternalData = state.getIn([
-                    'customer',
-                    'external_data',
-                ])
-                if (oldExternalData) {
-                    customerData = customerData.set(
-                        'external_data',
-                        oldExternalData
-                    )
+            // that did not have loaded the external_data or ecommerce_data
+            for (const dataKey of [
+                CUSTOMER_EXTERNAL_DATA_KEY,
+                CUSTOMER_ECOMMERCE_DATA_KEY,
+            ]) {
+                if (customerData.get(dataKey)) continue
+
+                const oldData = state.getIn(['customer', dataKey])
+                if (oldData) {
+                    customerData = customerData.set(dataKey, oldData)
                 }
             }
 
@@ -591,7 +596,7 @@ export default function reducer(
             let nextState = state
             for (const clientId in externalData) {
                 nextState = nextState.setIn(
-                    ['customer', 'external_data', clientId],
+                    ['customer', CUSTOMER_EXTERNAL_DATA_KEY, clientId],
                     fromJS(externalData[clientId])
                 )
             }

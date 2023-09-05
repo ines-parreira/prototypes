@@ -32,6 +32,9 @@ import {getSourcePathFromContext} from 'state/widgets/utils'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    CUSTOMER_ECOMMERCE_DATA_KEY,
+    WOOCOMMERCE_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_KEY,
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {DatetimeLabel} from 'pages/common/utils/labels'
@@ -42,6 +45,7 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import css from './utils.less'
 import {
     FEDEX_BASE_TRACKING_LINK,
@@ -457,22 +461,33 @@ export function jsonToWidgets(
                 context,
                 CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
             ) as string[],
+            getSourcePathFromContext(
+                context,
+                WOOCOMMERCE_WIDGET_TYPE
+            ) as string[],
         ]
 
         let typeByPath = fromJS({}) as Map<any, any>
-
         mutableDataSourcePaths.forEach((mutableDataSourcePath) => {
             const data = _get(json, mutableDataSourcePath, {}) as Record<
                 string,
                 unknown
             >
             // Transform:
-            //  [['customer', 'data'], ['customer', 'integrations'], ['customer', 'external_data']]
+            //  [
+            //      ['customer', 'integrations'],
+            //      ['customer', CUSTOMER_EXTERNAL_DATA_KEY]
+            //      ['customer', CUSTOMER_ECOMMERCE_DATA_KEY]
+            //  ]
             // To:
-            //  [['customer', 'data'], ['customer', 'integrations', '1'], ['customer', 'integrations', '2'], ['customer', 'external_data', '1'], ['customer', 'external_data', '2']]
+            //  [
+            //      ['customer', 'integrations', '1'], ['customer', 'integrations', '2'],
+            //      ['customer', CUSTOMER_EXTERNAL_DATA_KEY, 'fooBarAppId'], ['customer', CUSTOMER_EXTERNAL_DATA_KEY, 'fooBarAppId2']
+            //      ['customer', CUSTOMER_ECOMMERCE_DATA_KEY, 'foo-bar-store-uuid'], ['customer', CUSTOMER_ECOMMERCE_DATA_KEY, 'foo-bar-store-uuid2']
+            //  ]
             _forEach(data, (datum, datumId) => {
-                // datum = integrations or external_data
-                // datumId = integrationId or appId
+                // datum = integrations, external_data or ecommerce_data
+                // datumId = integrationId, appId or storeUuid
 
                 const newPath = mutableDataSourcePath.slice()
                 newPath.push(datumId.toString())
@@ -483,19 +498,41 @@ export function jsonToWidgets(
                     type = (datum as Record<string, unknown>)[
                         '__integration_type__'
                     ]
+                    typeByPath = typeByPath.set(
+                        newPath,
+                        fromJS({type, integrationId: parseInt(datumId)})
+                    )
                 }
 
-                if (mutableDataSourcePath.includes('external_data')) {
+                if (
+                    mutableDataSourcePath.includes(CUSTOMER_EXTERNAL_DATA_KEY)
+                ) {
                     type = CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+                    typeByPath = typeByPath.set(
+                        newPath,
+                        fromJS({type, appId: datumId})
+                    )
                 }
 
-                typeByPath = typeByPath.set(
-                    newPath,
-                    fromJS({
-                        type: type,
-                        datumId,
-                    })
-                )
+                if (
+                    mutableDataSourcePath.includes(
+                        CUSTOMER_ECOMMERCE_DATA_KEY
+                    ) &&
+                    (datum as CustomerEcommerceData).store.type ===
+                        WOOCOMMERCE_WIDGET_TYPE
+                ) {
+                    type = WOOCOMMERCE_WIDGET_TYPE
+                    typeByPath = typeByPath.set(
+                        newPath,
+                        fromJS({
+                            type,
+                            integrationId: (datum as CustomerEcommerceData)
+                                .store.helpdesk_integration_id,
+                        })
+                    )
+                }
+
+                if (!type) return // equivalent to continue in normal for loops
 
                 dataSourcePaths.push(newPath)
             })

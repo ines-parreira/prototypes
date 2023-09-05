@@ -5,7 +5,8 @@ import {ApiPaginationParams, OrderParams} from 'models/api/types'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {IntegrationType} from 'models/integration/types'
 import {Subscription} from 'state/billing/types'
-import {CustomerExternalData} from 'state/customers/types'
+import {CustomerExternalData} from 'models/customerExternalData/types'
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 
 type CustomerInformation = {
     city: string
@@ -43,6 +44,7 @@ export type Customer = CustomerDraft & {
     customer: Maybe<CustomerInformation>
     data: CustomerInformation | null
     external_data?: CustomerExternalData
+    ecommerce_data?: CustomerEcommerceData
     email: string | null
     external_id: Maybe<string>
     firstname: string

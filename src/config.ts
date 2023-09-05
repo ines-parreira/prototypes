@@ -18,6 +18,9 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    CUSTOMER_ECOMMERCE_DATA_KEY,
+    WOOCOMMERCE_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_KEY,
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetContextType} from 'state/widgets/types'
@@ -151,22 +154,35 @@ export const DEFAULT_SOURCE_PATHS = {
         [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: [
             'ticket',
             'customer',
-            'external_data',
+            CUSTOMER_EXTERNAL_DATA_KEY,
         ],
         [STANDALONE_WIDGET_TYPE]: ['ticket', 'customer'],
+        [WOOCOMMERCE_WIDGET_TYPE]: [
+            'ticket',
+            'customer',
+            CUSTOMER_ECOMMERCE_DATA_KEY,
+        ],
     },
     [WidgetContextType.Customer]: {
         [CUSTOM_WIDGET_TYPE]: ['customer', 'data'],
         integrations: ['customer', 'integrations'],
-        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: ['customer', 'external_data'],
+        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: [
+            'customer',
+            CUSTOMER_EXTERNAL_DATA_KEY,
+        ],
         [STANDALONE_WIDGET_TYPE]: ['customer'],
+        [WOOCOMMERCE_WIDGET_TYPE]: ['customer', CUSTOMER_ECOMMERCE_DATA_KEY],
     },
     //TODO(customers-migration): remove this property when we migrated widgets.
     [WidgetContextType.User]: {
         [CUSTOM_WIDGET_TYPE]: ['customer', 'data'],
         integrations: ['customer', 'integrations'],
-        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: ['customer', 'external_data'],
+        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: [
+            'customer',
+            CUSTOMER_EXTERNAL_DATA_KEY,
+        ],
         [STANDALONE_WIDGET_TYPE]: ['customer'],
+        [WOOCOMMERCE_WIDGET_TYPE]: ['customer', CUSTOMER_ECOMMERCE_DATA_KEY],
     },
 }
 

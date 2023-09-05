@@ -328,3 +328,1175 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should return a link
   https://gorgias.io
 </a>
 `;
+
+exports[`widgets infobar utils jsonToWidgets() should convert json to widgets 1`] = `
+[
+  Immutable.Map {
+    "type": "http",
+    "order": 1,
+    "context": "customer",
+    "template": Immutable.Map {
+      "type": "wrapper",
+      "widgets": Immutable.List [
+        Immutable.Map {
+          "type": "card",
+          "title": "",
+          "widgets": Immutable.List [
+            Immutable.Map {
+              "type": "text",
+              "title": "Origin",
+              "path": "origin",
+            },
+            Immutable.Map {
+              "type": "url",
+              "title": "Url",
+              "path": "url",
+            },
+            Immutable.Map {
+              "type": "card",
+              "title": "Args",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Name",
+                  "path": "name",
+                },
+              ],
+              "path": "args",
+            },
+            Immutable.Map {
+              "type": "card",
+              "title": "Headers",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "type": "text",
+                  "title": " accept",
+                  "path": "Accept",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": " accept encoding",
+                  "path": "Accept-Encoding",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": " content type",
+                  "path": "Content-Type",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": " host",
+                  "path": "Host",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": " user agent",
+                  "path": "User-Agent",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": " x amzn trace id",
+                  "path": "X-Amzn-Trace-Id",
+                },
+              ],
+              "path": "headers",
+            },
+          ],
+          "path": "",
+        },
+      ],
+    },
+    "sourcePath": Immutable.List [
+      "customer",
+      "integrations",
+      "1",
+    ],
+    "integration_id": 1,
+    "app_id": null,
+  },
+  Immutable.Map {
+    "type": "shopify",
+    "order": 2,
+    "context": "customer",
+    "template": Immutable.Map {
+      "type": "wrapper",
+      "widgets": Immutable.List [
+        Immutable.Map {
+          "type": "card",
+          "title": "",
+          "widgets": Immutable.List [
+            Immutable.Map {
+              "type": "array",
+              "title": "Orders",
+              "path": "orders",
+            },
+            Immutable.Map {
+              "type": "card",
+              "title": "Customer",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "type": "boolean",
+                  "title": "Accepts marketing",
+                  "path": "accepts_marketing",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Accepts marketing updated at",
+                  "path": "accepts_marketing_updated_at",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Admin graphql api id",
+                  "path": "admin_graphql_api_id",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Created at",
+                  "path": "created_at",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Currency",
+                  "path": "currency",
+                },
+                Immutable.Map {
+                  "type": "email",
+                  "title": "Email",
+                  "path": "email",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "First name",
+                  "path": "first_name",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Id",
+                  "path": "id",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Last name",
+                  "path": "last_name",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Last order id",
+                  "path": "last_order_id",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Last order name",
+                  "path": "last_order_name",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Marketing opt in level",
+                  "path": "marketing_opt_in_level",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Multipass identifier",
+                  "path": "multipass_identifier",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Note",
+                  "path": "note",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Orders count",
+                  "path": "orders_count",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Phone",
+                  "path": "phone",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Sms marketing consent",
+                  "path": "sms_marketing_consent",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "State",
+                  "path": "state",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Tags",
+                  "path": "tags",
+                },
+                Immutable.Map {
+                  "type": "boolean",
+                  "title": "Tax exempt",
+                  "path": "tax_exempt",
+                },
+                Immutable.Map {
+                  "type": "array",
+                  "title": "Tax exemptions",
+                  "path": "tax_exemptions",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Total spent",
+                  "path": "total_spent",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Updated at",
+                  "path": "updated_at",
+                },
+                Immutable.Map {
+                  "type": "boolean",
+                  "title": "Verified email",
+                  "path": "verified_email",
+                },
+                Immutable.Map {
+                  "type": "card",
+                  "title": "Default address",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Address1",
+                      "path": "address1",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Address2",
+                      "path": "address2",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "City",
+                      "path": "city",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Company",
+                      "path": "company",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Country",
+                      "path": "country",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Country code",
+                      "path": "country_code",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Country name",
+                      "path": "country_name",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Customer id",
+                      "path": "customer_id",
+                    },
+                    Immutable.Map {
+                      "type": "boolean",
+                      "title": "Default",
+                      "path": "default",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "First name",
+                      "path": "first_name",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Id",
+                      "path": "id",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Last name",
+                      "path": "last_name",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Name",
+                      "path": "name",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Phone",
+                      "path": "phone",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Province",
+                      "path": "province",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Province code",
+                      "path": "province_code",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Zip",
+                      "path": "zip",
+                    },
+                  ],
+                  "path": "default_address",
+                },
+                Immutable.Map {
+                  "type": "card",
+                  "title": "Email marketing consent",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Consent updated at",
+                      "path": "consent_updated_at",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Opt in level",
+                      "path": "opt_in_level",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "State",
+                      "path": "state",
+                    },
+                  ],
+                  "path": "email_marketing_consent",
+                },
+                Immutable.Map {
+                  "type": "list",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "type": "card",
+                      "title": "Addresses",
+                      "widgets": Immutable.List [
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Address1",
+                          "path": "address1",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Address2",
+                          "path": "address2",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "City",
+                          "path": "city",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Company",
+                          "path": "company",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Country",
+                          "path": "country",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Country code",
+                          "path": "country_code",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Country name",
+                          "path": "country_name",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Customer id",
+                          "path": "customer_id",
+                        },
+                        Immutable.Map {
+                          "type": "boolean",
+                          "title": "Default",
+                          "path": "default",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "First name",
+                          "path": "first_name",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Id",
+                          "path": "id",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Last name",
+                          "path": "last_name",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Name",
+                          "path": "name",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Phone",
+                          "path": "phone",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Province",
+                          "path": "province",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Province code",
+                          "path": "province_code",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Zip",
+                          "path": "zip",
+                        },
+                      ],
+                    },
+                  ],
+                  "path": "addresses",
+                },
+              ],
+              "path": "customer",
+            },
+          ],
+          "path": "",
+        },
+      ],
+    },
+    "sourcePath": Immutable.List [
+      "customer",
+      "integrations",
+      "9",
+    ],
+    "integration_id": 9,
+    "app_id": null,
+  },
+  Immutable.Map {
+    "type": "customer_external_data",
+    "order": 3,
+    "context": "customer",
+    "template": Immutable.Map {
+      "type": "wrapper",
+      "widgets": Immutable.List [
+        Immutable.Map {
+          "type": "card",
+          "title": "",
+          "widgets": Immutable.List [
+            Immutable.Map {
+              "type": "text",
+              "title": "Best",
+              "path": "best",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Foo",
+              "path": "foo",
+            },
+          ],
+          "path": "",
+        },
+      ],
+    },
+    "sourcePath": Immutable.List [
+      "customer",
+      "external_data",
+      "6318a932ee4d6a5078cde639",
+    ],
+    "integration_id": null,
+    "app_id": "6318a932ee4d6a5078cde639",
+  },
+  Immutable.Map {
+    "type": "woocommerce",
+    "order": 4,
+    "context": "customer",
+    "template": Immutable.Map {
+      "type": "wrapper",
+      "widgets": Immutable.List [
+        Immutable.Map {
+          "type": "card",
+          "title": "Shopper",
+          "widgets": Immutable.List [
+            Immutable.Map {
+              "type": "boolean",
+              "title": "Accepts marketing email",
+              "path": "accepts_marketing_email",
+            },
+            Immutable.Map {
+              "type": "boolean",
+              "title": "Accepts marketing sms",
+              "path": "accepts_marketing_sms",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Birthdate",
+              "path": "birthdate",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Created datetime",
+              "path": "created_datetime",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Deleted datetime",
+              "path": "deleted_datetime",
+            },
+            Immutable.Map {
+              "type": "email",
+              "title": "Email address",
+              "path": "email_address",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "External id",
+              "path": "external_id",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "First name",
+              "path": "first_name",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Helpdesk customer id",
+              "path": "helpdesk_customer_id",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Id",
+              "path": "id",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Last name",
+              "path": "last_name",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Middle name",
+              "path": "middle_name",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Phone number",
+              "path": "phone_number",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Status",
+              "path": "status",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Updated datetime",
+              "path": "updated_datetime",
+            },
+          ],
+          "path": "shopper",
+        },
+        Immutable.Map {
+          "type": "card",
+          "title": "Store",
+          "widgets": Immutable.List [
+            Immutable.Map {
+              "type": "text",
+              "title": "Created datetime",
+              "path": "created_datetime",
+            },
+            Immutable.Map {
+              "type": "array",
+              "title": "Currencies",
+              "path": "currencies",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Default currency",
+              "path": "default_currency",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Deleted datetime",
+              "path": "deleted_datetime",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Display name",
+              "path": "display_name",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Helpdesk integration id",
+              "path": "helpdesk_integration_id",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Id",
+              "path": "id",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Name",
+              "path": "name",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Type",
+              "path": "type",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Updated datetime",
+              "path": "updated_datetime",
+            },
+            Immutable.Map {
+              "type": "url",
+              "title": "Url",
+              "path": "url",
+            },
+            Immutable.Map {
+              "type": "text",
+              "title": "Uuid",
+              "path": "uuid",
+            },
+          ],
+          "path": "store",
+        },
+        Immutable.Map {
+          "type": "list",
+          "widgets": Immutable.List [
+            Immutable.Map {
+              "type": "card",
+              "title": "Addresses",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "type": "text",
+                  "title": "City",
+                  "path": "city",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Country",
+                  "path": "country",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Created datetime",
+                  "path": "created_datetime",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Deleted datetime",
+                  "path": "deleted_datetime",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "External id",
+                  "path": "external_id",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "First name",
+                  "path": "first_name",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Id",
+                  "path": "id",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Last name",
+                  "path": "last_name",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Line 1",
+                  "path": "line_1",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Line 2",
+                  "path": "line_2",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Phone number",
+                  "path": "phone_number",
+                },
+                Immutable.Map {
+                  "type": "boolean",
+                  "title": "Preferred",
+                  "path": "preferred",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "State",
+                  "path": "state",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Updated datetime",
+                  "path": "updated_datetime",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Zip code",
+                  "path": "zip_code",
+                },
+              ],
+            },
+          ],
+          "path": "addresses",
+        },
+        Immutable.Map {
+          "type": "list",
+          "widgets": Immutable.List [
+            Immutable.Map {
+              "type": "card",
+              "title": "Orders",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Created datetime",
+                  "path": "created_datetime",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Currency",
+                  "path": "currency",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Deleted datetime",
+                  "path": "deleted_datetime",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Discount amount",
+                  "path": "discount_amount",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Discount codes",
+                  "path": "discount_codes",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "External id",
+                  "path": "external_id",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Financial status",
+                  "path": "financial_status",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Fulfillment status",
+                  "path": "fulfillment_status",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Id",
+                  "path": "id",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Name",
+                  "path": "name",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Number",
+                  "path": "number",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Shipping amount",
+                  "path": "shipping_amount",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Subtotal amount",
+                  "path": "subtotal_amount",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Tax amount",
+                  "path": "tax_amount",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Total amount",
+                  "path": "total_amount",
+                },
+                Immutable.Map {
+                  "type": "text",
+                  "title": "Updated datetime",
+                  "path": "updated_datetime",
+                },
+                Immutable.Map {
+                  "type": "card",
+                  "title": "Billing address",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "City",
+                      "path": "city",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Country",
+                      "path": "country",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Created datetime",
+                      "path": "created_datetime",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Deleted datetime",
+                      "path": "deleted_datetime",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "External id",
+                      "path": "external_id",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "First name",
+                      "path": "first_name",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Id",
+                      "path": "id",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Last name",
+                      "path": "last_name",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Line 1",
+                      "path": "line_1",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Line 2",
+                      "path": "line_2",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Phone number",
+                      "path": "phone_number",
+                    },
+                    Immutable.Map {
+                      "type": "boolean",
+                      "title": "Preferred",
+                      "path": "preferred",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "State",
+                      "path": "state",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Updated datetime",
+                      "path": "updated_datetime",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Zip code",
+                      "path": "zip_code",
+                    },
+                  ],
+                  "path": "billing_address",
+                },
+                Immutable.Map {
+                  "type": "card",
+                  "title": "Shipping address",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "City",
+                      "path": "city",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Country",
+                      "path": "country",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Created datetime",
+                      "path": "created_datetime",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Deleted datetime",
+                      "path": "deleted_datetime",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "External id",
+                      "path": "external_id",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "First name",
+                      "path": "first_name",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Id",
+                      "path": "id",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Last name",
+                      "path": "last_name",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Line 1",
+                      "path": "line_1",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Line 2",
+                      "path": "line_2",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Phone number",
+                      "path": "phone_number",
+                    },
+                    Immutable.Map {
+                      "type": "boolean",
+                      "title": "Preferred",
+                      "path": "preferred",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "State",
+                      "path": "state",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Updated datetime",
+                      "path": "updated_datetime",
+                    },
+                    Immutable.Map {
+                      "type": "text",
+                      "title": "Zip code",
+                      "path": "zip_code",
+                    },
+                  ],
+                  "path": "shipping_address",
+                },
+                Immutable.Map {
+                  "type": "list",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "type": "card",
+                      "title": "Line items",
+                      "widgets": Immutable.List [
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Created datetime",
+                          "path": "created_datetime",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Deleted datetime",
+                          "path": "deleted_datetime",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Discount amount",
+                          "path": "discount_amount",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Discount reason",
+                          "path": "discount_reason",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Discount type",
+                          "path": "discount_type",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Fulfilled quantity",
+                          "path": "fulfilled_quantity",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Id",
+                          "path": "id",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Product options",
+                          "path": "product_options",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Quantity",
+                          "path": "quantity",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Requires shipping",
+                          "path": "requires_shipping",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Taxable",
+                          "path": "taxable",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Title",
+                          "path": "title",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Total amount",
+                          "path": "total_amount",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Unit price",
+                          "path": "unit_price",
+                        },
+                        Immutable.Map {
+                          "type": "text",
+                          "title": "Updated datetime",
+                          "path": "updated_datetime",
+                        },
+                        Immutable.Map {
+                          "type": "card",
+                          "title": "Product",
+                          "widgets": Immutable.List [
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Barcode",
+                              "path": "barcode",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Created datetime",
+                              "path": "created_datetime",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Currency",
+                              "path": "currency",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Deleted datetime",
+                              "path": "deleted_datetime",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Description",
+                              "path": "description",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "External id",
+                              "path": "external_id",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Id",
+                              "path": "id",
+                            },
+                            Immutable.Map {
+                              "type": "array",
+                              "title": "Images",
+                              "path": "images",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Name",
+                              "path": "name",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Price",
+                              "path": "price",
+                            },
+                            Immutable.Map {
+                              "type": "boolean",
+                              "title": "Requires shipping",
+                              "path": "requires_shipping",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Sku",
+                              "path": "sku",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Stock",
+                              "path": "stock",
+                            },
+                            Immutable.Map {
+                              "type": "array",
+                              "title": "Tags",
+                              "path": "tags",
+                            },
+                            Immutable.Map {
+                              "type": "boolean",
+                              "title": "Taxable",
+                              "path": "taxable",
+                            },
+                            Immutable.Map {
+                              "type": "text",
+                              "title": "Updated datetime",
+                              "path": "updated_datetime",
+                            },
+                          ],
+                          "path": "product",
+                        },
+                      ],
+                    },
+                  ],
+                  "path": "line_items",
+                },
+              ],
+            },
+          ],
+          "path": "orders",
+        },
+      ],
+    },
+    "sourcePath": Immutable.List [
+      "customer",
+      "ecommerce_data",
+      "f599447d-2de1-47ea-ab04-7649a421ba7d",
+    ],
+    "integration_id": 207,
+    "app_id": null,
+  },
+]
+`;

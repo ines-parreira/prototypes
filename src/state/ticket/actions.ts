@@ -50,7 +50,6 @@ import {
     SocketEventType,
     TicketMessageFailedEvent,
 } from 'services/socketManager/types'
-import {CustomerExternalData} from 'state/customers/types'
 import {
     Notification,
     NotificationButton,
@@ -68,6 +67,7 @@ import {getCustomFields} from 'models/customField/resources'
 
 import {getInvalidTicketFieldIds} from 'utils/customFields'
 
+import {CustomerExternalData} from 'models/customerExternalData/types'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,

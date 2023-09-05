@@ -102,5 +102,10 @@ exports[`getSourcePathFromContext() should render values of config because unkno
     "ticket",
     "customer",
   ],
+  [
+    "ticket",
+    "customer",
+    "ecommerce_data",
+  ],
 ]
 `;
