@@ -21,7 +21,7 @@ describe('<PageEmbedmentForm />', () => {
 
         screen.getByText(baseProps.modeSelectionTitle)
 
-        let input = screen.getByLabelText('Page name')
+        let input = screen.getByTestId('page-name-input')
 
         await userEvent.type(input, 'A')
 
@@ -39,7 +39,7 @@ describe('<PageEmbedmentForm />', () => {
 
         expect(dispatch).toHaveBeenCalledTimes(2)
 
-        input = screen.getByLabelText('Slug')
+        input = screen.getByTestId('page-slug-input')
 
         await userEvent.type(input, 'B')
 

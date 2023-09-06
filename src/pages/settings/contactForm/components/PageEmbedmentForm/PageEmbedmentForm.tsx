@@ -128,7 +128,9 @@ const PageEmbedmentForm = ({
                 })}
             >
                 <InputField
+                    isRequired
                     className={css.inputField}
+                    data-testid="page-name-input"
                     label="Page name"
                     placeholder="ie. Contact Form"
                     onChange={(nextValue) => {
@@ -153,7 +155,9 @@ const PageEmbedmentForm = ({
                     value={pageName.value}
                 />
                 <InputField
+                    isRequired
                     className={css.inputField}
+                    data-testid="page-slug-input"
                     label="Slug"
                     placeholder="ie. contact-form"
                     onChange={(nextValue) => {
@@ -182,7 +186,7 @@ const PageEmbedmentForm = ({
                     [css.tabActive]: embedMode === EmbedMode.EXISTING_PAGE,
                 })}
             >
-                <Label>Select page</Label>
+                <Label isRequired>Select page</Label>
                 <SelectInputBox
                     className={css.selectInputBox}
                     placeholder="Select a page"
