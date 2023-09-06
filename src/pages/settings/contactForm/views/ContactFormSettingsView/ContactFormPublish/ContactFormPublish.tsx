@@ -24,6 +24,7 @@ import {
     CONTACT_FORM_PUBLISH_PATH,
 } from 'pages/settings/contactForm/constants'
 import BackLink from 'pages/settings/contactForm/components/BackLink/BackLink'
+import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
 import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
 
 const ContactFormPublish = (): JSX.Element => {
@@ -44,6 +45,9 @@ const ContactFormPublish = (): JSX.Element => {
             <Switch>
                 <Route exact path={CONTACT_FORM_MANAGE_EMBEDMENTS_PATH}>
                     <BackLink contactFormId={contactForm.id} />
+                    <ManageEmbedments
+                        embedments={getPageEmbedments.data ?? []}
+                    />
                 </Route>
                 <Route exact path={CONTACT_FORM_PUBLISH_PATH}>
                     <div className={settingsCss.contentWrapper}>

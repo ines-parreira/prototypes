@@ -3,7 +3,7 @@ import {EmbeddablePage} from 'models/contactForm/types'
 import {
     EmbedMode,
     PageEmbedmentFormValueStateWithError,
-    PagePosition,
+    PageEmbedmentPosition,
     SelectedPage,
 } from './types'
 
@@ -12,7 +12,8 @@ export type PageEmbedmentFormReducerState = {
     pageName: PageEmbedmentFormValueStateWithError
     pageSlug: PageEmbedmentFormValueStateWithError
     selectedPage: SelectedPage
-    pagePosition: PagePosition
+    pagePosition: PageEmbedmentPosition
+    isSlugTouched: boolean
 }
 
 export const DEFAULT_VALUES: PageEmbedmentFormReducerState = {
@@ -26,10 +27,11 @@ export const DEFAULT_VALUES: PageEmbedmentFormReducerState = {
         error: '',
     },
     selectedPage: {
-        id: '',
+        external_id: '',
         title: '',
     },
-    pagePosition: PagePosition.TOP,
+    isSlugTouched: false,
+    pagePosition: PageEmbedmentPosition.TOP,
 }
 
 type PageEmbedmentFormReducerActions =
@@ -51,7 +53,7 @@ type PageEmbedmentFormReducerActions =
       }
     | {
           type: 'setPagePosition'
-          payload: PagePosition
+          payload: PageEmbedmentPosition
       }
     | {type: 'reset'}
 
@@ -75,6 +77,11 @@ export const pageEmbedmentFormReducer = (
         case 'setPageSlug':
             return {
                 ...state,
+                isSlugTouched:
+                    action.payload.value === ''
+                        ? // If the slug is empty, we don't want to mark it as touched
+                          false
+                        : action.payload.isTouched ?? state.isSlugTouched,
                 pageSlug: action.payload,
             }
         case 'setSelectedPage':

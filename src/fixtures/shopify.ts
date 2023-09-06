@@ -1261,7 +1261,7 @@ export const shopifyProductResult = () => [
                 product_id: 1,
             },
             title: 'Black shirt',
-            handle: 'black-shirt',
+            url_path: 'black-shirt',
             images: [
                 {
                     id: 28584880636113,
@@ -1494,7 +1494,7 @@ export const shopifyProductResult = () => [
                     'gid://shopify/ProductImage/28585978757329',
             },
             title: 'Strong phone',
-            handle: 'strong-phone',
+            url_path: 'strong-phone',
             images: [
                 {
                     id: 28585978757329,

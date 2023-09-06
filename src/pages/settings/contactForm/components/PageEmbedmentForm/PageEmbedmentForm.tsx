@@ -18,8 +18,10 @@ import imageLayoutTop from 'assets/img/icons/layout-top.svg'
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 
 import {EmbeddablePage} from 'models/contactForm/types'
+import Tooltip from 'pages/common/components/Tooltip'
+import {SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX} from 'pages/settings/contactForm/components/ContactFormAutoEmbedModalAssistant/constants'
 import {slugify} from '../../utils/slugify'
-import {EmbedMode, PagePosition} from './types'
+import {EmbedMode, PageEmbedmentPosition} from './types'
 
 import css from './PageEmbedmentForm.less'
 import {
@@ -62,10 +64,16 @@ const PageEmbedmentForm = ({
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const [isSlugTouched, setIsSlugTouched] = useState(false)
 
     // form states
-    const {embedMode, pageName, pageSlug, selectedPage, pagePosition} = state
+    const {
+        isSlugTouched,
+        embedMode,
+        pageName,
+        pageSlug,
+        selectedPage,
+        pagePosition,
+    } = state
 
     return (
         <ModalBody className={css.modalBody}>
@@ -88,7 +96,18 @@ const PageEmbedmentForm = ({
                         })
                     }}
                 />
+                {shopifyPages.length === 0 && (
+                    <Tooltip
+                        target="existing-page-emedment-radio-button"
+                        placement="top"
+                    >
+                        You have no existing pages
+                        <br /> to embed the Contact Form
+                    </Tooltip>
+                )}
                 <PreviewRadioButton
+                    id="existing-page-emedment-radio-button"
+                    isDisabled={shopifyPages.length === 0}
                     value={EmbedMode.EXISTING_PAGE}
                     isSelected={embedMode === EmbedMode.EXISTING_PAGE}
                     label="Embed to existing page"
@@ -138,14 +157,18 @@ const PageEmbedmentForm = ({
                     label="Slug"
                     placeholder="ie. contact-form"
                     onChange={(nextValue) => {
+                        const filteredValue = nextValue
+                            .toLowerCase()
+                            .replace(/[^a-z0-9_-]/g, '')
+
                         dispatch({
                             type: 'setPageSlug',
                             payload: {
+                                isTouched: true,
                                 error: '',
-                                value: nextValue,
+                                value: filteredValue,
                             },
                         })
-                        setIsSlugTouched(true)
                     }}
                     value={pageSlug.value}
                     caption="Page identifier added to the end of the URL"
@@ -171,35 +194,40 @@ const PageEmbedmentForm = ({
                     <SelectInputBoxContext.Consumer>
                         {(context) => (
                             <Dropdown
+                                placement="bottom"
                                 isOpen={isDropdownOpen}
                                 onToggle={() => context!.onBlur()}
                                 ref={floatingRef}
                                 target={targetRef}
-                                value={selectedPage.id}
+                                value={selectedPage.external_id}
                             >
                                 <DropdownSearch
                                     placeholder="Select page name"
                                     autoFocus
                                 />
                                 <DropdownBody>
-                                    {/* {options.map((option) => ( */}
                                     {shopifyPages.map(
-                                        ({id, title, handle, body_html}) => (
+                                        ({
+                                            external_id,
+                                            title,
+                                            url_path,
+                                            body_html,
+                                        }) => (
                                             <DropdownItem
-                                                key={id}
+                                                key={external_id}
                                                 option={{
                                                     // This label is only used as a reference for the
                                                     // searchable string value
-                                                    label: `${title}/${handle}`,
-                                                    value: id,
+                                                    label: `${title}/${url_path}`,
+                                                    value: external_id,
                                                 }}
                                                 onClick={() =>
                                                     dispatch({
                                                         type: 'setSelectedPage',
                                                         payload: {
-                                                            id,
+                                                            external_id,
                                                             title,
-                                                            handle,
+                                                            url_path,
                                                             body_html,
                                                         },
                                                     })
@@ -216,7 +244,10 @@ const PageEmbedmentForm = ({
                                                             css.dropdownItemSlug
                                                         }
                                                     >
-                                                        /{handle}
+                                                        {url_path?.replace(
+                                                            SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
+                                                            ''
+                                                        )}
                                                     </span>
                                                 </div>
                                             </DropdownItem>
@@ -244,8 +275,10 @@ const PageEmbedmentForm = ({
 
                     <div className={css.pagePositionSelectionGroup}>
                         <PreviewRadioButton
-                            value={PagePosition.TOP}
-                            isSelected={pagePosition === PagePosition.TOP}
+                            value={PageEmbedmentPosition.TOP}
+                            isSelected={
+                                pagePosition === PageEmbedmentPosition.TOP
+                            }
                             label="Top"
                             preview={
                                 <img
@@ -257,13 +290,15 @@ const PageEmbedmentForm = ({
                                 ev.preventDefault()
                                 dispatch({
                                     type: 'setPagePosition',
-                                    payload: PagePosition.TOP,
+                                    payload: PageEmbedmentPosition.TOP,
                                 })
                             }}
                         />
                         <PreviewRadioButton
-                            value={PagePosition.BOTTOM}
-                            isSelected={pagePosition === PagePosition.BOTTOM}
+                            value={PageEmbedmentPosition.BOTTOM}
+                            isSelected={
+                                pagePosition === PageEmbedmentPosition.BOTTOM
+                            }
                             label="Bottom"
                             preview={
                                 <img
@@ -275,7 +310,7 @@ const PageEmbedmentForm = ({
                                 ev.preventDefault()
                                 dispatch({
                                     type: 'setPagePosition',
-                                    payload: PagePosition.BOTTOM,
+                                    payload: PageEmbedmentPosition.BOTTOM,
                                 })
                             }}
                         />

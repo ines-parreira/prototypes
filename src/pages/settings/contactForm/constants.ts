@@ -1,5 +1,7 @@
 import {Language} from 'constants/languages'
 
+export const CONTACT_FORM_EMBEDMENTS_LIMIT = 50
+
 export const CONTACT_FORM_PAGE_TITLE = 'Contact Form'
 
 export const CONTACT_FORM_DEFAULT_LOCALE = Language.EnglishUs

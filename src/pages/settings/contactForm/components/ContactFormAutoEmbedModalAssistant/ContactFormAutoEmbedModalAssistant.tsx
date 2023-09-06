@@ -1,6 +1,8 @@
 import React from 'react'
 import _noop from 'lodash/noop'
 import {useQueryClient} from '@tanstack/react-query'
+import {useHistory} from 'react-router-dom'
+import {get} from 'lodash'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -13,7 +15,8 @@ import {
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
+import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import {CONTACT_FORM_MANAGE_EMBEDMENTS_PATH} from 'pages/settings/contactForm/constants'
 import PageEmbedmentForm, {
     EmbedMode,
     usePageEmbedmentForm,
@@ -22,7 +25,7 @@ import {
     contactFormPageEmbedmentsKeys,
     useCreatePageEmbedment,
 } from '../../queries'
-import {MODAL_LABELS} from './constants'
+import {MODAL_LABELS, SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX} from './constants'
 
 import css from './ContactFormAutoEmbedModalAssistant.less'
 
@@ -58,6 +61,7 @@ const ContactFormAutoEmbedModalAssistant = (
     } = usePageEmbedmentForm()
 
     const appDispatch = useAppDispatch()
+    const history = useHistory()
 
     const queryClient = useQueryClient()
 
@@ -82,31 +86,36 @@ const ContactFormAutoEmbedModalAssistant = (
             await queryClient.invalidateQueries(
                 contactFormPageEmbedmentsKeys.all(contactFormId)
             )
+
+            history.push(
+                insertContactFormIdParam(
+                    CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
+                    contactFormId
+                )
+            )
             handleOnClose()
         },
         onError: (error) => {
-            const message = isGorgiasApiError(error)
-                ? error.response?.data.error.msg
-                : 'Something went wrong'
+            const message =
+                String(get(error, 'response.data.error.msg')) ??
+                'Something went wrong'
 
             const isHandleError =
-                message?.indexOf(
-                    `handle ${pageEmbedmentForm.pageSlug.value} already exists`
-                ) !== -1
+                message?.indexOf(`has already been taken`) !== -1
 
             if (isHandleError) {
-                pageEmbedmentFormDispatch({
+                return pageEmbedmentFormDispatch({
                     type: 'setPageSlug',
                     payload: {
                         ...pageEmbedmentForm.pageSlug,
-                        error: message ?? '',
+                        error: `This slug already exists on your website. Try a new slug or select 'Embed to existing page' above.`,
                     },
                 })
             }
 
             void appDispatch(
                 notify({
-                    message: 'Something went wrong',
+                    message,
                     status: NotificationStatus.Error,
                 })
             )
@@ -123,10 +132,13 @@ const ContactFormAutoEmbedModalAssistant = (
             pageEmbedmentForm.embedMode === EmbedMode.NEW_PAGE
                 ? {
                       title: pageEmbedmentForm.pageName.value,
-                      handle: pageEmbedmentForm.pageSlug.value,
+                      page_url_path:
+                          SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX +
+                          pageEmbedmentForm.pageSlug.value,
                   }
                 : {
-                      shopify_page_id: pageEmbedmentForm.selectedPage.id,
+                      page_external_id:
+                          pageEmbedmentForm.selectedPage.external_id,
                       position: pageEmbedmentForm.pagePosition,
                   }
 
@@ -157,7 +169,20 @@ const ContactFormAutoEmbedModalAssistant = (
                 <Button intent="secondary" onClick={resetPageEmbedmentForm}>
                     {MODAL_LABELS.CANCEL}
                 </Button>
-                <Button onClick={handleEmbed}>{MODAL_LABELS.EMBED}</Button>
+                <Button
+                    isDisabled={
+                        createPageEmbedmentMutation.isLoading ||
+                        (pageEmbedmentForm.embedMode === EmbedMode.NEW_PAGE &&
+                            (!pageEmbedmentForm.pageName?.value ||
+                                !pageEmbedmentForm.pageSlug.value)) ||
+                        (pageEmbedmentForm.embedMode ===
+                            EmbedMode.EXISTING_PAGE &&
+                            !pageEmbedmentForm.selectedPage.external_id)
+                    }
+                    onClick={handleEmbed}
+                >
+                    {MODAL_LABELS.EMBED}
+                </Button>
             </ModalActionsFooter>
         </Modal>
     )

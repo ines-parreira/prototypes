@@ -3200,10 +3200,11 @@
                 "tags": ["workflows"]
             }
         },
-        "/api/help-center/contact-forms/{contact_form_id}/page-embedments": {
+        "/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments": {
             "post": {
-                "operationId": "createContactFormShopifyEmbedment",
-                "summary": "Create a Contact Form Shopify Embedment",
+                "operationId": "createContactFormShopifyPageEmbedment",
+                "summary": "Create a Contact Form Shopify Page Embedment",
+                "description": "The creation endpoint accepts 2 payloads:\n    - {title: string; pageUrlPath: string} - embed in a new page\n    - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page",
                 "parameters": [
                     {
                         "name": "contact_form_id",
@@ -3228,37 +3229,23 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ShopifyPageEmbedmentDto"
+                                    "$ref": "#/components/schemas/PageEmbedmentDto"
                                 }
                             }
                         }
                     }
                 },
-                "tags": ["contact-form-shopify-embedments"]
+                "tags": ["contact-form-shopify-page-embedments"]
             },
             "get": {
-                "operationId": "listContactFormShopifyEmbedments",
-                "summary": "List the Contact Form Shopify Embedments",
+                "operationId": "listContactFormShopifyPageEmbedments",
+                "summary": "List the Contact Form Shopify Page Embedments",
                 "parameters": [
                     {
                         "name": "contact_form_id",
                         "required": true,
                         "in": "path",
                         "schema": {"type": "number"}
-                    },
-                    {
-                        "name": "per_page",
-                        "required": false,
-                        "in": "query",
-                        "description": "The number of resources to retrieve per request. E.g: 20",
-                        "schema": {}
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "The index of the page to retrieve. E.g: 3",
-                        "schema": {}
                     }
                 ],
                 "responses": {
@@ -3269,20 +3256,20 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/ShopifyPageEmbedmentDto"
+                                        "$ref": "#/components/schemas/PageEmbedmentDto"
                                     }
                                 }
                             }
                         }
                     }
                 },
-                "tags": ["contact-form-shopify-embedments"]
+                "tags": ["contact-form-shopify-page-embedments"]
             }
         },
-        "/api/help-center/contact-forms/{contact_form_id}/page-embedments/{embedment_id}": {
+        "/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments/{embedment_id}": {
             "put": {
-                "operationId": "updateContactFormShopifyEmbedment",
-                "summary": "Update a Contact Form Shopify Embedment",
+                "operationId": "updateContactFormShopifyPageEmbedment",
+                "summary": "Update a Contact Form Shopify Page Embedment",
                 "parameters": [
                     {
                         "name": "embedment_id",
@@ -3302,7 +3289,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UpdateShopifyPageEmbedmentDto"
+                                "$ref": "#/components/schemas/UpdatePageEmbedmentDto"
                             }
                         }
                     }
@@ -3313,17 +3300,17 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ShopifyPageEmbedmentDto"
+                                    "$ref": "#/components/schemas/PageEmbedmentDto"
                                 }
                             }
                         }
                     }
                 },
-                "tags": ["contact-form-shopify-embedments"]
+                "tags": ["contact-form-shopify-page-embedments"]
             },
             "delete": {
-                "operationId": "deleteContactFormShopifyEmbedment",
-                "summary": "Delete a Contact Form Shopify Embedment",
+                "operationId": "deleteContactFormShopifyPageEmbedment",
+                "summary": "Delete a Contact Form Shopify Page Embedment",
                 "parameters": [
                     {
                         "name": "embedment_id",
@@ -3339,13 +3326,13 @@
                     }
                 ],
                 "responses": {"204": {"description": ""}},
-                "tags": ["contact-form-shopify-embedments"]
+                "tags": ["contact-form-shopify-page-embedments"]
             }
         },
-        "/api/help-center/contact-forms/{contact_form_id}/pages": {
+        "/api/help-center/contact-forms/{contact_form_id}/shopify-pages": {
             "get": {
-                "operationId": "listShopifyPages",
-                "summary": "List the Contact Form Shopify Embedments",
+                "operationId": "listContactFormShopifyPages",
+                "summary": "List the Contact Form Shopify Pages available for a Contact Form Page Embedment",
                 "parameters": [
                     {
                         "name": "contact_form_id",
@@ -3362,7 +3349,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/ShopifyPageDto"
+                                        "$ref": "#/components/schemas/ContactFormPageDto"
                                     }
                                 }
                             }
@@ -4559,7 +4546,7 @@
                         "items": {"$ref": "#/components/schemas/WorkflowVo"}
                     },
                     "order_management": {
-                        "example": [{"enabled": true}],
+                        "example": {"enabled": true},
                         "allOf": [
                             {"$ref": "#/components/schemas/OrderManagementVo"}
                         ]
@@ -4576,7 +4563,7 @@
                         "items": {"$ref": "#/components/schemas/WorkflowVo"}
                     },
                     "order_management": {
-                        "example": [{"enabled": true}],
+                        "example": {"enabled": true},
                         "allOf": [
                             {"$ref": "#/components/schemas/OrderManagementVo"}
                         ]
@@ -7005,9 +6992,16 @@
             "CreateShopifyPageEmbedmentDto": {
                 "type": "object",
                 "properties": {
-                    "shopify_page_id": {
+                    "page_external_id": {
                         "type": "string",
                         "example": 229672878386
+                    },
+                    "page_url_path": {
+                        "type": "string",
+                        "example": "/pages/my-new-page",
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "pattern": "SHOPIFY_PAGE_HANDLE_REGEX"
                     },
                     "position": {"enum": ["TOP", "BOTTOM"], "type": "string"},
                     "title": {
@@ -7015,28 +7009,22 @@
                         "example": "My new page",
                         "minLength": 1,
                         "maxLength": 255
-                    },
-                    "handle": {
-                        "type": "string",
-                        "example": "my-new-page",
-                        "minLength": 1,
-                        "maxLength": 255
                     }
                 }
             },
-            "ShopifyPageEmbedmentDto": {
+            "PageEmbedmentDto": {
                 "type": "object",
                 "properties": {
                     "id": {"type": "number", "example": 1},
-                    "shopify_page_id": {
+                    "page_external_id": {
                         "type": "string",
                         "example": "229672878386"
                     },
-                    "shopify_page_title": {
+                    "page_title": {
                         "type": "string",
                         "example": "My page title"
                     },
-                    "shopify_page_handle": {
+                    "page_path_url": {
                         "type": "string",
                         "example": "my-page-title"
                     },
@@ -7052,28 +7040,29 @@
                 },
                 "required": [
                     "id",
-                    "shopify_page_title",
-                    "shopify_page_handle",
+                    "page_title",
+                    "page_path_url",
                     "position",
                     "created_datetime",
                     "updated_datetime"
                 ]
             },
-            "UpdateShopifyPageEmbedmentDto": {
+            "UpdatePageEmbedmentDto": {
                 "type": "object",
                 "properties": {
                     "position": {"enum": ["TOP", "BOTTOM"], "type": "string"}
-                }
+                },
+                "required": ["position"]
             },
-            "ShopifyPageDto": {
+            "ContactFormPageDto": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "string"},
+                    "external_id": {"type": "string"},
                     "title": {"type": "string"},
-                    "handle": {"type": "string"},
-                    "body_html": {"type": "string"}
+                    "url_path": {"type": "string"},
+                    "body_html": {"type": "string", "nullable": true}
                 },
-                "required": ["id", "title", "handle", "body_html"]
+                "required": ["external_id", "title", "url_path", "body_html"]
             }
         }
     },

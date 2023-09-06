@@ -27,12 +27,12 @@ export type UpdateContactFormDto = Components.Schemas.UpdateContactFormDto
 export type UpsertContactFormAutomationSettingsDto =
     Components.Schemas.UpsertAutomationSettingsDto
 
-export type PageEmbedment = Components.Schemas.ShopifyPageEmbedmentDto
+export type PageEmbedment = Components.Schemas.PageEmbedmentDto
 
-export type EmbeddablePage = Components.Schemas.ShopifyPageDto
+export type EmbeddablePage = Components.Schemas.ContactFormPageDto
 
 export type CreateShopifyPageEmbedmentDto =
     Components.Schemas.CreateShopifyPageEmbedmentDto
 
 export type UpdateShopifyPageEmbedmentDto =
-    Components.Schemas.UpdateShopifyPageEmbedmentDto
+    Components.Schemas.UpdatePageEmbedmentDto

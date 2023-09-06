@@ -48,7 +48,8 @@ describe('<PageEmbedmentForm />', () => {
               {
                 "payload": {
                   "error": "",
-                  "value": "B",
+                  "isTouched": true,
+                  "value": "b",
                 },
                 "type": "setPageSlug",
               },

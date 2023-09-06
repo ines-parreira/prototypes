@@ -87,7 +87,7 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
   "post": [
     {
       "baseURL": "http://acme.gorgias.docker:4001",
-      "data": "{"shopify_page_id":"123456789","position":"TOP"}",
+      "data": "{"page_external_id":"123456789","position":"TOP"}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -104,7 +104,7 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/page-embedments",
+      "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -125,7 +125,7 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
   "post": [
     {
       "baseURL": "http://acme.gorgias.docker:4001",
-      "data": "{"shopify_page_id":"123456789","position":"TOP"}",
+      "data": "{"page_external_id":"123456789","position":"TOP"}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -142,7 +142,7 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/page-embedments",
+      "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -232,10 +232,9 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
   "get": [
     {
       "baseURL": "http://acme.gorgias.docker:4001",
-      "data": "{}",
+      "data": undefined,
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -249,7 +248,7 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/page-embedments",
+      "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -270,10 +269,9 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
   "get": [
     {
       "baseURL": "http://acme.gorgias.docker:4001",
-      "data": "{}",
+      "data": undefined,
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -287,7 +285,7 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/page-embedments",
+      "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -324,7 +322,7 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/pages",
+      "url": "/api/help-center/contact-forms/1/shopify-pages",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -361,7 +359,7 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/pages",
+      "url": "/api/help-center/contact-forms/1/shopify-pages",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",

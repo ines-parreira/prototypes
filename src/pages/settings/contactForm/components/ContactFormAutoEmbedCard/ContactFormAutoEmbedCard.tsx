@@ -83,7 +83,8 @@ const ContactFormAutoEmbedCard = ({
     const pages: EmbeddablePage[] = getShopifyPages.data ?? []
     const availablePages = pages.filter((page) =>
         pageEmbedments.every(
-            (pageEmbedment) => pageEmbedment.shopify_page_id !== page.id
+            (pageEmbedment) =>
+                pageEmbedment.page_external_id !== page.external_id
         )
     )
 

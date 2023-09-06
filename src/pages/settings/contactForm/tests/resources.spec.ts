@@ -77,7 +77,7 @@ describe('getShopifyPages', () => {
         })
 
         sdkMocks.mockedServer
-            .onGet(`/api/help-center/contact-forms/1/pages`)
+            .onGet(`/api/help-center/contact-forms/1/shopify-pages`)
             .reply(500, ShopifyPagesGeneric500ErrorFixture)
 
         await expect(
@@ -117,7 +117,7 @@ describe('getPageEmbedments', () => {
         })
 
         sdkMocks.mockedServer
-            .onGet(`/api/help-center/contact-forms/1/pages`)
+            .onGet(`/api/help-center/contact-forms/1/shopify-pages`)
             .reply(500, ShopifyPagesGeneric500ErrorFixture)
 
         await expect(
@@ -186,7 +186,7 @@ describe('createContactForm', () => {
 describe('createPageEmbedment', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const payload = {
-        shopify_page_id: '123456789',
+        page_external_id: '123456789',
         position: 'TOP',
     } as const
 
@@ -199,7 +199,7 @@ describe('createPageEmbedment', () => {
             createPageEmbedment: 'success',
         })
         sdkMocks.mockedServer
-            .onPost('/api/help-center/contact-forms/1/page-embedments')
+            .onPost('/api/help-center/contact-forms/1/shopify-page-embedments')
             .reply(201, PageEmbedmentFixture)
 
         const data = await contactFormResourceMethods.createPageEmbedment(
@@ -217,7 +217,7 @@ describe('createPageEmbedment', () => {
         })
 
         sdkMocks.mockedServer
-            .onPost('/api/help-center/contact-forms/1/page-embedments')
+            .onPost('/api/help-center/contact-forms/1/shopify-page-embedments')
             .reply(500, ContactFormGeneric500ErrorFixture)
 
         await expect(

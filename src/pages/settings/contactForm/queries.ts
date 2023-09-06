@@ -15,6 +15,7 @@ import {
     getPageEmbedments,
     createPageEmbedment,
     updatePageEmbedment,
+    deletePageEmbedment,
 } from './resources'
 
 /**
@@ -113,7 +114,7 @@ export const useGetContactFormList = <
 export const useGetShopifyPages = <
     TData = Awaited<ReturnType<typeof getShopifyPages>>
 >(
-    contactFormId: Paths.ListShopifyPages.Parameters.ContactFormId,
+    contactFormId: Paths.ListContactFormShopifyPages.Parameters.ContactFormId,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getShopifyPages>>,
         unknown,
@@ -136,7 +137,7 @@ export const useGetShopifyPages = <
 export const useGetPageEmbedments = <
     TData = Awaited<ReturnType<typeof getPageEmbedments>>
 >(
-    contactFormId: Paths.ListContactFormShopifyEmbedments.Parameters.ContactFormId,
+    contactFormId: Paths.ListContactFormShopifyPageEmbedments.Parameters.ContactFormId,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getPageEmbedments>>,
         unknown,
@@ -191,6 +192,18 @@ export const useUpdatePageEmbedment = (
     return useMutation({
         mutationFn: ([, pathParameters, newPageEmbedment]) =>
             updatePageEmbedment(client, pathParameters, newPageEmbedment),
+        ...overrides,
+    })
+}
+
+export const useDeletePageEmbedment = (
+    overrides?: MutationOverrides<typeof deletePageEmbedment>
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([, pathParameters]) =>
+            deletePageEmbedment(client, pathParameters),
         ...overrides,
     })
 }

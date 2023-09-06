@@ -11,3 +11,5 @@ export const MODAL_LABELS = {
     FORM_MODE_SELECTION_TITLE: 'Choose where to embed the form',
     FORM_POSITION_SELECTION_TITLE: 'Select the position of the form',
 }
+
+export const SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX = '/pages/'

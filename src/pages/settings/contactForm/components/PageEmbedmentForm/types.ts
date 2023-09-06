@@ -1,4 +1,4 @@
-export enum PagePosition {
+export enum PageEmbedmentPosition {
     TOP = 'TOP',
     BOTTOM = 'BOTTOM',
 }
@@ -9,11 +9,12 @@ export enum EmbedMode {
 }
 
 export type SelectedPage = {
-    id: string
+    external_id: string
     title: string
 }
 
 export type PageEmbedmentFormValueStateWithError<T = string> = {
     value: T
     error: string
+    isTouched?: true
 }
