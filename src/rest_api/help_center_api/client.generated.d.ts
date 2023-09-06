@@ -284,6 +284,17 @@ declare namespace Components {
        * ]
        */
       workflows: WorkflowVo[];
+      /**
+       * example:
+       * [
+       *   {
+       *     "enabled": true
+       *   }
+       * ]
+       */
+      order_management: {
+        enabled: boolean;
+      };
     }
     export interface CategoriesListPageDto {
       meta: PageMetaDto;
@@ -1701,6 +1712,9 @@ declare namespace Components {
       visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
     }
+    export interface OrderManagementVo {
+      enabled: boolean;
+    }
     export interface PageMetaDto {
       /**
        * The current page index.
@@ -2343,7 +2357,18 @@ declare namespace Components {
        *   }
        * ]
        */
-      workflows: WorkflowVo[];
+      workflows?: WorkflowVo[];
+      /**
+       * example:
+       * [
+       *   {
+       *     "enabled": true
+       *   }
+       * ]
+       */
+      order_management?: {
+        enabled: boolean;
+      };
     }
     export interface WorkflowHandoverDto {
       contact_form_uid?: string;

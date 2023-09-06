@@ -52,6 +52,7 @@ const useHelpCentersAutomationSettings = (helpCenterId: number) => {
                             helpCenterId: helpCenterId.toString(),
                             automationSettings: {
                                 workflows: [],
+                                order_management: {enabled: false},
                             },
                         })
                     )
@@ -74,7 +75,7 @@ const useHelpCentersAutomationSettings = (helpCenterId: number) => {
         {loading: isUpdatePending},
         handleHelpCenterAutomationSettingsUpdate,
     ] = useAsyncFn(
-        async (automationSettings: HelpCenterAutomationSettings) => {
+        async (automationSettings: Partial<HelpCenterAutomationSettings>) => {
             if (!client) {
                 return
             }

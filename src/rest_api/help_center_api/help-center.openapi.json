@@ -4545,6 +4545,11 @@
                 },
                 "required": ["id", "enabled"]
             },
+            "OrderManagementVo": {
+                "type": "object",
+                "properties": {"enabled": {"type": "boolean"}},
+                "required": ["enabled"]
+            },
             "AutomationSettingsDto": {
                 "type": "object",
                 "properties": {
@@ -4552,9 +4557,15 @@
                         "example": [{"id": "workflowId", "enabled": true}],
                         "type": "array",
                         "items": {"$ref": "#/components/schemas/WorkflowVo"}
+                    },
+                    "order_management": {
+                        "example": [{"enabled": true}],
+                        "allOf": [
+                            {"$ref": "#/components/schemas/OrderManagementVo"}
+                        ]
                     }
                 },
-                "required": ["workflows"]
+                "required": ["workflows", "order_management"]
             },
             "UpsertAutomationSettingsDto": {
                 "type": "object",
@@ -4563,9 +4574,14 @@
                         "example": [{"id": "workflowId", "enabled": true}],
                         "type": "array",
                         "items": {"$ref": "#/components/schemas/WorkflowVo"}
+                    },
+                    "order_management": {
+                        "example": [{"enabled": true}],
+                        "allOf": [
+                            {"$ref": "#/components/schemas/OrderManagementVo"}
+                        ]
                     }
-                },
-                "required": ["workflows"]
+                }
             },
             "HelpCenterTranslationsListPageDto": {
                 "type": "object",

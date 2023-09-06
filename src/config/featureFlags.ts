@@ -50,5 +50,6 @@ export enum FeatureFlagKey {
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     TicketNavigationArrows = 'ticket-navigation-arrows',
+    ContactFormOrderManagement = 'contact-form-order-management',
     CustomerTimelineButton = 'customer-timeline-button',
 }

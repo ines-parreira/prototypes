@@ -1,6 +1,7 @@
 import React, {useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -21,6 +22,7 @@ import AutomationViewContent from 'pages/automation/common/components/Automation
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../workflows/hooks/useWorkflowChannelSupport'
+import {FeatureFlagKey} from '../../../config/featureFlags'
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
 import ConnectedChannelsViewContext, {
@@ -135,8 +137,12 @@ const ConnectedChannelsView = () => {
 
     const expandedChannel = channels[expandedChannelIndex]
 
+    // Remove displayContactForms after we fully enable ContactFormOrderManagement
+    const contactFormOrderManagementEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.ContactFormOrderManagement]
     const displayContactForms =
-        connectedChannelsViewContext.workflowsEntrypoints.length > 0
+        connectedChannelsViewContext.workflowsEntrypoints.length > 0 ||
+        contactFormOrderManagementEnabled
 
     return (
         <AutomationView title="Connected channels" isLoading={isLoading}>

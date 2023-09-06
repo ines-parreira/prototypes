@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React from 'react'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
 
@@ -14,30 +14,7 @@ import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 import css from './SelfServiceHelpCenterHomePage.less'
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
-
-const OrderManagementFlowItem = ({
-    isHighlighted,
-    icon,
-    children,
-}: {
-    isHighlighted: boolean
-    icon: string
-    children: ReactNode
-}) => {
-    return (
-        <div
-            className={classnames(css.orderManagementItem, {
-                [css.isHighlighted]: isHighlighted,
-            })}
-        >
-            <img src={icon} alt="" />
-            <div className={css.flowLabel}>{children}</div>
-            <i className={classnames('material-icons', css.flowChevron)}>
-                keyboard_arrow_right
-            </i>
-        </div>
-    )
-}
+import OrderManagementFlowItemPreview from './OrderManagementFlowItemPreview'
 
 const WorkflowItem = ({label}: {label: string}) => (
     <div className={css.workflowItem}>
@@ -66,7 +43,8 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
         !selfServiceConfiguration?.track_order_policy.enabled &&
         !selfServiceConfiguration?.report_issue_policy.enabled &&
         !selfServiceConfiguration?.cancel_order_policy.enabled &&
-        !selfServiceConfiguration?.return_order_policy.enabled
+        !selfServiceConfiguration?.return_order_policy.enabled &&
+        workflowsEntrypoints.length === 0
 
     if (isOrderManagementUnavailable) {
         return (
@@ -144,44 +122,44 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                 ))}
 
                 {selfServiceConfiguration?.track_order_policy.enabled && (
-                    <OrderManagementFlowItem
+                    <OrderManagementFlowItemPreview
                         icon={trackIcon}
                         isHighlighted={
                             hoveredOrderManagementFlow === 'track_order_policy'
                         }
                     >
                         {helpCenterTexts.manageOrdersLabelTrackOrder}
-                    </OrderManagementFlowItem>
+                    </OrderManagementFlowItemPreview>
                 )}
                 {selfServiceConfiguration?.return_order_policy.enabled && (
-                    <OrderManagementFlowItem
+                    <OrderManagementFlowItemPreview
                         icon={returnIcon}
                         isHighlighted={
                             hoveredOrderManagementFlow === 'return_order_policy'
                         }
                     >
                         {helpCenterTexts.manageOrdersLabelReturnOrder}
-                    </OrderManagementFlowItem>
+                    </OrderManagementFlowItemPreview>
                 )}
                 {selfServiceConfiguration?.cancel_order_policy.enabled && (
-                    <OrderManagementFlowItem
+                    <OrderManagementFlowItemPreview
                         icon={cancelIcon}
                         isHighlighted={
                             hoveredOrderManagementFlow === 'cancel_order_policy'
                         }
                     >
                         {helpCenterTexts.manageOrdersLabelCancelOrder}
-                    </OrderManagementFlowItem>
+                    </OrderManagementFlowItemPreview>
                 )}
                 {selfServiceConfiguration?.report_issue_policy.enabled && (
-                    <OrderManagementFlowItem
+                    <OrderManagementFlowItemPreview
                         icon={reportIssueIcon}
                         isHighlighted={
                             hoveredOrderManagementFlow === 'report_issue_policy'
                         }
                     >
                         {helpCenterTexts.manageOrdersLabelReportIssue}
-                    </OrderManagementFlowItem>
+                    </OrderManagementFlowItemPreview>
                 )}
             </div>
         </div>

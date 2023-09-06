@@ -85,6 +85,8 @@ const ConnectedChannelsPreview = ({
             contactFormsAutomationSettings[channel.value.id]
 
         if (automationSettings !== undefined) {
+            isOrderManagementEnabled =
+                automationSettings.order_management.enabled
             workflowsEntrypoints = automationSettings.workflows.map(
                 ({id, enabled}) => ({workflow_id: id, enabled})
             )

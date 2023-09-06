@@ -44,6 +44,9 @@ const useContactFormsAutomationSettings = (contactFormId: number) => {
                         contactFormId: contactFormId.toString(),
                         automationSettings: {
                             workflows: [],
+                            order_management: {
+                                enabled: false,
+                            },
                         },
                     })
                 )
@@ -62,7 +65,7 @@ const useContactFormsAutomationSettings = (contactFormId: number) => {
         {loading: isUpdatePending},
         handleContactFormAutomationSettingsUpdate,
     ] = useAsyncFn(
-        async (automationSettings: ContactFormAutomationSettings) => {
+        async (automationSettings: Partial<ContactFormAutomationSettings>) => {
             try {
                 const res = await upsertAutomationSettingsByContactFormId(
                     contactFormId,
