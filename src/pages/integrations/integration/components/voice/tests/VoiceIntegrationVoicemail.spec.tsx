@@ -5,8 +5,6 @@ import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     IntegrationType,
     PhoneIntegration,
@@ -117,35 +115,8 @@ const renderVoiceIntegrationVoicemail = (
         </Provider>
     )
 
-describe('<VoiceIntegrationVoicemail /> feature flag check', () => {
-    beforeEach(() => {
-        jest.resetAllMocks()
-        resetLDMocks()
-    })
-    ;[standardIntegration, ivrIntegration].forEach((integration) => {
-        it('should render old UI', () => {
-            mockFlags({
-                [FeatureFlagKey.CustomVoicemailOutsideBusinessHours]: false,
-            })
-            const {getByLabelText, getByText} = renderVoiceIntegrationVoicemail(
-                {} as RootState,
-                integration
-            )
-            expect(getByText('Set Voicemail')).toBeInTheDocument()
-            expect(getByText('Insert Voice Recording')).toBeInTheDocument()
-            expect(getByText('Text To Speech')).toBeInTheDocument()
-            expect(getByText('None')).toBeInTheDocument()
-            expect(getByLabelText('None')).toBeChecked()
-            expect(
-                getByText('Allow caller to leave voicemail')
-            ).toBeInTheDocument()
-        })
-    })
-
-    it('should render IVR integration (custom voicemail outside business hours)', () => {
-        mockFlags({
-            [FeatureFlagKey.CustomVoicemailOutsideBusinessHours]: true,
-        })
+describe('<VoiceIntegrationVoicemail /> render', () => {
+    it('should render IVR integration', () => {
         const {getByLabelText, getByText, getByRole} =
             renderVoiceIntegrationVoicemail({} as RootState, ivrIntegration)
 
@@ -166,10 +137,7 @@ describe('<VoiceIntegrationVoicemail /> feature flag check', () => {
         )
     })
 
-    it('should render standard integration (custom voicemail outside business hours)', () => {
-        mockFlags({
-            [FeatureFlagKey.CustomVoicemailOutsideBusinessHours]: true,
-        })
+    it('should render standard integration', () => {
         const {getByLabelText, getByText, getByRole} =
             renderVoiceIntegrationVoicemail(
                 {} as RootState,
@@ -222,14 +190,6 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
             ],
         }),
     } as RootState
-
-    beforeEach(() => {
-        jest.resetAllMocks()
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.CustomVoicemailOutsideBusinessHours]: true,
-        })
-    })
 
     it('should render without set business hours', () => {
         const {queryByText} = renderVoiceIntegrationVoicemail(
