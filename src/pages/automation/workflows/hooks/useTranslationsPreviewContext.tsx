@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 import {LanguageCode} from '../models/workflowConfiguration.types'
+import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
 import {useWorkflowEditorContext} from './useWorkflowEditor'
 
 const TranslationsPreviewContext = createContext<
@@ -13,6 +14,7 @@ const TranslationsPreviewContext = createContext<
           previewLanguageList: LanguageCode[]
           previewLanguage?: LanguageCode | null
           setPreviewLanguage: (language: LanguageCode) => void
+          translatedGraph: VisualBuilderGraph
       }
     | undefined
 >(undefined)
@@ -31,7 +33,8 @@ export function TranslationsPreviewProvider({
 }: {
     children: React.ReactNode
 }) {
-    const {visualBuilderGraph, currentLanguage} = useWorkflowEditorContext()
+    const {visualBuilderGraph, currentLanguage, translateGraph} =
+        useWorkflowEditorContext()
     const previewLanguageList = useMemo(
         () =>
             (visualBuilderGraph.available_languages ?? []).filter(
@@ -46,13 +49,23 @@ export function TranslationsPreviewProvider({
     const [previewLanguage, setPreviewLanguage] = useState<
         LanguageCode | undefined
     >(defaultPreviewLanguage)
+    const translatedGraph = useMemo(() => {
+        if (!previewLanguage) return visualBuilderGraph
+        return translateGraph(visualBuilderGraph, previewLanguage)
+    }, [visualBuilderGraph, translateGraph, previewLanguage])
     const translationsPreviewContext = useMemo(
         () => ({
             previewLanguageList,
             previewLanguage,
             setPreviewLanguage,
+            translatedGraph,
         }),
-        [previewLanguageList, previewLanguage, setPreviewLanguage]
+        [
+            previewLanguageList,
+            previewLanguage,
+            setPreviewLanguage,
+            translatedGraph,
+        ]
     )
 
     useEffect(() => {

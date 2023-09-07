@@ -67,6 +67,7 @@ export default function TriggerButtonEditor({
                             Trigger button
                         </Label>
                         <TranslationsPreviewField
+                            nodeId={nodeInEdition.id}
                             tkey={nodeInEdition.data.label_tkey ?? ''}
                         />
                     </div>

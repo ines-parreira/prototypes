@@ -64,6 +64,7 @@ export default function TextReplyEditor({
                     <div className={css.formField}>
                         <Label className={css.labelDisabled}>Message</Label>
                         <TranslationsPreviewField
+                            nodeId={nodeInEdition.id}
                             tkey={nodeInEdition.data.content.text_tkey ?? ''}
                         />
                     </div>

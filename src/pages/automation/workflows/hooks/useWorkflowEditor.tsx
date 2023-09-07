@@ -52,6 +52,10 @@ type WorkflowEditorContext = {
     switchLanguage: (nextLanguage: LanguageCode) => void
     translateKey: (tkey: string, languageCode: LanguageCode) => string
     deleteTranslation: (lang: LanguageCode) => void
+    translateGraph: (
+        graph: VisualBuilderGraph,
+        lang: LanguageCode
+    ) => VisualBuilderGraph
     shouldShowErrors: boolean
     setShouldShowErrors: (b: boolean) => void
     visualBuilderChoiceEventIdEditing:
@@ -155,6 +159,7 @@ export function useWorkflowEditor(
         switchLanguage,
         setCurrentLanguage,
         validateTranslationsPayloadSize,
+        translateGraph,
     } = useWorkflowTranslations(
         visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
         visualBuilderGraphDirty.available_languages ?? ['en-US'],
@@ -351,6 +356,7 @@ export function useWorkflowEditor(
         setShouldShowErrors,
         visualBuilderChoiceEventIdEditing,
         setVisualBuilderChoiceEventIdEditing,
+        translateGraph,
     }
 }
 
@@ -407,5 +413,6 @@ export function createWorkflowEditorContextForPreview(
         },
         visualBuilderChoiceEventIdEditing: null,
         setVisualBuilderChoiceEventIdEditing: () => null,
+        translateGraph: (graph) => graph,
     }
 }

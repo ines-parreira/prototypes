@@ -88,6 +88,7 @@ export default function MultipleChoicesEditor({
                     <div className={css.formField}>
                         <Label className={css.labelDisabled}>Question</Label>
                         <TranslationsPreviewField
+                            nodeId={nodeInEdition.id}
                             tkey={nodeInEdition.data.content.text_tkey ?? ''}
                         />
                     </div>
@@ -95,6 +96,7 @@ export default function MultipleChoicesEditor({
                         <Label className={css.labelDisabled}>Options</Label>
                         {choices.map((choice) => (
                             <TranslationsPreviewField
+                                nodeId={nodeInEdition.id}
                                 key={choice.event_id}
                                 tkey={choice.label_tkey ?? ''}
                             />

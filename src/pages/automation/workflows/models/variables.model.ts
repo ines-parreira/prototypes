@@ -56,7 +56,7 @@ export function getAvailableFlowVariableListForNode(
                 },
             } = ancestor
             availableFlowVariableList.push({
-                name: formatVariableName(text),
+                name: formatVariableName(text.length > 0 ? text : 'Message'),
                 nodeType: 'text_reply',
                 value: `{{steps_state.${wfConfigurationTextInputStepId}.content.text}}`,
             })
@@ -69,7 +69,7 @@ export function getAvailableFlowVariableListForNode(
             } = ancestor
             availableFlowVariableList.push({
                 nodeType: 'multiple_choices',
-                name: formatVariableName(text),
+                name: formatVariableName(text.length > 0 ? text : 'Question'),
                 value: `{{steps_state.${wfConfigurationChoicesStepId}.selected_choice.label}}`,
             })
         } else if (ancestor.type === 'order_selection') {
@@ -80,7 +80,7 @@ export function getAvailableFlowVariableListForNode(
             } = ancestor
             availableFlowVariableList.push({
                 nodeType: 'order_selection',
-                name: formatVariableName(text),
+                name: formatVariableName(text.length > 0 ? text : 'Message'),
                 variables: [
                     {
                         name: 'Customer first name',

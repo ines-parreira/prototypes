@@ -198,6 +198,14 @@ export default function useWorkflowTranslations(
         [availableLanguages, translationsByLangDirty, currentLanguage]
     )
 
+    const translateGraph = useCallback(
+        (graph: VisualBuilderGraph, language: LanguageCode) =>
+            translateDeep(graph, translationsByLangDirty[language] ?? {}, {
+                doNotFallback: true,
+            }),
+        [translationsByLangDirty]
+    )
+
     const deleteTranslation = useCallback(
         (graph: VisualBuilderGraph, languageCode: LanguageCode) => {
             let g = graph
@@ -264,6 +272,7 @@ export default function useWorkflowTranslations(
         switchLanguage,
         translationsByLang,
         validateTranslationsPayloadSize,
+        translateGraph,
     }
 }
 
