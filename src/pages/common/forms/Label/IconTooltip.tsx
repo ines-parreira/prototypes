@@ -32,6 +32,7 @@ const IconTooltip = ({
             <i
                 id={tooltipId}
                 className={classnames('material-icons-outlined', css.icon)}
+                onClick={(e) => e.stopPropagation()}
             >
                 {icon}
             </i>
