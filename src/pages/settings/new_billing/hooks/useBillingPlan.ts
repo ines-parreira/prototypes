@@ -74,6 +74,7 @@ export const useBillingPlans = ({
     const isFreeTrial = useAppSelector(isTrialing)
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isSubscriptionCanceled = currentSubscription.isEmpty()
+    const [isSubscriptionUpdating, setIsSubscriptionUpdating] = useState(false)
 
     const periodEnd = useMemo(
         () =>
@@ -446,6 +447,7 @@ export const useBillingPlans = ({
             }
             try {
                 if (anyProductChanged) {
+                    setIsSubscriptionUpdating(true)
                     await dispatch(
                         updateSubscriptionsForPlans(
                             plansToBeUpdated,
@@ -456,6 +458,8 @@ export const useBillingPlans = ({
             } catch (error) {
                 dispatchBillingError()
                 throw error
+            } finally {
+                setIsSubscriptionUpdating(false)
             }
         }
     }, [
@@ -558,5 +562,6 @@ export const useBillingPlans = ({
         isEnterpriseHelpdeskPlanSelected,
         isStarterHelpdeskPlanSelected,
         isSubscriptionCanceled,
+        isSubscriptionUpdating,
     }
 }

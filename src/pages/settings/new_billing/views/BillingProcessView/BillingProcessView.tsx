@@ -14,6 +14,7 @@ import {fetchCreditCard} from 'state/billing/actions'
 import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
+import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import Card from '../../components/Card'
 import BackLink from '../../components/BackLink'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
@@ -79,6 +80,8 @@ const BillingProcessView = ({
     const dispatch = useAppDispatch()
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
+    const [showPendingChangesModal, setShowPendingChangesModal] =
+        useState(false)
 
     // Selected product to Subscribe or Update
     const {selectedProduct} = useParams<Params>()
@@ -106,6 +109,7 @@ const BillingProcessView = ({
         interval,
         updateSubscription,
         startSubscription,
+        isSubscriptionUpdating,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
@@ -342,6 +346,7 @@ const BillingProcessView = ({
                             ctaText={ctaText}
                             hasCreditCard={hasCreditCard}
                             shouldPayWithShopify={shouldPayWithShopify}
+                            isSubscriptionUpdating={isSubscriptionUpdating}
                         />
                     </Card>
                 )}
@@ -356,6 +361,17 @@ const BillingProcessView = ({
                 </span>
                 .
             </div>
+            <PendingChangesModal
+                onSave={updateSubscription}
+                onDiscard={() => setShowPendingChangesModal(false)}
+                onContinueEditing={() => setShowPendingChangesModal(false)}
+                when={anyProductChanged}
+                message="Your subscription changes will only be taken into account after you click “Update subscription”"
+                show={showPendingChangesModal}
+                title="Update subscription?"
+                saveText="Update subscription"
+                isSaving={isSubscriptionUpdating}
+            />
         </div>
     )
 }

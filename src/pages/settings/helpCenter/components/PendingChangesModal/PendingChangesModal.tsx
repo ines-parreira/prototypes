@@ -9,7 +9,10 @@ type PendingChangesModalProps = {
     show?: boolean
     onDiscard?: () => void
     onContinueEditing?: () => void
-    onSave: () => Promise<void>
+    onSave: () => Promise<void> | Promise<[void, void]>
+    title?: string
+    saveText?: string
+    isSaving?: boolean
 }
 
 const PendingChangesModal = ({
@@ -19,6 +22,9 @@ const PendingChangesModal = ({
     onContinueEditing,
     onDiscard,
     onSave,
+    title = 'Save changes?',
+    saveText = 'Save Changes',
+    isSaving = false,
 }: PendingChangesModalProps) => {
     const history = useHistory()
 
@@ -57,8 +63,9 @@ const PendingChangesModal = ({
     return (
         <CloseModal
             isOpen={showPrompt || show}
-            title={<b>Save changes?</b>}
-            saveText="Save Changes"
+            isSaving={isSaving}
+            title={<b>{title}</b>}
+            saveText={saveText}
             discardText="Discard Changes"
             editText="Back To Editing"
             onDiscard={() => {

@@ -35,6 +35,7 @@ export type SummaryFooterProps = {
     hasCreditCard?: boolean
     shouldPayWithShopify?: boolean
     shopifyBillingStatus?: ShopifyBillingStatus
+    isSubscriptionUpdating?: boolean
 }
 
 const SummaryFooter = ({
@@ -56,16 +57,15 @@ const SummaryFooter = ({
     hasCreditCard = true,
     shouldPayWithShopify = false,
     shopifyBillingStatus,
+    isSubscriptionUpdating = false,
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
-    const [isSubscriptionUpdating, setIsSubscriptionUpdating] = useState(false)
     const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
         SELECTED_PRODUCTS_SESSION_STORAGE_KEY
     )
     const history = useHistory()
 
     const handleUpdateSubscription = async () => {
-        setIsSubscriptionUpdating(true)
         try {
             await updateSubscription?.()
 
@@ -81,7 +81,6 @@ const SummaryFooter = ({
         } catch (error) {
             reportError(error as Error)
         } finally {
-            setIsSubscriptionUpdating(false)
             if (selectedPlans) {
                 setSessionSelectedPlans(selectedPlans)
             }

@@ -10,6 +10,7 @@ import css from './CloseModal.less'
 export type ConfirmationModalProps = {
     children: React.ReactNode
     isOpen: boolean
+    isSaving?: boolean
     title: React.ReactNode
     saveText: string
     discardText: string
@@ -29,6 +30,7 @@ export const CloseModal = ({
     onDiscard,
     onContinueEditing,
     onSave,
+    isSaving = false,
 }: ConfirmationModalProps): JSX.Element => {
     return (
         <DEPRECATED_Modal
@@ -56,6 +58,7 @@ export const CloseModal = ({
                             <Button
                                 className={classNames('ml-3', css.confirmBtn)}
                                 onClick={onSave}
+                                isLoading={isSaving}
                             >
                                 {saveText}
                             </Button>

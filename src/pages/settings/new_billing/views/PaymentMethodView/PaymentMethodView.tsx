@@ -68,6 +68,7 @@ const PaymentMethodView = ({
         interval,
         isSubscriptionCanceled,
         selectedPlans: selectedPlansFromState,
+        isSubscriptionUpdating,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
@@ -281,7 +282,8 @@ const PaymentMethodView = ({
                                 !!anyDowngradedPlanSelected
                             }
                             periodEnd={''}
-                            updateSubscription={() => handleSubmit()}
+                            updateSubscription={handleSubmit}
+                            isSubscriptionUpdating={isSubscriptionUpdating}
                             ctaText={`Subscribe now`}
                         />
                     </Card>

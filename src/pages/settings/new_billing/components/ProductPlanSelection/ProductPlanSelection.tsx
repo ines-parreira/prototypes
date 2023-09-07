@@ -239,7 +239,7 @@ const ProductPlanSelection = ({
                                 className={css.cancelButton}
                                 onClick={() => setIsCancelAAOModalOpen(true)}
                             >
-                                Remove
+                                Remove product
                             </Button>
                         ) : (
                             <i

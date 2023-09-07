@@ -32,6 +32,23 @@ describe('<PendingChangesModal />', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('has the correct wording', () => {
+        const {getByText} = render(
+            <PendingChangesModal
+                when={true}
+                show
+                onSave={handleOnSave}
+                onContinueEditing={handleOnEdit}
+                onDiscard={handleOnDiscard}
+                title="Title text"
+                saveText="Save text button"
+            />
+        )
+
+        expect(getByText(/title text/i)).toBeInTheDocument()
+        expect(getByText(/save text button/i)).toBeInTheDocument()
+    })
+
     it('calls the onSave callback', () => {
         const {getByRole} = render(
             <PendingChangesModal

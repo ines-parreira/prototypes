@@ -54,6 +54,7 @@ const BillingFrequencyView = ({
         totalProductAmount,
         anyProductChanged,
         updateSubscription,
+        isSubscriptionUpdating,
     } = useBillingPlans({
         contactBilling,
         dispatchBillingError,
@@ -225,6 +226,7 @@ const BillingFrequencyView = ({
                         updateSubscription={updateSubscription}
                         periodEnd={periodEnd}
                         ctaText="Update Subscription"
+                        isSubscriptionUpdating={isSubscriptionUpdating}
                     />
                 </Card>
             </div>
