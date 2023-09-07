@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 
 import classNames from 'classnames'
 
@@ -74,6 +74,16 @@ const PageEmbedmentForm = ({
         selectedPage,
         pagePosition,
     } = state
+
+    // If the 'existing page' option is selected, we need to make sure that
+    // when shopifyPages is empty, we switch to the 'new page' option.
+    useEffect(() => {
+        if (!shopifyPages.length)
+            dispatch({
+                type: 'setEmbedMode',
+                payload: EmbedMode.NEW_PAGE,
+            })
+    }, [dispatch, shopifyPages.length, embedMode])
 
     return (
         <ModalBody className={css.modalBody}>

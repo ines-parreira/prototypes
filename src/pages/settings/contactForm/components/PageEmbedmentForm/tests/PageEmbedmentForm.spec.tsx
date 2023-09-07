@@ -99,4 +99,44 @@ describe('<PageEmbedmentForm />', () => {
 
         expect(dispatch).toHaveBeenCalledTimes(2)
     })
+
+    it('should go from existing page mode to new page mode if there are no page left', () => {
+        const dispatch = jest.fn()
+
+        // render with pages
+        const {rerender} = render(
+            <PageEmbedmentForm {...baseProps} dispatch={dispatch} />
+        )
+
+        // navigate to existing page mode
+        const existingCtaMode = screen.getByText(/Embed to existing page/i)
+        expect(existingCtaMode).not.toHaveClass('isDisabled')
+
+        userEvent.click(existingCtaMode)
+        expect(dispatch).toHaveBeenCalledTimes(1)
+        expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
+            [
+              {
+                "payload": "embed-on-existing-page",
+                "type": "setEmbedMode",
+              },
+            ]
+        `)
+
+        // rerender with no pages
+        rerender(
+            <PageEmbedmentForm
+                {...baseProps}
+                dispatch={dispatch}
+                shopifyPages={[]}
+            />
+        )
+
+        // verify that we are back to new page mode
+        screen.getByText(/Page name/i)
+        screen.getByText(/Slug/i)
+
+        // verify that the cta is disabled
+        expect(existingCtaMode).toHaveClass('isDisabled')
+    })
 })
