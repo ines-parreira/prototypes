@@ -1,0 +1,20 @@
+:local {
+    .handle {
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+        width: 10px;
+        margin: 0 -5px;
+        cursor: grab;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 5px;
+            bottom: 0;
+            width: 1px;
+            background: var(--neutral-grey-3);
+        }
+    }
+}
