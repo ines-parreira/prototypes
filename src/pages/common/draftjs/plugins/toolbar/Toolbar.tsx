@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {EditorState} from 'draft-js'
 import Button from 'pages/common/components/button/Button'
 
+import {insertText} from 'utils'
 import {
     AddDiscountCode,
     AddEmoji,
@@ -93,6 +94,13 @@ const Toolbar = ({
         setIsHovered(false)
     }
 
+    const handleVariableSelection = (value: string) => {
+        const editorState = getEditorState()
+        const newEditorState = insertText(editorState, `${value}`)
+
+        setEditorState(newEditorState)
+    }
+
     const isActionDisplayed = (name: ActionName) =>
         isDisplayedAction(name, displayedActions)
 
@@ -178,7 +186,11 @@ const Toolbar = ({
                             </span>
                         )}
                         {isActionDisplayed(ActionName.FlowVariable) &&
-                            displayedActions && <FlowVariablePicker />}
+                            displayedActions && (
+                                <FlowVariablePicker
+                                    onSelect={handleVariableSelection}
+                                />
+                            )}
                     </div>
                 </div>
             </div>
