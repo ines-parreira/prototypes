@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import {fromJS, Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -28,11 +28,21 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
         () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
         [customers]
     )
+    const historyTickets = (customerHistory.get('tickets') ||
+        fromJS([])) as List<any>
+    const historyOpenedTickets = historyTickets
+        // remove current ticket from history for the count
+        .filter((t: Map<any, any>) => t.get('id') !== ticket.get('id'))
+        // count only open and new tickets
+        .filter((t: Map<any, any>) => t.get('status') !== 'closed')
+    const openTicketsCounter = historyOpenedTickets.size
 
     const isButtonRendered = isEditing || !ticket.get('id')
 
     const isHistoryDisabled =
         !customerHistory.get('hasHistory') || isCustomersLoading('history')
+
+    const isHistoryLoading = isCustomersLoading('history')
 
     const handleCustomerTimelineButtonClick = () => {
         dispatch(toggleHistory(!isHistoryDisplayed))
@@ -59,15 +69,27 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
                             {isHistoryDisplayed
                                 ? 'Close timeline'
                                 : 'Customer timeline'}
+                            {openTicketsCounter > 0 &&
+                                ` (${openTicketsCounter})`}
                         </ButtonIconLabel>
                     </Button>
-                    {isHistoryDisabled && (
+                    {!isHistoryLoading && isHistoryDisabled && (
                         <Tooltip
                             target={customerTimelineButtonId}
                             placement={'bottom-start'}
                             offset="0, 4"
                         >
-                            This customer does not have any other events
+                            This customer does not have any other tickets
+                        </Tooltip>
+                    )}
+                    {!isHistoryLoading && openTicketsCounter > 0 && (
+                        <Tooltip
+                            target={customerTimelineButtonId}
+                            placement={'top-end'}
+                            offset="0, 4"
+                        >
+                            {openTicketsCounter} open ticket
+                            {openTicketsCounter > 1 ? 's' : ''}
                         </Tooltip>
                     )}
                 </>

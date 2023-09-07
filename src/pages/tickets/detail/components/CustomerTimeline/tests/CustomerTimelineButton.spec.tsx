@@ -2,7 +2,8 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
-import {render, fireEvent, screen, act} from '@testing-library/react'
+import {render, fireEvent, screen, act, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {RootState} from 'state/types'
 
 import * as types from 'state/ticket/constants'
@@ -19,7 +20,10 @@ const defaultState = {
                 history: false,
             },
         },
-        customerHistory: {hasHistory: true},
+        customerHistory: {
+            hasHistory: true,
+            tickets: [],
+        },
     }),
 } as RootState
 
@@ -57,6 +61,7 @@ describe('CustomerTimelineButton', () => {
                     displayHistory ? 'Close timeline' : 'Customer timeline'
                 )
             ).toBeInTheDocument()
+
             act(() => {
                 fireEvent.click(screen.getByRole('button'))
             })
@@ -69,7 +74,76 @@ describe('CustomerTimelineButton', () => {
         }
     )
 
-    it('should render the `Customer timeline` button as disabled and do nothing when clicked - customer does not have history', () => {
+    it.each([true, false])(
+        'should render the `Customer timeline` button along with the number of opened tickets and toggle the history display when clicked',
+        async (displayHistory) => {
+            const state = {
+                ...defaultState,
+                ticket: defaultState.ticket.setIn(
+                    ['_internal', 'displayHistory'],
+                    displayHistory
+                ),
+                customers: defaultState.customers.setIn(
+                    ['customerHistory', 'tickets'],
+                    fromJS([
+                        {
+                            id: 123, // current ticket
+                            status: 'open',
+                        },
+                        {
+                            id: 124,
+                            status: 'closed',
+                        },
+                        {
+                            id: 125,
+                            status: 'open',
+                        },
+                        {
+                            id: 126,
+                            status: 'open',
+                        },
+                    ])
+                ),
+            } as unknown as RootState
+            const store = createStore((state) => state as RootState, state)
+
+            render(
+                <Provider store={store}>
+                    <CustomerTimelineButton isEditing={false} />
+                </Provider>
+            )
+
+            expect(
+                screen.getByText(
+                    displayHistory
+                        ? 'Close timeline (2)'
+                        : 'Customer timeline (2)'
+                )
+            ).toBeInTheDocument()
+            await waitFor(() => {
+                userEvent.hover(
+                    screen.getByText(
+                        displayHistory
+                            ? 'Close timeline (2)'
+                            : 'Customer timeline (2)'
+                    )
+                )
+                expect(screen.getByText('2 open tickets')).toBeInTheDocument()
+            })
+
+            act(() => {
+                fireEvent.click(screen.getByRole('button'))
+            })
+
+            expect(dispatch).toHaveBeenCalledTimes(1)
+            expect(dispatch).toHaveBeenCalledWith({
+                type: types.TOGGLE_HISTORY,
+                state: !displayHistory,
+            })
+        }
+    )
+
+    it('should render the `Customer timeline` button as disabled and do nothing when clicked - customer does not have history', async () => {
         const state = {
             ...defaultState,
             customers: defaultState.customers.setIn(
@@ -88,6 +162,15 @@ describe('CustomerTimelineButton', () => {
         expect(
             screen.getByRole('button', {name: /Customer timeline/})
         ).toHaveAttribute('aria-disabled', 'true')
+        await waitFor(() => {
+            userEvent.hover(screen.getByText('Customer timeline'))
+            expect(
+                screen.queryByText(
+                    'This customer does not have any other tickets'
+                )
+            ).toBeInTheDocument()
+        })
+
         act(() => {
             fireEvent.click(screen.getByRole('button'))
         })
@@ -95,7 +178,7 @@ describe('CustomerTimelineButton', () => {
         expect(dispatch).toHaveBeenCalledTimes(0)
     })
 
-    it('should render the `Customer timeline` button as disabled and do nothing when clicked - customer history is loading', () => {
+    it('should render the `Customer timeline` button as disabled and do nothing when clicked - customer history is loading', async () => {
         const state = {
             ...defaultState,
             customers: defaultState.customers.setIn(
@@ -114,6 +197,15 @@ describe('CustomerTimelineButton', () => {
         expect(
             screen.getByRole('button', {name: /Customer timeline/})
         ).toHaveAttribute('aria-disabled', 'true')
+        await waitFor(() => {
+            userEvent.hover(screen.getByText('Customer timeline'))
+            expect(
+                screen.queryByText(
+                    'This customer does not have any other tickets'
+                )
+            ).not.toBeInTheDocument()
+        })
+
         act(() => {
             fireEvent.click(screen.getByRole('button'))
         })
