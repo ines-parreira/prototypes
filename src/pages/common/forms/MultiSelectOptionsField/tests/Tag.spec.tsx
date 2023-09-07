@@ -1,7 +1,6 @@
-import {mount, render} from 'enzyme'
+import React from 'react'
+import {getByText, render} from '@testing-library/react'
 import _noop from 'lodash/noop'
-import React, {ReactElement} from 'react'
-
 import Tag from '../Tag'
 import {Option} from '../types'
 
@@ -19,16 +18,35 @@ describe('multi select options field tag', () => {
     }
 
     it('should display displayLabel first and label as a fallback', () => {
-        const wrapper = mount(<Tag {...defaultOptions} />)
-        expect(render(wrapper.find('span').last() as any).html()).toEqual(
-            render(option.displayLabel as ReactElement).html()
+        const {container, rerender} = render(<Tag {...defaultOptions} />)
+
+        expect(container).toHaveTextContent(/FooLabel/i)
+        rerender(
+            <Tag {...defaultOptions} option={{...option, displayLabel: ''}} />
         )
-        wrapper.setProps({
-            option: {
-                ...option,
-                displayLabel: undefined,
-            },
-        })
-        expect(wrapper.find('span').last().text()).toContain(option.label)
+        expect(container).toHaveTextContent(/Foo/i)
+    })
+
+    it('should add symbol spaces if symbolSpaces is true', () => {
+        const {container} = render(
+            <Tag
+                {...defaultOptions}
+                option={{...option, displayLabel: '', label: 'what is up'}}
+                symbolSpaces
+            />
+        )
+
+        expect(container).toHaveTextContent(/what␣is␣up/i)
+    })
+
+    it('should invoke onRemove when remove button is clicked', () => {
+        const onRemove = jest.fn()
+        const {container} = render(
+            <Tag {...defaultOptions} onRemove={onRemove} />
+        )
+
+        getByText(container, /close/i).click()
+
+        expect(onRemove).toHaveBeenCalled()
     })
 })

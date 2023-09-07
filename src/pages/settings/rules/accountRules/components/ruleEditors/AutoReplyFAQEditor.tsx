@@ -156,6 +156,7 @@ export const AutoReplyFAQEditor = ({
                     this rule.
                 </p>
                 <MultiSelectField
+                    showSymbolOnSpaces
                     allowCustomValues={true}
                     values={settings.block_list}
                     onChange={handleBlocklist}

@@ -554,6 +554,7 @@ export class Widget extends Component<Props, State> {
                         values={widget.value}
                         singular="word"
                         plural="words"
+                        showSymbolOnSpaces
                         allowCustomValues
                         onChange={this._handleChange as any}
                         caseInsensitive={caseInsensitive}

@@ -114,6 +114,7 @@ export const AutoReplyWismoEditor = ({
                     </p>
                     <MultiSelectField
                         allowCustomValues={true}
+                        showSymbolOnSpaces
                         values={settings.block_list}
                         onChange={handleBlocklist}
                         className={css.blockList}

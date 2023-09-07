@@ -74,6 +74,7 @@ export const AutoCloseSpamEditor = ({
                     addresses below.
                 </p>
                 <MultiSelectField
+                    showSymbolOnSpaces
                     allowCustomValues={true}
                     values={settings.allow_list}
                     onChange={(values) =>
@@ -95,6 +96,7 @@ export const AutoCloseSpamEditor = ({
                     this rule.
                 </p>
                 <MultiSelectField
+                    showSymbolOnSpaces
                     allowCustomValues={true}
                     values={settings.block_list}
                     onChange={(values) =>

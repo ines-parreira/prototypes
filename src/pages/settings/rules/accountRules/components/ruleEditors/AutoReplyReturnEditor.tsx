@@ -82,6 +82,7 @@ export const AutoReplyReturnEditor = ({
                         addresses below.
                     </p>
                     <MultiSelectField
+                        showSymbolOnSpaces
                         allowCustomValues={true}
                         values={settingsFields.block_list}
                         onChange={(block_list) =>

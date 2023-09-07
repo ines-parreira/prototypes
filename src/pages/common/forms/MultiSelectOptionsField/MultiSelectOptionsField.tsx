@@ -17,6 +17,7 @@ type Props = {
     style?: CSSProperties
     tagColor: string
     selectedOptions: Option[]
+    showSymbolOnSpaces?: boolean
     className?: string
     caseInsensitive?: boolean
     isDisabled?: boolean
@@ -245,6 +246,7 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
             allowCustomOptions,
             dropdownMenu,
             isDisabled,
+            showSymbolOnSpaces,
             isCompact,
         } = this.props
         const {isFocused, filteredOptions, input} = this.state
@@ -275,6 +277,7 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
                 >
                     {selectedOptions.map((selectedOption: Option) => (
                         <OptionTag
+                            symbolSpaces={showSymbolOnSpaces}
                             key={selectedOption.value}
                             option={selectedOption}
                             onRemove={this._onRemoveOptionTag}

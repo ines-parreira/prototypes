@@ -25,7 +25,6 @@ const Identifier = ({
     className,
 }: Props) => {
     const parentNew = parent.push('name')
-
     return (
         <span className="Identifier">
             <Widget

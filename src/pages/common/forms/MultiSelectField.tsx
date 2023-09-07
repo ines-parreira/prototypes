@@ -15,6 +15,7 @@ type Props = {
     onChange: (options: any[]) => void
     dropdownMenu?: ComponentType<unknown>
     isCompact?: boolean
+    showSymbolOnSpaces?: boolean
 }
 
 // Deprecated: Use MultiSelectOptionsField instead
@@ -48,6 +49,7 @@ export default class MultiSelectField extends React.Component<Props> {
         )
         return (
             <MultiSelectOptionsField
+                showSymbolOnSpaces={this.props.showSymbolOnSpaces}
                 allowCustomOptions={this.props.allowCustomValues}
                 options={this.props.options}
                 plural={this.props.plural}
