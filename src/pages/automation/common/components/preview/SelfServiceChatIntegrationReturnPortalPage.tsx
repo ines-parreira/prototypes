@@ -1,6 +1,9 @@
 import React from 'react'
 
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
 import Button from 'gorgias-design-system/Buttons/Button'
@@ -15,7 +18,7 @@ type Props = {
 }
 
 const SelfServiceChatIntegrationReturnPortalPage = ({integration}: Props) => {
-    const language = integration.meta.language || 'en-US'
+    const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
     const {orderPlacedDate} = useOrderDates(language)

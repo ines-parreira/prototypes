@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
 import ListItem from 'gorgias-design-system/List/ListItem'
@@ -19,8 +22,8 @@ type Props = {
 const SelfServiceChatIntegrationReportIssueReasonsPage = ({
     integration,
 }: Props) => {
-    const sspTexts =
-        GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']
+    const language = getPrimaryLanguageFromChatConfig(integration.meta)
+    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
     const history = useHistory()
     const {

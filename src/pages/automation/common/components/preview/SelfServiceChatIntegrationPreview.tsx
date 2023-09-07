@@ -3,7 +3,10 @@ import {Route, useHistory, useLocation} from 'react-router-dom'
 
 import {GorgiasChatIntegration} from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
 
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
 import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
@@ -33,6 +36,8 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
 
     const isInitialEntry = history.length === 1
 
+    const language = getPrimaryLanguageFromChatConfig(integration.meta)
+
     return (
         <ChatIntegrationPreview
             name={integration.name}
@@ -43,7 +48,7 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
             }
             isOnline
-            language={meta.language}
+            language={language}
             renderFooter={
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.CANCEL ||
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.RETURN ||

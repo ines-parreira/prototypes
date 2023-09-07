@@ -1,11 +1,19 @@
-import React, {ReactNode, useCallback, useEffect, useState} from 'react'
+import React, {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {Link} from 'react-router-dom'
 import _intersection from 'lodash/intersection'
 import _difference from 'lodash/difference'
-import {TicketChannel} from 'business/types/ticket'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {TicketChannel} from 'business/types/ticket'
 import {SelfServiceChannelType} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {ChannelLanguage} from 'pages/automation/common/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
 import useWorkflowApi from './useWorkflowApi'
 
@@ -55,6 +63,15 @@ export default function useLanguagesMismatchWarnings(
             : channelType === TicketChannel.HelpCenter
             ? helpCenterLanguageSettingsLink
             : contactFormLanguageSettingsLink
+
+    const hasChatMultiLanguagesFeatureFlag =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages] || false
+
+    const monoLanguageChannels = useMemo(() => {
+        return hasChatMultiLanguagesFeatureFlag
+            ? [TicketChannel.ContactForm]
+            : [TicketChannel.Chat, TicketChannel.ContactForm]
+    }, [hasChatMultiLanguagesFeatureFlag])
 
     const {fetchWorkflowConfigurations} = useWorkflowApi()
     const [workflows, setWorkflows] = useState<WorkflowConfigurationShallow[]>(
@@ -111,9 +128,7 @@ export default function useLanguagesMismatchWarnings(
 
             // The channel is mono-language, and there’s overlap between the flow languages and the channel language
             if (
-                [TicketChannel.Chat, TicketChannel.ContactForm].includes(
-                    channelType
-                ) &&
+                monoLanguageChannels.includes(channelType) &&
                 workflowLanguages.length > channelLanguages.length
             ) {
                 return {
@@ -182,7 +197,13 @@ export default function useLanguagesMismatchWarnings(
                 }
             }
         },
-        [channelLanguages, channelType, channelLanguageSettingsLink, workflows]
+        [
+            workflows,
+            channelLanguages,
+            monoLanguageChannels,
+            channelType,
+            channelLanguageSettingsLink,
+        ]
     )
 
     return {getLanguagesMismatchWarning}

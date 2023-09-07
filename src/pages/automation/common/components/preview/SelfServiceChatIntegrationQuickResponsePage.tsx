@@ -1,6 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
@@ -9,7 +12,6 @@ import {toJS} from 'utils'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
-
 import css from './SelfServiceChatIntegrationQuickResponsePage.less'
 
 type Props = {
@@ -29,7 +31,8 @@ const SelfServiceChatIntegrationQuickResponsePage = ({integration}: Props) => {
     const {quickResponse} = useSelfServicePreviewContext()
     const {decoration, meta} = integration
 
-    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[meta.language || 'en-US']
+    const language = getPrimaryLanguageFromChatConfig(meta)
+    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
     const currentUser = useAppSelector(getCurrentUser)
     const [previewStep, setPreviewStep] = useState(PreviewStep.QUESTION)

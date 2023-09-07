@@ -1,7 +1,10 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
@@ -17,7 +20,7 @@ type Props = {
 const SelfServiceChatIntegrationTrackUnfilFillResponsePage = ({
     integration,
 }: Props) => {
-    const language = integration.meta.language || 'en-US'
+    const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
     const {automatedResponseMessageContent} = useSelfServicePreviewContext()

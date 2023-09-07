@@ -10,6 +10,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {ChannelLanguage} from 'pages/automation/common/types'
 import {TicketChannel} from 'business/types/ticket'
 
+import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
@@ -100,15 +101,17 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         enabledEntrypointsCount + enabledQuickResponsesCount >
             MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS && !quickResponses.enabled
 
+    const channelLanguages = getLanguagesFromChatConfig(
+        channel.value.meta
+    ) as ChannelLanguage[]
+
     return (
         <>
             <ConnectedChannelWorkflowsFeature
                 channelType={TicketChannel.Chat}
                 channelId={`chat-${applicationId}`}
                 integrationId={channel.value.id}
-                channelLanguages={[
-                    (channel.value.meta.language as ChannelLanguage) ?? 'en-US',
-                ]}
+                channelLanguages={channelLanguages}
                 entrypoints={workflows.entrypoints || []}
                 maxActiveWorkflows={maxActiveWorkflows}
                 limitTooltipMessage={

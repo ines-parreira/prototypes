@@ -5,6 +5,7 @@ import {useHistory} from 'react-router-dom'
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_TEXTS,
+    getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
 import {
     GorgiasChatAvatarSettings,
@@ -39,15 +40,13 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         hoveredOrderManagementFlow,
         isArticleRecommendationEnabled,
     } = useSelfServicePreviewContext()
-    const workflowsEntrypoints = useWorkflowsEntrypoints(
-        integration.meta.language ?? 'en-US'
-    )
 
-    const sspTexts =
-        GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']
+    const language = getPrimaryLanguageFromChatConfig(integration.meta)
 
-    const translatedTexts =
-        GORGIAS_CHAT_WIDGET_TEXTS[integration.meta.language || 'en-US']
+    const workflowsEntrypoints = useWorkflowsEntrypoints(language)
+
+    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
+    const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
     const quickResponses =
         selfServiceConfiguration?.quick_response_policies.filter(

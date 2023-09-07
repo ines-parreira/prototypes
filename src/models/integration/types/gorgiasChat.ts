@@ -1,11 +1,11 @@
 // g/integrations/gorgias_chat/schemas.py
 
-import {createTypeGuard} from '../../../utils'
+import {LanguageItem} from 'config/integrations/gorgias_chat'
 
+import {createTypeGuard} from '../../../utils'
 import {IntegrationType} from '../constants'
 
 import {IntegrationBase, IntegrationDecoration} from './base'
-
 import type {Integration} from './'
 
 export type GorgiasChatIntegration = IntegrationBase & {
@@ -36,6 +36,7 @@ export type GorgiasChatIntegrationMeta = {
     app_id?: string
     campaigns?: Campaign[]
     language?: string
+    languages?: LanguageItem[]
     preferences?: {
         email_capture_enforcement: GorgiasChatEmailCaptureType
         auto_responder?: {

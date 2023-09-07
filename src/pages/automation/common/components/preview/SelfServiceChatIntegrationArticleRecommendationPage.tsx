@@ -1,6 +1,9 @@
 import React from 'react'
 
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
@@ -18,7 +21,7 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
 }: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
 
-    const language = integration.meta.language || 'en-US'
+    const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
     const {decoration} = integration

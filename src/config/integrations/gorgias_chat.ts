@@ -3,6 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 import {Language as LanguagePickerItem} from 'pages/common/components/LanguagePicker/LanguagePicker'
 import {Language} from '../../constants/languages'
 import {
+    GorgiasChatIntegrationMeta,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from '../../models/integration/types'
@@ -300,4 +301,21 @@ export const mapLanguagePickerToIntegrationLanguages = (
     )
 
     return integrationLanguages
+}
+
+export const getLanguagesFromChatConfig = (
+    meta: GorgiasChatIntegrationMeta
+): string[] => {
+    return meta.languages
+        ? meta.languages.map((x) => x.language)
+        : [meta.language ?? Language.EnglishUs]
+}
+
+export const getPrimaryLanguageFromChatConfig = (
+    meta: GorgiasChatIntegrationMeta
+): string => {
+    return (
+        meta.languages?.find((language) => language.primary)?.language ??
+        (meta.language || Language.EnglishUs)
+    )
 }
