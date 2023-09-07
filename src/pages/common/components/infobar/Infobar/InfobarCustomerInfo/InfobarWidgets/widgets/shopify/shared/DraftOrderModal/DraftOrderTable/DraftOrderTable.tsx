@@ -48,11 +48,12 @@ function DraftOrderTable({
                     </tr>
                 )}
                 {lineItems.map((lineItem: ImmutableMap<any, any>, index) => {
-                    const productId = lineItem.get('product_id') as string
-                    const variantId = lineItem.get('variant_id') as string
-                    const uid = `${productId}${
-                        variantId ? `_${variantId}` : ''
-                    }`
+                    const productId = lineItem.get('product_id', '') as string
+                    const variantId = lineItem.get('variant_id', '') as string
+                    const localId = lineItem.get('localId', '') as string
+                    const uid =
+                        localId ||
+                        `${productId}${variantId ? `_${variantId}` : ''}`
                     return (
                         <DraftOrderLineItemRow
                             key={uid}

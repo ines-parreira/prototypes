@@ -43,10 +43,12 @@ const debouncedRestock = _debounce(
         restock: boolean,
         lineItem: Map<any, any>,
         index: number,
-        onChange: onChange
+        onChange: onChange,
+        callback?: () => void
     ) => {
         const newLineItem = lineItem.set('restock_item', restock)
         onChange(newLineItem, index)
+        callback?.()
     },
     100
 )
@@ -57,7 +59,8 @@ const debouncedUpdateLineItem = _debounce(
         lineItem: Map<any, any>,
         index: number,
         onChange: onChange,
-        actionName
+        actionName,
+        callback?: () => void
     ) => {
         const newLineItem = lineItem.set('quantity', newQuantity)
         onChange(newLineItem, index)
@@ -75,8 +78,9 @@ const debouncedUpdateLineItem = _debounce(
                 break
         }
         logEvent(action as SegmentEvent)
+        callback?.()
     },
-    800
+    400
 )
 
 function DraftOrderLineItemRow({
@@ -96,13 +100,17 @@ function DraftOrderLineItemRow({
     const [restock, setRestock] = useState<boolean>(
         lineItem.get('restock_item', false)
     )
+    const [isWaitingForUpdate, setWaitingForUpdate] = useState(false)
 
     const lineItemQuantity = lineItem.get('quantity')
     useEffect(() => setQuantity(lineItemQuantity), [lineItemQuantity])
     const handleRestockItemsChange = useCallback(
         (newValue: boolean) => {
             setRestock(newValue)
-            debouncedRestock(newValue, lineItem, index, onChange)
+            setWaitingForUpdate(true)
+            debouncedRestock(newValue, lineItem, index, onChange, () =>
+                setWaitingForUpdate(false)
+            )
         },
         [index, lineItem, onChange]
     )
@@ -115,12 +123,14 @@ function DraftOrderLineItemRow({
             let newQuantity = value || 1
             if (newQuantity < min) newQuantity = min
             setQuantity(newQuantity)
+            setWaitingForUpdate(true)
             debouncedUpdateLineItem(
                 newQuantity,
                 lineItem,
                 index,
                 onChange,
-                actionName
+                actionName,
+                () => setWaitingForUpdate(false)
             )
         },
         [lineItem, isShownInEditOrder, index, onChange, actionName]
@@ -340,6 +350,7 @@ function DraftOrderLineItemRow({
                             intent="destructive"
                             tabIndex={0}
                             onClick={() => onDelete(index)}
+                            isDisabled={isWaitingForUpdate}
                         >
                             close
                         </IconButton>
@@ -347,7 +358,15 @@ function DraftOrderLineItemRow({
                 </div>
             </td>
         )
-    }, [currencyCode, index, isShownInEditOrder, lineItem, onDelete, removable])
+    }, [
+        currencyCode,
+        index,
+        isShownInEditOrder,
+        lineItem,
+        onDelete,
+        removable,
+        isWaitingForUpdate,
+    ])
 
     const renderRestock = useCallback(() => {
         const shouldRestock =

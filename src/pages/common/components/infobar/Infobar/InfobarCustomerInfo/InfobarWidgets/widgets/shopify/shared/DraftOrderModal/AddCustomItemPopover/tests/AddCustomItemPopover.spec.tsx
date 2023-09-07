@@ -18,6 +18,10 @@ jest.mock('store/middlewares/segmentTracker', () => {
     }
 })
 
+jest.mock('ulidx', () => ({
+    ulid: jest.fn(() => 'ulid-generated-id'),
+}))
+
 describe('<AddCustomItemPopover/>', () => {
     let onSubmit: jest.MockedFunction<any>
 
@@ -89,6 +93,7 @@ describe('<AddCustomItemPopover/>', () => {
                         requires_shipping: false,
                         product_exists: false,
                         newly_added: true,
+                        localId: 'ulid-generated-id',
                     })
                 )
 

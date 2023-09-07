@@ -16,7 +16,13 @@ import DraftOrderLineItemRow from '../DraftOrderLineItemRow'
 import {ShopifyActionType} from '../../../../types'
 import {InventoryManagement} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 
-jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
+jest.mock(
+    'lodash/debounce',
+    () =>
+        (fn: (...args: any[]) => void, delay: number) =>
+        (...args: any[]) =>
+            setTimeout(() => fn(...args), delay)
+)
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker'
@@ -231,6 +237,34 @@ describe('<DraftOrderLineItemRow/>', () => {
                 expect(logEventMock).toHaveBeenCalledWith(event)
             }
         )
+        it('should disable removing the line during the debounce duration', () => {
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
+            const lineItem = payload.getIn(['line_items', 0]) as Map<any, any>
+            render(
+                <DraftOrderLineItemRow
+                    {...props}
+                    actionName={ShopifyActionType.CreateOrder}
+                    lineItem={lineItem}
+                    product={fromJS(shopifyProductFixture())}
+                />
+            )
+
+            fireEvent.change(screen.getByRole('spinbutton'), {
+                target: {value: 5},
+            })
+            expect(screen.getByText('close').parentNode).toHaveAttribute(
+                'aria-disabled',
+                'true'
+            )
+            jest.advanceTimersByTime(1001)
+            expect(screen.getByText('close').parentNode).toHaveAttribute(
+                'aria-disabled',
+                'false'
+            )
+        })
     })
     describe('on delete line', () => {
         it('should call onDelete() with correct index', () => {

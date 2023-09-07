@@ -28,7 +28,7 @@ export function refreshAppliedDiscounts(
     let newDraftOrder = draftOrder
     ;(draftOrder.get('line_items', []) as List<any>).forEach(
         (lineItem: Map<any, any>, index) => {
-            const appliedDiscount = lineItem.get('applied_discount') as Maybe<
+            const appliedDiscount = lineItem?.get('applied_discount') as Maybe<
                 Map<any, any>
             >
             if (!appliedDiscount) {

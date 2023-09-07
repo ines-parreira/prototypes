@@ -5,6 +5,7 @@ import React, {
     PureComponent,
     KeyboardEvent,
 } from 'react'
+import {ulid} from 'ulidx'
 import {
     Button,
     Form,
@@ -144,6 +145,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                 requires_shipping: requiresShipping,
                 product_exists: false,
                 newly_added: true,
+                localId: ulid(),
             })
         )
 
