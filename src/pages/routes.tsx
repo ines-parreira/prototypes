@@ -18,6 +18,8 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {logPageChange} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PaywallConfig,
@@ -174,6 +176,9 @@ export default function Routes() {
 }
 
 export function AppRoutes({match: {path}}: RouteComponentProps) {
+    const hasSplitTicketView: boolean | undefined =
+        useFlags()[FeatureFlagKey.SplitTicketView]
+
     return (
         <Switch>
             <Route
@@ -216,6 +221,11 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
                     navbar: TicketNavbar,
                 })}
             />
+            {!!hasSplitTicketView && (
+                <Route path={`${path}/views`}>
+                    <SplitTicketViewRoutes />
+                </Route>
+            )}
             <Route component={NoMatch} />
         </Switch>
     )
