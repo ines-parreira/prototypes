@@ -22,10 +22,3 @@ export enum MetricName {
     ResolutionTime = 'resolutionTime',
     MessagesPerTicket = 'messagesPerTicket',
 }
-
-export const MetricNameToLabelMap: Record<MetricName, string> = {
-    [MetricName.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
-    [MetricName.FirstResponseTime]: FIRST_RESPONSE_TIME_LABEL,
-    [MetricName.ResolutionTime]: RESOLUTION_TIME_LABEL,
-    [MetricName.MessagesPerTicket]: MESSAGES_PER_TICKET_LABEL,
-}

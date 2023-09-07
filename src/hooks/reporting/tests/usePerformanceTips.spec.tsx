@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import useAppSelector from 'hooks/useAppSelector'
 import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
-import * as tipProvider from 'services/performanceTipService'
+import * as tipProvider from 'services/supportPerformanceTipService'
 import {MetricName} from 'services/reporting/constants'
 import {RootState, StoreDispatch} from 'state/types'
 import {PlanName} from 'utils/paywalls'
@@ -14,7 +14,7 @@ const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('hooks/useAppSelector')
 const appSelectorMock = assumeMock(useAppSelector)
 
-jest.mock('services/performanceTipService')
+jest.mock('services/supportPerformanceTipService')
 
 describe('usePerformanceTips', () => {
     const defaultState = {} as RootState

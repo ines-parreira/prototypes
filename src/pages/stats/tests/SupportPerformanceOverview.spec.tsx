@@ -9,7 +9,7 @@ import {UseQueryResult} from '@tanstack/react-query'
 import moment from 'moment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
-import {TipQualifier} from 'services/performanceTipService'
+import {TipQualifier} from 'services/supportPerformanceTipService'
 import {tags} from 'fixtures/tag'
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -88,7 +88,7 @@ const usePostReportingMock = assumeMock(usePostReporting)
 jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
-jest.mock('services/performanceTipService')
+jest.mock('services/supportPerformanceTipService')
 jest.mock('store/middlewares/segmentTracker')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
@@ -291,9 +291,9 @@ describe('<SupportPerformanceOverview />', () => {
         trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
         jest.spyOn(PerformanceTipHook, 'usePerformanceTips').mockReturnValue({
             type: TipQualifier.Success,
-            title: 'some title',
-            content: 'some content',
-            hint: undefined,
+            content: 'Tip: some content',
+            average: '4.5',
+            topTen: '3.9',
         })
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsPerformanceTips]: true,

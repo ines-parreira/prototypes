@@ -1025,9 +1025,48 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     class="wrapper success"
                   >
                     <div
-                      class="body-semibold title"
+                      class="sentiment"
                     >
-                      some title
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          4.5
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 10%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          3.9
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
+                      >
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
+                      </span>
                     </div>
                     <div
                       class="body-regular"
@@ -1079,9 +1118,48 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     class="wrapper success"
                   >
                     <div
-                      class="body-semibold title"
+                      class="sentiment"
                     >
-                      some title
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          4.5
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 10%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          3.9
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
+                      >
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
+                      </span>
                     </div>
                     <div
                       class="body-regular"
@@ -1133,9 +1211,48 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     class="wrapper success"
                   >
                     <div
-                      class="body-semibold title"
+                      class="sentiment"
                     >
-                      some title
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          4.5
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 10%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          3.9
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
+                      >
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
+                      </span>
                     </div>
                     <div
                       class="body-regular"
@@ -1187,9 +1304,48 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     class="wrapper success"
                   >
                     <div
-                      class="body-semibold title"
+                      class="sentiment"
                     >
-                      some title
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          4.5
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 10%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          3.9
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
+                      >
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
+                      </span>
                     </div>
                     <div
                       class="body-regular"

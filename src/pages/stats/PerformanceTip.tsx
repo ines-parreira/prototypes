@@ -1,15 +1,17 @@
 import classnames from 'classnames'
-
+import sanitizeHtml from 'sanitize-html'
 import React, {PropsWithChildren} from 'react'
+import Tooltip from 'pages/common/components/Tooltip'
 import css from 'pages/stats/PerformanceTip.less'
 
 type SuccessLevel = 'neutral' | 'light-error' | 'light-success' | 'success'
 
 type Props = {
-    avgMerchant: number | null
-    topTen: number | null
+    avgMerchant: number | string | null
+    topTen: number | string | null
     className?: string
     type?: SuccessLevel
+    avgTooltip?: string
 }
 
 const SentimentIconLabel: {
@@ -42,14 +44,32 @@ export default function PerformanceTip({
     type = 'neutral',
     avgMerchant,
     topTen,
+    avgTooltip,
 }: PropsWithChildren<Props>) {
     const hasData = !(avgMerchant == null || topTen == null)
+    const tooltipId = `tip-tooltip-${type}`
+
     return (
         <div className={classnames(css.wrapper, className, css[type])}>
             <div className={css.sentiment}>
                 <div>
                     <span className={css.label}>Avg. merchant:</span>
-                    <span className={css.value}>{avgMerchant ?? '-'}</span>
+                    <span className={css.value} id={tooltipId}>
+                        {avgMerchant ?? '-'}
+                    </span>
+                    {avgTooltip && (
+                        <Tooltip
+                            target={tooltipId}
+                            placement="top-start"
+                            autohide={false}
+                        >
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtml(avgTooltip),
+                                }}
+                            />
+                        </Tooltip>
+                    )}
                 </div>
                 <div>
                     <span className={css.label}>Top 10%:</span>
