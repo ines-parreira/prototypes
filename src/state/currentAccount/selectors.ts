@@ -33,6 +33,11 @@ export const getCurrentAccountFeatures = createSelector(
     (state) => (state.get('features') as Map<any, any>) || fromJS({})
 )
 
+export const getCurrentDomain = createSelector(
+    getCurrentAccountState,
+    (state) => state.get('domain') as string
+)
+
 export const currentAccountHasFeature = (feature: AccountFeature) =>
     createSelector(
         getCurrentAccountFeatures,

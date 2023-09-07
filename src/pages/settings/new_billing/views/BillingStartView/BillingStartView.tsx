@@ -334,6 +334,7 @@ const BillingStartView = () => {
                                     isCurrentSubscriptionCanceled
                                 }
                                 periodEnd={periodEnd}
+                                currentUsage={currentUsage}
                             />
                         </Route>
                         <Route exact path={BILLING_INFORMATION_PATH}>

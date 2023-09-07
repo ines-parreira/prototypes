@@ -1,4 +1,6 @@
 import {ProductType} from 'models/billing/types'
+import orderManagementIcon from 'assets/img/icons/order-management.svg'
+import {Reason} from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
 export const BILLING_PROCESS_PATH = `${BILLING_BASE_PATH}/process`
@@ -69,6 +71,8 @@ export const PRODUCT_INFO = {
 export const ENTERPRISE_PRICE_ID = '0'
 export const ZAPIER_BILLING_HOOK =
     'https://hooks.zapier.com/hooks/catch/9639651/3hsj6pb/'
+export const ZAPIER_REMOVE_AAO_HOOK =
+    'https://hooks.zapier.com/hooks/catch/10853648/35nmhz0/'
 
 export const TICKET_SUBJECTS = {
     Enterprise: 'New Enterprise plan request',
@@ -79,3 +83,50 @@ export const TICKET_SUBJECTS = {
 }
 
 export const BILLING_SUPPORT_EMAIL = 'billing@gorgias.com'
+
+export const AUTOMATION_FEATURES = [
+    {
+        title: 'Flows',
+        icon: 'account_tree',
+        description: 'Fully custom multi-step interactions',
+    },
+    {
+        title: 'Quick response flows',
+        icon: 'chat',
+        description: 'Provide instant automated responses',
+    },
+    {
+        title: 'Order management flows',
+        iconUrl: orderManagementIcon,
+        description: 'Allow customers to manager orders on their own',
+    },
+    {
+        title: 'Help Center article recommendation',
+        icon: 'menu_book',
+        description: 'Answer customer questions automatically',
+    },
+    {
+        title: 'Email autoresponders',
+        icon: 'email',
+        description: 'Leverage AI to target and resolve email tickets',
+    },
+    {
+        title: 'Automation statistics',
+        icon: 'bar_chart',
+        description: 'Measure automation impact and performance',
+    },
+]
+
+export const CANCEL_AUTOMATION_REASONS: Reason[] = [
+    {value: false, label: `It's not automating enough`},
+    {value: false, label: `It's missing features`},
+    {value: false, label: `It's too expensive`},
+    {
+        value: false,
+        label: `I don't have capacity to set it up/it's not a priority right now`,
+    },
+    {value: false, label: `I'm using an alternative`},
+    {value: false, label: `I'm not using Gorgias Chat or Help Center`},
+    {value: false, label: `I didn't know I purchased it`},
+    {value: false, label: `Other`},
+]

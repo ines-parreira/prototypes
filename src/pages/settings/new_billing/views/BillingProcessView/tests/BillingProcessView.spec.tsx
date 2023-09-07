@@ -7,6 +7,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {
     HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPrice,
+    currentProductsUsage,
     products,
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
@@ -68,6 +69,7 @@ describe('UsageAndPlansView', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
                 <BillingProcessView
+                    currentUsage={currentProductsUsage}
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}
                     setDefaultMessage={jest.fn()}

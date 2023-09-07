@@ -12,7 +12,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCreditCard} from 'state/billing/actions'
 import Button from 'pages/common/components/button/Button'
-import {TicketPurpose} from 'state/billing/types'
+import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Card from '../../components/Card'
 import BackLink from '../../components/BackLink'
@@ -44,6 +44,7 @@ type BillingProcessViewProps = {
     isTrialing: boolean
     isCurrentSubscriptionCanceled: boolean
     periodEnd: string
+    currentUsage: CurrentProductsUsages
 }
 
 export type SelectedPlans = {
@@ -73,6 +74,7 @@ const BillingProcessView = ({
     isTrialing,
     periodEnd,
     isCurrentSubscriptionCanceled,
+    currentUsage,
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
@@ -224,8 +226,9 @@ const BillingProcessView = ({
                             isStarterHelpdeskPlanSelected={
                                 isStarterHelpdeskPlanSelected
                             }
-                            isTrialing={isTrialing}
                             initialIndex={automationInitialIndex}
+                            periodEnd={periodEnd}
+                            currentUsage={currentUsage}
                         />
                         <ProductPlanSelection
                             type={ProductType.Voice}

@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 import classNames from 'classnames'
 
 import {
@@ -17,10 +17,12 @@ import {
 } from 'models/billing/utils'
 import Tooltip from 'pages/common/components/Tooltip'
 import Button from 'pages/common/components/button/Button'
+import {CurrentProductsUsages} from 'state/billing/types'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {formatNumTickets} from '../../utils/formatAmount'
+import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import css from './ProductPlanSelection.less'
 
 export type ProductPlanSelectionProps = {
@@ -33,6 +35,8 @@ export type ProductPlanSelectionProps = {
     isStarterHelpdeskPlanSelected?: boolean
     isTrialing?: boolean
     initialIndex?: number
+    periodEnd?: string
+    currentUsage?: CurrentProductsUsages
 }
 
 const ProductPlanSelection = ({
@@ -45,6 +49,8 @@ const ProductPlanSelection = ({
     isStarterHelpdeskPlanSelected,
     isTrialing = false,
     initialIndex = -1,
+    periodEnd,
+    currentUsage,
 }: ProductPlanSelectionProps) => {
     const isActive = useMemo(() => {
         if (!product) return false
@@ -54,6 +60,8 @@ const ProductPlanSelection = ({
     }, [product, isTrialing])
 
     const selectedPlan = selectedPlans[type].plan
+
+    const [isCancelAAOModalOpen, setIsCancelAAOModalOpen] = useState(false)
 
     const isStarterHelpdeskPlanDisabled = useCallback(
         (price) => {
@@ -225,13 +233,13 @@ const ProductPlanSelection = ({
                 </div>
                 {(!isActive || type === ProductType.Automation) &&
                     (selectedPlans[type].isSelected ? (
-                        type === ProductType.Automation ? (
+                        type === ProductType.Automation && isActive ? (
                             <Button
                                 intent="secondary"
                                 className={css.cancelButton}
-                                onClick={handleClose}
+                                onClick={() => setIsCancelAAOModalOpen(true)}
                             >
-                                Cancel Add-On
+                                Remove
                             </Button>
                         ) : (
                             <i
@@ -309,6 +317,15 @@ const ProductPlanSelection = ({
                             </div>
                         )}
                 </div>
+            )}
+            {!!periodEnd && !!currentUsage && (
+                <CancelAAOModal
+                    isOpen={isCancelAAOModalOpen}
+                    handleCancelAAO={handleClose}
+                    handleOnClose={() => setIsCancelAAOModalOpen(false)}
+                    periodEnd={periodEnd}
+                    currentUsage={currentUsage}
+                />
             )}
         </div>
     )
