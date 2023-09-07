@@ -36,15 +36,7 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
     <div
       class="pageContainer pb0 container-fluid"
       data-candu-id="integration-list-top"
-    >
-      <div
-        class="mb-3"
-      >
-        <div>
-          Chat with your customers by adding our Chat widget on your website. Every time a customer starts a conversation on your website, it opens a ticket in Gorgias.
-        </div>
-      </div>
-    </div>
+    />
     <table
       class="table table"
     >

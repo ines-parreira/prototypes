@@ -106,7 +106,9 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                     settingsCss.pb0
                 )}
             >
-                <div className="mb-3">{longTypeDescription}</div>
+                {chats.isEmpty() && (
+                    <div className="mb-3">{longTypeDescription}</div>
+                )}
 
                 {chats.isEmpty() && (
                     <div className="mt-3">
