@@ -197,13 +197,16 @@ const GorgiasChatIntegrationVisibilityControls = forwardRef<
             GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage
 
         const hideUpdateInstallationButton =
-            !installation?.visibility?.method ||
-            (isShowOnEveryPage &&
-                initialVisibilityMethod ===
-                    GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage)
+            isShowOnEveryPage &&
+            initialVisibilityMethod ===
+                GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage
 
         return (
-            <>
+            <div
+                className={classNames({
+                    [css.disabled]: !isUpdate,
+                })}
+            >
                 <div
                     className={classNames(
                         css.visibilityMethodDropdownPlaceholder,
@@ -325,7 +328,7 @@ const GorgiasChatIntegrationVisibilityControls = forwardRef<
                         )}
                     </div>
                 </Collapse>
-            </>
+            </div>
         )
     }
 )
