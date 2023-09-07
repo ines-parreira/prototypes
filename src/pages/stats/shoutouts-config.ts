@@ -10,11 +10,7 @@ import {OrderDirection} from 'models/api/types'
 import {ReportingMeasure, TicketMeasure} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {TableColumn} from 'state/ui/stats/types'
-import {
-    MetricValueFormat,
-    NOT_AVAILABLE_PLACEHOLDER,
-    formatMetricValue,
-} from './common/utils'
+import {NOT_AVAILABLE_PLACEHOLDER, formatMetricValue} from './common/utils'
 import {TableLabels} from './TableConfig'
 
 export interface ShoutoutConfig {
@@ -26,11 +22,7 @@ export interface ShoutoutConfig {
     ) => MetricWithDecile
     queryOrder: OrderDirection
     metricName: string
-    formatValue: (
-        value: number | null | undefined,
-        format?: MetricValueFormat,
-        notAvailableText?: string
-    ) => string
+    formatValue: typeof formatMetricValue
     measure: ReportingMeasure
 }
 

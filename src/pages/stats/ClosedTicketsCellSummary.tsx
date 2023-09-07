@@ -31,7 +31,7 @@ export const ClosedTicketsCellSummary = () => {
             ) : (
                 formatMetricValue(
                     metricValue,
-                    'decimal',
+                    'integer',
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )}

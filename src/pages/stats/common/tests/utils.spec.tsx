@@ -215,6 +215,12 @@ describe('stats components utils', () => {
             expect(formatMetricValue(123456.789, 'decimal')).toBe('123,456.79')
         })
 
+        it('should format rounded value when format is "integer"', () => {
+            const value = 123456.789
+
+            expect(formatMetricValue(value, 'integer')).toBe('123,457')
+        })
+
         it('should format value up to two decimal places and render as percentage when format is "percentage"', () => {
             expect(formatMetricValue(123456.789, 'percent')).toBe('123,456.79%')
         })

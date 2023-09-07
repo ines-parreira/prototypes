@@ -27,7 +27,7 @@ export const MessagesSentCellSummary = () => {
             ) : (
                 formatMetricValue(
                     metricValue,
-                    'decimal',
+                    'integer',
                     NOT_AVAILABLE_PLACEHOLDER
                 )
             )}
