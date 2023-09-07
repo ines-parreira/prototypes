@@ -82,7 +82,6 @@ const ContactFormNameInputSection = ({
                 Contact form name
             </Label>
             <InputField
-                autoFocus
                 isRequired={isRequiredShown}
                 data-testid="name"
                 id="name"

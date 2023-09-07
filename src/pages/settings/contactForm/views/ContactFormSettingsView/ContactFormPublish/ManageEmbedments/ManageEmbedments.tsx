@@ -280,6 +280,7 @@ const ManageEmbedments = ({
                                 <TableBodyRow key={embedment.id}>
                                     <BodyCell
                                         style={{
+                                            cursor: 'default',
                                             whiteSpace: 'nowrap',
                                             maxWidth: '100%',
                                             overflow: 'hidden',
@@ -390,7 +391,8 @@ const ManageEmbedments = ({
                     onClick={() => setIsEmbedModalOpen(true)}
                     intent="secondary"
                     isDisabled={
-                        embedments.length >= CONTACT_FORM_EMBEDMENTS_LIMIT
+                        embedments.length >= CONTACT_FORM_EMBEDMENTS_LIMIT ||
+                        isDirty
                     }
                     className={css.button}
                 >

@@ -57,7 +57,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
           </label>
           <div>
             <div
-              class="wrapper isFocused"
+              class="wrapper"
             >
               <input
                 class="input"

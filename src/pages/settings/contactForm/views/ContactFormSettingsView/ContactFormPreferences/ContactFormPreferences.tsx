@@ -212,8 +212,8 @@ const ContactFormPreferences = (): JSX.Element => {
                         Preferences
                     </h2>
                     <p>
-                        Manage the name and email associated with your contact
-                        form.
+                        Manage the name, email, language, and store associated
+                        with your form.
                     </p>
                 </section>
 
@@ -290,6 +290,7 @@ const ContactFormPreferences = (): JSX.Element => {
                     </div>
                     <Button
                         intent="destructive"
+                        fillStyle="ghost"
                         onClick={() => setIsDeletionModalShown(true)}
                     >
                         <ButtonIconLabel icon="delete">

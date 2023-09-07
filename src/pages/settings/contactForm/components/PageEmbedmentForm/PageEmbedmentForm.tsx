@@ -216,7 +216,7 @@ const PageEmbedmentForm = ({
                                 value={selectedPage.external_id}
                             >
                                 <DropdownSearch
-                                    placeholder="Select page name"
+                                    placeholder="Select page"
                                     autoFocus
                                 />
                                 <DropdownBody>

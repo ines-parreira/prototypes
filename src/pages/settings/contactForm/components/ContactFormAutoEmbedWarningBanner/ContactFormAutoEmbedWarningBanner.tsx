@@ -49,7 +49,10 @@ const ContactFormAutoEmbedWarningBanner = (
                         website.
                     </div>
                     <div style={{display: 'inline-block'}}>
-                        <Link to={linkToContactFormPreferences(entityId)}>
+                        <Link
+                            target="_blank"
+                            to={linkToContactFormPreferences(entityId)}
+                        >
                             <a className={css.connectShopifyBtn}>
                                 Connect Shopify
                             </a>
