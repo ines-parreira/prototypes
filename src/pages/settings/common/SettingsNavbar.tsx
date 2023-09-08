@@ -117,7 +117,7 @@ const CATEGORIES: Category[] = [
         ],
     },
     {
-        name: 'Revenue',
+        name: 'Convert',
         icon: 'paid',
         links: [
             {

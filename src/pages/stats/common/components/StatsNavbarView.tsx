@@ -171,7 +171,7 @@ export default function StatsNavbarView() {
                 </div>
             </NavbarBlock>
             {isRevenueSubscriber && (
-                <NavbarBlock icon="attach_money" title="Revenue">
+                <NavbarBlock icon="attach_money" title="Convert">
                     <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/revenue"
