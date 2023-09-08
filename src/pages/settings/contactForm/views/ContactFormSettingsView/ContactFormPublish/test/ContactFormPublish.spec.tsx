@@ -17,6 +17,8 @@ import {CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID} from 'pages/settings/contactForm/c
 import {FeatureFlagKey} from 'config/featureFlags'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
+import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
+import {ContactForm} from 'models/contactForm/types'
 
 jest.mock('../../../../queries', () => {
     const originalModule: Record<string, unknown> = jest.requireActual(
@@ -47,14 +49,16 @@ describe('ContactFormPublish', () => {
         state,
         path = CONTACT_FORM_PUBLISH_PATH,
         route = CONTACT_FORM_PUBLISH_PATH,
+        contactForm = ContactFormFixture,
     }: {
         state: Partial<RootState>
         path?: string
         route?: string
+        contactForm?: ContactForm
     }) => {
         return renderWithRouter(
             <QueryClientProvider client={queryClient}>
-                <CurrentContactFormContext.Provider value={ContactFormFixture}>
+                <CurrentContactFormContext.Provider value={contactForm}>
                     <Provider store={mockStore(state)}>
                         <ContactFormPublish />,
                     </Provider>
@@ -105,5 +109,22 @@ describe('ContactFormPublish', () => {
 
             screen.getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID)
         })
+    })
+
+    it('should not load page embedments if contact form is not connected to the shop', () => {
+        renderView({state: defaultState})
+        expect(useGetPageEmbedments).toHaveBeenCalledWith(
+            ContactFormFixture.id,
+            {enabled: false}
+        )
+
+        renderView({
+            state: defaultState,
+            contactForm: {...ContactFormFixture, shop_name: 'test'},
+        })
+        expect(useGetPageEmbedments).toHaveBeenLastCalledWith(
+            ContactFormFixture.id,
+            {enabled: true}
+        )
     })
 })

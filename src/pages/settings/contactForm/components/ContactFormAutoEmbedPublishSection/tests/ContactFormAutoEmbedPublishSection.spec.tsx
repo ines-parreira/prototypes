@@ -14,10 +14,25 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
 import {PageEmbedmentFixture} from 'pages/settings/contactForm/fixtures/pageEmbedment'
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {useGetShopifyPages} from 'pages/settings/contactForm/queries'
 import ContactFormAutoEmbedPublishSection, {
     ContactFormAutoEmbedPublishSectionProps,
 } from '../ContactFormAutoEmbedPublishSection'
 import {CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID} from '../../ContactFormAutoEmbedCard'
+
+jest.mock('../../../queries', () => {
+    const originalModule: Record<string, unknown> =
+        jest.requireActual('../../../queries')
+    return {
+        ...originalModule,
+        useGetShopifyPages: jest.fn(() => ({
+            isLoading: false,
+            isFetched: true,
+            data: [],
+        })),
+    }
+})
 
 const defaultProps: ContactFormAutoEmbedPublishSectionProps = {
     contactFormShopName: 'store-name',
@@ -60,6 +75,11 @@ const defaultStateWithIntegrations = {
     }),
 } as RootState
 
+const contactFormWithShop = {
+    ...ContactFormFixture,
+    shop_name: 'test-shop',
+}
+
 const mockFeatureFlagValue = (returnValue: boolean) => {
     jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
         [FeatureFlagKey.ContactFormAutoEmbed]: returnValue,
@@ -91,122 +111,253 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('Contact Form - not connected to any stores', () => {
-        mockFeatureFlagValue(true)
+    describe('Contact Form - not connected to any stores', () => {
+        it('should render correct section', () => {
+            mockFeatureFlagValue(true)
 
-        const {container} = renderView(
-            <ContactFormAutoEmbedPublishSection
-                contactFormShopName={null}
-                contactFormId={1}
-                pageEmbedments={[]}
-            />,
-            {
-                state: defaultStateWithIntegrations,
-            }
-        )
+            const {container} = renderView(
+                <ContactFormAutoEmbedPublishSection
+                    contactFormShopName={null}
+                    contactFormId={1}
+                    pageEmbedments={[]}
+                />,
+                {
+                    state: defaultStateWithIntegrations,
+                }
+            )
 
-        expect(container.firstChild).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
 
-        const testRegexp = /to enable auto-embedding/i
+            const testRegexp = /to enable auto-embedding/i
 
-        screen.getByText(testRegexp)
+            screen.getByText(testRegexp)
 
-        userEvent.click(screen.getByLabelText('Close Icon'))
+            userEvent.click(screen.getByLabelText('Close Icon'))
 
-        expect(screen.queryByText(testRegexp)).toBeNull()
+            expect(screen.queryByText(testRegexp)).toBeNull()
+        })
+
+        it('should not fetch Shopify pages', () => {
+            renderView(
+                <ContactFormAutoEmbedPublishSection
+                    contactFormShopName={null}
+                    contactFormId={1}
+                    pageEmbedments={[]}
+                />,
+                {
+                    state: defaultStateWithIntegrations,
+                }
+            )
+
+            screen
+                .getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID)
+                .click()
+
+            expect(useGetShopifyPages).toHaveBeenLastCalledWith(
+                contactFormWithShop.id,
+                {enabled: false}
+            )
+        })
     })
 
-    it('Contact Form - connected to a shopify stores - no update needed', () => {
-        mockFeatureFlagValue(true)
+    describe('Contact Form - connected to a non-shopify store', () => {
+        it('should render correct section', () => {
+            mockFeatureFlagValue(true)
 
-        const {container} = renderView(
-            <ContactFormAutoEmbedPublishSection
-                contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
-                contactFormId={1}
-                pageEmbedments={[]}
-            />,
-            {
-                state: defaultStateWithIntegrations,
-            }
-        )
+            const {container} = renderView(
+                <ContactFormAutoEmbedPublishSection
+                    contactFormShopName={'another-store'}
+                    contactFormId={1}
+                    pageEmbedments={[]}
+                />,
+                {
+                    state: defaultStateWithIntegrations,
+                }
+            )
 
-        expect(container.firstChild).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
 
-        expect(
-            screen.queryByText(/update your Shopify app permissions/i)
-        ).toBeNull()
+            screen.getByText(/Automatically embed on your website/i)
+            screen.getByText(/recommended/i)
+            screen.getByText(/Gorgias will automatically embed/i)
+        })
 
-        screen.getByText(/Automatically embed on your website/i)
-        screen.getByText(/recommended/i)
-        screen.getByText(/Gorgias will automatically embed/i)
+        it('should not fetch Shopify pages', () => {
+            renderView(
+                <ContactFormAutoEmbedPublishSection
+                    contactFormShopName={'another-store'}
+                    contactFormId={1}
+                    pageEmbedments={[]}
+                />,
+                {
+                    state: defaultStateWithIntegrations,
+                }
+            )
 
-        screen.getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID)
+            screen
+                .getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID)
+                .click()
+
+            expect(useGetShopifyPages).toHaveBeenLastCalledWith(
+                contactFormWithShop.id,
+                {enabled: false}
+            )
+        })
     })
 
-    it('Contact Form - connected to a shopify stores - update needed', () => {
-        mockFeatureFlagValue(true)
+    describe('Contact Form - connected to a shopify store', () => {
+        describe('when update permissions not needed', () => {
+            it('should render correct section', () => {
+                mockFeatureFlagValue(true)
 
-        const {container} = renderView(
-            <ContactFormAutoEmbedPublishSection
-                contactFormShopName={SHOPIFY_SHOP_NAME_UPDATE_NEEDED}
-                contactFormId={1}
-                pageEmbedments={[]}
-            />,
-            {
-                state: defaultStateWithIntegrations,
-            }
-        )
+                const {container} = renderView(
+                    <ContactFormAutoEmbedPublishSection
+                        contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
+                        contactFormId={1}
+                        pageEmbedments={[]}
+                    />,
+                    {
+                        state: defaultStateWithIntegrations,
+                    }
+                )
 
-        expect(container.firstChild).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
 
-        screen.getByText(/update your Shopify app permissions/i)
+                expect(
+                    screen.queryByText(/update your Shopify app permissions/i)
+                ).toBeNull()
 
-        screen.getByText(/Automatically embed on your website/i)
-        screen.getByText(/recommended/i)
-        screen.getByText(/Gorgias will automatically embed/i)
+                screen.getByText(/Automatically embed on your website/i)
+                screen.getByText(/recommended/i)
+                screen.getByText(/Gorgias will automatically embed/i)
 
-        screen.getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID)
-    })
+                screen.getByTestId(
+                    CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                )
+            })
 
-    it('Contact Form - connected to a non-shopify store', () => {
-        mockFeatureFlagValue(true)
+            it('should render correct section when store has embedments already', () => {
+                mockFeatureFlagValue(true)
 
-        const {container} = renderView(
-            <ContactFormAutoEmbedPublishSection
-                contactFormShopName={'another-store'}
-                contactFormId={1}
-                pageEmbedments={[]}
-            />,
-            {
-                state: defaultStateWithIntegrations,
-            }
-        )
+                const {container} = renderView(
+                    <ContactFormAutoEmbedPublishSection
+                        contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
+                        contactFormId={1}
+                        pageEmbedments={[PageEmbedmentFixture]}
+                    />,
+                    {
+                        state: defaultStateWithIntegrations,
+                    }
+                )
 
-        expect(container.firstChild).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
 
-        screen.getByText(/Automatically embed on your website/i)
-        screen.getByText(/recommended/i)
-        screen.getByText(/Gorgias will automatically embed/i)
-    })
+                screen.getByText(/Automatically embed on your website/i)
+                screen.getByText(/Gorgias will automatically embed/i)
+                expect(screen.queryByText(/recommended/i)).toBeNull()
+            })
 
-    it('Contact Form - connected to a Shopify store with embedment already', () => {
-        mockFeatureFlagValue(true)
+            it('should fetch Shopify pages', () => {
+                renderView(
+                    <ContactFormAutoEmbedPublishSection
+                        contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
+                        contactFormId={1}
+                        pageEmbedments={[]}
+                    />,
+                    {
+                        state: defaultStateWithIntegrations,
+                    }
+                )
 
-        const {container} = renderView(
-            <ContactFormAutoEmbedPublishSection
-                contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
-                contactFormId={1}
-                pageEmbedments={[PageEmbedmentFixture]}
-            />,
-            {
-                state: defaultStateWithIntegrations,
-            }
-        )
+                screen
+                    .getByTestId(
+                        CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                    )
+                    .click()
 
-        expect(container.firstChild).toMatchSnapshot()
+                expect(useGetShopifyPages).toHaveBeenLastCalledWith(
+                    contactFormWithShop.id,
+                    {enabled: true}
+                )
+            })
 
-        screen.getByText(/Automatically embed on your website/i)
-        screen.getByText(/Gorgias will automatically embed/i)
-        expect(screen.queryByText(/recommended/i)).toBeNull()
+            it('should not fetch Shopify pages if is disabled', () => {
+                renderView(
+                    <ContactFormAutoEmbedPublishSection
+                        contactFormShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
+                        contactFormId={1}
+                        pageEmbedments={[]}
+                        isDisabled={true}
+                    />,
+                    {
+                        state: defaultStateWithIntegrations,
+                    }
+                )
+
+                screen
+                    .getByTestId(
+                        CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                    )
+                    .click()
+
+                expect(useGetShopifyPages).toHaveBeenLastCalledWith(
+                    contactFormWithShop.id,
+                    {enabled: false}
+                )
+            })
+        })
+
+        describe('when update permissions needed', () => {
+            it('should render correct section', () => {
+                mockFeatureFlagValue(true)
+
+                const {container} = renderView(
+                    <ContactFormAutoEmbedPublishSection
+                        contactFormShopName={SHOPIFY_SHOP_NAME_UPDATE_NEEDED}
+                        contactFormId={1}
+                        pageEmbedments={[]}
+                    />,
+                    {
+                        state: defaultStateWithIntegrations,
+                    }
+                )
+
+                expect(container.firstChild).toMatchSnapshot()
+
+                screen.getByText(/update your Shopify app permissions/i)
+
+                screen.getByText(/Automatically embed on your website/i)
+                screen.getByText(/recommended/i)
+                screen.getByText(/Gorgias will automatically embed/i)
+
+                screen.getByTestId(
+                    CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                )
+            })
+
+            it('should not fetch Shopify pages', () => {
+                renderView(
+                    <ContactFormAutoEmbedPublishSection
+                        contactFormShopName={SHOPIFY_SHOP_NAME_UPDATE_NEEDED}
+                        contactFormId={1}
+                        pageEmbedments={[]}
+                    />,
+                    {
+                        state: defaultStateWithIntegrations,
+                    }
+                )
+
+                screen
+                    .getByTestId(
+                        CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                    )
+                    .click()
+
+                expect(useGetShopifyPages).toHaveBeenLastCalledWith(
+                    contactFormWithShop.id,
+                    {enabled: false}
+                )
+            })
+        })
     })
 })

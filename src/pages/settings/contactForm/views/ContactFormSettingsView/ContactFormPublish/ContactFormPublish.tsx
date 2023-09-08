@@ -18,7 +18,6 @@ import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrent
 import settingsCss from 'pages/settings/settings.less'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
-import Loader from 'pages/common/components/Loader/Loader'
 import {
     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
     CONTACT_FORM_PUBLISH_PATH,
@@ -29,15 +28,13 @@ import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormA
 
 const ContactFormPublish = (): JSX.Element => {
     const contactForm = useCurrentContactForm()
-    const getPageEmbedments = useGetPageEmbedments(contactForm.id)
+    const getPageEmbedments = useGetPageEmbedments(contactForm.id, {
+        enabled: Boolean(contactForm.shop_name),
+    })
     const {copyButtonText} = useClipboard('#copy-shareable-link')
 
     const onCopyClick = () => {
         logEvent(SegmentEvent.HelpCenterContactFormCopyLink)
-    }
-
-    if (getPageEmbedments.isLoading && !getPageEmbedments.isFetched) {
-        return <Loader />
     }
 
     return (
@@ -97,6 +94,10 @@ const ContactFormPublish = (): JSX.Element => {
                         </section>
 
                         <ContactFormAutoEmbedPublishSection
+                            isDisabled={
+                                getPageEmbedments.isLoading &&
+                                !getPageEmbedments.isFetched
+                            }
                             contactFormId={contactForm.id}
                             contactFormShopName={contactForm.shop_name}
                             pageEmbedments={getPageEmbedments.data ?? []}

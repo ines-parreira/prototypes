@@ -59,6 +59,7 @@ const CardContent = (props: {
 }
 
 export type ContactFormAutoEmbedCardProps = {
+    isDisabled?: boolean
     isNotConnected: boolean
     shopifyIntegrationId: number | null
     needScopeUpdate: boolean
@@ -74,6 +75,7 @@ const ContactFormAutoEmbedCard = ({
     hasEmbeddedPages,
     contactFormId,
     pageEmbedments,
+    isDisabled = false,
 }: ContactFormAutoEmbedCardProps) => {
     const history = useHistory()
     // Embed modal assistant state
@@ -84,7 +86,7 @@ const ContactFormAutoEmbedCard = ({
     const isConnectedToNonShopify = !isNotConnected && !shopifyIntegrationId
 
     const getShopifyPages = useGetShopifyPages(contactFormId, {
-        enabled: isEmbedModalOpen,
+        enabled: isEmbedModalOpen && !needScopeUpdate && !isNotConnected,
     })
     const pages: EmbeddablePage[] = getShopifyPages.data ?? []
     const availablePages = pages.filter((page) =>
@@ -117,7 +119,14 @@ const ContactFormAutoEmbedCard = ({
 
                 <CardContent hasEmbeddedPages={false} isDisabled={true} />
 
-                <Button isDisabled={true}>Embed Form</Button>
+                <Button
+                    data-testid={
+                        CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                    }
+                    isDisabled={true}
+                >
+                    Embed Form
+                </Button>
             </div>
         )
     }
@@ -146,7 +155,14 @@ const ContactFormAutoEmbedCard = ({
 
                 <CardContent hasEmbeddedPages={false} isDisabled={true} />
 
-                <Button isDisabled={true}>Embed Form</Button>
+                <Button
+                    data-testid={
+                        CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                    }
+                    isDisabled={true}
+                >
+                    Embed Form
+                </Button>
             </div>
         )
     }
@@ -165,7 +181,7 @@ const ContactFormAutoEmbedCard = ({
             return (
                 <div
                     className={classnames(css.card, {
-                        [css.disabled]: false,
+                        [css.disabled]: isDisabled,
                         [css.clickable]: true,
                     })}
                     data-testid={CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID}
@@ -179,7 +195,10 @@ const ContactFormAutoEmbedCard = ({
                         check_circle
                     </i>
 
-                    <CardContent hasEmbeddedPages={true} isDisabled={false} />
+                    <CardContent
+                        hasEmbeddedPages={true}
+                        isDisabled={isDisabled}
+                    />
                     <i className={`material-icons`}>keyboard_arrow_right</i>
                 </div>
             )
@@ -200,7 +219,7 @@ const ContactFormAutoEmbedCard = ({
         return (
             <div
                 className={classnames(css.card, {
-                    [css.disabled]: needScopeUpdate,
+                    [css.disabled]: needScopeUpdate || isDisabled,
                     [css.clickable]: false,
                 })}
                 data-testid={CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID}
@@ -227,7 +246,7 @@ const ContactFormAutoEmbedCard = ({
                     isDisabled={needScopeUpdate}
                 />
                 <Button
-                    isDisabled={needScopeUpdate}
+                    isDisabled={needScopeUpdate || isDisabled}
                     isLoading={
                         getShopifyPages.isFetching && !getShopifyPages.isFetched
                     }

@@ -57,7 +57,7 @@ exports[`useContactFormManualEmbedInstructionsCardState Contact auto embed flag 
 
 exports[`useContactFormManualEmbedInstructionsCardState Contact auto embed flag is ACTIVE should return the "shopify website" instructions card state when connected to Shopify store 1`] = `
 {
-  "isOpen": true,
+  "isOpen": false,
   "tabs": [
     {
       "code": "<Code snippet>",

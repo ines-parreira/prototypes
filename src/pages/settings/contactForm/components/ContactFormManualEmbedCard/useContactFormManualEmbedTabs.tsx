@@ -81,7 +81,7 @@ export const CARD_STATES_MAP: Record<
         tabs: [ANY_OTHER_WEBSITE_TAB],
     },
     [InstructionsCardStateKeyEnum.SHOPIFY_WEBSITE]: {
-        isOpen: true,
+        isOpen: false,
         tabs: [SHOPIFY_WEBSITE_TAB],
     },
     [InstructionsCardStateKeyEnum.BOTH]: {

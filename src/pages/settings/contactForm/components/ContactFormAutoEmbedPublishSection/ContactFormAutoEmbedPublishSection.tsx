@@ -40,6 +40,7 @@ export type ContactFormAutoEmbedPublishSectionProps = {
     contactFormShopName: ContactForm['shop_name']
     contactFormId: ContactForm['id']
     pageEmbedments: PageEmbedment[]
+    isDisabled?: boolean
 }
 
 const ContactFormAutoEmbedPublishSection = (
@@ -81,6 +82,7 @@ const ContactFormAutoEmbedPublishSection = (
         <section>
             <ContactFormAutoEmbedWarningBanner details={bannerDetails} />
             <ContactFormAutoEmbedCard
+                isDisabled={props.isDisabled}
                 isNotConnected={contactFormShopName === null}
                 shopifyIntegrationId={integrationId}
                 needScopeUpdate={needScopeUpdate}
