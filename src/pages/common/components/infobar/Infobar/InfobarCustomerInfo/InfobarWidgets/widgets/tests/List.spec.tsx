@@ -38,6 +38,15 @@ describe('Infobar::Widgets::List', () => {
         template,
     }
 
+    it('should not render if list template has no widget inside', () => {
+        const component = shallow(
+            <ListInfobarWidget
+                {...{...minProps, template: template.set('widgets', [])}}
+            />
+        )
+        expect(component.isEmptyRender()).toBe(true)
+    })
+
     it('used fixtures are correct', () => {
         expect(minProps.source.size).toBe(2)
         expect(template.getIn(['meta', 'limit'])).toBe('2')

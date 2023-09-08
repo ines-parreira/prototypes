@@ -45,6 +45,13 @@ class ListInfobarWidget extends Component<OwnProps> {
             removeBorderTop = false,
         } = this.props
 
+        if (
+            !List.isList(source) ||
+            !source.size ||
+            !template.getIn(['widgets', '0'])
+        )
+            return null
+
         const updatedTemplate = template.set(
             'absolutePath',
             (template.get('absolutePath') as List<string>).concat(['[]'])
@@ -63,12 +70,6 @@ class ListInfobarWidget extends Component<OwnProps> {
         const hasOnlyContent =
             isParentOfCard &&
             passedTemplate.getIn(['meta', 'displayCard'], true) === false
-
-        // if source data is not a list, don't try to display it as a list
-        // it means incoming data does not have the expected shape
-        if (!List.isList(source)) {
-            return null
-        }
 
         let orderedSource = source
         // order source
@@ -135,10 +136,6 @@ class ListInfobarWidget extends Component<OwnProps> {
                     </div>
                 )
             }
-        }
-
-        if (!isEditing && !sourceList.size) {
-            return null
         }
 
         // if the header of the children template is hidden
