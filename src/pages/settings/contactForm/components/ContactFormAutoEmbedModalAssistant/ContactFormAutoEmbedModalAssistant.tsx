@@ -166,7 +166,7 @@ const ContactFormAutoEmbedModalAssistant = (
                 shopifyPages={pages}
             />
             <ModalActionsFooter>
-                <Button intent="secondary" onClick={resetPageEmbedmentForm}>
+                <Button intent="secondary" onClick={handleOnClose}>
                     {MODAL_LABELS.CANCEL}
                 </Button>
                 <Button

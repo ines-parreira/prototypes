@@ -259,6 +259,8 @@ export enum SegmentEvent {
     HelpCenterContactFormCopyLink = 'help-center/contact-form/copy-link',
     HelpCenterContactFormCopyCode = 'help-center/contact-form/copy-code',
     HelpCenterArticleRowSettingsClicked = 'help-center/articles-view/article-row-settings-clicked',
+    ContactFormAutoEmbedEmbedFormClicked = 'contact-form/auto-embed/embed-form-clicked',
+    ContactFormAutoEmbedEmbedOnAnotherPageClicked = 'contact-form/auto-embed/embed-on-another-page-clicked',
     ChatSettingsAppearancePageViewed = 'settings-appearance-page-viewed',
     ChatSettingsToneOfVoiceLinkClicked = 'settings-tone-of-voice-link-clicked',
     ChatSettingsToneOfVoicePageViewed = 'settings-tone-of-voice-page-viewed',

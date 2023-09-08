@@ -35,6 +35,10 @@ import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigat
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import css from './ManageEmbedments.less'
 
 type ManageEmbedmentsProps = {
@@ -63,6 +67,8 @@ const ManageEmbedments = ({
     embedments,
 }: ManageEmbedmentsProps): JSX.Element | null => {
     const appDispatch = useAppDispatch()
+    const currentUser = useAppSelector(getCurrentUser)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const history = useHistory()
     const queryClient = useQueryClient()
     const [isEmbedModalOpen, setIsEmbedModalOpen] = useState(false)
@@ -388,7 +394,18 @@ const ManageEmbedments = ({
 
             <section className={contactFormCss.mbL}>
                 <Button
-                    onClick={() => setIsEmbedModalOpen(true)}
+                    onClick={() => {
+                        logEvent(
+                            SegmentEvent.ContactFormAutoEmbedEmbedOnAnotherPageClicked,
+                            {
+                                user_id: currentUser.get('id'),
+                                account_domain: currentAccount.get('domain'),
+                                contact_form_id: contactForm.id,
+                                page_embedments_count: embedments.length,
+                            }
+                        )
+                        setIsEmbedModalOpen(true)
+                    }}
                     intent="secondary"
                     isDisabled={
                         embedments.length >= CONTACT_FORM_EMBEDMENTS_LIMIT ||

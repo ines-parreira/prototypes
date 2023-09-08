@@ -5,9 +5,10 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import userEvent from '@testing-library/user-event'
 import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
-import {account} from 'fixtures/account'
+import {account as accountFixture} from 'fixtures/account'
 import {renderWithRouter} from 'utils/testing'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
@@ -16,7 +17,11 @@ import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
 import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
 import {PageEmbedment} from 'models/contactForm/types'
 import {PageEmbedmentPosition} from 'pages/settings/contactForm/components/PageEmbedmentForm'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import {user as userFixture} from 'fixtures/users'
 
+jest.mock('store/middlewares/segmentTracker')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const embedments: PageEmbedment[] = Array.from({length: 3}).map((_, i) => ({
@@ -37,7 +42,8 @@ const contactForm = {
 describe('ContactFormPublish', () => {
     const defaultState: Partial<RootState> = {
         integrations: fromJS(integrationsState),
-        currentAccount: fromJS(account),
+        currentAccount: fromJS(accountFixture),
+        currentUser: fromJS(userFixture),
     }
 
     const queryClient = createTestQueryClient()
@@ -91,5 +97,23 @@ describe('ContactFormPublish', () => {
                 `https://${contactForm.shop_name}.myshopify.com${embedment.page_path_url}`
             )
         })
+    })
+
+    it('logs an event when trying to embed on another page', () => {
+        renderView({state: defaultState})
+
+        const button = screen.getByText(/embed on another page/i)
+
+        userEvent.click(button)
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.ContactFormAutoEmbedEmbedOnAnotherPageClicked,
+            {
+                user_id: userFixture.id,
+                account_domain: accountFixture.domain,
+                contact_form_id: contactForm.id,
+                page_embedments_count: embedments.length,
+            }
+        )
     })
 })

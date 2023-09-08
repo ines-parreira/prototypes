@@ -12,6 +12,10 @@ import {
 } from 'pages/settings/contactForm/utils/navigation'
 
 import {PageEmbedment, EmbeddablePage} from 'models/contactForm/types'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
 import {useGetShopifyPages} from '../../queries'
 import {CONTACT_FORM_MANAGE_EMBEDMENTS_PATH} from '../../constants'
@@ -74,6 +78,8 @@ const ContactFormAutoEmbedCard = ({
     const history = useHistory()
     // Embed modal assistant state
     const [isEmbedModalOpen, setIsEmbedModalOpen] = React.useState(false)
+    const currentUser = useAppSelector(getCurrentUser)
+    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const isConnectedToNonShopify = !isNotConnected && !shopifyIntegrationId
 
@@ -183,6 +189,12 @@ const ContactFormAutoEmbedCard = ({
             ? _noop
             : () => {
                   setIsEmbedModalOpen(true)
+                  logEvent(SegmentEvent.ContactFormAutoEmbedEmbedFormClicked, {
+                      user_id: currentUser.get('id'),
+                      account_domain: currentAccount.get('domain'),
+                      contact_form_id: contactFormId,
+                      page_embedments_count: pageEmbedments.length,
+                  })
               }
 
         return (
