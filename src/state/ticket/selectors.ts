@@ -18,6 +18,12 @@ import {
     TicketSatisfactionSurvey,
 } from 'models/ticket/types'
 
+import {appQueryClient} from 'api/queryClient'
+import {listTicketVoiceCalls} from 'models/voiceCall/resources'
+import {ticketVoiceCallsKeys} from 'models/voiceCall/queries'
+import {TicketVoiceCall} from 'models/voiceCall/types'
+import {getQueryTimestamp} from 'state/queries/selectors'
+import {QueryKey} from 'state/queries/types'
 import {TicketState, TicketStateWithoutImmutable} from './types'
 
 export const getTicketState = (state: RootState): TicketState =>
@@ -191,6 +197,8 @@ export const getBody = createImmutableSelector(
     getRuleSuggestion,
     getAISuggestion,
     getTicketFieldState,
+    getTicketState,
+    getQueryTimestamp(QueryKey.TicketVoiceCalls),
     (
         messages,
         pendingMessages,
@@ -198,8 +206,13 @@ export const getBody = createImmutableSelector(
         satisfactionSurveys,
         ruleSuggestion,
         aiSuggestion,
-        ticketFieldState
+        ticketFieldState,
+        ticket
     ) => {
+        const voiceCallsData = appQueryClient.getQueryData<
+            Awaited<ReturnType<typeof listTicketVoiceCalls>>
+        >(ticketVoiceCallsKeys.list({ticket_id: ticket.get('id')}))
+
         const nextMessages = messages.map((message) => {
             return message!.set('isMessage', true)
         }) as List<any>
@@ -226,6 +239,14 @@ export const getBody = createImmutableSelector(
             return event.set('isEvent', true)
         }) as List<any>
 
+        const nextVoiceCalls =
+            voiceCallsData?.data?.map((voiceCall: TicketVoiceCall) => {
+                return fromJS({
+                    ...voiceCall,
+                    isVoiceCall: true,
+                }) as List<any>
+            }) ?? fromJS([])
+
         const nextSatisfactionSurveys = satisfactionSurveys.map(
             (satisfactionSurveys: Map<any, any>) => {
                 return satisfactionSurveys.set('isSatisfactionSurvey', true)
@@ -235,6 +256,7 @@ export const getBody = createImmutableSelector(
         let body = nextMessages
             .concat(failedPendingMessages)
             .concat(nextEvents)
+            .concat(nextVoiceCalls)
             .concat(nextSatisfactionSurveys)
             .sortBy(
                 (element: Map<any, any>) =>

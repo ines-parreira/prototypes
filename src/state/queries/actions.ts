@@ -1,0 +1,7 @@
+import {QueryKey} from './types'
+import * as constants from './constants'
+
+export const updateQueryTimestamp = (queryKey: QueryKey) => ({
+    type: constants.UPDATE_QUERY_TIMESTAMP,
+    queryKey,
+})

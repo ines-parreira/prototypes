@@ -52,4 +52,5 @@ export enum FeatureFlagKey {
     TicketNavigationArrows = 'ticket-navigation-arrows',
     ContactFormOrderManagement = 'contact-form-order-management',
     CustomerTimelineButton = 'customer-timeline-button',
+    NewVoiceCallUI = 'new-voice-call-ui',
 }

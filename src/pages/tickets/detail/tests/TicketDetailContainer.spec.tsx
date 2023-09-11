@@ -11,6 +11,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import client from 'models/api/resources'
 import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
@@ -33,8 +34,11 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import {triggerTicketFieldsErrors} from 'state/ticket/actions'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {TicketChannel} from 'business/types/ticket'
 import TicketView from '../components/TicketView'
 import {TicketDetailContainer} from '../TicketDetailContainer'
+import * as useTicketVoiceCalls from '../hooks/useTicketVoiceCalls'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
@@ -48,6 +52,8 @@ const mockGetTableObject = {
 } as unknown as LocalForage
 jest.spyOn(localForageManager, 'getTable').mockReturnValue(mockGetTableObject)
 jest.spyOn(localForageManager, 'clearTable')
+
+const ticketVoiceCallsSpy = jest.spyOn(useTicketVoiceCalls, 'default')
 
 jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('../components/TicketView', () => {
@@ -1298,6 +1304,116 @@ describe('TicketDetailContainer component', () => {
             expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(3, [
                 ticketInputFieldDefinition.id,
             ])
+        })
+    })
+
+    describe('ticket voice calls', () => {
+        beforeEach(() => {
+            resetLDMocks()
+        })
+
+        it('should show loading spinner until voice calls are loaded when the ticket channel is Voice', () => {
+            mockFlags({
+                [FeatureFlagKey.NewVoiceCallUI]: true,
+            })
+            ticketVoiceCallsSpy.mockImplementation((() => ({
+                isLoading: true,
+            })) as jest.MockedFn<any>)
+            const {getByText} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: existingTicket.set(
+                                    'channel',
+                                    TicketChannel.Phone
+                                ),
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            )
+
+            expect(getByText('Loading ticket...')).toBeInTheDocument()
+        })
+
+        it('should not show loading spinner when voice calls are not loaded and ticket channel is not Voice', () => {
+            mockFlags({
+                [FeatureFlagKey.NewVoiceCallUI]: true,
+            })
+            ticketVoiceCallsSpy.mockImplementation((() => ({
+                isLoading: true,
+            })) as jest.MockedFn<any>)
+            const {queryByText} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: existingTicket.set(
+                                    'channel',
+                                    TicketChannel.Email
+                                ),
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            )
+
+            expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
+        })
+
+        it('should not show loading spinner when voice calls are loaded and ticket channel is Voice', () => {
+            mockFlags({
+                [FeatureFlagKey.NewVoiceCallUI]: true,
+            })
+            ticketVoiceCallsSpy.mockImplementation((() => ({
+                isLoading: false,
+            })) as jest.MockedFn<any>)
+            const {queryByText} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: existingTicket.set(
+                                    'channel',
+                                    TicketChannel.Phone
+                                ),
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            )
+
+            expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
+        })
+
+        it('should not show loading spinner when voice calls are not loaded and ticket channel is Voice and FF is disabled', () => {
+            mockFlags({
+                [FeatureFlagKey.NewVoiceCallUI]: false,
+            })
+            ticketVoiceCallsSpy.mockImplementation((() => ({
+                isLoading: true,
+            })) as jest.MockedFn<any>)
+            const {queryByText} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: existingTicket.set(
+                                    'channel',
+                                    TicketChannel.Phone
+                                ),
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            )
+
+            expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
         })
     })
 })

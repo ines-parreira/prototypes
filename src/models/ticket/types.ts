@@ -15,6 +15,7 @@ import {Tag} from 'models/tag/types'
 import {Team} from 'models/team/types'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {TicketVoiceCall} from 'models/voiceCall/types'
 import {Event} from '../event/types'
 
 export type TicketSearchOptions = ApiPaginationParams &
@@ -92,6 +93,7 @@ export type TicketAssignee = {
 export type TicketElement =
     | TicketMessage
     | TicketEvent
+    | TicketVoiceCallEntry
     | TicketSatisfactionSurvey
 
 export type TicketMessage = {
@@ -146,6 +148,10 @@ export type TicketEvent =
     | (Event & {
           isEvent: true
       })
+
+export type TicketVoiceCallEntry = TicketVoiceCall & {
+    isVoiceCall: true
+}
 
 export type TicketSatisfactionSurvey = Omit<TicketMessage, 'isMessage'> & {
     isSatisfactionSurvey: true
