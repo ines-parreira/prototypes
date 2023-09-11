@@ -10,11 +10,6 @@ import {renderWithRouter} from 'utils/testing'
 jest.mock('pages/tickets/detail/components/TicketBodyNonVirtualized', () => {
     return () => <div>TicketBodyNonVirtualized</div>
 })
-
-jest.mock('state/queries/selectors', () => ({
-    getQueryTimestamp: jest.fn(() => jest.fn()),
-}))
-
 window.print = jest.fn()
 
 const mockStore = configureMockStore([thunk])

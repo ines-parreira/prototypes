@@ -81,10 +81,6 @@ const mockedUploadFiles = jest.spyOn(utils, 'uploadFiles')
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
-jest.mock('state/queries/selectors', () => ({
-    getQueryTimestamp: jest.fn(() => jest.fn()),
-}))
-
 jest.mock('services/socketManager/socketManager', () => {
     return {
         join: jest.fn(),

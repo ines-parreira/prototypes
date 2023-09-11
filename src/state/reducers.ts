@@ -27,7 +27,6 @@ import twilioReducer from './twilio/reducers'
 import ui from './ui/reducers'
 import viewsReducer from './views/reducers'
 import widgetsReducer from './widgets/reducers'
-import queriesReducer from './queries/reducers'
 import {StoreState} from './types'
 
 const rootReducer = combineReducers<StoreState>({
@@ -59,7 +58,6 @@ const rootReducer = combineReducers<StoreState>({
     ui,
     views: viewsReducer,
     widgets: widgetsReducer,
-    queries: queriesReducer,
 })
 
 export default rootReducer

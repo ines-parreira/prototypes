@@ -2,7 +2,6 @@ import memoizeOne from 'memoize-one'
 import moment from 'moment'
 import _get from 'lodash/get'
 
-import {TicketVoiceCall} from 'models/voiceCall/types'
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -24,12 +23,6 @@ export const isTicketEvent = (
 
 export const isTicketContactReasonSuggestion = (obj: Record<string, unknown>) =>
     obj.isContactReasonSuggestion as boolean
-
-export const isTicketVoiceCall = (
-    obj: Record<string, unknown>
-): obj is TicketVoiceCall => {
-    return obj.isVoiceCall as boolean
-}
 
 export const isTicketSatisfactionSurvey = (obj: Record<string, unknown>) =>
     obj.isSatisfactionSurvey as boolean

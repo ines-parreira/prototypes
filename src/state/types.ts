@@ -33,7 +33,6 @@ import {UIState} from './ui/reducers'
 import {Widget, WidgetContextType, WidgetType} from './widgets/types'
 import {TwilioState} from './twilio/types'
 import {Notification} from './notifications/types'
-import {QueriesState} from './queries/types'
 
 export type StoreState = {
     agents: Map<any, any>
@@ -64,7 +63,6 @@ export type StoreState = {
     usersAudit: Map<any, any>
     views: Map<any, any>
     widgets: Map<any, any>
-    queries: QueriesState
 }
 export type StoreAction = MacrosAction | AuditLogEventsAction | GorgiasAction
 
@@ -195,7 +193,6 @@ export type GorgiasAction = {
     hasError?: boolean
     discountCode?: DiscountCode
     transactions?: List<Map<any, any>>
-    queryKey?: string
 }
 
 export type CurrentUser = Map<any, any>
