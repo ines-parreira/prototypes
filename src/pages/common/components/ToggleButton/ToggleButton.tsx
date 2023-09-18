@@ -14,6 +14,7 @@ type ToggleButtonContextType = {
     type?: Type
     onChange?: (value: any) => void
     className?: string
+    size?: 'medium' | 'small'
 }
 
 const ToggleButtonContext = createContext<ToggleButtonContextType>({})
@@ -24,9 +25,13 @@ export const Wrapper: React.FC<ToggleButtonContextType> = ({
     onChange,
     className,
     children,
+    size = 'medium',
 }) => (
-    <ToggleButtonContext.Provider value={{value, type, onChange}}>
-        <div role="radiogroup" className={classnames(css.wrapper, className)}>
+    <ToggleButtonContext.Provider value={{value, type, onChange, size}}>
+        <div
+            role="radiogroup"
+            className={classnames(css.wrapper, css[size], className)}
+        >
             {children}
         </div>
     </ToggleButtonContext.Provider>
@@ -41,6 +46,7 @@ export const Option: React.FC<OptionProps> = ({children, value}) => {
         value: currentValue,
         type,
         onChange,
+        size = 'medium',
     } = useContext(ToggleButtonContext)
 
     const isSelected = currentValue === value
@@ -50,7 +56,7 @@ export const Option: React.FC<OptionProps> = ({children, value}) => {
             tabIndex={0}
             aria-checked={isSelected}
             role="radio"
-            className={classnames(css.option, {
+            className={classnames(css.option, css[size], {
                 [css.active]: isSelected,
                 [css.withLabel]: type === Type.Label,
                 [css.withIcon]: type === Type.Icon,

@@ -14,16 +14,31 @@ const TemplateWithLabel: Story<ComponentProps<typeof ToggleButton.Wrapper>> = (
     const [selectedValue, setSelectedValue] = useState<number>(1)
 
     return (
-        <ToggleButton.Wrapper
-            value={selectedValue}
-            type={ToggleButton.Type.Label}
-            onChange={setSelectedValue}
-            {...props}
-        >
-            <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
-            <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
-            <ToggleButton.Option value={3}>Option 3</ToggleButton.Option>
-        </ToggleButton.Wrapper>
+        <>
+            <ToggleButton.Wrapper
+                value={selectedValue}
+                type={ToggleButton.Type.Label}
+                onChange={setSelectedValue}
+                {...props}
+            >
+                <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
+                <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
+                <ToggleButton.Option value={3}>Option 3</ToggleButton.Option>
+            </ToggleButton.Wrapper>
+            <br />
+            <br />
+            <ToggleButton.Wrapper
+                value={selectedValue}
+                type={ToggleButton.Type.Label}
+                onChange={setSelectedValue}
+                size={'small'}
+                {...props}
+            >
+                <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
+                <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
+                <ToggleButton.Option value={3}>Option 3</ToggleButton.Option>
+            </ToggleButton.Wrapper>
+        </>
     )
 }
 
@@ -33,22 +48,43 @@ const TemplateWithIcon: Story<ComponentProps<typeof ToggleButton.Wrapper>> = (
     const [selectedValue, setSelectedValue] = useState<number>(1)
 
     return (
-        <ToggleButton.Wrapper
-            value={selectedValue}
-            type={ToggleButton.Type.Icon}
-            onChange={setSelectedValue}
-            {...props}
-        >
-            <ToggleButton.Option value={1}>
-                <i className="material-icons">format_align_left</i>
-            </ToggleButton.Option>
-            <ToggleButton.Option value={2}>
-                <i className="material-icons">format_align_center</i>
-            </ToggleButton.Option>
-            <ToggleButton.Option value={3}>
-                <i className="material-icons">format_align_right</i>
-            </ToggleButton.Option>
-        </ToggleButton.Wrapper>
+        <>
+            <ToggleButton.Wrapper
+                value={selectedValue}
+                type={ToggleButton.Type.Icon}
+                onChange={setSelectedValue}
+                {...props}
+            >
+                <ToggleButton.Option value={1}>
+                    <i className="material-icons">format_align_left</i>
+                </ToggleButton.Option>
+                <ToggleButton.Option value={2}>
+                    <i className="material-icons">format_align_center</i>
+                </ToggleButton.Option>
+                <ToggleButton.Option value={3}>
+                    <i className="material-icons">format_align_right</i>
+                </ToggleButton.Option>
+            </ToggleButton.Wrapper>
+            <br />
+            <br />
+            <ToggleButton.Wrapper
+                value={selectedValue}
+                type={ToggleButton.Type.Icon}
+                onChange={setSelectedValue}
+                size={'small'}
+                {...props}
+            >
+                <ToggleButton.Option value={1}>
+                    <i className="material-icons">format_align_left</i>
+                </ToggleButton.Option>
+                <ToggleButton.Option value={2}>
+                    <i className="material-icons">format_align_center</i>
+                </ToggleButton.Option>
+                <ToggleButton.Option value={3}>
+                    <i className="material-icons">format_align_right</i>
+                </ToggleButton.Option>
+            </ToggleButton.Wrapper>
+        </>
     )
 }
 

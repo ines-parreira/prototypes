@@ -40,4 +40,27 @@ describe('<ToggleButton />', () => {
         expect(getByText('Option 1')).toHaveAttribute('aria-checked', 'false')
         expect(getByText('Option 2')).toHaveAttribute('aria-checked', 'true')
     })
+
+    it('should render a medium size by default', () => {
+        const {container} = render(
+            <ToggleButton.Wrapper {...baseProps} value={2}>
+                <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
+                <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
+            </ToggleButton.Wrapper>
+        )
+
+        expect(container.firstChild).toHaveClass('medium')
+    })
+
+    it('should render a small size', () => {
+        const props = {...baseProps, size: 'small' as const}
+        const {container} = render(
+            <ToggleButton.Wrapper {...props} value={2}>
+                <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
+                <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
+            </ToggleButton.Wrapper>
+        )
+
+        expect(container.firstChild).toHaveClass('small')
+    })
 })

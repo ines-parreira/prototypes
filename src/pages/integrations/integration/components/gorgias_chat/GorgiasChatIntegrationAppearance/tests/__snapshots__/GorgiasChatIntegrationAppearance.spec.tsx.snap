@@ -657,12 +657,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -670,7 +670,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -1687,12 +1687,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -1700,7 +1700,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -2688,12 +2688,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -2701,7 +2701,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -3697,12 +3697,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -3710,7 +3710,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -4698,12 +4698,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -4711,7 +4711,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -5713,12 +5713,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -5726,7 +5726,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -6760,12 +6760,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -6773,7 +6773,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -7878,12 +7878,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -7891,7 +7891,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -8979,12 +8979,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -8992,7 +8992,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -9980,12 +9980,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 class="container"
               >
                 <div
-                  class="wrapper toggleButtonWrapper"
+                  class="wrapper medium toggleButtonWrapper"
                   role="radiogroup"
                 >
                   <div
                     aria-checked="true"
-                    class="option active withLabel"
+                    class="option medium active withLabel"
                     role="radio"
                     tabindex="0"
                   >
@@ -9993,7 +9993,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                   <div
                     aria-checked="false"
-                    class="option withLabel"
+                    class="option medium withLabel"
                     role="radio"
                     tabindex="0"
                   >
