@@ -24,6 +24,7 @@ export default function FlowVariableTag({value}: Props) {
             contentEditable={false}
             aria-label={flowVariable.name}
         >
+            {' '}
             <span className={css.copyPlaceholder}>{value}</span>
         </span>
     )

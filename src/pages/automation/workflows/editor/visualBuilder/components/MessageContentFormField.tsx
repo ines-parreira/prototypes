@@ -53,11 +53,15 @@ export default function MessageContentFormField({
         const currentContent = editorState.getCurrentContent()
         const text = currentContent.getPlainText()
 
-        if (convertToHTML(currentContent) === content.html) return
+        const convertedHTML = convertToHTML(currentContent)
+
+        if (convertedHTML === content.html) return
+
         if (text.length > textLimit) return
         const {html_tkey, text_tkey} = content
+
         handleUpdateContent({
-            html: convertToHTML(currentContent),
+            html: convertedHTML,
             html_tkey,
             text: text,
             text_tkey,

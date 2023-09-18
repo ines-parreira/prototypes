@@ -111,6 +111,7 @@
         "libphonenumber-js": "1.9.39",
         "linkify-it": "2.0.3",
         "linkifyjs": "2.1.8",
+        "liquidjs": "^10.9.2",
         "localforage": "1.10.0",
         "localforage-getitems": "1.4.2",
         "localforage-observable": "2.1.1",

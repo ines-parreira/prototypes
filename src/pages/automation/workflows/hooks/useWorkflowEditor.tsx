@@ -23,6 +23,12 @@ import {
     transformVisualBuilderGraphIntoWfConfiguration,
 } from '../models/visualBuilderGraph.model'
 import {verifyPayloadSize} from '../utils/payloadLengthCheck'
+import {
+    extractVariablesFromText,
+    getAvailableFlowVariableListForNode,
+    parseFlowVariable,
+    checkGraphVariablesValidity,
+} from '../models/variables.model'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
@@ -43,6 +49,7 @@ type WorkflowEditorContext = {
     handleValidate: () => Maybe<string>
     handleSave: () => Promise<void>
     handleDiscard: () => void
+    checkInvalidVariablesForNode: (text: string, nodeId: string) => boolean
     dispatch: React.Dispatch<VisualBuilderGraphAction>
     visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null
     setVisualBuilderNodeIdEditing: React.Dispatch<
@@ -227,8 +234,28 @@ export function useWorkflowEditor(
             transformVisualBuilderGraphIntoWfConfiguration(
                 visualBuilderGraphDirty
             )
+
         const error = validate(configurationDirty)
+
         if (error) return error
+
+        const graphVariablesError = checkGraphVariablesValidity(
+            visualBuilderGraphDirty,
+            translateGraph
+        )
+
+        if (graphVariablesError) {
+            const nextGraph = switchLanguage(
+                visualBuilderGraphDirty,
+                graphVariablesError.lang
+            )
+            dispatch({
+                type: 'RESET_GRAPH',
+                graph: nextGraph,
+            })
+            return graphVariablesError.error
+        }
+
         const incompleteLangs = getLangsOfIncompleteTranslations(
             visualBuilderGraphDirty
         )
@@ -245,6 +272,7 @@ export function useWorkflowEditor(
         }
         return null
     }, [
+        translateGraph,
         visualBuilderGraphDirty,
         getLangsOfIncompleteTranslations,
         switchLanguage,
@@ -259,7 +287,15 @@ export function useWorkflowEditor(
         if (validate(configurationDirty)) {
             return
         }
+
+        const isVariablesValidationFailed = checkGraphVariablesValidity(
+            visualBuilderGraphDirty,
+            translateGraph
+        )
+
+        if (isVariablesValidationFailed) return
         if (!isDirty) return
+
         setIsSavePending(true)
         try {
             validateTranslationsPayloadSize(visualBuilderGraphDirty)
@@ -283,6 +319,7 @@ export function useWorkflowEditor(
         setIsSavePending(false)
     }, [
         isDirty,
+        translateGraph,
         upsertWorkflowConfiguration,
         visualBuilderGraphDirty,
         saveTranslations,
@@ -311,6 +348,21 @@ export function useWorkflowEditor(
         discardTranslations,
     ])
 
+    const checkInvalidVariablesForNode = useCallback(
+        (text: string, nodeId: string) => {
+            const variables = extractVariablesFromText(text)
+            if (variables.length === 0) return false
+            const availableVariables = getAvailableFlowVariableListForNode(
+                visualBuilderGraph,
+                nodeId
+            )
+            return variables
+                .map((v) => parseFlowVariable(v, availableVariables))
+                .some((v) => v.isInvalid)
+        },
+        [visualBuilderGraph]
+    )
+
     return {
         hookError,
         configuration: remoteConfiguration || workflowFactoryInstance.current,
@@ -318,6 +370,7 @@ export function useWorkflowEditor(
         isFetchPending,
         isSavePending,
         isDirty: isVisualBuilderGraphDirty,
+        checkInvalidVariablesForNode,
         handleValidate,
         handleSave,
         handleDiscard,
@@ -393,6 +446,7 @@ export function createWorkflowEditorContextForPreview(
         isFetchPending: false,
         isSavePending: false,
         isDirty: false,
+        checkInvalidVariablesForNode: () => false,
         handleValidate: () => null,
         handleSave: () => Promise.resolve(),
         handleDiscard: () => null,

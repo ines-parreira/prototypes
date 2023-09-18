@@ -1,12 +1,15 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, {useMemo} from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
 
 import Label from 'pages/common/forms/Label/Label'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 import VisualBuilderActionTag from 'pages/automation/workflows/components/VisualBuilderActionTag'
-import {flowVariableRegex} from 'pages/automation/workflows/models/variables.model'
+import {
+    flowVariableRegex,
+    isValidLiquidSyntaxInNode,
+} from 'pages/automation/workflows/models/variables.model'
 
 import {OrderSelectionNodeType} from '../../../models/visualBuilderGraph.types'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
@@ -17,9 +20,21 @@ import css from './Node.less'
 function OrderSelectionNode(node: NodeProps<OrderSelectionNodeType['data']>) {
     const {content} = node.data
     const {isGreyedOut} = node.data
-    const isErrored = content.text.length === 0
-    const {visualBuilderNodeIdEditing, shouldShowErrors} =
-        useWorkflowEditorContext()
+    const {
+        visualBuilderNodeIdEditing,
+        shouldShowErrors,
+        checkInvalidVariablesForNode,
+    } = useWorkflowEditorContext()
+
+    const hasInvalidVariables = useMemo(
+        () => checkInvalidVariablesForNode(content.text, node.id),
+        [content.text, node.id, checkInvalidVariablesForNode]
+    )
+
+    const isErrored =
+        content.text.length === 0 ||
+        hasInvalidVariables ||
+        !isValidLiquidSyntaxInNode(node.data.content)
     const isSelected = visualBuilderNodeIdEditing === node.id
 
     return (

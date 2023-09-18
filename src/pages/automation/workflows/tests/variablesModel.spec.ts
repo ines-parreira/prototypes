@@ -11,17 +11,17 @@ describe('parseFlowVariable', () => {
             {
                 nodeType: 'text_reply',
                 name: 'My text reply',
-                value: '{{steps_state.textInput1.content.text}}',
+                value: '{{steps_state["textInput1"].content.text}}',
             },
         ]
         const parsed = parseFlowVariable(
-            '{{steps_state.textInput1.content.text}}',
+            '{{steps_state["textInput1"].content.text}}',
             availableVariables
         )
         expect(parsed).toEqual({
             nodeType: 'text_reply',
             name: 'My text reply',
-            value: '{{steps_state.textInput1.content.text}}',
+            value: '{{steps_state["textInput1"].content.text}}',
         })
     })
 
@@ -75,24 +75,24 @@ describe('getAvailableFlowVariables', () => {
             {
                 nodeType: 'multiple_choices',
                 name: 'Choices text',
-                value: '{{steps_state.choices1.selected_choice.label}}',
+                value: '{{steps_state["choices1"].selected_choice.label}}',
             },
             {
                 nodeType: 'text_reply',
                 name: 'Text reply text',
-                value: '{{steps_state.textInput1.content.text}}',
+                value: '{{steps_state["textInput1"].content.text}}',
             },
         ])
     })
 
-    test('only selected choice avaiable', () => {
+    test('only selected choice available', () => {
         expect(
             getAvailableFlowVariableListForNode(g, 'automated_message1')
         ).toEqual([
             {
                 nodeType: 'multiple_choices',
                 name: 'Choices text',
-                value: '{{steps_state.choices1.selected_choice.label}}',
+                value: '{{steps_state["choices1"].selected_choice.label}}',
             },
         ])
     })

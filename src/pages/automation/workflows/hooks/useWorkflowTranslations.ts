@@ -19,6 +19,7 @@ import _mapValues from 'lodash/mapValues'
 import {LanguageCode} from '../models/workflowConfiguration.types'
 import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
 import {verifyPayloadSize} from '../utils/payloadLengthCheck'
+import {decodeVariablesQuotes} from '../models/variables.model'
 import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
@@ -103,18 +104,25 @@ export default function useWorkflowTranslations(
                 currentLanguage,
                 translationsByLangDirty
             )
+
             for (const languageCode of availableLanguages) {
                 if (
                     !_isEqual(
                         nextTranslationsByLangDirty[languageCode],
                         translationsByLang[languageCode]
                     )
-                )
+                ) {
+                    const translationWithNoQuotes = _mapValues(
+                        nextTranslationsByLangDirty[languageCode],
+                        decodeVariablesQuotes
+                    )
+
                     await upsertWorkflowTranslations(
                         configurationInternalId,
                         languageCode,
-                        nextTranslationsByLangDirty[languageCode]
+                        translationWithNoQuotes
                     )
+                }
             }
             for (const languageCode of Object.keys(translationsByLang).filter(
                 (lang) => !availableLanguages.includes(lang as LanguageCode)
