@@ -353,14 +353,14 @@ export function useWorkflowEditor(
             const variables = extractVariablesFromText(text)
             if (variables.length === 0) return false
             const availableVariables = getAvailableFlowVariableListForNode(
-                visualBuilderGraph,
+                visualBuilderGraphDirty,
                 nodeId
             )
             return variables
                 .map((v) => parseFlowVariable(v, availableVariables))
                 .some((v) => v.isInvalid)
         },
-        [visualBuilderGraph]
+        [visualBuilderGraphDirty]
     )
 
     return {
