@@ -7,7 +7,6 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {HelpdeskMessageMeasure, TicketDimension} from 'models/reporting/types'
 import {useTicketsRepliedMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {initialState} from 'state/stats/reducers'
@@ -15,6 +14,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
+import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 

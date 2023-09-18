@@ -2,6 +2,9 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render, screen, within} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {agents} from 'fixtures/agents'
 import {RootState} from 'state/types'
 import {TableColumn} from 'state/ui/stats/types'
@@ -13,7 +16,6 @@ import {
 } from 'hooks/reporting/metricsPerDimension'
 import {assumeMock, mockStore} from 'utils/testing'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {TicketDimension, TicketMeasure} from 'models/reporting/types'
 import {initialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
@@ -60,9 +62,9 @@ describe('<AgentsShoutouts />', () => {
             decile: 5,
             allData: agents.map((agent, idx) => ({
                 [TicketDimension.AssigneeUserId]: String(agent.id),
-                [TicketMeasure.SurveyScore]: String(10 + idx),
-                [TicketMeasure.FirstResponseTime]: String(10 + idx),
-                [TicketMeasure.ResolutionTime]: String(10 + idx),
+                [TicketSatisfactionSurveyMeasure.SurveyScore]: String(10 + idx),
+                [TicketMessagesMeasure.FirstResponseTime]: String(10 + idx),
+                [TicketMessagesMeasure.ResolutionTime]: String(10 + idx),
                 [TicketMeasure.TicketCount]: String(10 + idx),
             })),
         },
@@ -113,11 +115,11 @@ describe('<AgentsShoutouts />', () => {
                     /**
                      * have it the same for all agents
                      */
-                    [TicketMeasure.SurveyScore]: '777',
+                    [TicketSatisfactionSurveyMeasure.SurveyScore]: '777',
                     /**
                      * this will be different for every agent
                      */
-                    [TicketMeasure.FirstResponseTime]: String(10 + idx),
+                    [TicketMessagesMeasure.FirstResponseTime]: String(10 + idx),
                 })),
             },
         }
@@ -140,7 +142,9 @@ describe('<AgentsShoutouts />', () => {
         )
 
         const satisfactionShoutout = within(
-            screen.getByTestId(`shoutout-for-${TicketMeasure.SurveyScore}`)
+            screen.getByTestId(
+                `shoutout-for-${TicketSatisfactionSurveyMeasure.SurveyScore}`
+            )
         )
 
         const multipleAgentsLabel = satisfactionShoutout.getByText(
@@ -155,7 +159,7 @@ describe('<AgentsShoutouts />', () => {
 
         const frtShoutout = within(
             screen.getByTestId(
-                `shoutout-for-${TicketMeasure.FirstResponseTime}`
+                `shoutout-for-${TicketMessagesMeasure.FirstResponseTime}`
             )
         )
         const shoutoutedAgent = frtShoutout.queryByText(agents[0].name)
@@ -182,7 +186,9 @@ describe('<AgentsShoutouts />', () => {
         )
 
         const satisfactionShoutout = within(
-            screen.getByTestId(`shoutout-for-${TicketMeasure.SurveyScore}`)
+            screen.getByTestId(
+                `shoutout-for-${TicketSatisfactionSurveyMeasure.SurveyScore}`
+            )
         )
         expect(
             satisfactionShoutout.getAllByText(SHOUTOUT_NO_VALUE_PLACEHOLDER)

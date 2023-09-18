@@ -19,9 +19,8 @@ import {getStatsFilters} from 'state/stats/selectors'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {periodToReportingGranularity} from 'utils/reporting'
 import colors from 'assets/tokens/colors.json'
-import {AutomationBillingEventMeasures} from 'models/reporting/types'
 import {
-    useAutomatedInteractionTrend,
+    useAutomatedInteractionsTrend,
     useAutomationRateTrend,
     useFirstResponseTimeWithAutomationTrend,
     useResolutionTimeWithAutomationTrend,
@@ -38,6 +37,7 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TicketChannel} from 'business/types/ticket'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBillingEventCube'
 import {
     MetricTrendFormat,
     SHORT_FORMAT,
@@ -75,19 +75,19 @@ import withEcommerceIntegration from './withEcommerceIntegrations'
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 export const getLabel = (label?: string): string => {
     switch (label) {
-        case AutomationBillingEventMeasures.AutomatedInteractionsByTrackOrder:
+        case AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder:
             return 'Track order'
-        case AutomationBillingEventMeasures.AutomatedInteractionsByLoopReturns:
+        case AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns:
             return 'Return order'
-        case AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponse:
+        case AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse:
             return 'Quick response'
-        case AutomationBillingEventMeasures.AutomatedInteractionsByArticleRecommendation:
+        case AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation:
             return 'Article recommendation'
-        case AutomationBillingEventMeasures.AutomatedInteractionsByAutomatedResponse:
+        case AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse:
             return 'Report issue'
-        case AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponseFlows:
+        case AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows:
             return 'Flows'
-        case AutomationBillingEventMeasures.AutomatedInteractionsByAutoResponders:
+        case AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders:
             return 'Autoresponders'
         default:
             return 'Others'
@@ -146,7 +146,7 @@ export function AutomationAddOnOverview() {
         pageStatsFilters,
         userTimezone
     )
-    const automatedInterationTrend = useAutomatedInteractionTrend(
+    const automatedInterationTrend = useAutomatedInteractionsTrend(
         pageStatsFilters,
         userTimezone
     )

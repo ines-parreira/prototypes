@@ -3,7 +3,8 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {TicketDimension, TicketMeasure} from 'models/reporting/types'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {useCustomerSatisfactionMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {initialState} from 'state/stats/reducers'
@@ -42,7 +43,8 @@ describe('<CustomerSatisfactionCellContent>', () => {
             decile: 5,
             allData: [
                 {
-                    [TicketMeasure.SurveyScore]: String(surveyScoreValue),
+                    [TicketSatisfactionSurveyMeasure.SurveyScore]:
+                        String(surveyScoreValue),
                     [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],

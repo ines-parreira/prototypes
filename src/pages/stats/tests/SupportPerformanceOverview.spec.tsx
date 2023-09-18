@@ -5,8 +5,11 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
-import {UseQueryResult} from '@tanstack/react-query'
 import moment from 'moment'
+import {
+    useWorkloadPerChannelDistribution,
+    useWorkloadPerChannelDistributionForPreviousPeriod,
+} from 'hooks/reporting/distributions'
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
 import {TipQualifier} from 'services/supportPerformanceTipService'
@@ -41,7 +44,6 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import useTimeSeries from 'hooks/reporting/useTimeSeries'
-import {usePostReporting} from 'models/reporting/queries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
@@ -82,8 +84,15 @@ const useTicketsClosedTimeSeriesMock = assumeMock(useTicketsClosedTimeSeries)
 const useTicketsRepliedTimeSeriesMock = assumeMock(useTicketsRepliedTimeSeries)
 const useMessagesSentTimeSeriesMock = assumeMock(useMessagesSentTimeSeries)
 
+jest.mock('hooks/reporting/distributions')
+const useWorkloadPerChannelDistributionMock = assumeMock(
+    useWorkloadPerChannelDistribution
+)
+const useWorkloadPerChannelDistributionForPreviousPeriodMock = assumeMock(
+    useWorkloadPerChannelDistributionForPreviousPeriod
+)
+
 jest.mock('models/reporting/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
 
 jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
@@ -254,6 +263,19 @@ describe('<SupportPerformanceOverview />', () => {
         ],
     } as ReturnType<typeof useTimeSeries>
 
+    const workloadDistribution = {
+        data: [
+            {
+                value: 200,
+                label: TicketChannel.Email,
+            },
+            {
+                value: 34,
+                label: TicketChannel.Chat,
+            },
+        ],
+    } as ReturnType<typeof useWorkloadPerChannelDistributionForPreviousPeriod>
+
     beforeEach(() => {
         jest.resetAllMocks()
         useCustomerSatisfactionTrendMock.mockReturnValue(
@@ -275,18 +297,12 @@ describe('<SupportPerformanceOverview />', () => {
         useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useMessagesSentTimeSeriesMock.mockReturnValue(defaultTimeSeries)
-        usePostReportingMock.mockReturnValue({
-            data: [
-                {
-                    value: 200,
-                    label: TicketChannel.Email,
-                },
-                {
-                    value: 34,
-                    label: TicketChannel.Chat,
-                },
-            ],
-        } as UseQueryResult)
+        useWorkloadPerChannelDistributionForPreviousPeriodMock.mockReturnValue(
+            workloadDistribution
+        )
+        useWorkloadPerChannelDistributionMock.mockReturnValue(
+            workloadDistribution
+        )
         useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
         jest.spyOn(PerformanceTipHook, 'usePerformanceTips').mockReturnValue({

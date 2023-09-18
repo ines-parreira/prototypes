@@ -1,8 +1,10 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 
 import {usePostReporting} from 'models/reporting/queries'
-import {ReportingQuery, TicketMeasure} from 'models/reporting/types'
+import {ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 
 import useMetricTrend from '../useMetricTrend'
@@ -16,8 +18,8 @@ describe('useMetricTrend', () => {
         isError: false,
     } as UseQueryResult
 
-    const defaultQuery: ReportingQuery = {
-        measures: [TicketMeasure.FirstResponseTime],
+    const defaultQuery: ReportingQuery<HelpdeskMessageCubeWithJoins> = {
+        measures: [TicketMessagesMeasure.FirstResponseTime],
         dimensions: [],
         filters: [],
     }
@@ -100,7 +102,7 @@ describe('useMetricTrend', () => {
     it('should call usePostReporting with the query', () => {
         const prevPeriodQuery = {
             ...defaultQuery,
-            measures: [TicketMeasure.MessagesAverage],
+            measures: [TicketMessagesMeasure.MessagesAverage],
         }
         usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,

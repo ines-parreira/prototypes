@@ -5,13 +5,14 @@ import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import {OrderDirection} from 'models/api/types'
+import {
+    useWorkloadPerChannelDistribution,
+    useWorkloadPerChannelDistributionForPreviousPeriod,
+} from 'hooks/reporting/distributions'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {getPreviousPeriod} from 'hooks/reporting/createUseMetricTrend'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 
-import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
 import StatsPage from 'pages/stats/StatsPage'
@@ -41,14 +42,6 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
-import {
-    ReportingFilterOperator,
-    TicketDimension,
-    TicketMeasure,
-    TicketMember,
-    TicketSegment,
-} from 'models/reporting/types'
-import {usePostReporting} from 'models/reporting/queries'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
@@ -67,12 +60,7 @@ import {
 import {DownloadOverviewDataButton} from 'pages/stats/DownloadOverviewDataButton'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {getTimezone} from 'state/currentUser/selectors'
-import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {
-    periodToReportingGranularity,
-    statsFiltersToReportingFilters,
-    TicketStatsFiltersMembers,
-} from 'utils/reporting'
+import {getPreviousPeriod, periodToReportingGranularity} from 'utils/reporting'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {
@@ -90,7 +78,6 @@ import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
 import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
-import {OneDimensionalDataItem} from './types'
 import {statsHintsTooltipsConfig} from './stats-hints-config'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
@@ -203,96 +190,16 @@ export default function SupportPerformanceOverview() {
         granularity
     )
 
-    const workloadPerChannel = usePostReporting<
-        {
-            [TicketMeasure.TicketCount]: string
-            [TicketDimension.FirstMessageChannel]: TicketChannel
-        }[],
-        OneDimensionalDataItem[]
-    >(
-        [
-            {
-                measures: [TicketMeasure.TicketCount],
-                order: [[TicketMeasure.TicketCount, OrderDirection.Desc]],
-                dimensions: [TicketDimension.FirstMessageChannel],
-                segments: [TicketSegment.WorkloadTickets],
-                filters: [
-                    {
-                        member: TicketMember.IsSpam,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
-                    {
-                        member: TicketMember.IsTrashed,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
-                    ...statsFiltersToReportingFilters(
-                        TicketStatsFiltersMembers,
-                        requestStatsFilters
-                    ),
-                ],
-            },
-        ],
-        {
-            select: (data) => {
-                return data.data.data.map((item) => ({
-                    label: TICKET_CHANNEL_NAMES[
-                        item[TicketDimension.FirstMessageChannel]
-                    ],
-                    value: parseFloat(item[TicketMeasure.TicketCount]),
-                }))
-            },
-        }
+    const workloadPerChannel = useWorkloadPerChannelDistribution(
+        requestStatsFilters,
+        userTimezone
     )
 
-    const workloadPerChannelPrevious = usePostReporting<
-        {
-            [TicketMeasure.TicketCount]: string
-            [TicketDimension.FirstMessageChannel]: TicketChannel
-        }[],
-        OneDimensionalDataItem[]
-    >(
-        [
-            {
-                measures: [TicketMeasure.TicketCount],
-                order: [[TicketMeasure.TicketCount, OrderDirection.Desc]],
-                dimensions: [TicketDimension.FirstMessageChannel],
-                segments: [TicketSegment.WorkloadTickets],
-                filters: [
-                    {
-                        member: TicketMember.IsSpam,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
-                    {
-                        member: TicketMember.IsTrashed,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
-                    ...statsFiltersToReportingFilters(
-                        TicketStatsFiltersMembers,
-                        {
-                            ...requestStatsFilters,
-                            period: getPreviousPeriod(
-                                requestStatsFilters.period
-                            ),
-                        }
-                    ),
-                ],
-            },
-        ],
-        {
-            select: (data) => {
-                return data.data.data.map((item) => ({
-                    label: TICKET_CHANNEL_NAMES[
-                        item[TicketDimension.FirstMessageChannel]
-                    ],
-                    value: parseFloat(item[TicketMeasure.TicketCount]),
-                }))
-            },
-        }
-    )
+    const workloadPerChannelPrevious =
+        useWorkloadPerChannelDistributionForPreviousPeriod(
+            requestStatsFilters,
+            userTimezone
+        )
 
     const exportableData = useMemo(() => {
         return {

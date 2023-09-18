@@ -5,39 +5,45 @@ import {
     QueryReturnType,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
+import {TicketCubeWithJoins} from 'models/reporting/cubes/TicketCube'
 import {
-    ReportingQuery,
-    TicketDimension,
-    TicketMeasure,
-} from 'models/reporting/types'
+    TicketMessagesCube,
+    TicketMessagesDimension,
+    TicketMessagesMeasure,
+} from 'models/reporting/cubes/TicketMessagesCube'
+import {ReportingQuery} from 'models/reporting/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {assumeMock} from 'utils/testing'
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 
 describe('useMetricPerDimension.spec.ts', () => {
-    const query: ReportingQuery = firstResponseTimeMetricPerAgentQueryFactory(
-        {
-            period: {
-                start_datetime: '2020-01-16T03:04:56.789-10:00',
-                end_datetime: '2020-01-02T03:04:56.789-10:00',
+    const query: ReportingQuery<TicketCubeWithJoins> =
+        firstResponseTimeMetricPerAgentQueryFactory(
+            {
+                period: {
+                    start_datetime: '2020-01-16T03:04:56.789-10:00',
+                    end_datetime: '2020-01-02T03:04:56.789-10:00',
+                },
             },
-        },
-        'timezone'
-    )
+            'timezone'
+        )
     const agentId = 456
     const metricValue = 4567
 
     const data = Array.from(Array(150).keys()).map((index) => ({
-        [TicketDimension.FirstHelpdeskMessageUserId]: String(agentId + index),
-        [TicketMeasure.FirstResponseTime]: String(metricValue + index),
+        [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
+            agentId + index
+        ),
+        [TicketMessagesMeasure.FirstResponseTime]: String(metricValue + index),
     }))
 
-    const mockedResponse = {
-        isFetching: false,
-        isError: false,
-        data: data,
-    } as UseQueryResult<QueryReturnType>
+    const mockedResponse: UseQueryResult<QueryReturnType<TicketMessagesCube>> =
+        {
+            isFetching: false,
+            isError: false,
+            data: data,
+        } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
 
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(mockedResponse)

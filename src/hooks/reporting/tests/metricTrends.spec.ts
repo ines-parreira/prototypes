@@ -1,26 +1,29 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
-    AutomationBillingEventMeasures,
-    AutomationBillingEventMember,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
-    ReportingFilterOperator,
-    TicketMember,
-} from 'models/reporting/types'
+} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {
-    getAutomatedInteractionFactory,
-    getAutomationRateFactory,
-    getFirstResponseTimeWithAutomationFactory,
-    getMessagesSentQueryFactory,
-    getOverallTimeSavedWithAutomationFactory,
-    getResolutionTimeWithAutomationFactory,
-    getTicketsRepliedQueryFactory,
+    AutomationBillingEventMeasure,
+    AutomationBillingEventMember,
+} from 'models/reporting/cubes/AutomationBillingEventCube'
+import {
+    automatedInteractionsQueryFactory,
+    automationRateQueryFactory,
+    firstResponseTimeWithAutomationQueryFactory,
+    messagesSentQueryFactory,
+    overallTimeSavedWithAutomationQueryFactory,
+    resolutionTimeWithAutomationQueryFactory,
+    ticketsRepliedQueryFactory,
     NotSpamNorTrashedTicketsFilter,
-    useAutomatedInteractionTrend,
+    useAutomatedInteractionsTrend,
     useAutomationRateTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
@@ -32,21 +35,10 @@ import {
     useResolutionTimeWithAutomationTrend,
     useTicketsCreatedTrend,
 } from '../metricTrends'
-import {MetricTrend} from '../useMetricTrend'
 
-jest.mock(
-    '../createUseMetricTrend',
-    () =>
-        (
-            queryCreator: (
-                filters: StatsFilters,
-                timezone: string
-            ) => MetricTrend
-        ) =>
-        (filters: StatsFilters, timezone: string) => {
-            return queryCreator(filters, timezone)
-        }
-)
+jest.mock('../useMetricTrend', () => (queryCreator: ReportingQuery) => ({
+    ...queryCreator,
+}))
 
 describe('metric trends', () => {
     describe.each([
@@ -89,7 +81,7 @@ describe('metric trends', () => {
 
     describe('getTicketsRepliedQuery', () => {
         it('should build a query', () => {
-            const query = getTicketsRepliedQueryFactory(statsFilters, timezone)
+            const query = ticketsRepliedQueryFactory(statsFilters, timezone)
 
             expect(query).toEqual({
                 dimensions: [],
@@ -107,7 +99,7 @@ describe('metric trends', () => {
                         values: [periodEnd],
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },
@@ -129,7 +121,7 @@ describe('metric trends', () => {
 
     describe('getMessagesSentQuery', () => {
         it('should create a query', () => {
-            const query = getMessagesSentQueryFactory(statsFilters, timezone)
+            const query = messagesSentQueryFactory(statsFilters, timezone)
 
             expect(query).toEqual({
                 measures: [HelpdeskMessageMeasure.MessageCount],
@@ -170,28 +162,28 @@ describe('metric trends', () => {
         describe.each([
             [
                 'FirstResponseTimeWithAutomation',
-                AutomationBillingEventMeasures.FirstResponseTimeWithAutomation,
-                getFirstResponseTimeWithAutomationFactory,
+                AutomationBillingEventMeasure.FirstResponseTimeWithAutomation,
+                firstResponseTimeWithAutomationQueryFactory,
             ],
             [
                 'ResolutionTimeWithAutomation',
-                AutomationBillingEventMeasures.ResolutionTimeWithAutomation,
-                getResolutionTimeWithAutomationFactory,
+                AutomationBillingEventMeasure.ResolutionTimeWithAutomation,
+                resolutionTimeWithAutomationQueryFactory,
             ],
             [
                 'OverallTimeSaved',
-                AutomationBillingEventMeasures.OverallTimeSaved,
-                getOverallTimeSavedWithAutomationFactory,
+                AutomationBillingEventMeasure.OverallTimeSaved,
+                overallTimeSavedWithAutomationQueryFactory,
             ],
             [
                 'AutomationRate',
-                AutomationBillingEventMeasures.AutomationRate,
-                getAutomationRateFactory,
+                AutomationBillingEventMeasure.AutomationRate,
+                automationRateQueryFactory,
             ],
             [
                 'AutomatedInteractions',
-                AutomationBillingEventMeasures.AutomatedInteractions,
-                getAutomatedInteractionFactory,
+                AutomationBillingEventMeasure.AutomatedInteractions,
+                automatedInteractionsQueryFactory,
             ],
         ])('%s', (_testName, kpi, getAutomationFactory) => {
             it('should create a query', () => {
@@ -235,7 +227,7 @@ describe('metric trends', () => {
                 useOverallTimeSavedWithAutomationTrend,
             ],
             ['useAutomationRateTrend', useAutomationRateTrend],
-            ['useAutomatedInteractionTrend', useAutomatedInteractionTrend],
+            ['useAutomatedInteractionTrend', useAutomatedInteractionsTrend],
         ])('%s', (_testName, useTrendFn) => {
             it('should create automation filters', () => {
                 const {result} = renderHook(() =>

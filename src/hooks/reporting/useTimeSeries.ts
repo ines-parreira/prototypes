@@ -1,15 +1,20 @@
 import moment from 'moment-timezone'
+import {Cubes} from 'models/reporting/cubes'
 
 import {formatReportingQueryDate} from 'utils/reporting'
 import {usePostReporting} from 'models/reporting/queries'
 import {
+    Cube,
     ReportingGranularity,
     ReportingQuery,
     ReportingTimeDimension,
 } from 'models/reporting/types'
 
-export type TimeSeriesQuery = Omit<ReportingQuery, 'timeDimensions'> & {
-    timeDimensions: [Required<ReportingTimeDimension>]
+export type TimeSeriesQuery<TCube extends Cube = Cube> = Omit<
+    ReportingQuery<TCube>,
+    'timeDimensions'
+> & {
+    timeDimensions: [Required<ReportingTimeDimension<TCube['timeDimensions']>>]
 }
 
 export type TimeSeriesDataItem = {
@@ -18,18 +23,21 @@ export type TimeSeriesDataItem = {
     label?: string
 }
 
-export default function useTimeSeries(query: TimeSeriesQuery) {
+export default function useTimeSeries<TCube extends Cubes>(
+    query: TimeSeriesQuery<TCube>
+) {
     const {timeDimensions, measures} = query
     const {dimension, dateRange, granularity} = timeDimensions[0]
     return usePostReporting<
-        Partial<Record<string, string>>[],
-        TimeSeriesDataItem[][]
+        Record<string, string>[],
+        TimeSeriesDataItem[][],
+        TCube
     >([query], {
         select: (res) => {
             const dateTimeToValuesMap = res.data.data.reduce<
                 Partial<Record<string, number[]>>
             >((acc, item) => {
-                const key = formatReportingQueryDate(item[dimension]!)
+                const key = formatReportingQueryDate(item[String(dimension)]!)
                 const values = measures.map((measure) =>
                     parseFloat(item[measure] || '0')
                 )

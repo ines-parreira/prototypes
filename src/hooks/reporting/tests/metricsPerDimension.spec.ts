@@ -1,5 +1,20 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
+import {
+    TicketSatisfactionSurveyMeasure,
+    TicketSatisfactionSurveySegment,
+} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {
+    TicketMessagesMeasure,
+    TicketMessagesMember,
+    TicketMessagesSegment,
+} from 'models/reporting/cubes/TicketMessagesCube'
+import {
+    TicketMeasure,
+    TicketDimension,
+    TicketMember,
+    TicketSegment,
+} from 'models/reporting/cubes/TicketCube'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
     closedTicketsPerAgentQueryFactory,
@@ -22,12 +37,8 @@ import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
-    ReportingFilterOperator,
-    TicketDimension,
-    TicketMeasure,
-    TicketMember,
-    TicketSegment,
-} from 'models/reporting/types'
+} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
@@ -59,11 +70,11 @@ describe('metricsPerDimension', () => {
                     timezone
                 )
             ).toEqual({
-                dimensions: [TicketMember.FirstHelpdeskMessageUserId],
+                dimensions: [TicketMessagesMember.FirstHelpdeskMessageUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     {
-                        member: TicketMember.FirstHelpdeskMessageDatetime,
+                        member: TicketMessagesMember.FirstHelpdeskMessageDatetime,
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
                             formatReportingQueryDate(periodStart),
@@ -81,12 +92,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -96,8 +107,8 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.tags?.map(String),
                     },
                 ],
-                measures: [TicketMeasure.FirstResponseTime],
-                segments: [TicketSegment.ConversationStarted],
+                measures: [TicketMessagesMeasure.FirstResponseTime],
+                segments: [TicketMessagesSegment.ConversationStarted],
                 timezone: timezone,
             })
         })
@@ -112,11 +123,11 @@ describe('metricsPerDimension', () => {
                     sorting
                 )
             ).toEqual({
-                dimensions: [TicketMember.FirstHelpdeskMessageUserId],
+                dimensions: [TicketMessagesMember.FirstHelpdeskMessageUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     {
-                        member: TicketMember.FirstHelpdeskMessageDatetime,
+                        member: TicketMessagesMember.FirstHelpdeskMessageDatetime,
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
                             formatReportingQueryDate(periodStart),
@@ -124,7 +135,7 @@ describe('metricsPerDimension', () => {
                         ],
                     },
                     {
-                        member: TicketMember.FirstHelpdeskMessageUserId,
+                        member: TicketMessagesMember.FirstHelpdeskMessageUserId,
                         operator: ReportingFilterOperator.Equals,
                         values: agents?.map(String),
                     },
@@ -139,12 +150,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -154,9 +165,9 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.tags?.map(String),
                     },
                 ],
-                measures: [TicketMeasure.FirstResponseTime],
-                order: [[TicketMeasure.FirstResponseTime, sorting]],
-                segments: [TicketSegment.ConversationStarted],
+                measures: [TicketMessagesMeasure.FirstResponseTime],
+                order: [[TicketMessagesMeasure.FirstResponseTime, sorting]],
+                segments: [TicketMessagesSegment.ConversationStarted],
                 timezone: timezone,
             })
         })
@@ -208,7 +219,7 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },
@@ -224,12 +235,12 @@ describe('metricsPerDimension', () => {
                     },
 
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -271,7 +282,7 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },
@@ -287,12 +298,12 @@ describe('metricsPerDimension', () => {
                     },
 
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -357,12 +368,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -402,12 +413,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -485,12 +496,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodStart)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -541,12 +552,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodStart)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -611,12 +622,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -626,10 +637,10 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.tags?.map(String),
                     },
                 ],
-                measures: [TicketMeasure.ResolutionTime],
+                measures: [TicketMessagesMeasure.ResolutionTime],
                 segments: [
                     TicketSegment.ClosedTickets,
-                    TicketSegment.ConversationStarted,
+                    TicketMessagesSegment.ConversationStarted,
                 ],
                 timezone: timezone,
             })
@@ -658,12 +669,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -678,11 +689,11 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.tags?.map(String),
                     },
                 ],
-                measures: [TicketMeasure.ResolutionTime],
-                order: [[TicketMeasure.ResolutionTime, sorting]],
+                measures: [TicketMessagesMeasure.ResolutionTime],
+                order: [[TicketMessagesMeasure.ResolutionTime, sorting]],
                 segments: [
                     TicketSegment.ClosedTickets,
-                    TicketSegment.ConversationStarted,
+                    TicketMessagesSegment.ConversationStarted,
                 ],
                 timezone: timezone,
             })
@@ -735,12 +746,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodStart)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -750,8 +761,8 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.tags?.map(String),
                     },
                 ],
-                measures: [TicketMeasure.SurveyScore],
-                segments: [TicketSegment.SurveyScored],
+                measures: [TicketSatisfactionSurveyMeasure.SurveyScore],
+                segments: [TicketSatisfactionSurveySegment.SurveyScored],
                 timezone: timezone,
             })
         })
@@ -780,12 +791,12 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodStart)],
                     },
                     {
-                        member: TicketMember.Integration,
+                        member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMember.FirstMessageChannel,
+                        member: TicketMessagesMember.FirstMessageChannel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -800,9 +811,9 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.tags?.map(String),
                     },
                 ],
-                measures: [TicketMeasure.SurveyScore],
-                segments: [TicketSegment.SurveyScored],
-                order: [[TicketMeasure.SurveyScore, sorting]],
+                measures: [TicketSatisfactionSurveyMeasure.SurveyScore],
+                segments: [TicketSatisfactionSurveySegment.SurveyScored],
+                order: [[TicketSatisfactionSurveyMeasure.SurveyScore, sorting]],
                 timezone: timezone,
             })
         })

@@ -14,7 +14,7 @@ import {
     useFirstResponseTimeWithAutomationTrend,
     useResolutionTimeWithAutomationTrend,
     useAutomationRateTrend,
-    useAutomatedInteractionTrend,
+    useAutomatedInteractionsTrend,
 } from 'hooks/reporting/metricTrends'
 import {
     useAutomationRateTimeSeries,
@@ -62,7 +62,7 @@ const useResolutionTimeWithAutomationTrendMock = assumeMock(
 )
 const useAutomationRateTrendMock = assumeMock(useAutomationRateTrend)
 const useAutomatedInteractionTrendMock = assumeMock(
-    useAutomatedInteractionTrend
+    useAutomatedInteractionsTrend
 )
 
 // Timeseries

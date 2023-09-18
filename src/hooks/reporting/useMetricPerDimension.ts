@@ -1,36 +1,34 @@
 import {withDeciles} from 'hooks/reporting/withDeciles'
+import {Cubes} from 'models/reporting/cubes'
 import {usePostReporting} from 'models/reporting/queries'
 import {postReporting} from 'models/reporting/resources'
-import {
-    ReportingDimension,
-    ReportingMeasure,
-    ReportingQuery,
-} from 'models/reporting/types'
+import {ReportingQuery} from 'models/reporting/types'
 
 type Requested = {
     isFetching: boolean
     isError: boolean
 }
 
-export type ReportingMetricItem = Partial<
-    Record<ReportingMeasure | ReportingDimension | 'decile', string | null>
+export type ReportingMetricItem<TCube extends Cubes = Cubes> = Record<
+    TCube['measures'][0] | TCube['dimensions'][0] | 'decile',
+    string | null
 >
 
-export type MetricWithDecile = Requested & {
+export type MetricWithDecile<TCube extends Cubes = Cubes> = Requested & {
     data: {
         value: number | null
         decile: number | null
-        allData: QueryReturnType
+        allData: QueryReturnType<TCube>
     } | null
 }
 
-export type QueryReturnType = ReportingMetricItem[]
+export type QueryReturnType<TCube extends Cubes> = ReportingMetricItem<TCube>[]
 
-const selectMeasurePerDimension = (
-    measure: ReportingMeasure,
-    dimension: ReportingDimension,
+const selectMeasurePerDimension = <TCube extends Cubes = Cubes>(
+    measure: TCube['measures'],
+    dimension: TCube['dimensions'],
     dimensionId: string,
-    data?: QueryReturnType
+    data: QueryReturnType<TCube>
 ): {value: number | null; decile: number | null} => {
     const dataMeasure =
         data?.find((row) => row[dimension] === dimensionId) || null
@@ -45,26 +43,27 @@ const selectMeasurePerDimension = (
 }
 
 const selectMetric =
-    (query: ReportingQuery, dimensionId: string) => (data: QueryReturnType) =>
-        selectMeasurePerDimension(
+    <TCube extends Cubes>(query: ReportingQuery<TCube>, dimensionId: string) =>
+    (data: QueryReturnType<TCube>) =>
+        selectMeasurePerDimension<TCube>(
             query.measures[0],
             query.dimensions[0],
             String(dimensionId),
             data
         )
 
-export function useMetricPerDimension(
-    query: ReportingQuery,
+export function useMetricPerDimension<TCube extends Cubes>(
+    query: ReportingQuery<TCube>,
     dimensionId?: string
-): MetricWithDecile {
-    const metricData = usePostReporting<QueryReturnType, QueryReturnType>(
-        [query],
-        {
-            select: (data) => data.data.data,
-            queryFn: () =>
-                postReporting<QueryReturnType>([query]).then(withDeciles),
-        }
-    )
+): MetricWithDecile<TCube> {
+    const metricData = usePostReporting<
+        QueryReturnType<TCube>,
+        QueryReturnType<TCube>
+    >([query], {
+        select: (data) => data.data.data,
+        queryFn: () =>
+            postReporting<QueryReturnType<TCube>>([query]).then(withDeciles),
+    })
 
     return {
         isFetching: metricData.isFetching,

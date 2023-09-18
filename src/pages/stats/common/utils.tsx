@@ -2,6 +2,7 @@ import {useContext, useMemo} from 'react'
 import moment, {Moment} from 'moment'
 import _isNumber from 'lodash/isNumber'
 import {findKey} from 'lodash'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {ViewFilter} from 'state/views/types'
@@ -13,16 +14,14 @@ import {
     EqualityOperator,
 } from 'state/rules/types'
 import {RootState} from 'state/types'
-import {
-    HelpdeskMessageMember,
-    ReportingGranularity,
-    TicketMember,
-} from 'models/reporting/types'
+import {ReportingGranularity} from 'models/reporting/types'
 import {TicketChannel} from 'business/types/ticket'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import StatsFiltersContext from '../StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
@@ -312,5 +311,6 @@ export const isMetricForAgent = (
     agentId: number | string
 ) =>
     metric[TicketMember.AssigneeUserId] === String(agentId) ||
-    metric[TicketMember.FirstHelpdeskMessageUserId] === String(agentId) ||
+    metric[TicketMessagesMember.FirstHelpdeskMessageUserId] ===
+        String(agentId) ||
     metric[HelpdeskMessageMember.SenderId] === String(agentId)

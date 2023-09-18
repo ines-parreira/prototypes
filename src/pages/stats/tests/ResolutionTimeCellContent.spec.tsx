@@ -3,7 +3,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {TicketDimension, TicketMeasure} from 'models/reporting/types'
+import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {useResolutionTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {
     formatMetricValue,
@@ -15,6 +15,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -46,7 +47,8 @@ describe('<ResolutionTimeCellContent>', () => {
             decile: 5,
             allData: [
                 {
-                    [TicketMeasure.ResolutionTime]: String(resolutionTimeValue),
+                    [TicketMessagesMeasure.ResolutionTime]:
+                        String(resolutionTimeValue),
                     [TicketDimension.AssigneeUserId]: String(agentId),
                 },
             ],

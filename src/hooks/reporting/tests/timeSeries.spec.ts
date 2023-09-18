@@ -2,14 +2,18 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
-    AutomationBillingEventMeasures,
+    AutomationBillingEventMeasure,
     AutomationBillingEventMember,
+} from 'models/reporting/cubes/AutomationBillingEventCube'
+import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {
     ReportingFilterOperator,
     ReportingGranularity,
-    TicketMember,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
@@ -152,17 +156,17 @@ describe('time series', () => {
                     timezone,
                     filters: [
                         {
+                            member: TicketMember.PeriodEnd,
+                            operator: ReportingFilterOperator.BeforeDate,
+                            values: [periodEnd],
+                        },
+                        {
                             member: HelpdeskMessageMember.PeriodStart,
                             operator: ReportingFilterOperator.AfterDate,
                             values: [periodStart],
                         },
                         {
                             member: HelpdeskMessageMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [periodEnd],
-                        },
-                        {
-                            member: TicketMember.PeriodEnd,
                             operator: ReportingFilterOperator.BeforeDate,
                             values: [periodEnd],
                         },
@@ -176,24 +180,24 @@ describe('time series', () => {
         const aaoTimeSeriesIterator = describe.each([
             [
                 'useAutomationRateTimeSeries',
-                [AutomationBillingEventMeasures.AutomationRate],
+                [AutomationBillingEventMeasure.AutomationRate],
                 useAutomationRateTimeSeries,
             ],
             [
                 'useAutomatedInteractionTimeSeries',
-                [AutomationBillingEventMeasures.AutomatedInteractions],
+                [AutomationBillingEventMeasure.AutomatedInteractions],
                 useAutomatedInteractionTimeSeries,
             ],
             [
                 'OverallTimeSaved',
                 [
-                    AutomationBillingEventMeasures.AutomatedInteractionsByTrackOrder,
-                    AutomationBillingEventMeasures.AutomatedInteractionsByLoopReturns,
-                    AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponse,
-                    AutomationBillingEventMeasures.AutomatedInteractionsByArticleRecommendation,
-                    AutomationBillingEventMeasures.AutomatedInteractionsByAutomatedResponse,
-                    AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponseFlows,
-                    AutomationBillingEventMeasures.AutomatedInteractionsByAutoResponders,
+                    AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder,
+                    AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns,
+                    AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse,
+                    AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation,
+                    AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse,
+                    AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows,
+                    AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders,
                 ],
                 useAutomatedInteractionByEventTypesTimeSeries,
             ],

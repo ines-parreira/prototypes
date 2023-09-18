@@ -3,11 +3,11 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {TicketDimension, TicketMeasure} from 'models/reporting/types'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
 import {initialState} from 'state/stats/reducers'

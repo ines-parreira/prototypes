@@ -3,7 +3,6 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {HelpdeskMessageMeasure, TicketDimension} from 'models/reporting/types'
 import {useMessagesSentMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {
     formatMetricValue,
@@ -15,6 +14,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
+import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 

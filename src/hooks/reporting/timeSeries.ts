@@ -2,18 +2,29 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
     AutomationBillingEventDimension,
-    AutomationBillingEventMeasures,
+    AutomationBillingEventMeasure,
     AutomationBillingEventMember,
+} from 'models/reporting/cubes/AutomationBillingEventCube'
+import {
+    HelpdeskMessageCubeWithJoins,
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
-    ReportingFilter,
-    ReportingFilterOperator,
-    ReportingGranularity,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
     TicketSegment,
+} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketMessagesMember,
+    TicketMessagesSegment,
+} from 'models/reporting/cubes/TicketMessagesCube'
+import {
+    ReportingFilter,
+    ReportingFilterOperator,
+    ReportingGranularity,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -30,7 +41,7 @@ export const ticketsCreatedQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity
-): TimeSeriesQuery => {
+): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => {
     const {agents, ...statFiltersWithoutAgents} = statsFilters
     const commonFilters: ReportingFilter[] = [
         {
@@ -46,7 +57,7 @@ export const ticketsCreatedQueryFactory = (
     ]
     if (agents?.length) {
         commonFilters.push({
-            member: TicketMember.FirstHelpdeskMessageUserId,
+            member: TicketMessagesMember.FirstHelpdeskMessageUserId,
             operator: ReportingFilterOperator.Equals,
             values: agents.map((agent) => agent.toString()),
         })
@@ -55,7 +66,9 @@ export const ticketsCreatedQueryFactory = (
     return {
         measures: [TicketMeasure.TicketCount],
         dimensions: [],
-        segments: agents?.length ? [TicketSegment.TicketCreatedByAgent] : [],
+        segments: agents?.length
+            ? [TicketMessagesSegment.TicketCreatedByAgent]
+            : [],
         timeDimensions: [
             {
                 dimension: TicketDimension.CreatedDatetime,
@@ -198,15 +211,15 @@ export function useMessagesSentTimeSeries(
         ],
         timezone,
         filters: [
-            ...statsFiltersToReportingFilters(
-                HelpdeskMessagesStatsFiltersMembers,
-                filters
-            ),
             {
                 member: TicketMember.PeriodEnd,
                 operator: ReportingFilterOperator.BeforeDate,
                 values: [filters.period.end_datetime],
             },
+            ...statsFiltersToReportingFilters(
+                HelpdeskMessagesStatsFiltersMembers,
+                filters
+            ),
         ],
     })
 }
@@ -218,7 +231,7 @@ export function useAutomationRateTimeSeries(
     granularity: ReportingGranularity
 ) {
     return useTimeSeries({
-        measures: [AutomationBillingEventMeasures.AutomationRate],
+        measures: [AutomationBillingEventMeasure.AutomationRate],
         dimensions: [],
         timeDimensions: [
             {
@@ -250,7 +263,7 @@ export function useAutomatedInteractionTimeSeries(
     granularity: ReportingGranularity
 ) {
     return useTimeSeries({
-        measures: [AutomationBillingEventMeasures.AutomatedInteractions],
+        measures: [AutomationBillingEventMeasure.AutomatedInteractions],
         dimensions: [],
         timeDimensions: [
             {
@@ -284,13 +297,13 @@ export function useAutomatedInteractionByEventTypesTimeSeries(
 ) {
     return useTimeSeries({
         measures: [
-            AutomationBillingEventMeasures.AutomatedInteractionsByTrackOrder,
-            AutomationBillingEventMeasures.AutomatedInteractionsByLoopReturns,
-            AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponse,
-            AutomationBillingEventMeasures.AutomatedInteractionsByArticleRecommendation,
-            AutomationBillingEventMeasures.AutomatedInteractionsByAutomatedResponse,
-            AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponseFlows,
-            AutomationBillingEventMeasures.AutomatedInteractionsByAutoResponders,
+            AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder,
+            AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns,
+            AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse,
+            AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation,
+            AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse,
+            AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows,
+            AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders,
         ],
         dimensions: [],
         timeDimensions: [

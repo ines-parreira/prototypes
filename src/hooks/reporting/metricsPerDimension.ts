@@ -2,35 +2,41 @@ import {
     closedTicketsQueryFactory,
     resolutionTimeQueryFactory,
     customerSatisfactionQueryFactory,
-    getMessagesSentQueryFactory,
-    getTicketsRepliedQueryFactory,
     firstResponseTimeQueryFactory,
+    messagesSentQueryFactory,
+    ticketsRepliedQueryFactory,
 } from 'hooks/reporting/metricTrends'
-import {
-    MetricWithDecile,
-    useMetricPerDimension,
-} from 'hooks/reporting/useMetricPerDimension'
+import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {OrderDirection} from 'models/api/types'
 import {
-    HelpdeskMessageDimension,
-    HelpdeskMessageMeasure,
-    ReportingQuery,
+    TicketCubeWithJoins,
     TicketDimension,
     TicketMeasure,
-} from 'models/reporting/types'
+} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketMessagesDimension,
+    TicketMessagesMeasure,
+} from 'models/reporting/cubes/TicketMessagesCube'
+import {
+    HelpdeskMessageCubeWithJoins,
+    HelpdeskMessageDimension,
+    HelpdeskMessageMeasure,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
 export const firstResponseTimeMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery => ({
+): ReportingQuery<TicketCubeWithJoins> => ({
     ...firstResponseTimeQueryFactory(filters, timezone),
-    dimensions: [TicketDimension.FirstHelpdeskMessageUserId],
+    dimensions: [TicketMessagesDimension.FirstHelpdeskMessageUserId],
     ...(sorting
         ? {
-              order: [[TicketMeasure.FirstResponseTime, sorting]],
+              order: [[TicketMessagesMeasure.FirstResponseTime, sorting]],
           }
         : {}),
 })
@@ -40,7 +46,7 @@ export const useFirstResponseTimeMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): MetricWithDecile =>
+) =>
     useMetricPerDimension(
         firstResponseTimeMetricPerAgentQueryFactory(
             statsFilters,
@@ -54,8 +60,8 @@ export const ticketsRepliedMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery => ({
-    ...getTicketsRepliedQueryFactory(filters, timezone),
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...ticketsRepliedQueryFactory(filters, timezone),
     dimensions: [HelpdeskMessageDimension.SenderId],
     ...(sorting
         ? {
@@ -69,7 +75,7 @@ export const useTicketsRepliedMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): MetricWithDecile =>
+) =>
     useMetricPerDimension(
         ticketsRepliedMetricPerAgentQueryFactory(
             statsFilters,
@@ -83,7 +89,7 @@ export const closedTicketsPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery => ({
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...closedTicketsQueryFactory(filters, timezone),
     dimensions: [TicketDimension.AssigneeUserId],
 
@@ -99,7 +105,7 @@ export const useClosedTicketsMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): MetricWithDecile =>
+) =>
     useMetricPerDimension(
         closedTicketsPerAgentQueryFactory(statsFilters, timezone, sorting),
         agentAssigneeId
@@ -110,7 +116,7 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): MetricWithDecile => {
+) => {
     const closedTicketsPerAgent = useClosedTicketsMetricPerAgent(
         statsFilters,
         timezone,
@@ -164,8 +170,8 @@ export const messagesSentMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery => ({
-    ...getMessagesSentQueryFactory(filters, timezone),
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...messagesSentQueryFactory(filters, timezone),
     dimensions: [HelpdeskMessageDimension.SenderId],
     ...(sorting
         ? {
@@ -179,7 +185,7 @@ export const useMessagesSentMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): MetricWithDecile =>
+) =>
     useMetricPerDimension(
         messagesSentMetricPerAgentQueryFactory(statsFilters, timezone, sorting),
         agentAssigneeId
@@ -189,12 +195,12 @@ export const resolutionTimeMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery => ({
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...resolutionTimeQueryFactory(filters, timezone),
     dimensions: [TicketDimension.AssigneeUserId],
     ...(sorting
         ? {
-              order: [[TicketMeasure.ResolutionTime, sorting]],
+              order: [[TicketMessagesMeasure.ResolutionTime, sorting]],
           }
         : {}),
 })
@@ -204,7 +210,7 @@ export const useResolutionTimeMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): MetricWithDecile =>
+) =>
     useMetricPerDimension(
         resolutionTimeMetricPerAgentQueryFactory(
             statsFilters,
@@ -218,12 +224,12 @@ export const customerSatisfactionMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-): ReportingQuery => ({
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...customerSatisfactionQueryFactory(filters, timezone),
     dimensions: [TicketDimension.AssigneeUserId],
     ...(sorting
         ? {
-              order: [[TicketMeasure.SurveyScore, sorting]],
+              order: [[TicketSatisfactionSurveyMeasure.SurveyScore, sorting]],
           }
         : {}),
 })
@@ -233,7 +239,7 @@ export const useCustomerSatisfactionMetricPerAgent = (
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
-): MetricWithDecile =>
+) =>
     useMetricPerDimension(
         customerSatisfactionMetricPerAgentQueryFactory(
             statsFilters,

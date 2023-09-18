@@ -1,29 +1,30 @@
 import moment, {Moment} from 'moment'
+import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
+import {Cubes} from 'models/reporting/cubes'
+import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
-    AutomationBillingEventMember,
-    HelpdeskMessageMember,
     ReportingFilter,
-    ReportingFilterMember,
     ReportingFilterOperator,
     ReportingGranularity,
-    TicketMember,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
 
-type StatsFiltersMembers = Record<
+export type StatsFiltersMembers = Record<
     'periodStart' | 'periodEnd',
-    ReportingFilterMember
+    Cubes['filters']
 > &
-    Partial<Record<keyof Omit<StatsFilters, 'period'>, ReportingFilterMember>>
+    Partial<Record<keyof Omit<StatsFilters, 'period'>, Cubes['filters']>>
 
 export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: TicketMember.PeriodStart,
     periodEnd: TicketMember.PeriodEnd,
-    channels: TicketMember.FirstMessageChannel,
-    integrations: TicketMember.Integration,
+    channels: TicketMessagesMember.FirstMessageChannel,
+    integrations: TicketMessagesMember.Integration,
     agents: TicketMember.AssigneeUserId,
     tags: TicketMember.Tags,
 }
@@ -31,8 +32,8 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
 export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: HelpdeskMessageMember.PeriodStart,
     periodEnd: HelpdeskMessageMember.PeriodEnd,
-    channels: TicketMember.FirstMessageChannel,
-    integrations: TicketMember.Integration,
+    channels: TicketMessagesMember.FirstMessageChannel,
+    integrations: TicketMessagesMember.Integration,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
 }
@@ -40,8 +41,8 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
 export const AutomationAddonStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: AutomationBillingEventMember.PeriodStart,
     periodEnd: AutomationBillingEventMember.PeriodEnd,
-    channels: TicketMember.FirstMessageChannel,
-    integrations: TicketMember.Integration,
+    channels: TicketMessagesMember.FirstMessageChannel,
+    integrations: TicketMessagesMember.Integration,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
 }
@@ -114,4 +115,15 @@ export const periodToReportingGranularity = (
     }
 
     return granularity
+}
+export const getPreviousPeriod = (
+    period: StatsFilters['period']
+): StatsFilters['period'] => {
+    const start = moment(period.start_datetime).parseZone()
+    const end = moment(period.end_datetime).parseZone()
+    const diff = moment.duration(end.diff(start) + 1)
+    return {
+        start_datetime: start.subtract(diff).format(),
+        end_datetime: end.subtract(diff).format(),
+    }
 }

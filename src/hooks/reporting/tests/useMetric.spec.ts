@@ -1,8 +1,12 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+import {
+    TicketMessagesCube,
+    TicketMessagesMeasure,
+} from 'models/reporting/cubes/TicketMessagesCube'
 
 import {usePostReporting} from 'models/reporting/queries'
-import {ReportingQuery, TicketMeasure} from 'models/reporting/types'
+import {ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 
 import {useMetric} from '../useMetric'
@@ -16,8 +20,8 @@ describe('useMetric', () => {
         isError: false,
     } as UseQueryResult
 
-    const defaultQuery: ReportingQuery = {
-        measures: [TicketMeasure.FirstResponseTime],
+    const defaultQuery: ReportingQuery<TicketMessagesCube> = {
+        measures: [TicketMessagesMeasure.FirstResponseTime],
         dimensions: [],
         filters: [],
     }

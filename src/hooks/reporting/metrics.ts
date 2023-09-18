@@ -2,9 +2,9 @@ import {
     closedTicketsQueryFactory,
     customerSatisfactionQueryFactory,
     firstResponseTimeQueryFactory,
+    messagesSentQueryFactory,
     resolutionTimeQueryFactory,
-    getTicketsRepliedQueryFactory,
-    getMessagesSentQueryFactory,
+    ticketsRepliedQueryFactory,
 } from 'hooks/reporting/metricTrends'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {StatsFilters} from 'models/stat/types'
@@ -40,9 +40,9 @@ export const useResolutionTimeMetric = (
 export const useTicketsRepliedMetric = (
     statsFilters: StatsFilters,
     timezone: string
-): Metric => useMetric(getTicketsRepliedQueryFactory(statsFilters, timezone))
+): Metric => useMetric(ticketsRepliedQueryFactory(statsFilters, timezone))
 
 export const useMessagesSentMetric = (
     statsFilters: StatsFilters,
     timezone: string
-): Metric => useMetric(getMessagesSentQueryFactory(statsFilters, timezone))
+): Metric => useMetric(messagesSentQueryFactory(statsFilters, timezone))

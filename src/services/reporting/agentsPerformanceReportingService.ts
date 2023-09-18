@@ -1,19 +1,24 @@
 import moment from 'moment/moment'
-import {MetricWithDecile as DimensionMetric} from 'hooks/reporting/useMetricPerDimension'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {
+    TicketMessagesDimension,
+    TicketMessagesMeasure,
+} from 'models/reporting/cubes/TicketMessagesCube'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Metric} from 'hooks/reporting/metrics'
 import {TableLabels} from 'pages/stats/TableConfig'
 import {User} from 'config/types/user'
 import {createCsv, saveZippedFiles} from 'utils/file'
 import {
-    TicketMeasure,
-    TicketDimension,
-    HelpdeskMessageMember,
-    HelpdeskMessageMeasure,
-} from 'models/reporting/types'
-import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {
+    HelpdeskMessageCubeWithJoins,
+    HelpdeskMessageMeasure,
+    HelpdeskMessageMember,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {DATE_TIME_FORMAT} from './constants'
 
 export interface Period {
@@ -21,7 +26,7 @@ export interface Period {
     start_datetime: string
 }
 
-export interface AgentsPerformanceReportData<T = DimensionMetric> {
+export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     agents: User[]
     customerSatisfactionMetric: T
     firstResponseTimeMetric: T
@@ -40,7 +45,7 @@ const formatMetric = {
 }
 
 export const saveReport = async (
-    data: AgentsPerformanceReportData<DimensionMetric>,
+    data: AgentsPerformanceReportData<MetricWithDecile>,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
     period?: Period
 ) => {
@@ -57,26 +62,23 @@ export const saveReport = async (
 
     const getAgentMetric = (
         agentId: number,
-        data: DimensionMetric,
+        data: MetricWithDecile,
         accessItem: `${
-            | TicketDimension
-            | TicketMeasure
-            | HelpdeskMessageMember
-            | HelpdeskMessageMeasure}`
+            | HelpdeskMessageCubeWithJoins['dimensions']
+            | HelpdeskMessageCubeWithJoins['measures']}`
     ) => {
         const metricValue = (
             data.data?.allData as {
                 [Property in
-                    | TicketDimension
-                    | TicketMeasure
-                    | HelpdeskMessageMember
-                    | HelpdeskMessageMeasure]: string
+                    | HelpdeskMessageCubeWithJoins['dimensions']
+                    | HelpdeskMessageCubeWithJoins['measures']]: string
             }[]
         ).find(
             (item) =>
                 Number(item[TicketDimension.AssigneeUserId]) === agentId ||
-                Number(item[TicketDimension.FirstHelpdeskMessageUserId]) ===
-                    agentId ||
+                Number(
+                    item[TicketMessagesDimension.FirstHelpdeskMessageUserId]
+                ) === agentId ||
                 Number(item[HelpdeskMessageMember.SenderId]) === agentId
         )?.[accessItem]
 
@@ -90,7 +92,7 @@ export const saveReport = async (
             getAgentMetric(
                 agentId,
                 customerSatisfactionMetric,
-                TicketMeasure.SurveyScore
+                TicketSatisfactionSurveyMeasure.SurveyScore
             )
         )
 
@@ -98,14 +100,14 @@ export const saveReport = async (
         getAgentMetric(
             agentId,
             firstResponseTimeMetric,
-            TicketMeasure.FirstResponseTime
+            TicketMessagesMeasure.FirstResponseTime
         ) || NOT_AVAILABLE_PLACEHOLDER
 
     const getResolutionTimeAgentMetric = (agentId: number) =>
         getAgentMetric(
             agentId,
             resolutionTimeMetric,
-            TicketMeasure.ResolutionTime
+            TicketMessagesMeasure.ResolutionTime
         ) || NOT_AVAILABLE_PLACEHOLDER
 
     const getClosedTicketsMetricAgentMetric = (agentId: number) =>

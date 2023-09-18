@@ -2,11 +2,11 @@ import {fromJS} from 'immutable'
 import {personNames} from 'fixtures/personNames'
 import {user} from 'fixtures/users'
 import {OrderDirection} from 'models/api/types'
+import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
-    TicketDimension,
-    TicketMeasure,
-    TicketMember,
-} from 'models/reporting/types'
+    TicketMessagesDimension,
+    TicketMessagesMeasure,
+} from 'models/reporting/cubes/TicketMessagesCube'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import {
@@ -44,24 +44,24 @@ describe('agentPerformanceSlice', () => {
 
     const metricData = [
         {
-            [TicketMember.AssigneeUserId]: '5',
-            [TicketMeasure.FirstResponseTime]: '25',
+            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '5',
+            [TicketMessagesMeasure.FirstResponseTime]: '25',
         },
         {
-            [TicketMember.AssigneeUserId]: '4',
-            [TicketMeasure.FirstResponseTime]: '20',
+            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '4',
+            [TicketMessagesMeasure.FirstResponseTime]: '20',
         },
         {
-            [TicketMember.AssigneeUserId]: '3',
-            [TicketMeasure.FirstResponseTime]: '15',
+            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '3',
+            [TicketMessagesMeasure.FirstResponseTime]: '15',
         },
         {
-            [TicketMember.AssigneeUserId]: '2',
-            [TicketMeasure.FirstResponseTime]: '10',
+            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
+            [TicketMessagesMeasure.FirstResponseTime]: '10',
         },
         {
-            [TicketMember.AssigneeUserId]: '1',
-            [TicketMeasure.FirstResponseTime]: '5',
+            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '1',
+            [TicketMessagesMeasure.FirstResponseTime]: '5',
         },
     ]
 
@@ -94,7 +94,7 @@ describe('agentPerformanceSlice', () => {
             }
             const metricData = [
                 {
-                    [TicketMeasure.FirstResponseTime]: '123',
+                    [TicketMessagesMeasure.FirstResponseTime]: '123',
                     [TicketDimension.AssigneeUserId]: '456',
                 },
             ]
@@ -297,14 +297,17 @@ describe('agentPerformanceSlice', () => {
                     stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
-            } as RootState
+            } as unknown as RootState
 
             expect(getSortedAgents(state)).toEqual(
                 metricData.map((metric) =>
                     agents.find(
                         (agent) =>
                             String(agent.id) ===
-                            metric[TicketMember.AssigneeUserId]
+                            metric[
+                                TicketMessagesDimension
+                                    .FirstHelpdeskMessageUserId
+                            ]
                     )
                 )
             )
@@ -317,8 +320,8 @@ describe('agentPerformanceSlice', () => {
             ]
             const metricData = [
                 {
-                    [TicketMember.AssigneeUserId]: '2',
-                    [TicketMeasure.FirstResponseTime]: '10',
+                    [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
+                    [TicketMessagesMeasure.FirstResponseTime]: '10',
                 },
             ]
 
@@ -336,7 +339,7 @@ describe('agentPerformanceSlice', () => {
                     stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
-            } as RootState
+            } as unknown as RootState
 
             expect(getSortedAgents(state).pop()).toEqual(agents[0])
         })
@@ -348,8 +351,8 @@ describe('agentPerformanceSlice', () => {
             ]
             const metricData = [
                 {
-                    [TicketMember.AssigneeUserId]: '2',
-                    [TicketMeasure.FirstResponseTime]: '10',
+                    [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
+                    [TicketMessagesMeasure.FirstResponseTime]: '10',
                 },
             ]
             const noDataAgent = agents[0]
@@ -369,7 +372,7 @@ describe('agentPerformanceSlice', () => {
                         stats: initialUiStatsState,
                     },
                     stats: initialStatsFiltersState,
-                } as RootState)
+                } as unknown as RootState)
 
             expect(
                 getSortedAgents(
@@ -387,7 +390,7 @@ describe('agentPerformanceSlice', () => {
             const agents = personNames.map((name, idx) => ({id: idx, name}))
             const lastSortingMetric = agents.map((agent) => ({
                 [TicketMember.AssigneeUserId]: String(agent.id),
-                [TicketMeasure.FirstResponseTime]: '10',
+                [TicketMessagesMeasure.FirstResponseTime]: '10',
             }))
             const filteredAgents = [1, 4, 5, 10]
             const state = {

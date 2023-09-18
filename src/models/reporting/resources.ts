@@ -1,11 +1,14 @@
 import client from 'models/api/resources'
-import {ReportingParams, ReportingResponse} from './types'
+import {Cube, ReportingParams, ReportingResponse} from './types'
 
 export const REPORTING_ENDPOINT = '/api/reporting'
 export const QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS = 202
 
-export const postReporting = async <TData extends unknown[]>(
-    queries: ReportingParams
+export const postReporting = async <
+    TData extends unknown[],
+    TCube extends Cube = Cube
+>(
+    queries: ReportingParams<TCube>
 ) => {
     const res = await client.post<ReportingResponse<TData>>(
         REPORTING_ENDPOINT,

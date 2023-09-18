@@ -3,6 +3,10 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {
+    TicketMessagesCube,
+    TicketMessagesMeasure,
+} from 'models/reporting/cubes/TicketMessagesCube'
 import {getQuery} from 'pages/stats/TableConfig'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {opposite, OrderDirection} from 'models/api/types'
@@ -18,7 +22,6 @@ import {
 import {initialState as filtersInitialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {TableColumn} from 'state/ui/stats/types'
-import {TicketMeasure} from 'models/reporting/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -99,10 +102,10 @@ describe('useSortingQueries', () => {
 
     it('should dispatch query result on sorting isLoading and data fetched', () => {
         const column = TableColumn.ClosedTickets
-        const metricData: MetricWithDecile['data'] = {
+        const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMeasure.FirstResponseTime]: '123'}],
+            allData: [{[TicketMessagesMeasure.FirstResponseTime]: '123'}],
         }
         const store = mockStore({
             ...defaultState,
@@ -137,10 +140,10 @@ describe('useSortingQueries', () => {
 
     it('should not dispatch query result on sorting isLoading and data is fetching', () => {
         const column = TableColumn.ClosedTickets
-        const metricData: MetricWithDecile['data'] = {
+        const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMeasure.FirstResponseTime]: '123'}],
+            allData: [{[TicketMessagesMeasure.FirstResponseTime]: '123'}],
         }
         const store = mockStore({
             ...defaultState,
