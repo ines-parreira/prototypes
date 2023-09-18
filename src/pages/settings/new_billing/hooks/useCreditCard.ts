@@ -207,18 +207,24 @@ export const useCreditCard = ({
         })
 
         try {
+            // A valid billing address is needed for tax purpose
+            // (only for the first time a credit card is added, therefore when in trial)
+            if (isTrialingSubscription) {
+                const response = (await updateContact(fromJS(billingContact))(
+                    dispatch
+                )) as AnyAction
+
+                if (response.type === UPDATE_BILLING_CONTACT_ERROR) {
+                    return
+                }
+            }
+
+            // Then the credit card is added
             const creditCardToken = await createStripeCardToken(cardToEncode)
+
             await gorgiasApi.updateCreditCard(
                 fromJS({token: creditCardToken.id})
             )
-
-            const response = (await updateContact(fromJS(billingContact))(
-                dispatch
-            )) as AnyAction
-
-            if (response.type === UPDATE_BILLING_CONTACT_ERROR) {
-                return
-            }
 
             void dispatch(
                 notify({

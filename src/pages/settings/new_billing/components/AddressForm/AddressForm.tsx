@@ -6,7 +6,11 @@ import {BillingContact} from 'state/billing/types'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import CountriesDropdown from '../../components/CountriesDropdown/CountriesDropdown'
 
-import {emailError, emptyError} from '../../utils/validations'
+import {
+    emailError,
+    emptyError,
+    validatePostalCode,
+} from '../../utils/validations'
 import css from './AddressForm.less'
 
 type AddressFormProps = {
@@ -171,9 +175,9 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                         }
                         placeholder="94103"
                         isRequired
-                        error={emptyError(
+                        error={validatePostalCode(
                             billingContact.shipping.address.postal_code,
-                            'Zip code'
+                            billingContact.shipping.address.country
                         )}
                         value={billingContact.shipping.address.postal_code}
                     />
