@@ -1,11 +1,6 @@
 // g/integrations/magento2/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-
+import type {IntegrationBase} from './base'
 import type {Integration} from './'
 
 export type Magento2Integration = IntegrationBase & {
@@ -23,9 +18,7 @@ export type Magento2IntegrationMeta = {
     is_manual: boolean
 }
 
-export const isMagento2Integration = createTypeGuard<
-    Maybe<Integration>,
-    Magento2Integration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Magento2 ? input : undefined
-)
+export const isMagento2Integration = (
+    integration: Maybe<Integration>
+): integration is Magento2Integration =>
+    integration?.type === IntegrationType.Magento2

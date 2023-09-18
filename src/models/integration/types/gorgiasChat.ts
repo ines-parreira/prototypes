@@ -1,11 +1,8 @@
 // g/integrations/gorgias_chat/schemas.py
-
 import {LanguageItem} from 'config/integrations/gorgias_chat'
-
-import {createTypeGuard} from '../../../utils'
 import {IntegrationType} from '../constants'
+import type {IntegrationBase, IntegrationDecoration} from './base'
 
-import {IntegrationBase, IntegrationDecoration} from './base'
 import type {Integration} from './'
 
 export type GorgiasChatIntegration = IntegrationBase & {
@@ -93,12 +90,10 @@ export type SelfServiceConfiguration = {
     integration_id?: number
 }
 
-export const isGorgiasChatIntegration = createTypeGuard<
-    Maybe<Integration>,
-    GorgiasChatIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.GorgiasChat ? input : undefined
-)
+export const isGorgiasChatIntegration = (
+    integration: Maybe<Integration>
+): integration is GorgiasChatIntegration =>
+    integration?.type === IntegrationType.GorgiasChat
 
 export enum GorgiasChatPositionAlignmentEnum {
     BOTTOM_RIGHT = 'bottom-right',

@@ -1,12 +1,7 @@
 // g/integrations/facebook/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-import {OAuth2, AutoResponder} from './misc'
-
+import type {IntegrationBase} from './base'
+import type {OAuth2, AutoResponder} from './misc'
 import type {Integration} from './'
 
 export type FacebookIntegration = IntegrationBase & {
@@ -69,9 +64,7 @@ export type FacebokIntegrationPreferences = {
     auto_responder?: AutoResponder
 }
 
-export const isFacebookIntegration = createTypeGuard<
-    Maybe<Integration>,
-    FacebookIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Facebook ? input : undefined
-)
+export const isFacebookIntegration = (
+    integration: Maybe<Integration>
+): integration is FacebookIntegration =>
+    integration?.type === IntegrationType.Facebook

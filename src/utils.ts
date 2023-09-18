@@ -1062,16 +1062,6 @@ export const makeGetPlainJS = <T = unknown, S = RootState>(
     selector: Selector<S, Iterable<any, any>>
 ) => createSelector(selector, (data: Iterable<any, any>) => data.toJS() as T)
 
-export function createTypeGuard<
-    Input,
-    Output extends Input,
-    Args extends unknown[] = []
->(f: (value: Input, ...args: Args) => Output | undefined) {
-    return (value: Input, ...args: Args): value is Output => {
-        return f(value, ...args) !== undefined
-    }
-}
-
 export const getIconFromUrl = (url: string): string => {
     //eslint-disable-next-line  @typescript-eslint/no-var-requires
     return url ? (require(`assets/img/${url}`) as string) : ''

@@ -1,12 +1,7 @@
 // g/integrations/smooch/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-import {OAuth2, AutoResponder} from './misc'
-
+import type {IntegrationBase} from './base'
+import type {OAuth2, AutoResponder} from './misc'
 import type {Integration} from './'
 
 export type SmoochIntegration = IntegrationBase & {
@@ -30,9 +25,7 @@ export type SmoochIntegrationMeta = {
     language: string
 }
 
-export const isSmoochIntegration = createTypeGuard<
-    Maybe<Integration>,
-    SmoochIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Smooch ? input : undefined
-)
+export const isSmoochIntegration = (
+    integration: Maybe<Integration>
+): integration is SmoochIntegration =>
+    integration?.type === IntegrationType.Smooch

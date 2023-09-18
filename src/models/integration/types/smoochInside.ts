@@ -1,12 +1,7 @@
 // g/integrations/smooch_inside/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-import {AutoResponder} from './misc'
-
+import type {IntegrationBase} from './base'
+import type {AutoResponder} from './misc'
 import type {Integration} from './'
 
 export type SmoochInsideIntegration = IntegrationBase & {
@@ -54,9 +49,7 @@ type SmoochInsideMessage = {
     html: string
 }
 
-export const isSmoochInsideIntegration = createTypeGuard<
-    Maybe<Integration>,
-    SmoochInsideIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.SmoochInside ? input : undefined
-)
+export const isSmoochInsideIntegration = (
+    integration: Maybe<Integration>
+): integration is SmoochInsideIntegration =>
+    integration?.type === IntegrationType.SmoochInside

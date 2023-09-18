@@ -1,12 +1,7 @@
 // g/integrations/email/schemas.py
-
-import {SenderVerification} from 'models/singleSenderVerification/types'
-import {createTypeGuard} from '../../../utils'
-
+import type {SenderVerification} from 'models/singleSenderVerification/types'
 import {EmailProvider, IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-
+import type {IntegrationBase} from './base'
 import type {Integration} from './'
 
 export enum OutboundVerificationStatusValue {
@@ -125,9 +120,7 @@ export type EmailMigrationOutboundVerification = {
     integrations: EmailMigrationSenderVerificationIntegration[]
 }
 
-export const isEmailIntegration = createTypeGuard<
-    Maybe<Integration>,
-    EmailIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Email ? input : undefined
-)
+export const isEmailIntegration = (
+    integration: Maybe<Integration>
+): integration is EmailIntegration =>
+    integration?.type === IntegrationType.Email

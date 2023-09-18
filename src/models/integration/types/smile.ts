@@ -1,11 +1,9 @@
 // g/integrations/smile/schemas.py
 
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
 
-import {IntegrationBase} from './base'
-import {OAuth2} from './misc'
+import type {IntegrationBase} from './base'
+import type {OAuth2} from './misc'
 
 import type {Integration} from './'
 
@@ -23,9 +21,7 @@ export type SmileIntegrationMeta = {
     }
 }
 
-export const isSmileIntegration = createTypeGuard<
-    Maybe<Integration>,
-    SmileIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Smile ? input : undefined
-)
+export const isSmileIntegration = (
+    integration: Maybe<Integration>
+): integration is SmileIntegration =>
+    integration?.type === IntegrationType.Smile

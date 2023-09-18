@@ -1,13 +1,8 @@
 // g/integrations/gmail/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {EmailIntegrationMeta} from './email'
-import {IntegrationBase} from './base'
-import {OAuth2} from './misc'
-
+import type {EmailIntegrationMeta} from './email'
+import type {IntegrationBase} from './base'
+import type {OAuth2} from './misc'
 import type {Integration} from './'
 
 export type GmailIntegration = IntegrationBase & {
@@ -27,9 +22,7 @@ export type GmailIntegrationMeta = EmailIntegrationMeta & {
     use_new_creds_version: boolean
 }
 
-export const isGmailIntegration = createTypeGuard<
-    Maybe<Integration>,
-    GmailIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Gmail ? input : undefined
-)
+export const isGmailIntegration = (
+    integration: Maybe<Integration>
+): integration is GmailIntegration =>
+    integration?.type === IntegrationType.Gmail

@@ -1,12 +1,7 @@
 // g/integrations/yotpo/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-import {OAuth2} from './misc'
-
+import type {IntegrationBase} from './base'
+import type {OAuth2} from './misc'
 import type {Integration} from './'
 
 export type YotpoIntegration = IntegrationBase & {
@@ -23,9 +18,7 @@ export type YotpoIntegrationMeta = {
     yotpo_account_id: string
 }
 
-export const isYotpoIntegration = createTypeGuard<
-    Maybe<Integration>,
-    YotpoIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Yotpo ? input : undefined
-)
+export const isYotpoIntegration = (
+    integration: Maybe<Integration>
+): integration is YotpoIntegration =>
+    integration?.type === IntegrationType.Yotpo

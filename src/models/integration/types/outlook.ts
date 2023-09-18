@@ -1,13 +1,8 @@
 // g/integrations/outlook/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-import {EmailSignature} from './email'
-import {OAuth2} from './misc'
-
+import type {IntegrationBase} from './base'
+import type {EmailSignature} from './email'
+import type {OAuth2} from './misc'
 import type {Integration} from './'
 
 export type OutlookIntegration = IntegrationBase & {
@@ -34,9 +29,7 @@ export type OutlookIntegrationMeta = {
     signature?: EmailSignature
 }
 
-export const isOutlookIntegration = createTypeGuard<
-    Maybe<Integration>,
-    OutlookIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Outlook ? input : undefined
-)
+export const isOutlookIntegration = (
+    integration: Maybe<Integration>
+): integration is OutlookIntegration =>
+    integration?.type === IntegrationType.Outlook

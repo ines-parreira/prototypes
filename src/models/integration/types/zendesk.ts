@@ -1,12 +1,7 @@
 // g/integrations/zendesk/schemas.py
-
 import {ImportStatus} from 'pages/settings/importData/zendesk/types'
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-
+import type {IntegrationBase} from './base'
 import type {Integration} from './'
 
 export type ZendeskIntegration = IntegrationBase & {
@@ -36,9 +31,7 @@ export type ZendeskIntegrationMeta = {
     continuous_import_enabled?: boolean
 }
 
-export const isZendeskIntegration = createTypeGuard<
-    Maybe<Integration>,
-    ZendeskIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Zendesk ? input : undefined
-)
+export const isZendeskIntegration = (
+    integration: Maybe<Integration>
+): integration is ZendeskIntegration =>
+    integration?.type === IntegrationType.Zendesk

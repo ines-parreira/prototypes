@@ -1,11 +1,7 @@
 // g/integrations/recharge/schemas.py
-
-import {createTypeGuard} from '../../../utils'
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-import {OAuth2} from './misc'
-
+import type {IntegrationBase} from './base'
+import type {OAuth2} from './misc'
 import type {Integration} from './'
 
 export type RechargeIntegration = IntegrationBase & {
@@ -23,9 +19,7 @@ export type RechargeIntegrationMeta = {
     need_scope_update: boolean
 }
 
-export const isRechargeIntegration = createTypeGuard<
-    Maybe<Integration>,
-    RechargeIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Recharge ? input : undefined
-)
+export const isRechargeIntegration = (
+    integration: Maybe<Integration>
+): integration is RechargeIntegration =>
+    integration?.type === IntegrationType.Recharge

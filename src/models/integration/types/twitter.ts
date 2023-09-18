@@ -1,12 +1,8 @@
 // g/integrations/twitter/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
 
-import {IntegrationBase} from './base'
-import {OAuth2} from './misc'
-
+import type {IntegrationBase} from './base'
+import type {OAuth2} from './misc'
 import type {Integration} from './'
 
 export type TwitterIntegration = IntegrationBase & {
@@ -27,9 +23,7 @@ export type TwitterIntegrationMeta = {
     }
 }
 
-export const isTwitterIntegration = createTypeGuard<
-    Maybe<Integration>,
-    TwitterIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Twitter ? input : undefined
-)
+export const isTwitterIntegration = (
+    integration: Maybe<Integration>
+): integration is TwitterIntegration =>
+    integration?.type === IntegrationType.Twitter

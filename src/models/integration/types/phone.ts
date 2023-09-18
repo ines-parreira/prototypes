@@ -1,16 +1,11 @@
 // g/integrations/phone/schemas.py
-
-import {createTypeGuard} from 'utils'
 import {PhoneFunction} from 'business/twilio'
-
 import {
     IntegrationType,
     IvrMenuActionType,
     VoiceMessageType,
 } from '../constants'
-
-import {IntegrationBase} from './base'
-
+import type {IntegrationBase} from './base'
 import type {Integration} from './'
 
 export type PhoneIntegration = IntegrationBase & {
@@ -105,9 +100,7 @@ export type IvrForwardCall = {
     integration_id?: number
 }
 
-export const isPhoneIntegration = createTypeGuard<
-    Maybe<Integration>,
-    PhoneIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Phone ? input : undefined
-)
+export const isPhoneIntegration = (
+    integration: Maybe<Integration>
+): integration is PhoneIntegration =>
+    integration?.type === IntegrationType.Phone

@@ -1,11 +1,6 @@
 // g/integrations/aircall/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-
+import type {IntegrationBase} from './base'
 import type {Integration} from './'
 
 export type AircallIntegration = IntegrationBase & {
@@ -17,9 +12,7 @@ type AircallIntegrationMeta = {
     address: string
 }
 
-export const isAircallIntegration = createTypeGuard<
-    Maybe<Integration>,
-    AircallIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Aircall ? input : undefined
-)
+export const isAircallIntegration = (
+    integration: Maybe<Integration>
+): integration is AircallIntegration =>
+    integration?.type === IntegrationType.Aircall

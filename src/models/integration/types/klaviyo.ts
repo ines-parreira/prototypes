@@ -1,11 +1,6 @@
 // g/integrations/klaviyo/schemas.py
-
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-
+import type {IntegrationBase} from './base'
 import type {Integration} from './'
 
 export type KlaviyoIntegration = IntegrationBase & {
@@ -59,9 +54,7 @@ type SyncState = {
     customer: KlaviyoSyncStateItem
 }
 
-export const isKlaviyoIntegration = createTypeGuard<
-    Maybe<Integration>,
-    KlaviyoIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Klaviyo ? input : undefined
-)
+export const isKlaviyoIntegration = (
+    integration: Maybe<Integration>
+): integration is KlaviyoIntegration =>
+    integration?.type === IntegrationType.Klaviyo

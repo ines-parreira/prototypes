@@ -1,10 +1,6 @@
 // g/integrations/sms/schemas.py
-
-import {createTypeGuard} from 'utils'
 import {IntegrationType} from '../constants'
-
-import {IntegrationBase} from './base'
-
+import type {IntegrationBase} from './base'
 import type {Integration} from './'
 
 export type WhatsAppIntegration = IntegrationBase & {
@@ -20,12 +16,10 @@ export type WhatsAppIntegrationMeta = {
     }
 }
 
-export const isWhatsAppIntegration = createTypeGuard<
-    Maybe<Integration>,
-    WhatsAppIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.WhatsApp ? input : undefined
-)
+export const isWhatsAppIntegration = (
+    integration: Maybe<Integration>
+): integration is WhatsAppIntegration =>
+    integration?.type === IntegrationType.WhatsApp
 
 export type WhatsAppMigrationProgress = {
     waba_phone_number_id: string

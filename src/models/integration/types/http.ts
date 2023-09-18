@@ -1,10 +1,8 @@
 import {ContentType, HttpMethod} from 'models/api/types'
-import {EventType} from 'models/event/types'
-
-import {Field} from 'pages/integrations/integration/components/http/Integration/ObjectListField'
-import {createTypeGuard} from '../../../utils'
+import type {EventType} from 'models/event/types'
+import type {Field} from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 import {IntegrationType} from '../constants'
-import {IntegrationBase} from './base'
+import type {IntegrationBase} from './base'
 import type {Integration} from './'
 
 export type HttpIntegration = IntegrationBase & {
@@ -32,9 +30,6 @@ export type HttpIntegrationMeta = {
 
 export type HTTPForm = string | null | Record<string, unknown> | Field[]
 
-export const isHttpIntegration = createTypeGuard<
-    Maybe<Integration>,
-    HttpIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Http ? input : undefined
-)
+export const isHttpIntegration = (
+    integration: Maybe<Integration>
+): integration is HttpIntegration => integration?.type === IntegrationType.Http
