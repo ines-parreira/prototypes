@@ -27,7 +27,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             <i
               class="material-icons md-1 directionIcon"
             >
-              arrow_drop_up
+              arrow_upward
             </i>
           </div>
         </div>
@@ -49,7 +49,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             <i
               class="material-icons md-1 directionIcon"
             >
-              arrow_drop_up
+              arrow_upward
             </i>
           </div>
         </div>

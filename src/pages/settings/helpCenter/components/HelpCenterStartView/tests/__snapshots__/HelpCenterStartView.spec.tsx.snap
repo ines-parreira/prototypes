@@ -297,7 +297,7 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         <i
                           class="material-icons md-1 directionIcon"
                         >
-                          arrow_drop_up
+                          arrow_upward
                         </i>
                       </div>
                     </div>
@@ -319,7 +319,7 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         <i
                           class="material-icons md-1 directionIcon"
                         >
-                          arrow_drop_up
+                          arrow_upward
                         </i>
                       </div>
                     </div>
@@ -341,7 +341,7 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         <i
                           class="material-icons md-1 directionIcon"
                         >
-                          arrow_drop_up
+                          arrow_upward
                         </i>
                       </div>
                     </div>

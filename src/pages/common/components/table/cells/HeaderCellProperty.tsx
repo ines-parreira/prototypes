@@ -72,8 +72,8 @@ export default function HeaderCellProperty({
                         )}
                     >
                         {direction === OrderDirection.Asc
-                            ? 'arrow_drop_down'
-                            : 'arrow_drop_up'}
+                            ? 'arrow_downward'
+                            : 'arrow_upward'}
                     </i>
                 </div>
             </div>

@@ -43,7 +43,7 @@ describe('<AgentsHeaderCellContent>', () => {
         const sortableColumn = TableColumn.AgentName
 
         render(<AgentsHeaderCellContent column={sortableColumn} />)
-        const sortingIcon = screen.getByText('arrow_drop_up')
+        const sortingIcon = screen.getByText('arrow_upward')
 
         expect(sortingIcon).toBeInTheDocument()
     })
@@ -52,7 +52,7 @@ describe('<AgentsHeaderCellContent>', () => {
         const column = TableColumn.FirstResponseTime
 
         render(<AgentsHeaderCellContent column={column} />)
-        const sortingIcon = screen.queryByText('arrow_drop_up')
+        const sortingIcon = screen.queryByText('arrow_upward')
 
         expect(sortingIcon).not.toBeInTheDocument()
     })

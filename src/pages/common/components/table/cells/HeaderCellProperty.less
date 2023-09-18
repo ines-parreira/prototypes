@@ -25,7 +25,7 @@
     }
 
     .title {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-6);
         font-size: 11px;
         letter-spacing: 0.05em;
         text-transform: uppercase;
@@ -38,10 +38,12 @@
     }
 
     .directionIcon {
-        opacity: 0;
+        display: none;
+        color: var(--main-primary-4);
+        margin-left: 4px;
 
         &.isVisible {
-            opacity: 1;
+            display: block;
         }
     }
 }

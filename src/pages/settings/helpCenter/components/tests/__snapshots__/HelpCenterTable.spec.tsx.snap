@@ -49,7 +49,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
               <i
                 class="material-icons md-1 directionIcon"
               >
-                arrow_drop_up
+                arrow_upward
               </i>
             </div>
           </div>
@@ -71,7 +71,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
               <i
                 class="material-icons md-1 directionIcon"
               >
-                arrow_drop_up
+                arrow_upward
               </i>
             </div>
           </div>
@@ -93,7 +93,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
               <i
                 class="material-icons md-1 directionIcon"
               >
-                arrow_drop_up
+                arrow_upward
               </i>
             </div>
           </div>
