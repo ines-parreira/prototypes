@@ -434,6 +434,15 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         let actionToUse = actions.createGorgiasChatIntegration
 
         if (isUpdate) {
+            // TODO. Drop me once multi-language changes are introduced.
+            // This one is used to fix a bug introduced with https://linear.app/gorgias/issue/AUTCH-1611/bug-fix-wizard-preview-and-language-should-still-be-set-for-the-moment.
+            state.languages = fromJS([
+                {
+                    language: state.language,
+                    primary: true,
+                },
+            ])
+
             form.id = integration.get('id')
             const integrationMeta: Map<any, any> = integration.get('meta')
             form.meta = integrationMeta
