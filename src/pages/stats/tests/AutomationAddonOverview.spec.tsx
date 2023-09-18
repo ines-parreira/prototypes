@@ -231,7 +231,6 @@ describe('<AutomationAddonOverview />', () => {
 
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsPerformanceTips]: true,
-            [FeatureFlagKey.AnalyticsFilterByTags]: true,
         }))
     })
 
