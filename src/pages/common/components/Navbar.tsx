@@ -446,7 +446,7 @@ export class Navbar extends Component<Props, State> {
                         isOpen={this.state.bottomDropdownOpen}
                         onToggle={this._toggleBottomDropdown}
                         target={this.menuToggleRef}
-                        placement="top"
+                        placement="top-start"
                         offset={0}
                     >
                         <Screens activeScreen={this.state.activeScreen}>

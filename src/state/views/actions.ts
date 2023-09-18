@@ -791,7 +791,7 @@ export const updateRecentViews = (viewIds: number[]) => ({
 /**
  * Go to the parent view
  */
-export const gotoActiveView =
+export const goToActiveView =
     () => (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
         const activeView = viewsSelectors.getActiveView(state)

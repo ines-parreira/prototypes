@@ -1,33 +1,40 @@
 import classnames from 'classnames'
-import React, {ComponentType, ReactNode, createRef} from 'react'
+import React, {
+    ComponentType,
+    ReactNode,
+    memo,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react'
 import * as ReactDOM from 'react-dom'
-import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 import NotificationsSystem, {
     dismissNotification,
     Notification as ReapopNotification,
 } from 'reapop'
-import {RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
 import {Program} from 'estree'
 
 import 'assets/css/main.less'
+import {useEffectOnce} from 'react-use'
 import {Theme, AppUIContext} from 'providers/ui/AppUIContext'
-import {getAccessSettings} from 'state/currentAccount/selectors'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import pollingManager from 'services/pollingManager'
 import shortcutManager from 'services/shortcutManager'
 import userActivityManager from 'services/userActivityManager'
 import statusPageManager from 'services/statusPageManager/statusPageManager'
-import * as layoutActions from 'state/layout/actions'
-import * as layoutSelectors from 'state/layout/selectors'
-import {RootState} from 'state/types'
-import * as viewsActions from 'state/views/actions'
+import {closePanels, openPanel} from 'state/layout/actions'
+import {getCurrentOpenedPanel} from 'state/layout/selectors'
+import {fetchVisibleViewsCounts, goToActiveView} from 'state/views/actions'
 import {identifyUser} from 'store/middlewares/segmentTracker'
 import {handleUsageBanner} from 'state/notifications/actions'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
-import * as viewsSelectors from 'state/views/selectors'
+import {
+    getActiveView,
+    shouldFetchActiveViewTickets as shouldFetchActiveViewTicketsSelect,
+} from 'state/views/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {getViewFilters} from 'state/views/utils'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
@@ -35,6 +42,8 @@ import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {handle2FAEnforced} from 'state/currentUser/actions'
 
+import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
 import css from './App.less'
 import BannerNotifications from './common/components/BannerNotifications/BannerNotifications'
 import FullPage from './common/components/FullPage'
@@ -58,72 +67,84 @@ type Props = {
     navbar?: ComponentType<any>
     infobar?: ComponentType<any>
     content?: ComponentType<any>
-} & ConnectedProps<typeof connector> &
-    RouteComponentProps
-
-type State = {
-    theme: Theme
 }
 
-class App extends React.Component<Props, State> {
-    appRef = createRef<HTMLDivElement>()
+const App = ({
+    infobarOnMobile,
+    isEditingWidgets,
+    noContainerWidthLimit,
+    containerPadding,
+    content: Content,
+    navbar: Navbar,
+    infobar: Infobar,
+    children,
+}: Props) => {
+    const dispatch = useAppDispatch()
 
-    state: State = {
-        theme: 'modern',
-    }
+    const currentUser = useAppSelector((state) => state.currentUser)
 
-    componentDidMount() {
-        const item = this.props.currentAccount
-        const newAccountStatus = item.getIn(['status', 'status'])
-        const notification: Map<any, any> | undefined = item.getIn([
+    const isCurrentUserActive = currentUser.get('is_active')
+    const isPreviousCurrentUserActive = useRef()
+
+    const currentAccount = useAppSelector((state) => state.currentAccount)
+    const notifications = useAppSelector((state) => state.notifications)
+    const openedPanel = useAppSelector(getCurrentOpenedPanel)
+    const hasPhoneIntegration = useAppSelector(
+        hasIntegrationOfTypes(IntegrationType.Phone)
+    )
+    const activeView = useAppSelector(getActiveView)
+    const shouldFetchActiveViewTickets = useAppSelector(
+        shouldFetchActiveViewTicketsSelect
+    )
+
+    const appRef = useRef<HTMLDivElement>(null)
+    const [theme] = useState<Theme>('modern')
+
+    useEffectOnce(() => {
+        const newAccountStatus = currentAccount.getIn(['status', 'status'])
+        const notification: Map<any, any> | undefined = currentAccount.getIn([
             'status',
             'notification',
         ])
 
-        this.props.handleUsageBanner({
-            newAccountStatus,
-            notification: notification ? notification.toJS() : null,
-            currentAccountStatus: newAccountStatus,
-        })
+        dispatch(
+            handleUsageBanner({
+                newAccountStatus,
+                notification: notification ? notification.toJS() : null,
+                currentAccountStatus: newAccountStatus,
+            })
+        )
 
         userActivityManager.watch()
-        pollingManager.start()
         statusPageManager.startPolling()
 
         // ask for the newest view counts
-        this.props.fetchVisibleViewsCounts()
+        dispatch(fetchVisibleViewsCounts())
         shortcutManager.bind('App', {
             GO_VIEW: {
                 action: (e) => {
                     e.preventDefault()
-                    this.props.gotoActiveView()
+                    dispatch(goToActiveView())
                 },
             },
             UNDO_MESSAGE: {
                 action: () => pendingMessageManager.undoMessage(),
             },
         })
-        identifyUser(this.props.currentUser.toJS())
+        identifyUser(currentUser.toJS())
 
-        this.props.handle2FAEnforced()
-    }
+        dispatch(handle2FAEnforced())
 
-    componentWillUnmount() {
-        shortcutManager.unbind('App')
-        pollingManager.stop()
-        statusPageManager.stopPolling()
-    }
+        return () => {
+            shortcutManager.unbind('App')
+            pollingManager.stop()
+            statusPageManager.stopPolling()
+        }
+    })
 
-    componentWillReceiveProps(nextProps: Props) {
-        const isUserActive = this.props.currentUser.get('is_active')
-        const isNextUserActive = nextProps.currentUser.get('is_active')
-
-        if (isUserActive && !isNextUserActive) {
-            const activeView = nextProps.activeView
-
+    useLayoutEffect(() => {
+        if (isPreviousCurrentUserActive.current && !isCurrentUserActive) {
             if (activeView.get('filters_ast')) {
-                const shouldFetchActiveViewTickets =
-                    nextProps.shouldFetchActiveViewTickets
                 const shouldContinuePollingChatViews =
                     !!getLDClient().allFlags()[
                         FeatureFlagKey.ContinuousChatViewsPolling
@@ -158,190 +179,154 @@ class App extends React.Component<Props, State> {
 
             // Stop polling when current user becomes inactive
             pollingManager.stop()
-        } else if (!isUserActive && isNextUserActive) {
+        } else if (
+            !isPreviousCurrentUserActive.current &&
+            isCurrentUserActive
+        ) {
             // Start polling when current user becomes active
             pollingManager.start()
         }
-    }
+        return () => {
+            isPreviousCurrentUserActive.current = isCurrentUserActive
+        }
+    }, [activeView, isCurrentUserActive, shouldFetchActiveViewTickets])
 
-    render() {
-        const {
-            notifications,
-            openedPanel,
-            infobarOnMobile,
-            isEditingWidgets,
-            noContainerWidthLimit,
-            containerPadding,
-            content: Content,
-            navbar: Navbar,
-            infobar: Infobar,
-            hasPhoneIntegration,
-            children,
-            dismissNotification,
-        } = this.props
-        const {theme} = this.state
-        const bannerNotifications = notifications.filter(
-            (notif) => notif.style === 'banner'
-        )
+    const bannerNotifications = notifications.filter(
+        (notif) => notif.style === 'banner'
+    )
 
-        const alertNotifications = notifications.filter(
-            (notif) => notif.style === 'alert'
-        ) as ReapopNotification[]
+    const alertNotifications = notifications.filter(
+        (notif) => notif.style === 'alert'
+    ) as ReapopNotification[]
 
-        const Wrapper = containerPadding ? FullPage : Container
-        const wrapperProps = containerPadding
-            ? {noContainerWidthLimit}
-            : {fluid: true, className: classnames(css['main-content'])}
-        const content = !!Content ? <Content /> : children
+    const Wrapper = containerPadding ? FullPage : Container
+    const wrapperProps = containerPadding
+        ? {noContainerWidthLimit}
+        : {fluid: true, className: classnames(css['main-content'])}
+    const content = !!Content ? <Content /> : children
 
-        const hasOpenedPanel = !!openedPanel
+    const hasOpenedPanel = !!openedPanel
 
-        return (
-            <ErrorBoundary>
-                <AppUIContext.Provider
-                    value={{
-                        appRef: this.appRef,
-                        theme,
-                    }}
-                >
-                    <AppUIContext.Consumer>
-                        {({theme}) => (
-                            <div
-                                ref={this.appRef}
-                                className={classnames(css.page, theme)}
-                            >
-                                <BannerNotifications
-                                    notifications={bannerNotifications}
-                                />
-                                <EmailMigrationBanner />
+    return (
+        <ErrorBoundary>
+            <AppUIContext.Provider
+                value={{
+                    appRef,
+                    theme,
+                }}
+            >
+                <AppUIContext.Consumer>
+                    {({theme}) => (
+                        <div
+                            ref={appRef}
+                            className={classnames(css.page, theme)}
+                        >
+                            <BannerNotifications
+                                notifications={bannerNotifications}
+                            />
+                            <EmailMigrationBanner />
 
-                                <div id="app-root" className={css.app}>
-                                    <Spotlight>
-                                        {Navbar && <Navbar />}
-                                    </Spotlight>
+                            <div id="app-root" className={css.app}>
+                                <Spotlight>{Navbar && <Navbar />}</Spotlight>
 
+                                <div
+                                    className={classnames(
+                                        'd-flex flex-grow-1 flex-column',
+                                        css.container
+                                    )}
+                                >
                                     <div
-                                        className={classnames(
-                                            'd-flex flex-grow-1 flex-column',
-                                            css.container
-                                        )}
+                                        className="d-flex flex-grow-1"
+                                        style={{
+                                            overflow: 'hidden',
+                                        }}
                                     >
                                         <div
-                                            className="d-flex flex-grow-1"
-                                            style={{
-                                                overflow: 'hidden',
-                                            }}
+                                            className={classnames(
+                                                'app-content',
+                                                css.content
+                                            )}
                                         >
-                                            <div
-                                                className={classnames(
-                                                    'app-content',
-                                                    css.content
-                                                )}
-                                            >
-                                                <div className="mobile-nav">
-                                                    <IconButton
-                                                        className="mr-3"
+                                            <div className="mobile-nav">
+                                                <IconButton
+                                                    className="mr-3"
+                                                    fillStyle="ghost"
+                                                    intent="secondary"
+                                                    onClick={() =>
+                                                        dispatch(
+                                                            openPanel('navbar')
+                                                        )
+                                                    }
+                                                >
+                                                    menu
+                                                </IconButton>
+                                                {infobarOnMobile && (
+                                                    <Button
+                                                        className="ml-3"
                                                         fillStyle="ghost"
                                                         intent="secondary"
                                                         onClick={() =>
-                                                            this.props.openPanel(
-                                                                'navbar'
+                                                            dispatch(
+                                                                openPanel(
+                                                                    'infobar'
+                                                                )
                                                             )
                                                         }
                                                     >
-                                                        menu
-                                                    </IconButton>
-                                                    {infobarOnMobile && (
-                                                        <Button
-                                                            className="ml-3"
-                                                            fillStyle="ghost"
-                                                            intent="secondary"
-                                                            onClick={() =>
-                                                                this.props.openPanel(
-                                                                    'infobar'
-                                                                )
-                                                            }
-                                                        >
-                                                            More info
-                                                        </Button>
-                                                    )}
-                                                </div>
-
-                                                <Wrapper {...wrapperProps}>
-                                                    <ErrorBoundary>
-                                                        {content}
-                                                    </ErrorBoundary>
-                                                </Wrapper>
+                                                        More info
+                                                    </Button>
+                                                )}
                                             </div>
 
-                                            {!!Infobar && (
-                                                <Infobar
-                                                    isEditingWidgets={
-                                                        !!isEditingWidgets
-                                                    }
-                                                />
-                                            )}
+                                            <Wrapper {...wrapperProps}>
+                                                <ErrorBoundary>
+                                                    {content}
+                                                </ErrorBoundary>
+                                            </Wrapper>
                                         </div>
-                                        {hasPhoneIntegration && (
-                                            <PhoneIntegrationBar />
+
+                                        {!!Infobar && (
+                                            <Infobar
+                                                isEditingWidgets={
+                                                    !!isEditingWidgets
+                                                }
+                                            />
                                         )}
                                     </div>
-
-                                    <div
-                                        className={classnames(css.backdrop, {
-                                            [css.hidden]: !hasOpenedPanel,
-                                        })}
-                                        onClick={this.props.closePanels}
-                                    />
+                                    {hasPhoneIntegration && (
+                                        <PhoneIntegrationBar />
+                                    )}
                                 </div>
 
-                                <KeyboardHelp />
-                                {ReactDOM.createPortal(
-                                    <NotificationsSystem
-                                        theme={notificationsTheme}
-                                        notifications={alertNotifications}
-                                        dismissNotification={
-                                            dismissNotification
-                                        }
-                                        components={{
-                                            NotificationIcon:
-                                                GorgiasNotificationIcon,
-                                        }}
-                                    />,
-                                    document.body
-                                )}
+                                <div
+                                    className={classnames(css.backdrop, {
+                                        [css.hidden]: !hasOpenedPanel,
+                                    })}
+                                    onClick={() => dispatch(closePanels())}
+                                />
                             </div>
-                        )}
-                    </AppUIContext.Consumer>
-                </AppUIContext.Provider>
-            </ErrorBoundary>
-        )
-    }
+
+                            <KeyboardHelp />
+                            {ReactDOM.createPortal(
+                                <NotificationsSystem
+                                    theme={notificationsTheme}
+                                    notifications={alertNotifications}
+                                    dismissNotification={(id) =>
+                                        dispatch(dismissNotification(id))
+                                    }
+                                    components={{
+                                        NotificationIcon:
+                                            GorgiasNotificationIcon,
+                                    }}
+                                />,
+                                document.body
+                            )}
+                        </div>
+                    )}
+                </AppUIContext.Consumer>
+            </AppUIContext.Provider>
+        </ErrorBoundary>
+    )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        currentUser: state.currentUser,
-        currentAccount: state.currentAccount,
-        currentAccountAccessSettings: getAccessSettings(state),
-        notifications: state.notifications,
-        openedPanel: layoutSelectors.getCurrentOpenedPanel(state),
-        hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
-            state
-        ),
-        activeView: viewsSelectors.getActiveView(state),
-        shouldFetchActiveViewTickets:
-            viewsSelectors.shouldFetchActiveViewTickets(state),
-    }),
-    {
-        fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,
-        openPanel: layoutActions.openPanel,
-        closePanels: layoutActions.closePanels,
-        gotoActiveView: viewsActions.gotoActiveView,
-        handleUsageBanner: handleUsageBanner,
-        dismissNotification: dismissNotification,
-        handle2FAEnforced: handle2FAEnforced,
-    }
-)
-
-export default connector(React.memo(App, _isEqual))
+export default memo(App, _isEqual)

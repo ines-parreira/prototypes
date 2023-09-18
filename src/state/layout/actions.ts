@@ -1,8 +1,6 @@
-import {StoreDispatch} from '../types'
-
 import * as constants from './constants'
 
-export const openPanel = (panelName: string): ReturnType<StoreDispatch> => {
+export const openPanel = (panelName: string) => {
     return {
         type: constants.OPEN_PANEL,
         panelName,
