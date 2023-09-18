@@ -1,0 +1,161 @@
+import {UseQueryResult} from '@tanstack/react-query'
+import {act, render, screen} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import userEvent from '@testing-library/user-event'
+import {ticketFieldDefinitions} from 'fixtures/customField'
+import {CustomField} from 'models/customField/types'
+import {ApiListResponseCursorPagination} from 'models/api/types'
+import {
+    CustomFieldSelect,
+    SELECT_FIELD_LABEL,
+} from 'pages/stats/CustomFieldSelect'
+import {RootState} from 'state/types'
+import {
+    initialState,
+    setSelectedCustomFieldId,
+    ticketInsightsSlice,
+} from 'state/ui/stats/ticketInsightsSlice'
+
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {assumeMock} from 'utils/testing'
+
+jest.mock('hooks/customField/useCustomFieldDefinitions')
+const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
+
+const mockStore = configureMockStore([thunk])
+
+describe('<CustomFieldSelec />', () => {
+    const defaultState = {
+        ui: {
+            [ticketInsightsSlice.name]: initialState,
+        },
+    } as unknown as RootState
+
+    it('should select first of the active fields ', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: false,
+        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+
+        const store = mockStore(defaultState)
+
+        render(
+            <Provider store={store}>
+                <CustomFieldSelect />
+            </Provider>
+        )
+
+        expect(store.getActions()).toContainEqual(
+            setSelectedCustomFieldId(ticketFieldDefinitions[0].id)
+        )
+        expect(screen.getByText(SELECT_FIELD_LABEL)).toBeInTheDocument()
+    })
+
+    it('should not render if less then 2 options available', () => {
+        const selectedCustomFieldId = ticketFieldDefinitions[0].id
+        const state = {
+            ui: {
+                [ticketInsightsSlice.name]: {selectedCustomFieldId},
+            },
+        }
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: [ticketFieldDefinitions[0]]},
+            isLoading: false,
+        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+
+        const {container} = render(
+            <Provider store={mockStore(state)}>
+                <CustomFieldSelect />
+            </Provider>
+        )
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
+    it.each([{data: undefined}, undefined])(
+        'should not render if empty response %#',
+        (response) => {
+            const selectedCustomFieldId = ticketFieldDefinitions[0].id
+            const state = {
+                ui: {
+                    [ticketInsightsSlice.name]: {selectedCustomFieldId},
+                },
+            }
+            useCustomFieldDefinitionsMock.mockReturnValue({
+                data: response,
+                isLoading: false,
+            } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+
+            const {container} = render(
+                <Provider store={mockStore(state)}>
+                    <CustomFieldSelect />
+                </Provider>
+            )
+
+            expect(container).toBeEmptyDOMElement()
+        }
+    )
+
+    it('should render Button with currently selected field Label', () => {
+        const selectedCustomFieldId = ticketFieldDefinitions[0].id
+        const state = {
+            ui: {
+                [ticketInsightsSlice.name]: {selectedCustomFieldId},
+            },
+        }
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: false,
+        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+
+        render(
+            <Provider store={mockStore(state)}>
+                <CustomFieldSelect />
+            </Provider>
+        )
+
+        expect(
+            screen.getByText(ticketFieldDefinitions[0].label)
+        ).toBeInTheDocument()
+    })
+
+    it('should list all available Custom Fields and dispatch selection', () => {
+        const state = {
+            ui: {
+                [ticketInsightsSlice.name]: initialState,
+            },
+        }
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: false,
+        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+        const selectField = ticketFieldDefinitions[1]
+        const store = mockStore(state)
+
+        render(
+            <Provider store={store}>
+                <CustomFieldSelect />
+            </Provider>
+        )
+        act(() => {
+            userEvent.click(screen.getByRole('button'))
+        })
+
+        ticketFieldDefinitions.forEach((field) => {
+            expect(screen.getByText(field.label)).toBeInTheDocument()
+        })
+
+        act(() => {
+            userEvent.click(
+                screen.getByRole('option', {name: selectField.label})
+            )
+        })
+
+        expect(store.getActions()).toContainEqual(
+            setSelectedCustomFieldId(selectField.id)
+        )
+    })
+})

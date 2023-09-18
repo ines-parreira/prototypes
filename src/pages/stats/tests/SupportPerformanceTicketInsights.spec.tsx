@@ -4,19 +4,24 @@ import SupportPerformanceTicketInsights, {
     TICKET_INSIGHTS_PAGE_TITLE,
 } from 'pages/stats/SupportPerformanceTicketInsights'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
+
 import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
-const cellMock = () => <div />
+
+jest.mock('pages/stats/CustomFieldSelect.tsx')
+const CustomFieldSelectMock = assumeMock(CustomFieldSelect)
+const componentMock = () => <div />
 
 describe('<SupportPerformanceTicketInsights />', () => {
     beforeEach(() => {
-        SupportPerformanceFiltersMock.mockImplementation(cellMock)
+        SupportPerformanceFiltersMock.mockImplementation(componentMock)
+        CustomFieldSelectMock.mockImplementation(componentMock)
     })
     it('should render the page title', () => {
         render(<SupportPerformanceTicketInsights />)
-
         const title = screen.getByText(TICKET_INSIGHTS_PAGE_TITLE)
 
         expect(title).toBeInTheDocument()
@@ -26,5 +31,11 @@ describe('<SupportPerformanceTicketInsights />', () => {
         render(<SupportPerformanceTicketInsights />)
 
         expect(SupportPerformanceFiltersMock).toHaveBeenCalled()
+    })
+
+    it('should render the CustomFieldSelect', () => {
+        render(<SupportPerformanceTicketInsights />)
+
+        expect(CustomFieldSelectMock).toHaveBeenCalled()
     })
 })

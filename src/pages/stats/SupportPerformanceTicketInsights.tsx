@@ -1,4 +1,6 @@
 import React from 'react'
+import DashboardSection from 'pages/stats/DashboardSection'
+import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
 
 import StatsPage from './StatsPage'
 import {SupportPerformanceFilters} from './SupportPerformanceFilters'
@@ -15,7 +17,9 @@ export default function SupportPerformanceTicketInsights() {
                 </>
             }
         >
-            Work in progress
+            <DashboardSection>
+                <CustomFieldSelect />
+            </DashboardSection>
         </StatsPage>
     )
 }

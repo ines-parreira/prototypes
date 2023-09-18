@@ -3,6 +3,10 @@ import {
     agentPerformanceSlice,
     AgentPerformanceState,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {
+    ticketInsightsSlice,
+    TicketInsightsState,
+} from 'state/ui/stats/ticketInsightsSlice'
 
 import editor from './editor/reducer'
 import {EditorState} from './editor/types'
@@ -28,6 +32,7 @@ const uiReducers = combineReducers<{
     helpCenter: HelpCenterState
     contactForm: ContactFormState
     [agentPerformanceSlice.name]: AgentPerformanceState
+    [ticketInsightsSlice.name]: TicketInsightsState
 }>({
     editor,
     stats,
@@ -37,6 +42,7 @@ const uiReducers = combineReducers<{
     helpCenter,
     contactForm,
     [agentPerformanceSlice.name]: agentPerformanceSlice.reducer,
+    [ticketInsightsSlice.name]: ticketInsightsSlice.reducer,
 })
 
 export default uiReducers

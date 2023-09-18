@@ -13,7 +13,6 @@ import {useApplications} from 'models/integration/queries'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
-import {initialState} from 'state/ui/stats/agentPerformanceSlice'
 import ChatApplication from '../ChatApplication'
 const queryClient = createTestQueryClient()
 
@@ -90,7 +89,6 @@ const defaultState: Partial<RootState> = {
         selfServiceConfigurations: {
             loading: false,
         },
-        agentPerformance: initialState,
     },
     integrations: fromJS({
         integrations: [
@@ -164,7 +162,7 @@ const defaultState: Partial<RootState> = {
             },
         ],
     }),
-}
+} as unknown as RootState
 
 jest.mock('../../../../../providers/HelpCenterTranslation')
 jest.mock('../../../../../../../../models/integration/queries')
