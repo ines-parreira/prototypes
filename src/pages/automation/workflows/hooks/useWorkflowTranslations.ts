@@ -207,11 +207,21 @@ export default function useWorkflowTranslations(
     )
 
     const translateGraph = useCallback(
-        (graph: VisualBuilderGraph, language: LanguageCode) =>
-            translateDeep(graph, translationsByLangDirty[language] ?? {}, {
+        (graph: VisualBuilderGraph, language: LanguageCode) => {
+            let translationsByLang = translationsByLangDirty
+            // snapshot the current language translations if needed
+            if (language === currentLanguage) {
+                translationsByLang = snapshotTranslations(
+                    graph,
+                    currentLanguage,
+                    translationsByLangDirty
+                )
+            }
+            return translateDeep(graph, translationsByLang[language] ?? {}, {
                 doNotFallback: true,
-            }),
-        [translationsByLangDirty]
+            })
+        },
+        [translationsByLangDirty, currentLanguage]
     )
 
     const deleteTranslation = useCallback(
