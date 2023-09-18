@@ -116,20 +116,14 @@ export default function SupportPerformanceOverview() {
     const accountCreatedDatetime = useAppSelector(
         getCurrentAccountCreatedDatetime
     )
-
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(() =>
         moment(accountCreatedDatetime).isBefore(
             moment(AGENTS_REPORT_RELEASE_DATE)
         )
     )
 
-    const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
-    )
-
     const hasPerformanceTips: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsPerformanceTips]
-
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
@@ -138,20 +132,17 @@ export default function SupportPerformanceOverview() {
         hasSatisfactionSurveyEnabled &&
         (surveySettings?.data.send_survey_for_chat ||
             surveySettings?.data.send_survey_for_email)
-    const statsFilters = useAppSelector(getStatsFilters)
-
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
         true
     )
 
+    const userTimezone = useAppSelector(
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    )
+    const statsFilters = useAppSelector(getStatsFilters)
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
-    const hasFilterByTags: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsFilterByTags]
-    if (!hasFilterByTags) {
-        delete requestStatsFilters['tags']
-    }
 
     const customerSatisfactionTrend = useCustomerSatisfactionTrend(
         requestStatsFilters,

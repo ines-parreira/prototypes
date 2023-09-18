@@ -1,14 +1,12 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
@@ -64,10 +62,6 @@ describe('Support Performance Filters', () => {
     ]
 
     it('should render the filters with no selected value', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsFilterByTags]: true,
-        }))
-
         render(
             <MemoryRouter>
                 <Provider
@@ -104,10 +98,6 @@ describe('Support Performance Filters', () => {
     })
 
     it('should render the filters with one selected value', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsFilterByTags]: true,
-        }))
-
         render(
             <MemoryRouter>
                 <Provider store={mockStore(defaultState)}>

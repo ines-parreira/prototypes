@@ -297,7 +297,6 @@ describe('<SupportPerformanceOverview />', () => {
         })
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsPerformanceTips]: true,
-            [FeatureFlagKey.AnalyticsFilterByTags]: true,
         }))
     })
 
@@ -384,7 +383,6 @@ describe('<SupportPerformanceOverview />', () => {
         beforeEach(() => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.AnalyticsPerformanceTips]: true,
-                [FeatureFlagKey.AnalyticsFilterByTags]: true,
             }))
         })
 

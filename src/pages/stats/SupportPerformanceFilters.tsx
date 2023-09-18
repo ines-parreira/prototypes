@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {TicketChannel} from 'business/types/ticket'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
@@ -16,8 +14,6 @@ import {
 
 export const SupportPerformanceFilters = () => {
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
-    const hasFilterByTags: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsFilterByTags]
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     useCleanStatsFilters(pageStatsFilters)
 
@@ -29,7 +25,6 @@ export const SupportPerformanceFilters = () => {
                 isMultiple
                 variant="ghost"
             />
-
             <ChannelsStatsFilter
                 value={pageStatsFilters.channels}
                 channels={Object.values(TicketChannel)}
@@ -39,12 +34,7 @@ export const SupportPerformanceFilters = () => {
                 value={pageStatsFilters.agents}
                 variant="ghost"
             />
-            {hasFilterByTags && (
-                <TagsStatsFilter
-                    value={pageStatsFilters.tags}
-                    variant={'ghost'}
-                />
-            )}
+            <TagsStatsFilter value={pageStatsFilters.tags} variant={'ghost'} />
             <PeriodStatsFilter
                 initialSettings={{
                     maxSpan: 365,
