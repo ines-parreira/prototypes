@@ -1,5 +1,3 @@
-import axios from 'axios'
-import {useQueryClient} from '@tanstack/react-query'
 import {appQueryClient} from 'api/queryClient'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {channelsQueryKeys, useListChannels} from 'models/channel/queries'
@@ -7,28 +5,19 @@ import {listChannels} from 'models/channel/resources'
 import {Channel, ChannelLike, LegacyChannel} from 'models/channel/types'
 import {TicketChannel} from 'business/types/ticket'
 
+export type {Channel, ChannelLike, LegacyChannel} from 'models/channel/types'
+
 const STALE_TIME = 1 * 60 * 60 * 1000
 const CACHE_TIME = STALE_TIME + 60 * 1000
 
 const INITIAL_DATA = mockPaginatedChannelsList(window.GORGIAS_STATE.channels)
 
 export const useChannels: () => Channel[] = () => {
-    const queryClient = useQueryClient()
     return (
         useListChannels({
             staleTime: STALE_TIME,
             cacheTime: CACHE_TIME,
             initialData: INITIAL_DATA,
-            onError: (error) => {
-                if (axios.isAxiosError(error)) {
-                    if (error.response?.status === 404) {
-                        queryClient.setQueryData(
-                            channelsQueryKeys.list(),
-                            INITIAL_DATA
-                        )
-                    }
-                }
-            },
         })?.data?.data ?? []
     )
 }
