@@ -9,6 +9,7 @@ import TableWrapper from './TableWrapper'
 import TableHead from './TableHead'
 import TableBody from './TableBody'
 import TableBodyRow from './TableBodyRow'
+import GaugeCellAddon from './addons/GaugeCellAddon'
 
 const tableColumns = [
     {
@@ -87,7 +88,45 @@ const HeaderCellPropertyTable: Story<ComponentProps<typeof TableWrapper>> = (
     </TableWrapper>
 )
 
+const TableWithGauges: Story<ComponentProps<typeof TableWrapper>> = (props) => (
+    <TableWrapper {...props}>
+        <TableHead>
+            {tableColumns.map((column) => (
+                <HeaderCell key={column.key} style={{width: '25%'}}>
+                    {column.title}
+                </HeaderCell>
+            ))}
+        </TableHead>
+        <TableBody>
+            {new Array(10).fill(null).map((_, rowIndex) => (
+                <TableBodyRow key={rowIndex}>
+                    {tableColumns.map((_, index) => (
+                        <BodyCell key={index}>
+                            {index === 0 && (
+                                <GaugeCellAddon
+                                    progress={Math.floor(
+                                        Math.random() * 100 + 1
+                                    )}
+                                    color="#EAF1FF"
+                                />
+                            )}
+                            Lorem ipsum dolor sit.
+                        </BodyCell>
+                    ))}
+                </TableBodyRow>
+            ))}
+            <TableBodyRow>
+                <BodyCell key="summary">
+                    <GaugeCellAddon progress={75} color="#EDEAFF" />
+                    Lorem ipsum dolor sit.
+                </BodyCell>
+            </TableBodyRow>
+        </TableBody>
+    </TableWrapper>
+)
+
 export const Default = SimpleTable.bind({})
 export const WithProperty = HeaderCellPropertyTable.bind({})
+export const WithGauges = TableWithGauges.bind({})
 
 export default storyConfig
