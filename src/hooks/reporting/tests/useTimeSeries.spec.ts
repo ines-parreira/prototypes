@@ -115,6 +115,14 @@ describe('useTimeSeries', () => {
                     ],
                 },
             } as unknown as AxiosResponse<ReportingResponse<typeof defaultData>>)
-        ).toEqual([[{dateTime: '2023-04-17T00:00:00.000', value: 3}]])
+        ).toEqual([
+            [
+                {
+                    dateTime: '2023-04-17T00:00:00.000',
+                    label: TicketMeasure.FirstResponseTime,
+                    value: 3,
+                },
+            ],
+        ])
     })
 })

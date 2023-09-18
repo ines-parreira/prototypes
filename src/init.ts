@@ -43,6 +43,7 @@ import {
     getCurrentHelpdeskProduct,
 } from 'state/billing/selectors'
 import {RootState} from 'state/types'
+import GreyArea from 'pages/stats/ChartPluginGreyArea'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -270,7 +271,8 @@ export function initApp({datadog, sentry}: InitAppParams) {
         CategoryScale,
         SankeyController,
         Flow,
-        Filler
+        Filler,
+        GreyArea
     )
 
     return store

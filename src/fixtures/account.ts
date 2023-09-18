@@ -81,6 +81,7 @@ export const account: Account = {
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
+        [AccountFeature.AutomationAddonOverview]: {enabled: true},
     },
 }
 

@@ -1,5 +1,6 @@
 import moment, {Moment} from 'moment'
 import {
+    AutomationBillingEventMember,
     HelpdeskMessageMember,
     ReportingFilter,
     ReportingFilterMember,
@@ -30,6 +31,15 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
 export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: HelpdeskMessageMember.PeriodStart,
     periodEnd: HelpdeskMessageMember.PeriodEnd,
+    channels: TicketMember.FirstMessageChannel,
+    integrations: TicketMember.Integration,
+    agents: HelpdeskMessageMember.SenderId,
+    tags: TicketMember.Tags,
+}
+
+export const AutomationAddonStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: AutomationBillingEventMember.PeriodStart,
+    periodEnd: AutomationBillingEventMember.PeriodEnd,
     channels: TicketMember.FirstMessageChannel,
     integrations: TicketMember.Integration,
     agents: HelpdeskMessageMember.SenderId,

@@ -7,10 +7,11 @@ import css from 'pages/stats/PerformanceTip.less'
 type SuccessLevel = 'neutral' | 'light-error' | 'light-success' | 'success'
 
 type Props = {
-    avgMerchant: number | string | null
-    topTen: number | string | null
+    avgMerchant?: string | number | null
+    topTen?: string | number | null
     className?: string
     type?: SuccessLevel
+    showBenchmark?: boolean
     avgTooltip?: string
 }
 
@@ -44,6 +45,7 @@ export default function PerformanceTip({
     type = 'neutral',
     avgMerchant,
     topTen,
+    showBenchmark = true,
     avgTooltip,
 }: PropsWithChildren<Props>) {
     const hasData = !(avgMerchant == null || topTen == null)
@@ -51,34 +53,39 @@ export default function PerformanceTip({
 
     return (
         <div className={classnames(css.wrapper, className, css[type])}>
-            <div className={css.sentiment}>
-                <div>
-                    <span className={css.label}>Avg. merchant:</span>
-                    <span className={css.value} id={tooltipId}>
-                        {avgMerchant ?? '-'}
-                    </span>
-                    {avgTooltip && (
-                        <Tooltip
-                            target={tooltipId}
-                            placement="top-start"
-                            autohide={false}
-                        >
-                            <span
-                                dangerouslySetInnerHTML={{
-                                    __html: sanitizeHtml(avgTooltip),
-                                }}
-                            />
-                        </Tooltip>
-                    )}
-                </div>
-                <div>
-                    <span className={css.label}>Top 10%:</span>
-                    <span className={css.value}>{topTen ?? '-'}</span>
-                </div>
-            </div>
-            <div className={css.separator}></div>
+            {showBenchmark && (
+                <>
+                    <div className={css.sentiment}>
+                        <div>
+                            <span className={css.label}>Avg. merchant:</span>
+                            <span className={css.value} id={tooltipId}>
+                                {avgMerchant ?? '-'}
+                            </span>
+                            {avgTooltip && (
+                                <Tooltip
+                                    target={tooltipId}
+                                    placement="top-start"
+                                    autohide={false}
+                                >
+                                    <span
+                                        dangerouslySetInnerHTML={{
+                                            __html: sanitizeHtml(avgTooltip),
+                                        }}
+                                    />
+                                </Tooltip>
+                            )}
+                        </div>
+                        <div>
+                            <span className={css.label}>Top 10%:</span>
+                            <span className={css.value}>{topTen ?? '-'}</span>
+                        </div>
+                    </div>
+                    <div className={css.separator}></div>
+                </>
+            )}
+
             <div className={css.iconWrapper}>
-                {hasData ? (
+                {hasData || !showBenchmark ? (
                     <>
                         <i
                             className={classnames(
@@ -95,9 +102,7 @@ export default function PerformanceTip({
                     'No data'
                 )}
             </div>
-            {!hasData || !children
-                ? 'No data available for the selected filters.'
-                : children}
+            {children || 'No data available for the selected filters.'}
         </div>
     )
 }

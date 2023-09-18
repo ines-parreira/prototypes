@@ -2,6 +2,8 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
+    AutomationBillingEventMeasures,
+    AutomationBillingEventMember,
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
@@ -13,6 +15,9 @@ import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 
 import {
+    useAutomatedInteractionByEventTypesTimeSeries,
+    useAutomatedInteractionTimeSeries,
+    useAutomationRateTimeSeries,
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
@@ -38,7 +43,7 @@ describe('time series', () => {
     describe.each([
         ['useTicketsCreatedTimeSeries', useTicketsCreatedTimeSeries],
         ['useTicketsClosedTimeSeries', useTicketsClosedTimeSeries],
-    ])('%s', (testName, useTrendFn) => {
+    ])('%s', (_testName, useTrendFn) => {
         it('should create reporting filters', () => {
             renderHook(() =>
                 useTrendFn(
@@ -164,6 +169,101 @@ describe('time series', () => {
                     ],
                 },
             ])
+        })
+    })
+
+    describe('Automation add-on', () => {
+        const aaoTimeSeriesIterator = describe.each([
+            [
+                'useAutomationRateTimeSeries',
+                [AutomationBillingEventMeasures.AutomationRate],
+                useAutomationRateTimeSeries,
+            ],
+            [
+                'useAutomatedInteractionTimeSeries',
+                [AutomationBillingEventMeasures.AutomatedInteractions],
+                useAutomatedInteractionTimeSeries,
+            ],
+            [
+                'OverallTimeSaved',
+                [
+                    AutomationBillingEventMeasures.AutomatedInteractionsByTrackOrder,
+                    AutomationBillingEventMeasures.AutomatedInteractionsByLoopReturns,
+                    AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponse,
+                    AutomationBillingEventMeasures.AutomatedInteractionsByArticleRecommendation,
+                    AutomationBillingEventMeasures.AutomatedInteractionsByAutomatedResponse,
+                    AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponseFlows,
+                    AutomationBillingEventMeasures.AutomatedInteractionsByAutoResponders,
+                ],
+                useAutomatedInteractionByEventTypesTimeSeries,
+            ],
+        ])
+        aaoTimeSeriesIterator('%s', (_testName, measures, useTimeSeries) => {
+            it('should render expected query', () => {
+                renderHook(
+                    ({statsFilters, timezone}) =>
+                        useTimeSeries(statsFilters, timezone, granularity),
+                    {initialProps: {statsFilters, timezone, granularity}}
+                )
+
+                expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+                    {
+                        measures,
+                        dimensions: [],
+                        filters: [
+                            {
+                                member: AutomationBillingEventMember.PeriodStart,
+                                operator: ReportingFilterOperator.AfterDate,
+                                values: [periodStart],
+                            },
+                            {
+                                member: AutomationBillingEventMember.PeriodEnd,
+                                operator: ReportingFilterOperator.BeforeDate,
+                                values: [periodEnd],
+                            },
+
+                            {
+                                member: AutomationBillingEventMember.PeriodEnd,
+                                operator: ReportingFilterOperator.BeforeDate,
+                                values: [periodEnd],
+                            },
+                        ],
+                        timeDimensions: [
+                            {
+                                dimension:
+                                    AutomationBillingEventMember.CreatedDate,
+                                granularity: ReportingGranularity.Day,
+                                dateRange: [periodStart, periodEnd],
+                            },
+                        ],
+                        timezone,
+                    },
+                ])
+            })
+        })
+        aaoTimeSeriesIterator('%s', (_testName, _measures, useTimeSeries) => {
+            it('should render expected query snapshot', () => {
+                renderHook(
+                    ({timezone}) =>
+                        useTimeSeries(
+                            {
+                                period: {
+                                    start_datetime: '2021-05-29T00:00:00+02:00',
+                                    end_datetime: '2021-06-04T23:59:59+02:00',
+                                },
+                                channels: [
+                                    TicketChannel.HelpCenter,
+                                    TicketChannel.Chat,
+                                ],
+                            },
+                            timezone,
+                            granularity
+                        ),
+                    {initialProps: {statsFilters, timezone, granularity}}
+                )
+
+                expect(useTimeSeriesMock.mock.calls[0]).toMatchSnapshot()
+            })
         })
     })
 })

@@ -1,4 +1,5 @@
 import {OrderDirection} from 'models/api/types'
+
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -75,12 +76,64 @@ export enum TicketMessagesDimension {
     PeriodEnd = 'TicketMessages.periodEnd',
 }
 
+// Automation add-on
+
+// AutomationEvent
+export enum AutomationEventDimension {
+    Channel = 'AutomationEvent.channel',
+    AccountId = 'AutomationEvent.accountId',
+}
+export enum AutomationEventMember {
+    PeriodStart = 'AutomationEvent.periodStart',
+    PeriodEnd = 'AutomationEvent.periodEnd',
+    CreatedDate = 'AutomationEvent.createdDate',
+}
+
+// AutomationBillingEvent
+export enum AutomationBillingEventDimension {
+    CreatedDate = 'AutomationBillingEvent.createdDate',
+    AccountId = 'AutomationBillingEvent.accountId',
+}
+export enum AutomationBillingEventMember {
+    PeriodStart = 'AutomationBillingEvent.periodStart',
+    PeriodEnd = 'AutomationBillingEvent.periodEnd',
+    CreatedDate = 'AutomationBillingEvent.createdDate',
+    AccountId = 'AutomationBillingEvent.accountId',
+    AutomatedInteractions = 'AutomationBillingEvent.automatedInteractions',
+}
+export enum AutomationBillingEventMeasures {
+    FirstResponseTimeWithAutomation = 'AutomationBillingEvent.firstResponseTimeWithAutomation',
+    ResolutionTimeWithAutomation = 'AutomationBillingEvent.resolutionTimeWithAutomation',
+    OverallTimeSaved = 'AutomationBillingEvent.overallTimeSaved',
+    AutomationRate = 'AutomationBillingEvent.automationRate',
+    AutomatedInteractions = 'AutomationBillingEvent.automatedInteractions',
+    AutomatedInteractionsByTrackOrder = 'AutomationBillingEvent.automatedInteractionsByTrackOrder',
+    AutomatedInteractionsByLoopReturns = 'AutomationBillingEvent.automatedInteractionsByLoopReturns',
+    AutomatedInteractionsByQuickResponse = 'AutomationBillingEvent.automatedInteractionsByQuickResponse',
+    AutomatedInteractionsByArticleRecommendation = 'AutomationBillingEvent.automatedInteractionsByArticleRecommendation',
+    AutomatedInteractionsByAutomatedResponse = 'AutomationBillingEvent.automatedInteractionsByAutomatedResponse',
+    AutomatedInteractionsByAutoResponders = 'AutomationBillingEvent.automatedInteractionsByAutoResponders',
+    AutomatedInteractionsByQuickResponseFlows = 'AutomationBillingEvent.automatedInteractionsByQuickResponseFlows',
+}
+
+// BillableData
+export enum BillableDataDimension {
+    BillableTicketCount = 'BillableData.billableTicketCount',
+    AccountId = 'BillableData.accountId',
+    FirstMessageChannel = 'BillableData.firstMessageChannel',
+    TicketId = 'BillableData.ticketId',
+    AvgResolutionTime = 'BillableData.avgResolutionTime',
+    AvgFirstResponseTime = 'BillableData.avgFirstResponseTime',
+    TicketCreatedDate = 'BillableData.ticketCreatedDate',
+}
+
 export type ReportingMeasure =
     | TicketMeasure
     | EventsMeasure
     | OrderConversionMeasure
     | CampaignOrderEventsMeasure
     | HelpdeskMessageMeasure
+    | AutomationBillingEventMeasures
 
 export type ReportingDimension =
     | TicketDimension
@@ -89,10 +142,16 @@ export type ReportingDimension =
     | CampaignOrderEventsDimension
     | HelpdeskMessageDimension
     | TicketMessagesDimension
+    | AutomationBillingEventDimension
+    | AutomationEventDimension
 
 export type ReportingSegment = TicketSegment | EventsSegment
 
-export type ReportingFilterMember = TicketMember | HelpdeskMessageMember
+export type ReportingFilterMember =
+    | TicketMember
+    | HelpdeskMessageMember
+    | AutomationBillingEventMember
+    | AutomationEventMember
 
 export enum ReportingFilterOperator {
     Equals = 'equals',

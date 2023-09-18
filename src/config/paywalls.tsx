@@ -6,6 +6,10 @@ import {
     UpgradeType,
 } from 'pages/common/components/Paywall/Paywall'
 import {AccountFeature} from 'state/currentAccount/types'
+import {
+    PAGE_TITLE_AAO,
+    PAGE_TITLE_AAO_FEATURES,
+} from 'pages/stats/self-service/constants'
 
 export type PaywallConfig = {
     pageHeader?: ReactNode
@@ -73,15 +77,30 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
     },
     [AccountFeature.AutomationSelfServiceStatistics]: {
         paywallTheme: PaywallTheme.Default,
-        header: 'Track Automation Add-on performance',
+        header: PAGE_TITLE_AAO_FEATURES,
         description: (
             <div>
-                Monitor automated customer interactions, gain insights to
-                improve your automation rate, and more!
+                Monitor performance by feature for flows, quick response flows,
+                order management flows, and article recommendation.
             </div>
         ),
         preview: assetsUrl(
             '/img/paywalls/screens/automation-add-on-statistics.png'
+        ),
+        requiredUpgrade: 'Automation',
+        upgradeType: UpgradeType.AddOn,
+    },
+    [AccountFeature.AutomationAddonOverview]: {
+        paywallTheme: PaywallTheme.Default,
+        header: PAGE_TITLE_AAO,
+        description: (
+            <div>
+                Monitor your automation rate, fully automated interactions and
+                Automation add-on performance.
+            </div>
+        ),
+        preview: assetsUrl(
+            '/img/paywalls/screens/automation-addon-overview.png'
         ),
         requiredUpgrade: 'Automation',
         upgradeType: UpgradeType.AddOn,

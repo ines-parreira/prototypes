@@ -1,5 +1,175 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`metric trends Automation add-on useAutomatedInteractionTrend should create automation filters 1`] = `
+{
+  "dimensions": [],
+  "filters": [
+    {
+      "member": "AutomationBillingEvent.createdDate",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00.000",
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodStart",
+      "operator": "afterDate",
+      "values": [
+        "2021-05-29T00:00:00.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodEnd",
+      "operator": "beforeDate",
+      "values": [
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+  ],
+  "measures": [
+    "AutomationBillingEvent.automatedInteractions",
+  ],
+  "timezone": "UTC",
+}
+`;
+
+exports[`metric trends Automation add-on useAutomationRateTrend should create automation filters 1`] = `
+{
+  "dimensions": [],
+  "filters": [
+    {
+      "member": "AutomationBillingEvent.createdDate",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00.000",
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodStart",
+      "operator": "afterDate",
+      "values": [
+        "2021-05-29T00:00:00.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodEnd",
+      "operator": "beforeDate",
+      "values": [
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+  ],
+  "measures": [
+    "AutomationBillingEvent.automationRate",
+  ],
+  "timezone": "UTC",
+}
+`;
+
+exports[`metric trends Automation add-on useFirstResponseTimeWithAutomationTrend should create automation filters 1`] = `
+{
+  "dimensions": [],
+  "filters": [
+    {
+      "member": "AutomationBillingEvent.createdDate",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00.000",
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodStart",
+      "operator": "afterDate",
+      "values": [
+        "2021-05-29T00:00:00.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodEnd",
+      "operator": "beforeDate",
+      "values": [
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+  ],
+  "measures": [
+    "AutomationBillingEvent.firstResponseTimeWithAutomation",
+  ],
+  "timezone": "UTC",
+}
+`;
+
+exports[`metric trends Automation add-on useOverallTimeSavedWithAutomationTrend should create automation filters 1`] = `
+{
+  "dimensions": [],
+  "filters": [
+    {
+      "member": "AutomationBillingEvent.createdDate",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00.000",
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodStart",
+      "operator": "afterDate",
+      "values": [
+        "2021-05-29T00:00:00.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodEnd",
+      "operator": "beforeDate",
+      "values": [
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+  ],
+  "measures": [
+    "AutomationBillingEvent.overallTimeSaved",
+  ],
+  "timezone": "UTC",
+}
+`;
+
+exports[`metric trends Automation add-on useResolutionTimeWithAutomationTrend should create automation filters 1`] = `
+{
+  "dimensions": [],
+  "filters": [
+    {
+      "member": "AutomationBillingEvent.createdDate",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00.000",
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodStart",
+      "operator": "afterDate",
+      "values": [
+        "2021-05-29T00:00:00.000",
+      ],
+    },
+    {
+      "member": "AutomationBillingEvent.periodEnd",
+      "operator": "beforeDate",
+      "values": [
+        "2021-06-04T23:59:59.000",
+      ],
+    },
+  ],
+  "measures": [
+    "AutomationBillingEvent.resolutionTimeWithAutomation",
+  ],
+  "timezone": "UTC",
+}
+`;
+
 exports[`metric trends useClosedTicketsTrend should create reporting filters 1`] = `
 {
   "dimensions": [],

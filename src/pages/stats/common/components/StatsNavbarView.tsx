@@ -1,11 +1,10 @@
-import React, {useState} from 'react'
+import React, {ReactNode, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
-import AutomationNavbarAddOnPaywallNavbarLink from 'pages/automation/common/components/AutomationNavbarAddOnPaywallNavbarLink'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
@@ -13,9 +12,12 @@ import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import AutomationNavbarAddOnPaywallNavbarLink from 'pages/automation/common/components/AutomationNavbarAddOnPaywallNavbarLink'
 import {
+    AUTOMATION_ADD_ON_FEATURES_PATH,
     AUTOMATION_ADD_ON_PATH,
-    AUTOMATION_ADD_ON_TITLE,
+    PAGE_TITLE_AAO,
+    PAGE_TITLE_AAO_FEATURES,
 } from 'pages/stats/self-service/constants'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
@@ -34,9 +36,38 @@ export default function StatsNavbarView() {
         setIsAutomationSubscriptionModal,
     ] = useState(false)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const isNewAutomationAddonEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewAutomationAddon]
 
     const isRevenueSubscriber = useIsRevenueBetaTester()
-
+    const automationAddon: {
+        label: ReactNode
+        to: string
+    }[] = [
+        {
+            label: isNewAutomationAddonEnabled
+                ? PAGE_TITLE_AAO_FEATURES
+                : PAGE_TITLE_AAO,
+            to: AUTOMATION_ADD_ON_FEATURES_PATH,
+        },
+    ]
+    isNewAutomationAddonEnabled &&
+        automationAddon.unshift({
+            label: (
+                <>
+                    {PAGE_TITLE_AAO}
+                    {hasAutomationAddOn && (
+                        <Badge
+                            type={ColorType.Blue}
+                            className={cssNavbar.badge}
+                        >
+                            NEW
+                        </Badge>
+                    )}
+                </>
+            ),
+            to: AUTOMATION_ADD_ON_PATH,
+        })
     return (
         <>
             <NavbarBlock icon="adjust" title="Live">
@@ -143,15 +174,18 @@ export default function StatsNavbarView() {
                     </NavbarLink>
                     {!hasAutomationAddOn ? (
                         <>
-                            <AutomationNavbarAddOnPaywallNavbarLink
-                                to={AUTOMATION_ADD_ON_PATH}
-                                exact
-                                onSubscribeToAutomationAddOnClick={() => {
-                                    setIsAutomationSubscriptionModal(true)
-                                }}
-                            >
-                                {AUTOMATION_ADD_ON_TITLE}
-                            </AutomationNavbarAddOnPaywallNavbarLink>
+                            {automationAddon.map((aao) => (
+                                <AutomationNavbarAddOnPaywallNavbarLink
+                                    to={aao.to}
+                                    key={aao.to}
+                                    exact
+                                    onSubscribeToAutomationAddOnClick={() => {
+                                        setIsAutomationSubscriptionModal(true)
+                                    }}
+                                >
+                                    {aao.label}
+                                </AutomationNavbarAddOnPaywallNavbarLink>
+                            ))}
                             <AutomationSubscriptionModal
                                 confirmLabel="Subscribe"
                                 isOpen={isAutomationSubscriptionModalOpen}
@@ -161,12 +195,17 @@ export default function StatsNavbarView() {
                             />
                         </>
                     ) : (
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={AUTOMATION_ADD_ON_PATH}
-                        >
-                            {AUTOMATION_ADD_ON_TITLE}
-                        </NavbarLink>
+                        <>
+                            {automationAddon.map((aao) => (
+                                <NavbarLink
+                                    {...COMMON_NAV_LINK_PROPS}
+                                    to={aao.to}
+                                    key={aao.to}
+                                >
+                                    {aao.label}
+                                </NavbarLink>
+                            ))}
+                        </>
                     )}
                 </div>
             </NavbarBlock>

@@ -149,6 +149,9 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             },
             "amount": 6000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -271,6 +274,9 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             },
             "amount": 60000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -393,6 +399,9 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             },
             "amount": 36000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -515,6 +524,9 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             },
             "amount": 360000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -637,6 +649,9 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             },
             "amount": 90000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -759,6 +774,9 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             },
             "amount": 900000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -1210,6 +1228,9 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
     },
     "id": 1,
     "features": Immutable.Map {
+      "automation_addon_overview": Immutable.Map {
+        "enabled": true,
+      },
       "view_sharing": Immutable.Map {
         "enabled": true,
       },

@@ -1,0 +1,28 @@
+@import (reference) '~css/typography.less';
+@import '~css/new/layout';
+
+:local {
+    .crossLine {
+        font-size: @heading-page-regular-font-size;
+        margin-right: 8px;
+        opacity: 0.15;
+        rotate: 90deg;
+    }
+    .pageFooter {
+        color: var(--neutral-grey-4);
+        padding: @layout-spacing-m;
+    }
+    .wrapper {
+        padding: @layout-spacing-m;
+        width: 100%;
+    }
+    .tooltip {
+        font-size: 16px;
+    }
+    .noDataHint {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        display: flex;
+        align-items: center;
+    }
+}

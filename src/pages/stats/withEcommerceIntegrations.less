@@ -1,0 +1,31 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/layout.less';
+:local {
+    .layout {
+        width: 100%;
+    }
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        width: 100%;
+        height: calc(100% - 60px);
+        > div {
+            max-width: 400px;
+        }
+    }
+    .title {
+        font-weight: @body-semibold-font-weight;
+        font-size: @heading-section-medium-font-size;
+        line-height: @heading-section-medium-line-height;
+        margin-bottom: @layout-spacing-xs;
+    }
+    .description {
+        font-weight: @body-regular-font-weight;
+        font-size: @body-medium-font-size;
+        line-height: @body-regular-line-height;
+        margin-bottom: @layout-spacing-m;
+    }
+}

@@ -55,14 +55,15 @@ import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
 import useStatResource from '../useStatResource'
 
+import withEcommerceIntegration from '../withEcommerceIntegrations'
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
 import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
 import {
     AUTOMATION_SELF_SERVICE_STAT_NAME,
     HELP_URL,
-    AUTOMATION_ADD_ON_TITLE,
     PAGE_DESCRIPTION,
+    PAGE_TITLE_AAO_FEATURES,
 } from './constants'
 
 import css from './SelfServiceStatsPage.less'
@@ -281,7 +282,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     return (
         <StatsPage
-            title={AUTOMATION_ADD_ON_TITLE}
+            title={PAGE_TITLE_AAO_FEATURES}
             description={PAGE_DESCRIPTION}
             helpUrl={HELP_URL}
             filters={
@@ -591,7 +592,7 @@ export default withFeaturePaywall(
                 <PageHeader
                     title={
                         <HeaderTitle
-                            title={AUTOMATION_ADD_ON_TITLE}
+                            title={PAGE_TITLE_AAO_FEATURES}
                             description={PAGE_DESCRIPTION}
                             helpUrl={HELP_URL}
                         />
@@ -601,4 +602,4 @@ export default withFeaturePaywall(
             customCta: <SelfServiceStatsPagePaywallCustomCta />,
         } as PaywallConfig,
     }
-)(SelfServiceStatsPage)
+)(withEcommerceIntegration(PAGE_TITLE_AAO_FEATURES, SelfServiceStatsPage))

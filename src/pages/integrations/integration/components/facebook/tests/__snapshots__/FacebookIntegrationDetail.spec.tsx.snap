@@ -45,6 +45,9 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
           "auto_assignment": {
             "enabled": true,
           },
+          "automation_addon_overview": {
+            "enabled": false,
+          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
@@ -281,6 +284,9 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
           },
           "auto_assignment": {
             "enabled": true,
+          },
+          "automation_addon_overview": {
+            "enabled": false,
           },
           "automation_cancellations_flow": {
             "enabled": false,

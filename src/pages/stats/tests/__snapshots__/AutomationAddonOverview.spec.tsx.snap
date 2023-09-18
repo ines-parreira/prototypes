@@ -1,0 +1,5109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutomationAddonOverview /> Performance Tips light-error should show tips with sentiment  1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="full-width"
+      >
+        <div
+          class="full-width wrapper"
+        >
+          <div
+            class="header"
+            data-candu-id="stat-header-container"
+          >
+            <div
+              class="page-header pageHeader mb-0"
+            >
+              <h1
+                class="align-items-center"
+              >
+                <span>
+                  Automation add-on
+                </span>
+              </h1>
+              <div>
+                <div
+                  class="d-flex flex-wrap float-right"
+                >
+                  <div
+                    class="dropdown"
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      <span>
+                        1 channel
+                      </span>
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdown dropdown-menu dropdown-menu-right"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <h6
+                        class="dropdown-item-input dropdownItemInput dropdown-header"
+                        tabindex="-1"
+                      >
+                        <input
+                          class="form-control"
+                          placeholder="Search channels..."
+                          type="text"
+                          value=""
+                        />
+                      </h6>
+                      <button
+                        class="component dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                      >
+                        <div
+                          class="checkbox"
+                        >
+                          <label
+                            class="label label quickSelectionOption"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              checked=""
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                            Deselect
+                            <div
+                              class="badge badge--unselect"
+                            >
+                              1
+                            </div>
+                          </label>
+                        </div>
+                      </button>
+                      <div
+                        class="dropdownDivider dropdown-divider"
+                        tabindex="-1"
+                      />
+                      <div
+                        class="content"
+                      >
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              checked=""
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Chat
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Help Center
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Contact Form
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Email
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper ghost secondary medium"
+                      type="button"
+                    >
+                      <span
+                        class="wrapper"
+                      >
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          calendar_today
+                        </i>
+                        <span
+                          class="wrapper"
+                        >
+                          Feb 03, 2021
+                          <i
+                            class="material-icons icon isRight medium"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost secondary medium"
+                    title="Download Performance Overview Data"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        file_download
+                      </i>
+                      Download data
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="statsWrapper"
+          >
+            <div
+              class="statsContainer container-fluid"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="alert info"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Impact
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost primary medium"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        visibility_off
+                      </i>
+                      Hide tips
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1.81%
+                      </div>
+                      <div
+                        class="tip"
+                      >
+                        <div
+                          class="wrapper light-error"
+                        >
+                          <div
+                            class="sentiment"
+                          >
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Avg. merchant:
+                              </span>
+                              <span
+                                class="value"
+                                id="tip-tooltip-light-error"
+                              >
+                                11.81%
+                              </span>
+                            </div>
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Top 10%:
+                              </span>
+                              <span
+                                class="value"
+                              >
+                                31.34%
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            class="separator"
+                          />
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon light-error"
+                            >
+                              sentiment_neutral
+                            </i>
+                            <span>
+                              Room for improvement
+                            </span>
+                          </div>
+                          You’re in the 
+                          bottom 30%
+                           of merchants. Set up all
+                           
+                          <a
+                            href=""
+                          >
+                            Automation Add-on features
+                          </a>
+                           
+                          to capture more traffic and increase your automation rate.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        93
+                      </div>
+                      <div
+                        class="tip"
+                      >
+                        <div
+                          class="wrapper neutral"
+                        >
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon neutral"
+                            >
+                              lightbulb
+                            </i>
+                            <span>
+                              Tip
+                            </span>
+                          </div>
+                          Check out our
+                           
+                          <a
+                            href=""
+                          >
+                             Automation Playbook
+                          </a>
+                           to ensure you’re using Automation Add-on features to their full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your automation plan is the right size for you.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Customer time saved on first response
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Overall time saved by your team
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 32s
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Performance
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automation rate
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automated interactions
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automated interactions by feature
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      >
+                        <div
+                          class="legend legend legendOnLeft"
+                        >
+                          <div
+                            class="legendItem"
+                          >
+                            <div
+                              class="legendCaret"
+                              style="background-color: rgb(51, 115, 219);"
+                            />
+                            Others
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="pageFooter caption-regular"
+              >
+                Analytics are using 
+                UTC
+                 timezone
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="daterangepicker ltr show-ranges show-calendar opensleft"
+    >
+      <div
+        class="ranges"
+      >
+        <ul>
+          <li
+            data-range-key="Today"
+          >
+            Today
+          </li>
+          <li
+            data-range-key="Last 7 days"
+          >
+            Last 7 days
+          </li>
+          <li
+            data-range-key="Last 30 days"
+          >
+            Last 30 days
+          </li>
+          <li
+            data-range-key="Last 60 days"
+          >
+            Last 60 days
+          </li>
+          <li
+            data-range-key="Last 90 days"
+          >
+            Last 90 days
+          </li>
+        </ul>
+      </div>
+      <div
+        class="drp-calendar left"
+      >
+        <div
+          class="calendar-table"
+        />
+        <div
+          class="calendar-time"
+          style="display: none;"
+        />
+      </div>
+      <div
+        class="drp-calendar right"
+      >
+        <div
+          class="calendar-table"
+        />
+        <div
+          class="calendar-time"
+          style="display: none;"
+        />
+      </div>
+      <div
+        class="drp-buttons"
+      >
+        <span
+          class="drp-selected"
+        />
+        <button
+          class="cancelBtn btn btn-sm btn-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="applyBtn btn btn-sm btn-success mr-2"
+          disabled="disabled"
+          type="button"
+        >
+          Apply
+        </button>
+         
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="full-width"
+    >
+      <div
+        class="full-width wrapper"
+      >
+        <div
+          class="header"
+          data-candu-id="stat-header-container"
+        >
+          <div
+            class="page-header pageHeader mb-0"
+          >
+            <h1
+              class="align-items-center"
+            >
+              <span>
+                Automation add-on
+              </span>
+            </h1>
+            <div>
+              <div
+                class="d-flex flex-wrap float-right"
+              >
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                    type="button"
+                  >
+                    <span>
+                      1 channel
+                    </span>
+                  </button>
+                  <div
+                    aria-hidden="true"
+                    class="dropdown dropdown-menu dropdown-menu-right"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <h6
+                      class="dropdown-item-input dropdownItemInput dropdown-header"
+                      tabindex="-1"
+                    >
+                      <input
+                        class="form-control"
+                        placeholder="Search channels..."
+                        type="text"
+                        value=""
+                      />
+                    </h6>
+                    <button
+                      class="component dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                    >
+                      <div
+                        class="checkbox"
+                      >
+                        <label
+                          class="label label quickSelectionOption"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                          Deselect
+                          <div
+                            class="badge badge--unselect"
+                          >
+                            1
+                          </div>
+                        </label>
+                      </div>
+                    </button>
+                    <div
+                      class="dropdownDivider dropdown-divider"
+                      tabindex="-1"
+                    />
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Chat
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Help Center
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Contact Form
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Email
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost secondary medium"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        calendar_today
+                      </i>
+                      <span
+                        class="wrapper"
+                      >
+                        Feb 03, 2021
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </span>
+                    </span>
+                  </button>
+                </div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost secondary medium"
+                  title="Download Performance Overview Data"
+                  type="button"
+                >
+                  <span
+                    class="wrapper"
+                  >
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      file_download
+                    </i>
+                    Download data
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="statsWrapper"
+        >
+          <div
+            class="statsContainer container-fluid"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="alert info"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="icon"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="content"
+                >
+                  <span
+                    class="label"
+                  >
+                    Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Impact
+                </div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span
+                    class="wrapper"
+                  >
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      visibility_off
+                    </i>
+                    Hide tips
+                  </span>
+                </button>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Automation rate
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1.81%
+                    </div>
+                    <div
+                      class="tip"
+                    >
+                      <div
+                        class="wrapper light-error"
+                      >
+                        <div
+                          class="sentiment"
+                        >
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Avg. merchant:
+                            </span>
+                            <span
+                              class="value"
+                              id="tip-tooltip-light-error"
+                            >
+                              11.81%
+                            </span>
+                          </div>
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Top 10%:
+                            </span>
+                            <span
+                              class="value"
+                            >
+                              31.34%
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          class="separator"
+                        />
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon light-error"
+                          >
+                            sentiment_neutral
+                          </i>
+                          <span>
+                            Room for improvement
+                          </span>
+                        </div>
+                        You’re in the 
+                        bottom 30%
+                         of merchants. Set up all
+                         
+                        <a
+                          href=""
+                        >
+                          Automation Add-on features
+                        </a>
+                         
+                        to capture more traffic and increase your automation rate.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Automated interactions
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      93
+                    </div>
+                    <div
+                      class="tip"
+                    >
+                      <div
+                        class="wrapper neutral"
+                      >
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon neutral"
+                          >
+                            lightbulb
+                          </i>
+                          <span>
+                            Tip
+                          </span>
+                        </div>
+                        Check out our
+                         
+                        <a
+                          href=""
+                        >
+                           Automation Playbook
+                        </a>
+                         to ensure you’re using Automation Add-on features to their full potential. Visit
+                        <a
+                          href="/app/settings/billing"
+                        >
+                           
+                          billing
+                        </a>
+                         
+                        to make sure your automation plan is the right size for you.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Customer time saved on first response
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Overall time saved by your team
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 32s
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Performance
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automation rate
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automated interactions
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automated interactions by feature
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="legend legend legendOnLeft"
+                      >
+                        <div
+                          class="legendItem"
+                        >
+                          <div
+                            class="legendCaret"
+                            style="background-color: rgb(51, 115, 219);"
+                          />
+                          Others
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="pageFooter caption-regular"
+            >
+              Analytics are using 
+              UTC
+               timezone
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<AutomationAddonOverview /> Performance Tips light-success should show tips with sentiment  1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="full-width"
+      >
+        <div
+          class="full-width wrapper"
+        >
+          <div
+            class="header"
+            data-candu-id="stat-header-container"
+          >
+            <div
+              class="page-header pageHeader mb-0"
+            >
+              <h1
+                class="align-items-center"
+              >
+                <span>
+                  Automation add-on
+                </span>
+              </h1>
+              <div>
+                <div
+                  class="d-flex flex-wrap float-right"
+                >
+                  <div
+                    class="dropdown"
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      <span>
+                        1 channel
+                      </span>
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdown dropdown-menu dropdown-menu-right"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <h6
+                        class="dropdown-item-input dropdownItemInput dropdown-header"
+                        tabindex="-1"
+                      >
+                        <input
+                          class="form-control"
+                          placeholder="Search channels..."
+                          type="text"
+                          value=""
+                        />
+                      </h6>
+                      <button
+                        class="component dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                      >
+                        <div
+                          class="checkbox"
+                        >
+                          <label
+                            class="label label quickSelectionOption"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              checked=""
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                            Deselect
+                            <div
+                              class="badge badge--unselect"
+                            >
+                              1
+                            </div>
+                          </label>
+                        </div>
+                      </button>
+                      <div
+                        class="dropdownDivider dropdown-divider"
+                        tabindex="-1"
+                      />
+                      <div
+                        class="content"
+                      >
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              checked=""
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Chat
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Help Center
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Contact Form
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Email
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper ghost secondary medium"
+                      type="button"
+                    >
+                      <span
+                        class="wrapper"
+                      >
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          calendar_today
+                        </i>
+                        <span
+                          class="wrapper"
+                        >
+                          Feb 03, 2021
+                          <i
+                            class="material-icons icon isRight medium"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost secondary medium"
+                    title="Download Performance Overview Data"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        file_download
+                      </i>
+                      Download data
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="statsWrapper"
+          >
+            <div
+              class="statsContainer container-fluid"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="alert info"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Impact
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost primary medium"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        visibility_off
+                      </i>
+                      Hide tips
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        21.34%
+                      </div>
+                      <div
+                        class="tip"
+                      >
+                        <div
+                          class="wrapper light-success"
+                        >
+                          <div
+                            class="sentiment"
+                          >
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Avg. merchant:
+                              </span>
+                              <span
+                                class="value"
+                                id="tip-tooltip-light-success"
+                              >
+                                11.81%
+                              </span>
+                            </div>
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Top 10%:
+                              </span>
+                              <span
+                                class="value"
+                              >
+                                31.34%
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            class="separator"
+                          />
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon light-success"
+                            >
+                              sentiment_satisfied
+                            </i>
+                            <span>
+                              You’re doing good
+                            </span>
+                          </div>
+                          You’re in the 
+                          top 30%
+                           of merchants. Set up all
+                           
+                          <a
+                            href=""
+                          >
+                            Automation Add-on features
+                          </a>
+                           
+                          to capture more traffic and increase your automation rate.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        93
+                      </div>
+                      <div
+                        class="tip"
+                      >
+                        <div
+                          class="wrapper neutral"
+                        >
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon neutral"
+                            >
+                              lightbulb
+                            </i>
+                            <span>
+                              Tip
+                            </span>
+                          </div>
+                          Check out our
+                           
+                          <a
+                            href=""
+                          >
+                             Automation Playbook
+                          </a>
+                           to ensure you’re using Automation Add-on features to their full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your automation plan is the right size for you.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Customer time saved on first response
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Overall time saved by your team
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 32s
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Performance
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automation rate
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automated interactions
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automated interactions by feature
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      >
+                        <div
+                          class="legend legend legendOnLeft"
+                        >
+                          <div
+                            class="legendItem"
+                          >
+                            <div
+                              class="legendCaret"
+                              style="background-color: rgb(51, 115, 219);"
+                            />
+                            Others
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="pageFooter caption-regular"
+              >
+                Analytics are using 
+                UTC
+                 timezone
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="daterangepicker ltr show-ranges show-calendar opensleft"
+    >
+      <div
+        class="ranges"
+      >
+        <ul>
+          <li
+            data-range-key="Today"
+          >
+            Today
+          </li>
+          <li
+            data-range-key="Last 7 days"
+          >
+            Last 7 days
+          </li>
+          <li
+            data-range-key="Last 30 days"
+          >
+            Last 30 days
+          </li>
+          <li
+            data-range-key="Last 60 days"
+          >
+            Last 60 days
+          </li>
+          <li
+            data-range-key="Last 90 days"
+          >
+            Last 90 days
+          </li>
+        </ul>
+      </div>
+      <div
+        class="drp-calendar left"
+      >
+        <div
+          class="calendar-table"
+        />
+        <div
+          class="calendar-time"
+          style="display: none;"
+        />
+      </div>
+      <div
+        class="drp-calendar right"
+      >
+        <div
+          class="calendar-table"
+        />
+        <div
+          class="calendar-time"
+          style="display: none;"
+        />
+      </div>
+      <div
+        class="drp-buttons"
+      >
+        <span
+          class="drp-selected"
+        />
+        <button
+          class="cancelBtn btn btn-sm btn-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="applyBtn btn btn-sm btn-success mr-2"
+          disabled="disabled"
+          type="button"
+        >
+          Apply
+        </button>
+         
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="full-width"
+    >
+      <div
+        class="full-width wrapper"
+      >
+        <div
+          class="header"
+          data-candu-id="stat-header-container"
+        >
+          <div
+            class="page-header pageHeader mb-0"
+          >
+            <h1
+              class="align-items-center"
+            >
+              <span>
+                Automation add-on
+              </span>
+            </h1>
+            <div>
+              <div
+                class="d-flex flex-wrap float-right"
+              >
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                    type="button"
+                  >
+                    <span>
+                      1 channel
+                    </span>
+                  </button>
+                  <div
+                    aria-hidden="true"
+                    class="dropdown dropdown-menu dropdown-menu-right"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <h6
+                      class="dropdown-item-input dropdownItemInput dropdown-header"
+                      tabindex="-1"
+                    >
+                      <input
+                        class="form-control"
+                        placeholder="Search channels..."
+                        type="text"
+                        value=""
+                      />
+                    </h6>
+                    <button
+                      class="component dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                    >
+                      <div
+                        class="checkbox"
+                      >
+                        <label
+                          class="label label quickSelectionOption"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                          Deselect
+                          <div
+                            class="badge badge--unselect"
+                          >
+                            1
+                          </div>
+                        </label>
+                      </div>
+                    </button>
+                    <div
+                      class="dropdownDivider dropdown-divider"
+                      tabindex="-1"
+                    />
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Chat
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Help Center
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Contact Form
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Email
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost secondary medium"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        calendar_today
+                      </i>
+                      <span
+                        class="wrapper"
+                      >
+                        Feb 03, 2021
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </span>
+                    </span>
+                  </button>
+                </div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost secondary medium"
+                  title="Download Performance Overview Data"
+                  type="button"
+                >
+                  <span
+                    class="wrapper"
+                  >
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      file_download
+                    </i>
+                    Download data
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="statsWrapper"
+        >
+          <div
+            class="statsContainer container-fluid"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="alert info"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="icon"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="content"
+                >
+                  <span
+                    class="label"
+                  >
+                    Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Impact
+                </div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span
+                    class="wrapper"
+                  >
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      visibility_off
+                    </i>
+                    Hide tips
+                  </span>
+                </button>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Automation rate
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      21.34%
+                    </div>
+                    <div
+                      class="tip"
+                    >
+                      <div
+                        class="wrapper light-success"
+                      >
+                        <div
+                          class="sentiment"
+                        >
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Avg. merchant:
+                            </span>
+                            <span
+                              class="value"
+                              id="tip-tooltip-light-success"
+                            >
+                              11.81%
+                            </span>
+                          </div>
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Top 10%:
+                            </span>
+                            <span
+                              class="value"
+                            >
+                              31.34%
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          class="separator"
+                        />
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon light-success"
+                          >
+                            sentiment_satisfied
+                          </i>
+                          <span>
+                            You’re doing good
+                          </span>
+                        </div>
+                        You’re in the 
+                        top 30%
+                         of merchants. Set up all
+                         
+                        <a
+                          href=""
+                        >
+                          Automation Add-on features
+                        </a>
+                         
+                        to capture more traffic and increase your automation rate.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Automated interactions
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      93
+                    </div>
+                    <div
+                      class="tip"
+                    >
+                      <div
+                        class="wrapper neutral"
+                      >
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon neutral"
+                          >
+                            lightbulb
+                          </i>
+                          <span>
+                            Tip
+                          </span>
+                        </div>
+                        Check out our
+                         
+                        <a
+                          href=""
+                        >
+                           Automation Playbook
+                        </a>
+                         to ensure you’re using Automation Add-on features to their full potential. Visit
+                        <a
+                          href="/app/settings/billing"
+                        >
+                           
+                          billing
+                        </a>
+                         
+                        to make sure your automation plan is the right size for you.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Customer time saved on first response
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Overall time saved by your team
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 32s
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Performance
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automation rate
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automated interactions
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automated interactions by feature
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="legend legend legendOnLeft"
+                      >
+                        <div
+                          class="legendItem"
+                        >
+                          <div
+                            class="legendCaret"
+                            style="background-color: rgb(51, 115, 219);"
+                          />
+                          Others
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="pageFooter caption-regular"
+            >
+              Analytics are using 
+              UTC
+               timezone
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<AutomationAddonOverview /> Performance Tips success should show tips with sentiment  1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="full-width"
+      >
+        <div
+          class="full-width wrapper"
+        >
+          <div
+            class="header"
+            data-candu-id="stat-header-container"
+          >
+            <div
+              class="page-header pageHeader mb-0"
+            >
+              <h1
+                class="align-items-center"
+              >
+                <span>
+                  Automation add-on
+                </span>
+              </h1>
+              <div>
+                <div
+                  class="d-flex flex-wrap float-right"
+                >
+                  <div
+                    class="dropdown"
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      <span>
+                        1 channel
+                      </span>
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdown dropdown-menu dropdown-menu-right"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <h6
+                        class="dropdown-item-input dropdownItemInput dropdown-header"
+                        tabindex="-1"
+                      >
+                        <input
+                          class="form-control"
+                          placeholder="Search channels..."
+                          type="text"
+                          value=""
+                        />
+                      </h6>
+                      <button
+                        class="component dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                      >
+                        <div
+                          class="checkbox"
+                        >
+                          <label
+                            class="label label quickSelectionOption"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              checked=""
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                            Deselect
+                            <div
+                              class="badge badge--unselect"
+                            >
+                              1
+                            </div>
+                          </label>
+                        </div>
+                      </button>
+                      <div
+                        class="dropdownDivider dropdown-divider"
+                        tabindex="-1"
+                      />
+                      <div
+                        class="content"
+                      >
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              checked=""
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Chat
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Help Center
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Contact Form
+                          </label>
+                        </div>
+                        <div
+                          class="wrapperItem"
+                        >
+                          <label
+                            class="label label labelItem"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                             Email
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper ghost secondary medium"
+                      type="button"
+                    >
+                      <span
+                        class="wrapper"
+                      >
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          calendar_today
+                        </i>
+                        <span
+                          class="wrapper"
+                        >
+                          Feb 03, 2021
+                          <i
+                            class="material-icons icon isRight medium"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost secondary medium"
+                    title="Download Performance Overview Data"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        file_download
+                      </i>
+                      Download data
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="statsWrapper"
+          >
+            <div
+              class="statsContainer container-fluid"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="alert info"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Impact
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost primary medium"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        visibility_off
+                      </i>
+                      Hide tips
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        41.34%
+                      </div>
+                      <div
+                        class="tip"
+                      >
+                        <div
+                          class="wrapper success"
+                        >
+                          <div
+                            class="sentiment"
+                          >
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Avg. merchant:
+                              </span>
+                              <span
+                                class="value"
+                                id="tip-tooltip-success"
+                              >
+                                11.81%
+                              </span>
+                            </div>
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Top 10%:
+                              </span>
+                              <span
+                                class="value"
+                              >
+                                31.34%
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            class="separator"
+                          />
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon success"
+                            >
+                              sentiment_very_satisfied
+                            </i>
+                            <span>
+                              You’re doing great
+                            </span>
+                          </div>
+                          You’re in the 
+                          top 10%
+                           of merchants. Set up all
+                           
+                          <a
+                            href=""
+                          >
+                            Automation Add-on features
+                          </a>
+                           
+                          to capture more traffic and increase your automation rate.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        93
+                      </div>
+                      <div
+                        class="tip"
+                      >
+                        <div
+                          class="wrapper neutral"
+                        >
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon neutral"
+                            >
+                              lightbulb
+                            </i>
+                            <span>
+                              Tip
+                            </span>
+                          </div>
+                          Check out our
+                           
+                          <a
+                            href=""
+                          >
+                             Automation Playbook
+                          </a>
+                           to ensure you’re using Automation Add-on features to their full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your automation plan is the right size for you.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Customer time saved on first response
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 6 / span 6;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Overall time saved by your team
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                        <div
+                          class="trendBadge"
+                        >
+                          <div>
+                            TrendBadgeMock
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 32s
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <div
+                    class="titleText heading-page-semibold"
+                  >
+                    Performance
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automation rate
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automated interactions
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="cell"
+                    style="grid-column: span 12 / span 12;"
+                  >
+                    <div
+                      class="wrapper card"
+                    >
+                      <div
+                        class="titleWrapper"
+                      >
+                        <div
+                          class="title"
+                        >
+                          <span>
+                            Automated interactions by feature
+                          </span>
+                          <div
+                            class="wrapper tooltip"
+                          >
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="wrapper"
+                      >
+                        <div
+                          class="legend legend legendOnLeft"
+                        >
+                          <div
+                            class="legendItem"
+                          >
+                            <div
+                              class="legendCaret"
+                              style="background-color: rgb(51, 115, 219);"
+                            />
+                            Others
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="pageFooter caption-regular"
+              >
+                Analytics are using 
+                UTC
+                 timezone
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="daterangepicker ltr show-ranges show-calendar opensleft"
+    >
+      <div
+        class="ranges"
+      >
+        <ul>
+          <li
+            data-range-key="Today"
+          >
+            Today
+          </li>
+          <li
+            data-range-key="Last 7 days"
+          >
+            Last 7 days
+          </li>
+          <li
+            data-range-key="Last 30 days"
+          >
+            Last 30 days
+          </li>
+          <li
+            data-range-key="Last 60 days"
+          >
+            Last 60 days
+          </li>
+          <li
+            data-range-key="Last 90 days"
+          >
+            Last 90 days
+          </li>
+        </ul>
+      </div>
+      <div
+        class="drp-calendar left"
+      >
+        <div
+          class="calendar-table"
+        />
+        <div
+          class="calendar-time"
+          style="display: none;"
+        />
+      </div>
+      <div
+        class="drp-calendar right"
+      >
+        <div
+          class="calendar-table"
+        />
+        <div
+          class="calendar-time"
+          style="display: none;"
+        />
+      </div>
+      <div
+        class="drp-buttons"
+      >
+        <span
+          class="drp-selected"
+        />
+        <button
+          class="cancelBtn btn btn-sm btn-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="applyBtn btn btn-sm btn-success mr-2"
+          disabled="disabled"
+          type="button"
+        >
+          Apply
+        </button>
+         
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="full-width"
+    >
+      <div
+        class="full-width wrapper"
+      >
+        <div
+          class="header"
+          data-candu-id="stat-header-container"
+        >
+          <div
+            class="page-header pageHeader mb-0"
+          >
+            <h1
+              class="align-items-center"
+            >
+              <span>
+                Automation add-on
+              </span>
+            </h1>
+            <div>
+              <div
+                class="d-flex flex-wrap float-right"
+              >
+                <div
+                  class="dropdown"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                    type="button"
+                  >
+                    <span>
+                      1 channel
+                    </span>
+                  </button>
+                  <div
+                    aria-hidden="true"
+                    class="dropdown dropdown-menu dropdown-menu-right"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <h6
+                      class="dropdown-item-input dropdownItemInput dropdown-header"
+                      tabindex="-1"
+                    >
+                      <input
+                        class="form-control"
+                        placeholder="Search channels..."
+                        type="text"
+                        value=""
+                      />
+                    </h6>
+                    <button
+                      class="component dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                    >
+                      <div
+                        class="checkbox"
+                      >
+                        <label
+                          class="label label quickSelectionOption"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                          Deselect
+                          <div
+                            class="badge badge--unselect"
+                          >
+                            1
+                          </div>
+                        </label>
+                      </div>
+                    </button>
+                    <div
+                      class="dropdownDivider dropdown-divider"
+                      tabindex="-1"
+                    />
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Chat
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Help Center
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Contact Form
+                        </label>
+                      </div>
+                      <div
+                        class="wrapperItem"
+                      >
+                        <label
+                          class="label label labelItem"
+                          for="checkbox-abc"
+                        >
+                          <input
+                            class="input"
+                            id="checkbox-abc"
+                            name="checkbox-abc"
+                            type="checkbox"
+                          />
+                           Email
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost secondary medium"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        calendar_today
+                      </i>
+                      <span
+                        class="wrapper"
+                      >
+                        Feb 03, 2021
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </span>
+                    </span>
+                  </button>
+                </div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost secondary medium"
+                  title="Download Performance Overview Data"
+                  type="button"
+                >
+                  <span
+                    class="wrapper"
+                  >
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      file_download
+                    </i>
+                    Download data
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="statsWrapper"
+        >
+          <div
+            class="statsContainer container-fluid"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="alert info"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="icon"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="content"
+                >
+                  <span
+                    class="label"
+                  >
+                    Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Impact
+                </div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span
+                    class="wrapper"
+                  >
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      visibility_off
+                    </i>
+                    Hide tips
+                  </span>
+                </button>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Automation rate
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      41.34%
+                    </div>
+                    <div
+                      class="tip"
+                    >
+                      <div
+                        class="wrapper success"
+                      >
+                        <div
+                          class="sentiment"
+                        >
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Avg. merchant:
+                            </span>
+                            <span
+                              class="value"
+                              id="tip-tooltip-success"
+                            >
+                              11.81%
+                            </span>
+                          </div>
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Top 10%:
+                            </span>
+                            <span
+                              class="value"
+                            >
+                              31.34%
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          class="separator"
+                        />
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon success"
+                          >
+                            sentiment_very_satisfied
+                          </i>
+                          <span>
+                            You’re doing great
+                          </span>
+                        </div>
+                        You’re in the 
+                        top 10%
+                         of merchants. Set up all
+                         
+                        <a
+                          href=""
+                        >
+                          Automation Add-on features
+                        </a>
+                         
+                        to capture more traffic and increase your automation rate.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Automated interactions
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      93
+                    </div>
+                    <div
+                      class="tip"
+                    >
+                      <div
+                        class="wrapper neutral"
+                      >
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon neutral"
+                          >
+                            lightbulb
+                          </i>
+                          <span>
+                            Tip
+                          </span>
+                        </div>
+                        Check out our
+                         
+                        <a
+                          href=""
+                        >
+                           Automation Playbook
+                        </a>
+                         to ensure you’re using Automation Add-on features to their full potential. Visit
+                        <a
+                          href="/app/settings/billing"
+                        >
+                           
+                          billing
+                        </a>
+                         
+                        to make sure your automation plan is the right size for you.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Customer time saved on first response
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 6 / span 6;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Overall time saved by your team
+                      <div
+                        class="wrapper tooltip"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                      <div
+                        class="trendBadge"
+                      >
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 32s
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="title"
+              >
+                <div
+                  class="titleText heading-page-semibold"
+                >
+                  Performance
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automation rate
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automated interactions
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="wrapper card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          Automated interactions by feature
+                        </span>
+                        <div
+                          class="wrapper tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="legend legend legendOnLeft"
+                      >
+                        <div
+                          class="legendItem"
+                        >
+                          <div
+                            class="legendCaret"
+                            style="background-color: rgb(51, 115, 219);"
+                          />
+                          Others
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="pageFooter caption-regular"
+            >
+              Analytics are using 
+              UTC
+               timezone
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<AutomationAddonOverview /> should display AAO 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="full-width wrapper"
+  >
+    <div
+      class="header"
+      data-candu-id="stat-header-container"
+    >
+      <div
+        class="page-header pageHeader mb-0"
+      >
+        <h1
+          class="align-items-center"
+        >
+          <span>
+            Automation add-on
+          </span>
+        </h1>
+        <div>
+          <div
+            class="d-flex flex-wrap float-right"
+          >
+            <div
+              class="dropdown"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                <span>
+                  1 channel
+                </span>
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown dropdown-menu dropdown-menu-right"
+                role="menu"
+                tabindex="-1"
+              >
+                <h6
+                  class="dropdown-item-input dropdownItemInput dropdown-header"
+                  tabindex="-1"
+                >
+                  <input
+                    class="form-control"
+                    placeholder="Search channels..."
+                    type="text"
+                    value=""
+                  />
+                </h6>
+                <button
+                  class="component dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <div
+                    class="checkbox"
+                  >
+                    <label
+                      class="label label quickSelectionOption"
+                      for="checkbox-abc"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="checkbox-abc"
+                        name="checkbox-abc"
+                        type="checkbox"
+                      />
+                      Deselect
+                      <div
+                        class="badge badge--unselect"
+                      >
+                        1
+                      </div>
+                    </label>
+                  </div>
+                </button>
+                <div
+                  class="dropdownDivider dropdown-divider"
+                  tabindex="-1"
+                />
+                <div
+                  class="content"
+                >
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-abc"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="checkbox-abc"
+                        name="checkbox-abc"
+                        type="checkbox"
+                      />
+                       Chat
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-abc"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-abc"
+                        name="checkbox-abc"
+                        type="checkbox"
+                      />
+                       Help Center
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-abc"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-abc"
+                        name="checkbox-abc"
+                        type="checkbox"
+                      />
+                       Contact Form
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-abc"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-abc"
+                        name="checkbox-abc"
+                        type="checkbox"
+                      />
+                       Email
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button
+                aria-disabled="false"
+                class="wrapper ghost secondary medium"
+                type="button"
+              >
+                <span
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    calendar_today
+                  </i>
+                  <span
+                    class="wrapper"
+                  >
+                    Feb 03, 2021
+                    <i
+                      class="material-icons icon isRight medium"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </span>
+                </span>
+              </button>
+            </div>
+            <button
+              aria-disabled="false"
+              class="wrapper ghost secondary medium"
+              title="Download Performance Overview Data"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  file_download
+                </i>
+                Download data
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="statsWrapper"
+    >
+      <div
+        class="statsContainer container-fluid"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="alert info"
+          >
+            <div
+              class="iconContainer"
+            >
+              <img
+                alt="icon"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="content"
+            >
+              <span
+                class="label"
+              >
+                Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            <div
+              class="titleText heading-page-semibold"
+            >
+              Impact
+            </div>
+            <button
+              aria-disabled="false"
+              class="wrapper ghost primary medium"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  visibility_off
+                </i>
+                Hide tips
+              </span>
+            </button>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="title"
+                >
+                  Automation rate
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div>
+                      TrendBadgeMock
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  9,300%
+                </div>
+                <div
+                  class="tip"
+                >
+                  <div
+                    class="wrapper success"
+                  >
+                    <div
+                      class="sentiment"
+                    >
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          11.81%
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 10%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          31.34%
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
+                      >
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
+                      </span>
+                    </div>
+                    You’re in the 
+                    top 10%
+                     of merchants. Set up all
+                     
+                    <a
+                      href=""
+                    >
+                      Automation Add-on features
+                    </a>
+                     
+                    to capture more traffic and increase your automation rate.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="title"
+                >
+                  Automated interactions
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div>
+                      TrendBadgeMock
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  93
+                </div>
+                <div
+                  class="tip"
+                >
+                  <div
+                    class="wrapper neutral"
+                  >
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon neutral"
+                      >
+                        lightbulb
+                      </i>
+                      <span>
+                        Tip
+                      </span>
+                    </div>
+                    Check out our
+                     
+                    <a
+                      href=""
+                    >
+                       Automation Playbook
+                    </a>
+                     to ensure you’re using Automation Add-on features to their full potential. Visit
+                    <a
+                      href="/app/settings/billing"
+                    >
+                       
+                      billing
+                    </a>
+                     
+                    to make sure your automation plan is the right size for you.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="title"
+                >
+                  Customer time saved on first response
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div>
+                      TrendBadgeMock
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                </div>
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="title"
+                >
+                  Overall time saved by your team
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div>
+                      TrendBadgeMock
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 32s
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            <div
+              class="titleText heading-page-semibold"
+            >
+              Performance
+            </div>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="cell"
+              style="grid-column: span 12 / span 12;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="titleWrapper"
+                >
+                  <div
+                    class="title"
+                  >
+                    <span>
+                      Automation rate
+                    </span>
+                    <div
+                      class="wrapper tooltip"
+                    >
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                />
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 12 / span 12;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="titleWrapper"
+                >
+                  <div
+                    class="title"
+                  >
+                    <span>
+                      Automated interactions
+                    </span>
+                    <div
+                      class="wrapper tooltip"
+                    >
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                />
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 12 / span 12;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="titleWrapper"
+                >
+                  <div
+                    class="title"
+                  >
+                    <span>
+                      Automated interactions by feature
+                    </span>
+                    <div
+                      class="wrapper tooltip"
+                    >
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="legend legend legendOnLeft"
+                  >
+                    <div
+                      class="legendItem"
+                    >
+                      <div
+                        class="legendCaret"
+                        style="background-color: rgb(51, 115, 219);"
+                      />
+                      Others
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="pageFooter caption-regular"
+        >
+          Analytics are using 
+          UTC
+           timezone
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationAddonOverview /> should display paywall 1`] = `
+<div
+  class="full-width pageWrapper"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="align-items-center"
+    >
+      <span>
+        Automation add-on
+      </span>
+    </h1>
+  </div>
+  <div
+    class="page container-fluid"
+  >
+    <div
+      class="paywallContainer"
+    >
+      <div
+        class="align-items-center mx-0 row"
+      >
+        <svg
+          class="svg default"
+          height="auto"
+          viewBox="0 0 824 900"
+          width="824"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
+          />
+        </svg>
+        <div
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
+        >
+          <div
+            class=""
+          >
+            <img
+              alt="Feature preview"
+              class="img-fluid"
+              src="/assets/img/paywalls/screens/automation-addon-overview.png"
+            />
+          </div>
+        </div>
+        <div
+          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="flex align-items-center"
+            >
+              <div
+                class="badge"
+              >
+                Automation Add-on
+              </div>
+            </div>
+            <h1
+              class="contentTitle"
+            >
+              Automation add-on
+            </h1>
+            <div
+              class="description"
+            >
+              <p>
+                <div>
+                  Monitor your automation rate, fully automated interactions and Automation add-on performance.
+                </div>
+              </p>
+            </div>
+            <div
+              class="upgradeButton"
+            >
+              <div>
+                <div
+                  class="d-flex align-items-center upgradeLink"
+                >
+                  <button
+                    aria-disabled="false"
+                    class="wrapper fill primary medium"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        auto_awesome
+                      </i>
+                      Get Automation Add-on
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

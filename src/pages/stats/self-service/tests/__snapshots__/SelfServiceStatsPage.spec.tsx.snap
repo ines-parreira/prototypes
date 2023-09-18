@@ -96,13 +96,13 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-4"
+                    for="checkbox-7"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-4"
-                      name="checkbox-4"
+                      id="checkbox-7"
+                      name="checkbox-7"
                       type="checkbox"
                     />
                     Deselect
@@ -120,7 +120,29 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
               />
               <div
                 class="content"
-              />
+              >
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-8"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-8"
+                      name="checkbox-8"
+                      type="checkbox"
+                    />
+                    <img
+                      alt="logo"
+                      class="integrationIcon"
+                      src="/assets/img/integrations/shopify.png"
+                    />
+                     My Phone Integration 1
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div>
@@ -1491,13 +1513,13 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-6"
+                    for="checkbox-11"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-6"
-                      name="checkbox-6"
+                      id="checkbox-11"
+                      name="checkbox-11"
                       type="checkbox"
                     />
                     Deselect
@@ -1515,7 +1537,29 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               />
               <div
                 class="content"
-              />
+              >
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-12"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-12"
+                      name="checkbox-12"
+                      type="checkbox"
+                    />
+                    <img
+                      alt="logo"
+                      class="integrationIcon"
+                      src="/assets/img/integrations/shopify.png"
+                    />
+                     My Phone Integration 1
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div>

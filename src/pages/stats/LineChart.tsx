@@ -1,13 +1,22 @@
-import {Chart, ChartArea, ChartData, ChartOptions, TooltipItem} from 'chart.js'
-import React, {useMemo, useState} from 'react'
+import {
+    Chart,
+    ChartArea,
+    ChartData,
+    ChartOptions,
+    Scale,
+    TooltipItem,
+} from 'chart.js'
+import React, {useCallback, useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 
+import classNames from 'classnames'
 import colors from 'assets/tokens/colors.json'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Legend from 'pages/stats/Legend'
 import css from './LineChart.less'
 import {TwoDimensionalDataItem} from './types'
 import {getGradient, renderTickLabelAsNumber} from './utils'
+import {GreyArea} from './ChartPluginGreyArea'
 
 const STAT_COLORS = Object.freeze([
     colors['📺 Classic'].Main.Primary.value,
@@ -23,8 +32,23 @@ type Props = {
     renderYTickLabel?: (value: number | string) => string
     isLoading?: boolean
     displayLegend?: boolean
+    toggleLegend?: boolean
     _displayLegacyTooltip?: boolean
     _renderLegacyTooltipLabel?: (tooltipItem: TooltipItem<'line'>) => string
+    greyArea?: GreyArea
+    customColors?: string[]
+    isCurvedLine?: boolean
+    yAxisBeginAtZero?: boolean
+    legendOnLeft?: boolean
+    renderXTickLabel?: (
+        this: Scale,
+        value: number | string,
+        index: number
+    ) => string
+    yAxisScale?: {
+        min?: number
+        max?: number
+    }
 }
 
 const LINE_OPTIONS: ChartOptions<'line'> = {
@@ -80,6 +104,7 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
                 font: {
                     size: 12,
                 },
+                maxTicksLimit: 10,
             },
             suggestedMin: 0,
             beginAtZero: true,
@@ -111,9 +136,22 @@ export default function LineChart({
     displayLegend = false,
     _displayLegacyTooltip = false,
     _renderLegacyTooltipLabel,
+    greyArea,
+    customColors,
+    isCurvedLine = true,
+    yAxisBeginAtZero = false,
+    legendOnLeft = false,
+    toggleLegend = false,
+    renderXTickLabel,
+    yAxisScale = {},
 }: Props) {
+    const [chart, setChart] = useState<Chart>()
     const [chartArea, setChartArea] = useState<ChartArea>()
     const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
+    const chartColors = useCallback(
+        (index: number) => customColors?.[index] || STAT_COLORS[index],
+        [customColors]
+    )
 
     const formattedData = useMemo<ChartData<'line'>>(() => {
         const labels = Array.from(
@@ -131,7 +169,7 @@ export default function LineChart({
         return {
             labels,
             datasets: data.map((item, index) => {
-                const color = STAT_COLORS[index]
+                const color = chartColors(index)
                 const background = hasBackground
                     ? getGradient(color, chartArea, chartContext)
                     : 'transparent'
@@ -146,7 +184,7 @@ export default function LineChart({
                 }
             }),
         }
-    }, [chartArea, chartContext, data, hasBackground])
+    }, [chartArea, chartContext, data, hasBackground, chartColors])
 
     const options = useMemo<ChartOptions<'line'>>(
         () => ({
@@ -164,6 +202,17 @@ export default function LineChart({
                         ...LINE_OPTIONS.scales?.y?.ticks,
                         callback: renderYTickLabel,
                     },
+                    beginAtZero: yAxisBeginAtZero,
+                    ...yAxisScale,
+                },
+                x: {
+                    ...LINE_OPTIONS.scales?.x,
+                    ticks: {
+                        ...LINE_OPTIONS.scales?.x?.ticks,
+                        ...(renderXTickLabel
+                            ? {callback: renderXTickLabel}
+                            : {}),
+                    },
                 },
             },
             plugins: {
@@ -176,11 +225,21 @@ export default function LineChart({
                         label: _renderLegacyTooltipLabel,
                     },
                 },
+                greyArea,
             },
             resizeDelay: 1000,
             onResize: (chart) => {
                 setChartArea(chart.chartArea)
                 setChartContext(chart.ctx)
+            },
+            elements: {
+                ...LINE_OPTIONS.elements,
+                line: {
+                    ...LINE_OPTIONS.elements?.line,
+                    tension: !isCurvedLine
+                        ? 0
+                        : LINE_OPTIONS.elements?.line?.tension,
+                },
             },
         }),
         [
@@ -188,6 +247,11 @@ export default function LineChart({
             renderYTickLabel,
             _displayLegacyTooltip,
             _renderLegacyTooltipLabel,
+            isCurvedLine,
+            yAxisBeginAtZero,
+            greyArea,
+            renderXTickLabel,
+            yAxisScale,
         ]
     )
 
@@ -203,15 +267,22 @@ export default function LineChart({
                 ref={(chart: Chart<'line'> | null | undefined) => {
                     setChartContext(chart?.ctx)
                     setChartArea(chart?.chartArea)
+                    chart && setChart(chart)
                 }}
             />
             {displayLegend && (
                 <Legend
-                    className={css.legend}
+                    toggleLegend={toggleLegend}
+                    className={classNames({
+                        [css.legend]: true,
+                        [css.legendOnLeft]: legendOnLeft,
+                    })}
                     items={data.map(({label}, index) => ({
                         label,
-                        color: STAT_COLORS[index],
+                        color: chartColors(index),
+                        index,
                     }))}
+                    chart={chart}
                 />
             )}
         </div>

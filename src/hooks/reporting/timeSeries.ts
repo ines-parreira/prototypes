@@ -1,6 +1,9 @@
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
+    AutomationBillingEventDimension,
+    AutomationBillingEventMeasures,
+    AutomationBillingEventMember,
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
@@ -14,6 +17,7 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    AutomationAddonStatsFiltersMembers,
     formatReportingQueryDate,
     HelpdeskMessagesStatsFiltersMembers,
     statsFiltersToReportingFilters,
@@ -200,6 +204,113 @@ export function useMessagesSentTimeSeries(
             ),
             {
                 member: TicketMember.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: [filters.period.end_datetime],
+            },
+        ],
+    })
+}
+
+// Automation add-on
+export function useAutomationRateTimeSeries(
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) {
+    return useTimeSeries({
+        measures: [AutomationBillingEventMeasures.AutomationRate],
+        dimensions: [],
+        timeDimensions: [
+            {
+                dimension: AutomationBillingEventDimension.CreatedDate,
+                granularity,
+                dateRange: [
+                    formatReportingQueryDate(filters.period.start_datetime),
+                    formatReportingQueryDate(filters.period.end_datetime),
+                ],
+            },
+        ],
+        timezone,
+        filters: [
+            ...statsFiltersToReportingFilters(
+                AutomationAddonStatsFiltersMembers,
+                filters
+            ),
+            {
+                member: AutomationBillingEventMember.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: [filters.period.end_datetime],
+            },
+        ],
+    })
+}
+export function useAutomatedInteractionTimeSeries(
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) {
+    return useTimeSeries({
+        measures: [AutomationBillingEventMeasures.AutomatedInteractions],
+        dimensions: [],
+        timeDimensions: [
+            {
+                dimension: AutomationBillingEventDimension.CreatedDate,
+                granularity,
+                dateRange: [
+                    formatReportingQueryDate(filters.period.start_datetime),
+                    formatReportingQueryDate(filters.period.end_datetime),
+                ],
+            },
+        ],
+        timezone,
+        filters: [
+            ...statsFiltersToReportingFilters(
+                AutomationAddonStatsFiltersMembers,
+                filters
+            ),
+            {
+                member: AutomationBillingEventMember.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: [filters.period.end_datetime],
+            },
+        ],
+    })
+}
+
+export function useAutomatedInteractionByEventTypesTimeSeries(
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) {
+    return useTimeSeries({
+        measures: [
+            AutomationBillingEventMeasures.AutomatedInteractionsByTrackOrder,
+            AutomationBillingEventMeasures.AutomatedInteractionsByLoopReturns,
+            AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponse,
+            AutomationBillingEventMeasures.AutomatedInteractionsByArticleRecommendation,
+            AutomationBillingEventMeasures.AutomatedInteractionsByAutomatedResponse,
+            AutomationBillingEventMeasures.AutomatedInteractionsByQuickResponseFlows,
+            AutomationBillingEventMeasures.AutomatedInteractionsByAutoResponders,
+        ],
+        dimensions: [],
+        timeDimensions: [
+            {
+                dimension: AutomationBillingEventDimension.CreatedDate,
+                granularity,
+                dateRange: [
+                    formatReportingQueryDate(filters.period.start_datetime),
+                    formatReportingQueryDate(filters.period.end_datetime),
+                ],
+            },
+        ],
+        timezone,
+        filters: [
+            ...statsFiltersToReportingFilters(
+                AutomationAddonStatsFiltersMembers,
+                filters
+            ),
+            {
+                member: AutomationBillingEventMember.PeriodEnd,
                 operator: ReportingFilterOperator.BeforeDate,
                 values: [filters.period.end_datetime],
             },

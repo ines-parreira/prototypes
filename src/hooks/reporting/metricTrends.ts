@@ -1,15 +1,20 @@
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {
+    AutomationBillingEventMeasures,
+    AutomationBillingEventMember,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
+    ReportingDimension,
     ReportingFilter,
     ReportingFilterOperator,
+    ReportingMeasure,
     TicketMeasure,
     TicketMember,
     TicketSegment,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    AutomationAddonStatsFiltersMembers,
     formatReportingQueryDate,
     HelpdeskMessagesStatsFiltersMembers,
     statsFiltersToReportingFilters,
@@ -290,4 +295,73 @@ export const getMessagesSentQueryFactory = (
 
 export const useMessagesSentTrend = createUseMetricTrend(
     getMessagesSentQueryFactory
+)
+
+// Automation add on
+const getAutomationAddOnMeasuresFactory = (
+    measures: ReportingMeasure[] = [],
+    dimensions: ReportingDimension[] = []
+) => {
+    return (filters: StatsFilters, timezone: string) => ({
+        measures,
+        dimensions,
+        timezone,
+        filters: [
+            {
+                member: AutomationBillingEventMember.CreatedDate,
+                operator: ReportingFilterOperator.InDateRange,
+                values: [
+                    formatReportingQueryDate(filters.period.start_datetime),
+                    formatReportingQueryDate(filters.period.end_datetime),
+                ],
+            },
+            ...statsFiltersToReportingFilters(
+                AutomationAddonStatsFiltersMembers,
+                filters
+            ),
+        ],
+    })
+}
+
+export const getFirstResponseTimeWithAutomationFactory =
+    getAutomationAddOnMeasuresFactory([
+        AutomationBillingEventMeasures.FirstResponseTimeWithAutomation,
+    ])
+
+export const useFirstResponseTimeWithAutomationTrend = createUseMetricTrend(
+    getFirstResponseTimeWithAutomationFactory
+)
+
+export const getResolutionTimeWithAutomationFactory =
+    getAutomationAddOnMeasuresFactory([
+        AutomationBillingEventMeasures.ResolutionTimeWithAutomation,
+    ])
+
+export const useResolutionTimeWithAutomationTrend = createUseMetricTrend(
+    getResolutionTimeWithAutomationFactory
+)
+
+export const getOverallTimeSavedWithAutomationFactory =
+    getAutomationAddOnMeasuresFactory([
+        AutomationBillingEventMeasures.OverallTimeSaved,
+    ])
+
+export const useOverallTimeSavedWithAutomationTrend = createUseMetricTrend(
+    getOverallTimeSavedWithAutomationFactory
+)
+
+export const getAutomationRateFactory = getAutomationAddOnMeasuresFactory([
+    AutomationBillingEventMeasures.AutomationRate,
+])
+
+export const useAutomationRateTrend = createUseMetricTrend(
+    getAutomationRateFactory
+)
+
+export const getAutomatedInteractionFactory = getAutomationAddOnMeasuresFactory(
+    [AutomationBillingEventMeasures.AutomatedInteractions]
+)
+
+export const useAutomatedInteractionTrend = createUseMetricTrend(
+    getAutomatedInteractionFactory
 )

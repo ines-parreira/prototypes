@@ -41,4 +41,9 @@ DataNotAvailable.args = {
     topTen: null,
 }
 
+export const withoutBenchMark = Template.bind({})
+withoutBenchMark.args = {
+    showBenchmark: false,
+}
+
 export default storyConfig

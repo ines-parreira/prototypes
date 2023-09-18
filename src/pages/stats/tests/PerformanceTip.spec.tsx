@@ -32,27 +32,36 @@ describe('<PerformanceTip />', () => {
             expect(screen.getByText(content)).toBeInTheDocument()
         })
     })
-
-    describe.each([[`Consider Using XYZ to improve this metric`], [undefined]])(
-        'For content %s',
-        (content) => {
-            it(`should render the default sentiment tip without type`, () => {
-                const topTen = null
-                const avgMerchant = null
-
-                render(
-                    <PerformanceTip avgMerchant={avgMerchant} topTen={topTen}>
-                        {content}
-                    </PerformanceTip>
-                )
-
-                expect(screen.queryAllByText('-')).toHaveLength(2)
-                expect(
-                    screen.getByText(
-                        'No data available for the selected filters.'
-                    )
-                ).toBeInTheDocument()
-            })
-        }
-    )
+    it(`should render with no data without benchmark`, () => {
+        render(<PerformanceTip showBenchmark={false}></PerformanceTip>)
+        expect(screen.queryAllByText('-')).toHaveLength(0)
+        expect(
+            screen.getByText('No data available for the selected filters.')
+        ).toBeInTheDocument()
+    })
+    it(`should render with data without benchmark`, () => {
+        const content = 'Consider using XYZ to improve this metric'
+        render(<PerformanceTip showBenchmark={false}>{content}</PerformanceTip>)
+        expect(screen.queryAllByText('-')).toHaveLength(0)
+        expect(screen.getByText('Tip')).toBeInTheDocument()
+        expect(screen.getByText(content)).toBeInTheDocument()
+    })
+    it(`should render with no data state`, () => {
+        render(<PerformanceTip></PerformanceTip>)
+        expect(screen.queryAllByText('-')).toHaveLength(2)
+        expect(screen.getByText('No data')).toBeInTheDocument()
+        expect(
+            screen.getByText('No data available for the selected filters.')
+        ).toBeInTheDocument()
+    })
+    it(`should render with null data state`, () => {
+        render(
+            <PerformanceTip topTen={null} avgMerchant={null}></PerformanceTip>
+        )
+        expect(screen.queryAllByText('-')).toHaveLength(2)
+        expect(screen.getByText('No data')).toBeInTheDocument()
+        expect(
+            screen.getByText('No data available for the selected filters.')
+        ).toBeInTheDocument()
+    })
 })

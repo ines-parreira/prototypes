@@ -1,5 +1,170 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`time series Automation add-on OverallTimeSaved should render expected query snapshot 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "AutomationBillingEvent.periodStart",
+        "operator": "afterDate",
+        "values": [
+          "2021-05-29T00:00:00.000",
+        ],
+      },
+      {
+        "member": "AutomationBillingEvent.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59.000",
+        ],
+      },
+      {
+        "member": "TicketMessages.firstMessageChannel",
+        "operator": "equals",
+        "values": [
+          "help-center",
+          "chat",
+        ],
+      },
+      {
+        "member": "AutomationBillingEvent.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59+02:00",
+        ],
+      },
+    ],
+    "measures": [
+      "AutomationBillingEvent.automatedInteractionsByTrackOrder",
+      "AutomationBillingEvent.automatedInteractionsByLoopReturns",
+      "AutomationBillingEvent.automatedInteractionsByQuickResponse",
+      "AutomationBillingEvent.automatedInteractionsByArticleRecommendation",
+      "AutomationBillingEvent.automatedInteractionsByAutomatedResponse",
+      "AutomationBillingEvent.automatedInteractionsByQuickResponseFlows",
+      "AutomationBillingEvent.automatedInteractionsByAutoResponders",
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2021-05-29T00:00:00.000",
+          "2021-06-04T23:59:59.000",
+        ],
+        "dimension": "AutomationBillingEvent.createdDate",
+        "granularity": "day",
+      },
+    ],
+    "timezone": "UTC",
+  },
+]
+`;
+
+exports[`time series Automation add-on useAutomatedInteractionTimeSeries should render expected query snapshot 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "AutomationBillingEvent.periodStart",
+        "operator": "afterDate",
+        "values": [
+          "2021-05-29T00:00:00.000",
+        ],
+      },
+      {
+        "member": "AutomationBillingEvent.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59.000",
+        ],
+      },
+      {
+        "member": "TicketMessages.firstMessageChannel",
+        "operator": "equals",
+        "values": [
+          "help-center",
+          "chat",
+        ],
+      },
+      {
+        "member": "AutomationBillingEvent.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59+02:00",
+        ],
+      },
+    ],
+    "measures": [
+      "AutomationBillingEvent.automatedInteractions",
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2021-05-29T00:00:00.000",
+          "2021-06-04T23:59:59.000",
+        ],
+        "dimension": "AutomationBillingEvent.createdDate",
+        "granularity": "day",
+      },
+    ],
+    "timezone": "UTC",
+  },
+]
+`;
+
+exports[`time series Automation add-on useAutomationRateTimeSeries should render expected query snapshot 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "AutomationBillingEvent.periodStart",
+        "operator": "afterDate",
+        "values": [
+          "2021-05-29T00:00:00.000",
+        ],
+      },
+      {
+        "member": "AutomationBillingEvent.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59.000",
+        ],
+      },
+      {
+        "member": "TicketMessages.firstMessageChannel",
+        "operator": "equals",
+        "values": [
+          "help-center",
+          "chat",
+        ],
+      },
+      {
+        "member": "AutomationBillingEvent.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59+02:00",
+        ],
+      },
+    ],
+    "measures": [
+      "AutomationBillingEvent.automationRate",
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2021-05-29T00:00:00.000",
+          "2021-06-04T23:59:59.000",
+        ],
+        "dimension": "AutomationBillingEvent.createdDate",
+        "granularity": "day",
+      },
+    ],
+    "timezone": "UTC",
+  },
+]
+`;
+
 exports[`time series useTicketsClosedTimeSeries should create reporting filters 1`] = `
 [
   {

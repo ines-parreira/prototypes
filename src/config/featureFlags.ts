@@ -50,5 +50,6 @@ export enum FeatureFlagKey {
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     TicketNavigationArrows = 'ticket-navigation-arrows',
     ContactFormOrderManagement = 'contact-form-order-management',
+    NewAutomationAddon = 'new-automation-add-on',
     CustomerTimelineButton = 'customer-timeline-button',
 }

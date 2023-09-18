@@ -28,6 +28,8 @@ exports[`getCheapestPriceNameForFeature() should return the cheaper plan to acce
 
 exports[`getCheapestPriceNameForFeature() should return the cheaper plan to access the feature auto_assignment 1`] = `"Basic"`;
 
+exports[`getCheapestPriceNameForFeature() should return the cheaper plan to access the feature automation_addon_overview 1`] = `undefined`;
+
 exports[`getCheapestPriceNameForFeature() should return the cheaper plan to access the feature automation_cancellations_flow 1`] = `"Basic"`;
 
 exports[`getCheapestPriceNameForFeature() should return the cheaper plan to access the feature automation_managed_rules 1`] = `"Basic"`;

@@ -36,6 +36,7 @@ import {StatsFilters} from 'models/stat/types'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {entitiesInitialState} from 'fixtures/entities'
+import {IntegrationType} from 'models/integration/constants'
 import useStatResource from '../../useStatResource'
 import SelfServiceStatsPage from '../SelfServiceStatsPage'
 
@@ -57,6 +58,17 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 >
 
 describe('<SelfServiceStatsPage />', () => {
+    function getIntegration(id: number, type: IntegrationType) {
+        return {
+            id,
+            type,
+            name: `My Phone Integration ${id}`,
+            meta: {
+                emoji: '',
+                phone_number_id: id,
+            },
+        }
+    }
     const defaultState = {
         stats: fromJS({
             filters: {
@@ -81,7 +93,12 @@ describe('<SelfServiceStatsPage />', () => {
             current_subscription: account.current_subscription,
         }),
         entities: entitiesInitialState,
-        integrations: fromJS({integrations: []}),
+        integrations: fromJS({
+            integrations: [
+                getIntegration(1, IntegrationType.Shopify),
+                getIntegration(2, IntegrationType.Magento2),
+            ],
+        }),
         billing: fromJS(billingState),
     } as RootState
 

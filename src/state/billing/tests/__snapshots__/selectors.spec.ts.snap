@@ -509,6 +509,9 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -658,6 +661,9 @@ exports[`billing selectors getCurrentProductsFeatures should return the current 
   "auto_assignment": {
     "enabled": true,
   },
+  "automation_addon_overview": {
+    "enabled": false,
+  },
   "automation_cancellations_flow": {
     "enabled": true,
   },
@@ -755,6 +761,9 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
       "auto_assignment": {
         "enabled": true,
+      },
+      "automation_addon_overview": {
+        "enabled": false,
       },
       "automation_cancellations_flow": {
         "enabled": false,
@@ -878,6 +887,9 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -999,6 +1011,9 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
       "auto_assignment": {
         "enabled": true,
+      },
+      "automation_addon_overview": {
+        "enabled": false,
       },
       "automation_cancellations_flow": {
         "enabled": false,
@@ -1122,6 +1137,9 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -1244,6 +1262,9 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -1365,6 +1386,9 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
       "auto_assignment": {
         "enabled": true,
+      },
+      "automation_addon_overview": {
+        "enabled": false,
       },
       "automation_cancellations_flow": {
         "enabled": false,
@@ -1495,6 +1519,9 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "auto_assignment": {
           "enabled": true,
         },
+        "automation_addon_overview": {
+          "enabled": false,
+        },
         "automation_cancellations_flow": {
           "enabled": false,
         },
@@ -1616,6 +1643,9 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
         "auto_assignment": {
           "enabled": true,
+        },
+        "automation_addon_overview": {
+          "enabled": false,
         },
         "automation_cancellations_flow": {
           "enabled": false,
@@ -1739,6 +1769,9 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "auto_assignment": {
           "enabled": true,
         },
+        "automation_addon_overview": {
+          "enabled": false,
+        },
         "automation_cancellations_flow": {
           "enabled": false,
         },
@@ -1860,6 +1893,9 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
         "auto_assignment": {
           "enabled": true,
+        },
+        "automation_addon_overview": {
+          "enabled": false,
         },
         "automation_cancellations_flow": {
           "enabled": false,
@@ -1983,6 +2019,9 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "auto_assignment": {
           "enabled": true,
         },
+        "automation_addon_overview": {
+          "enabled": false,
+        },
         "automation_cancellations_flow": {
           "enabled": false,
         },
@@ -2104,6 +2143,9 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
         "auto_assignment": {
           "enabled": true,
+        },
+        "automation_addon_overview": {
+          "enabled": false,
         },
         "automation_cancellations_flow": {
           "enabled": false,
@@ -2336,6 +2378,9 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -2530,6 +2575,9 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -2688,6 +2736,9 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -2809,6 +2860,9 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       },
       "auto_assignment": {
         "enabled": true,
+      },
+      "automation_addon_overview": {
+        "enabled": false,
       },
       "automation_cancellations_flow": {
         "enabled": false,
@@ -2968,6 +3022,9 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -3126,6 +3183,9 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "auto_assignment": {
         "enabled": true,
       },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
@@ -3256,6 +3316,9 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
+          "automation_addon_overview": {
+            "enabled": false,
+          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
@@ -3377,6 +3440,9 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
           "auto_assignment": {
             "enabled": true,
+          },
+          "automation_addon_overview": {
+            "enabled": false,
           },
           "automation_cancellations_flow": {
             "enabled": false,
@@ -3500,6 +3566,9 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
+          "automation_addon_overview": {
+            "enabled": false,
+          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
@@ -3621,6 +3690,9 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
           "auto_assignment": {
             "enabled": true,
+          },
+          "automation_addon_overview": {
+            "enabled": false,
           },
           "automation_cancellations_flow": {
             "enabled": false,
@@ -3744,6 +3816,9 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
+          "automation_addon_overview": {
+            "enabled": false,
+          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
@@ -3865,6 +3940,9 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
           "auto_assignment": {
             "enabled": true,
+          },
+          "automation_addon_overview": {
+            "enabled": false,
           },
           "automation_cancellations_flow": {
             "enabled": false,

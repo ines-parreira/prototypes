@@ -272,20 +272,39 @@ export const formatMetricTrend = (
 }
 
 export const SHORT_FORMAT = 'MMM Do, YYYY'
+const getFormat = (granularity: ReportingGranularity) =>
+    granularity === 'hour' ? 'LT' : SHORT_FORMAT
+const formatTimeSeries = (
+    label: string,
+    items: TimeSeriesDataItem[],
+    format: string
+) => ({
+    label: label,
+    values: items.map((item) => ({
+        x: moment(item.dateTime).format(format),
+        y: item.value,
+    })),
+})
 export const formatTimeSeriesData = (
     data: TimeSeriesDataItem[][] = [],
     label: string,
     granularity: ReportingGranularity
 ) => {
-    const format = granularity === 'hour' ? 'LT' : SHORT_FORMAT
+    const format = getFormat(granularity)
 
-    return data.map((items) => ({
-        label: label,
-        values: items.map((item) => ({
-            x: moment(item.dateTime).format(format),
-            y: item.value,
-        })),
-    }))
+    return data.map((items) => formatTimeSeries(label, items, format))
+}
+
+export const formatLabeledTimeSeriesData = (
+    data: TimeSeriesDataItem[][] = [],
+    labels: string[],
+    granularity: ReportingGranularity
+) => {
+    const format = getFormat(granularity)
+
+    return data.map((items, index) =>
+        formatTimeSeries(labels[index], items, format)
+    )
 }
 
 export const isMetricForAgent = (

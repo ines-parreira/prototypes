@@ -49,6 +49,7 @@ export const basicHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
     [AccountFeature.AutomationReturnFlow]: {enabled: false},
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
+    [AccountFeature.AutomationAddonOverview]: {enabled: false},
 }
 
 export const automationPriceFeatures: AutomationPriceFeatures = {
@@ -101,6 +102,7 @@ const proHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
     [AccountFeature.AutomationReturnFlow]: {enabled: false},
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
+    [AccountFeature.AutomationAddonOverview]: {enabled: false},
 }
 
 const advancedHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
@@ -135,6 +137,7 @@ const advancedHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
     [AccountFeature.AutomationReturnFlow]: {enabled: false},
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
+    [AccountFeature.AutomationAddonOverview]: {enabled: false},
 }
 
 const customHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
@@ -169,6 +172,7 @@ const customHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
     [AccountFeature.AutomationReturnFlow]: {enabled: false},
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
+    [AccountFeature.AutomationAddonOverview]: {enabled: false},
 }
 
 export const starterHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
@@ -203,6 +207,7 @@ export const starterHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
     [AccountFeature.AutomationReturnFlow]: {enabled: false},
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
+    [AccountFeature.AutomationAddonOverview]: {enabled: false},
 }
 
 export const basicMonthlyHelpdeskPrice: HelpdeskPrice = {

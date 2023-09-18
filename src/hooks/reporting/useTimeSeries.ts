@@ -15,6 +15,7 @@ export type TimeSeriesQuery = Omit<ReportingQuery, 'timeDimensions'> & {
 export type TimeSeriesDataItem = {
     dateTime: string
     value: number
+    label?: string
 }
 
 export default function useTimeSeries(query: TimeSeriesQuery) {
@@ -44,6 +45,7 @@ export default function useTimeSeries(query: TimeSeriesQuery) {
                     return {
                         dateTime,
                         value: values[index] || 0,
+                        label: measures[index],
                     }
                 })
             })

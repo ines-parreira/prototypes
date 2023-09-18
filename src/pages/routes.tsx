@@ -152,7 +152,12 @@ import ConnectedChannelsViewContainer from './automation/connectedChannels/Conne
 import WorkflowsPaywallView from './automation/workflows/WorkflowsPaywallView'
 import WorkflowTemplatesViewContainer from './automation/workflows/WorkflowTemplatesViewContainer'
 import SelfServiceContactFormsProvider from './automation/common/providers/SelfServiceContactFormsProvider'
+import AutomationAddOnOverview from './stats/AutomationAddonOverview'
 import SupportPerformanceTicketInsights from './stats/SupportPerformanceTicketInsights'
+import {
+    AUTOMATION_ADD_ON_FEATURES_PATH,
+    AUTOMATION_ADD_ON_PATH,
+} from './stats/self-service/constants'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -470,6 +475,8 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     )
     const hasAnalyticsNewAgentPerformance: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
+    const isNewAutomationAddonEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewAutomationAddon]
     const hasAnalyticsTicketInsights: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsTicketInsights]
 
@@ -645,7 +652,17 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                 />
                 <Route
                     exact
-                    path={`${path}/automation-add-on-features`}
+                    path={`${path}/${AUTOMATION_ADD_ON_PATH}`}
+                    render={appRender({
+                        content: isNewAutomationAddonEnabled
+                            ? AutomationAddOnOverview
+                            : SelfServiceStatsPage,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/${AUTOMATION_ADD_ON_FEATURES_PATH}`}
                     render={appRender({
                         content: SelfServiceStatsPage,
                         navbar: StatsNavbarContainer,
