@@ -17,6 +17,7 @@ export const HeatmapSwitch = () => {
             type={ToggleButton.Type.Label}
             value={heatmapMode}
             onChange={toggleHandler}
+            size={'small'}
         >
             <ToggleButton.Option value={false}>Table</ToggleButton.Option>
             <ToggleButton.Option value={true}>Heatmap</ToggleButton.Option>
