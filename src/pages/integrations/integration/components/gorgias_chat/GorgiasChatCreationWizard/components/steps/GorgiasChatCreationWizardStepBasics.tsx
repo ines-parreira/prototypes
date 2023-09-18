@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 
@@ -53,7 +53,8 @@ import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavi
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 import {Label as DesignSystemLabel} from 'gorgias-design-system/Input/Label'
-import LanguagePicker, {
+import {
+    LanguagePicker,
     Language,
 } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -99,6 +100,12 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const [currentName, setCurrentName] = useState<string>()
     const [currentLanguage, setCurrentLanguage] = useState<string>()
     const [currentLanguages, setCurrentLanguages] = useState<LanguageItem[]>()
+
+    useEffect(() => {
+        // Used to keep saving the correct `language` with `languages` for the time being.
+        // Also used to set the correct language to preview as of today.
+        setCurrentLanguage(currentLanguages?.find((x) => x.primary)?.language)
+    }, [currentLanguages])
 
     const gorgiasChatIntegrations = useAppSelector(
         DEPRECATED_getIntegrationsByTypes([IntegrationType.GorgiasChat])
