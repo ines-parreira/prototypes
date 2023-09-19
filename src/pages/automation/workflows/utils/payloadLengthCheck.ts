@@ -6,7 +6,7 @@ export class PayloadSizeLimitError extends Error {
         this.name = 'PayloadSizeLimitError'
     }
 }
-export const SIZE_LIMIT_ERROR = `Sorry, your flow couldn't be saved because it's too big`
+export const SIZE_LIMIT_ERROR = `Your flow couldn't be saved because it's too large. Please delete some steps and try again.`
 
 export function verifyPayloadSize<T>(payload: T): T {
     if (
