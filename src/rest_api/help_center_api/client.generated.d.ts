@@ -3016,21 +3016,6 @@ declare namespace Paths {
       export type $200 = number[];
     }
   }
-  namespace GetRedirect {
-    namespace Parameters {
-      export type From = string;
-      export type HelpCenterId = number;
-    }
-    export interface PathParameters {
-      help_center_id: Parameters.HelpCenterId;
-    }
-    export interface QueryParameters {
-      from: Parameters.From;
-    }
-    namespace Responses {
-      export type $200 = Components.Schemas.RedirectDto;
-    }
-  }
   namespace GetSubCategoriesPositions {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -3315,6 +3300,21 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.NavigationLinksListPageDto;
+    }
+  }
+  namespace ListRedirects {
+    namespace Parameters {
+      export type From = string;
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export interface QueryParameters {
+      from?: Parameters.From;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.RedirectDto[];
     }
   }
   namespace PurgeCache {
@@ -3834,13 +3834,15 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetLocale.Responses.$200>
   /**
-   * getRedirect - Retrieve a redirect
+   * listRedirects - List all redirects
+   * 
+   * TODO: pagination
    */
-  'getRedirect'(
-    parameters?: Parameters<Paths.GetRedirect.PathParameters & Paths.GetRedirect.QueryParameters> | null,
+  'listRedirects'(
+    parameters?: Parameters<Paths.ListRedirects.PathParameters & Paths.ListRedirects.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetRedirect.Responses.$200>
+  ): OperationResponse<Paths.ListRedirects.Responses.$200>
   /**
    * createRedirect - Create a new redirect
    */
@@ -4678,13 +4680,15 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateRedirect.Responses.$201>
     /**
-     * getRedirect - Retrieve a redirect
+     * listRedirects - List all redirects
+     * 
+     * TODO: pagination
      */
     'get'(
-      parameters?: Parameters<Paths.GetRedirect.PathParameters & Paths.GetRedirect.QueryParameters> | null,
+      parameters?: Parameters<Paths.ListRedirects.PathParameters & Paths.ListRedirects.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetRedirect.Responses.$200>
+    ): OperationResponse<Paths.ListRedirects.Responses.$200>
     /**
      * deleteRedirect - Delete a redirect
      */

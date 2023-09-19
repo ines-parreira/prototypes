@@ -1001,8 +1001,9 @@
                 "tags": ["redirects"]
             },
             "get": {
-                "operationId": "getRedirect",
-                "summary": "Retrieve a redirect",
+                "operationId": "listRedirects",
+                "summary": "List all redirects",
+                "description": "TODO: pagination",
                 "parameters": [
                     {
                         "name": "help_center_id",
@@ -1012,7 +1013,7 @@
                     },
                     {
                         "name": "from",
-                        "required": true,
+                        "required": false,
                         "in": "query",
                         "schema": {"type": "string"}
                     }
@@ -1023,7 +1024,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RedirectDto"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RedirectDto"
+                                    }
                                 }
                             }
                         }

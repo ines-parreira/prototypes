@@ -45,6 +45,7 @@ import {SearchContextProvider} from '../SearchContext'
 import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
 import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
 import HelpCenterPaywall from '../../components/Paywalls/HelpCenterPaywall'
+import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
 
 const CurrentHelpCenterContext = createContext<HelpCenter | null>(null)
 
@@ -163,6 +164,11 @@ const CurrentHelpCenter: React.FC = () => {
                 <Route
                     path={`${path}/import/csv/column-matching`}
                     component={HelpCenterImportCsvColumnMatchingView}
+                />
+                <Route
+                    path={`${path}/maintenance`}
+                    exact
+                    component={HelpCenterMaintenanceView}
                 />
             </Switch>
         </CurrentHelpCenterContext.Provider>
