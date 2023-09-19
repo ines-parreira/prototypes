@@ -13,8 +13,6 @@ import {
     getHelpdeskPrices,
     getSMSProduct,
     getVoiceProduct,
-    getCurrentConvertProduct,
-    getConvertProduct,
 } from 'state/billing/selectors'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {objKeys} from 'utils'
@@ -51,7 +49,6 @@ import {sendSupportTicket} from '../utils/sendSupportTicket'
 import {
     setAutomationNotification,
     setHelpdeskNotification,
-    setConvertNotification,
 } from '../views/BillingProcessView/utils'
 
 export type BillingPlansProps = {
@@ -145,14 +142,6 @@ export const useBillingPlans = ({
 
     const smsInitialIndex = smsPrices?.findIndex((price) => !!price.amount) ?? 0
 
-    // Convert
-    const convertProduct = useAppSelector(getCurrentConvertProduct)
-    const convertPrices = useAppSelector(getConvertProduct)?.prices.filter(
-        (price) => (filterByInterval ? price.interval === interval : true)
-    )
-    const convertInitialIndex =
-        convertPrices?.findIndex((price) => !!price.amount) ?? 0
-
     // Selected plans
     const [selectedPlans, setSelectedPlans] = useState<SelectedPlans>({
         [ProductType.Helpdesk]: {
@@ -174,11 +163,6 @@ export const useBillingPlans = ({
         [ProductType.SMS]: {
             plan: smsProduct || smsPrices?.[smsInitialIndex],
             isSelected: !!smsProduct || selectedProduct === ProductType.SMS,
-        },
-        [ProductType.Convert]: {
-            plan: convertProduct || convertPrices?.[convertInitialIndex],
-            isSelected:
-                !!convertProduct || selectedProduct === ProductType.Convert,
         },
     })
 
@@ -215,20 +199,12 @@ export const useBillingPlans = ({
             (!!smsProduct?.price_id &&
                 smsProduct.price_id ===
                     selectedPlans[ProductType.SMS].plan?.price_id &&
-                !selectedPlans[ProductType.SMS].isSelected) ||
-            (convertProduct?.price_id !==
-                selectedPlans[ProductType.Convert].plan?.price_id &&
-                selectedPlans[ProductType.Convert].isSelected) ||
-            (!!convertProduct?.price_id &&
-                convertProduct.price_id ===
-                    selectedPlans[ProductType.Convert].plan?.price_id &&
-                !selectedPlans[ProductType.Convert].isSelected),
+                !selectedPlans[ProductType.SMS].isSelected),
         [
             helpdeskProduct,
             automationProduct,
             voiceProduct,
             smsProduct,
-            convertProduct,
             selectedPlans,
         ]
     )
@@ -247,17 +223,13 @@ export const useBillingPlans = ({
                     (selectedPlans[ProductType.Voice].plan?.amount || 0)) ||
             (smsProduct &&
                 smsProduct.amount >
-                    (selectedPlans[ProductType.SMS].plan?.amount || 0)) ||
-            (convertProduct &&
-                convertProduct.amount >
-                    (selectedPlans[ProductType.Convert].plan?.amount || 0)),
+                    (selectedPlans[ProductType.SMS].plan?.amount || 0)),
         [
             selectedPlans,
             helpdeskProduct,
             automationProduct,
             voiceProduct,
             smsProduct,
-            convertProduct,
         ]
     )
 
@@ -268,15 +240,13 @@ export const useBillingPlans = ({
             (selectedPlans[ProductType.Automation].isSelected &&
                 !automationProduct) ||
             (selectedPlans[ProductType.Voice].isSelected && !voiceProduct) ||
-            (selectedPlans[ProductType.SMS].isSelected && !smsProduct) ||
-            (selectedPlans[ProductType.Convert].isSelected && !convertProduct),
+            (selectedPlans[ProductType.SMS].isSelected && !smsProduct),
         [
             selectedPlans,
             helpdeskProduct,
             automationProduct,
             voiceProduct,
             smsProduct,
-            convertProduct,
         ]
     )
 
@@ -380,7 +350,7 @@ export const useBillingPlans = ({
         helpdeskProduct?.name,
     ])
 
-    const handleStripePlansChange = useCallback(async () => {
+    const handleHelpdeskAndAutomationPlansChange = useCallback(async () => {
         const plansToBeUpdated: ProductData = {}
         const notifications: Notification[] = []
 
@@ -393,12 +363,6 @@ export const useBillingPlans = ({
                 automationProduct?.price_id ||
             (automationProduct?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected)
-
-        const isNewConvertProduct =
-            selectedPlans[ProductType.Convert].plan?.price_id !==
-                convertProduct?.price_id ||
-            (convertProduct?.price_id &&
-                !selectedPlans[ProductType.Convert].isSelected)
 
         // Set notification when interval is changing
         if (isIntervalChanged) {
@@ -463,33 +427,6 @@ export const useBillingPlans = ({
             }
         }
 
-        // handle subscribe for Convert plan
-        if (selectedPlans[ProductType.Convert].isSelected) {
-            if (isNewConvertProduct && !isIntervalChanged) {
-                const notification = setConvertNotification({
-                    oldProduct: convertProduct,
-                    newProduct: selectedPlans[ProductType.Convert].plan,
-                    periodEnd,
-                    onClick: () => {
-                        history.push('/app/settings/revenue/bundles')
-                    },
-                    interval,
-                    isFreeTrial,
-                })
-
-                // Add the notification
-                !!notification && notifications.push(notification)
-            }
-
-            if (selectedPlans[ProductType.Convert]?.plan?.product_id) {
-                const plan = selectedPlans[ProductType.Convert]?.plan
-
-                if (plan) {
-                    plansToBeUpdated[plan.product_id] = plan?.price_id ?? ''
-                }
-            }
-        }
-
         // update subscription for Helpdesk and Automation plans
         if (Object.keys(plansToBeUpdated).length > 0) {
             // Automation has been removed while in free trial
@@ -529,7 +466,6 @@ export const useBillingPlans = ({
         selectedPlans,
         helpdeskProduct,
         automationProduct,
-        convertProduct,
         isIntervalChanged,
         periodEnd,
         isFreeTrial,
@@ -542,10 +478,10 @@ export const useBillingPlans = ({
 
     const updateSubscription = useCallback(() => {
         return Promise.all([
-            handleStripePlansChange(),
+            handleHelpdeskAndAutomationPlansChange(),
             handleSMSAndVoicePlansChange(),
         ])
-    }, [handleStripePlansChange, handleSMSAndVoicePlansChange])
+    }, [handleHelpdeskAndAutomationPlansChange, handleSMSAndVoicePlansChange])
 
     const startSubscription = useCallback(async () => {
         if (!isFreeTrial && !isSubscriptionCanceled) return
@@ -620,9 +556,6 @@ export const useBillingPlans = ({
         smsProduct,
         smsPrices,
         smsInitialIndex,
-        convertProduct,
-        convertPrices,
-        convertInitialIndex,
         selectedPlans,
         setSelectedPlans,
         interval,

@@ -3,7 +3,6 @@ import _minBy from 'lodash/minBy'
 import {ColorType} from 'pages/common/components/Badge/Badge'
 import {
     AutomationPrice,
-    ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
     ProductType,
@@ -28,13 +27,13 @@ export const getFullPrice = (discounted_amount: number, discount: number) => {
 }
 
 export function isHelpdeskPrice(
-    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
 ): price is HelpdeskPrice {
     return 'public' in price
 }
 
 export function isAutomationPrice(
-    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
 ): price is AutomationPrice {
     return 'automation_addon_discount' in price
 }
@@ -45,20 +44,18 @@ export function isStarterTierPrice(
     return !!price?.internal_id.startsWith('starter-')
 }
 
-export function isTrialPrice(
-    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice,
+export function isTrialVoiceOrSMSPrice(
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice,
     type: ProductType
 ) {
     return (
         price.num_quota_tickets === 0 &&
-        (type === ProductType.Voice ||
-            type === ProductType.SMS ||
-            type === ProductType.Convert)
+        (type === ProductType.Voice || type === ProductType.SMS)
     )
 }
 
 export function isAAOLegacyPrice(
-    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice,
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice,
     type: ProductType
 ) {
     return price.num_quota_tickets === null && type === ProductType.Automation
@@ -69,12 +66,7 @@ export function getFormattedAmount(amountInCents: number) {
 }
 
 export const getCheapestPrice = (
-    prices?: (
-        | HelpdeskPrice
-        | AutomationPrice
-        | SMSOrVoicePrice
-        | ConvertPrice
-    )[],
+    prices?: (HelpdeskPrice | AutomationPrice | SMSOrVoicePrice)[],
     interval?: PlanInterval
 ) =>
     !!prices

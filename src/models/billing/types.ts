@@ -19,14 +19,9 @@ export enum ProductType {
     Automation = 'automation',
     Voice = 'voice',
     SMS = 'sms',
-    Convert = 'convert',
 }
 
-export type Price =
-    | HelpdeskPrice
-    | AutomationPrice
-    | SMSOrVoicePrice
-    | ConvertPrice
+export type Price = HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
 
 export type Product<T = Price> = {
     id: string
@@ -36,8 +31,6 @@ export type Product<T = Price> = {
         ? ProductType.Automation
         : T extends SMSOrVoicePrice
         ? ProductType.Voice | ProductType.SMS
-        : T extends ConvertPrice
-        ? ProductType.Convert
         : never
     prices: T[]
 }
@@ -99,10 +92,6 @@ export type AutomationPrice = BasePrice & {
 
 export type SMSOrVoicePrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
     num_quota_tickets: number
-}
-
-export type ConvertPrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
-    num_quota_tickets: number | null
 }
 
 export type SubscriptionCycle = {

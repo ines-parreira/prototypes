@@ -2,7 +2,6 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {
     AutomationPrice,
     AutomationPriceFeatures,
-    ConvertPrice,
     HelpdeskPrice,
     HelpdeskPriceFeatures,
     PlanInterval,
@@ -757,47 +756,10 @@ export const smsPrice0: SMSOrVoicePrice = {
     extra_ticket_cost: 1.6,
 }
 
-export const convertPrice0: ConvertPrice = {
-    amount: 0,
-    currency: 'usd',
-    num_quota_tickets: 0,
-    internal_id: 'convert-01-monthly-usd-5',
-    interval: PlanInterval.Month,
-    name: 'Convert Trial Monthly',
-    price_id: 'price_1NdBfmI9qXomtXqSFfC7T2xX',
-    product_id: 'prod_Mwy3exdalDFouZ',
-    extra_ticket_cost: 0,
-}
-
-export const convertPrice1: ConvertPrice = {
-    amount: 100,
-    currency: 'usd',
-    num_quota_tickets: 10000,
-    internal_id: 'convert-01-monthly-usd-5',
-    interval: PlanInterval.Month,
-    name: 'Convert 10,000 Monthly',
-    price_id: 'price_1NdBiMI9qXomtXqSX8MxFkYW',
-    product_id: 'prod_Mwy3exdalDFouZ',
-    extra_ticket_cost: 0,
-}
-
-const convertPrice2: ConvertPrice = {
-    amount: 285,
-    currency: 'usd',
-    num_quota_tickets: 30000,
-    internal_id: 'convert-02-monthly-usd-5',
-    interval: PlanInterval.Month,
-    name: 'Convert 30,000 Monthly',
-    price_id: 'price_1NdXfXI9qXomtXqS0CDMe7Yy',
-    product_id: 'prod_Mwy3exdalDFouZ',
-    extra_ticket_cost: 0,
-}
-
 export const HELPDESK_PRODUCT_ID = 'prod_LsH6kV35G6zKWo'
 export const AUTOMATION_PRODUCT_ID = 'prod_LsHD5xmSqoFBBs'
 export const VOICE_PRODUCT_ID = 'prod_MT6fyh00TCFRGZ'
 export const SMS_PRODUCT_ID = 'prod_MT8Fzk7vmcT73m'
-export const CONVERT_PRODUCT_ID = 'prod_Mwy3exdalDFouZ'
 
 export const helpdeskProduct: Product<HelpdeskPrice> = {
     id: HELPDESK_PRODUCT_ID,
@@ -837,21 +799,9 @@ export const smsProduct: Product<SMSOrVoicePrice> = {
     prices: [smsPrice1, smsPrice2, smsPrice0],
 }
 
-export const convertProduct: Product<ConvertPrice> = {
-    id: CONVERT_PRODUCT_ID,
-    type: ProductType.Convert,
-    prices: [convertPrice1, convertPrice2, convertPrice0],
-}
-
 export const products: Product<
-    HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
->[] = [
-    helpdeskProduct,
-    automationProduct,
-    smsProduct,
-    voiceProduct,
-    convertProduct,
-]
+    HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
+>[] = [helpdeskProduct, automationProduct, smsProduct, voiceProduct]
 
 export const currentProductsUsage: CurrentProductsUsages = {
     helpdesk: {
@@ -878,5 +828,4 @@ export const currentProductsUsage: CurrentProductsUsages = {
     },
     voice: null,
     sms: null,
-    convert: null,
 }

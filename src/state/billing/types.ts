@@ -36,7 +36,6 @@ export type CurrentProductsUsages = {
     [ProductType.Automation]: CurrentUsagePerProduct | null
     [ProductType.Voice]: CurrentUsagePerProduct | null
     [ProductType.SMS]: CurrentUsagePerProduct | null
-    [ProductType.Convert]: CurrentUsagePerProduct | null
 }
 
 export enum PaymentType {

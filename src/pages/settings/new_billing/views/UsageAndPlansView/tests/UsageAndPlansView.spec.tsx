@@ -4,10 +4,8 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
-import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {products, currentProductsUsage} from 'fixtures/productPrices'
-import {FeatureFlagKey} from 'config/featureFlags'
 import UsageAndPlansView from '../UsageAndPlansView'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
@@ -18,10 +16,6 @@ const store = mockedStore({
 
 describe('UsageAndPlansView', () => {
     it('should render', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ConvertBilling]: true,
-        }))
-
         const {container} = render(
             <Provider store={store}>
                 <UsageAndPlansView

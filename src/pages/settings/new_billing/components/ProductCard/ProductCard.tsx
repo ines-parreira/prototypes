@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import {useHistory} from 'react-router-dom'
 import {
     AutomationPrice,
-    ConvertPrice,
     HelpdeskPrice,
     ProductType,
     SMSOrVoicePrice,
@@ -19,7 +18,7 @@ import {
 import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {isAAOLegacyPrice, isTrialPrice} from 'models/billing/utils'
+import {isAAOLegacyPrice, isTrialVoiceOrSMSPrice} from 'models/billing/utils'
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
@@ -27,7 +26,7 @@ import css from './ProductCard.less'
 
 export type ProductCardProps = {
     type: ProductType
-    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
     usage?: CurrentUsagePerProduct | null
     banner?: BillingBanner
     isDisabled: boolean
@@ -91,7 +90,7 @@ const ProductCard = ({
             return <Badge text="Inactive" type={BadgeType.Info} />
         }
 
-        if (product && isTrialPrice(product, type)) {
+        if (product && isTrialVoiceOrSMSPrice(product, type)) {
             return (
                 <>
                     <strong>
@@ -159,7 +158,7 @@ const ProductCard = ({
 
         return (
             <div className={classNames(css.counter)}>
-                {product && isTrialPrice(product, type) ? (
+                {product && isTrialVoiceOrSMSPrice(product, type) ? (
                     <div className={className}>
                         {usage ? formatNumTickets(usage.data.num_tickets) : 0}{' '}
                         {PRODUCT_INFO[type].counter} used

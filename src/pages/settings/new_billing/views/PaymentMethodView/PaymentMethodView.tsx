@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {Form} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useSessionStorage} from 'react-use'
 import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
@@ -9,7 +8,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {TicketPurpose} from 'state/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {isTrialing as useIsTrialing} from 'state/currentAccount/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import BackLink from '../../components/BackLink/BackLink'
 import {useCreditCard} from '../../hooks/useCreditCard'
 import AddressForm from '../../components/AddressForm/AddressForm'
@@ -39,7 +37,6 @@ const PaymentMethodView = ({
     dispatchBillingError,
 }: PaymentMethodViewProps) => {
     const isTrialing = useAppSelector(useIsTrialing)
-    const flags = useFlags()
 
     const {
         fields,
@@ -64,8 +61,6 @@ const PaymentMethodView = ({
         automationPrices,
         smsProduct,
         smsPrices,
-        convertProduct,
-        convertPrices,
         voiceProduct,
         voicePrices,
         anyDowngradedPlanSelected,
@@ -87,8 +82,6 @@ const PaymentMethodView = ({
     const selectedPlans = isSubscriptionCanceled
         ? selectedPlansFromSessionStorage
         : selectedPlansFromState
-
-    const isConvertProductActive = Boolean(flags[FeatureFlagKey.ConvertBilling])
 
     const currentMonth = new Date().getMonth() + 1
 
@@ -262,15 +255,6 @@ const PaymentMethodView = ({
                                 prices={smsPrices}
                                 selectedPlans={selectedPlans}
                             />
-                            {isConvertProductActive && (
-                                <SummaryItem
-                                    type={ProductType.Convert}
-                                    interval={interval}
-                                    product={convertProduct}
-                                    prices={convertPrices}
-                                    selectedPlans={selectedPlans}
-                                />
-                            )}
                             <SummaryTotal
                                 selectedPlans={selectedPlans}
                                 totalProductAmount={totalProductAmount}

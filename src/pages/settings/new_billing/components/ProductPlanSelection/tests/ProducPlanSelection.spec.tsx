@@ -23,9 +23,6 @@ describe('ProductPlanSelection', () => {
         sms: {
             isSelected: false,
         },
-        convert: {
-            isSelected: false,
-        },
     }
 
     const props: ProductPlanSelectionProps = {

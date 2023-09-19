@@ -3,7 +3,6 @@ import classNames from 'classnames'
 
 import {
     AutomationPrice,
-    ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
     ProductType,
@@ -13,7 +12,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {
     isStarterTierPrice,
-    isTrialPrice,
+    isTrialVoiceOrSMSPrice,
     isAAOLegacyPrice,
 } from 'models/billing/utils'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -29,13 +28,8 @@ import css from './ProductPlanSelection.less'
 export type ProductPlanSelectionProps = {
     type: ProductType
     interval?: PlanInterval
-    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
-    prices?: (
-        | HelpdeskPrice
-        | AutomationPrice
-        | SMSOrVoicePrice
-        | ConvertPrice
-    )[]
+    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
+    prices?: (HelpdeskPrice | AutomationPrice | SMSOrVoicePrice)[]
     selectedPlans: SelectedPlans
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     isStarterHelpdeskPlanSelected?: boolean
@@ -100,14 +94,8 @@ const ProductPlanSelection = ({
     )
 
     const getLabel = useCallback(
-        (
-            price:
-                | HelpdeskPrice
-                | AutomationPrice
-                | SMSOrVoicePrice
-                | ConvertPrice
-        ) => {
-            if (isTrialPrice(price, type)) {
+        (price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice) => {
+            if (isTrialVoiceOrSMSPrice(price, type)) {
                 return 'Trial'
             }
 
@@ -121,7 +109,7 @@ const ProductPlanSelection = ({
     )
 
     const getCounterText = useMemo(() => {
-        if (selectedPlan && isTrialPrice(selectedPlan, type)) {
+        if (selectedPlan && isTrialVoiceOrSMSPrice(selectedPlan, type)) {
             return (
                 <>
                     <strong>
@@ -243,9 +231,9 @@ const ProductPlanSelection = ({
                         <Badge text="Active" type={BadgeType.Success} />
                     )}
                 </div>
-                {selectedPlans[type].isSelected ? (
-                    isActive ? (
-                        type === ProductType.Automation ? (
+                {(!isActive || type === ProductType.Automation) &&
+                    (selectedPlans[type].isSelected ? (
+                        type === ProductType.Automation && isActive ? (
                             <Button
                                 intent="secondary"
                                 className={css.cancelButton}
@@ -254,37 +242,27 @@ const ProductPlanSelection = ({
                                 Remove product
                             </Button>
                         ) : (
-                            type === ProductType.Convert && (
-                                <Button
-                                    intent="secondary"
-                                    className={css.cancelButton}
-                                    onClick={handleClose}
-                                >
-                                    Remove product
-                                </Button>
-                            )
+                            <i
+                                className={classNames(
+                                    'material-icons',
+                                    css.closeButton
+                                )}
+                                onClick={handleClose}
+                            >
+                                close
+                            </i>
                         )
                     ) : (
-                        <i
-                            className={classNames(
-                                'material-icons',
-                                css.closeButton
-                            )}
-                            onClick={handleClose}
+                        <div
+                            className={classNames(css.addProduct, {
+                                [css.openIsDisabled]:
+                                    isStarterHelpdeskPlanSelected,
+                            })}
+                            onClick={handleOpen}
                         >
-                            close
-                        </i>
-                    )
-                ) : (
-                    <div
-                        className={classNames(css.addProduct, {
-                            [css.openIsDisabled]: isStarterHelpdeskPlanSelected,
-                        })}
-                        onClick={handleOpen}
-                    >
-                        <i className="material-icons">add</i>Add Product
-                    </div>
-                )}
+                            <i className="material-icons">add</i>Add Product
+                        </div>
+                    ))}
             </div>
             {selectedPlans[type].isSelected && (
                 <div className={css.details}>

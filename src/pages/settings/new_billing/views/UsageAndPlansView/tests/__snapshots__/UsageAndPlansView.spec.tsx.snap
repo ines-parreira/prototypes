@@ -242,59 +242,6 @@ exports[`UsageAndPlansView should render 1`] = `
           <div />
         </div>
       </div>
-      <div
-        class="container"
-      >
-        <div
-          class="header"
-        >
-          <div
-            class="title"
-          >
-            <i
-              class="material-icons"
-            >
-              paid
-            </i>
-            <div>
-              Convert
-            </div>
-          </div>
-          <div>
-            <span
-              class="badge info"
-            >
-              Inactive
-            </span>
-          </div>
-        </div>
-        <div
-          class="body"
-        >
-          <div
-            data-candu-id="billing-convert-description-info"
-          />
-        </div>
-        <div
-          class="footer"
-        >
-          <div>
-            <div
-              class="subscribeContainer"
-            >
-              <button
-                aria-disabled="false"
-                class="wrapper fill primary medium"
-                id="productCardButton_convert"
-                type="button"
-              >
-                Subscribe
-              </button>
-            </div>
-          </div>
-          <div />
-        </div>
-      </div>
     </div>
     <div
       class="unsubscribe"
