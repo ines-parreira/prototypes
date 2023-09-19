@@ -56,9 +56,7 @@ function AutomatedMessageNode(
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="automated_message">
-                        Automated answer
-                    </VisualBuilderActionTag>
+                    <VisualBuilderActionTag nodeType="automated_message" />
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text.replace(flowVariableRegex, '{...}')

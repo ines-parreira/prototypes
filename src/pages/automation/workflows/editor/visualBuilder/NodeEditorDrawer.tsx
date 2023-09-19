@@ -8,6 +8,7 @@ import useId from 'hooks/useId'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {VisualBuilderNode} from '../../models/visualBuilderGraph.types'
 import {TranslationsPreviewProvider} from '../../hooks/useTranslationsPreviewContext'
+import {labelByVisualBuilderNodeType} from '../../constants'
 
 import css from './NodeEditorDrawer.less'
 import TriggerButtonEditor from './editors/TriggerButtonEditor'
@@ -68,19 +69,10 @@ export default function NodeEditorDrawer({
             <Drawer.Header className={css.header}>
                 <div className={css.headerTop}>
                     <h3>
-                        {memoizedNodeInEdition?.type === 'trigger_button' &&
-                            'Start flow'}
-                        {memoizedNodeInEdition?.type === 'automated_message' &&
-                            'Automated answer'}
-                        {memoizedNodeInEdition?.type === 'multiple_choices' &&
-                            'Multiple choice'}
-                        {memoizedNodeInEdition?.type === 'text_reply' &&
-                            'Collect text reply'}
-                        {memoizedNodeInEdition?.type === 'file_upload' &&
-                            'Collect file upload'}
-                        {memoizedNodeInEdition?.type === 'order_selection' &&
-                            'Order selection'}
-                        {memoizedNodeInEdition?.type === 'end' && 'End flow'}
+                        {memoizedNodeInEdition?.type &&
+                            labelByVisualBuilderNodeType[
+                                memoizedNodeInEdition.type
+                            ]}
                     </h3>
                     <Drawer.HeaderActions>
                         <IconButton

@@ -16,6 +16,7 @@ import {
 import {
     colorByVisualBuilderNodeType,
     iconByVisualBuilderNodeType,
+    labelByVisualBuilderNodeType,
 } from 'pages/automation/workflows/constants'
 import {
     useWorkflowChannelSupportContext,
@@ -85,7 +86,7 @@ function useMenuItems(
     const storeIntegration = useSelfServiceStoreIntegrationContext()
     const [menuItems, setMenuItems] = useState<MenuItem[]>([
         {
-            label: 'Multiple choice',
+            label: labelByVisualBuilderNodeType.multiple_choices,
             type: 'multiple_choices',
             description: 'Display up to 6 options',
             icon: iconByVisualBuilderNodeType.multiple_choices,
@@ -98,7 +99,7 @@ function useMenuItems(
             },
         },
         {
-            label: 'Collect text reply',
+            label: labelByVisualBuilderNodeType.text_reply,
             description: 'Allow up to 5,000 characters',
             type: 'text_reply',
             icon: iconByVisualBuilderNodeType.text_reply,
@@ -112,7 +113,7 @@ function useMenuItems(
             },
         },
         {
-            label: 'Collect file upload',
+            label: labelByVisualBuilderNodeType.file_upload,
             description: 'Allow up to 5 files',
             type: 'file_upload',
             icon: iconByVisualBuilderNodeType.file_upload,
@@ -126,7 +127,7 @@ function useMenuItems(
             },
         },
         {
-            label: 'Automated answer',
+            label: labelByVisualBuilderNodeType.automated_message,
             description: 'Display short text',
             type: 'automated_message',
             icon: iconByVisualBuilderNodeType.automated_message,
@@ -139,7 +140,7 @@ function useMenuItems(
             },
         },
         {
-            label: 'Order selection',
+            label: labelByVisualBuilderNodeType.order_selection,
             description: 'Display last 5 orders',
             type: 'order_selection',
             icon: <img src={orderSelectionIcon} alt="" />,

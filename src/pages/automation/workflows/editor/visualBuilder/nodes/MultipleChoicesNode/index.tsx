@@ -51,9 +51,7 @@ function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="multiple_choices">
-                        Multiple choice
-                    </VisualBuilderActionTag>
+                    <VisualBuilderActionTag nodeType="multiple_choices" />
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text.replace(flowVariableRegex, '{...}')

@@ -53,9 +53,7 @@ function TextReplyNode(node: NodeProps<TextReplyNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="text_reply">
-                        Collect text reply
-                    </VisualBuilderActionTag>
+                    <VisualBuilderActionTag nodeType="text_reply" />
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text.replace(flowVariableRegex, '{...}')

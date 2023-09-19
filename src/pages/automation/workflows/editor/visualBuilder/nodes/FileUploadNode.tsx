@@ -53,9 +53,7 @@ function FileUploadNode(node: NodeProps<FileUploadNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="file_upload">
-                        Collect file upload
-                    </VisualBuilderActionTag>
+                    <VisualBuilderActionTag nodeType="file_upload" />
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text.replace(flowVariableRegex, '{...}')

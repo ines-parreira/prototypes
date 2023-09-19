@@ -53,9 +53,7 @@ function OrderSelectionNode(node: NodeProps<OrderSelectionNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
-                    <VisualBuilderActionTag nodeType="order_selection">
-                        Order selection
-                    </VisualBuilderActionTag>
+                    <VisualBuilderActionTag nodeType="order_selection" />
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text.replace(flowVariableRegex, '{...}')

@@ -7,7 +7,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {FlowVariableGroup} from 'pages/automation/workflows/models/variables.types'
-import VisualBuilderActionTag from 'pages/automation/workflows/components/VisualBuilderActionTag'
+import VisualBuilderActionIcon from 'pages/automation/workflows/components/VisualBuilderActionIcon'
 import Tooltip from 'pages/common/components/Tooltip'
 import {useToolbarContext} from '../ToolbarContext'
 import css from './FlowVariablePicker.less'
@@ -121,7 +121,7 @@ const FlowVariablePicker = ({onSelect}: FlowVariablePickerProps) => {
                             >
                                 <div className={css.itemContent}>
                                     {option.nodeType && (
-                                        <VisualBuilderActionTag
+                                        <VisualBuilderActionIcon
                                             nodeType={option.nodeType}
                                         />
                                     )}

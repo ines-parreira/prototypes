@@ -49,6 +49,19 @@ export const iconByVisualBuilderNodeType: Record<
     order_selection: <img src={orderSelectionIcon} alt="" />,
 }
 
+export const labelByVisualBuilderNodeType: Record<
+    NonNullable<VisualBuilderNode['type']>,
+    string
+> = {
+    trigger_button: 'Start flow',
+    automated_message: 'Automated answer',
+    multiple_choices: 'Multiple choice',
+    text_reply: 'Collect text reply',
+    file_upload: 'Collect file upload',
+    order_selection: 'Order selection',
+    end: 'End flow',
+}
+
 export const WAS_THIS_HELPFUL_WORKFLOW_ID = '01GWPRH2G05DYYFBB1GNVNRB19'
 export const ORDER_SELECTION_WORKFLOW_ID = '01H6XMB9DXNERSDSMPAM84JJ6J'
 export const NO_ORDERS_WORKFLOW_ID = '01H7FR7QJ4YG1QWXTXNJ5WV1EH'
