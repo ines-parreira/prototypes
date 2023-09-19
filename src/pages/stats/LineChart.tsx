@@ -8,6 +8,7 @@ import {
 } from 'chart.js'
 import React, {useCallback, useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
+import _merge from 'lodash/merge'
 
 import classNames from 'classnames'
 import colors from 'assets/tokens/colors.json'
@@ -27,6 +28,7 @@ const STAT_COLORS = Object.freeze([
 
 type Props = {
     data: TwoDimensionalDataItem[]
+    options?: ChartOptions<'line'>
     hasBackground?: boolean
     yLabel?: string
     renderYTickLabel?: (value: number | string) => string
@@ -51,7 +53,7 @@ type Props = {
     }
 }
 
-const LINE_OPTIONS: ChartOptions<'line'> = {
+const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = {
     elements: {
         point: {
             pointStyle: 'circle',
@@ -125,10 +127,12 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
         },
     },
     maintainAspectRatio: false,
+    resizeDelay: 1000,
 }
 
 export default function LineChart({
     data,
+    options,
     hasBackground,
     yLabel,
     renderYTickLabel = renderTickLabelAsNumber,
@@ -186,62 +190,53 @@ export default function LineChart({
         }
     }, [chartArea, chartContext, data, hasBackground, chartColors])
 
-    const options = useMemo<ChartOptions<'line'>>(
-        () => ({
-            ...LINE_OPTIONS,
-            scales: {
-                ...LINE_OPTIONS.scales,
-                y: {
-                    ...LINE_OPTIONS.scales?.y,
-                    title: {
-                        ...LINE_OPTIONS.scales?.y?.title,
-                        display: !!yLabel,
-                        text: yLabel,
+    const lineOptions: ChartOptions<'line'> = useMemo(
+        () =>
+            _merge(
+                _merge(LINE_OPTIONS, {
+                    scales: {
+                        y: {
+                            title: {
+                                display: !!yLabel,
+                                text: yLabel,
+                            },
+                            ticks: {
+                                callback: renderYTickLabel,
+                            },
+                            beginAtZero: yAxisBeginAtZero,
+                            ...yAxisScale,
+                        },
+                        x: {
+                            ticks: {
+                                ...(renderXTickLabel
+                                    ? {callback: renderXTickLabel}
+                                    : {}),
+                            },
+                        },
                     },
-                    ticks: {
-                        ...LINE_OPTIONS.scales?.y?.ticks,
-                        callback: renderYTickLabel,
+                    plugins: {
+                        tooltip: {
+                            enabled: _displayLegacyTooltip,
+                            callbacks: {
+                                label: _renderLegacyTooltipLabel,
+                            },
+                        },
+                        greyArea,
                     },
-                    beginAtZero: yAxisBeginAtZero,
-                    ...yAxisScale,
-                },
-                x: {
-                    ...LINE_OPTIONS.scales?.x,
-                    ticks: {
-                        ...LINE_OPTIONS.scales?.x?.ticks,
-                        ...(renderXTickLabel
-                            ? {callback: renderXTickLabel}
-                            : {}),
+                    elements: {
+                        line: {
+                            tension: !isCurvedLine
+                                ? 0
+                                : LINE_OPTIONS.elements?.line?.tension,
+                        },
                     },
-                },
-            },
-            plugins: {
-                ...LINE_OPTIONS.plugins,
-                tooltip: {
-                    ...LINE_OPTIONS.plugins?.tooltip,
-                    enabled: _displayLegacyTooltip,
-                    callbacks: {
-                        ...LINE_OPTIONS.plugins?.tooltip?.callbacks,
-                        label: _renderLegacyTooltipLabel,
+                    onResize: (chart: Chart) => {
+                        setChartArea(chart.chartArea)
+                        setChartContext(chart.ctx)
                     },
-                },
-                greyArea,
-            },
-            resizeDelay: 1000,
-            onResize: (chart) => {
-                setChartArea(chart.chartArea)
-                setChartContext(chart.ctx)
-            },
-            elements: {
-                ...LINE_OPTIONS.elements,
-                line: {
-                    ...LINE_OPTIONS.elements?.line,
-                    tension: !isCurvedLine
-                        ? 0
-                        : LINE_OPTIONS.elements?.line?.tension,
-                },
-            },
-        }),
+                }),
+                options
+            ),
         [
             yLabel,
             renderYTickLabel,
@@ -252,6 +247,7 @@ export default function LineChart({
             greyArea,
             renderXTickLabel,
             yAxisScale,
+            options,
         ]
     )
 
@@ -263,7 +259,7 @@ export default function LineChart({
         <div className={css.wrapper}>
             <Line
                 data={formattedData}
-                options={options}
+                options={lineOptions}
                 ref={(chart: Chart<'line'> | null | undefined) => {
                     setChartContext(chart?.ctx)
                     setChartArea(chart?.chartArea)
