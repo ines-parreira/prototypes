@@ -36,6 +36,7 @@ import {
 } from 'state/billing/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import {AlertType} from 'pages/common/components/Alert/Alert'
+import {getRevenueAddonApiClient} from 'rest_api/revenue_addon_api/client'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -99,6 +100,7 @@ const BillingStartView = () => {
     const [helpdeskBanner, setHelpdeskBanner] = useState<BillingBanner>()
     const [voiceBanner, setVoiceBanner] = useState<BillingBanner>()
     const [smsBanner, setSMSBanner] = useState<BillingBanner>()
+    const [convertBanner, setConvertBanner] = useState<BillingBanner>()
 
     const contactBilling = useCallback(
         (ticketPurpose: TicketPurpose) => {
@@ -261,6 +263,49 @@ const BillingStartView = () => {
         }
     }, [currentUsage, dispatch, isCurrentHelpdeskLegacy, periodEnd])
 
+    // A separate useEffect to avoid re-rendering notification on set convert banner
+    useEffect(() => {
+        if (!currentUsage?.convert || convertBanner) {
+            return
+        }
+
+        const setBannerForConvert = async () => {
+            const client = await getRevenueAddonApiClient()
+            const {data: bundleList} = await client.list_bundle_installation()
+            if (bundleList.length > 0) {
+                return
+            }
+
+            setConvertBanner({
+                description: 'Get started with your Convert plan',
+                type: AlertType.Info,
+            })
+            void dispatch(
+                notify({
+                    message: `Your Convert subscription has been activated!`,
+                    style: NotificationStyle.Banner,
+                    status: NotificationStatus.Success,
+                    actionHTML: (
+                        <a
+                            href="/app/settings/revenue/bundles"
+                            rel="noreferrer"
+                        >
+                            Set Up Convert
+                        </a>
+                    ),
+                })
+            )
+        }
+
+        void setBannerForConvert()
+    }, [
+        currentUsage,
+        dispatch,
+        isCurrentHelpdeskLegacy,
+        periodEnd,
+        convertBanner,
+    ])
+
     if (!hasAccessToNewBilling) {
         return null
     }
@@ -301,6 +346,7 @@ const BillingStartView = () => {
                                 currentUsage={currentUsage}
                                 voiceBanner={voiceBanner}
                                 smsBanner={smsBanner}
+                                convertBanner={convertBanner}
                                 helpdeskBanner={helpdeskBanner}
                             />
                         </Route>

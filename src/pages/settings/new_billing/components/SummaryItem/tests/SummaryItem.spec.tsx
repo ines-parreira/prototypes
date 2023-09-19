@@ -21,6 +21,9 @@ describe('SummaryItem', () => {
             sms: {
                 isSelected: false,
             },
+            convert: {
+                isSelected: false,
+            },
         },
         interval: PlanInterval.Month,
         product: basicMonthlyHelpdeskPrice,
@@ -43,6 +46,7 @@ describe('SummaryItem', () => {
                     automation: {isSelected: false},
                     voice: {isSelected: false},
                     sms: {isSelected: false},
+                    convert: {isSelected: false},
                 }}
                 product={undefined}
             />

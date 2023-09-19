@@ -51,6 +51,7 @@ const store = mockedStore({
             automation: null,
             voice: null,
             sms: null,
+            convert: null,
         },
     }),
 })

@@ -21,6 +21,7 @@ import {
     products,
     smsPrice1,
     voicePrice1,
+    convertPrice1,
 } from 'fixtures/productPrices'
 import {
     automationSubscriptionProductPrices,
@@ -662,6 +663,7 @@ describe('billing selectors', () => {
             expect(cheapestProductPrices.helpdesk).toEqual(
                 basicMonthlyHelpdeskPrice
             )
+            expect(cheapestProductPrices.convert).toEqual(convertPrice1)
 
             expect(cheapestProductPrices).toMatchSnapshot()
         })

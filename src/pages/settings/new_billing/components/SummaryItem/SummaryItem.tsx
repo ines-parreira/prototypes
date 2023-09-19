@@ -3,12 +3,13 @@ import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import {
     AutomationPrice,
+    ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
     ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
-import {isAAOLegacyPrice, isTrialVoiceOrSMSPrice} from 'models/billing/utils'
+import {isAAOLegacyPrice, isTrialPrice} from 'models/billing/utils'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {PRODUCT_INFO} from '../../constants'
 import {formatAmount} from '../../utils/formatAmount'
@@ -18,8 +19,13 @@ import css from './SummaryItem.less'
 export type SummaryItemProps = {
     type: ProductType
     interval?: PlanInterval
-    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
-    prices?: (HelpdeskPrice | AutomationPrice | SMSOrVoicePrice)[]
+    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    prices?: (
+        | HelpdeskPrice
+        | AutomationPrice
+        | SMSOrVoicePrice
+        | ConvertPrice
+    )[]
     selectedPlans: SelectedPlans
     isFrequencyChanged?: boolean
 }
@@ -68,10 +74,7 @@ const SummaryItem = ({
     }, [prices, product, selectedPlan])
 
     const description = useMemo(() => {
-        if (
-            selectedPlan.plan &&
-            isTrialVoiceOrSMSPrice(selectedPlan.plan, type)
-        ) {
+        if (selectedPlan.plan && isTrialPrice(selectedPlan.plan, type)) {
             return <div>Trial</div>
         }
 
@@ -113,8 +116,7 @@ const SummaryItem = ({
                         {formatAmount(oldPrice, currency)}
                     </div>
                 )}
-                {selectedPlan.plan &&
-                isTrialVoiceOrSMSPrice(selectedPlan.plan, type) ? (
+                {selectedPlan.plan && isTrialPrice(selectedPlan.plan, type) ? (
                     <>
                         <b>
                             $

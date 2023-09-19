@@ -2,6 +2,7 @@ import React, {useEffect, useMemo} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Tooltip from 'pages/common/components/Tooltip'
 import {
     getCurrentSubscription,
@@ -14,6 +15,7 @@ import {
     getCurrentAutomationProduct,
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
+    getCurrentConvertProduct,
     getCurrentSMSProduct,
     getCurrentVoiceProduct,
 } from 'state/billing/selectors'
@@ -28,6 +30,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {isAAOLegacyPrice} from 'models/billing/utils'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
@@ -45,6 +48,7 @@ type UsageAndPlansViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     periodEnd: string
     currentUsage: CurrentProductsUsages | null
+    convertBanner?: BillingBanner
     voiceBanner?: BillingBanner
     smsBanner?: BillingBanner
     helpdeskBanner?: BillingBanner
@@ -54,16 +58,19 @@ const UsageAndPlansView = ({
     contactBilling,
     periodEnd,
     currentUsage,
+    convertBanner,
     smsBanner,
     voiceBanner,
     helpdeskBanner,
 }: UsageAndPlansViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
+    const flags = useFlags()
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const smsProduct = useAppSelector(getCurrentSMSProduct)
+    const convertProduct = useAppSelector(getCurrentConvertProduct)
     const automationProduct = useAppSelector(getCurrentAutomationProduct)
     const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
 
@@ -103,6 +110,8 @@ const UsageAndPlansView = ({
 
     const hasCreditCard = useAppSelector(getHasCreditCard)
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
+
+    const isConvertProductActive = Boolean(flags[FeatureFlagKey.ConvertBilling])
 
     useEffect(() => {
         if (isTrialingSubscription) {
@@ -294,6 +303,15 @@ const UsageAndPlansView = ({
                     banner={smsBanner}
                     isDisabled={isSubscribedToHelpdeskStarter}
                 />
+                {isConvertProductActive && (
+                    <ProductCard
+                        type={ProductType.Convert}
+                        product={convertProduct}
+                        usage={currentUsage?.convert}
+                        banner={convertBanner}
+                        isDisabled={isSubscribedToHelpdeskStarter}
+                    />
+                )}
             </div>
             <div className={css.unsubscribe}>
                 If you have any questions regarding your subscription, please{' '}
