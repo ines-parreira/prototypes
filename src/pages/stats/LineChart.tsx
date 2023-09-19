@@ -156,6 +156,9 @@ export default function LineChart({
         (index: number) => customColors?.[index] || STAT_COLORS[index],
         [customColors]
     )
+    const [linesVisibility, setLinesVisibility] = useState<
+        Record<number, boolean | undefined>
+    >({})
 
     const formattedData = useMemo<ChartData<'line'>>(() => {
         const labels = Array.from(
@@ -269,16 +272,29 @@ export default function LineChart({
             {displayLegend && (
                 <Legend
                     toggleLegend={toggleLegend}
-                    className={classNames({
-                        [css.legend]: true,
+                    className={classNames(css.legend, {
                         [css.legendOnLeft]: legendOnLeft,
                     })}
                     items={data.map(({label}, index) => ({
                         label,
                         color: chartColors(index),
-                        index,
+                        ...(toggleLegend && {
+                            isChecked:
+                                linesVisibility[index] ??
+                                chart?.isDatasetVisible(index),
+                            onChange: () => {
+                                chart?.setDatasetVisibility(
+                                    index,
+                                    !chart.isDatasetVisible(index)
+                                )
+                                setLinesVisibility((prevValue) => ({
+                                    ...prevValue,
+                                    [index]: chart?.isDatasetVisible(index),
+                                }))
+                                chart?.update()
+                            },
+                        }),
                     }))}
-                    chart={chart}
                 />
             )}
         </div>

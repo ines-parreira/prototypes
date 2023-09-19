@@ -1,9 +1,11 @@
 @import '~css/new/layout';
+@import (reference) '~css/typography';
 
 :local {
     .legend {
         display: flex;
-        gap: @layout-spacing-m;
+        flex-wrap: wrap;
+        gap: @layout-spacing-s @layout-spacing-m;
     }
 
     .legendItem {
@@ -13,8 +15,13 @@
     }
 
     .legendCaret {
-        border-radius: 4px;
-        height: 24px;
-        width: 24px;
+        border-radius: 2px;
+        height: 16px;
+        width: 16px;
+    }
+
+    .legendCheckbox label {
+        .body-regular();
+        letter-spacing: normal;
     }
 }

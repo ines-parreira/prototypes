@@ -25,4 +25,23 @@ describe('<LineChart />', () => {
 
         expect(getAllByTestId('skeleton')).toHaveLength(1)
     })
+
+    it('should render the legend', () => {
+        render(<LineChart data={[ticketsCreatedDataItem]} displayLegend />)
+
+        expect(document.querySelector('.legend')).toBeInTheDocument()
+    })
+
+    it('should render the interactive legend', () => {
+        const {getAllByRole, getByLabelText} = render(
+            <LineChart
+                data={[ticketsCreatedDataItem]}
+                displayLegend
+                toggleLegend
+            />
+        )
+
+        expect(getByLabelText(ticketsCreatedDataItem.label)).toBeInTheDocument()
+        expect(getAllByRole('checkbox').length).toBe(1)
+    })
 })

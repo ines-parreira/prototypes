@@ -633,13 +633,20 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                           class="legend legend legendOnLeft"
                         >
                           <div
-                            class="legendItem"
+                            class="legendCheckbox"
                           >
-                            <div
-                              class="legendCaret"
-                              style="background-color: rgb(51, 115, 219);"
-                            />
-                            Others
+                            <label
+                              class="label label"
+                              for="checkbox-abc"
+                            >
+                              <input
+                                class="input"
+                                id="checkbox-abc"
+                                name="checkbox-abc"
+                                type="checkbox"
+                              />
+                              Others
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -1367,13 +1374,20 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                         class="legend legend legendOnLeft"
                       >
                         <div
-                          class="legendItem"
+                          class="legendCheckbox"
                         >
-                          <div
-                            class="legendCaret"
-                            style="background-color: rgb(51, 115, 219);"
-                          />
-                          Others
+                          <label
+                            class="label label"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                            Others
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -2080,13 +2094,20 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                           class="legend legend legendOnLeft"
                         >
                           <div
-                            class="legendItem"
+                            class="legendCheckbox"
                           >
-                            <div
-                              class="legendCaret"
-                              style="background-color: rgb(51, 115, 219);"
-                            />
-                            Others
+                            <label
+                              class="label label"
+                              for="checkbox-abc"
+                            >
+                              <input
+                                class="input"
+                                id="checkbox-abc"
+                                name="checkbox-abc"
+                                type="checkbox"
+                              />
+                              Others
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -2814,13 +2835,20 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                         class="legend legend legendOnLeft"
                       >
                         <div
-                          class="legendItem"
+                          class="legendCheckbox"
                         >
-                          <div
-                            class="legendCaret"
-                            style="background-color: rgb(51, 115, 219);"
-                          />
-                          Others
+                          <label
+                            class="label label"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                            Others
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -3527,13 +3555,20 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                           class="legend legend legendOnLeft"
                         >
                           <div
-                            class="legendItem"
+                            class="legendCheckbox"
                           >
-                            <div
-                              class="legendCaret"
-                              style="background-color: rgb(51, 115, 219);"
-                            />
-                            Others
+                            <label
+                              class="label label"
+                              for="checkbox-abc"
+                            >
+                              <input
+                                class="input"
+                                id="checkbox-abc"
+                                name="checkbox-abc"
+                                type="checkbox"
+                              />
+                              Others
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -4261,13 +4296,20 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                         class="legend legend legendOnLeft"
                       >
                         <div
-                          class="legendItem"
+                          class="legendCheckbox"
                         >
-                          <div
-                            class="legendCaret"
-                            style="background-color: rgb(51, 115, 219);"
-                          />
-                          Others
+                          <label
+                            class="label label"
+                            for="checkbox-abc"
+                          >
+                            <input
+                              class="input"
+                              id="checkbox-abc"
+                              name="checkbox-abc"
+                              type="checkbox"
+                            />
+                            Others
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -4970,13 +5012,20 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                     class="legend legend legendOnLeft"
                   >
                     <div
-                      class="legendItem"
+                      class="legendCheckbox"
                     >
-                      <div
-                        class="legendCaret"
-                        style="background-color: rgb(51, 115, 219);"
-                      />
-                      Others
+                      <label
+                        class="label label"
+                        for="checkbox-abc"
+                      >
+                        <input
+                          class="input"
+                          id="checkbox-abc"
+                          name="checkbox-abc"
+                          type="checkbox"
+                        />
+                        Others
+                      </label>
                     </div>
                   </div>
                 </div>
