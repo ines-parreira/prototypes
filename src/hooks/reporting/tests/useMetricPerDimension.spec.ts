@@ -17,7 +17,7 @@ import {assumeMock} from 'utils/testing'
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 
-describe('useMetricPerDimension.spec.ts', () => {
+describe('useMetricPerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
         firstResponseTimeMetricPerAgentQueryFactory(
             {

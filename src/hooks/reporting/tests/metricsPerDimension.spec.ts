@@ -29,6 +29,8 @@ import {
     useMessagesSentMetricPerAgent,
     useResolutionTimeMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
+    useCustomFieldsTicketCount,
+    customFieldsTicketCountQueryFactory,
 } from 'hooks/reporting/metricsPerDimension'
 import {NotSpamNorTrashedTicketsFilter} from 'hooks/reporting/metricTrends'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
@@ -61,6 +63,7 @@ describe('metricsPerDimension', () => {
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
     const agentId = 'someId'
+    const customFieldId = '1'
 
     describe('firstResponseTimeMetricPerAgent', () => {
         it('should build a query', () => {
@@ -839,6 +842,30 @@ describe('metricsPerDimension', () => {
                     sorting
                 ),
                 agentId
+            )
+        })
+    })
+
+    describe('useCustomFieldsTicketCount', () => {
+        it('should pass the query to useMetricPerDimension hook', () => {
+            renderHook(
+                () =>
+                    useCustomFieldsTicketCount(
+                        statsFilters,
+                        timezone,
+                        customFieldId,
+                        sorting
+                    ),
+                {}
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                customFieldsTicketCountQueryFactory(
+                    statsFilters,
+                    timezone,
+                    customFieldId,
+                    sorting
+                )
             )
         })
     })

@@ -1,4 +1,5 @@
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {customFieldsTicketCountQueryFactory} from 'hooks/reporting/metricsPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {
     AutomationBillingEventDimension,
@@ -221,6 +222,32 @@ export function useMessagesSentTimeSeries(
                 filters
             ),
         ],
+    })
+}
+
+export const useCustomFieldsTicketCountTimeSeries = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    customFieldId: string
+) => {
+    return useTimeSeries({
+        ...customFieldsTicketCountQueryFactory(
+            filters,
+            timezone,
+            customFieldId
+        ),
+        timeDimensions: [
+            {
+                dimension: HelpdeskMessageDimension.SentDatetime,
+                granularity,
+                dateRange: [
+                    formatReportingQueryDate(filters.period.start_datetime),
+                    formatReportingQueryDate(filters.period.end_datetime),
+                ],
+            },
+        ],
+        timezone,
     })
 }
 

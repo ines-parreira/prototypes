@@ -1,8 +1,8 @@
 import _findIndex from 'lodash/findLastIndex'
 
-export interface DataResponse {
+export interface DataResponse<TData = Record<string, any>> {
     data: {
-        data: Record<string, any>[]
+        data: TData[]
     }
 }
 

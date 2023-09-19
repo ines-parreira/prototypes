@@ -1,19 +1,28 @@
+import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {
     closedTicketsQueryFactory,
-    resolutionTimeQueryFactory,
     customerSatisfactionQueryFactory,
     firstResponseTimeQueryFactory,
     messagesSentQueryFactory,
+    NotSpamNorTrashedTicketsFilter,
+    resolutionTimeQueryFactory,
     ticketsRepliedQueryFactory,
 } from 'hooks/reporting/metricTrends'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
+import {
+    MetricWithDecile,
+    useMetricPerDimension,
+} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {
     TicketCubeWithJoins,
     TicketDimension,
     TicketMeasure,
 } from 'models/reporting/cubes/TicketCube'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
+    TicketCustomFieldsMember,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
@@ -24,8 +33,13 @@ import {
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingQuery} from 'models/reporting/types'
+import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {
+    formatReportingQueryDate,
+    statsFiltersToReportingFilters,
+    TicketStatsFiltersMembers,
+} from 'utils/reporting'
 
 export const firstResponseTimeMetricPerAgentQueryFactory = (
     filters: StatsFilters,
@@ -139,18 +153,15 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
         )
     }
 
+    const allData = closedTicketsPerAgent.data?.allData || []
+
     return {
         isFetching: isFetching || closedTicketsPerAgent.isFetching,
         isError: isError || closedTicketsPerAgent.isError,
         data: {
             value: metricValue,
             decile: closedTicketsPerAgent.data?.decile || null,
-            allData: (
-                closedTicketsPerAgent.data?.allData as {
-                    [TicketDimension.AssigneeUserId]: string
-                    [TicketMeasure.TicketCount]: string
-                }[]
-            )?.map((item) => ({
+            allData: allData.map((item) => ({
                 ...item,
                 [TicketMeasure.TicketCount]:
                     item[TicketMeasure.TicketCount] && data?.value
@@ -247,4 +258,58 @@ export const useCustomerSatisfactionMetricPerAgent = (
             sorting
         ),
         agentAssigneeId
+    )
+
+export const customFieldsTicketCountQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
+    dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
+    timezone,
+    segments: [],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+        {
+            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+            operator: ReportingFilterOperator.Equals,
+            values: [customFieldId],
+        },
+        {
+            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                formatReportingQueryDate(filters.period.start_datetime),
+                formatReportingQueryDate(filters.period.end_datetime),
+            ],
+        },
+    ],
+    ...(sorting
+        ? {
+              order: [
+                  [
+                      TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                      sorting,
+                  ],
+              ],
+          }
+        : {}),
+})
+
+export const useCustomFieldsTicketCount = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    sorting?: OrderDirection
+): MetricWithDecile =>
+    useMetricPerDimension(
+        customFieldsTicketCountQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            sorting
+        )
     )

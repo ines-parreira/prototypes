@@ -12,6 +12,11 @@ import {
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
+    TicketCustomFieldsMember,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
@@ -22,6 +27,7 @@ import {
     useAutomatedInteractionByEventTypesTimeSeries,
     useAutomatedInteractionTimeSeries,
     useAutomationRateTimeSeries,
+    useCustomFieldsTicketCountTimeSeries,
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
@@ -169,6 +175,81 @@ describe('time series', () => {
                             member: HelpdeskMessageMember.PeriodEnd,
                             operator: ReportingFilterOperator.BeforeDate,
                             values: [periodEnd],
+                        },
+                    ],
+                },
+            ])
+        })
+    })
+
+    describe('useCustomFieldsTicketCountTimeSeries', () => {
+        it('should render expected query', () => {
+            const customFieldId = '1'
+            renderHook(
+                ({statsFilters, timezone, granularity, customFieldId}) =>
+                    useCustomFieldsTicketCountTimeSeries(
+                        statsFilters,
+                        timezone,
+                        granularity,
+                        customFieldId
+                    ),
+                {
+                    initialProps: {
+                        statsFilters,
+                        timezone,
+                        granularity,
+                        customFieldId,
+                    },
+                }
+            )
+
+            expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+                {
+                    measures: [
+                        TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                    ],
+                    dimensions: [
+                        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                    ],
+                    timezone,
+                    segments: [],
+                    filters: [
+                        {
+                            member: TicketMember.IsTrashed,
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['0'],
+                        },
+                        {
+                            member: TicketMember.IsSpam,
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['0'],
+                        },
+                        {
+                            member: TicketMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [periodStart],
+                        },
+                        {
+                            member: TicketMember.PeriodEnd,
+                            operator: ReportingFilterOperator.BeforeDate,
+                            values: [periodEnd],
+                        },
+                        {
+                            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                            operator: ReportingFilterOperator.Equals,
+                            values: [customFieldId],
+                        },
+                        {
+                            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                            operator: ReportingFilterOperator.InDateRange,
+                            values: [periodStart, periodEnd],
+                        },
+                    ],
+                    timeDimensions: [
+                        {
+                            dimension: HelpdeskMessageDimension.SentDatetime,
+                            granularity: ReportingGranularity.Day,
+                            dateRange: [periodStart, periodEnd],
                         },
                     ],
                 },

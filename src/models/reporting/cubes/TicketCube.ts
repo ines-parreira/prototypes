@@ -1,4 +1,5 @@
 import {TagsOnTicketCube} from 'models/reporting/cubes/TagsOnTicketCube'
+import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyCube} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {TicketTagsCube} from 'models/reporting/cubes/TicketTagsCube'
@@ -53,10 +54,13 @@ export type TicketCube = Cube<
 export type TicketCubeWithJoins = JoinedCubesWithMapping<
     JoinedCubesWithMapping<
         JoinedCubesWithMapping<
-            JoinedCubesWithMapping<TicketCube, TicketMessagesCube>,
-            TicketSatisfactionSurveyCube
+            JoinedCubesWithMapping<
+                JoinedCubesWithMapping<TicketCube, TicketMessagesCube>,
+                TicketSatisfactionSurveyCube
+            >,
+            TicketTagsCube
         >,
-        TicketTagsCube
+        TagsOnTicketCube
     >,
-    TagsOnTicketCube
+    TicketCustomFieldsCube
 >
