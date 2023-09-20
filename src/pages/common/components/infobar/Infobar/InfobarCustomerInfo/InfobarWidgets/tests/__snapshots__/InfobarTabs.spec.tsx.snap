@@ -1,121 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<InfobarTabs/> render() should not render when list contains only one item 1`] = `""`;
-
-exports[`<InfobarTabs/> render() should not render when list is empty 1`] = `""`;
-
-exports[`<InfobarTabs/> render() should render 1`] = `
-<Navbar
-  className="container"
-  expand={false}
-  sticky="top"
-  tag="nav"
+exports[`<InfobarTabs/> should render 1`] = `
+<nav
+  class="container navbar sticky-top"
 >
-  <Nav
-    pills={true}
-    tag="ul"
-    vertical={false}
+  <ul
+    class="nav nav-pills"
   >
-    <NavItem
-      key="0"
-      tag="li"
+    <li
+      class="nav-item"
     >
-      <NavLink
-        className="tab"
-        href="#http"
-        tag="a"
+      <a
+        class="tab nav-link"
+        href="#widget_1"
       >
-        HTTP
-      </NavLink>
-    </NavItem>
-    <NavItem
-      key="1"
-      tag="li"
+        widget1
+      </a>
+    </li>
+    <li
+      class="nav-item"
     >
-      <NavLink
-        className="tab"
-        href="#shopify"
-        tag="a"
+      <a
+        class="tab nav-link"
+        href="#widget_2"
       >
-        Shopify
-      </NavLink>
-    </NavItem>
-    <NavItem
-      key="2"
-      tag="li"
-    >
-      <NavLink
-        className="tab"
-        href="#magento"
-        tag="a"
-      >
-        Magento
-      </NavLink>
-    </NavItem>
-    <NavItem
-      key="3"
-      tag="li"
-    >
-      <NavLink
-        className="tab"
-        href="#chat"
-        tag="a"
-      >
-        Chat
-      </NavLink>
-    </NavItem>
-    <NavItem
-      key="4"
-      tag="li"
-    >
-      <NavLink
-        className="tab"
-        href="#custom"
-        tag="a"
-      >
-        Custom
-      </NavLink>
-    </NavItem>
-  </Nav>
-</Navbar>
-`;
-
-exports[`<InfobarTabs/> render() should render without duplicates 1`] = `
-<Navbar
-  className="container"
-  expand={false}
-  sticky="top"
-  tag="nav"
->
-  <Nav
-    pills={true}
-    tag="ul"
-    vertical={false}
-  >
-    <NavItem
-      key="0"
-      tag="li"
-    >
-      <NavLink
-        className="tab"
-        href="#http"
-        tag="a"
-      >
-        HTTP
-      </NavLink>
-    </NavItem>
-    <NavItem
-      key="1"
-      tag="li"
-    >
-      <NavLink
-        className="tab"
-        href="#shopify"
-        tag="a"
-      >
-        Shopify
-      </NavLink>
-    </NavItem>
-  </Nav>
-</Navbar>
+        widget2
+      </a>
+    </li>
+  </ul>
+</nav>
 `;

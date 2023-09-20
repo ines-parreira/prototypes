@@ -18,7 +18,6 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {AppContext} from 'providers/infobar/AppContext'
-import {getWidgetId, getWidgetName} from 'state/widgets/predicates'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
@@ -29,6 +28,10 @@ import {
 
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
+import {
+    getWidgetId,
+    getWidgetTitle,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget'
 import Button from 'pages/common/components/button/Button'
@@ -58,16 +61,14 @@ export default function Wrapper({widget, template, source, editing}: Props) {
     const absolutePath = template.get('absolutePath', []) as string[]
     const templatePath = template.get('templatePath', '') as string
 
-    const widgetTitle = template.getIn(['widgets', 0, 'title'])
     const widgetType = widget.get('type') as WidgetType
     const integration = useIntegration(absolutePath, widgetType)
 
-    const widgetName = getWidgetName({
-        source,
-        widgetTitle,
+    const widgetName = getWidgetTitle({
+        source: source.toJS(),
+        template: template.toJS(),
         widgetType,
-        widgetAppId: widget.get('app_id') as string,
-        templatePath: template.get('path') as string[],
+        appId: widget.get('app_id') as string | undefined,
         integration: integration?.toJS(),
     })
     const widgetId = getWidgetId(widgetName)
@@ -186,10 +187,10 @@ export default function Wrapper({widget, template, source, editing}: Props) {
                     >
                         {(
                             template.get('widgets', fromJS([])) as Map<
-                                string,
+                                number,
                                 unknown
                             >
-                        ).map((mappedWidget, index = '') => {
+                        ).map((mappedWidget, index = 0) => {
                             const passedTemplate = (
                                 mappedWidget as Map<string, unknown>
                             ).set(

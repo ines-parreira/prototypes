@@ -64,55 +64,6 @@ exports[`<WidgetEdit/> should handle the list case 2`] = `
 ]
 `;
 
-exports[`<WidgetEdit/> should hide the hidden fields 1`] = `
-<div>
-  <div>
-    <form
-      class=""
-    >
-      <div
-        class="InputField form-group"
-        color=""
-      >
-        <label
-          class="control-label"
-          for="id-card.title"
-        >
-          Title
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-card.title"
-            placeholder="Order {{id}}"
-            type="text"
-            value="Some Title"
-          />
-        </div>
-      </div>
-      <div>
-        <button
-          aria-disabled="false"
-          class="wrapper mr-2 fill primary medium"
-          type="submit"
-        >
-          Submit
-        </button>
-        <button
-          aria-disabled="false"
-          class="wrapper fill secondary medium"
-          type="button"
-        >
-          Cancel
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-`;
-
 exports[`<WidgetEdit/> should render 1`] = `
 <div>
   <div>
@@ -161,6 +112,80 @@ exports[`<WidgetEdit/> should render 1`] = `
             type="text"
             value=""
           />
+        </div>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-card.meta.pictureUrl"
+        >
+          Icon
+        </label>
+        <div
+          class=""
+        >
+          <div
+            class="d-flex align-center"
+          >
+            
+            <button
+              aria-disabled="false"
+              class="wrapper fill secondary medium"
+              type="button"
+            >
+              <span>
+                Upload Icon
+              </span>
+            </button>
+            
+            <input
+              class="input form-control-file"
+              id="id-card.meta.pictureUrl"
+              name="card.meta.pictureUrl"
+              type="file"
+            />
+          </div>
+        </div>
+        <small
+          class="form-text text-muted"
+        >
+          Less than 500kB, .png or .jpg
+        </small>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-card.meta.color"
+        >
+          Icon background
+        </label>
+        <div
+          class=""
+        >
+          <div
+            class="wrapper"
+          >
+            <button
+              aria-disabled="false"
+              class="wrapper button fill secondary medium"
+              id="color-picker-1"
+              type="button"
+            >
+              Pick a color
+            </button>
+            <input
+              class="input form-control"
+              placeholder="ex: #eeeeee"
+              type="text"
+              value=""
+            />
+          </div>
         </div>
       </div>
       <div

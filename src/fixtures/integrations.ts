@@ -1,7 +1,11 @@
 import {fromJS, Map} from 'immutable'
 import {IntegrationBase} from 'models/integration/types/base'
-
-import {IntegrationType} from '../models/integration/types'
+import {
+    HttpIntegration,
+    HttpIntegrationMeta,
+    IntegrationType,
+} from 'models/integration/types'
+import {ContentType, HttpMethod} from 'models/api/types'
 
 export const integrationBase: IntegrationBase = {
     id: 5,
@@ -17,6 +21,37 @@ export const integrationBase: IntegrationBase = {
     user: {
         id: 1,
     },
+}
+
+export const baseHttp: HttpIntegrationMeta = {
+    headers: {
+        Authorization: 'Bearer a57sd4as6d4',
+        Foo: 'bar',
+    },
+    url: 'http://httpbin.org/post',
+    method: HttpMethod.Post,
+    execution_order: 1,
+    id: 1,
+    request_content_type: ContentType.Json,
+    response_content_type: ContentType.Json,
+    triggers: {
+        'ticket-created': true,
+        'ticket-updated': false,
+        'ticket-message-created': false,
+    },
+    form: {
+        foo: 'bar',
+        baz: {
+            bazile: 'bazar',
+        },
+    },
+}
+
+export const httpIntegration: HttpIntegration = {
+    ...integrationBase,
+    type: IntegrationType.Http,
+    meta: {},
+    http: baseHttp,
 }
 
 export const integrationsState = {

@@ -10,6 +10,7 @@ import {Iterable, List, Map, fromJS} from 'immutable'
 import {Form, FormGroup} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import {PartialTemplate} from 'models/widget/types'
 import {updateEditedWidget, stopWidgetEdition} from 'state/widgets/actions'
 import Button from 'pages/common/components/button/Button'
 import ColorField from 'pages/common/forms/ColorField'
@@ -17,27 +18,16 @@ import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import FileField, {UploadType} from 'pages/common/forms/FileField'
-import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
-import {
-    CUSTOM_WIDGET_TYPE,
-    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-    HTTP_WIDGET_TYPE,
-    STANDALONE_WIDGET_TYPE,
-    WOOCOMMERCE_WIDGET_TYPE,
-} from 'state/widgets/constants'
-import {WidgetType} from 'state/widgets/types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
 
-type EditionHiddenField = 'link' | 'displayCard'
+export type EditionHiddenField = 'title' | 'link' | 'displayCard' | 'icon'
 
 type Props = {
     template: Map<string, unknown>
     parent: Map<string, unknown>
     editionHiddenFields: EditionHiddenField[]
     isParentList: boolean
-    isRootWidget: boolean
-    widgetType: WidgetType
 }
 
 type FormState = {
@@ -55,8 +45,6 @@ const WidgetEdit = ({
     parent,
     editionHiddenFields = [],
     isParentList = false,
-    isRootWidget = false,
-    widgetType,
 }: Props) => {
     const dispatch = useAppDispatch()
     const wrapperRef = useRef<HTMLDivElement>(null)
@@ -65,7 +53,7 @@ const WidgetEdit = ({
         link: template.getIn(['meta', 'link'], ''),
         pictureUrl: template.getIn(['meta', 'pictureUrl'], ''),
         color: template.getIn(['meta', 'color'], ''),
-        displayCard: true,
+        displayCard: template.getIn(['meta', 'displayCard'], true),
         limit: isParentList
             ? parent.getIn(['meta', 'limit'], undefined) || undefined
             : undefined,
@@ -136,16 +124,18 @@ const WidgetEdit = ({
     return (
         <div ref={wrapperRef}>
             <Form onSubmit={handleSubmit}>
-                <DEPRECATED_InputField
-                    type="text"
-                    name="card.title"
-                    label="Title"
-                    placeholder="Order {{id}}"
-                    value={formState.title}
-                    onChange={(title) =>
-                        setFormState((formState) => ({...formState, title}))
-                    }
-                />
+                {!editionHiddenFields.includes('title') && (
+                    <DEPRECATED_InputField
+                        type="text"
+                        name="card.title"
+                        label="Title"
+                        placeholder="Order {{id}}"
+                        value={formState.title}
+                        onChange={(title) =>
+                            setFormState((formState) => ({...formState, title}))
+                        }
+                    />
+                )}
                 {!editionHiddenFields.includes('link') && (
                     <DEPRECATED_InputField
                         type="text"
@@ -158,45 +148,38 @@ const WidgetEdit = ({
                         }
                     />
                 )}
-                {isRootWidget &&
-                    [
-                        HTTP_WIDGET_TYPE,
-                        CUSTOM_WIDGET_TYPE,
-                        CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-                        STANDALONE_WIDGET_TYPE,
-                        WOOCOMMERCE_WIDGET_TYPE,
-                    ].includes(widgetType) && (
-                        <>
-                            <FileField
-                                name="card.meta.pictureUrl"
-                                label="Widget icon"
-                                value={formState.pictureUrl}
-                                onChange={(pictureUrl: string) => {
-                                    setFormState((formState) => ({
-                                        ...formState,
-                                        pictureUrl,
-                                    }))
-                                }}
-                                uploadType={UploadType.Widget}
-                                maxSize={500 * 1024}
-                                placeholder="Upload Icon"
-                                help="Less than 500kB, .png or .jpg"
-                                isRemovable
-                            />
-                            <ColorField
-                                name="card.meta.color"
-                                label="Icon background"
-                                value={formState.color}
-                                onChange={(color: string) => {
-                                    setFormState((formState) => ({
-                                        ...formState,
-                                        color,
-                                    }))
-                                }}
-                                popupContainer={wrapperRef}
-                            />
-                        </>
-                    )}
+                {!editionHiddenFields.includes('icon') && (
+                    <>
+                        <FileField
+                            name="card.meta.pictureUrl"
+                            label="Icon"
+                            value={formState.pictureUrl}
+                            onChange={(pictureUrl: string) => {
+                                setFormState((formState) => ({
+                                    ...formState,
+                                    pictureUrl,
+                                }))
+                            }}
+                            uploadType={UploadType.Widget}
+                            maxSize={500 * 1024}
+                            placeholder="Upload Icon"
+                            help="Less than 500kB, .png or .jpg"
+                            isRemovable
+                        />
+                        <ColorField
+                            name="card.meta.color"
+                            label="Icon background"
+                            value={formState.color}
+                            onChange={(color: string) => {
+                                setFormState((formState) => ({
+                                    ...formState,
+                                    color,
+                                }))
+                            }}
+                            popupContainer={wrapperRef}
+                        />
+                    </>
+                )}
                 {!editionHiddenFields.includes('displayCard') && (
                     <FormGroup>
                         <CheckBox
