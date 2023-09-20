@@ -221,7 +221,7 @@ describe('widgets infobar utils', () => {
         }
 
         it('templating OK', () => {
-            expect(utils.jsonToTemplate(source)).toEqual(result)
+            expect(utils.jsonToWidget(source)).toEqual(result)
         })
     })
 

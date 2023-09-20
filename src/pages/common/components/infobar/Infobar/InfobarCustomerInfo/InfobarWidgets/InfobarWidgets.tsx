@@ -14,7 +14,7 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetContextType, WidgetType} from 'state/widgets/types'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import {getWidgetName} from 'state/widgets/predicates'
 import {canDisplayWidget} from 'pages/common/components/infobar/utils'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
@@ -112,33 +112,31 @@ const InfobarWidgets = ({
         isEditing,
     })
 
-    const widgetTabNames = preparedDisplayList
+    const widgetNames = preparedDisplayList
         .map((item = fromJS({})) => {
             const widget = item.get('widget') as Map<string, unknown>
-            const title = getWidgetTitle({
-                source: (
-                    source.getIn(
-                        item.getIn(['template', 'path']),
-                        fromJS({})
-                    ) as Map<string, unknown>
-                ).toJS(),
-                template: (
-                    item.getIn(['widget', 'template']) as Map<string, unknown>
-                ).toJS(),
-                widgetType: item.getIn(['widget', 'type']) as WidgetType,
-                integration: (
-                    item.get('integration') as Map<string, unknown> | undefined
-                )?.toJS() as Integration | undefined,
-                appId: widget.get('app_id') as string | undefined,
+            const integration = (
+                item.get('integration') as Map<string, unknown> | undefined
+            )?.toJS() as Integration
+            const templatePath = item.getIn(['template', 'path'])
+
+            const widgetTitle = item.getIn(['template', 'widgets', 0, 'title'])
+
+            return getWidgetName({
+                source,
+                widgetTitle,
+                widgetType: widget.get('type') as WidgetType,
+                widgetAppId: widget.get('app_id') as string,
+                templatePath,
+                integration: integration,
             })
-            return title
         })
         .toJS() as string[]
 
     return (
         <>
             {displayTabs && !isEditing && (
-                <InfobarTabs widgetNames={widgetTabNames} />
+                <InfobarTabs widgetNames={widgetNames} />
             )}
             <DragWrapper
                 sort

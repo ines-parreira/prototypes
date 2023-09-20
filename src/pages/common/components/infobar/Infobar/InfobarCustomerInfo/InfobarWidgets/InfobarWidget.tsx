@@ -18,7 +18,6 @@ import {
     YOTPO_WIDGET_TYPE,
     BIGCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
-    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
 import ListWidget from './widgets/List'
@@ -34,7 +33,6 @@ import smile from './widgets/smile'
 import smoochInside from './widgets/smoochInside'
 import yotpo from './widgets/yotpo'
 import bigcommerce from './widgets/bigcommerce'
-import woocommerce from './widgets/woocommerce'
 import {infobarWidgetShouldRender} from './predicates'
 
 type Props = {
@@ -76,7 +74,6 @@ export default function InfobarWidget({
         [HTTP_WIDGET_TYPE]: http,
         [YOTPO_WIDGET_TYPE]: yotpo,
         [BIGCOMMERCE_WIDGET_TYPE]: bigcommerce,
-        [WOOCOMMERCE_WIDGET_TYPE]: woocommerce,
     }
 
     const passedData = {

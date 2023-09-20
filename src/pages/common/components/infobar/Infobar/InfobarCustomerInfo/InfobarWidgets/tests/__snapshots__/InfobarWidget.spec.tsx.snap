@@ -2,7 +2,7 @@
 
 exports[`InfobarWidget card widget should display the widget if isEditing=true 1`] = `
 "<ContextProvider value={{...}}>
-  <Card isEditing={true} isParentList={false} source={{...}} widget={{...}} template={{...}} editing={[undefined]} parent={[undefined]} open={true} removeBorderTop={false} AfterTitle={[undefined]} BeforeContent={[undefined]} TitleWrapper={[undefined]} Wrapper={[undefined]} editionHiddenFields={[undefined]} />
+  <Card isEditing={true} isParentList={false} source={{...}} widget={{...}} template={{...}} editing={[undefined]} parent={[undefined]} open={true} removeBorderTop={false} AfterTitle={{...}} BeforeContent={{...}} TitleWrapper={{...}} Wrapper={{...}} />
 </ContextProvider>"
 `;
 
@@ -19,6 +19,10 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
   }
 >
   <Card
+    AfterTitle={null}
+    BeforeContent={null}
+    TitleWrapper={null}
+    Wrapper={null}
     extensionUsed="bigcommerce"
     isEditing={true}
     isParentList={false}
@@ -77,6 +81,10 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
   }
 >
   <Card
+    AfterTitle={null}
+    BeforeContent={null}
+    TitleWrapper={null}
+    Wrapper={null}
     extensionUsed="magento2"
     isEditing={true}
     isParentList={false}
@@ -135,6 +143,10 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
   }
 >
   <Card
+    AfterTitle={null}
+    BeforeContent={null}
+    TitleWrapper={null}
+    Wrapper={null}
     extensionUsed="recharge"
     isEditing={true}
     isParentList={false}
@@ -193,6 +205,10 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
   }
 >
   <Card
+    AfterTitle={null}
+    BeforeContent={null}
+    TitleWrapper={null}
+    Wrapper={null}
     extensionUsed="shopify"
     isEditing={true}
     isParentList={false}

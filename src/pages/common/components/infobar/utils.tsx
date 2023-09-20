@@ -27,7 +27,6 @@ import ReactStars from 'react-rating-stars-component'
 import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
 import * as utils from 'utils'
 import {reportError} from 'utils/errors'
-import {Template, Card} from 'models/widget/types'
 import {WidgetContextType} from 'state/widgets/types'
 import {getSourcePathFromContext} from 'state/widgets/utils'
 import {
@@ -40,6 +39,10 @@ import {
 } from 'state/widgets/constants'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {
+    Template,
+    CardTemplate,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 
 import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
@@ -266,19 +269,36 @@ export function isWidgetEmpty(
     }
 }
 
-function hasCustomAction(widget: Card) {
+function hasCustomAction(widget: CardTemplate) {
     const links = widget.meta?.custom?.links
     const buttons = widget.meta?.custom?.buttons
     return Boolean((links && links.length) || (buttons && buttons.length))
 }
 
 export function makeWrapper({
+    order,
+    context,
     child,
+    sourcePath,
     widgetType,
+    integrationId,
+    appId,
 }: {
+    order: number
+    context: string
     child: Map<any, any> | Record<string, unknown>
-    widgetType: string
+    sourcePath: string[] | string
+    widgetType: string | null
+    integrationId: number | null
+    appId: string | null
 }) {
+    // TODO(@Manuel): Replace the default type with standalone once custom is removed
+    let type = CUSTOM_WIDGET_TYPE
+
+    if (widgetType) {
+        type = widgetType
+    }
+
     let wrapperWidget = fromJS({
         type: 'wrapper',
         widgets: [child],
@@ -287,7 +307,7 @@ export function makeWrapper({
     // we don't want to display a card around data in wrapper (unnecessary nesting)
     // if there is only a card in the wrapper and no simple widget in this card (ie. only cards or lists) we move those
     // children into the wrapper directly instead of letting them in the card
-    if (widgetType !== STANDALONE_WIDGET_TYPE) {
+    if (type !== STANDALONE_WIDGET_TYPE) {
         const firstWidget = (
             wrapperWidget.get('widgets', fromJS([])) as List<any>
         ).first() as Map<any, any>
@@ -299,13 +319,21 @@ export function makeWrapper({
         }
     }
 
-    return wrapperWidget
+    return fromJS({
+        type,
+        order,
+        context,
+        template: wrapperWidget,
+        sourcePath,
+        integration_id: integrationId,
+        app_id: appId,
+    }) as Map<any, any>
 }
 
 /**
  * Translate json to template configuration for widgets
  */
-export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
+export function jsonToWidget(value: any, key = '', isChildOfList = false) {
     try {
         // if array of objects
         if (isArrayOfObjects(value)) {
@@ -315,7 +343,7 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
                 widgets: Record<string, unknown>[]
             } = {
                 type: 'list',
-                widgets: [jsonToTemplate(value[0], key, true)],
+                widgets: [jsonToWidget(value[0], key, true)],
             }
 
             if (!isChildOfList) {
@@ -349,7 +377,7 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
             }
 
             const widgets: Record<string, unknown>[] = []
-            _forIn(enhancedValues, (v, k) => widgets.push(jsonToTemplate(v, k)))
+            _forIn(enhancedValues, (v, k) => widgets.push(jsonToWidget(v, k)))
 
             const response: {
                 type: string
@@ -420,7 +448,7 @@ export function jsonToWidgets(
     json: Record<string, unknown>,
     context = WidgetContextType.Ticket
 ) {
-    const defaultWidgets: Map<any, any>[] = []
+    const defaultResponse: Map<any, any>[] = []
 
     try {
         const dataSourcePaths = [
@@ -458,7 +486,7 @@ export function jsonToWidgets(
             //      ['customer', CUSTOMER_ECOMMERCE_DATA_KEY, 'foo-bar-store-uuid'], ['customer', CUSTOMER_ECOMMERCE_DATA_KEY, 'foo-bar-store-uuid2']
             //  ]
             _forEach(data, (datum, datumId) => {
-                // datum = integrations, CUSTOMER_EXTERNAL_DATA_KEY or CUSTOMER_ECOMMERCE_DATA_KEY
+                // datum = integrations, external_data or ecommerce_data
                 // datumId = integrationId, appId or storeUuid
 
                 const newPath = mutableDataSourcePath.slice()
@@ -510,7 +538,7 @@ export function jsonToWidgets(
             })
         })
 
-        const widgets = dataSourcePaths.map((sourcePath, i) => {
+        const response = dataSourcePaths.map((sourcePath, i) => {
             let source = _get(json, sourcePath, {}) as Record<string, unknown>
 
             // remove private keys from source before we transform it into a template
@@ -520,31 +548,26 @@ export function jsonToWidgets(
                 return null
             }
 
-            const template = jsonToTemplate(source)
+            const template = jsonToWidget(source)
 
             if (!template || !_size(template)) {
                 return null
             }
 
-            const widgetType = typeByPath.getIn(
-                [sourcePath, 'type'],
-                CUSTOM_WIDGET_TYPE
-            )
-
-            return fromJS({
-                type: widgetType,
+            return makeWrapper({
                 order: i,
                 context,
-                template: makeWrapper({child: template, widgetType}),
+                child: template,
                 sourcePath,
-                integration_id:
+                widgetType: typeByPath.getIn([sourcePath, 'type']) || null,
+                integrationId:
                     typeByPath.getIn([sourcePath, 'integrationId']) || null,
-                app_id: typeByPath.getIn([sourcePath, 'appId']) || null,
-            }) as Map<string, unknown>
+                appId: typeByPath.getIn([sourcePath, 'appId']) || null,
+            })
         })
 
         // remove null widgets
-        return _compact(widgets)
+        return _compact(response)
     } catch (err) {
         reportError(err, {
             extra: {
@@ -554,7 +577,7 @@ export function jsonToWidgets(
                 context,
             },
         })
-        return defaultWidgets
+        return defaultResponse
     }
 }
 

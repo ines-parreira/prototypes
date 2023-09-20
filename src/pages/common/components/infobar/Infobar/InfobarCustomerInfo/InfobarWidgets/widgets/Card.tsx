@@ -1,20 +1,28 @@
-import React, {ElementType, SyntheticEvent, ContextType} from 'react'
+import React, {ElementType, SyntheticEvent, ComponentProps} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody} from 'reactstrap'
 
-import {WidgetType} from 'state/widgets/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
+
+import {
+    IntegrationContext,
+    IntegrationContextType,
+} from 'providers/infobar/IntegrationContext'
+import {
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    HTTP_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
+} from 'state/widgets/constants'
+import {getWidgetName} from 'state/widgets/predicates'
+import {WidgetType} from 'state/widgets/types'
 import {CardHeaderIcon} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderIcon'
 import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
-import {IntegrationType} from 'models/integration/constants'
 import InfobarWidget from '../InfobarWidget'
-import {getWidgetTitle} from '../helpers'
-import WidgetEdit, {EditionHiddenField} from './forms/WidgetEdit'
+import WidgetEdit from './forms/WidgetEdit'
 import {StaticField} from './StaticField'
 import CustomActions from './customActions'
 
@@ -26,13 +34,12 @@ type Props = {
     AfterContent?: ElementType
     TitleWrapper?: ElementType
     Wrapper?: ElementType
-    editionHiddenFields?: EditionHiddenField[]
 
     editing?: Editing
     parent?: Map<any, any>
     source?: Map<string, unknown>
     widget: Map<string, unknown>
-    template: Map<string, unknown>
+    template: Map<unknown, unknown>
 
     isEditing: boolean
     isParentList: boolean
@@ -50,11 +57,10 @@ export default class Card extends React.Component<
     uniqueId: string
 
     static defaultProps = {
-        AfterTitle: undefined,
-        BeforeContent: undefined,
-        TitleWrapper: undefined,
-        Wrapper: undefined,
-        editionHiddenFields: undefined,
+        AfterTitle: null,
+        BeforeContent: null,
+        TitleWrapper: null,
+        Wrapper: null,
 
         isEditing: false,
         isParentList: false,
@@ -62,7 +68,6 @@ export default class Card extends React.Component<
     }
 
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
 
     constructor(props: Props) {
         super(props)
@@ -143,21 +148,10 @@ export default class Card extends React.Component<
      * @private
      */
     renderPopover = () => {
-        const {editing, TitleWrapper} = this.props
+        const {template, editing} = this.props
 
         if (!editing) {
             return null
-        }
-
-        // HTTP is a special case because it can have both
-        // custom and hard coded icons
-        const editionHiddenFields: EditionHiddenField[] =
-            this.props.editionHiddenFields || []
-        if (
-            this.context.integration.get('type') !== IntegrationType.Http &&
-            Boolean(TitleWrapper)
-        ) {
-            editionHiddenFields.push('icon')
         }
 
         return (
@@ -170,25 +164,63 @@ export default class Card extends React.Component<
             >
                 <PopoverBody>
                     <WidgetEdit
-                        template={this.props.template}
-                        parent={this.props.parent || Map()}
-                        isParentList={this.props.isParentList}
-                        editionHiddenFields={editionHiddenFields}
+                        {...(this.props as unknown as ComponentProps<
+                            typeof WidgetEdit
+                        >)}
+                        widgetType={this.props.widget.get('type') as WidgetType}
+                        isRootWidget={
+                            isRootWidget(
+                                template.get('templatePath') as string
+                            ) as unknown as boolean
+                        }
                     />
                 </PopoverBody>
             </Popover>
         )
     }
 
-    renderTitle = () => {
-        const {template, source, isEditing} = this.props
-        const title = this.getCardTitle()
+    getWidgetTitle() {
+        const {source, widget, template} = this.props
+
+        const widgetType = widget.get('type') as WidgetType
+        const widgetAppId = widget.get('app_id') as Maybe<string>
+
+        let title = template.get('title', '') as string
+
+        if (
+            !title &&
+            [
+                CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                HTTP_WIDGET_TYPE,
+                WOOCOMMERCE_WIDGET_TYPE,
+            ].includes(widgetType)
+        ) {
+            title = getWidgetName({
+                source: fromJS(source),
+                widgetType,
+                widgetAppId,
+                templatePath: template.get('absolutePath') as string[],
+                integration: (
+                    this.context as IntegrationContextType
+                ).integration.toJS(),
+            })
+        }
+
+        return title
+    }
+
+    renderTitle = (
+        template: Map<unknown, unknown>,
+        source: Record<string, Maybe<string>>,
+        isEditing: boolean
+    ) => {
+        const title = this.getWidgetTitle()
         const link = template.getIn(['meta', 'link'])
         const pictureUrl = template.getIn(['meta', 'pictureUrl'], '')
         const color = template.getIn(['meta', 'color'], '')
         const {TitleWrapper} = this.props
 
-        let content = title && renderInfobarTemplate(title, source?.toJS())
+        let content = title && renderInfobarTemplate(title, source)
         if (isEditing) {
             content = content || (
                 <span className={css.widgetCardHeaderPlaceholder}>Title</span>
@@ -236,22 +268,11 @@ export default class Card extends React.Component<
         return content
     }
 
-    getCardTitle() {
-        const {template, widget, source} = this.props
-        return isRootWidget(template.get('templatePath', '') as string)
-            ? getWidgetTitle({
-                  source: source?.toJS(),
-                  widgetType: widget.get('type') as WidgetType,
-                  template: template.toJS(),
-                  appId: widget.get('app_id') as string | undefined,
-                  integration: this.context.integration?.toJS(),
-              })
-            : (template.get('title', '') as string)
-    }
-
-    shouldDisplayCardWidgetHeader() {
-        const {template, isEditing} = this.props
-        const hasTitle = Boolean(this.getCardTitle())
+    shouldDisplayCardWidgetHeader(
+        template: Map<unknown, unknown>,
+        isEditing: boolean
+    ) {
+        const templateTitle = this.getWidgetTitle()
         const onlyContent = !template.getIn(['meta', 'displayCard'], true)
         const hasColor = template.getIn(['meta', 'color'], '') as string
         const hasPicture = template.getIn(['meta', 'pictureUrl'], '') as string
@@ -265,7 +286,7 @@ export default class Card extends React.Component<
         ) as Map<string, unknown>
 
         return (
-            ((hasTitle ||
+            ((templateTitle ||
                 hasColor ||
                 hasPicture ||
                 templateCustomLinks.size > 0 ||
@@ -322,7 +343,10 @@ export default class Card extends React.Component<
                         [css.onlyContent]: !isEditing && onlyContent,
                     })}
                 >
-                    {this.shouldDisplayCardWidgetHeader() && (
+                    {this.shouldDisplayCardWidgetHeader(
+                        template,
+                        isEditing
+                    ) && (
                         <>
                             <div
                                 className={css.widgetCardHeader}
@@ -382,14 +406,18 @@ export default class Card extends React.Component<
                                         Hidden card
                                     </div>
                                 )}
-                                {this.renderTitle()}
+                                {this.renderTitle(
+                                    template,
+                                    source?.toJS(),
+                                    isEditing
+                                )}
                             </div>
                             {this.renderPopover()}
                             {isRootWidget(
                                 template.get('templatePath') as string
                             ) && (
                                 <CustomActions
-                                    template={template}
+                                    template={template as Map<string, unknown>}
                                     source={source as Map<string, unknown>}
                                     isEditing={isEditing}
                                 />
@@ -492,8 +520,6 @@ export default class Card extends React.Component<
 }
 
 function isRootWidget(templatePath: string) {
-    // We must handle the case where the first widget after the wrapper
-    // is a list, in which case we need to check the second widget
     return (
         templatePath.match(/.template.widgets.(\d+)$/) ||
         templatePath.match(/.template.widgets.(\d+).widgets.0$/)

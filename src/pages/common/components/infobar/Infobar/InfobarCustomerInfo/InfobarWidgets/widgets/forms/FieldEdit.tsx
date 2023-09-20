@@ -2,7 +2,7 @@ import React, {useState, SyntheticEvent} from 'react'
 import {Form} from 'reactstrap'
 import {Map} from 'immutable'
 
-import {PartialTemplate} from 'models/widget/types'
+import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import {IntegrationType} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'

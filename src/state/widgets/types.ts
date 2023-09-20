@@ -1,6 +1,6 @@
 import {Map} from 'immutable'
 import {IntegrationType} from 'models/integration/types'
-import {PartialTemplate} from 'models/widget/types'
+import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,

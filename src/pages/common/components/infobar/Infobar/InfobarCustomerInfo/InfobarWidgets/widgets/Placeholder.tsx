@@ -7,8 +7,8 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
 import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 
+import {getWidgetName} from 'state/widgets/predicates'
 import cssWrapper from './Wrapper.less'
 import css from './Placeholder.less'
 
@@ -37,11 +37,11 @@ export class Placeholder extends Component<
 
     _renderWidgetFor() {
         const {source, template, widget, integration} = this.props
-        const widgetName = getWidgetTitle({
-            source: source.toJS(),
+        const widgetName = getWidgetName({
+            source,
             widgetType: widget.get('type'),
-            appId: widget.get('app_id'),
-            template: template.toJS(),
+            widgetAppId: widget.get('app_id'),
+            templatePath: template.get('path'),
             integration: integration?.toJS(),
         })
 

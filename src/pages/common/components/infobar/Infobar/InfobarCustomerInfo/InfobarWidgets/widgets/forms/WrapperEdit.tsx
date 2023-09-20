@@ -10,9 +10,9 @@ import {Map} from 'immutable'
 import {Form, Button} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {PartialTemplate} from 'models/widget/types'
 import {updateEditedWidget, stopWidgetEdition} from 'state/widgets/actions'
 import ColorField from 'pages/common/forms/ColorField'
+import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 
 type Props = {
     template: Map<string, unknown>

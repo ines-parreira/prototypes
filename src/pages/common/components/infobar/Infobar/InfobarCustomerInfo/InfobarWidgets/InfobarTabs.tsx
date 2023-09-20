@@ -1,7 +1,7 @@
 import React from 'react'
 import {Nav, Navbar, NavItem, NavLink} from 'reactstrap'
 
-import {getWidgetId} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import {getWidgetId, getWidgetLabel} from 'state/widgets/predicates'
 
 import css from './InfobarTabs.less'
 
@@ -24,7 +24,7 @@ export function InfobarTabs({widgetNames}: Props) {
                     return (
                         <NavItem key={idx}>
                             <NavLink href={`#${widgetId}`} className={css.tab}>
-                                {tab}
+                                {getWidgetLabel(tab)}
                             </NavLink>
                         </NavItem>
                     )

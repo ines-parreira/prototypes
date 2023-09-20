@@ -6,7 +6,7 @@ import _initial from 'lodash/initial'
 import {
     isRootSource,
     stripLastListsFromPath,
-    jsonToTemplate,
+    jsonToWidget,
     makeWrapper,
 } from 'pages/common/components/infobar/utils'
 import {GorgiasAction} from '../types'
@@ -139,7 +139,7 @@ export default function reducer(
                 fromIndex,
                 targetParentTemplatePath,
                 source,
-                widgetType = types.CUSTOM_WIDGET_TYPE,
+                widgetType,
                 integrationId,
                 appId,
             } = action
@@ -183,7 +183,7 @@ export default function reducer(
             }
 
             // generate the widget we are going to put with the others
-            let template = fromJS(
+            let widget = fromJS(
                 widgetType === types.STANDALONE_WIDGET_TYPE
                     ? {
                           meta: {
@@ -195,7 +195,7 @@ export default function reducer(
                           title: 'Standalone widget',
                           widgets: [],
                       }
-                    : jsonToTemplate(
+                    : jsonToWidget(
                           isDraggingARootSource
                               ? preparedData[key as string]
                               : preparedData
@@ -216,21 +216,26 @@ export default function reducer(
                 const context = state.get('currentContext', '')
                 const strippedSourceFlattenAbsolutePath =
                     stripLastListsFromPath(sourceFlattenAbsolutePath)
-
-                template = fromJS({
-                    type: widgetType,
+                widget = makeWrapper({
                     order: widgetsItems.length,
                     context,
-                    template: makeWrapper({child: template, widgetType}),
+                    child: widget,
                     sourcePath: strippedSourceFlattenAbsolutePath.split('.'),
-                    integration_id: integrationId,
-                    app_id: appId,
-                })
+                    widgetType,
+                } as any)
+
+                if (integrationId) {
+                    widget = widget.set('integration_id', integrationId)
+                }
+
+                if (appId) {
+                    widget = widget.set('app_id', appId)
+                }
             }
 
             // get first child widget, may be useful later
-            const childTemplate = (
-                template.get('widgets', fromJS([])) as List<any>
+            const childWidget = (
+                widget.get('widgets', fromJS([])) as List<any>
             ).first()
 
             // current list at the path to put generated widgets
@@ -242,8 +247,8 @@ export default function reducer(
             if (eventType === 'add') {
                 // on add, insert the element at previously calculated path
                 const element: Map<any, any> = isDraggingARootSource
-                    ? template
-                    : childTemplate
+                    ? widget
+                    : childWidget
                 let shouldAddWidget = true
 
                 if (isDraggingARootSource) {

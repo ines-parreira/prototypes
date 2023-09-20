@@ -10,7 +10,9 @@ import * as utils from 'utils'
 import {IntegrationType} from 'models/integration/constants'
 import * as actions from 'state/widgets/actions'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {HTTP_WIDGET_TYPE} from 'state/widgets/constants'
 
+import {WidgetType} from 'state/widgets/types'
 import WidgetEdit from '../WidgetEdit'
 
 const mockStore = configureMockStore([thunk])
@@ -39,6 +41,7 @@ describe('<WidgetEdit/>', () => {
         }),
         parent: fromJS({}),
         editionHiddenFields: [],
+        widgetType: HTTP_WIDGET_TYPE as WidgetType,
         isRootWidget: false,
         isParentList: false,
     }
@@ -62,7 +65,7 @@ describe('<WidgetEdit/>', () => {
     })
 
     it('should hide the hidden fields', () => {
-        render(
+        const {container} = render(
             <Provider store={store}>
                 <IntegrationContext.Provider
                     value={{
@@ -74,21 +77,12 @@ describe('<WidgetEdit/>', () => {
                 >
                     <WidgetEdit
                         {...props}
-                        editionHiddenFields={[
-                            'title',
-                            'icon',
-                            'displayCard',
-                            'link',
-                        ]}
+                        editionHiddenFields={['displayCard', 'link']}
                     />
                 </IntegrationContext.Provider>
             </Provider>
         )
-        expect(screen.queryByLabelText('Display card')).toBeNull()
-        expect(screen.queryByLabelText('Link')).toBeNull()
-        expect(screen.queryByLabelText('Widget icon')).toBeNull()
-        expect(screen.queryByLabelText('Icon background')).toBeNull()
-        expect(screen.queryByLabelText('Title')).toBeNull()
+        expect(container).toMatchSnapshot()
     })
 
     it('should call the correct action when cancelling', () => {
@@ -131,7 +125,7 @@ describe('<WidgetEdit/>', () => {
                         }),
                     }}
                 >
-                    <WidgetEdit {...props} />
+                    <WidgetEdit {...props} isRootWidget />
                 </IntegrationContext.Provider>
             </Provider>
         )
@@ -145,7 +139,7 @@ describe('<WidgetEdit/>', () => {
         })
 
         userEvent.upload(
-            screen.getByLabelText('Icon'),
+            screen.getByLabelText('Widget icon'),
             new File(['hello'], 'hello.png', {type: 'image/png'})
         )
 
@@ -174,6 +168,7 @@ describe('<WidgetEdit/>', () => {
                 >
                     <WidgetEdit
                         editionHiddenFields={[]}
+                        isRootWidget={false}
                         isParentList={true}
                         parent={fromJS({
                             title: 'List title',
@@ -190,6 +185,7 @@ describe('<WidgetEdit/>', () => {
                                 },
                             ],
                         })}
+                        widgetType={HTTP_WIDGET_TYPE as WidgetType}
                     />
                 </IntegrationContext.Provider>
             </Provider>

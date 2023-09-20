@@ -93,7 +93,7 @@ exports[`InfobarWidgets component should render woocommerce widget with the prop
   >
     <div
       class="anchor"
-      id="woo_commerce"
+      id="woocommerce"
     />
   </div>
 </div>
