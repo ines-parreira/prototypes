@@ -21,6 +21,8 @@ import {
     products,
     smsPrice1,
     voicePrice1,
+    convertPrice1,
+    CONVERT_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {
     automationSubscriptionProductPrices,
@@ -622,6 +624,38 @@ describe('billing selectors', () => {
         })
     })
 
+    describe('getCurrentProducts', () => {
+        it('should return the current products', () => {
+            const currentProducts = selectors.getCurrentProducts({
+                ...state,
+                currentAccount: state.currentAccount.setIn(
+                    ['current_subscription', 'products', AUTOMATION_PRODUCT_ID],
+                    basicMonthlyAutomationPrice.price_id
+                ),
+            })
+
+            expect(currentProducts && 'helpdesk' in currentProducts).toBe(true)
+            expect(currentProducts && 'automation' in currentProducts).toBe(
+                true
+            )
+        })
+
+        it('should return the current products without unknown prices for convert', () => {
+            // This is a case that should happen only on when account is subscribed to an internal price
+            // e.g. revenue beta testers prices
+            const currentProducts = selectors.getCurrentProducts({
+                ...state,
+                currentAccount: state.currentAccount.setIn(
+                    ['current_subscription', 'products', CONVERT_PRODUCT_ID],
+                    'price_unknown_id'
+                ),
+            })
+
+            expect(currentProducts && 'helpdesk' in currentProducts).toBe(true)
+            expect(currentProducts && 'convert' in currentProducts).toBe(false)
+        })
+    })
+
     describe('makeHasFeature', () => {
         it.each([
             AccountFeature.FacebookComment,
@@ -662,6 +696,7 @@ describe('billing selectors', () => {
             expect(cheapestProductPrices.helpdesk).toEqual(
                 basicMonthlyHelpdeskPrice
             )
+            expect(cheapestProductPrices.convert).toEqual(convertPrice1)
 
             expect(cheapestProductPrices).toMatchSnapshot()
         })

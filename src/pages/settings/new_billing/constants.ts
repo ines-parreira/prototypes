@@ -66,6 +66,16 @@ export const PRODUCT_INFO = {
         tooltipLink: 'https://link.gorgias.com/bfde15',
         bannerLink: 'https://docs.gorgias.com/en-US/set-up-sms-81919',
     },
+    [ProductType.Convert]: {
+        title: 'Convert',
+        icon: 'paid',
+        counter: 'clicks',
+        perTicket: 'per click',
+        tooltip:
+            'Campaign clicks represent the cumulative count of instances when a visitor clicks on campaigns.',
+        tooltipLink: 'https://docs.gorgias.com/en-US/subscription-plans-81852',
+        bannerLink: '/app/settings/revenue/bundles',
+    },
 }
 
 export const ENTERPRISE_PRICE_ID = '0'

@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 
 import {
     AutomationPrice,
+    ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
     SMSOrVoicePrice,
@@ -15,7 +16,12 @@ import css from './SummaryTotal.less'
 export type SummaryTotalProps = {
     selectedPlans: SelectedPlans
     totalProductAmount: number
-    prices?: (HelpdeskPrice | AutomationPrice | SMSOrVoicePrice)[]
+    prices?: (
+        | HelpdeskPrice
+        | AutomationPrice
+        | SMSOrVoicePrice
+        | ConvertPrice
+    )[]
     interval?: PlanInterval
     currency: string
     isFrequencyChanged?: boolean

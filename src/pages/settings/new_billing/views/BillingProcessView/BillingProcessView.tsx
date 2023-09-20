@@ -3,8 +3,10 @@ import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
 
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     AutomationPrice,
+    ConvertPrice,
     HelpdeskPrice,
     ProductType,
     SMSOrVoicePrice,
@@ -15,6 +17,7 @@ import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
+import {FeatureFlagKey} from 'config/featureFlags'
 import Card from '../../components/Card'
 import BackLink from '../../components/BackLink'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
@@ -65,6 +68,10 @@ export type SelectedPlans = {
         plan?: SMSOrVoicePrice
         isSelected: boolean
     }
+    [ProductType.Convert]: {
+        plan?: ConvertPrice
+        isSelected: boolean
+    }
 }
 
 const BillingProcessView = ({
@@ -78,10 +85,13 @@ const BillingProcessView = ({
     currentUsage,
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
+    const flags = useFlags()
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
     const [showPendingChangesModal, setShowPendingChangesModal] =
         useState(false)
+
+    const isConvertProductActive = Boolean(flags[FeatureFlagKey.ConvertBilling])
 
     // Selected product to Subscribe or Update
     const {selectedProduct} = useParams<Params>()
@@ -97,6 +107,9 @@ const BillingProcessView = ({
         smsProduct,
         smsPrices,
         smsInitialIndex,
+        convertProduct,
+        convertPrices,
+        convertInitialIndex,
         voiceProduct,
         voicePrices,
         voiceInitialIndex,
@@ -260,6 +273,21 @@ const BillingProcessView = ({
                             isTrialing={isTrialing}
                             initialIndex={smsInitialIndex}
                         />
+                        {isConvertProductActive && (
+                            <ProductPlanSelection
+                                type={ProductType.Convert}
+                                interval={interval}
+                                product={convertProduct}
+                                prices={convertPrices}
+                                selectedPlans={selectedPlans}
+                                setSelectedPlans={setSelectedPlans}
+                                isStarterHelpdeskPlanSelected={
+                                    isStarterHelpdeskPlanSelected
+                                }
+                                isTrialing={isTrialing}
+                                initialIndex={convertInitialIndex}
+                            />
+                        )}
                     </div>
                 </Card>
                 {isEnterpriseHelpdeskPlanSelected ? (
@@ -315,6 +343,15 @@ const BillingProcessView = ({
                                 prices={smsPrices}
                                 selectedPlans={selectedPlans}
                             />
+                            {isConvertProductActive && (
+                                <SummaryItem
+                                    type={ProductType.Convert}
+                                    interval={interval}
+                                    product={convertProduct}
+                                    prices={convertPrices}
+                                    selectedPlans={selectedPlans}
+                                />
+                            )}
                             <SummaryTotal
                                 selectedPlans={selectedPlans}
                                 totalProductAmount={totalProductAmount}

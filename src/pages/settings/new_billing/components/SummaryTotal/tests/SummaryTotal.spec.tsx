@@ -23,6 +23,9 @@ const selectedPlans: SelectedPlans = {
     sms: {
         isSelected: false,
     },
+    convert: {
+        isSelected: false,
+    },
 }
 const totalProductAmount =
     basicMonthlyHelpdeskPrice.amount + basicMonthlyAutomationPrice.amount

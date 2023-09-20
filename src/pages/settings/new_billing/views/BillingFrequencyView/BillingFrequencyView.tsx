@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 
 import {useHistory} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Alert from 'pages/common/components/Alert/Alert'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,6 +10,7 @@ import {PlanInterval, ProductType} from 'models/billing/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCreditCard} from 'state/billing/actions'
 import {TicketPurpose} from 'state/billing/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import Card from '../../components/Card/Card'
 import BackLink from '../../components/BackLink/BackLink'
 import BillingFrequency from '../../components/BillingFrequency/BillingFrequency'
@@ -38,16 +40,19 @@ const BillingFrequencyView = ({
 }: BillingFrequencyViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
+    const flags = useFlags()
 
     const {
         helpdeskProduct,
         automationProduct,
         voiceProduct,
         smsProduct,
+        convertProduct,
         helpdeskPrices,
         automationPrices,
         voicePrices,
         smsPrices,
+        convertPrices,
         interval,
         selectedPlans,
         setSelectedPlans,
@@ -59,6 +64,8 @@ const BillingFrequencyView = ({
         contactBilling,
         dispatchBillingError,
     })
+
+    const isConvertProductActive = Boolean(flags[FeatureFlagKey.ConvertBilling])
 
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
     const [showAlert, setShowAlert] = useState(true)
@@ -108,6 +115,14 @@ const BillingFrequencyView = ({
                         currentPrice: smsProduct,
                     }),
                 },
+                [ProductType.Convert]: {
+                    ...prev[ProductType.Convert],
+                    plan: getPriceForInterval({
+                        prices: convertPrices ?? [],
+                        interval,
+                        currentPrice: convertProduct,
+                    }),
+                },
             }))
         },
         [
@@ -119,6 +134,8 @@ const BillingFrequencyView = ({
             setSelectedPlans,
             smsPrices,
             smsProduct,
+            convertPrices,
+            convertProduct,
             voicePrices,
             voiceProduct,
         ]
@@ -203,6 +220,16 @@ const BillingFrequencyView = ({
                             selectedPlans={selectedPlans}
                             isFrequencyChanged={true}
                         />
+                        {isConvertProductActive && (
+                            <SummaryItem
+                                type={ProductType.Convert}
+                                interval={selectedInterval}
+                                product={convertProduct}
+                                prices={convertPrices}
+                                selectedPlans={selectedPlans}
+                                isFrequencyChanged={true}
+                            />
+                        )}
                         <SummaryTotal
                             selectedPlans={selectedPlans}
                             totalProductAmount={totalProductAmount}
