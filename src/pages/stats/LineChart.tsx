@@ -8,7 +8,7 @@ import {
 } from 'chart.js'
 import React, {useCallback, useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
-import _merge from 'lodash/merge'
+import {fromJS, Map} from 'immutable'
 
 import classNames from 'classnames'
 import colors from 'assets/tokens/colors.json'
@@ -53,7 +53,7 @@ type Props = {
     }
 }
 
-const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = {
+const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = fromJS({
     elements: {
         point: {
             pointStyle: 'circle',
@@ -128,7 +128,7 @@ const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = {
     },
     maintainAspectRatio: false,
     resizeDelay: 1000,
-}
+})
 
 export default function LineChart({
     data,
@@ -193,10 +193,10 @@ export default function LineChart({
         }
     }, [chartArea, chartContext, data, hasBackground, chartColors])
 
-    const lineOptions: ChartOptions<'line'> = useMemo(
+    const lineOptions = useMemo(
         () =>
-            _merge(
-                _merge(LINE_OPTIONS, {
+            (LINE_OPTIONS as Map<any, any>).mergeDeep(
+                {
                     scales: {
                         y: {
                             title: {
@@ -237,8 +237,8 @@ export default function LineChart({
                         setChartArea(chart.chartArea)
                         setChartContext(chart.ctx)
                     },
-                }),
-                options
+                },
+                fromJS(options)
             ),
         [
             yLabel,
@@ -262,7 +262,7 @@ export default function LineChart({
         <div className={css.wrapper}>
             <Line
                 data={formattedData}
-                options={lineOptions}
+                options={lineOptions.toJS()}
                 ref={(chart: Chart<'line'> | null | undefined) => {
                     setChartContext(chart?.ctx)
                     setChartArea(chart?.chartArea)
