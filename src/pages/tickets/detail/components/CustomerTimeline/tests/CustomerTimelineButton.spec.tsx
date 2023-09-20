@@ -61,6 +61,8 @@ describe('CustomerTimelineButton', () => {
                     displayHistory ? 'Close timeline' : 'Customer timeline'
                 )
             ).toBeInTheDocument()
+            // Secondary button -> there aren't open tickets
+            expect(screen.getByRole('button')).toHaveClass('secondary')
 
             act(() => {
                 fireEvent.click(screen.getByRole('button'))
@@ -75,7 +77,7 @@ describe('CustomerTimelineButton', () => {
     )
 
     it.each([true, false])(
-        'should render the `Customer timeline` button along with the number of opened tickets and toggle the history display when clicked',
+        'should render the `Customer timeline` button along with the number of opened & closed tickets and toggle the history display when clicked',
         async (displayHistory) => {
             const state = {
                 ...defaultState,
@@ -102,6 +104,10 @@ describe('CustomerTimelineButton', () => {
                             id: 126,
                             status: 'open',
                         },
+                        {
+                            id: 127,
+                            status: 'closed',
+                        },
                     ])
                 ),
             } as unknown as RootState
@@ -120,6 +126,9 @@ describe('CustomerTimelineButton', () => {
                         : 'Customer timeline (2)'
                 )
             ).toBeInTheDocument()
+            // Primary button -> there are open tickets
+            expect(screen.getByRole('button')).toHaveClass('primary')
+
             await waitFor(() => {
                 userEvent.hover(
                     screen.getByText(
@@ -128,7 +137,10 @@ describe('CustomerTimelineButton', () => {
                             : 'Customer timeline (2)'
                     )
                 )
-                expect(screen.getByText('2 open tickets')).toBeInTheDocument()
+
+                expect(screen.getByRole('tooltip').innerHTML).toEqual(
+                    '2 open tickets<br>2 closed tickets'
+                )
             })
 
             act(() => {
@@ -162,6 +174,9 @@ describe('CustomerTimelineButton', () => {
         expect(
             screen.getByRole('button', {name: /Customer timeline/})
         ).toHaveAttribute('aria-disabled', 'true')
+        // Secondary button -> there aren't open tickets
+        expect(screen.getByRole('button')).toHaveClass('secondary')
+
         await waitFor(() => {
             userEvent.hover(screen.getByText('Customer timeline'))
             expect(
@@ -197,6 +212,9 @@ describe('CustomerTimelineButton', () => {
         expect(
             screen.getByRole('button', {name: /Customer timeline/})
         ).toHaveAttribute('aria-disabled', 'true')
+        // Secondary button -> there aren't open tickets
+        expect(screen.getByRole('button')).toHaveClass('secondary')
+
         await waitFor(() => {
             userEvent.hover(screen.getByText('Customer timeline'))
             expect(

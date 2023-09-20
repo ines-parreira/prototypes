@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 import {fromJS, List, Map} from 'immutable'
 
+import pluralize from 'pluralize'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {toggleHistory} from 'state/ticket/actions'
@@ -35,14 +36,20 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
         .filter((t: Map<any, any>) => t.get('id') !== ticket.get('id'))
         // count only open and new tickets
         .filter((t: Map<any, any>) => t.get('status') !== 'closed')
+    const historyClosedTickets = historyTickets
+        // remove current ticket from history for the count
+        .filter((t: Map<any, any>) => t.get('id') !== ticket.get('id'))
+        // count only closed tickets
+        .filter((t: Map<any, any>) => t.get('status') === 'closed')
     const openTicketsCounter = historyOpenedTickets.size
+    const closedTicketsCounter = historyClosedTickets.size
 
     const isButtonRendered = isEditing || !ticket.get('id')
 
-    const isHistoryDisabled =
-        !customerHistory.get('hasHistory') || isCustomersLoading('history')
-
     const isHistoryLoading = isCustomersLoading('history')
+
+    const isHistoryDisabled =
+        !customerHistory.get('hasHistory') || isHistoryLoading
 
     const handleCustomerTimelineButtonClick = () => {
         dispatch(toggleHistory(!isHistoryDisplayed))
@@ -55,7 +62,7 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
                     <Button
                         id={customerTimelineButtonId}
                         className={css.customerTimelineButtonWrapper}
-                        intent="secondary"
+                        intent={openTicketsCounter ? 'primary' : 'secondary'}
                         onClick={handleCustomerTimelineButtonClick}
                         isDisabled={isHistoryDisabled}
                     >
@@ -70,6 +77,7 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
                                 ? 'Close timeline'
                                 : 'Customer timeline'}
                             {openTicketsCounter > 0 &&
+                                !isHistoryLoading &&
                                 ` (${openTicketsCounter})`}
                         </ButtonIconLabel>
                     </Button>
@@ -82,16 +90,30 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
                             This customer does not have any other tickets
                         </Tooltip>
                     )}
-                    {!isHistoryLoading && openTicketsCounter > 0 && (
-                        <Tooltip
-                            target={customerTimelineButtonId}
-                            placement={'top-end'}
-                            offset="0, 4"
-                        >
-                            {openTicketsCounter} open ticket
-                            {openTicketsCounter > 1 ? 's' : ''}
-                        </Tooltip>
-                    )}
+                    {!isHistoryLoading &&
+                        (openTicketsCounter > 0 ||
+                            closedTicketsCounter > 0) && (
+                            <Tooltip
+                                target={customerTimelineButtonId}
+                                placement={'top-end'}
+                                offset="0, 4"
+                            >
+                                <>
+                                    {openTicketsCounter > 0 &&
+                                        `${openTicketsCounter} open ${pluralize(
+                                            'ticket',
+                                            openTicketsCounter
+                                        )}`}
+                                    {openTicketsCounter > 0 &&
+                                        closedTicketsCounter > 0 && <br />}
+                                    {closedTicketsCounter > 0 &&
+                                        `${closedTicketsCounter} closed ${pluralize(
+                                            'ticket',
+                                            closedTicketsCounter
+                                        )}`}
+                                </>
+                            </Tooltip>
+                        )}
                 </>
             )}
         </>
