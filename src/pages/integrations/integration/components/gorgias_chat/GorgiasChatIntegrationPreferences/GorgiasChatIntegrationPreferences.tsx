@@ -445,6 +445,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             displayControlTicketVolume,
             flags,
         } = this.props
+        const chatMultiLanguagesEnabled =
+            flags?.[FeatureFlagKey.ChatMultiLanguages]
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
         const chatTitle = integration.get('name')
@@ -749,7 +751,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             <Link to="/app/settings/business-hours">
                                                 business hours
                                             </Link>
-                                            .
+                                            .{' '}
+                                            {chatMultiLanguagesEnabled &&
+                                                'Live chat is always unavailable outside business hours.'}
                                         </p>
                                         <RadioFieldSet
                                             className={classnames(
@@ -778,9 +782,26 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                     ? 'offline capture'
                                                     : 'contact form'}
                                             </a>{' '}
-                                            to receive an email response. Live
-                                            chat is always unavailable outside
-                                            business hours.
+                                            to receive an email response.{' '}
+                                            {chatMultiLanguagesEnabled ? (
+                                                <>
+                                                    You can customize offline
+                                                    capture's copy and
+                                                    translations in the{' '}
+                                                    <Link
+                                                        to={`/app/settings/channels/gorgias_chat/${
+                                                            integration.get(
+                                                                'id'
+                                                            ) as string
+                                                        }/languages`}
+                                                    >
+                                                        Language
+                                                    </Link>{' '}
+                                                    tab.
+                                                </>
+                                            ) : (
+                                                'Live chat is always unavailable outside business hours.'
+                                            )}
                                         </p>
                                     </div>
                                 </div>

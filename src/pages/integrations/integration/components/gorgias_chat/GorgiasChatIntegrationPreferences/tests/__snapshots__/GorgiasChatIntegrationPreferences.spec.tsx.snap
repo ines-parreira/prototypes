@@ -414,6 +414,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                   business hours
                 </Link>
                 .
+                 
               </p>
               <RadioFieldSet
                 className="mb-3 radioFieldSet"
@@ -452,7 +453,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                   contact form
                 </a>
                  
-                to receive an email response. Live chat is always unavailable outside business hours.
+                to receive an email response.
+                 
+                Live chat is always unavailable outside business hours.
               </p>
             </div>
           </div>
@@ -962,6 +965,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   business hours
                 </Link>
                 .
+                 
               </p>
               <RadioFieldSet
                 className="mb-3 radioFieldSet"
@@ -1000,7 +1004,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   contact form
                 </a>
                  
-                to receive an email response. Live chat is always unavailable outside business hours.
+                to receive an email response.
+                 
+                Live chat is always unavailable outside business hours.
               </p>
             </div>
           </div>
