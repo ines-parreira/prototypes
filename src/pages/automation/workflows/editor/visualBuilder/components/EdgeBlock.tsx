@@ -1,17 +1,12 @@
 import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
-import {NodeProps} from 'reactflow'
 import classNames from 'classnames'
 import {produce, Draft} from 'immer'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
-import {
-    VisualBuilderGraph,
-    VisualBuilderNode,
-    isMultipleChoicesNodeType,
-} from 'pages/automation/workflows/models/visualBuilderGraph.types'
+import {WorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
+import {VisualBuilderNode} from 'pages/automation/workflows/models/visualBuilderGraph.types'
 
 import {
     colorByVisualBuilderNodeType,
@@ -44,39 +39,6 @@ type MenuItem = {
     onClick: () => void
     hidden?: boolean
     disabledText?: string
-}
-
-function getIncomingChoice(
-    visualBuilderGraph: VisualBuilderGraph,
-    currentNodeId: string
-) {
-    const incomingEdge = visualBuilderGraph.edges.find(
-        ({target}) => target === currentNodeId
-    )
-    const choiceEventId = incomingEdge?.data?.event?.id
-    const previousNodeId = incomingEdge?.source
-    const previousNode = previousNodeId
-        ? visualBuilderGraph.nodes.find(({id}) => id === previousNodeId)
-        : undefined
-    const choiceIndex =
-        previousNode?.type === 'multiple_choices' && choiceEventId != null
-            ? previousNode.data.choices.findIndex(
-                  ({event_id}) => event_id === choiceEventId
-              )
-            : -1
-    if (
-        choiceIndex >= 0 &&
-        previousNode &&
-        isMultipleChoicesNodeType(previousNode)
-    ) {
-        const choice = previousNode.data.choices[choiceIndex]
-        return {
-            label: choice.label || `Option ${choiceIndex + 1}`,
-            eventId: choice.event_id,
-            nodeId: previousNode.id,
-        }
-    }
-    return undefined
 }
 
 function useMenuItems(
@@ -221,26 +183,41 @@ function useMenuItemsForConnectedChannels(
     return menuItems
 }
 
-export default function EdgeBlock({node}: {node: NodeProps}) {
+export type VisualBuilderEdgeProps = {
+    nodeId: string
+    configurationId: string
+    isSelected: boolean
+    incomingChoice?: {
+        label: string
+        eventId: string
+        nodeId: string
+    }
+} & Pick<
+    WorkflowEditorContext,
+    | 'dispatch'
+    | 'setVisualBuilderChoiceEventIdEditing'
+    | 'setVisualBuilderNodeIdEditing'
+>
+
+export default function EdgeBlock({
+    nodeId,
+    configurationId,
+    incomingChoice,
+    isSelected,
+    setVisualBuilderChoiceEventIdEditing,
+    setVisualBuilderNodeIdEditing,
+    dispatch,
+}: VisualBuilderEdgeProps) {
     const edgeRef = useRef<HTMLDivElement>(null)
     const [floatingRef, setFloatingRef] = useState<HTMLElement | null>(null)
     const onFloatingRefChange = useCallback((node: HTMLElement | null) => {
         setFloatingRef(node)
     }, [])
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
-    const {
-        dispatch,
-        visualBuilderGraph,
-        configuration,
-        visualBuilderNodeIdEditing,
-        setVisualBuilderChoiceEventIdEditing,
-        setVisualBuilderNodeIdEditing,
-    } = useWorkflowEditorContext()
-    const incomingChoice = getIncomingChoice(visualBuilderGraph, node.id)
     const menuItems = useMenuItemsForConnectedChannels(
-        node.id,
+        nodeId,
         dispatch,
-        configuration.id
+        configurationId
     )
 
     return (
@@ -261,9 +238,7 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
                         )
                         setVisualBuilderNodeIdEditing(incomingChoice.nodeId)
                     }}
-                    isSelected={
-                        visualBuilderNodeIdEditing === incomingChoice.nodeId
-                    }
+                    isSelected={isSelected}
                 >
                     {incomingChoice.label}
                 </EdgeLabel>

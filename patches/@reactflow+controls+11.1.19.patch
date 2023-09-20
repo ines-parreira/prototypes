@@ -1,0 +1,14 @@
+diff --git a/node_modules/@reactflow/controls/dist/.DS_Store b/node_modules/@reactflow/controls/dist/.DS_Store
+new file mode 100644
+index 0000000..fc27286
+Binary files /dev/null and b/node_modules/@reactflow/controls/dist/.DS_Store differ
+diff --git a/node_modules/@reactflow/controls/dist/esm/Controls.d.ts b/node_modules/@reactflow/controls/dist/esm/Controls.d.ts
+index a2b6305..591b551 100644
+--- a/node_modules/@reactflow/controls/dist/esm/Controls.d.ts
++++ b/node_modules/@reactflow/controls/dist/esm/Controls.d.ts
+@@ -1,4 +1,4 @@
+-import { type PropsWithChildren } from 'react';
++import { PropsWithChildren } from 'react';
+ import type { ControlProps } from './types';
+ declare const _default: import("react").NamedExoticComponent<PropsWithChildren<ControlProps>>;
+ export default _default;

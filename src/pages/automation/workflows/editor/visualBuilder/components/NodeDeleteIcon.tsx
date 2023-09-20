@@ -1,29 +1,25 @@
 import React, {useRef, useState} from 'react'
 
-import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import {WorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 
 import css from './NodeDeleteIcon.less'
 
+export type VisualBuilderDeleteProps = {
+    nodeId: string
+    hasMultipleChildren: boolean
+} & Pick<WorkflowEditorContext, 'dispatch'>
+
 export default function NodeDeleteIcon({
-    node,
-}: {
-    node: {id: string; type: string}
-}) {
-    const {visualBuilderGraph} = useWorkflowEditorContext()
+    nodeId,
+    dispatch,
+    hasMultipleChildren,
+}: VisualBuilderDeleteProps) {
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
-    const {dispatch} = useWorkflowEditorContext()
-    const childrenNodeIds = visualBuilderGraph.edges
-        .filter((e) => e.source === node.id)
-        .map((e) => e.target)
-    const childrenNodes = visualBuilderGraph.nodes.filter((n) =>
-        childrenNodeIds.includes(n.id)
-    )
-    const hasMultipleDeleteChoices = childrenNodes.length === 1
     return (
         <ConfirmationPopover
             placement="top"
@@ -35,13 +31,13 @@ export default function NodeDeleteIcon({
             onConfirm={() => {
                 dispatch({
                     type: 'DELETE_BRANCH',
-                    nodeId: node.id,
+                    nodeId,
                 })
             }}
             onCancel={() => {
                 dispatch({
                     type: 'GREY_OUT_BRANCH',
-                    nodeId: node.id,
+                    nodeId,
                     isGreyedOut: false,
                 })
             }}
@@ -56,12 +52,12 @@ export default function NodeDeleteIcon({
                         className={css.deleteIcon}
                         onClick={(e) => {
                             e.stopPropagation()
-                            if (hasMultipleDeleteChoices) {
+                            if (!hasMultipleChildren) {
                                 setIsNodeMenuDropdownOpen(true)
                             } else {
                                 dispatch({
                                     type: 'GREY_OUT_BRANCH',
-                                    nodeId: node.id,
+                                    nodeId: nodeId,
                                     isGreyedOut: true,
                                 })
                                 onDisplayConfirmation()
@@ -70,7 +66,7 @@ export default function NodeDeleteIcon({
                     >
                         <i className="material-icons">delete</i>
                     </div>
-                    {hasMultipleDeleteChoices && (
+                    {!hasMultipleChildren && (
                         <Dropdown
                             isOpen={isNodeMenuDropdownOpen}
                             onToggle={setIsNodeMenuDropdownOpen}
@@ -86,7 +82,7 @@ export default function NodeDeleteIcon({
                                     onClick={() => {
                                         dispatch({
                                             type: 'DELETE_NODE',
-                                            nodeId: node.id,
+                                            nodeId: nodeId,
                                         })
                                     }}
                                     shouldCloseOnSelect
@@ -99,7 +95,7 @@ export default function NodeDeleteIcon({
                                     onClick={() => {
                                         dispatch({
                                             type: 'GREY_OUT_BRANCH',
-                                            nodeId: node.id,
+                                            nodeId: nodeId,
                                             isGreyedOut: true,
                                         })
                                         onDisplayConfirmation()

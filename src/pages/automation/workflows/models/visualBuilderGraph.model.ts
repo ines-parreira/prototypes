@@ -23,6 +23,7 @@ import {
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
+    isMultipleChoicesNodeType,
 } from './visualBuilderGraph.types'
 
 export const buildEdgeCommonProperties: () => Pick<
@@ -402,4 +403,37 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
         }
     )
     return c
+}
+
+export function getIncomingChoice(
+    visualBuilderGraph: VisualBuilderGraph,
+    currentNodeId: string
+) {
+    const incomingEdge = visualBuilderGraph.edges.find(
+        ({target}) => target === currentNodeId
+    )
+    const choiceEventId = incomingEdge?.data?.event?.id
+    const previousNodeId = incomingEdge?.source
+    const previousNode = previousNodeId
+        ? visualBuilderGraph.nodes.find(({id}) => id === previousNodeId)
+        : undefined
+    const choiceIndex =
+        previousNode?.type === 'multiple_choices' && choiceEventId != null
+            ? previousNode.data.choices.findIndex(
+                  ({event_id}) => event_id === choiceEventId
+              )
+            : -1
+    if (
+        choiceIndex >= 0 &&
+        previousNode &&
+        isMultipleChoicesNodeType(previousNode)
+    ) {
+        const choice = previousNode.data.choices[choiceIndex]
+        return {
+            label: choice.label || `Option ${choiceIndex + 1}`,
+            eventId: choice.event_id,
+            nodeId: previousNode.id,
+        }
+    }
+    return undefined
 }

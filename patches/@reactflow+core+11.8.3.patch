@@ -9,6 +9,26 @@ index a6d2532..cdb25f7 100644
  export type HandleComponentProps = HandleProps & Omit<HTMLAttributes<HTMLDivElement>, 'id'>;
  declare const _default: import("react").MemoExoticComponent<import("react").ForwardRefExoticComponent<HandleProps & Omit<HTMLAttributes<HTMLDivElement>, "id"> & import("react").RefAttributes<HTMLDivElement>>>;
  export default _default;
+diff --git a/node_modules/@reactflow/core/dist/esm/components/ReactFlowProvider/index.d.ts b/node_modules/@reactflow/core/dist/esm/components/ReactFlowProvider/index.d.ts
+index 7df6c10..9719f38 100644
+--- a/node_modules/@reactflow/core/dist/esm/components/ReactFlowProvider/index.d.ts
++++ b/node_modules/@reactflow/core/dist/esm/components/ReactFlowProvider/index.d.ts
+@@ -1,4 +1,4 @@
+-import { type FC, type PropsWithChildren } from 'react';
++import { FC, PropsWithChildren } from 'react';
+ declare const ReactFlowProvider: FC<PropsWithChildren<unknown>>;
+ export default ReactFlowProvider;
+ //# sourceMappingURL=index.d.ts.map
+diff --git a/node_modules/@reactflow/core/dist/esm/container/ReactFlow/index.d.ts b/node_modules/@reactflow/core/dist/esm/container/ReactFlow/index.d.ts
+index 7095a8b..12e63df 100644
+--- a/node_modules/@reactflow/core/dist/esm/container/ReactFlow/index.d.ts
++++ b/node_modules/@reactflow/core/dist/esm/container/ReactFlow/index.d.ts
+@@ -1,4 +1,4 @@
+-import { type CSSProperties } from 'react';
++import { CSSProperties } from 'react';
+ import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '../../types';
+ import type { EdgeTypes, NodeOrigin, NodeTypes, Viewport } from '../../types';
+ declare const ReactFlow: import("react").ForwardRefExoticComponent<Omit<import("react").HTMLAttributes<HTMLDivElement>, "onError"> & {
 diff --git a/node_modules/@reactflow/core/dist/esm/index.d.ts b/node_modules/@reactflow/core/dist/esm/index.d.ts
 index a8a8e9a..a4ceebe 100644
 --- a/node_modules/@reactflow/core/dist/esm/index.d.ts

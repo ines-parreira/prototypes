@@ -5,9 +5,12 @@ import {
     MiniMap,
     Controls,
     ReactFlowProvider,
+    NodeMouseHandler,
+    useNodesInitialized,
 } from 'reactflow'
 import _keyBy from 'lodash/keyBy'
 import {usePrevious} from 'react-use'
+import classNames from 'classnames'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
@@ -22,6 +25,8 @@ import 'reactflow/dist/style.css'
 import TextReplyNode from './nodes/TextReplyNode'
 import FileUploadNode from './nodes/FileUploadNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
+
+import css from './WorkflowVisualBuilder.less'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
@@ -76,50 +81,77 @@ export function WorkflowVisualBuilderWrapped() {
         setVisualBuilderChoiceEventIdEditing(null)
     }, [setVisualBuilderNodeIdEditing, setVisualBuilderChoiceEventIdEditing])
 
-    if (isFetchPending) return <Loader />
+    const handleNodeClick = useCallback<NodeMouseHandler>(
+        (_e, node) => {
+            setVisualBuilderNodeIdEditing(node.id)
+        },
+        [setVisualBuilderNodeIdEditing]
+    )
+
+    const areNodesInitialized = useNodesInitialized()
+
+    // for big flows we disable some features to improve performance
+    const isDegradedMode = visualBuilderGraph.nodes.length > 800
 
     return (
-        <>
-            <ReactFlow
-                proOptions={{
-                    hideAttribution: true,
-                }}
-                fitView
-                fitViewOptions={{
-                    duration: 0,
-                }}
-                nodes={visualBuilderGraph.nodes}
-                edges={visualBuilderGraph.edges}
-                edgeTypes={edgeTypes}
-                nodeTypes={nodeTypes}
-                minZoom={0.1}
-                maxZoom={1}
-                nodesDraggable={false}
-                nodesConnectable={false}
-                zoomOnDoubleClick={false}
-                onNodeClick={(_e, node) => {
-                    setVisualBuilderNodeIdEditing(node.id)
-                }}
-                elementsSelectable={false}
-                nodesFocusable={false}
-                edgesFocusable={false}
-                zoomOnPinch={true}
-                zoomOnScroll={false}
-                panOnScroll={true}
-            >
-                <MiniMap zoomable pannable position="top-left" />
-                <Controls
-                    showInteractive={false}
-                    position="top-left"
-                    style={{left: 200 + 15}}
-                />
-                <Background />
-            </ReactFlow>
-            <NodeEditorDrawer
-                nodeInEdition={visualBuilderNodeEditing}
-                onClose={onDrawerEditorClose}
-            />
-        </>
+        <div className={css.container}>
+            {(isFetchPending || !areNodesInitialized) && <Loader />}
+            {!isFetchPending && (
+                <>
+                    <div
+                        className={classNames(css.reactFlowContainer, {
+                            [css.transparent]:
+                                isFetchPending || !areNodesInitialized,
+                        })}
+                    >
+                        <ReactFlow
+                            proOptions={{
+                                hideAttribution: true,
+                            }}
+                            fitView
+                            fitViewOptions={{
+                                duration: 0,
+                            }}
+                            onlyRenderVisibleElements
+                            nodes={visualBuilderGraph.nodes}
+                            edges={visualBuilderGraph.edges}
+                            edgeTypes={edgeTypes}
+                            nodeTypes={nodeTypes}
+                            minZoom={0.1}
+                            maxZoom={1}
+                            nodesDraggable={false}
+                            nodesConnectable={false}
+                            zoomOnDoubleClick={false}
+                            onNodeClick={handleNodeClick}
+                            elementsSelectable={false}
+                            nodesFocusable={false}
+                            edgesFocusable={false}
+                            zoomOnPinch={true}
+                            zoomOnScroll={false}
+                            panOnScroll={true}
+                        >
+                            {!isDegradedMode && (
+                                <MiniMap
+                                    zoomable
+                                    pannable
+                                    position="top-left"
+                                />
+                            )}
+                            <Controls
+                                showInteractive={false}
+                                position="top-left"
+                                style={!isDegradedMode ? {left: 200 + 15} : {}}
+                            />
+                            <Background />
+                        </ReactFlow>
+                    </div>
+                    <NodeEditorDrawer
+                        nodeInEdition={visualBuilderNodeEditing}
+                        onClose={onDrawerEditorClose}
+                    />
+                </>
+            )}
+        </div>
     )
 }
 

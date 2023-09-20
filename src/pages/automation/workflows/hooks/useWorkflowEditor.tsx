@@ -39,7 +39,7 @@ import useWorkflowTranslations, {
     emptyTranslatedTexts,
 } from './useWorkflowTranslations'
 
-type WorkflowEditorContext = {
+export type WorkflowEditorContext = {
     hookError: Maybe<string>
     configuration: WorkflowConfiguration
     visualBuilderGraph: VisualBuilderGraph
@@ -363,6 +363,34 @@ export function useWorkflowEditor(
         [visualBuilderGraphDirty]
     )
 
+    const switchLanguageCallback = useCallback(
+        (nextLanguage: LanguageCode) => {
+            const nextVisualBuilderGraph = switchLanguage(
+                visualBuilderGraphDirty,
+                nextLanguage
+            )
+            dispatch({
+                type: 'RESET_GRAPH',
+                graph: nextVisualBuilderGraph,
+            })
+        },
+        [visualBuilderGraphDirty, switchLanguage, dispatch]
+    )
+
+    const deleteTranslationCallback = useCallback(
+        (lang: LanguageCode) => {
+            const nextVisualBuilderGraph = deleteTranslation(
+                visualBuilderGraphDirty,
+                lang
+            )
+            dispatch({
+                type: 'RESET_GRAPH',
+                graph: nextVisualBuilderGraph,
+            })
+        },
+        [deleteTranslation, visualBuilderGraphDirty, dispatch]
+    )
+
     return {
         hookError,
         configuration: remoteConfiguration || workflowFactoryInstance.current,
@@ -379,32 +407,8 @@ export function useWorkflowEditor(
         setVisualBuilderNodeIdEditing,
         translateKey,
         currentLanguage,
-        switchLanguage: useCallback(
-            (nextLanguage: LanguageCode) => {
-                const nextVisualBuilderGraph = switchLanguage(
-                    visualBuilderGraphDirty,
-                    nextLanguage
-                )
-                dispatch({
-                    type: 'RESET_GRAPH',
-                    graph: nextVisualBuilderGraph,
-                })
-            },
-            [visualBuilderGraphDirty, switchLanguage, dispatch]
-        ),
-        deleteTranslation: useCallback(
-            (lang: LanguageCode) => {
-                const nextVisualBuilderGraph = deleteTranslation(
-                    visualBuilderGraphDirty,
-                    lang
-                )
-                dispatch({
-                    type: 'RESET_GRAPH',
-                    graph: nextVisualBuilderGraph,
-                })
-            },
-            [deleteTranslation, visualBuilderGraphDirty, dispatch]
-        ),
+        switchLanguage: switchLanguageCallback,
+        deleteTranslation: deleteTranslationCallback,
         shouldShowErrors,
         setShouldShowErrors,
         visualBuilderChoiceEventIdEditing,

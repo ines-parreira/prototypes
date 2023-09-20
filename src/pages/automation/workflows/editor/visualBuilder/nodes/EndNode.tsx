@@ -1,27 +1,34 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, {memo} from 'react'
 import {Handle, NodeProps, Position} from 'reactflow'
-import _isEqual from 'lodash/isEqual'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {EndNodeType} from 'pages/automation/workflows/models/visualBuilderGraph.types'
-import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 import {useWorkflowChannelSupportContext} from 'pages/automation/workflows/hooks/useWorkflowChannelSupport'
+import {
+    VisualBuilderNodeProps,
+    useVisualBuilderNodeProps,
+} from 'pages/automation/workflows/hooks/useVisualBuilderNodeProps'
 
 import EdgeBlock from '../components/EdgeBlock'
 
 import css from './Node.less'
 
-function EndNode(node: NodeProps<EndNodeType['data']>) {
-    const {isGreyedOut} = node.data
-    const {visualBuilderNodeIdEditing} = useWorkflowEditorContext()
-    const isSelected = visualBuilderNodeIdEditing === node.id
-    const {getSupportedChannels} = useWorkflowChannelSupportContext()
-    const isShopperInputFeatureEnabled =
-        getSupportedChannels('text_reply').length > 0
+type Props = VisualBuilderNodeProps & {
+    isShopperInputFeatureEnabled: boolean
+    withWasThisHelpfulPrompt: boolean
+}
+
+const EndNode = memo(function EndNode({
+    isShopperInputFeatureEnabled,
+    withWasThisHelpfulPrompt,
+    isGreyedOut,
+    isSelected,
+    edgeProps,
+}: Props) {
     return (
         <div>
-            <EdgeBlock node={node} />
+            <EdgeBlock {...edgeProps} />
             <div
                 className={classNames(css.node, css.endNode, {
                     [css.nodeGreyedOut]: isGreyedOut,
@@ -42,12 +49,12 @@ function EndNode(node: NodeProps<EndNodeType['data']>) {
                         <span className={css.iconContainer}>
                             {' '}
                             <i className={classNames('material-icons')}>
-                                {node.data.withWasThisHelpfulPrompt
+                                {withWasThisHelpfulPrompt
                                     ? 'thumb_up_alt'
                                     : 'forum'}
                             </i>
                         </span>
-                        {node.data.withWasThisHelpfulPrompt
+                        {withWasThisHelpfulPrompt
                             ? 'Ask for feedback'
                             : 'Create ticket'}
                     </div>
@@ -60,8 +67,19 @@ function EndNode(node: NodeProps<EndNodeType['data']>) {
             </div>
         </div>
     )
-}
+})
 
-export default React.memo(EndNode, (prevProps, nextProps) =>
-    _isEqual(prevProps, nextProps)
-)
+export default function EndNodeWrapper(node: NodeProps<EndNodeType['data']>) {
+    const {getSupportedChannels} = useWorkflowChannelSupportContext()
+    const isShopperInputFeatureEnabled =
+        getSupportedChannels('text_reply').length > 0
+    const commonProps = useVisualBuilderNodeProps(node)
+
+    return (
+        <EndNode
+            {...commonProps}
+            isShopperInputFeatureEnabled={isShopperInputFeatureEnabled}
+            withWasThisHelpfulPrompt={node.data.withWasThisHelpfulPrompt}
+        />
+    )
+}

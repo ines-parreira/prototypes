@@ -1,43 +1,42 @@
 import classNames from 'classnames'
-import React, {useMemo} from 'react'
+import React, {memo, useMemo} from 'react'
 import {Handle, NodeProps, Position} from 'reactflow'
-import _isEqual from 'lodash/isEqual'
+
 import Label from 'pages/common/forms/Label/Label'
 import VisualBuilderActionTag from 'pages/automation/workflows/components/VisualBuilderActionTag'
-import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 import {
     flowVariableRegex,
     isValidLiquidSyntaxInNode,
 } from 'pages/automation/workflows/models/variables.model'
+import {
+    VisualBuilderNodeProps,
+    useVisualBuilderNodeProps,
+} from 'pages/automation/workflows/hooks/useVisualBuilderNodeProps'
+import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
+
 import {MultipleChoicesNodeType} from '../../../../models/visualBuilderGraph.types'
 import NodeDeleteIcon from '../../components/NodeDeleteIcon'
 import EdgeBlock from '../../components/EdgeBlock'
 
 import css from '../Node.less'
 
-function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
-    const {content, choices, isGreyedOut} = node.data
+type Props = VisualBuilderNodeProps & {
+    contentText: string
+    isErrored: boolean
+}
 
-    const {
-        visualBuilderNodeIdEditing,
-        shouldShowErrors,
-        checkInvalidVariablesForNode,
-    } = useWorkflowEditorContext()
-    const hasInvalidVariables = useMemo(
-        () => checkInvalidVariablesForNode(content.text, node.id),
-        [content.text, node.id, checkInvalidVariablesForNode]
-    )
-    const isErrored =
-        content.text.length === 0 ||
-        choices.find((c) => !c.label) ||
-        hasInvalidVariables ||
-        !isValidLiquidSyntaxInNode(node.data.content)
-
-    const isSelected = visualBuilderNodeIdEditing === node.id
-
+const MultipleChoicesNode = memo(function MultipleChoicesNode({
+    contentText,
+    isErrored,
+    shouldShowErrors,
+    isGreyedOut,
+    isSelected,
+    edgeProps,
+    deleteProps,
+}: Props) {
     return (
         <div>
-            <EdgeBlock node={node} />
+            <EdgeBlock {...edgeProps} />
             <div
                 className={classNames(css.node, {
                     [css.nodeErrored]: shouldShowErrors && isErrored,
@@ -53,13 +52,13 @@ function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
                 <div className={css.nodeContainer}>
                     <VisualBuilderActionTag nodeType="multiple_choices" />
                     <Label className={css.nodeTitle}>
-                        {content.text.length > 0 ? (
-                            content.text.replace(flowVariableRegex, '{...}')
+                        {contentText.length > 0 ? (
+                            contentText.replace(flowVariableRegex, '{...}')
                         ) : (
                             <span className={css.clickToAdd}>Question</span>
                         )}
                     </Label>
-                    <NodeDeleteIcon node={node} />
+                    <NodeDeleteIcon {...deleteProps} />
                 </div>
                 <Handle
                     type="source"
@@ -69,8 +68,29 @@ function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
             </div>
         </div>
     )
-}
+})
 
-export default React.memo(MultipleChoicesNode, (prevProps, nextProps) =>
-    _isEqual(prevProps, nextProps)
-)
+export default function MultipleChoicesNodeWrapper(
+    node: NodeProps<MultipleChoicesNodeType['data']>
+) {
+    const {content, choices} = node.data
+    const {checkInvalidVariablesForNode} = useWorkflowEditorContext()
+    const hasInvalidVariables = useMemo(
+        () => checkInvalidVariablesForNode(content.text, node.id),
+        [content.text, node.id, checkInvalidVariablesForNode]
+    )
+    const isErrored =
+        content.text.length === 0 ||
+        choices.some((c) => !c.label) ||
+        hasInvalidVariables ||
+        !isValidLiquidSyntaxInNode(node.data.content)
+    const commonProps = useVisualBuilderNodeProps(node)
+
+    return (
+        <MultipleChoicesNode
+            {...commonProps}
+            contentText={content.text}
+            isErrored={isErrored}
+        />
+    )
+}

@@ -1,21 +1,27 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, {memo} from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
-import _isEqual from 'lodash/isEqual'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 import Label from 'pages/common/forms/Label/Label'
+import {
+    VisualBuilderNodeProps,
+    useVisualBuilderNodeProps,
+} from 'pages/automation/workflows/hooks/useVisualBuilderNodeProps'
 
 import {TriggerButtonNodeType} from '../../../models/visualBuilderGraph.types'
 import css from './Node.less'
 
-function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
-    const label = node.data.label
-    const isErrored = label.length === 0
-    const {visualBuilderNodeIdEditing, shouldShowErrors} =
-        useWorkflowEditorContext()
-    const isSelected = visualBuilderNodeIdEditing === node.id
+type Props = VisualBuilderNodeProps & {
+    label: string
+    isErrored: boolean
+}
 
+const TriggerButtonNode = memo(function TriggerButtonNode({
+    label,
+    isErrored,
+    isSelected,
+    shouldShowErrors,
+}: Props) {
     return (
         <div>
             <div
@@ -36,7 +42,7 @@ function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
                     </div>
                     <Label className={css.nodeTitle}>
                         {label.length > 0 ? (
-                            node.data.label
+                            label
                         ) : (
                             <span className={css.clickToAdd}>
                                 Trigger button
@@ -52,8 +58,20 @@ function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
             </div>
         </div>
     )
-}
+})
 
-export default React.memo(TriggerButtonNode, (prevProps, nextProps) =>
-    _isEqual(prevProps, nextProps)
-)
+export default function TriggerButtonNodeWrapper(
+    node: NodeProps<TriggerButtonNodeType['data']>
+) {
+    const label = node.data.label
+    const isErrored = label.length === 0
+    const commonProps = useVisualBuilderNodeProps(node)
+
+    return (
+        <TriggerButtonNode
+            {...commonProps}
+            label={label}
+            isErrored={isErrored}
+        />
+    )
+}
