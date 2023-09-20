@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import axios from 'axios'
 import _debounce from 'lodash/debounce'
 import {useHistory, useLocation} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -20,6 +21,7 @@ import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import InputField from 'pages/common/forms/input/InputField'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {AlertType} from 'pages/common/components/Alert/Alert'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
@@ -39,6 +41,8 @@ import {UpdateToggle} from './UpdateToggle'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
+    const canUseHelpCenterAutoEmbed =
+        useFlags()[FeatureFlagKey.HelpCenterAutoEmbed]
     const helpCenterId = useHelpCenterIdParam()
     const history = useHistory()
     const location = useLocation()
@@ -242,6 +246,11 @@ export const HelpCenterInstallationView: React.FC = () => {
                         : null
                 }
             />
+            {canUseHelpCenterAutoEmbed && (
+                <div style={{color: 'red', padding: '0 0 24px 0'}}>
+                    New Publish content
+                </div>
+            )}
 
             <div className={css.ctasGroup}>
                 <div className={css.leftSideButtons}>
