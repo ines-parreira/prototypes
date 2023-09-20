@@ -139,22 +139,19 @@ describe('services', () => {
 
         it('should prevent redirection when a message is pending', () => {
             const newPendingMessageManager = new PendingMessageManager('foo')
-            const beforeUnloadHandler = (
-                window.addEventListener as jest.MockedFunction<
-                    typeof window.addEventListener
-                >
-            ).mock.calls[0][1] as (event: BeforeUnloadEvent) => void
-            const event = new Event('beforeUnload')
-
-            expect(beforeUnloadHandler(event)).toBe(undefined)
+            expect(window.addEventListener).not.toHaveBeenCalled()
             newPendingMessageManager.sendMessage(sendMessageArgs)
-            expect(beforeUnloadHandler(event)).toBe('foo')
+            expect(window.addEventListener).toHaveBeenNthCalledWith(
+                1,
+                'beforeunload',
+                newPendingMessageManager.handleBeforeUnload
+            )
         })
 
-        it('should remove redirection handler when reset', () => {
+        it('should remove redirection handler when skipExistingTimer is called', () => {
             const newPendingMessageManager = new PendingMessageManager('foo')
-            newPendingMessageManager.reset()
-
+            newPendingMessageManager.sendMessage(sendMessageArgs)
+            newPendingMessageManager.skipExistingTimer()
             expect(window.removeEventListener).toHaveBeenNthCalledWith(
                 1,
                 'beforeunload',

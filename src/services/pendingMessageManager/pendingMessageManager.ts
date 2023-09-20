@@ -35,7 +35,6 @@ export class PendingMessageManager {
 
     constructor(message: string) {
         this.message = message
-        window.addEventListener('beforeunload', this.handleBeforeUnload)
     }
 
     handleBeforeUnload = (e: BeforeUnloadEvent): Maybe<string> => {
@@ -46,7 +45,11 @@ export class PendingMessageManager {
         return this.message
     }
 
-    reset = () => {
+    listenUnloadEvent = () => {
+        window.addEventListener('beforeunload', this.handleBeforeUnload)
+    }
+
+    dismissUnloadListener = () => {
         window.removeEventListener('beforeunload', this.handleBeforeUnload)
     }
 
@@ -72,6 +75,7 @@ export class PendingMessageManager {
             }) as any
         )
         this.pendingSendMessagesArgs = sendMessageArgs
+        this.listenUnloadEvent()
         this.timeoutId = window.setTimeout(() => {
             //$TsFixMe remove casting on init.js migration
             typeSafeReduxStore.dispatch(
@@ -83,6 +87,7 @@ export class PendingMessageManager {
                     ticketId
                 ) as any
             )
+            this.dismissUnloadListener()
             this.timeoutId = null
         }, pendingMessageDelay)
     }
@@ -90,6 +95,7 @@ export class PendingMessageManager {
     clearMessage = () => {
         if (this.timeoutId) {
             clearTimeout(this.timeoutId)
+            this.dismissUnloadListener()
             this.timeoutId = null
         }
     }
