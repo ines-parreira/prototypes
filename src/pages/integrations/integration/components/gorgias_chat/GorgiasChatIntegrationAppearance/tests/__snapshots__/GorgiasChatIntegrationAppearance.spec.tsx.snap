@@ -314,11 +314,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -1228,11 +1232,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -2258,11 +2266,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -3259,11 +3271,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -4268,11 +4284,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -5269,11 +5289,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -6417,11 +6441,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -7331,11 +7359,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -8636,11 +8668,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""
@@ -9550,11 +9586,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               <div
                 class="formSection"
               >
-                <h2
-                  class="title"
+                <div
+                  class="introMessageHeader"
                 >
-                  Intro message
-                </h2>
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
                 <div
                   class="InputField formGroup form-group"
                   color=""

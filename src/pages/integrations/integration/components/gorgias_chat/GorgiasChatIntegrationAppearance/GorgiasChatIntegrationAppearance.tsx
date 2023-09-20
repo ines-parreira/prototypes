@@ -211,6 +211,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             defaultContent
         )
     )
+    const chatMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages]
     const viewTranslateEdit =
         useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
     const shouldShowLauncherCustomization =
@@ -780,30 +782,54 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 placeholder="Ex: Company Support"
                                 required
                             />
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="select"
-                                value={language}
-                                options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
-                                onChange={setLanguage}
-                                label="Language"
-                            >
-                                {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
-                                    (option) => {
-                                        const value = option?.get('value')
-                                        const label = option?.get('label')
-                                        return (
-                                            <option key={value} value={value}>
-                                                {label}
-                                            </option>
-                                        )
-                                    }
-                                )}
-                            </DEPRECATED_InputField>
+                            {!chatMultiLanguagesEnabled && (
+                                <DEPRECATED_InputField
+                                    className={css.formGroup}
+                                    type="select"
+                                    value={language}
+                                    options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                    onChange={setLanguage}
+                                    label="Language"
+                                >
+                                    {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
+                                        (option) => {
+                                            const value = option?.get('value')
+                                            const label = option?.get('label')
+                                            return (
+                                                <option
+                                                    key={value}
+                                                    value={value}
+                                                >
+                                                    {label}
+                                                </option>
+                                            )
+                                        }
+                                    )}
+                                </DEPRECATED_InputField>
+                            )}
                         </div>
 
                         <div className={css.formSection}>
-                            <h2 className={css.title}>Intro message</h2>
+                            <div className={css.introMessageHeader}>
+                                <h2 className={css.title}>Intro message</h2>
+                                {chatMultiLanguagesEnabled && (
+                                    <Button
+                                        fillStyle="ghost"
+                                        intent="primary"
+                                        onClick={() =>
+                                            history.push(
+                                                `/app/settings/channels/gorgias_chat/${
+                                                    integration.get(
+                                                        'id'
+                                                    ) as string
+                                                }/languages`
+                                            )
+                                        }
+                                    >
+                                        Customize Translations
+                                    </Button>
+                                )}
+                            </div>
                             <DEPRECATED_InputField
                                 className={css.formGroup}
                                 type="text"
@@ -847,11 +873,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 }
                             />
 
-                            {viewTranslateEdit && isUpdate && (
-                                <CustomizeToneOfVoiceBlock
-                                    integrationId={integration.get('id')}
-                                />
-                            )}
+                            {!chatMultiLanguagesEnabled &&
+                                viewTranslateEdit &&
+                                isUpdate && (
+                                    <CustomizeToneOfVoiceBlock
+                                        integrationId={integration.get('id')}
+                                    />
+                                )}
                         </div>
 
                         <div className={css.formSection}>
