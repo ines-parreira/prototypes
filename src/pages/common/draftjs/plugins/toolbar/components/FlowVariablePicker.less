@@ -1,3 +1,5 @@
+@import (reference) '~css/typography';
+
 :local {
     .dropdown {
         min-width: 384px !important;
@@ -8,48 +10,30 @@
         padding-left: 4px;
         padding-top: 8px;
         display: block;
-        font-size: 14px;
         color: var(--neutral-grey-4);
     }
 
     .backButton {
-        color: var(--neutral-grey-5) !important;
-        padding: 0 !important;
-    }
-
-    .backButtonIcon {
-        i {
-            margin: 0 !important;
-        }
-    }
-
-    .transformUppercase {
-        text-transform: uppercase;
-    }
-
-    .header {
         max-width: 100%;
         height: auto;
+        padding: 0 !important;
         font-weight: 600;
     }
 
-    .headerCategory {
-        display: flex;
-        gap: 4px;
+    .backButtonIconLabel {
+        overflow: hidden;
+    }
+
+    .header {
+        .caption-allcaps();
+        padding: 8px 4px 8px;
+        color: var(--main-primary);
+    }
+
+    .categoryName {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow-x: hidden;
-    }
-
-    .headerNoCategory {
-        padding: 8px 4px 8px;
-        text-transform: uppercase;
-        color: var(--main-primary);
-        font-size: 11px;
-    }
-
-    .noBackground {
-        background: none !important;
     }
 
     .item {

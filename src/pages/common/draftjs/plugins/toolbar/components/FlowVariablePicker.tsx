@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react'
-import classNames from 'classnames'
+
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -65,27 +65,24 @@ const FlowVariablePicker = ({onSelect}: FlowVariablePickerProps) => {
                         <Button
                             onClick={() => setSelectedCategory(null)}
                             fillStyle="ghost"
-                            className={classNames(css.backButton, css.header)}
+                            intent="secondary"
+                            className={css.backButton}
                         >
-                            <span className={css.headerCategory}>
-                                <ButtonIconLabel
-                                    icon="arrow_back"
-                                    position="right"
-                                    className={css.backButtonIcon}
-                                />
-                                {selectedCategory.name}
-                            </span>
+                            <ButtonIconLabel
+                                icon="arrow_back"
+                                position="left"
+                                className={css.backButtonIconLabel}
+                            >
+                                <span className={css.categoryName}>
+                                    {selectedCategory.name}
+                                </span>
+                            </ButtonIconLabel>
                         </Button>
                     </DropdownHeader>
                 )}
                 <DropdownBody>
                     {!selectedCategory && (
-                        <span
-                            className={classNames(
-                                css.header,
-                                css.headerNoCategory
-                            )}
-                        >
+                        <span className={css.header}>
                             Insert variable from previous steps
                         </span>
                     )}
