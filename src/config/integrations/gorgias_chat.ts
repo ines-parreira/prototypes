@@ -20,7 +20,7 @@ export interface LanguageItem {
     primary?: boolean
 }
 
-interface LanguageUI {
+export interface LanguageUI {
     value: string
     label: string
 }

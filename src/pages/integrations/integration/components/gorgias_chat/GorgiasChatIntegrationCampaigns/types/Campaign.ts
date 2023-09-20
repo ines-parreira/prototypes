@@ -14,6 +14,7 @@ export interface ChatCampaign {
         text: string
     }
     name: string
+    language?: string
     attachments?: CampaignAttachment[]
     triggers: CampaignTrigger[]
     deactivated_datetime?: string

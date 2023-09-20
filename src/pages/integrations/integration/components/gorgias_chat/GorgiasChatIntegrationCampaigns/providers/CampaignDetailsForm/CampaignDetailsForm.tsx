@@ -6,12 +6,17 @@ import {EditorState} from 'draft-js'
 import _trim from 'lodash/trim'
 import _isEmpty from 'lodash/isEmpty'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import history from 'pages/history'
 import {convertToHTML} from 'utils/editor'
 import {removeLinksFromHtml, sanitizeHtmlDefault} from 'utils/html'
 
 import {User} from 'config/types/user'
-import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
     GorgiasChatAvatarImageType,
@@ -31,6 +36,8 @@ import {
 import Accordion from 'pages/common/components/accordion/Accordion'
 import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {Language} from 'constants/languages'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 import {replaceUrlsWithUtmUrl} from '../../utils/attachUtmParams'
 import {transformProductToAttachment} from '../../utils/transformProductToAttachment'
@@ -91,11 +98,18 @@ export const CampaignDetailsForm = ({
 
     const attachments = useAppSelector(getNewMessageAttachments)
 
+    const defaultLanguage = useMemo<string>(() => {
+        const meta = (integration.get('meta') as Map<string, string>)?.toJS()
+        if (!meta) return Language.EnglishUs
+        return getPrimaryLanguageFromChatConfig(meta)
+    }, [integration])
+
     const [showContentWarning, setShowContentWarning] = useState<boolean>(false)
     const [actionInProgress, setActionInProgress] = useState<string>('')
     const [campaignData, setCampaignData] = useState<ChatCampaign>({
         id: campaign?.id,
         name: campaign.name ?? 'Untitled campaign',
+        language: campaign.language ?? defaultLanguage,
         message: {
             html: campaign?.message?.html ?? '',
             text: campaign?.message?.text ?? '',
@@ -107,13 +121,22 @@ export const CampaignDetailsForm = ({
     const {triggers, addTrigger, updateTrigger, deleteTrigger} =
         useManageTriggers(campaign.triggers)
 
+    const chatMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+
     useEffect(() => {
         if (actionInProgress !== '') {
             return
         }
 
         if (!_isEmpty(campaign)) {
-            setCampaignData(campaign)
+            setCampaignData(
+                produce(campaign, (draft) => {
+                    if (chatMultiLanguagesEnabled) {
+                        draft.language = campaign.language ?? defaultLanguage
+                    }
+                })
+            )
 
             if (
                 Array.isArray(campaign.attachments) &&
@@ -159,6 +182,7 @@ export const CampaignDetailsForm = ({
         return () => {
             dispatch(setNewMessageForChatCampaign({}))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [campaign, dispatch, actionInProgress])
 
     const shopifyProducts = useMemo<CampaignProduct[]>(() => {
@@ -173,6 +197,14 @@ export const CampaignDetailsForm = ({
                 setCampaignData(
                     produce((draft) => {
                         draft.name = payload
+                    })
+                )
+            }
+
+            if (key === 'language') {
+                setCampaignData(
+                    produce((draft) => {
+                        draft.language = payload
                     })
                 )
             }
@@ -268,6 +300,10 @@ export const CampaignDetailsForm = ({
                     trimmedCampaignName
                 )
                 draft.triggers = Object.values(triggers)
+
+                if (!chatMultiLanguagesEnabled) {
+                    delete draft.language
+                }
 
                 if (shopifyProducts.length > 0) {
                     draft.attachments = shopifyProducts.map((product) => {
@@ -478,6 +514,13 @@ export const CampaignDetailsForm = ({
                     <div>
                         <CampaignPreview
                             {...chatPreviewProps}
+                            translatedTexts={
+                                campaignData.language
+                                    ? GORGIAS_CHAT_WIDGET_TEXTS[
+                                          campaignData.language
+                                      ]
+                                    : chatPreviewProps.translatedTexts
+                            }
                             className={css.campaignPreview}
                             products={shopifyProducts}
                             html={sanitizeHtmlDefault(

@@ -1,8 +1,9 @@
-import React, {MouseEvent, useCallback} from 'react'
+import React, {MouseEvent, useCallback, useMemo} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {IntegrationType} from 'models/integration/constants'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
@@ -14,6 +15,14 @@ import TableHead from 'pages/common/components/table/TableHead'
 import {NumberedPagination} from 'pages/common/components/Paginations/NumberedPagination'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    LanguageUI,
+    getGorgiasChatLanguageByCode,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
+import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
+import {Language} from 'constants/languages'
 import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
 
 import {ChatCampaign} from '../../types/Campaign'
@@ -54,6 +63,15 @@ export const CampaignsTable = ({
         [changeSorting]
     )
 
+    const chatMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+
+    const defaultLanguage = useMemo<string>(() => {
+        return getPrimaryLanguageFromChatConfig(
+            (integration.get('meta') as Map<string, string>).toJS()
+        )
+    }, [integration])
+
     const renderRows = useCallback(
         (campaign: ChatCampaign, index: number) => {
             const editLink =
@@ -65,6 +83,10 @@ export const CampaignsTable = ({
                       'en-US'
                   )
                 : ''
+
+            const language = getGorgiasChatLanguageByCode(
+                (campaign.language ?? defaultLanguage) as Language
+            ) as LanguageUI
 
             return (
                 <TableBodyRow key={index} className={css.tableRow}>
@@ -99,6 +121,20 @@ export const CampaignsTable = ({
                     <BodyCell>
                         <div>{creationDate}</div>
                     </BodyCell>
+                    {chatMultiLanguagesEnabled && (
+                        <BodyCell size="small">
+                            <BadgeItem
+                                customClass={css.languageBadge}
+                                key={language.value}
+                                id={language.value as any}
+                                label={`${language.label}${
+                                    language.value === defaultLanguage
+                                        ? ' (Default)'
+                                        : ''
+                                }`}
+                            />
+                        </BodyCell>
+                    )}
                     <BodyCell style={{width: 110}}>
                         <CampaignToolsCell
                             campaign={campaign}
@@ -115,6 +151,8 @@ export const CampaignsTable = ({
             onClickDelete,
             onClickDuplicate,
             onToggleCampaign,
+            chatMultiLanguagesEnabled,
+            defaultLanguage,
         ]
     )
 
@@ -151,6 +189,9 @@ export const CampaignsTable = ({
                         title="Creation date"
                         onClick={handleChangeSort('created_datetime')}
                     />
+                    {chatMultiLanguagesEnabled && (
+                        <HeaderCellProperty title="Language" />
+                    )}
                     <HeaderCellProperty title="" style={{width: 110}} />
                 </TableHead>
                 <TableBody>{paginatedRows.map(renderRows)}</TableBody>

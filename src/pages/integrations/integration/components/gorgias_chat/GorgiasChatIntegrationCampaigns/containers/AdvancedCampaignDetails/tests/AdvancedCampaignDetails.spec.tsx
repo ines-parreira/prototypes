@@ -22,6 +22,8 @@ import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
 
 import * as betaTesterHook from 'pages/common/hooks/useIsRevenueBetaTester'
+import {Language} from 'constants/languages'
+import {FeatureFlagKey} from 'config/featureFlags'
 import * as shopifyHeadlessHook from '../../../hooks/useIsHeadlessShopifyStore'
 
 import {ChatCampaign} from '../../../types/Campaign'
@@ -74,6 +76,7 @@ const regularMerchantCampaign: ChatCampaign = {
         text: `Hello, first-time visitor! 👋 Thank you for shopping with us, we'd like to offer you free shipping 🚢, please use the code: FREE_SHIPPING`,
     },
     name: 'Cart value with first time visitor',
+    language: Language.EnglishUs,
     triggers: [
         {
             key: CampaignTriggerKey.CurrentUrl,
@@ -113,6 +116,11 @@ const shopifyChatIntegration = fromJS({
     id: '174',
     meta: {
         shop_type: 'shopify',
+        languages: [
+            {language: 'en-US', primary: true},
+            {language: 'fr-FR'},
+            {language: 'fr-CA'},
+        ],
     },
 })
 
@@ -123,7 +131,7 @@ const shopifyIntegration = fromJS({
 
 describe('<AdvancedCampaignDetails />', () => {
     beforeEach(() => {
-        mockFlags({})
+        mockFlags({[FeatureFlagKey.ChatMultiLanguages]: true})
 
         const allFlagsMock = getLDClient().allFlags as jest.Mock
         allFlagsMock.mockReturnValue({})
@@ -350,6 +358,26 @@ describe('<AdvancedCampaignDetails />', () => {
                 fromJS({
                     ...regularMerchantCampaign,
                     name: 'My Campaign',
+                }),
+                shopifyChatIntegration
+            )
+        })
+
+        it('updates campaign language', () => {
+            const campaignLanguageSelect = screen.getByText('French - FR')
+
+            act(() => {
+                fireEvent.click(campaignLanguageSelect)
+            })
+
+            act(() => {
+                fireEvent.click(screen.getByText('Save Changes'))
+            })
+
+            expect(updateCampaignFn).toHaveBeenCalledWith(
+                fromJS({
+                    ...regularMerchantCampaign,
+                    language: 'fr-FR',
                 }),
                 shopifyChatIntegration
             )

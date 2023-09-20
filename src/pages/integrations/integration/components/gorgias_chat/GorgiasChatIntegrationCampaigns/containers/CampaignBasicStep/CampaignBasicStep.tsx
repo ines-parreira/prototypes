@@ -1,13 +1,26 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {fromJS} from 'immutable'
 import InputField from 'pages/common/forms/input/InputField'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import Label from 'pages/common/forms/Label/Label'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {
+    getGorgiasChatLanguageByCode,
+    mapIntegrationLanguagesToLanguagePicker,
+} from 'config/integrations/gorgias_chat'
+import {Language} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import {Language as LanguageEnum} from 'constants/languages'
 import {useStepState} from '../../hooks/useStepState'
 import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
 
 import {StatefulAccordion} from '../../components/StatefulAccordion'
 
 import {CampaignStepsKeys} from '../../types/CampaignSteps'
+
+import {useIntegrationContext} from '../IntegrationProvider'
 
 type Props = {
     count?: number
@@ -21,9 +34,34 @@ export const CampaignBasicStep = ({
     isValid = false,
 }: Props) => {
     const {campaign, isEditMode, updateCampaign} = useCampaignDetailsContext()
+    const {chatIntegration} = useIntegrationContext()
+
     const stateProps = useStepState({count, isPristine, isValid, isEditMode})
 
     const handleUpdateName = (value: string) => updateCampaign('name', value)
+
+    const handleUpdateLanguage = (value: any) =>
+        updateCampaign('language', value)
+
+    const chatMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+
+    const languageOptions = useMemo<Language[]>(() => {
+        const mappedLanguages = mapIntegrationLanguagesToLanguagePicker(
+            fromJS(chatIntegration)
+        )
+        const campaignLanguage = getGorgiasChatLanguageByCode(
+            campaign.language as LanguageEnum
+        ) as Language
+
+        const exists = mappedLanguages.some(
+            (language) => language.value === campaign.language
+        )
+        if (!exists) {
+            mappedLanguages.push(campaignLanguage)
+        }
+        return mappedLanguages
+    }, [chatIntegration, campaign.language])
 
     return (
         <StatefulAccordion
@@ -39,6 +77,20 @@ export const CampaignBasicStep = ({
                 value={campaign.name}
                 onChange={handleUpdateName}
             />
+
+            {chatMultiLanguagesEnabled && (
+                <div className="mt-4">
+                    <Label className="mb-2" isRequired>
+                        Language
+                    </Label>
+                    <SelectField
+                        value={campaign.language}
+                        onChange={handleUpdateLanguage}
+                        options={languageOptions}
+                        fullWidth
+                    />
+                </div>
+            )}
         </StatefulAccordion>
     )
 }

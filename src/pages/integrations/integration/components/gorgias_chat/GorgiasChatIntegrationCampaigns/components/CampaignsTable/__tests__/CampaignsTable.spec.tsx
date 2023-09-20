@@ -16,6 +16,7 @@ jest.mock('hooks/useSearch')
 const data = Array.from({length: 19}, (_, i) => ({
     id: i,
     name: `campaign ${i}`,
+    language: 'en-US',
     triggers: [createTrigger(CampaignTriggerKey.BusinessHours)],
     message: {
         text: `campaign message ${i}`,
@@ -25,6 +26,9 @@ const data = Array.from({length: 19}, (_, i) => ({
 
 const integration = fromJS({
     id: '1',
+    meta: {
+        languages: [{language: 'en-US', primary: true}],
+    },
 })
 describe('<CampaignsTable />', () => {
     beforeEach(() => {

@@ -5,6 +5,7 @@ import _uniqueId from 'lodash/uniqueId'
 import {EditorState} from 'draft-js'
 import trim from 'lodash/trim'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -32,7 +33,18 @@ import InputField from 'pages/common/forms/input/InputField'
 import {Value} from 'pages/common/forms/SelectField/types'
 
 import RichField from 'pages/common/forms/RichField/RichField'
-import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
+import {
+    getGorgiasChatLanguageByCode,
+    getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
+    mapIntegrationLanguagesToLanguagePicker,
+} from 'config/integrations/gorgias_chat'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {Language} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import Label from 'pages/common/forms/Label/Label'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Language as LanguageEnum} from 'constants/languages'
 import {createTrigger} from '../../utils/createTrigger'
 
 import {useChatPreviewProps} from '../../hooks/useChatPreviewProps'
@@ -97,6 +109,14 @@ export const AdvancedCampaignDetails = memo(
         const isUpdate = id !== 'new'
         const dispatch = useAppDispatch()
 
+        const defaultLanguage = useMemo<string>(() => {
+            const meta = (
+                integration.get('meta') as Map<string, string>
+            )?.toJS()
+            if (!meta) return LanguageEnum.EnglishUs
+            return getPrimaryLanguageFromChatConfig(meta)
+        }, [integration])
+
         const [showContentWarning, setShowContentWarning] =
             useState<boolean>(false)
         const [stateInitialized, setStateInitialized] = useState(false)
@@ -105,6 +125,9 @@ export const AdvancedCampaignDetails = memo(
         const [triggers, updateTriggers] = useState<CampaignTriggerMap>({})
         const [campaignName, setCampaignName] = useState<string>(
             campaign.name ?? ''
+        )
+        const [campaignLanguage, setCampaignLanguage] = useState<string>(
+            campaign.language ?? defaultLanguage
         )
         const [campaignDelay, setCampaignDelay] = useState<number>(0)
         const [campaignAgent, setCampaignAgent] = useState<CampaignAuthor>()
@@ -123,10 +146,39 @@ export const AdvancedCampaignDetails = memo(
             })
         }, [attachments, shopifyIntegration])
 
+        const chatMultiLanguagesEnabled =
+            useFlags()[FeatureFlagKey.ChatMultiLanguages]
+
+        const languageOptions = useMemo<Language[]>(() => {
+            const mappedLanguages = mapIntegrationLanguagesToLanguagePicker(
+                fromJS(integration)
+            )
+            const campaignLanguage = getGorgiasChatLanguageByCode(
+                campaign.language as LanguageEnum
+            ) as Language
+
+            if (!campaignLanguage) return mappedLanguages
+
+            const exists = mappedLanguages.some(
+                (language) => language.value === campaign.language
+            )
+            if (!exists) {
+                mappedLanguages.push(campaignLanguage)
+            }
+            return mappedLanguages
+        }, [integration, campaign.language])
+
         // makes sure editor and preview are in sync on initial load of HTML
         useEffect(() => {
             if (richArea) richArea.focusEditor()
         }, [richArea])
+
+        useEffect(() => {
+            if (chatMultiLanguagesEnabled) {
+                setCampaignLanguage(campaign.language ?? defaultLanguage)
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [campaign])
 
         const handleAddTrigger = useCallback(
             (key: CampaignTriggerKey) => {
@@ -319,6 +371,10 @@ export const AdvancedCampaignDetails = memo(
                     created_datetime: campaign?.created_datetime,
                 }
 
+                if (chatMultiLanguagesEnabled) {
+                    payload.language = campaignLanguage
+                }
+
                 if (isRevenueBetaTester) {
                     payload = {
                         ...payload,
@@ -372,7 +428,9 @@ export const AdvancedCampaignDetails = memo(
         const isCampaignValid =
             !!campaignName &&
             !!campaignMessageText &&
-            Object.keys(triggers).length !== 0
+            Object.keys(triggers).length !== 0 &&
+            (!chatMultiLanguagesEnabled ||
+                (chatMultiLanguagesEnabled && !!campaignLanguage))
 
         useEffect(() => {
             setStateInitialized(true)
@@ -520,6 +578,23 @@ export const AdvancedCampaignDetails = memo(
                                     value={campaignName}
                                     onChange={setCampaignName}
                                 />
+
+                                {chatMultiLanguagesEnabled && (
+                                    <div className="mb-4 mt-4">
+                                        <Label className="mb-2" isRequired>
+                                            Language
+                                        </Label>
+                                        <SelectField
+                                            aria-label="languageSelector"
+                                            value={campaignLanguage}
+                                            onChange={
+                                                setCampaignLanguage as any
+                                            }
+                                            options={languageOptions}
+                                            fullWidth
+                                        />
+                                    </div>
+                                )}
                             </div>
 
                             <h3 className={css.section}>
@@ -602,6 +677,9 @@ export const AdvancedCampaignDetails = memo(
                             mainFontFamily={
                                 chatPreviewProps.mainFontFamily ??
                                 GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                            }
+                            translatedTexts={
+                                GORGIAS_CHAT_WIDGET_TEXTS[campaignLanguage]
                             }
                             shouldHideReplyInput={campaignWithNoReply}
                             onCampaignContentChange={setShowContentWarning}
