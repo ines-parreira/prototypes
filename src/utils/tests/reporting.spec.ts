@@ -1,16 +1,10 @@
 import {TicketChannel} from 'business/types/ticket'
-import {messagesSentQueryFactory} from 'hooks/reporting/metricTrends'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {
-    ReportingFilterOperator,
-    ReportingGranularity,
-} from 'models/reporting/types'
+import {ReportingGranularity} from 'models/reporting/types'
 import {
     formatReportingQueryDate,
     periodToReportingGranularity,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
-    withFilter,
 } from 'utils/reporting'
 
 describe('reporting utils', () => {
@@ -83,29 +77,6 @@ describe('reporting utils', () => {
                     end_datetime: '2020-01-01T12:00:00.000Z',
                 })
             ).toBe(ReportingGranularity.Hour)
-        })
-    })
-
-    describe('withFilter', () => {
-        it('should add a filter to the query', () => {
-            const query = messagesSentQueryFactory(
-                {
-                    period: {
-                        start_datetime: '2020-01-01T00:00:00.000Z',
-                        end_datetime: '2020-01-03T00:00:00.000Z',
-                    },
-                },
-                'timezone'
-            )
-            const filter = {
-                member: TicketMember.AssigneeUserId,
-                operator: ReportingFilterOperator.Equals,
-                values: ['1'],
-            }
-
-            const queryWithFilter = withFilter(query, filter)
-
-            expect(queryWithFilter.filters).toContainEqual(filter)
         })
     })
 })

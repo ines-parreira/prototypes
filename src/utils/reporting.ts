@@ -8,7 +8,6 @@ import {
     ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
-    ReportingQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
@@ -127,11 +126,4 @@ export const getPreviousPeriod = (
         start_datetime: start.subtract(diff).format(),
         end_datetime: end.subtract(diff).format(),
     }
-}
-
-export const withFilter = <T extends ReportingQuery>(
-    query: T,
-    filter: ReportingFilter
-): T => {
-    return {...query, filters: [...query.filters, filter]}
 }
