@@ -20,13 +20,13 @@ const storyConfig: Meta = {
 const Template: Story<GorgiasChatIntegrationLanguagesTableRowProps> = ({
     language,
     onClickDelete,
-    onClickSetAsDefault,
+    onClickSetDefault,
 }) => {
     return (
         <GorgiasChatIntegrationLanguagesTable>
             <GorgiasChatIntegrationLanguagesTableRow
                 language={language}
-                onClickSetAsDefault={onClickSetAsDefault}
+                onClickSetDefault={onClickSetDefault}
                 onClickDelete={onClickDelete}
             />
         </GorgiasChatIntegrationLanguagesTable>
@@ -55,7 +55,7 @@ DefaultWithActions.args = {
         link: '/integrations/1/chat/languages/en-US',
         showActions: true,
     },
-    onClickSetAsDefault: (lang) => {
+    onClickSetDefault: (lang) => {
         alert(`Set '${lang.language}' as default`)
     },
     onClickDelete: (lang) => {
@@ -72,7 +72,7 @@ NotDefaultWithActions.args = {
         link: '/integrations/1/chat/languages/en-US',
         showActions: true,
     },
-    onClickSetAsDefault: (lang) => {
+    onClickSetDefault: (lang) => {
         alert(`Set '${lang.language}' as default`)
     },
     onClickDelete: (lang) => {

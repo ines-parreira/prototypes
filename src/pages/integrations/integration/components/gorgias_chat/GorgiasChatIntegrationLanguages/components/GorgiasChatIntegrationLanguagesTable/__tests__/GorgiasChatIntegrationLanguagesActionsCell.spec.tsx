@@ -1,105 +1,144 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {GorgiasChatIntegrationLanguagesTableRowActions} from '../GorgiasChatIntegrationLanguagesTableRowActions'
 import {LanguageItemRow} from '../types'
 
 describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
     it('renders actions if show actions is enabled', () => {
-        const onClickSetAsDefault = jest.fn()
-        const onClickDelete = jest.fn()
+        const onSetDefaultMock = jest.fn()
+        const onDeleteMock = jest.fn()
         const language = {
             language: 'en-US',
             primary: true,
             label: 'English (US)',
-            link: '/app/settings/channels/GorgiasChat/1/language/en-US',
+            link: '/app/settings/channels/gorgias_chat/1/language/en-US',
             showActions: true,
         } as LanguageItemRow
 
-        const {getByText} = render(
+        const {getByText, queryByTestId} = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
-                onClickDelete={onClickDelete}
-                onClickSetAsDefault={onClickSetAsDefault}
+                onClickDelete={onDeleteMock}
+                onClickSetDefault={onSetDefaultMock}
             />
         )
 
         getByText('Customize')
-        getByText('more_vert')
-        getByText('Make default language')
-        getByText('Delete')
+        expect(queryByTestId('more-actions-button')).toBeInTheDocument()
+        expect(queryByTestId('action-set-default-button')).toBeInTheDocument()
+        expect(queryByTestId('action-delete-button')).toBeInTheDocument()
     })
 
     it('renders no actions if show actions is disabled', () => {
-        const onClickSetAsDefault = jest.fn()
-        const onClickDelete = jest.fn()
+        const onSetDefaultMock = jest.fn()
+        const onDeleteMock = jest.fn()
         const language = {
             language: 'en-US',
             primary: true,
             label: 'English (US)',
-            link: '/app/settings/channels/GorgiasChat/1/language/en-US',
+            link: '/app/settings/channels/gorgias_chat/1/language/en-US',
             showActions: false,
         } as LanguageItemRow
 
-        const {getByText, findByText} = render(
+        const {getByText, queryByTestId} = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
-                onClickDelete={onClickDelete}
-                onClickSetAsDefault={onClickSetAsDefault}
+                onClickDelete={onDeleteMock}
+                onClickSetDefault={onSetDefaultMock}
             />
         )
 
         getByText('Customize')
-        expect(findByText('more_vert')).not.toBeFalsy()
-        expect(findByText('Make default language')).not.toBeFalsy()
-        expect(findByText('Delete')).not.toBeFalsy()
+        expect(queryByTestId('more-actions-button')).not.toBeInTheDocument()
+        expect(
+            queryByTestId('action-set-default-button')
+        ).not.toBeInTheDocument()
+        expect(queryByTestId('action-delete-button')).not.toBeInTheDocument()
     })
 
-    it('calls onClickSetAsDefault with passed language', () => {
-        const onClickSetAsDefault = jest.fn()
-        const onClickDelete = jest.fn()
+    it('calls onClickSetDefault with passed language', () => {
+        const onSetDefaultMock = jest.fn()
+        const onDeleteMock = jest.fn()
         const language = {
             language: 'en-US',
             primary: true,
             label: 'English (US)',
-            link: '/app/settings/channels/GorgiasChat/1/language/en-US',
+            link: '/app/settings/channels/gorgias_chat/1/language/en-US',
             showActions: true,
         } as LanguageItemRow
 
-        const {getByText} = render(
+        render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
-                onClickDelete={onClickDelete}
-                onClickSetAsDefault={onClickSetAsDefault}
+                onClickDelete={onDeleteMock}
+                onClickSetDefault={onSetDefaultMock}
             />
         )
 
-        getByText('more_vert').click()
-        getByText('Make default language').click()
-        expect(onClickSetAsDefault).toHaveBeenCalledWith(language)
+        userEvent.click(screen.getByTestId('more-actions-button'))
+        userEvent.click(screen.getByTestId('action-set-default-button'))
+        expect(onSetDefaultMock).toHaveBeenCalledWith(language)
     })
 
-    it('calls onClickDelete with passed language', () => {
-        const onClickSetAsDefault = jest.fn()
-        const onClickDelete = jest.fn()
+    it('renders delete confirmation modal and discards it', () => {
+        const onSetDefaultMock = jest.fn()
+        const onDeleteMock = jest.fn()
         const language = {
             language: 'en-US',
             primary: true,
             label: 'English (US)',
-            link: '/app/settings/channels/GorgiasChat/1/language/en-US',
+            link: '/app/settings/channels/gorgias_chat/1/language/en-US',
             showActions: true,
         } as LanguageItemRow
 
-        const {getByText} = render(
+        render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
-                onClickDelete={onClickDelete}
-                onClickSetAsDefault={onClickSetAsDefault}
+                onClickDelete={onDeleteMock}
+                onClickSetDefault={onSetDefaultMock}
             />
         )
 
-        getByText('more_vert').click()
-        getByText('Delete').click()
-        expect(onClickDelete).toHaveBeenCalledWith(language)
+        userEvent.click(screen.getByTestId('more-actions-button'))
+        userEvent.click(screen.getByTestId('action-delete-button'))
+
+        expect(screen.getByRole('dialog')).toHaveClass('open')
+
+        userEvent.click(screen.getByTestId('discard-delete-button'))
+
+        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        expect(onDeleteMock).not.toHaveBeenCalled()
+    })
+
+    it('renders delete confirmation modal and calls onClickDelete with passed language', () => {
+        const onSetDefaultMock = jest.fn()
+        const onDeleteMock = jest.fn()
+        const language = {
+            language: 'en-US',
+            primary: true,
+            label: 'English (US)',
+            link: '/app/settings/channels/gorgias_chat/1/language/en-US',
+            showActions: true,
+        } as LanguageItemRow
+
+        render(
+            <GorgiasChatIntegrationLanguagesTableRowActions
+                language={language}
+                onClickDelete={onDeleteMock}
+                onClickSetDefault={onSetDefaultMock}
+            />
+        )
+
+        userEvent.click(screen.getByTestId('more-actions-button'))
+        userEvent.click(screen.getByTestId('action-delete-button'))
+
+        expect(screen.getByRole('dialog')).toHaveClass('open')
+
+        userEvent.click(screen.getByTestId('confirm-delete-button'))
+
+        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        expect(onDeleteMock).toHaveBeenCalledWith(language)
     })
 })

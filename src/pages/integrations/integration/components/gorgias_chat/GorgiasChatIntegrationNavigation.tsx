@@ -1,8 +1,10 @@
 import React, {useMemo} from 'react'
 import {Map} from 'immutable'
 import {NavLink} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import dotError from 'assets/img/icons/dot-error.svg'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
@@ -23,6 +25,8 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
             `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`,
         [integrationId]
     )
+    const isChatMultiLanguagesEnabled =
+        useFlags()[FeatureFlagKey.ChatMultiLanguages]
 
     return (
         <SecondaryNavbar>
@@ -36,6 +40,9 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
             <NavLink to={`${baseURL}/preferences`} exact>
                 Preferences
             </NavLink>
+            {isChatMultiLanguagesEnabled && (
+                <NavLink to={`${baseURL}/languages`}>Language</NavLink>
+            )}
             <NavLink to={`${baseURL}/installation`} exact>
                 Installation
                 {!installationStatus.installed && (

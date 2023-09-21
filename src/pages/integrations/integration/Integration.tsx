@@ -60,6 +60,7 @@ import ChatCampaignDetailsFactory from './components/gorgias_chat/GorgiasChatInt
 import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
 import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
+import GorgiasChatIntegrationLanguages from './components/gorgias_chat/GorgiasChatIntegrationLanguages'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
 
@@ -120,6 +121,7 @@ export enum Tab {
     PhoneGreetingMessage = 'greeting-message',
     PhoneIvr = 'ivr',
     CreateWizard = 'create-wizard',
+    Languages = 'languages',
 }
 
 export const IntegrationDetail = ({
@@ -438,6 +440,21 @@ export const IntegrationDetail = ({
                             isUpdate={isUpdate}
                             loading={loading}
                             currentUser={currentUser}
+                        />
+                    )
+                }
+
+                if (extra === Tab.Languages) {
+                    if (subId) {
+                        return (
+                            <GorgiasTranslateText integration={integration} />
+                        )
+                    }
+
+                    return (
+                        <GorgiasChatIntegrationLanguages
+                            integration={integration}
+                            loading={loading}
                         />
                     )
                 }

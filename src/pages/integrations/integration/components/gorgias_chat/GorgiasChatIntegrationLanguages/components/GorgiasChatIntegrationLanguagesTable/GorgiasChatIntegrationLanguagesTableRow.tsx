@@ -12,17 +12,20 @@ import type {LanguageItemRow} from './types'
 export type GorgiasChatIntegrationLanguagesTableRowProps = {
     language: LanguageItemRow
     onClickDelete?: (language: LanguageItemRow) => void
-    onClickSetAsDefault?: (language: LanguageItemRow) => void
+    onClickSetDefault?: (language: LanguageItemRow) => void
 }
 
 export const GorgiasChatIntegrationLanguagesTableRow = ({
     language,
     onClickDelete,
-    onClickSetAsDefault,
+    onClickSetDefault,
 }: GorgiasChatIntegrationLanguagesTableRowProps) => {
     return (
-        <TableBodyRow onClick={() => history.push(language.link)}>
-            <BodyCell className={css.language}>
+        <TableBodyRow>
+            <BodyCell
+                className={css.language}
+                onClick={() => history.push(language.link)}
+            >
                 {language.label}
                 {language.primary && <Badge label="Default" className="ml-3" />}
             </BodyCell>
@@ -30,7 +33,7 @@ export const GorgiasChatIntegrationLanguagesTableRow = ({
                 <GorgiasChatIntegrationLanguagesTableRowActions
                     language={language}
                     onClickDelete={onClickDelete}
-                    onClickSetAsDefault={onClickSetAsDefault}
+                    onClickSetDefault={onClickSetDefault}
                 />
             </BodyCell>
         </TableBodyRow>

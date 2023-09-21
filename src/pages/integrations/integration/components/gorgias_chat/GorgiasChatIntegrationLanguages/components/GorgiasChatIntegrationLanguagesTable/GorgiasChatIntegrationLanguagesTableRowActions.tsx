@@ -1,28 +1,34 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 import {gorgiasColors} from 'gorgias-design-system/styles'
 
 import Tooltip from 'pages/common/components/Tooltip'
+import GorgiasChatIntegrationLanguageDeleteModal from './GorgiasChatIntegrationLanguageDeleteModal'
 import type {LanguageItemRow} from './types'
 
 type GorgiasChatIntegrationLanguagesTableRowActionsProps = {
     language: LanguageItemRow
     onClickDelete?: (language: LanguageItemRow) => void
-    onClickSetAsDefault?: (language: LanguageItemRow) => void
+    onClickSetDefault?: (language: LanguageItemRow) => void
 }
 
 export const GorgiasChatIntegrationLanguagesTableRowActions = ({
     language,
     onClickDelete,
-    onClickSetAsDefault,
+    onClickSetDefault,
 }: GorgiasChatIntegrationLanguagesTableRowActionsProps) => {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const onToggle = () => {
-        setIsOpen((isCurrentOpen) => !isCurrentOpen)
-    }
+    const onDiscard = useCallback(() => setIsModalOpen(false), [])
+
+    const onDelete = useCallback(() => {
+        onClickDelete && onClickDelete(language)
+        onDiscard()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [language, onClickDelete])
 
     return (
         <>
@@ -30,9 +36,18 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
 
             {language.showActions && (
                 <>
+                    <GorgiasChatIntegrationLanguageDeleteModal
+                        isOpen={isModalOpen}
+                        language={language.label}
+                        onConfirm={onDelete}
+                        onDiscard={onDiscard}
+                    />
+
                     <Dropdown
-                        isOpen={isOpen}
-                        toggle={onToggle}
+                        isOpen={isDropdownOpen}
+                        toggle={() =>
+                            setIsDropdownOpen((isCurrentOpen) => !isCurrentOpen)
+                        }
                         className="ml-4"
                     >
                         <DropdownToggle disabled={language.primary} tag="span">
@@ -57,7 +72,7 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                                 placement="bottom-end"
                             >
                                 Change your default language to delete{' '}
-                                {language.language}.
+                                {language.label}.
                             </Tooltip>
                         </DropdownToggle>
 
@@ -66,8 +81,8 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                                 data-testid="action-set-default-button"
                                 key="action-set-default-button"
                                 onClick={() =>
-                                    onClickSetAsDefault &&
-                                    onClickSetAsDefault(language)
+                                    onClickSetDefault &&
+                                    onClickSetDefault(language)
                                 }
                             >
                                 Make default language
@@ -76,9 +91,7 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                             <DropdownItem
                                 data-testid="action-delete-button"
                                 key="action-delete-button"
-                                onClick={() =>
-                                    onClickDelete && onClickDelete(language)
-                                }
+                                onClick={() => setIsModalOpen(true)}
                                 style={{
                                     color: gorgiasColors.secondaryRed,
                                     padding: 8,

@@ -2,45 +2,37 @@ import React from 'react'
 import {Meta, Story} from '@storybook/react'
 import {BrowserRouter} from 'react-router-dom'
 
+import {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS} from 'config/integrations/gorgias_chat'
 import {Language} from 'constants/languages'
-
 import {
     GorgiasChatIntegrationLanguagesTable,
     GorgiasChatIntegrationLanguagesTableProps,
 } from './GorgiasChatIntegrationLanguagesTable'
 import {GorgiasChatIntegrationLanguagesTableRow} from './GorgiasChatIntegrationLanguagesTableRow'
-import {useGorgiasChatIntegrationLanguagesTable} from './useGorgiasChatIntegrationLanguagesTable'
+import {LanguageItemRow} from './types'
 
-const GorgiasChatIntegrationLanguagesTableContainer = () => {
-    const {languagesRows} = useGorgiasChatIntegrationLanguagesTable({
-        integrationId: 1,
-        languages: [
-            {
-                language: Language.EnglishUs,
-                primary: true,
-            },
-            {
-                language: Language.Spanish,
-                primary: false,
-            },
-            {
-                language: Language.German,
-                primary: false,
-            },
-        ],
+const rows: LanguageItemRow[] = GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
+    (option) => ({
+        language: option?.get('value'),
+        primary: option?.get('value') === Language.EnglishUs,
+        label: option?.get('label'),
+        link: '#',
+        showActions: true,
     })
+).toJS()
 
+const GorgiasChatIntegrationLanguagesTableChildren = () => {
     return (
         <>
-            {languagesRows.map((languageRow) => (
+            {rows.map((languageRow) => (
                 <GorgiasChatIntegrationLanguagesTableRow
                     key={languageRow.language}
                     language={languageRow}
-                    onClickSetAsDefault={(lang) => {
+                    onClickSetDefault={(lang) => {
                         alert(`Set '${lang.language}' as default`)
                     }}
                     onClickDelete={(lang) => {
-                        alert(`Delete '${lang.language}'`)
+                        alert(`Deleted '${lang.language}' (not really)`)
                     }}
                 />
             ))}
@@ -59,11 +51,9 @@ const Template: Story<GorgiasChatIntegrationLanguagesTableProps> = (props) => (
     <GorgiasChatIntegrationLanguagesTable {...props} />
 )
 
-const defaultProps: Partial<GorgiasChatIntegrationLanguagesTableProps> = {
-    children: <GorgiasChatIntegrationLanguagesTableContainer />,
-}
-
 export const Default = Template.bind({})
-Default.args = defaultProps
+Default.args = {
+    children: <GorgiasChatIntegrationLanguagesTableChildren />,
+}
 
 export default storyConfig
