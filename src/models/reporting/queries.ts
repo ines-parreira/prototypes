@@ -1,5 +1,9 @@
 import {useQuery, UseQueryOptions} from '@tanstack/react-query'
 import axios, {AxiosResponse} from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 
 import {postReporting} from './resources'
 import {Cube, ReportingParams, ReportingResponse} from './types'
@@ -44,10 +48,33 @@ export const usePostReporting = <
         SelectData
     >
 ) => {
+    const hasNewAnalyticsChannelFilter: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsChannelFilter]
+
+    const query = hasNewAnalyticsChannelFilter
+        ? data
+        : withOldChannelFilter<TCube>(data)
+
     return useQuery({
-        queryKey: reportingKeys.post(data),
-        queryFn: () => postReporting<TData, TCube>(data),
+        queryKey: reportingKeys.post(query),
+        queryFn: () => postReporting<TData, TCube>(query),
         ...defaultOptions,
         ...overrides,
     })
+}
+
+const withOldChannelFilter = <TCube extends Cube = Cube>(
+    data: ReportingParams<TCube>
+) => {
+    return data.map((query) => ({
+        ...query,
+        filters: query.filters.map((filter) =>
+            filter.member === TicketMember.Channel
+                ? {
+                      ...filter,
+                      member: TicketMessagesMember.FirstMessageChannel,
+                  }
+                : filter
+        ),
+    }))
 }

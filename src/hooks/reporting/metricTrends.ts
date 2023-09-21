@@ -346,7 +346,7 @@ export const ticketsRepliedQueryFactory = (
             values: [formatReportingQueryDate(filters.period.end_datetime)],
         },
         {
-            member: TicketMessagesMember.FirstMessageChannel,
+            member: TicketMember.Channel,
             operator: ReportingFilterOperator.NotEquals,
             values: [TicketMessageSourceType.InternalNote],
         },

@@ -1,11 +1,15 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {AxiosError, AxiosResponse} from 'axios'
+import LD from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 
 import {createTestQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {doNotRetry40XErrorsHandler, usePostReporting} from '../queries'
 import {postReporting} from '../resources'
 
-import {ReportingParams} from '../types'
+import {ReportingFilterOperator, ReportingParams} from '../types'
 
 jest.mock('../resources')
 const postReportingMock = postReporting as jest.Mock
@@ -37,6 +41,12 @@ describe('Reporting queries', () => {
     })
 
     describe('usePostReporting', () => {
+        beforeEach(() => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsChannelFilter]: false,
+            }))
+        })
+
         it('should call postReporting and return the result', async () => {
             const {result, waitForNextUpdate} = renderHook(
                 () => usePostReporting(payload),
@@ -48,6 +58,45 @@ describe('Reporting queries', () => {
 
             expect(postReportingMock).toHaveBeenCalledWith(payload)
             expect(result.current.data?.data.data).toEqual([42])
+        })
+
+        it(`should replace the ${TicketMember.Channel} with ${TicketMessagesMember.FirstMessageChannel}  when feature flag is disabled`, async () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsChannelFilter]: false,
+            }))
+            const payloadWithNewFilter: ReportingParams = [
+                {
+                    ...payload[0],
+                    filters: [
+                        {
+                            member: TicketMember.Channel,
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['0'],
+                        },
+                    ],
+                },
+            ]
+
+            const {waitForNextUpdate} = renderHook(
+                () => usePostReporting(payloadWithNewFilter),
+                {
+                    wrapper: createTestQueryClientProvider(),
+                }
+            )
+            await waitForNextUpdate()
+
+            expect(postReportingMock).toHaveBeenCalledWith([
+                {
+                    ...payloadWithNewFilter[0],
+                    filters: [
+                        {
+                            member: TicketMessagesMember.FirstMessageChannel,
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['0'],
+                        },
+                    ],
+                },
+            ])
         })
     })
 

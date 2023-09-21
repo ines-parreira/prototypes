@@ -1,6 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
@@ -99,7 +98,7 @@ describe('metric trends', () => {
                         values: [periodEnd],
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },

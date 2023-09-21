@@ -15,6 +15,7 @@ export enum TicketDimension {
     PeriodEnd = 'Ticket.periodEnd',
     AccountId = 'Ticket.accountId',
     Status = 'Ticket.status',
+    Channel = 'Ticket.channel',
     CreatedDatetime = 'Ticket.createdDatetime',
     ClosedDatetime = 'Ticket.closedDatetime',
     AssigneeUserId = 'Ticket.assigneeUserId',
@@ -37,6 +38,7 @@ export enum TicketMember {
     IsSpam = 'Ticket.isSpam',
     Status = 'Ticket.status',
     Tags = 'Ticket.tags',
+    Channel = 'Ticket.channel',
 }
 
 export type TicketTimeDimensions =

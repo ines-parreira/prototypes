@@ -24,7 +24,7 @@ exports[`reporting utils statsFiltersToReportingFilters should convert StatsFilt
     ],
   },
   {
-    "member": "TicketMessages.firstMessageChannel",
+    "member": "Ticket.channel",
     "operator": "equals",
     "values": [
       "email",

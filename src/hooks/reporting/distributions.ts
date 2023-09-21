@@ -2,11 +2,11 @@ import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
+    TicketDimension,
     TicketMeasure,
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     usePostReporting,
     UsePostReportingQueryData,
@@ -27,7 +27,7 @@ const workloadPerChannelDistributionQueryFactory = (
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketMeasure.TicketCount],
     order: [[TicketMeasure.TicketCount, OrderDirection.Desc]],
-    dimensions: [TicketMessagesDimension.FirstMessageChannel],
+    dimensions: [TicketDimension.Channel],
     segments: [TicketSegment.WorkloadTickets],
     filters: [
         {
@@ -52,7 +52,7 @@ export const useWorkloadPerChannelDistribution = (
     usePostReporting<
         {
             [TicketMeasure.TicketCount]: string
-            [TicketMessagesDimension.FirstMessageChannel]: TicketChannel
+            [TicketDimension.Channel]: TicketChannel
         }[],
         OneDimensionalDataItem[],
         HelpdeskMessageCubeWithJoins
@@ -67,7 +67,7 @@ export const useWorkloadPerChannelDistributionForPreviousPeriod = (
     usePostReporting<
         {
             [TicketMeasure.TicketCount]: string
-            [TicketMessagesDimension.FirstMessageChannel]: TicketChannel
+            [TicketDimension.Channel]: TicketChannel
         }[],
         OneDimensionalDataItem[],
         HelpdeskMessageCubeWithJoins
@@ -90,14 +90,12 @@ const selectPerChannel = (
     data: UsePostReportingQueryData<
         {
             [TicketMeasure.TicketCount]: string
-            [TicketMessagesDimension.FirstMessageChannel]: TicketChannel
+            [TicketDimension.Channel]: TicketChannel
         }[]
     >
 ) => {
     return data.data.data.map((item) => ({
-        label: TICKET_CHANNEL_NAMES[
-            item[TicketMessagesDimension.FirstMessageChannel]
-        ],
+        label: TICKET_CHANNEL_NAMES[item[TicketDimension.Channel]],
         value: parseFloat(item[TicketMeasure.TicketCount]),
     }))
 }

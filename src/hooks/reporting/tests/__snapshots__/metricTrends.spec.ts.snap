@@ -210,7 +210,7 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
       ],
     },
     {
-      "member": "TicketMessages.firstMessageChannel",
+      "member": "Ticket.channel",
       "operator": "equals",
       "values": [
         "email",
@@ -283,7 +283,7 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
       ],
     },
     {
-      "member": "TicketMessages.firstMessageChannel",
+      "member": "Ticket.channel",
       "operator": "equals",
       "values": [
         "email",
@@ -371,7 +371,7 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
       ],
     },
     {
-      "member": "TicketMessages.firstMessageChannel",
+      "member": "Ticket.channel",
       "operator": "equals",
       "values": [
         "email",
@@ -437,7 +437,7 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
       ],
     },
     {
-      "member": "TicketMessages.firstMessageChannel",
+      "member": "Ticket.channel",
       "operator": "equals",
       "values": [
         "email",
@@ -511,7 +511,7 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "TicketMessages.firstMessageChannel",
+      "member": "Ticket.channel",
       "operator": "equals",
       "values": [
         "email",
@@ -600,7 +600,7 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "TicketMessages.firstMessageChannel",
+      "member": "Ticket.channel",
       "operator": "equals",
       "values": [
         "email",

@@ -1,5 +1,6 @@
 export enum FeatureFlagKey {
     AnalyticsNewAgentPerformance = 'analytics-new-agent-performance',
+    AnalyticsChannelFilter = 'analytics-channel-filter',
     AnalyticsExportAgentsPerformance = 'analytics-export-agents-performance',
     AnalyticsNewAgentPerformanceHeatmaps = 'analytics-new-agent-performance-heatmaps',
     AnalyticsPerformanceTips = 'analytics-performance-tips',

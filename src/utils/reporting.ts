@@ -24,7 +24,7 @@ export type StatsFiltersMembers = Record<
 export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: TicketMember.PeriodStart,
     periodEnd: TicketMember.PeriodEnd,
-    channels: TicketMessagesMember.FirstMessageChannel,
+    channels: TicketMember.Channel, //TODO: how to replace it in runtime with flags?
     integrations: TicketMessagesMember.Integration,
     agents: TicketMember.AssigneeUserId,
     tags: TicketMember.Tags,
@@ -33,7 +33,7 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
 export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: HelpdeskMessageMember.PeriodStart,
     periodEnd: HelpdeskMessageMember.PeriodEnd,
-    channels: TicketMessagesMember.FirstMessageChannel,
+    channels: TicketMember.Channel,
     integrations: TicketMessagesMember.Integration,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
@@ -42,7 +42,7 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
 export const AutomationAddonStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: AutomationBillingEventMember.PeriodStart,
     periodEnd: AutomationBillingEventMember.PeriodEnd,
-    channels: TicketMessagesMember.FirstMessageChannel,
+    channels: TicketMember.Channel,
     integrations: TicketMessagesMember.Integration,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,

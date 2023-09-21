@@ -100,7 +100,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -158,7 +158,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -222,7 +222,7 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },
@@ -243,7 +243,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -285,7 +285,7 @@ describe('metricsPerDimension', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },
@@ -306,7 +306,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -376,7 +376,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -421,7 +421,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -504,7 +504,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -560,7 +560,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -630,7 +630,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -677,7 +677,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -754,7 +754,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },
@@ -799,7 +799,7 @@ describe('metricsPerDimension', () => {
                         values: statsFilters.integrations?.map(String),
                     },
                     {
-                        member: TicketMessagesMember.FirstMessageChannel,
+                        member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.channels,
                     },

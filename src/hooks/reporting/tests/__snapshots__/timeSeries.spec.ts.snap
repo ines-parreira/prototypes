@@ -20,7 +20,7 @@ exports[`time series Automation add-on OverallTimeSaved should render expected q
         ],
       },
       {
-        "member": "TicketMessages.firstMessageChannel",
+        "member": "Ticket.channel",
         "operator": "equals",
         "values": [
           "help-center",
@@ -79,7 +79,7 @@ exports[`time series Automation add-on useAutomatedInteractionTimeSeries should 
         ],
       },
       {
-        "member": "TicketMessages.firstMessageChannel",
+        "member": "Ticket.channel",
         "operator": "equals",
         "values": [
           "help-center",
@@ -132,7 +132,7 @@ exports[`time series Automation add-on useAutomationRateTimeSeries should render
         ],
       },
       {
-        "member": "TicketMessages.firstMessageChannel",
+        "member": "Ticket.channel",
         "operator": "equals",
         "values": [
           "help-center",
@@ -192,7 +192,7 @@ exports[`time series useTicketsClosedTimeSeries should create reporting filters 
         ],
       },
       {
-        "member": "TicketMessages.firstMessageChannel",
+        "member": "Ticket.channel",
         "operator": "equals",
         "values": [
           "email",
@@ -283,7 +283,7 @@ exports[`time series useTicketsCreatedTimeSeries should create reporting filters
         ],
       },
       {
-        "member": "TicketMessages.firstMessageChannel",
+        "member": "Ticket.channel",
         "operator": "equals",
         "values": [
           "email",
