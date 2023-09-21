@@ -53,6 +53,18 @@ variables:
   environment:
     name: ${DEPLOY_ENV}/${CONTEXT}
 
+.codecov:
+  after_script:
+    - |
+      cat ./codecov_pgp_key.asc | gpg --no-default-keyring --keyring trustedb.gpg --import
+      curl -Os https://uploader.codecov.io/latest/linux/codecov
+      curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
+      curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
+      gpg --keyring ~/.gnupg/trustedb.gpg --verify codecov.SHA256SUM.sig codecov.SHA256SUM
+      shasum -a 256 -c codecov.SHA256SUM
+      chmod +x codecov
+      ./codecov -t ${CODECOV_TOKEN}
+
 Install dependencies:
   extends: .yarn cache
   stage: bootstrap
@@ -76,6 +88,8 @@ Typecheck:
     - yarn types
 
 Jest:
+  extends:
+    - .codecov
   stage: test
   variables:
     NODE_OPTIONS: "--max-old-space-size=3584"
