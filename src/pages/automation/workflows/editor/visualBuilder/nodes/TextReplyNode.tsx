@@ -88,6 +88,9 @@ export default function TextReplyNodeWrapper(
     return (
         <TextReplyNode
             {...commonProps}
+            shouldShowErrors={
+                commonProps.shouldShowErrors || hasInvalidVariables
+            }
             contentText={content.text}
             isErrored={isErrored}
         />

@@ -88,6 +88,9 @@ export default function FileUploadNodeWrapper(
     return (
         <FileUploadNode
             {...commonProps}
+            shouldShowErrors={
+                commonProps.shouldShowErrors || hasInvalidVariables
+            }
             contentText={content.text}
             isErrored={isErrored}
         />

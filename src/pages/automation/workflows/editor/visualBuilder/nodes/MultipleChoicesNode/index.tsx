@@ -89,6 +89,9 @@ export default function MultipleChoicesNodeWrapper(
     return (
         <MultipleChoicesNode
             {...commonProps}
+            shouldShowErrors={
+                commonProps.shouldShowErrors || hasInvalidVariables
+            }
             contentText={content.text}
             isErrored={isErrored}
         />

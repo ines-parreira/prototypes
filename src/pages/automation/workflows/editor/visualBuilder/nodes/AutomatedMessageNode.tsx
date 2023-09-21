@@ -90,6 +90,9 @@ export default function AutomatedMessageNodeWrapper(
     return (
         <AutomatedMessageNode
             {...commonProps}
+            shouldShowErrors={
+                commonProps.shouldShowErrors || hasInvalidVariables
+            }
             contentText={content.text}
             isErrored={isErrored}
         />
