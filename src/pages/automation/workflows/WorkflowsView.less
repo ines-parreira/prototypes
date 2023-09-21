@@ -28,15 +28,20 @@
     }
 
     .description {
+        display: flex;
+        flex-direction: column;
         flex: 1;
     }
 
     .descriptionText {
         .body-regular();
-        margin-bottom: 2px;
+    }
+
+    .descriptionLink {
+        margin-top: 6px;
     }
 
     .alert {
-        margin-top: @layout-spacing-s;
+        margin-top: auto;
     }
 }

@@ -71,16 +71,27 @@ export default function WorkflowsView({
                                     interactions.
                                 </div>
                                 <a
-                                    href="https://docs.gorgias.com/en-US/setting-up-multi-step-flows-246591"
+                                    href="https://docs.gorgias.com/en-US/flows-101-252069"
                                     rel="noopener noreferrer"
                                     target="_blank"
+                                    className={css.descriptionLink}
                                 >
                                     <i className="material-icons mr-2">
                                         menu_book
                                     </i>
-                                    How To Set Up Flows
+                                    Learn More About Flows
                                 </a>
-
+                                <a
+                                    href="https://docs.gorgias.com/en-US/create-a-new-flow-256472"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                    className={css.descriptionLink}
+                                >
+                                    <i className="material-icons mr-2">
+                                        menu_book
+                                    </i>
+                                    How To Create A Flow
+                                </a>
                                 <Alert icon className={css.alert}>
                                     Control where customers see flows in{' '}
                                     <Link to={connectedChannelsUrl}>
