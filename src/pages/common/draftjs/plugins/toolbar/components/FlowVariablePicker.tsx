@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -23,6 +23,12 @@ const FlowVariablePicker = ({onSelect}: FlowVariablePickerProps) => {
     const [selectedCategory, setSelectedCategory] =
         useState<FlowVariableGroup | null>(null)
     const [isOpen, setIsOpen] = useState(false)
+
+    useEffect(() => {
+        if (!isOpen) {
+            setSelectedCategory(null)
+        }
+    }, [isOpen])
 
     const handleToggle = () => {
         setIsOpen(!isOpen)
@@ -57,7 +63,7 @@ const FlowVariablePicker = ({onSelect}: FlowVariablePickerProps) => {
                 ref={dropdownRef}
                 className={css.dropdown}
                 placement="bottom-end"
-                onToggle={() => setIsOpen(!isOpen)}
+                onToggle={handleToggle}
                 safeDistance={0}
             >
                 {selectedCategory && (
