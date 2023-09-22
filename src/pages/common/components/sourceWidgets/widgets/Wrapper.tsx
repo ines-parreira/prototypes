@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import _last from 'lodash/last'
 
-import {getWidgetName} from 'state/widgets/predicates'
 import {
     WOOCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
@@ -13,6 +12,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
 import infobarWidgetCss from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Wrapper.less'
+import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 
 import {WidgetType} from 'state/widgets/types'
 import SourceWidget from '../Widget'
@@ -33,9 +33,9 @@ export default function Wrapper({widget, template, source, parent}: Props) {
     >
     const widgetType = widget.get('type') as WidgetType
 
-    let integrationId
+    let integrationId: number
     if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
-        integrationId = source.getIn(['store', 'helpdesk_integration_id'])
+        integrationId = source?.getIn(['store', 'helpdesk_integration_id'])
     } else {
         integrationId = parseInt(_last(absolutePath) || '', 10)
     }
@@ -46,11 +46,13 @@ export default function Wrapper({widget, template, source, parent}: Props) {
         return null
     }
 
-    const displayName = getWidgetName({
-        source,
+    const displayName = getWidgetTitle({
+        source: source?.toJS(),
+        template: (
+            widget.get('template', fromJS({})) as Map<string, unknown>
+        ).toJS(),
         widgetType: widgetType,
-        widgetAppId: widget.get('app_id') as Maybe<string>,
-        templatePath: template.get('path') as string[],
+        appId: widget.get('app_id') as string | undefined,
         integration: integration?.toJS(),
     })
 

@@ -16,6 +16,7 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_KEY,
     CUSTOMER_ECOMMERCE_DATA_KEY,
+    CUSTOM_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetContextType} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
@@ -336,5 +337,71 @@ describe('InfobarWidgets component', () => {
                 )
             ).toBeTruthy()
         })
+    })
+
+    it('should not break if data source is null with custom actions', () => {
+        const widgets = fromJS([
+            {
+                id: 666,
+                type: CUSTOM_WIDGET_TYPE,
+                context: WidgetContextType.Ticket,
+                template: {
+                    type: 'wrapper',
+                    widgets: [
+                        {
+                            meta: {
+                                custom: {
+                                    buttons: [
+                                        {
+                                            label: 'Foo',
+                                            action: {
+                                                url: 'https://foo.com',
+                                                body: {
+                                                    contentType:
+                                                        'application/json',
+                                                    'application/json': [],
+                                                },
+                                                method: 'POST',
+                                                params: [],
+                                                headers: [],
+                                            },
+                                        },
+                                    ],
+                                },
+                            },
+                            path: '',
+                            type: 'card',
+                            title: 'Custom',
+                            widgets: [
+                                {
+                                    path: 'foo',
+                                    type: 'text',
+                                    title: 'Foo',
+                                    order: 1,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            },
+        ])
+
+        const source = fromJS({
+            ticket: {
+                customer: {
+                    data: null,
+                },
+            },
+        })
+
+        render(
+            <Provider store={store}>
+                <InfobarWidgets
+                    widgets={widgets}
+                    context={WidgetContextType.Ticket}
+                    source={source}
+                />
+            </Provider>
+        )
     })
 })

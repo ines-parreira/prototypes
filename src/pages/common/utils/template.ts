@@ -58,7 +58,7 @@ export type Context = {
  */
 export const renderTemplate = (
     body?: Maybe<string>,
-    context: Context = {}
+    context: Maybe<Context> = {}
 ): string => {
     if (!body) {
         return ''

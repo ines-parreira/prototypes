@@ -18,6 +18,7 @@ import {
     YOTPO_WIDGET_TYPE,
     BIGCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
 import ListWidget from './widgets/List'
@@ -33,12 +34,13 @@ import smile from './widgets/smile'
 import smoochInside from './widgets/smoochInside'
 import yotpo from './widgets/yotpo'
 import bigcommerce from './widgets/bigcommerce'
+import woocommerce from './widgets/woocommerce'
 import {infobarWidgetShouldRender} from './predicates'
 
 type Props = {
     editing?: Editing
     parent?: Map<any, any>
-    source?: Map<string, unknown>
+    source?: Maybe<Map<string, unknown>>
     widget: Map<string, unknown>
     template: Map<unknown, unknown>
     isEditing?: boolean
@@ -49,7 +51,7 @@ type Props = {
 export default function InfobarWidget({
     editing,
     parent,
-    source = fromJS({}),
+    source,
     widget,
     template,
     isEditing,
@@ -74,6 +76,7 @@ export default function InfobarWidget({
         [HTTP_WIDGET_TYPE]: http,
         [YOTPO_WIDGET_TYPE]: yotpo,
         [BIGCOMMERCE_WIDGET_TYPE]: bigcommerce,
+        [WOOCOMMERCE_WIDGET_TYPE]: woocommerce,
     }
 
     const passedData = {
@@ -117,8 +120,8 @@ export default function InfobarWidget({
         if (match?.length === 2) data_source = match[1]
 
         widget_resource_ids = {
-            target_id: source.get('id') as number,
-            customer_id: source.getIn(['customer', 'id']),
+            target_id: source?.get('id') as number,
+            customer_id: source?.getIn(['customer', 'id']),
         }
     }
 
@@ -161,7 +164,7 @@ export default function InfobarWidget({
                     return null
                 }
                 // do not display card if there is no data to display in it
-                if (!isEditing && data.isEmpty()) {
+                if (!isEditing && data?.isEmpty()) {
                     return null
                 }
             }

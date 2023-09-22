@@ -7,8 +7,7 @@ import {Map} from 'immutable'
 
 import client from 'models/api/resources'
 import {fetchWidgets as fetchWidgetsRequest} from 'models/widget/resources'
-import {FetchWidgetsOptions} from 'models/widget/types'
-import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
+import {FetchWidgetsOptions, PartialTemplate} from 'models/widget/types'
 import {
     Button,
     Link,

@@ -2,7 +2,9 @@ import {Map} from 'immutable'
 import _isObject from 'lodash/isObject'
 import _isFunction from 'lodash/isFunction'
 
-export function infobarWidgetShouldRender(source: Map<any, any>): boolean {
+export function infobarWidgetShouldRender(
+    source: Maybe<Map<any, any>>
+): boolean {
     // prevent buggy display if source...
     // ... is empty
     if (!source) {
