@@ -1,6 +1,6 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 
-import * as revenueBetaHook from 'pages/common/hooks/useIsRevenueBetaTester'
+import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {createTrigger} from '../../utils/createTrigger'
 
@@ -12,7 +12,7 @@ describe('useManageTriggers()', () => {
     beforeAll(() => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsRevenueBetaTester'
+            'useIsConvertSubscriber'
         ).mockImplementation(() => true)
     })
 

@@ -25,7 +25,7 @@ type Props = {
     agents: User[]
     attachments: List<any>
     html: string
-    isRevenueBetaTester?: boolean
+    isConvertSubscriber?: boolean
     text: string
     selectedAgent: string
     showContentWarning?: boolean
@@ -40,7 +40,7 @@ export const CampaignMessage = memo(
         agents,
         attachments,
         html,
-        isRevenueBetaTester = false,
+        isConvertSubscriber = false,
         text,
         selectedAgent,
         showContentWarning,
@@ -130,7 +130,7 @@ export const CampaignMessage = memo(
                         onChange={onSelectAgent}
                     />
                 </div>
-                {isRevenueBetaTester && showContentWarning && (
+                {isConvertSubscriber && showContentWarning && (
                     <div className="mb-4 mt-4">
                         <Alert icon type={AlertType.Warning}>
                             Your campaign might be too large for mobile devices
@@ -145,12 +145,12 @@ export const CampaignMessage = memo(
                         value={value}
                         attachments={attachments}
                         allowExternalChanges
-                        disableProductCards={!isRevenueBetaTester}
+                        disableProductCards={!isConvertSubscriber}
                         onChange={onChangeMessage}
                         placeholder={'Write your message'}
                         displayedActions={displayedActions}
                         isRequired
-                        countCharacters={isRevenueBetaTester}
+                        countCharacters={isConvertSubscriber}
                     />
                     <TicketAttachments
                         removable

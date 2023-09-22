@@ -71,6 +71,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         emailIntegrations: [],
         updateOrCreateIntegration: jest.fn(),
         displayControlTicketVolume: true,
+        convertProduct: undefined,
     }
 
     describe('componentDidMount()', () => {

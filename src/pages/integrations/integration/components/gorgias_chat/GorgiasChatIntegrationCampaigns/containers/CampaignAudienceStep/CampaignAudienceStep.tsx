@@ -23,7 +23,7 @@ type Props = {
     count?: number
     isPristine?: boolean
     isValid?: boolean
-    isRevenueBetaTester?: boolean
+    isConvertSubscriber?: boolean
     isShopifyStore?: boolean
 }
 
@@ -31,7 +31,7 @@ export const CampaignAudienceStep = ({
     count,
     isPristine = true,
     isValid = false,
-    isRevenueBetaTester,
+    isConvertSubscriber,
     isShopifyStore,
 }: Props) => {
     const {
@@ -48,7 +48,7 @@ export const CampaignAudienceStep = ({
     const stateProps = useStepState({count, isPristine, isValid, isEditMode})
 
     const shouldShowContactCsm = Object.values(triggers).some(
-        (trigger) => !isAllowedToUpdateTrigger(trigger, isRevenueBetaTester)
+        (trigger) => !isAllowedToUpdateTrigger(trigger, isConvertSubscriber)
     )
 
     const handleUpdateDelay = (value: number) => updateCampaign('delay', value)
@@ -116,13 +116,13 @@ export const CampaignAudienceStep = ({
                 </TriggersProvider>
                 <AdvancedTriggersSelect
                     isShopifyStore={isShopifyStore}
-                    isRevenueBetaTester={isRevenueBetaTester}
+                    isConvertSubscriber={isConvertSubscriber}
                     onClick={addTrigger}
                 />
             </div>
 
             <CampaignDisplaySettings
-                isRevenueBetaTester={isRevenueBetaTester}
+                isConvertSubscriber={isConvertSubscriber}
                 triggers={triggers}
                 isNoReply={campaignWithNoReply}
                 delay={campaignDelay}

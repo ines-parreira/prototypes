@@ -34,7 +34,7 @@ import {
 } from 'state/newMessage/actions'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Language} from 'constants/languages'
@@ -92,7 +92,7 @@ export const CampaignDetailsForm = ({
         ? CampaignStepsKeys.Audience
         : CampaignStepsKeys.Basics
 
-    const isRevenueBetaTester = useIsRevenueBetaTester()
+    const isConvertSubscriber = useIsConvertSubscriber()
     const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
 
@@ -297,7 +297,8 @@ export const CampaignDetailsForm = ({
                 draft.name = trimmedCampaignName
                 draft.message.html = replaceUrlsWithUtmUrl(
                     campaignData.message.html,
-                    trimmedCampaignName
+                    trimmedCampaignName,
+                    isConvertSubscriber
                 )
                 draft.triggers = Object.values(triggers)
 
@@ -307,13 +308,17 @@ export const CampaignDetailsForm = ({
 
                 if (shopifyProducts.length > 0) {
                     draft.attachments = shopifyProducts.map((product) => {
-                        return transformProductToAttachment(product, {
-                            campaignName: trimmedCampaignName,
-                            currency: shopifyIntegration.getIn([
-                                'meta',
-                                'currency',
-                            ]),
-                        })
+                        return transformProductToAttachment(
+                            product,
+                            {
+                                campaignName: trimmedCampaignName,
+                                currency: shopifyIntegration.getIn([
+                                    'meta',
+                                    'currency',
+                                ]),
+                            },
+                            isConvertSubscriber
+                        )
                     })
                 } else {
                     draft.attachments = []
@@ -482,7 +487,7 @@ export const CampaignDetailsForm = ({
                                     isValid={isStepValid(
                                         CampaignStepsKeys.Audience
                                     )}
-                                    isRevenueBetaTester={isRevenueBetaTester}
+                                    isConvertSubscriber={isConvertSubscriber}
                                     isShopifyStore={isShopifyStore}
                                 />
                                 <CampaignMessageStep
@@ -493,7 +498,7 @@ export const CampaignDetailsForm = ({
                                     isValid={isStepValid(
                                         CampaignStepsKeys.Message
                                     )}
-                                    isRevenueBetaTester={isRevenueBetaTester}
+                                    isConvertSubscriber={isConvertSubscriber}
                                     showContentWarning={showContentWarning}
                                     onDeleteAttachment={handleDeleteAttachment}
                                 />

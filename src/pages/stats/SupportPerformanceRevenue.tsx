@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     getStatsFilters,
     getStatsStoreIntegrations,
@@ -24,7 +23,7 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
@@ -92,8 +91,7 @@ function SupportPerformanceRevenue() {
             statsFilters: pageStatsFilters,
         })
 
-    const isRevenueBetaTester: boolean =
-        useFlags()[FeatureFlagKey.RevenueBetaTesters]
+    const isConvertSubscriber: boolean = useIsConvertSubscriber()
 
     return (
         <StatsPage
@@ -109,7 +107,7 @@ helping customers through the purchasing journey."
                             integrations={storeIntegrations}
                             isRequired
                         />
-                        {isRevenueBetaTester && (
+                        {isConvertSubscriber && (
                             <CampaignsStatsFilter
                                 value={pageStatsFilters.campaigns}
                                 selectedIntegrations={

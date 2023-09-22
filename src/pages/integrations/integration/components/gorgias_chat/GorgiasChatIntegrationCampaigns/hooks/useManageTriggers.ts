@@ -2,7 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from 'react'
 import {produce} from 'immer'
 import _uniqueId from 'lodash/uniqueId'
 
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {createTrigger} from '../utils/createTrigger'
 import {isAllowedToUpdateTrigger} from '../utils/isAllowedToUpdateTrigger'
@@ -17,7 +17,7 @@ import {
 import {CampaignTrigger} from '../types/CampaignTrigger'
 
 export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
-    const isRevenueBetaTester = useIsRevenueBetaTester()
+    const isConvertSubscriber = useIsConvertSubscriber()
     const [triggers, updateTriggers] = useState<CampaignTriggerMap>({
         [_uniqueId()]: createTrigger(CampaignTriggerKey.CurrentUrl),
     })
@@ -42,7 +42,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
 
             const isAllowedToEdit = isAllowedToUpdateTrigger(
                 newTrigger,
-                isRevenueBetaTester
+                isConvertSubscriber
             )
 
             if (!isAllowedToEdit) return
@@ -53,7 +53,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
                 })
             )
         },
-        [isRevenueBetaTester, triggers, updateTriggers]
+        [isConvertSubscriber, triggers, updateTriggers]
     )
 
     const updateTrigger = useCallback<UpdateTriggerFn>(
@@ -61,7 +61,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
             const currentTrigger = triggers[triggerId]
             const isAllowedToEdit = isAllowedToUpdateTrigger(
                 currentTrigger,
-                isRevenueBetaTester
+                isConvertSubscriber
             )
 
             if (!isAllowedToEdit) return
@@ -79,7 +79,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
                 })
             )
         },
-        [isRevenueBetaTester, triggers, updateTriggers]
+        [isConvertSubscriber, triggers, updateTriggers]
     )
 
     const deleteTrigger = useCallback<DeleteTriggerFn>(
@@ -87,7 +87,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
             const currentTrigger = triggers[triggerId]
             const isAllowedToEdit = isAllowedToUpdateTrigger(
                 currentTrigger,
-                isRevenueBetaTester
+                isConvertSubscriber
             )
 
             if (!isAllowedToEdit) return
@@ -100,7 +100,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
                 })
             )
         },
-        [isRevenueBetaTester, triggers, updateTriggers]
+        [isConvertSubscriber, triggers, updateTriggers]
     )
 
     const api = useMemo(

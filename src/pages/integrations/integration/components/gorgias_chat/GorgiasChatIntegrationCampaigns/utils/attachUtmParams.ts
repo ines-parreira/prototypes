@@ -7,14 +7,12 @@ import {CampaignProduct} from '../types/CampaignProduct'
 
 import {extractLinksFromText} from './extractLinksFromText'
 
-import {isRevenueAddonSubscriber} from './isRevenueAddonSubscriber'
-
-export function shouldAppendUtmParam(): boolean {
+export function shouldAppendUtmParam(isConvertSubscriber: boolean): boolean {
     const shouldDisableUtmParams = Boolean(
         getLDClient().allFlags()[FeatureFlagKey.RevenueDisableUtmParams]
     )
 
-    return isRevenueAddonSubscriber() && !shouldDisableUtmParams
+    return isConvertSubscriber && !shouldDisableUtmParams
 }
 
 export function removeRevenueUtmFromUrl(url: string): string {
@@ -29,9 +27,10 @@ export function removeRevenueUtmFromUrl(url: string): string {
 
 export function attachUtmToCampaignProduct(
     product: CampaignProduct,
-    campaignName: string
+    campaignName: string,
+    isConvertSubscriber: boolean
 ): string {
-    if (shouldAppendUtmParam()) {
+    if (shouldAppendUtmParam(isConvertSubscriber)) {
         return attachSearchParamsToUrl(product.url, {
             utm_source: 'Gorgias',
             utm_medium: 'ChatCampaign',
@@ -42,15 +41,19 @@ export function attachUtmToCampaignProduct(
     return removeRevenueUtmFromUrl(product.url)
 }
 
-export function replaceUrlsWithUtmUrl(html: string, campaignName: string) {
+export function replaceUrlsWithUtmUrl(
+    html: string,
+    campaignName: string,
+    isConvertSubscriber: boolean
+) {
     let output = html
     const links = extractLinksFromText(html)
 
-    if (!isRevenueAddonSubscriber()) {
+    if (!isConvertSubscriber) {
         return output
     }
 
-    if (shouldAppendUtmParam()) {
+    if (shouldAppendUtmParam(isConvertSubscriber)) {
         const linksWithUtm = links.map((url) =>
             attachSearchParamsToUrl(url, {
                 utm_source: 'Gorgias',

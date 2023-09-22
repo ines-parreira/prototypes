@@ -26,16 +26,24 @@ describe('transformProductToAttachment()', () => {
     it('adds the currency code if product is missing it', () => {
         ;(shouldAppendUtmParam as jest.Mock).mockImplementation(() => true)
         expect(
-            transformProductToAttachment(PRODUCT_WITHOUT_CURRENCY, {
-                campaignName: 'Test 1',
-                currency: 'GBP',
-            })
+            transformProductToAttachment(
+                PRODUCT_WITHOUT_CURRENCY,
+                {
+                    campaignName: 'Test 1',
+                    currency: 'GBP',
+                },
+                false
+            )
         ).toMatchSnapshot()
         expect(
-            transformProductToAttachment(PRODUCT_WITH_CURRENCY, {
-                campaignName: 'Test 1',
-                currency: 'GBP',
-            })
+            transformProductToAttachment(
+                PRODUCT_WITH_CURRENCY,
+                {
+                    campaignName: 'Test 1',
+                    currency: 'GBP',
+                },
+                false
+            )
         ).toMatchSnapshot()
     })
 })

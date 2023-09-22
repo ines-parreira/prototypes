@@ -6,7 +6,6 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
-import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -28,7 +27,7 @@ import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
 import {StatsFilters} from 'models/stat/types'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import TagsStatsFilter from '../TagsStatsFilter'
 import useStatResource from '../useStatResource'
 import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
@@ -248,9 +247,10 @@ describe('SupportPerformanceRevenue', () => {
                     return [revenuePerTicket, false, _noop]
             }
         })
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.RevenueBetaTesters]: true,
-        }))
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => true)
 
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
@@ -274,9 +274,10 @@ describe('SupportPerformanceRevenue', () => {
                     return [revenuePerTicket, false, _noop]
             }
         })
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.RevenueBetaTesters]: false,
-        }))
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => false)
 
         const {queryByPlaceholderText} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>

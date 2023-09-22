@@ -7,7 +7,8 @@ export function transformProductToAttachment(
     context: {
         campaignName: string
         currency?: string
-    }
+    },
+    isConvertSubscriber: boolean
 ) {
     return {
         contentType: 'application/productCard',
@@ -20,7 +21,8 @@ export function transformProductToAttachment(
             product_id: product.id,
             product_link: attachUtmToCampaignProduct(
                 product,
-                context.campaignName
+                context.campaignName,
+                isConvertSubscriber
             ),
             variant_name: product?.variant_name,
             position: product?.position,

@@ -7,6 +7,7 @@ import {render} from '@testing-library/react'
 
 import {RootState, StoreDispatch} from 'state/types'
 
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {CampaignMessage} from '../CampaignMessage'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
@@ -17,12 +18,18 @@ const defaultState = {
 } as RootState
 
 describe('<CampaignMessage>', () => {
+    beforeEach(() => {
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => false)
+    })
     it('renders the warning if the content is too big and merchant is a revenue subscriber', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
                 <CampaignMessage
                     showContentWarning
-                    isRevenueBetaTester
+                    isConvertSubscriber
                     richAreaRef={jest.fn()}
                     attachments={fromJS([])}
                     agents={[]}
@@ -46,7 +53,7 @@ describe('<CampaignMessage>', () => {
             <Provider store={mockStore(defaultState)}>
                 <CampaignMessage
                     showContentWarning
-                    isRevenueBetaTester={false}
+                    isConvertSubscriber={false}
                     richAreaRef={jest.fn()}
                     attachments={fromJS([])}
                     agents={[]}

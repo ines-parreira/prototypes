@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {ClickTrackingSettingsView} from '../ClickTrackingSettingsView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -38,6 +39,10 @@ describe('<ClickTrackingSettingsView />', () => {
     })
 
     it('should not render if the account does not have the feature flag', () => {
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => false)
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
 
         const {queryByTestId} = render(<ClickTrackingSettingsView />, {
@@ -48,8 +53,12 @@ describe('<ClickTrackingSettingsView />', () => {
     })
 
     it('should render if the account has the feature flag', () => {
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => true)
+
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.RevenueBetaTesters]: true,
             [FeatureFlagKey.RevenueClickTracking]: true,
         }))
 

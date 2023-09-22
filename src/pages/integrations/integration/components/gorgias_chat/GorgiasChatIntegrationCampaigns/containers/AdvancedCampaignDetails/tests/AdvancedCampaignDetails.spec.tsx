@@ -21,7 +21,7 @@ import {integrationsState} from 'fixtures/integrations'
 
 import {RootState, StoreDispatch} from 'state/types'
 
-import * as betaTesterHook from 'pages/common/hooks/useIsRevenueBetaTester'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {Language} from 'constants/languages'
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as shopifyHeadlessHook from '../../../hooks/useIsHeadlessShopifyStore'
@@ -142,8 +142,8 @@ describe('<AdvancedCampaignDetails />', () => {
 
         beforeEach(() => {
             jest.spyOn(
-                betaTesterHook,
-                'useIsRevenueBetaTester'
+                isConvertSubscriberHook,
+                'useIsConvertSubscriber'
             ).mockImplementation(() => false)
             jest.spyOn(
                 shopifyHeadlessHook,
@@ -153,7 +153,7 @@ describe('<AdvancedCampaignDetails />', () => {
             component = render(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueBetaTester={false}
+                        isConvertSubscriber={false}
                         id="new"
                         campaign={{} as ChatCampaign}
                         agents={agents as User[]}
@@ -186,7 +186,7 @@ describe('<AdvancedCampaignDetails />', () => {
             component.rerender(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueBetaTester={false}
+                        isConvertSubscriber={false}
                         id="new"
                         campaign={{
                             ...regularMerchantCampaign,
@@ -213,7 +213,7 @@ describe('<AdvancedCampaignDetails />', () => {
             component.rerender(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueBetaTester={false}
+                        isConvertSubscriber={false}
                         id="new"
                         campaign={{
                             ...regularMerchantCampaign,
@@ -310,8 +310,8 @@ describe('<AdvancedCampaignDetails />', () => {
 
         beforeEach(() => {
             jest.spyOn(
-                betaTesterHook,
-                'useIsRevenueBetaTester'
+                isConvertSubscriberHook,
+                'useIsConvertSubscriber'
             ).mockImplementation(() => false)
             jest.spyOn(
                 shopifyHeadlessHook,
@@ -321,7 +321,7 @@ describe('<AdvancedCampaignDetails />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueBetaTester={false}
+                        isConvertSubscriber={false}
                         id={regularMerchantCampaign.id}
                         campaign={regularMerchantCampaign}
                         agents={agents as User[]}
@@ -455,8 +455,8 @@ describe('<AdvancedCampaignDetails />', () => {
     describe('Creating a campaign as revenue beta tester', () => {
         beforeEach(() => {
             jest.spyOn(
-                betaTesterHook,
-                'useIsRevenueBetaTester'
+                isConvertSubscriberHook,
+                'useIsConvertSubscriber'
             ).mockImplementation(() => true)
             jest.spyOn(
                 shopifyHeadlessHook,
@@ -466,7 +466,7 @@ describe('<AdvancedCampaignDetails />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueBetaTester
+                        isConvertSubscriber
                         id="new"
                         campaign={{} as ChatCampaign}
                         agents={agents as User[]}
@@ -536,8 +536,8 @@ describe('<AdvancedCampaignDetails />', () => {
     describe('Updating a campaign as revenue beta tester', () => {
         beforeEach(() => {
             jest.spyOn(
-                betaTesterHook,
-                'useIsRevenueBetaTester'
+                isConvertSubscriberHook,
+                'useIsConvertSubscriber'
             ).mockImplementation(() => true)
             jest.spyOn(
                 shopifyHeadlessHook,
@@ -547,7 +547,7 @@ describe('<AdvancedCampaignDetails />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueBetaTester
+                        isConvertSubscriber
                         id={revenueMerchantCampaign.id}
                         campaign={revenueMerchantCampaign}
                         agents={agents as User[]}
@@ -717,8 +717,8 @@ describe('<AdvancedCampaignDetails />', () => {
     describe('Updating a campaign as previous revenue beta tester', () => {
         beforeEach(() => {
             jest.spyOn(
-                betaTesterHook,
-                'useIsRevenueBetaTester'
+                isConvertSubscriberHook,
+                'useIsConvertSubscriber'
             ).mockImplementation(() => false)
             jest.spyOn(
                 shopifyHeadlessHook,
@@ -728,7 +728,7 @@ describe('<AdvancedCampaignDetails />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueBetaTester={false}
+                        isConvertSubscriber={false}
                         id={revenueMerchantCampaign.id}
                         campaign={revenueMerchantCampaign}
                         agents={agents as User[]}

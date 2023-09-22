@@ -14,6 +14,7 @@ import {integrationsState} from 'fixtures/integrations'
 
 import {RootState, StoreDispatch} from 'state/types'
 
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {CampaignDetailsForm} from '../CampaignDetailsForm'
 
 import {ChatCampaign} from '../../../types/Campaign'
@@ -69,6 +70,11 @@ describe('<CampaignDetailsForm />', () => {
 
         const allFlagsMock = getLDClient().allFlags as jest.Mock
         allFlagsMock.mockReturnValue({})
+
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => false)
     })
 
     describe('Create campaign', () => {

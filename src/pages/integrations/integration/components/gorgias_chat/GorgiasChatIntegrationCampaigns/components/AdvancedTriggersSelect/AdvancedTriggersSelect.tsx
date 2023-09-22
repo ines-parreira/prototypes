@@ -14,13 +14,13 @@ import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 import css from './AdvancedTriggersSelect.less'
 
 type Props = {
-    isRevenueBetaTester?: boolean
+    isConvertSubscriber?: boolean
     isShopifyStore?: boolean
     onClick: (value: CampaignTriggerKey) => void
 }
 
 export const AdvancedTriggersSelect = ({
-    isRevenueBetaTester = false,
+    isConvertSubscriber = false,
     isShopifyStore = false,
     onClick,
 }: Props): JSX.Element => {
@@ -34,7 +34,7 @@ export const AdvancedTriggersSelect = ({
     }
 
     const options = useAvailableTriggerList({
-        isRevenueBetaTester,
+        isConvertSubscriber,
         isShopifyStore,
         isShopifyHeadless,
     })

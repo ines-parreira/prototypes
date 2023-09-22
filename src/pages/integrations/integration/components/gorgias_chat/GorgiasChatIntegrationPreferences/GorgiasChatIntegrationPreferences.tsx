@@ -31,8 +31,7 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {TagLabel} from 'pages/common/utils/labels'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
-import {isRevenueAddonSubscriber} from '../GorgiasChatIntegrationCampaigns/utils/isRevenueAddonSubscriber'
-
+import {getCurrentConvertProduct} from 'state/billing/selectors'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -129,6 +128,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 > {
     static defaultProps = {
         emailIntegrations: [],
+        convertProduct: undefined,
     }
 
     state: State = {
@@ -444,6 +444,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             emailIntegrations: integrations,
             displayControlTicketVolume,
             flags,
+            convertProduct,
         } = this.props
         const chatMultiLanguagesEnabled =
             flags?.[FeatureFlagKey.ChatMultiLanguages]
@@ -694,7 +695,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             },
         ]
 
-        const renderDisplayCampaignsHiddenChat = isRevenueAddonSubscriber()
+        const renderDisplayCampaignsHiddenChat =
+            Boolean(flags?.[FeatureFlagKey.RevenueBetaTesters]) ||
+            Boolean(convertProduct)
 
         return (
             <>
@@ -1241,6 +1244,7 @@ const connector = connect(
         emailIntegrations: getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)(
             state
         ),
+        convertProduct: getCurrentConvertProduct(state),
     }),
     {
         updateOrCreateIntegration,

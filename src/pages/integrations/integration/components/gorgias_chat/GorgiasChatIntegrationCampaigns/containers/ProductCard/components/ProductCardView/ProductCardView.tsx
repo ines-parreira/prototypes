@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
@@ -32,7 +32,7 @@ export const ProductCardView = ({
     position,
     onClickEdit,
 }: Props) => {
-    const isRevenueBetaTester = useIsRevenueBetaTester()
+    const isConvertSubscriber = useIsConvertSubscriber()
     const buttonStyle = useMemo(
         () => ({
             backgroundColor: bgColor,
@@ -54,7 +54,7 @@ export const ProductCardView = ({
         return (
             <>
                 <div className={css.repositionWrapper}>
-                    {isRevenueBetaTester && (
+                    {isConvertSubscriber && (
                         <Button
                             intent="secondary"
                             size="small"

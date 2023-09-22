@@ -6,7 +6,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {useDismissFlag} from 'hooks/useDismissFlag'
 import useAppSelector from 'hooks/useAppSelector'
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {IntegrationType} from 'models/integration/constants'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
@@ -17,7 +17,7 @@ type Props = {
 }
 
 export const CampaignChatHiddenWarning = ({integration}: Props) => {
-    const isRevenueBetaTester = useIsRevenueBetaTester()
+    const isConvertSubscriber = useIsConvertSubscriber()
     const businessHours = useAppSelector(getBusinessHoursSettings)
     const {isDismissed, dismiss} = useDismissFlag(
         'gorgias.chat-hidden-warning',
@@ -57,7 +57,7 @@ export const CampaignChatHiddenWarning = ({integration}: Props) => {
         isOfflineModeEnabled,
     ])
 
-    if (!isRevenueBetaTester || !shouldDisplayWarning || isDismissed)
+    if (!isConvertSubscriber || !shouldDisplayWarning || isDismissed)
         return <></>
 
     return (

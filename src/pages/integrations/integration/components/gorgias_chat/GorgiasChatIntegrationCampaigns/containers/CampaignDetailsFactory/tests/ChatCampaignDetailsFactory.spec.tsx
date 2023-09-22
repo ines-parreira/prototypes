@@ -9,7 +9,7 @@ import {RootState, StoreDispatch} from 'state/types'
 
 import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsState} from 'fixtures/integrations'
-import * as revenueBetaHook from 'pages/common/hooks/useIsRevenueBetaTester'
+import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {ChatCampaignDetailsFactory} from '../ChatCampaignDetailsFactory'
 
@@ -35,7 +35,7 @@ describe('<ChatCampaignDetailsFactory />', () => {
     it('renders the "AdvancedCampaignDetails" component if merchant is not a revenue subscriber', () => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsRevenueBetaTester'
+            'useIsConvertSubscriber'
         ).mockImplementation(() => true)
 
         const {getByTestId} = render(
@@ -50,7 +50,7 @@ describe('<ChatCampaignDetailsFactory />', () => {
     it('renders the "AdvancedCampaignDetails" component if merchant is a revenue subscriber', () => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsRevenueBetaTester'
+            'useIsConvertSubscriber'
         ).mockImplementation(() => false)
 
         const {getByTestId} = render(

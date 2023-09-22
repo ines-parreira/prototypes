@@ -21,6 +21,7 @@ import Navbar from 'pages/common/components/Navbar'
 
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
+import {useIsConvertSubscriber} from '../../common/hooks/useIsConvertSubscriber'
 
 type CategoryLink = {
     className?: string
@@ -119,17 +120,7 @@ const CATEGORIES: Category[] = [
     {
         name: 'Convert',
         icon: 'paid',
-        links: [
-            {
-                requiredRole: ADMIN_ROLE,
-                to: 'revenue/click-tracking',
-                requiredFeatureFlags: [
-                    FeatureFlagKey.RevenueBetaTesters,
-                    FeatureFlagKey.RevenueClickTracking,
-                ],
-                text: 'Click Tracking',
-            },
-        ],
+        links: [],
     },
     {
         name: 'Users & Teams',
@@ -208,6 +199,15 @@ const CATEGORIES: Category[] = [
     },
 ]
 
+const CONVERT_LINKS: CategoryLink[] = [
+    {
+        requiredRole: ADMIN_ROLE,
+        to: 'revenue/click-tracking',
+        requiredFeatureFlags: [FeatureFlagKey.RevenueClickTracking],
+        text: 'Click Tracking',
+    },
+]
+
 const SettingsNavbar = () => {
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
@@ -216,6 +216,7 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
+    const isConvertSubscriber = useIsConvertSubscriber()
 
     const categoriesInUse = React.useMemo<Category[]>(() => {
         return flatMap(CATEGORIES, (category) => {
@@ -228,11 +229,18 @@ const SettingsNavbar = () => {
                         ),
                     },
                 ]
+            } else if (isConvertSubscriber && category.name === 'Convert') {
+                return [
+                    {
+                        ...category,
+                        links: CONVERT_LINKS,
+                    },
+                ]
             }
 
             return [category]
         })
-    }, [isDecoupleContactFormEnabled])
+    }, [isConvertSubscriber, isDecoupleContactFormEnabled])
 
     return (
         <Navbar activeContent="settings">

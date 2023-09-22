@@ -18,7 +18,7 @@ import {
     updateCampaign,
 } from 'state/campaigns/actions'
 
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {canSeeCampaignImprovements} from '../../utils/canSeeCampaignImprovements'
 import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
@@ -40,7 +40,7 @@ export const ChatCampaignDetailsFactory = ({
     id,
 }: OwnProps): JSX.Element => {
     const dispatch = useAppDispatch()
-    const isRevenueBetaTester: boolean = useIsRevenueBetaTester()
+    const isConvertSubscriber: boolean = useIsConvertSubscriber()
 
     const campaign = useAppSelector(
         getChatIntegrationCampaignById(integration.get('id'), id)
@@ -103,7 +103,7 @@ export const ChatCampaignDetailsFactory = ({
                     id={id}
                     integration={integration}
                     shopifyIntegration={shopify}
-                    isRevenueBetaTester={isRevenueBetaTester}
+                    isConvertSubscriber={isConvertSubscriber}
                     campaign={memoCampaign}
                     createCampaign={handleCreateCampaign}
                     updateCampaign={handleUpdateCampaign}

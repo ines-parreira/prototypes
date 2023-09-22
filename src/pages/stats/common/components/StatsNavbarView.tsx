@@ -11,7 +11,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import AutomationNavbarAddOnPaywallNavbarLink from 'pages/automation/common/components/AutomationNavbarAddOnPaywallNavbarLink'
 import {
     AUTOMATION_ADD_ON_FEATURES_PATH,
@@ -39,7 +39,7 @@ export default function StatsNavbarView() {
     const isNewAutomationAddonEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewAutomationAddon]
 
-    const isRevenueSubscriber = useIsRevenueBetaTester()
+    const isConvertSubscriber = useIsConvertSubscriber()
     const automationAddon: {
         label: ReactNode
         to: string
@@ -139,7 +139,7 @@ export default function StatsNavbarView() {
                     >
                         Satisfaction
                     </NavbarLink>
-                    {!isRevenueSubscriber && (
+                    {!isConvertSubscriber && (
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/revenue"
@@ -209,7 +209,7 @@ export default function StatsNavbarView() {
                     )}
                 </div>
             </NavbarBlock>
-            {isRevenueSubscriber && (
+            {isConvertSubscriber && (
                 <NavbarBlock icon="attach_money" title="Convert">
                     <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}

@@ -13,7 +13,7 @@ describe('useAvailableTriggerList()', () => {
         it('returns only legacy triggers', () => {
             const {result} = renderHook(() =>
                 useAvailableTriggerList({
-                    isRevenueBetaTester: false,
+                    isConvertSubscriber: false,
                     isShopifyStore: false,
                 })
             )
@@ -41,7 +41,7 @@ describe('useAvailableTriggerList()', () => {
         it('returns legacy triggers', () => {
             const {result} = renderHook(() =>
                 useAvailableTriggerList({
-                    isRevenueBetaTester: false,
+                    isConvertSubscriber: false,
                     isShopifyStore: true,
                 })
             )
@@ -69,7 +69,7 @@ describe('useAvailableTriggerList()', () => {
         it('returns both legacy and advanced (non Shopify) triggers', () => {
             const {result} = renderHook(() =>
                 useAvailableTriggerList({
-                    isRevenueBetaTester: true,
+                    isConvertSubscriber: true,
                     isShopifyStore: false,
                 })
             )
@@ -137,7 +137,7 @@ describe('useAvailableTriggerList()', () => {
         it('returns all triggers', () => {
             const {result} = renderHook(() =>
                 useAvailableTriggerList({
-                    isRevenueBetaTester: true,
+                    isConvertSubscriber: true,
                     isShopifyStore: true,
                 })
             )

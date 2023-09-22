@@ -12,7 +12,7 @@ import {WithRevenuePaywall} from '../WithRevenuePaywall'
 import css from './CampaignDisplaySettings.less'
 
 type Props = {
-    isRevenueBetaTester?: boolean
+    isConvertSubscriber?: boolean
     delay?: number
     isNoReply: boolean
     triggers: CampaignTriggerMap
@@ -35,7 +35,7 @@ function getTriggerIdByKey(
 }
 
 export const CampaignDisplaySettings = ({
-    isRevenueBetaTester,
+    isConvertSubscriber,
     delay,
     isNoReply,
     triggers,
@@ -53,7 +53,7 @@ export const CampaignDisplaySettings = ({
         CampaignTriggerKey.SingleInView
     )
     const shouldRenderSettings =
-        isRevenueBetaTester || singleInViewId || deviceTypeId || delay
+        isConvertSubscriber || singleInViewId || deviceTypeId || delay
 
     const deviceTypeTrigger = useMemo(() => {
         return triggers[deviceTypeId] ?? null
@@ -67,7 +67,7 @@ export const CampaignDisplaySettings = ({
     }
 
     return (
-        <WithRevenuePaywall showPaywall={!isRevenueBetaTester}>
+        <WithRevenuePaywall showPaywall={!isConvertSubscriber}>
             <h3 style={{marginTop: 32}}>Display</h3>
             <div className={css.settingsContainer}>
                 <div className={css.sectionItem}>

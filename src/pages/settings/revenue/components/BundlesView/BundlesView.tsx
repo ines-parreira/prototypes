@@ -29,7 +29,7 @@ import history from 'pages/history'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 import {getIconFromType} from 'state/integrations/helpers'
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useRevenueAddonApi} from '../../hooks/useRevenueAddonApi'
 import pageCss from './BundlesView.less'
 
@@ -83,8 +83,8 @@ export const BundlesView = () => {
             )
         )
 
-    const isRevenueSubscriber = useIsRevenueBetaTester()
-    if (!isRevenueSubscriber) {
+    const isConvertSubscriber = useIsConvertSubscriber()
+    if (!isConvertSubscriber) {
         return (
             <div className={css.pageContainer}>
                 You don't have access to this page, please contact your CSM.

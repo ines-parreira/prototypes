@@ -9,7 +9,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import * as integrationsHelpers from 'state/integrations/helpers'
 import * as dismissHook from 'hooks/useDismissFlag'
 
-import * as revenueBetaHook from 'pages/common/hooks/useIsRevenueBetaTester'
+import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {CampaignChatHiddenWarning} from '../CampaignChatHiddenWarning'
 
@@ -35,7 +35,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
     beforeAll(() => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsRevenueBetaTester'
+            'useIsConvertSubscriber'
         ).mockImplementation(() => true)
     })
 
@@ -216,7 +216,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
         it('should not display the warning', () => {
             jest.spyOn(
                 revenueBetaHook,
-                'useIsRevenueBetaTester'
+                'useIsConvertSubscriber'
             ).mockImplementation(() => false)
 
             const {container} = render(

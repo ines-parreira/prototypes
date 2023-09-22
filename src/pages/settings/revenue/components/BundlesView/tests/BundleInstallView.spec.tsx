@@ -14,7 +14,7 @@ import client from 'models/api/resources'
 import {flushPromises} from 'utils/testing'
 
 import {BundleInstallView} from '../BundleInstallView'
-import * as betaTesterHook from '../../../../../common/hooks/useIsRevenueBetaTester'
+import * as isConvertSubscriberHook from '../../../../../common/hooks/useIsConvertSubscriber'
 
 const mockStore = configureMockStore([thunk])
 
@@ -34,9 +34,10 @@ const defaultState = {
 
 describe('<BundleInstallView />', () => {
     beforeEach(() => {
-        jest.spyOn(betaTesterHook, 'useIsRevenueBetaTester').mockImplementation(
-            () => true
-        )
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => true)
     })
 
     afterEach(() => {

@@ -5,7 +5,7 @@ import Fuse from 'fuse.js'
 import {Container} from 'reactstrap'
 
 import Segmented from 'pages/common/components/Segmented'
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
 import {QuickFilters} from '../QuickFilters'
@@ -45,7 +45,7 @@ export const CampaignsList = ({
     onDuplicateCampaign,
     onUpdateCampaign,
 }: Props) => {
-    const isRevenueSubscriber = useIsRevenueBetaTester()
+    const isConvertSubscriber = useIsConvertSubscriber()
     const isRevenueBillingEnabled = useIsRevenueBillingEnabled()
     const {getParams, onChangeParams} = useCampaignListOptions()
 
@@ -98,12 +98,12 @@ export const CampaignsList = ({
             campaignsByStatus = fuse.search(search).map((result) => result.item)
         }
 
-        if (filters.length && isRevenueSubscriber) {
+        if (filters.length && isConvertSubscriber) {
             campaignsByStatus = quickFiltersInvoke(campaignsByStatus, filters)
         }
 
         return campaignsByStatus
-    }, [campaigns, filters, isRevenueSubscriber, search, state])
+    }, [campaigns, filters, isConvertSubscriber, search, state])
 
     const handleChangeSearch = (value: string) => {
         onChangeParams({search: value, page: 1})
@@ -172,7 +172,7 @@ export const CampaignsList = ({
                     )}
                 </div>
 
-                {isRevenueSubscriber && (
+                {isConvertSubscriber && (
                     <div className={css.quickFiltersContainer}>
                         <QuickFilters
                             filters={QUICK_FILTERS}
@@ -182,7 +182,7 @@ export const CampaignsList = ({
                     </div>
                 )}
 
-                {!isRevenueSubscriber && isRevenueBillingEnabled && (
+                {!isConvertSubscriber && isRevenueBillingEnabled && (
                     <CampaignInfobarPaywall />
                 )}
 

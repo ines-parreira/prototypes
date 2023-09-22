@@ -21,7 +21,7 @@ type Props = {
     count?: number
     isPristine?: boolean
     isValid?: boolean
-    isRevenueBetaTester?: boolean
+    isConvertSubscriber?: boolean
     showContentWarning?: boolean
     onDeleteAttachment: (index: number) => void
 }
@@ -32,7 +32,7 @@ export const CampaignMessageStep = ({
     count,
     isPristine = true,
     isValid = false,
-    isRevenueBetaTester = false,
+    isConvertSubscriber = false,
     showContentWarning = false,
     onDeleteAttachment,
 }: Props) => {
@@ -64,7 +64,7 @@ export const CampaignMessageStep = ({
                 attachments={attachments}
                 html={campaign.message.html}
                 text={campaign.message.text}
-                isRevenueBetaTester={isRevenueBetaTester}
+                isConvertSubscriber={isConvertSubscriber}
                 selectedAgent={campaign.message.author?.email ?? ''}
                 onSelectAgent={handleChangeAgent}
                 onChangeMessage={handleChangeMessage}

@@ -6,7 +6,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ButtonSpinner from 'pages/common/components/button/ButtonSpinner'
 import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {isAdmin} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import closeIcon from 'assets/img/icons/close.svg'
@@ -27,7 +27,7 @@ export const CampaignGenerator = ({
     currentUser,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
-    const isRevenueBetaTester = useIsRevenueBetaTester()
+    const isConvertSubscriber = useIsConvertSubscriber()
     const isHiddenByLegacyCheck = useIsHiddenByLegacyFlag(integration)
     const storageKey = `${CAMPAIGN_INFO_BOX_STORAGE_KEY}:${
         integration.get('id') as string
@@ -42,11 +42,11 @@ export const CampaignGenerator = ({
         const isVisible =
             !isHiddenByLegacyCheck &&
             isHiddenPermanently !== true &&
-            isRevenueBetaTester &&
+            isConvertSubscriber &&
             isAdmin(currentUser)
         setVisible(isVisible)
     }, [
-        isRevenueBetaTester,
+        isConvertSubscriber,
         currentUser,
         isHiddenPermanently,
         isHiddenByLegacyCheck,

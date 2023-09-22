@@ -28,7 +28,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 
 import client from 'models/api/resources'
 import history from 'pages/history'
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import pageCss from './BundlesView.less'
 
 export const BundleInstallView = () => {
@@ -92,8 +92,8 @@ export const BundleInstallView = () => {
         }
     }, [currentStoreIntegration])
 
-    const isRevenueSubscriber = useIsRevenueBetaTester()
-    if (!isRevenueSubscriber) {
+    const isConvertSubscriber = useIsConvertSubscriber()
+    if (!isConvertSubscriber) {
         return (
             <div className={css.pageContainer}>
                 You don't have access to this page, please contact your CSM.

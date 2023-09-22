@@ -10,7 +10,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
 import useSearch from 'hooks/useSearch'
 
-import * as revenueBetaHook from 'pages/common/hooks/useIsRevenueBetaTester'
+import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
@@ -58,7 +58,7 @@ describe('<CampaignsList />', () => {
     beforeAll(() => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsRevenueBetaTester'
+            'useIsConvertSubscriber'
         ).mockImplementation(() => true)
     })
 

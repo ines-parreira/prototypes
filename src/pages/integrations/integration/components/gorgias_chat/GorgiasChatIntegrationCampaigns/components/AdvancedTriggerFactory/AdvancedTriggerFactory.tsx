@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useTriggers} from '../../containers/TriggersProvider'
 
@@ -40,11 +40,11 @@ export const AdvancedTriggerFactory = ({
     trigger,
 }: Props): JSX.Element => {
     const {onUpdateTrigger, onDeleteTrigger} = useTriggers()
-    const isRevenueBetaTester: boolean = useIsRevenueBetaTester()
+    const isConvertSubscriber: boolean = useIsConvertSubscriber()
 
     const isAllowedToEdit = isAllowedToUpdateTrigger(
         trigger,
-        isRevenueBetaTester
+        isConvertSubscriber
     )
 
     const content = useMemo(() => {

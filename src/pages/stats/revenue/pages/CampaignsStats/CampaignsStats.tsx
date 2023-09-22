@@ -5,7 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {AccountFeature} from 'state/currentAccount/types'
 import {getStatsStoreIntegrations} from 'state/stats/selectors'
 
-import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 
 import RevenueStatsRestrictedFeature from 'pages/stats/RevenueStatsRestrictedFeature'
@@ -17,12 +17,12 @@ import {RevenueFilters} from '../../containers/RevenueFilters'
 import {RevenueStatsContent} from '../../containers/RevenueStatsContent'
 
 const CampaignsStats = () => {
-    const isRevenueSubscriber = useIsRevenueBetaTester()
+    const isConvertSubscriber = useIsConvertSubscriber()
 
     return (
         <CampaignStatsFilters>
             <StatsPage title="Campaigns" filters={<RevenueFilters />}>
-                {isRevenueSubscriber ? (
+                {isConvertSubscriber ? (
                     <RevenueStatsContent />
                 ) : (
                     <div>

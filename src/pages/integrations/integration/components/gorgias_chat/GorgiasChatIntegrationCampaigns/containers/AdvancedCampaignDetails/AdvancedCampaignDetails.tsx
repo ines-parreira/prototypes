@@ -88,7 +88,7 @@ type Props = {
     id: string
     integration: Map<any, any>
     shopifyIntegration: Map<any, any>
-    isRevenueBetaTester: boolean
+    isConvertSubscriber: boolean
     createCampaign: (form: any, integration: Map<any, any>) => Promise<unknown>
     updateCampaign: (form: any, integration: Map<any, any>) => Promise<unknown>
     deleteCampaign: (form: any, integration: Map<any, any>) => Promise<unknown>
@@ -100,7 +100,7 @@ export const AdvancedCampaignDetails = memo(
         campaign,
         integration,
         id,
-        isRevenueBetaTester = false,
+        isConvertSubscriber = false,
         shopifyIntegration,
         createCampaign,
         updateCampaign,
@@ -187,7 +187,7 @@ export const AdvancedCampaignDetails = memo(
 
                 const isAllowedToEdit = isAllowedToUpdateTrigger(
                     newTrigger,
-                    isRevenueBetaTester
+                    isConvertSubscriber
                 )
 
                 if (!isAllowedToEdit) return
@@ -198,7 +198,7 @@ export const AdvancedCampaignDetails = memo(
                     })
                 )
             },
-            [isRevenueBetaTester, triggers, updateTriggers]
+            [isConvertSubscriber, triggers, updateTriggers]
         )
 
         const handleUpdateTrigger = useCallback<UpdateTriggerFn>(
@@ -206,7 +206,7 @@ export const AdvancedCampaignDetails = memo(
                 const currentTrigger = triggers[triggerId]
                 const isAllowedToEdit = isAllowedToUpdateTrigger(
                     currentTrigger,
-                    isRevenueBetaTester
+                    isConvertSubscriber
                 )
 
                 if (!isAllowedToEdit) return
@@ -224,7 +224,7 @@ export const AdvancedCampaignDetails = memo(
                     })
                 )
             },
-            [isRevenueBetaTester, triggers, updateTriggers]
+            [isConvertSubscriber, triggers, updateTriggers]
         )
 
         const handleDeleteTrigger = useCallback<DeleteTriggerFn>(
@@ -232,7 +232,7 @@ export const AdvancedCampaignDetails = memo(
                 const currentTrigger = triggers[triggerId]
                 const isAllowedToEdit = isAllowedToUpdateTrigger(
                     currentTrigger,
-                    isRevenueBetaTester
+                    isConvertSubscriber
                 )
 
                 if (!isAllowedToEdit) return
@@ -245,7 +245,7 @@ export const AdvancedCampaignDetails = memo(
                     })
                 )
             },
-            [isRevenueBetaTester, triggers, updateTriggers]
+            [isConvertSubscriber, triggers, updateTriggers]
         )
 
         const handleChangeMessage = useCallback(
@@ -355,8 +355,10 @@ export const AdvancedCampaignDetails = memo(
                 const author = campaignAgent ?? undefined
                 const html = replaceUrlsWithUtmUrl(
                     campaignMessageHTML,
-                    campaignName
+                    campaignName,
+                    isConvertSubscriber
                 )
+
                 const text = campaignMessageText
 
                 let payload: ChatCampaign = {
@@ -375,7 +377,7 @@ export const AdvancedCampaignDetails = memo(
                     payload.language = campaignLanguage
                 }
 
-                if (isRevenueBetaTester) {
+                if (isConvertSubscriber) {
                     payload = {
                         ...payload,
                         meta: {
@@ -388,13 +390,17 @@ export const AdvancedCampaignDetails = memo(
 
                 if (shopifyProducts.length > 0) {
                     payload['attachments'] = shopifyProducts.map((product) => {
-                        return transformProductToAttachment(product, {
-                            campaignName,
-                            currency: shopifyIntegration.getIn([
-                                'meta',
-                                'currency',
-                            ]),
-                        })
+                        return transformProductToAttachment(
+                            product,
+                            {
+                                campaignName,
+                                currency: shopifyIntegration.getIn([
+                                    'meta',
+                                    'currency',
+                                ]),
+                            },
+                            isConvertSubscriber
+                        )
                     })
                 }
 
@@ -521,11 +527,11 @@ export const AdvancedCampaignDetails = memo(
                     )
                 }
             }
-        }, [campaign, dispatch, isRevenueBetaTester])
+        }, [campaign, dispatch, isConvertSubscriber])
 
         const isShopifyStore = chatIsShopifyStore(integration)
         const shouldShowContactCsm = Object.values(triggers).some(
-            (trigger) => !isAllowedToUpdateTrigger(trigger, isRevenueBetaTester)
+            (trigger) => !isAllowedToUpdateTrigger(trigger, isConvertSubscriber)
         )
 
         const chatTitle = integration.get('name')
@@ -620,13 +626,13 @@ export const AdvancedCampaignDetails = memo(
                                 </TriggersProvider>
                                 <AdvancedTriggersSelect
                                     isShopifyStore={isShopifyStore}
-                                    isRevenueBetaTester={isRevenueBetaTester}
+                                    isConvertSubscriber={isConvertSubscriber}
                                     onClick={handleAddTrigger}
                                 />
                             </div>
 
                             <CampaignDisplaySettings
-                                isRevenueBetaTester={isRevenueBetaTester}
+                                isConvertSubscriber={isConvertSubscriber}
                                 triggers={triggers}
                                 isNoReply={campaignWithNoReply}
                                 delay={campaignDelay}
@@ -647,7 +653,7 @@ export const AdvancedCampaignDetails = memo(
                                     attachments={attachments}
                                     html={campaignMessageHTML}
                                     text={campaignMessageText}
-                                    isRevenueBetaTester={isRevenueBetaTester}
+                                    isConvertSubscriber={isConvertSubscriber}
                                     selectedAgent={campaignAgent?.email ?? ''}
                                     onSelectAgent={handleChangeAgent}
                                     onChangeMessage={handleChangeMessage}
