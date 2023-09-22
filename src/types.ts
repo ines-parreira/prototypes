@@ -15,6 +15,8 @@ import {Team} from 'models/team/types'
 import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'
 import {BillingProducts} from 'state/billing/types'
+import {Application} from 'services/applications'
+import {Channel} from 'services/channels'
 
 export type Attachment = {
     content_type: string
@@ -108,3 +110,8 @@ export type InitialRootState = {
 }
 
 export type NonEmptyArray<T> = [T, ...T[]]
+
+export type InitialReactQueryState = {
+    channels: Channel[]
+    applications: Application[]
+}

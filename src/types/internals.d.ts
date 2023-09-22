@@ -1,14 +1,13 @@
-import {Channel} from 'models/channel/types'
 import {Middleware} from 'redux'
 
 import {Page} from 'services/statusPageManager/types'
-import {GorgiasInitialState} from 'types'
+import {GorgiasInitialState, InitialReactQueryState} from 'types'
 import {SystemMessage} from 'utils'
 
 declare global {
     interface Window {
         GORGIAS_CONSTANTS: {[key: string]: any}
-        GORGIAS_STATE: GorgiasInitialState & {channels: Channel[]}
+        GORGIAS_STATE: GorgiasInitialState & InitialReactQueryState
         SEGMENT_EVENTS_TO_TRACK?: {data: any; type: string}[]
         SYSTEM_MESSAGES: SystemMessage[]
         GORGIAS_RELEASE: string

@@ -7,8 +7,7 @@ import {
 } from 'config/integrations/recharge'
 import {Order} from 'constants/integrations/types/shopify'
 
-import {Category, PricingPlan} from 'models/integration/types/app'
-import {IntegrationType} from 'models/integration/types'
+import {IntegrationType, Category, PricingPlan} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Customer} from 'models/customer/types'
 

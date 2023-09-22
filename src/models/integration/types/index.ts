@@ -19,7 +19,8 @@ import type {PhoneIntegration} from './phone'
 import type {SmsIntegration} from './sms'
 import type {TwitterIntegration} from './twitter'
 import type {BigCommerceIntegration} from './bigcommerce'
-import {WhatsAppIntegration} from './whatsapp'
+import type {WhatsAppIntegration} from './whatsapp'
+import type {AppIntegration} from './app'
 
 export type {IntegrationDecoration} from './base'
 
@@ -52,6 +53,7 @@ export * from './sms'
 export * from './twitter'
 export * from './bigcommerce'
 export * from './whatsapp'
+export * from './app'
 
 export type Integration =
     | EmailIntegration
@@ -76,6 +78,7 @@ export type Integration =
     | TwitterIntegration
     | BigCommerceIntegration
     | WhatsAppIntegration
+    | AppIntegration
 
 export type IntegrationRequest = {
     description: string

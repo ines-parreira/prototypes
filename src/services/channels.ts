@@ -5,7 +5,12 @@ import {listChannels} from 'models/channel/resources'
 import {Channel, ChannelLike, LegacyChannel} from 'models/channel/types'
 import {TicketChannel} from 'business/types/ticket'
 
-export type {Channel, ChannelLike, LegacyChannel} from 'models/channel/types'
+export type {
+    Channel,
+    ChannelLike,
+    LegacyChannel,
+    ChannelIdentifier,
+} from 'models/channel/types'
 
 const STALE_TIME = 1 * 60 * 60 * 1000
 const CACHE_TIME = STALE_TIME + 60 * 1000
@@ -48,6 +53,10 @@ export function toChannel(channel: ChannelLike): Channel | undefined {
     }
 
     return channel
+}
+
+export function toChannels(input: ChannelLike[]): Channel[] {
+    return input.map(toChannel).filter(Boolean) as Channel[]
 }
 
 export function isLegacyChannel(

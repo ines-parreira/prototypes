@@ -1,10 +1,9 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {ChannelLike} from 'models/channel/types'
 import {IntegrationType} from 'models/integration/types'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {isLegacyChannel, toChannel} from 'services/channels'
+import {ChannelLike, isLegacyChannel, toChannel} from 'services/channels'
 
 type Props = {
     type?: ChannelLike

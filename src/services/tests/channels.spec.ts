@@ -1,5 +1,6 @@
-import 'tests/mockChannels'
-import {channels as fixtures} from 'fixtures/channels'
+import {createQueryClientWithCacheData as mockCreateQueryClientWithCacheData} from 'api/utils'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {channels as mockChannels} from 'fixtures/channels'
 import {
     getChannelById,
     getChannelBySlug,
@@ -10,13 +11,19 @@ import {
 import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
+jest.mock('api/queryClient', () => ({
+    appQueryClient: mockCreateQueryClientWithCacheData([
+        [mockChannelsQueryKeys.list(), mockChannels],
+    ]),
+}))
+
 describe('services', () => {
     describe('channels', () => {
         describe('getChannels()', () => {
             it('should return an array of channels', () => {
                 const channels = getChannels()
                 expect(channels).toBeInstanceOf(Array)
-                expect(channels).toHaveLength(fixtures.length)
+                expect(channels).toHaveLength(mockChannels.length)
             })
         })
 

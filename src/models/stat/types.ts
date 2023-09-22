@@ -1,4 +1,4 @@
-import {TicketChannel} from 'business/types/ticket'
+import {ChannelIdentifier} from 'services/channels'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {CursorMeta} from '../api/types'
 
@@ -10,7 +10,7 @@ export type StatsFilters = {
     integrations?: number[]
     tags?: number[]
     agents?: number[]
-    channels?: TicketChannel[]
+    channels?: ChannelIdentifier[]
     campaigns?: string[]
     score?: string[]
 }

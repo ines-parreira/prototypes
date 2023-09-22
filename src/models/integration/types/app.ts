@@ -1,6 +1,14 @@
-import {IntegrationConfig} from 'config'
-import {IntegrationListItem} from 'state/integrations/types'
+import type {IntegrationListItem} from 'state/integrations/types'
+import type {IntegrationConfig} from 'config'
+
 import {IntegrationType} from '../constants'
+import type {IntegrationBase} from './base'
+import type {Integration} from '.'
+
+export type AppIntegration = IntegrationBase & {
+    type: IntegrationType.App
+    application_id: string
+}
 
 export enum Category {
     FEATURED = 'Featured',
@@ -19,6 +27,10 @@ export enum Category {
     DATA = 'Data Management',
     QUALITY = 'Quality Assurance',
 }
+
+export const isAppIntegration = (
+    integration: Maybe<Integration>
+): integration is AppIntegration => integration?.type === IntegrationType.App
 
 export const isCategory = (
     potentialCategory: Maybe<string>

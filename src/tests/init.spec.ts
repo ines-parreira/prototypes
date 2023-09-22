@@ -15,10 +15,9 @@ import {
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
 import {mockProductionEnvironment, mockStagingEnvironment} from 'utils/testing'
-import {GorgiasInitialState} from 'types'
+import {GorgiasInitialState, InitialReactQueryState} from 'types'
 import {account} from 'fixtures/account'
 import {initDatadogRum} from 'utils/datadog'
-import {Channel} from 'models/channel/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -132,7 +131,7 @@ describe('init', () => {
             window.GORGIAS_STATE = {
                 currentAccount: account,
                 currentUser: user,
-            } as GorgiasInitialState & {channels: Channel[]}
+            } as GorgiasInitialState & InitialReactQueryState
         })
 
         describe.each([
