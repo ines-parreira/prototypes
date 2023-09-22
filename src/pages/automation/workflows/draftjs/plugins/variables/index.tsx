@@ -30,11 +30,15 @@ export default function createFlowVariablesPlugin() {
                     }, callback)
                 },
                 component: (props: DecoratorComponentProps) => {
-                    const {contentState, entityKey} = props
+                    const {contentState, entityKey, children} = props
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     const value = contentState.getEntity(entityKey).getData()
                         .value as string
-                    return <FlowVariableTag value={value} />
+                    return (
+                        <FlowVariableTag value={value}>
+                            {children}
+                        </FlowVariableTag>
+                    )
                 },
             },
         ],

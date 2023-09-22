@@ -38,14 +38,5 @@ export const addEntityToVariable = (
         undefined,
         entityKey
     )
-    if (end === block.getLength()) {
-        // bug: when inserting a flow var at the end of a block, the cursor is lost and editor looses focus
-        // workaround: add artifical space at the end of the block
-        newContentState = Modifier.insertText(
-            newContentState,
-            newContentState.getSelectionAfter(),
-            ' '
-        )
-    }
     return newContentState
 }

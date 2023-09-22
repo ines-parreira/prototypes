@@ -96,7 +96,7 @@ const Toolbar = ({
 
     const handleVariableSelection = (value: string) => {
         const editorState = getEditorState()
-        const newEditorState = insertText(editorState, `${value}`)
+        const newEditorState = insertText(editorState, `${value} `)
         // restore focus after insertText
         setEditorState(
             EditorState.forceSelection(

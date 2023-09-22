@@ -32,21 +32,4 @@ describe('addEntityToVariable', () => {
             value: '{{customer.lastname}}',
         })
     })
-
-    test('should append an artificial space if entity is last in block', () => {
-        // it's a workaround to preserve focus and cursor position
-        const contentState = ContentState.createFromText('Hello {{customer}}')
-        const block = contentState.getFirstBlock()
-        let newContentState = contentState
-        findWithRegex(flowVariableRegex, block, (start, end) => {
-            newContentState = addEntityToVariable(
-                block,
-                newContentState,
-                start,
-                end
-            )
-        })
-        const newText = newContentState.getFirstBlock().getText()
-        expect(newText).toEqual('Hello {{customer}} ')
-    })
 })

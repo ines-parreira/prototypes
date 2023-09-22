@@ -1,22 +1,28 @@
 @import (reference) '~css/typography.less';
 
 :local {
+    .wrapper {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
     .container {
         position: relative;
-        display: inline-block;
+        display: inline-flex;
         vertical-align: top;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 50ch;
         padding: 4px 8px;
-        align-items: center;
-        gap: 4px;
         border-radius: 4px;
         background: var(--neutral-grey-3);
         .caption-semibold();
         color: var(--neutral-grey-6);
-        margin: 0 1px 4px 1px;
+        margin: 1px;
+    }
+
+    .content {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 50ch;
 
         &::before {
             content: attr(aria-label);
@@ -37,5 +43,9 @@
         background: var(--accessory-red-bg);
         .caption-semibold();
         color: var(--feedback-variations-error-4);
+    }
+
+    .children {
+        display: none;
     }
 }
