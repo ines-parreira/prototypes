@@ -126,14 +126,12 @@ const GorgiasChatIntegrationInstall = ({
                                     />
                                     <b>
                                         Update 1-click installation for Shopify
-                                        method
                                     </b>
                                 </p>
                                 <p>
                                     We enhanced the 1-click installation for
-                                    Shopify method to ensure better stability.
-                                    Please follow the steps below to update your
-                                    chat:
+                                    Shopify to ensure better stability. Please
+                                    follow the steps below to update your chat:
                                 </p>
                                 <InstallationTab>
                                     <InstallationStep index={1}>

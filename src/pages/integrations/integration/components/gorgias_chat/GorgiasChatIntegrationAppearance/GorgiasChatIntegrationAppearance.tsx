@@ -1251,9 +1251,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     widgets you might have. By
                                                     default, the chat icon is
                                                     displayed at 20px from the
-                                                    left/right edges and and
-                                                    20px from the top/bottom
-                                                    edges.
+                                                    left/right edges and 20px
+                                                    from the top/bottom edges.
                                                 </Tooltip>
                                             </span>
                                         </ReactStrapLabel>
@@ -1310,9 +1309,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     widgets you might have. By
                                                     default, the chat icon is
                                                     displayed at 20px from the
-                                                    left/right edges and and
-                                                    20px from the top/bottom
-                                                    edges.
+                                                    left/right edges and 20px
+                                                    from the top/bottom edges.
                                                 </Tooltip>
                                             </span>
                                         </ReactStrapLabel>
