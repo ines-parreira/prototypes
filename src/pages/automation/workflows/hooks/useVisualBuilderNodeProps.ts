@@ -31,11 +31,13 @@ export function useVisualBuilderNodeProps({
         visualBuilderNodeIdEditing,
         setVisualBuilderNodeIdEditing,
         setVisualBuilderChoiceEventIdEditing,
+        hasVariablesUsedInChildren,
     } = useWorkflowEditorContext()
 
     const isSelected = visualBuilderNodeIdEditing === id
     const incomingChoice = getIncomingChoice(visualBuilderGraph, id)
 
+    const isEdgeSelected = incomingChoice?.nodeId === visualBuilderNodeIdEditing
     const edgeProps: VisualBuilderEdgeProps = useMemo(
         () => ({
             nodeId: id,
@@ -51,7 +53,7 @@ export function useVisualBuilderNodeProps({
                       }
                     : undefined,
             dispatch,
-            isSelected: incomingChoice?.nodeId === visualBuilderNodeIdEditing,
+            isSelected: isEdgeSelected,
             setVisualBuilderNodeIdEditing,
             setVisualBuilderChoiceEventIdEditing,
         }),
@@ -61,8 +63,8 @@ export function useVisualBuilderNodeProps({
             incomingChoice?.label,
             incomingChoice?.eventId,
             incomingChoice?.nodeId,
+            isEdgeSelected,
             dispatch,
-            visualBuilderNodeIdEditing,
             setVisualBuilderNodeIdEditing,
             setVisualBuilderChoiceEventIdEditing,
         ]
@@ -73,13 +75,17 @@ export function useVisualBuilderNodeProps({
             .filter((e) => e.source === id)
             .map((e) => e.target).length > 1
 
+    // only compute this when the node is selected for performance reasons
+    const doesNodeHaveVariablesUsedInChildren =
+        isSelected && hasVariablesUsedInChildren(id)
     const deleteProps: VisualBuilderDeleteProps = useMemo(
         () => ({
             nodeId: id,
             hasMultipleChildren,
+            hasVariablesUsedInChildren: doesNodeHaveVariablesUsedInChildren,
             dispatch,
         }),
-        [id, hasMultipleChildren, dispatch]
+        [id, hasMultipleChildren, dispatch, doesNodeHaveVariablesUsedInChildren]
     )
 
     return {

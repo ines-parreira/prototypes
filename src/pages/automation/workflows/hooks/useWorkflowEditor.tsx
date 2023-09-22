@@ -21,6 +21,7 @@ import {
 import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
+    walkVisualBuilderGraph,
 } from '../models/visualBuilderGraph.model'
 import {verifyPayloadSize} from '../utils/payloadLengthCheck'
 import {
@@ -28,6 +29,8 @@ import {
     getAvailableFlowVariableListForNode,
     parseFlowVariable,
     checkGraphVariablesValidity,
+    buildFlowVariableFromNode,
+    findVariable,
 } from '../models/variables.model'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
@@ -50,6 +53,7 @@ export type WorkflowEditorContext = {
     handleSave: () => Promise<void>
     handleDiscard: () => void
     checkInvalidVariablesForNode: (text: string, nodeId: string) => boolean
+    hasVariablesUsedInChildren: (nodeId: string) => boolean
     dispatch: React.Dispatch<VisualBuilderGraphAction>
     visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null
     setVisualBuilderNodeIdEditing: React.Dispatch<
@@ -363,6 +367,50 @@ export function useWorkflowEditor(
         [visualBuilderGraphDirty]
     )
 
+    const hasVariablesUsedInChildren = useCallback(
+        (nodeId: string) => {
+            const currentNode = visualBuilderGraphDirty.nodes.find(
+                (n) => n.id === nodeId
+            )
+
+            if (!currentNode) return false
+
+            const nodeVariable = buildFlowVariableFromNode(currentNode)
+            if (!nodeVariable) return false
+
+            let found = false
+
+            walkVisualBuilderGraph(
+                visualBuilderGraphDirty,
+                nodeId,
+                (childNode) => {
+                    if (found) return
+
+                    const content =
+                        'content' in childNode.data
+                            ? childNode.data.content.text
+                            : null
+
+                    if (!content) return
+
+                    const variables = extractVariablesFromText(content)
+                    if (variables.length === 0) return
+
+                    found = Boolean(
+                        findVariable([nodeVariable], (v) => {
+                            if ('value' in v && variables.includes(v.value)) {
+                                return v
+                            }
+                        })
+                    )
+                }
+            )
+
+            return found
+        },
+        [visualBuilderGraphDirty]
+    )
+
     const switchLanguageCallback = useCallback(
         (nextLanguage: LanguageCode) => {
             const nextVisualBuilderGraph = switchLanguage(
@@ -399,6 +447,7 @@ export function useWorkflowEditor(
         isSavePending,
         isDirty: isVisualBuilderGraphDirty,
         checkInvalidVariablesForNode,
+        hasVariablesUsedInChildren,
         handleValidate,
         handleSave,
         handleDiscard,
@@ -451,6 +500,7 @@ export function createWorkflowEditorContextForPreview(
         isSavePending: false,
         isDirty: false,
         checkInvalidVariablesForNode: () => false,
+        hasVariablesUsedInChildren: () => false,
         handleValidate: () => null,
         handleSave: () => Promise.resolve(),
         handleDiscard: () => null,

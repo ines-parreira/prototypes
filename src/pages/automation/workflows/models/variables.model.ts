@@ -1,5 +1,9 @@
 import {Liquid} from 'liquidjs'
-import {FlowVariableList, FlowVariable} from './variables.types'
+import {
+    FlowVariableList,
+    FlowVariable,
+    FlowVariableGroup,
+} from './variables.types'
 import {
     VisualBuilderEdge,
     VisualBuilderGraph,
@@ -31,22 +35,111 @@ export function extractVariablesFromText(text: string): string[] {
     return []
 }
 
+export function findVariable(
+    variables: FlowVariableList,
+    fn: (v: FlowVariable | FlowVariableGroup) => FlowVariable | undefined
+): FlowVariable | undefined {
+    for (const variable of variables) {
+        const result = fn(variable)
+        if (result) {
+            return result
+        }
+        if ('variables' in variable) {
+            const recursiveResult = findVariable(variable.variables, fn)
+            if (recursiveResult) {
+                return recursiveResult
+            }
+        }
+    }
+}
 export function parseFlowVariable(
     value: string,
     availableVariables: FlowVariableList
 ): FlowVariable {
-    for (const variable of availableVariables) {
-        if ('value' in variable && variable.value === value) {
-            return variable
+    const variable = findVariable(availableVariables, (v) => {
+        if ('value' in v && v.value === value) {
+            return v
         }
-        if ('variables' in variable) {
-            const parsed = parseFlowVariable(value, variable.variables)
-            if (!parsed.isInvalid) {
-                return parsed
-            }
+    })
+
+    return variable ?? {isInvalid: true, value, name: 'variable unavailable'}
+}
+
+export const buildFlowVariableFromNode = (
+    node: VisualBuilderNode
+): FlowVariable | FlowVariableGroup | undefined => {
+    const formatVariableName = (text: string) =>
+        text.replace(flowVariableRegex, '{...}')
+
+    if (node.type === 'text_reply') {
+        const {
+            data: {
+                content: {text},
+                wfConfigurationRef: {wfConfigurationTextInputStepId},
+            },
+        } = node
+        return {
+            name: formatVariableName(text.length > 0 ? text : 'Message'),
+            value: `{{steps_state["${wfConfigurationTextInputStepId}"].content.text}}`,
+            nodeType: 'text_reply',
+        }
+    } else if (node.type === 'multiple_choices') {
+        const {
+            data: {
+                content: {text},
+                wfConfigurationRef: {wfConfigurationChoicesStepId},
+            },
+        } = node
+        return {
+            name: formatVariableName(text.length > 0 ? text : 'Question'),
+            value: `{{steps_state["${wfConfigurationChoicesStepId}"].selected_choice.label}}`,
+            nodeType: 'multiple_choices',
+        }
+    } else if (node.type === 'order_selection') {
+        const {
+            data: {
+                content: {text},
+            },
+        } = node
+        return {
+            nodeType: 'order_selection',
+            name: formatVariableName(text.length > 0 ? text : 'Message'),
+            variables: [
+                {
+                    name: 'Customer first name',
+                    value: '{{customer.firstname}}',
+                },
+                {
+                    name: 'Customer last name',
+                    value: '{{customer.lastname}}',
+                },
+                {
+                    name: 'Customer full name',
+                    value: '{{customer.name}}',
+                },
+                {
+                    name: 'Customer email',
+                    value: '{{customer.email}}',
+                },
+                {
+                    name: 'Customer phone number',
+                    value: '{{customer.phone_number}}',
+                },
+                {
+                    name: 'Order number',
+                    value: '{{order.name}}',
+                },
+                {
+                    name: 'Order total amount',
+                    value: '{{order.total_amount | format_currency: order.currency.code, order.currency.decimals}}',
+                },
+                {
+                    name: 'Order date',
+                    value: '{{order.created_datetime | format_datetime}}',
+                },
+            ],
         }
     }
-    return {isInvalid: true, value, name: 'variable unavailable'}
 }
 
 export function getAvailableFlowVariableListForNode(
@@ -68,77 +161,11 @@ export function getAvailableFlowVariableListForNode(
     } while (incomingEdges.length > 0)
 
     const availableFlowVariableList: FlowVariableList = []
-    const formatVariableName = (text: string) =>
-        text.replace(flowVariableRegex, '{...}')
+
     for (const ancestor of ancestors.reverse()) {
-        if (ancestor.type === 'text_reply') {
-            const {
-                data: {
-                    content: {text},
-                    wfConfigurationRef: {wfConfigurationTextInputStepId},
-                },
-            } = ancestor
-            availableFlowVariableList.push({
-                name: formatVariableName(text.length > 0 ? text : 'Message'),
-                nodeType: 'text_reply',
-                value: `{{steps_state["${wfConfigurationTextInputStepId}"].content.text}}`,
-            })
-        } else if (ancestor.type === 'multiple_choices') {
-            const {
-                data: {
-                    content: {text},
-                    wfConfigurationRef: {wfConfigurationChoicesStepId},
-                },
-            } = ancestor
-            availableFlowVariableList.push({
-                nodeType: 'multiple_choices',
-                name: formatVariableName(text.length > 0 ? text : 'Question'),
-                value: `{{steps_state["${wfConfigurationChoicesStepId}"].selected_choice.label}}`,
-            })
-        } else if (ancestor.type === 'order_selection') {
-            const {
-                data: {
-                    content: {text},
-                },
-            } = ancestor
-            availableFlowVariableList.push({
-                nodeType: 'order_selection',
-                name: formatVariableName(text.length > 0 ? text : 'Message'),
-                variables: [
-                    {
-                        name: 'Customer first name',
-                        value: '{{customer.firstname}}',
-                    },
-                    {
-                        name: 'Customer last name',
-                        value: '{{customer.lastname}}',
-                    },
-                    {
-                        name: 'Customer full name',
-                        value: '{{customer.name}}',
-                    },
-                    {
-                        name: 'Customer email',
-                        value: '{{customer.email}}',
-                    },
-                    {
-                        name: 'Customer phone number',
-                        value: '{{customer.phone_number}}',
-                    },
-                    {
-                        name: 'Order number',
-                        value: '{{order.name}}',
-                    },
-                    {
-                        name: 'Order total amount',
-                        value: '{{order.total_amount | format_currency: order.currency.code, order.currency.decimals}}',
-                    },
-                    {
-                        name: 'Order date',
-                        value: '{{order.created_datetime | format_datetime}}',
-                    },
-                ],
-            })
+        const availableNode = buildFlowVariableFromNode(ancestor)
+        if (availableNode) {
+            availableFlowVariableList.push(availableNode)
         }
     }
     return availableFlowVariableList

@@ -3,6 +3,8 @@ import {ulid} from 'ulidx'
 import _cloneDeep from 'lodash/cloneDeep'
 import _omit from 'lodash/omit'
 import _isEqual from 'lodash/isEqual'
+import _keyBy from 'lodash/keyBy'
+import _groupBy from 'lodash/groupBy'
 
 import {
     NO_ORDERS_WORKFLOW_ID,
@@ -85,23 +87,36 @@ export function walkVisualBuilderGraph(
             incomingEdge: VisualBuilderEdge | undefined
             outgoingEdges: VisualBuilderEdge[]
         }
-    ) => void
+    ) => void,
+    indexes?: {
+        nodeById: Record<string, VisualBuilderNode>
+        edgesBySource: Record<string, VisualBuilderEdge[]>
+        edgesByTarget: Record<string, VisualBuilderEdge[]>
+    }
 ) {
     const {nodes, edges} = g
-    const node = nodes.find((n) => n.id === currentNodeId)
+    // build indexes on first iteration
+    const {nodeById, edgesBySource, edgesByTarget} = indexes ?? {
+        nodeById: _keyBy(nodes, 'id'),
+        edgesBySource: _groupBy(edges, 'source'),
+        edgesByTarget: _groupBy(edges, 'target'),
+    }
+    const node = nodeById[currentNodeId]
     if (!node) return
-    const incomingEdge = edges.find((e) => e.target === currentNodeId)
+    const incomingEdge = edgesByTarget[currentNodeId]?.[0]
     const previousNode = incomingEdge
-        ? nodes.find((n) => n.id === incomingEdge.source)
+        ? nodeById[incomingEdge.source]
         : undefined
-    const outgoingEdges = edges.filter((e) => e.source === currentNodeId)
-    const nextNodes = outgoingEdges.map(
-        (e) => nodes.find((n) => n.id === e.target) as VisualBuilderNode
-    )
+    const outgoingEdges = edgesBySource[currentNodeId] ?? []
+    const nextNodes = outgoingEdges.map((e) => nodeById[e.target])
     f(node, {previousNode, nextNodes, incomingEdge, outgoingEdges})
     if (outgoingEdges.length === 0) return
     for (const outgoingEdge of outgoingEdges) {
-        walkVisualBuilderGraph(g, outgoingEdge.target, f)
+        walkVisualBuilderGraph(g, outgoingEdge.target, f, {
+            nodeById,
+            edgesBySource,
+            edgesByTarget,
+        })
     }
 }
 

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useCallback} from 'react'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -11,39 +11,88 @@ import css from './NodeDeleteIcon.less'
 export type VisualBuilderDeleteProps = {
     nodeId: string
     hasMultipleChildren: boolean
+    hasVariablesUsedInChildren: boolean
 } & Pick<WorkflowEditorContext, 'dispatch'>
+
+type ConfirmationPopoverBaseProps =
+    | 'placement'
+    | 'buttonProps'
+    | 'showCancelButton'
+    | 'cancelButtonProps'
 
 export default function NodeDeleteIcon({
     nodeId,
     dispatch,
     hasMultipleChildren,
+    hasVariablesUsedInChildren,
 }: VisualBuilderDeleteProps) {
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
+
     const ref = useRef<HTMLDivElement>(null)
-    return (
-        <ConfirmationPopover
-            placement="top"
-            buttonProps={{
+    const [intent, setIntent] = useState<
+        'deleteSingleStep' | 'deleteAllStepsBelow'
+    >()
+
+    const getConfirmationPopoverProps = useCallback((): Omit<
+        React.ComponentProps<typeof ConfirmationPopover>,
+        'children'
+    > => {
+        const baseProps: Pick<
+            React.ComponentProps<typeof ConfirmationPopover>,
+            ConfirmationPopoverBaseProps
+        > = {
+            placement: 'top',
+            buttonProps: {
                 intent: 'destructive',
-            }}
-            title="Delete step and children?"
-            content="Deleting this step will also delete any steps added below and cannot be undone"
-            onConfirm={() => {
+            },
+            cancelButtonProps: {intent: 'secondary'},
+            showCancelButton: true,
+        }
+
+        if (intent === 'deleteSingleStep') {
+            return {
+                ...baseProps,
+                title: 'Delete step and all related variables?',
+                content:
+                    'The variable created by this step is used in other steps below. Deleting this step will result in unavailable variables and cannot be undone.',
+                onConfirm: () => {
+                    dispatch({
+                        type: 'DELETE_NODE',
+                        nodeId,
+                    })
+                },
+                onCancel: () => {
+                    dispatch({
+                        type: 'GREY_OUT_BRANCH',
+                        nodeId,
+                        isGreyedOut: false,
+                    })
+                },
+            }
+        }
+        return {
+            ...baseProps,
+            title: 'Delete step and children?',
+            content:
+                'Deleting this step will also delete any steps added below and cannot be undone',
+            onConfirm: () => {
                 dispatch({
                     type: 'DELETE_BRANCH',
                     nodeId,
                 })
-            }}
-            onCancel={() => {
+            },
+            onCancel: () => {
                 dispatch({
                     type: 'GREY_OUT_BRANCH',
                     nodeId,
                     isGreyedOut: false,
                 })
-            }}
-            cancelButtonProps={{intent: 'secondary'}}
-            showCancelButton
-        >
+            },
+        }
+    }, [dispatch, nodeId, intent])
+
+    return (
+        <ConfirmationPopover {...getConfirmationPopoverProps()}>
             {({uid, onDisplayConfirmation}) => (
                 <>
                     <div
@@ -80,10 +129,15 @@ export default function NodeDeleteIcon({
                                         value: 'node',
                                     }}
                                     onClick={() => {
-                                        dispatch({
-                                            type: 'DELETE_NODE',
-                                            nodeId: nodeId,
-                                        })
+                                        if (hasVariablesUsedInChildren) {
+                                            setIntent('deleteSingleStep')
+                                            onDisplayConfirmation()
+                                        } else {
+                                            dispatch({
+                                                type: 'DELETE_NODE',
+                                                nodeId: nodeId,
+                                            })
+                                        }
                                     }}
                                     shouldCloseOnSelect
                                 />
