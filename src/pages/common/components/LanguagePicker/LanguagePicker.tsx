@@ -14,11 +14,10 @@ export type Language = {
 export interface LanguagePicker {
     languages: Language[]
     availableLanguages: Language[]
-
     onSelectLanguageChange: (languages: Language[]) => void
 }
 
-export const LanguagePicker: React.FC<LanguagePicker> = ({...props}) => {
+export const LanguagePicker: React.FC<LanguagePicker> = (props) => {
     const [defaultLanguage, setDefaultLanguage] = React.useState(
         props.languages.find((language) => language.isDefault) as Language
     )

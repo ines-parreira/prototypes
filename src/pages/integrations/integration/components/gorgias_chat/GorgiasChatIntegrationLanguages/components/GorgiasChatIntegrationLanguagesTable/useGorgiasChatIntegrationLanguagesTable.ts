@@ -4,6 +4,7 @@ import {List, Map, fromJS} from 'immutable'
 
 import {Language} from 'constants/languages'
 import {
+    mapLanguageOptionsToLanguageDropdown,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     LanguageItem,
 } from 'config/integrations/gorgias_chat'
@@ -37,6 +38,28 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
 }: UseGorgiasChatIntegrationLanguagesTableProps) => {
     const [languages, setLanguages] = useState<LanguageItem[]>([])
 
+    const languagesAvailable = useMemo(
+        () => mapLanguageOptionsToLanguageDropdown(integration),
+        [integration]
+    )
+
+    const languagesRows: LanguageItemRow[] = useMemo(() => {
+        if (loading.get('integration')) {
+            return []
+        }
+
+        const integrationId: number = integration.get('id')
+
+        return languages.map((language) => ({
+            ...language,
+            label: getLanguageLabel(language),
+            link: `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/languages/${language.language}`,
+            showActions: languages.length > 1,
+        }))
+    }, [loading, integration, languages])
+
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
         if (loading.get('integration', true)) {
             return
@@ -63,23 +86,6 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
         setLanguages(integrationLanguages)
     }, [loading, integration])
 
-    const languagesRows: LanguageItemRow[] = useMemo(() => {
-        if (loading.get('integration')) {
-            return []
-        }
-
-        const integrationId: number = integration.get('id')
-
-        return languages.map((language) => ({
-            ...language,
-            label: getLanguageLabel(language),
-            link: `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/languages/${language.language}`,
-            showActions: languages.length > 1,
-        }))
-    }, [loading, integration, languages])
-
-    const dispatch = useAppDispatch()
-
     const [{loading: isUpdatePending}, handleUpdate] = useAsyncFn(
         async (updatedLanguages: LanguageItem[]) => {
             const form: SubmitForm = {
@@ -103,6 +109,12 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
         },
         [integration]
     )
+
+    const addLanguage = async (newLanguage: LanguageItem) => {
+        const newLanguages = languages.concat(newLanguage)
+
+        await handleUpdate(newLanguages)
+    }
 
     const updateDefaultLanguage = async (newDefaultLanguage: LanguageItem) => {
         const newLanguages = languages.map((currentLanguage) => {
@@ -131,8 +143,10 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
     }
 
     return {
+        languagesAvailable,
         languagesRows,
         isUpdatePending,
+        addLanguage,
         updateDefaultLanguage,
         deleteLanguage,
     }

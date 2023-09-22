@@ -3,6 +3,10 @@ import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {Language} from 'constants/languages'
+import DropdownButtonWithSearch, {
+    Option as DropdownOption,
+} from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import PageHeader from 'pages/common/components/PageHeader'
 import {IntegrationType} from 'models/integration/constants'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
@@ -21,11 +25,20 @@ const GorgiasChatIntegrationLanguages = ({
     integration,
     loading,
 }: GorgiasChatIntegrationLanguagesProps) => {
-    const {languagesRows, updateDefaultLanguage, deleteLanguage} =
-        useGorgiasChatIntegrationLanguagesTable({
-            integration,
-            loading,
-        })
+    const {
+        languagesAvailable,
+        languagesRows,
+        addLanguage,
+        updateDefaultLanguage,
+        deleteLanguage,
+    } = useGorgiasChatIntegrationLanguagesTable({
+        integration,
+        loading,
+    })
+
+    const onAddLanguage = async (option: DropdownOption) => {
+        await addLanguage({language: option.value as Language})
+    }
 
     return (
         <div className="full-width">
@@ -48,7 +61,14 @@ const GorgiasChatIntegrationLanguages = ({
                 <GorgiasChatIntegrationConnectedChannel
                     integration={integration}
                 />
-                {/* <LanguagePicker /> */}
+
+                <DropdownButtonWithSearch
+                    label="Add Language"
+                    options={languagesAvailable}
+                    variant="primary"
+                    withLargeMenu
+                    onSelectOptionChange={onAddLanguage}
+                />
             </PageHeader>
 
             <GorgiasChatIntegrationHeader integration={integration} />

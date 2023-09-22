@@ -1,10 +1,11 @@
 import React from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import classnames from 'classnames'
 import InputField from 'pages/common/forms/input/InputField'
 
 import css from './DropdownButtonWithSearch.less'
 
-interface Option {
+export interface Option {
     value: string
     label: string
 }
@@ -19,17 +20,21 @@ interface DropdownButtonWithSearch {
     placeholder?: string
     variant: 'primary' | 'secondary' | 'none'
     /*
-     * whether to persist the dropdown menu on option selection
+     * Whether to persist the dropdown menu on option selection
      */
     persist?: boolean
     displayResetSearchIcon?: boolean
     textNotFound?: string
-    onSelectOptionChange: (options: Option) => void
+    /*
+     * Whether to display the dropdown menu with large width (272px)
+     */
+    withLargeMenu?: boolean
+    onSelectOptionChange: (option: Option) => void
 }
 
-const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = ({
-    ...props
-}) => {
+const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = (
+    props
+) => {
     const [isOpen, setOpen] = React.useState(false)
     const [search, setSearch] = React.useState('')
     const [selectedOptions, setSelectedOptions] = React.useState<Option[]>([])
@@ -55,7 +60,12 @@ const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = ({
     }
 
     return (
-        <Dropdown isOpen={isOpen} toggle={handleOnToggle} setActiveFromChild>
+        <Dropdown
+            isOpen={isOpen}
+            toggle={handleOnToggle}
+            setActiveFromChild
+            className={css.dropdown}
+        >
             <DropdownToggle
                 className={
                     props.variant === 'none' ? css.optionPickerToggleNone : ''
@@ -73,6 +83,10 @@ const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = ({
                 {props.label}
             </DropdownToggle>
             <DropdownMenu
+                className={classnames({
+                    [css.optionDropdownMenuLarge]: props.withLargeMenu,
+                })}
+                right
                 modifiers={{
                     setMaxHeight: {
                         enabled: true,

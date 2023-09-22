@@ -303,6 +303,48 @@ export const mapLanguagePickerToIntegrationLanguages = (
     return integrationLanguages
 }
 
+/**
+ * @param integration Gorgias Chat integration
+ * @returns List of languages that are not yet added to the integration to display in the language dropdown
+ */
+export const mapLanguageOptionsToLanguageDropdown = (
+    integration: Map<any, any>
+): LanguagePickerItem[] => {
+    const languageIntegration = integration.getIn([
+        'meta',
+        'language',
+    ]) as string
+    const languagesIntegration: LanguageItem[] = (
+        (integration.getIn(['meta', 'languages']) as List<
+            Map<string, string>
+        >) || fromJS([])
+    ).toJS()
+    const languageOptions: LanguagePickerItem[] =
+        GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()
+
+    if (!languagesIntegration && !languageIntegration)
+        return GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT_UI.toJS() as LanguagePickerItem[]
+
+    // We add the legacy 'language' value as default language if no languages are set
+    if (!languagesIntegration.length) {
+        languagesIntegration.push({
+            language: languageIntegration as Language,
+            primary: true,
+        })
+    }
+
+    // We filter out the languages that are already added to the integration
+    return languageOptions.filter((languageOption: LanguagePickerItem) => {
+        const matchedLanguage: LanguageItem | undefined =
+            languagesIntegration.find(
+                (languageItem: LanguageItem) =>
+                    languageOption.value === languageItem.language
+            )
+
+        return !matchedLanguage
+    })
+}
+
 export const getLanguagesFromChatConfig = (
     meta: GorgiasChatIntegrationMeta
 ): string[] => {
