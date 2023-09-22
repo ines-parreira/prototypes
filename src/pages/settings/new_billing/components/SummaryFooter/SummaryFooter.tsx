@@ -36,6 +36,7 @@ export type SummaryFooterProps = {
     shouldPayWithShopify?: boolean
     shopifyBillingStatus?: ShopifyBillingStatus
     isSubscriptionUpdating?: boolean
+    setUpdateProcessStarted?: (isStarted: boolean) => void
 }
 
 const SummaryFooter = ({
@@ -58,6 +59,7 @@ const SummaryFooter = ({
     shouldPayWithShopify = false,
     shopifyBillingStatus,
     isSubscriptionUpdating = false,
+    setUpdateProcessStarted,
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
@@ -67,6 +69,7 @@ const SummaryFooter = ({
 
     const handleUpdateSubscription = async () => {
         try {
+            setUpdateProcessStarted?.(true)
             await updateSubscription?.()
 
             // Start the subscription if it was previously canceled and the customer has the payment method set

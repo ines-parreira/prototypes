@@ -90,6 +90,7 @@ const BillingProcessView = ({
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
     const [showPendingChangesModal, setShowPendingChangesModal] =
         useState(false)
+    const [updateProcessStarted, setUpdateProcessStarted] = useState(false)
 
     const isConvertProductActive = Boolean(flags[FeatureFlagKey.ConvertBilling])
 
@@ -384,6 +385,7 @@ const BillingProcessView = ({
                             hasCreditCard={hasCreditCard}
                             shouldPayWithShopify={shouldPayWithShopify}
                             isSubscriptionUpdating={isSubscriptionUpdating}
+                            setUpdateProcessStarted={setUpdateProcessStarted}
                         />
                     </Card>
                 )}
@@ -402,7 +404,7 @@ const BillingProcessView = ({
                 onSave={updateSubscription}
                 onDiscard={() => setShowPendingChangesModal(false)}
                 onContinueEditing={() => setShowPendingChangesModal(false)}
-                when={anyProductChanged}
+                when={anyProductChanged && !updateProcessStarted}
                 message="Your subscription changes will only be taken into account after you click “Update subscription”"
                 show={showPendingChangesModal}
                 title="Update subscription?"
