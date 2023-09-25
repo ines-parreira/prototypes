@@ -1,36 +1,32 @@
 import React from 'react'
 import {fromJS, List, Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 
+import {startEditionMode, submitWidgets} from 'state/widgets/actions'
+import {StoreDispatch} from 'state/types'
+import {WidgetContextType} from 'state/widgets/types'
 import Button from 'pages/common/components/button/Button'
-import {ConnectedAction} from '../../../../../state/types'
-import {
-    startEditionMode,
-    submitWidgets,
-} from '../../../../../state/widgets/actions'
-import {WidgetContextType} from '../../../../../state/widgets/types'
+
 import css from '../Infobar.less'
 
 type Props = {
     widgets: Map<any, any>
-    actions: {
-        startEditionMode: typeof startEditionMode
-        submitWidgets: ConnectedAction<typeof submitWidgets>
-    }
     context: WidgetContextType
-}
+} & ConnectedProps<typeof connector>
 
-export default class InfobarWidgetsEditionTools extends React.Component<Props> {
+export class InfobarWidgetsEditionTools extends React.Component<Props> {
     _saveWidgets = () => {
-        const {actions, widgets} = this.props
+        const {dispatch} = this.props
+        const {widgets} = this.props
         const editedItems = (
             widgets.getIn(['_internal', 'editedItems'], fromJS([])) as List<any>
         ).toJS()
-        void actions.submitWidgets(editedItems)
+        void (dispatch as StoreDispatch)(submitWidgets(editedItems))
     }
 
     _cancelWidgetsUpdates = () => {
-        const {actions, context} = this.props
-        actions.startEditionMode(context)
+        const {context} = this.props
+        this.props.dispatch(startEditionMode(context))
     }
 
     render() {
@@ -67,3 +63,7 @@ export default class InfobarWidgetsEditionTools extends React.Component<Props> {
         )
     }
 }
+
+const connector = connect()
+
+export default connector(InfobarWidgetsEditionTools)

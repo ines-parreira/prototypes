@@ -32,7 +32,9 @@ export const DEPRECATED_getIntegrationsState = (state: RootState) =>
 
 export const getIntegrationsState = createSelector(
     DEPRECATED_getIntegrationsState,
-    (state) => state.toJS() as IntegrationsState
+    (state) => {
+        return state.toJS() as IntegrationsState
+    }
 )
 
 export const DEPRECATED_getIntegrations = createSelector(

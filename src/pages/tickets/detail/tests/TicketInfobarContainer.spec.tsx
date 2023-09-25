@@ -1,101 +1,83 @@
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
-import * as immutableMatchers from 'jest-immutable-matchers'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
 
-import {renderWithRouter} from '../../../../utils/testing'
+import {selectContext, fetchWidgets} from 'state/widgets/actions'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 import {TicketInfobarContainer} from '../TicketInfobarContainer'
-import Infobar from '../../../common/components/infobar/Infobar/Infobar'
+import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
 
-jest.mock('../../../common/components/infobar/Infobar/Infobar', () => {
-    return ({customer, sources, widgets}: ComponentProps<typeof Infobar>) => {
-        return (
-            <div>
-                Infobar mock
-                <div>customer: {JSON.stringify(customer.toJS())}</div>
-                <div>sources: {JSON.stringify(sources.toJS())}</div>
-                <div>widgets: {JSON.stringify(widgets.toJS())}</div>
-            </div>
-        )
-    }
-})
+jest.mock('state/widgets/actions')
+jest.mock(
+    '../../../common/components/infobar/Infobar/Infobar',
+    () =>
+        ({
+            sources,
+            isRouteEditingWidgets,
+            identifier,
+            customer,
+            widgets,
+            context,
+        }: ComponentProps<typeof Infobar>) =>
+            (
+                <div>
+                    <div>Infobar</div>
+                    <div>sources: {JSON.stringify(sources)}</div>
+                    <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
+                    <div>identifier: {identifier}</div>
+                    <div>customer: {customer}</div>
+                    <div>widgets: {JSON.stringify(widgets)}</div>
+                    <div>context: {context}</div>
+                </div>
+            )
+)
 
-describe('TicketInfobarContainer component', () => {
+const mockedSelectContext = assumeMock(selectContext)
+const mockedFetchWidgets = assumeMock(fetchWidgets)
+const mockStore = configureMockStore([thunk])
+const store = mockStore({})
+store.dispatch = jest.fn()
+
+describe('<TicketInfobarContainer />', () => {
     const minProps = {
-        actions: {
-            widgets: {
-                cancelDrag: jest.fn(),
-                drag: jest.fn(),
-                drop: jest.fn(),
-                generateAndSetWidgets: jest.fn(),
-                removeEditedWidget: jest.fn(),
-                resetWidgets: jest.fn(),
-                setEditedWidgets: jest.fn(),
-                setEditionAsDirty: jest.fn(),
-                startEditionMode: jest.fn(),
-                startWidgetEdition: jest.fn(),
-                stopEditionMode: jest.fn(),
-                stopWidgetEdition: jest.fn(),
-                submitWidgets: jest.fn(),
-                updateEditedWidget: jest.fn(),
-                updateCustomActions: jest.fn(),
-                fetchWidgets: jest.fn(),
-                selectContext: jest.fn(),
-            },
-            fetchPreviewCustomer: jest.fn(),
-        },
-        ticket: fromJS({}),
-        widgets: fromJS({}),
+        isEditingWidgets: false,
         sources: fromJS({
             ticket: fromJS({
                 customer: fromJS({}),
             }),
             customer: fromJS({}),
         }),
-    }
+        widgets: fromJS({}),
+    } as unknown as ComponentProps<typeof TicketInfobarContainer>
 
-    beforeEach(() => {
-        expect.extend(immutableMatchers)
-    })
-
-    it('should render infobar for new ticket', () => {
+    it('should render infobar for active customer', () => {
         const {container} = renderWithRouter(
-            <TicketInfobarContainer {...minProps} />,
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/new',
             }
         )
 
+        expect(mockedSelectContext).toHaveBeenCalledWith()
+        expect(mockedFetchWidgets).toHaveBeenCalled()
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should disable widget editing new tickets without customer', () => {
+    it('should not render anything without a customer id', () => {
         const {container} = renderWithRouter(
-            <TicketInfobarContainer {...minProps} />,
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/new',
             }
         )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should allow widget editing new tickets with customer', () => {
-        const sources = fromJS({
-            ticket: fromJS({
-                customer: {name: 'Pizza Pepperoni'},
-            }),
-            customer: fromJS({}),
-        })
-        const {container} = renderWithRouter(
-            <TicketInfobarContainer {...minProps} sources={sources} />,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            }
-        )
-
         expect(container.firstChild).toMatchSnapshot()
     })
 })

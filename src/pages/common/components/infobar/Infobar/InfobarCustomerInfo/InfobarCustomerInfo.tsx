@@ -1,39 +1,35 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useMemo} from 'react'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {connect, ConnectedProps} from 'react-redux'
 import Clipboard from 'clipboard'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import * as actions from 'state/widgets/actions'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import Button from 'pages/common/components/button/Button'
-import {RootState} from 'state/types'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {itemsWithContext} from 'state/widgets/utils'
 import {getDisplayName} from 'state/customers/helpers'
 import {IntegrationType} from 'models/integration/types'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
-
+import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from 'pages/common/components/infobar/Infobar.less'
 import {
     areSourcesReady,
-    canDrop,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
-import {WidgetsActionsType} from 'pages/common/components/infobar/Infobar/Infobar'
 
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
+import useAppSelector from 'hooks/useAppSelector'
 import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote/CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
 import AddAppSuggestion from './AddAppSuggestion'
 
 type GenerateButtonProps = {
-    setEditedWidgets: (items: Map<any, any>[]) => void
-    setEditionAsDirty: () => void
     widgets?: Maybe<Map<any, any>>
     sources: Map<any, any>
 }
@@ -41,18 +37,14 @@ type GenerateButtonProps = {
 /**
  * Render a button that generates a widget template as edited template
  */
-const GenerateButton = ({
-    setEditedWidgets,
-    setEditionAsDirty,
-    sources,
-    widgets,
-}: GenerateButtonProps) => {
+const GenerateButton = ({sources, widgets}: GenerateButtonProps) => {
+    const dispatch = useAppDispatch()
     const generateWidgets = () => {
         const context = widgets ? widgets.get('currentContext', '') : ''
 
         const items = jsonToWidgets(sources.toJS(), context)
-        setEditedWidgets(items)
-        setEditionAsDirty()
+        dispatch(actions.setEditedWidgets(items))
+        dispatch(actions.setEditionAsDirty())
     }
 
     return (
@@ -66,39 +58,42 @@ const GenerateButton = ({
 }
 
 type OwnProps = {
-    actions: Omit<
-        WidgetsActionsType,
-        'startEditionMode' | 'stopEditionMode' | 'submitWidgets'
-    >
     customer?: Map<any, any>
     displayTabs?: boolean
-    hasIntegrations: boolean
     isEditing: boolean
     sources: Map<any, any>
     widgets: Map<any, any>
 }
 
-export type Editing = {
-    isEditing: boolean
-    isDragging: boolean
-    actions: OwnProps['actions']
-    state: Map<any, any>
-    canDrop: (arg: string) => boolean
-}
-
-export const InfobarCustomerInfoContainer = ({
-    actions,
+const InfobarCustomerInfo = ({
     customer = fromJS({}),
     displayTabs = true,
-    hasIntegrations,
     isEditing,
     sources,
     widgets,
-}: OwnProps & ConnectedProps<typeof connector>) => {
+}: OwnProps) => {
+    const dispatch = useAppDispatch()
+    const hasIntegrations =
+        useAppSelector(
+            getIntegrationsByTypes([
+                IntegrationType.Http,
+                IntegrationType.Magento2,
+                IntegrationType.Recharge,
+                IntegrationType.Shopify,
+                IntegrationType.Smile,
+                IntegrationType.BigCommerce,
+            ])
+        ).length > 0
+
+    const editionContextObject = useMemo(
+        () => ({
+            isEditing,
+        }),
+        [isEditing]
+    )
     const hasCustomerTimelineButton =
         useFlags()[FeatureFlagKey.CustomerTimelineButton] || false
 
-    const [contextWidgets, setContextWidgets] = useState<List<any>>(fromJS([]))
     const [isInitialized, setIsInitialized] = useState(false)
 
     let clipboard: Maybe<Clipboard> = null
@@ -108,7 +103,7 @@ export const InfobarCustomerInfoContainer = ({
         clipboard = new Clipboard('.js-clipboard-copy')
 
         return () => {
-            actions.resetWidgets()
+            dispatch(actions.resetWidgets())
 
             if (clipboard) {
                 clipboard.destroy()
@@ -116,25 +111,21 @@ export const InfobarCustomerInfoContainer = ({
         }
     }, [])
 
-    useEffect(() => {
-        initWidgets()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isEditing, widgets, sources])
-
-    const initWidgets = () => {
+    const contextWidgets = useMemo(() => {
         const context = widgets.get('currentContext', '')
-
         const currentItems = itemsWithContext(
             widgets.get('items', fromJS([])),
             context
         )
 
-        // null = should generate a new widgets template
-        // empty array = user wanted no widgets
-        const hasWidgets = !currentItems.isEmpty()
+        return !currentItems.isEmpty()
+            ? currentItems
+            : (fromJS([]) as List<any>)
+    }, [widgets])
 
-        setContextWidgets(hasWidgets ? currentItems : fromJS([]))
-
+    useEffect(() => {
+        const context = widgets.get('currentContext', '')
+        const hasWidgets = !contextWidgets.isEmpty()
         if (widgets.getIn(['_internal', 'hasFetchedWidgets'])) {
             const shouldGenerateWidgets =
                 areSourcesReady(sources, context) &&
@@ -143,7 +134,7 @@ export const InfobarCustomerInfoContainer = ({
 
             // if no widgets, generate them from incoming json
             if (shouldGenerateWidgets) {
-                actions.generateAndSetWidgets(sources, context)
+                dispatch(actions.generateAndSetWidgets(sources, context))
             }
 
             const shouldSetEditedItems =
@@ -152,25 +143,22 @@ export const InfobarCustomerInfoContainer = ({
             // if editing, set template to edit when ready
             if (shouldSetEditedItems) {
                 // start edition mode
-                actions.setEditedWidgets(currentItems.toJS())
-                setIsInitialized(true)
+                dispatch(actions.setEditedWidgets(contextWidgets.toJS()))
+                if (!isInitialized) {
+                    setIsInitialized(true)
+                }
             }
         }
-    }
+    }, [widgets, contextWidgets, sources, isEditing, isInitialized, dispatch])
 
     const renderWidgets = () => {
         const renderedContextWidgets: List<any> = isEditing
             ? widgets.getIn(['_internal', 'editedItems'])
             : contextWidgets
 
-        const isDragging = widgets.getIn(
-            ['_internal', 'drag', 'isDragging'],
-            false
-        ) as boolean
-
         const shouldSuggestTemplateGeneration =
             isEditing &&
-            !isDragging &&
+            !widgets.getIn(['_internal', 'drag', 'isDragging'], false) &&
             (!renderedContextWidgets ||
                 (renderedContextWidgets.size <= 1 &&
                     (
@@ -181,14 +169,7 @@ export const InfobarCustomerInfoContainer = ({
                     ).isEmpty()))
 
         if (shouldSuggestTemplateGeneration) {
-            return (
-                <GenerateButton
-                    setEditedWidgets={actions.setEditedWidgets}
-                    setEditionAsDirty={actions.setEditionAsDirty}
-                    widgets={widgets}
-                    sources={sources}
-                />
-            )
+            return <GenerateButton widgets={widgets} sources={sources} />
         }
 
         const allWidgetsTemplatesAreEmpty =
@@ -201,25 +182,8 @@ export const InfobarCustomerInfoContainer = ({
             return null
         }
 
-        const editing: Editing | undefined = isEditing
-            ? {
-                  isEditing,
-                  isDragging,
-                  actions,
-                  state: widgets,
-                  canDrop: (targetAbsolutePath: string) => {
-                      const group = widgets.getIn([
-                          '_internal',
-                          'drag',
-                          'group',
-                      ])
-                      return canDrop(group, targetAbsolutePath)
-                  },
-              }
-            : undefined
-
         return (
-            <EditionContext.Provider value={{isEditing}}>
+            <EditionContext.Provider value={editionContextObject}>
                 <CustomerContext.Provider
                     value={{
                         customerId: customer.get('id'),
@@ -230,7 +194,6 @@ export const InfobarCustomerInfoContainer = ({
                         source={sources}
                         widgets={renderedContextWidgets}
                         displayTabs={displayTabs}
-                        editing={editing}
                     />
                 </CustomerContext.Provider>
             </EditionContext.Provider>
@@ -316,16 +279,4 @@ export const InfobarCustomerInfoContainer = ({
     )
 }
 
-const connector = connect((state: RootState) => ({
-    hasIntegrations:
-        getIntegrationsByTypes([
-            IntegrationType.Http,
-            IntegrationType.Magento2,
-            IntegrationType.Recharge,
-            IntegrationType.Shopify,
-            IntegrationType.Smile,
-            IntegrationType.BigCommerce,
-        ])(state).length > 0,
-}))
-
-export default connector(InfobarCustomerInfoContainer)
+export default InfobarCustomerInfo

@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react'
-import {fromJS, Map, List} from 'immutable'
+import React from 'react'
+import {fromJS, Map, List, Iterable} from 'immutable'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
 import _get from 'lodash/get'
@@ -325,7 +325,6 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
             return response
         }
 
-        // if object (and not an array, since Array is an Object in JS)
         if (isObject(value)) {
             // remove private keys from source
             const filteredValue = _omitBy(value, (v, k: string) =>
@@ -640,44 +639,63 @@ export const StarRatingColors = Object.freeze({
  * Return a field value based on raw incoming data and a field type
  */
 export function guessFieldValueFromRawData(
-    data: any,
-    type: string,
+    potentiallyImmutableData: unknown,
+    type?: string,
     integrationType?: string
 ) {
-    let fieldValue: unknown = ''
+    let assignedType = type
+    const fallbackValue = '-'
+    const data = (
+        utils.isImmutable(potentiallyImmutableData)
+            ? (potentiallyImmutableData as Iterable<unknown, unknown>).toJS()
+            : potentiallyImmutableData
+    ) as unknown
 
     if (_isUndefined(data) || _isNull(data)) {
-        return fieldValue as string
+        return fallbackValue
     }
 
-    if (_isString(data)) {
-        fieldValue = data
+    if (!type) {
+        if (_isBoolean(data)) {
+            assignedType = 'boolean'
+        } else if (_isString(data) || typeof data === 'number') {
+            assignedType = 'text'
+        } else if (_isArray(data)) {
+            assignedType = 'array'
+        } else {
+            return fallbackValue
+        }
     }
 
-    switch (type) {
+    switch (assignedType) {
         case 'text': {
-            fieldValue = data
+            if ((_isString(data) && data) || typeof data === 'number') {
+                return data
+            }
             break
         }
         case 'date': {
-            fieldValue = (
-                <DatetimeLabel
-                    dateTime={data}
-                    integrationType={integrationType}
-                />
-            )
+            if (_isString(data) && data) {
+                return (
+                    <DatetimeLabel
+                        dateTime={data}
+                        integrationType={integrationType}
+                    />
+                )
+            }
             break
         }
         case 'age': {
-            if (moment(data).isValid()) {
-                fieldValue = moment().diff(data, 'years')
-                fieldValue += ` (${moment(data).format('YYYY-MM-DD')})`
+            if (_isString(data) && moment(data).isValid()) {
+                return `${moment().diff(data, 'years')} (${moment(data).format(
+                    'YYYY-MM-DD'
+                )})`
             }
             break
         }
         case 'url': {
-            if (utils.isUrl(data)) {
-                fieldValue = (
+            if (_isString(data) && utils.isUrl(data)) {
+                return (
                     <a href={data} target="_blank" rel="noopener noreferrer">
                         {data.length > 60 ? `${data.slice(0, 57)}...` : data}
                     </a>
@@ -686,8 +704,8 @@ export function guessFieldValueFromRawData(
             break
         }
         case 'email': {
-            if (utils.isEmail(data)) {
-                fieldValue = (
+            if (_isString(data) && utils.isEmail(data)) {
+                return (
                     <a
                         href={`mailto:${data}`}
                         target="_blank"
@@ -714,20 +732,42 @@ export function guessFieldValueFromRawData(
                 isTrue = data !== 0
             }
 
-            fieldValue = isTrue
-            break
+            return (
+                <Badge type={isTrue ? ColorType.Success : ColorType.Error}>
+                    {isTrue ? 'True' : 'False'}
+                </Badge>
+            )
         }
         case 'array': {
-            if (_isArray(data) || List.isList(data)) {
-                fieldValue = data
+            if (_isArray(data)) {
+                if (!data.length) {
+                    return fallbackValue
+                }
+                // This case means the array was empty when the template was generated
+                // so we could not guess the type of data it would contains
+                if (_isObject(data[0])) {
+                    return 'Undetermined value'
+                }
+                return data.map(
+                    (val: Maybe<string | number | boolean>, index: number) => {
+                        return (
+                            <React.Fragment key={index}>
+                                {index > 0 && ', '}
+                                {val ? val.toString() : fallbackValue}
+                            </React.Fragment>
+                        )
+                    }
+                )
             }
+
             break
         }
         case 'sentiment': {
-            if (!isNaN(data)) {
-                fieldValue = (
+            const value = Number(data)
+            if (!Number.isNaN(value)) {
+                return (
                     <>
-                        {parseFloat(data) >= SENTIMENT_TYPE_UPPER_BOUND ? (
+                        {value >= SENTIMENT_TYPE_UPPER_BOUND ? (
                             <>
                                 <strong>Positive</strong>
                                 <span
@@ -736,7 +776,7 @@ export function guessFieldValueFromRawData(
                                     thumb_up
                                 </span>
                             </>
-                        ) : parseFloat(data) <= SENTIMENT_TYPE_LOWER_BOUND ? (
+                        ) : value <= SENTIMENT_TYPE_LOWER_BOUND ? (
                             <>
                                 <strong>Negative</strong>
                                 <span
@@ -756,14 +796,17 @@ export function guessFieldValueFromRawData(
             break
         }
         case 'editableList': {
-            fieldValue = <EditableListWidget selectedOptions={data} />
+            if (_isString(data)) {
+                return <EditableListWidget selectedOptions={data} />
+            }
             break
         }
         case 'rating': {
-            if (!isNaN(data)) {
+            const value = Number(data)
+            if (!Number.isNaN(value)) {
                 const starRatings = {
                     activeColor: StarRatingColors.activeColor,
-                    value: parseFloat(data),
+                    value,
                     size: 15,
                     edit: false,
                     isHalf: true,
@@ -774,9 +817,9 @@ export function guessFieldValueFromRawData(
                     ),
                     filledIcon: <span className={`material-icons`}>star</span>,
                 }
-                fieldValue = (
+                return (
                     <>
-                        <b>{data}</b>
+                        <b>{value}</b>
                         <span className={css.starRatingWrapper}>
                             <ReactStars {...starRatings} />
                         </span>
@@ -786,10 +829,11 @@ export function guessFieldValueFromRawData(
             break
         }
         case 'points': {
-            if (!isNaN(data)) {
-                fieldValue = (
+            const value = Number(data)
+            if (!Number.isNaN(value)) {
+                return (
                     <Badge type={ColorType.Grey}>
-                        {parseFloat(data).toLocaleString()}
+                        {value.toLocaleString()}
                     </Badge>
                 )
             }
@@ -797,16 +841,16 @@ export function guessFieldValueFromRawData(
             break
         }
         case 'percent': {
-            if (!isNaN(data)) {
-                fieldValue = (data as number).toString() + '%'
+            const value = Number(data)
+            if (!Number.isNaN(value)) {
+                return value.toString() + '%'
             }
 
             break
         }
-        default:
     }
 
-    return fieldValue
+    return _isString(data) && data ? data : fallbackValue
 }
 
 export function stringifyRawData(data: any, type: string): string | null {
@@ -862,16 +906,16 @@ export function stringifyRawData(data: any, type: string): string | null {
             return isTrue ? 'true' : 'false'
         }
         case 'rating': {
-            const value = _isString(data) ? parseFloat(data) : data
-            if (!isNaN(value)) {
-                return (value as string).toString()
+            const value = Number(data)
+            if (!Number.isNaN(value)) {
+                return value.toString()
             }
             break
         }
         case 'sentiment': {
-            const value = _isString(data) ? parseFloat(data) : data
+            const value = Number(data)
 
-            if (!isNaN(value)) {
+            if (!Number.isNaN(value)) {
                 if (value >= SENTIMENT_TYPE_UPPER_BOUND) {
                     return 'Positive'
                 } else if (value <= SENTIMENT_TYPE_UPPER_BOUND) {
@@ -883,60 +927,22 @@ export function stringifyRawData(data: any, type: string): string | null {
             break
         }
         case 'points': {
-            const value = _isString(data) ? parseFloat(data) : data
-            if (!isNaN(value)) {
-                return (value as string).toLocaleString()
+            const value = Number(data)
+            if (!Number.isNaN(value)) {
+                return value.toLocaleString()
             }
 
             break
         }
         case 'percent': {
-            const value = _isString(data) ? parseFloat(data) : data
-            if (!isNaN(value)) {
-                return (value as string).toString() + '%'
+            const value = Number(data)
+            if (!Number.isNaN(value)) {
+                return value.toString() + '%'
             }
             break
         }
     }
     return null
-}
-
-/**
- * Display a widget field label (before the value)
- */
-export const displayValue = (label: any): ReactNode => {
-    const defaultValue = '-'
-
-    if (_isUndefined(label)) {
-        return defaultValue
-    }
-
-    if (_isNull(label)) {
-        return defaultValue
-    }
-
-    if (_isString(label) && !label) {
-        return defaultValue
-    }
-
-    if (_isBoolean(label)) {
-        return (
-            <Badge type={label ? ColorType.Success : ColorType.Error}>
-                {label ? 'True' : 'False'}
-            </Badge>
-        )
-    }
-
-    if (_isArray(label) || List.isList(label)) {
-        return (label as any[]).map((val: any, index: number) => (
-            <span key={index}>
-                {index > 0 && ', '}
-                {displayValue(val)}
-            </span>
-        ))
-    }
-
-    return label as ReactNode
 }
 
 /**

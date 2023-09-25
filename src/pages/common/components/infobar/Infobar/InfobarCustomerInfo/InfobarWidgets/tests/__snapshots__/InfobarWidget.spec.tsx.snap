@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InfobarWidget card widget should display the widget if isEditing=true 1`] = `
+exports[`InfobarWidget card widget should display the widget 1`] = `
 "<ContextProvider value={{...}}>
-  <Card isEditing={true} isParentList={false} source={{...}} widget={{...}} template={{...}} editing={[undefined]} parent={[undefined]} open={true} removeBorderTop={false} AfterTitle={[undefined]} BeforeContent={[undefined]} TitleWrapper={[undefined]} Wrapper={[undefined]} editionHiddenFields={[undefined]} />
+  <Connect(Card) isEditing={false} isParentList={false} source={{...}} widget={{...}} template={{...}} parent={[undefined]} open={true} removeBorderTop={false} />
 </ContextProvider>"
 `;
 
@@ -18,9 +18,9 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
     }
   }
 >
-  <Card
+  <Connect(Card)
     extensionUsed="bigcommerce"
-    isEditing={true}
+    isEditing={false}
     isParentList={false}
     open={true}
     removeBorderTop={false}
@@ -76,9 +76,9 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
     }
   }
 >
-  <Card
+  <Connect(Card)
     extensionUsed="magento2"
-    isEditing={true}
+    isEditing={false}
     isParentList={false}
     open={true}
     removeBorderTop={false}
@@ -134,9 +134,9 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
     }
   }
 >
-  <Card
+  <Connect(Card)
     extensionUsed="recharge"
-    isEditing={true}
+    isEditing={false}
     isParentList={false}
     open={true}
     removeBorderTop={false}
@@ -192,9 +192,9 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
     }
   }
 >
-  <Card
+  <Connect(Card)
     extensionUsed="shopify"
-    isEditing={true}
+    isEditing={false}
     isParentList={false}
     open={true}
     removeBorderTop={false}

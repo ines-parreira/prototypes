@@ -32,7 +32,6 @@ import {
     getWidgetId,
     getWidgetTitle,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -41,13 +40,12 @@ import css from './Wrapper.less'
 import WrapperEdit from './forms/WrapperEdit'
 
 type Props = {
-    editing?: Editing
     source: Maybe<Map<string, unknown>>
     widget: Map<string, unknown>
     template: Map<string, unknown>
 }
 
-export default function Wrapper({widget, template, source, editing}: Props) {
+export default function Wrapper({widget, template, source}: Props) {
     const dispatch = useAppDispatch()
     const {isEditing} = useContext(EditionContext)
     const id = useId()
@@ -207,8 +205,6 @@ export default function Wrapper({widget, template, source, editing}: Props) {
                                     parent={template}
                                     widget={widget}
                                     template={passedTemplate}
-                                    editing={editing}
-                                    isEditing={isEditing}
                                 />
                             )
                         })}

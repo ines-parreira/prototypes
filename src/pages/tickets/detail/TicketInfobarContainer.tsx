@@ -1,15 +1,14 @@
-import React, {useEffect, useMemo} from 'react'
+import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import {fromJS, Map} from 'immutable'
 import {useParams} from 'react-router-dom'
 
-import {RootState, StoreDispatch} from '../../../state/types'
-import Infobar from '../../common/components/infobar/Infobar/Infobar'
-import * as WidgetActions from '../../../state/widgets/actions'
-import {fetchPreviewCustomer} from '../../../state/infobar/actions'
-import {getSourcesWithCustomer} from '../../../state/widgets/selectors'
-import {WidgetContextType} from '../../../state/widgets/types'
+import {RootState} from 'state/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import * as actions from 'state/widgets/actions'
+import {WidgetContextType} from 'state/widgets/types'
+import {getSourcesWithCustomer, getWidgetsState} from 'state/widgets/selectors'
+import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 
 type OwnProps = {
     isEditingWidgets?: boolean
@@ -18,37 +17,27 @@ type OwnProps = {
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export const TicketInfobarContainer = ({
-    actions,
     isEditingWidgets,
     sources,
-    ticket,
     widgets,
 }: Props) => {
     const params = useParams<{ticketId: string}>()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        actions.widgets.selectContext()
-        actions.widgets.fetchWidgets()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        dispatch(actions.selectContext())
+        void dispatch(actions.fetchWidgets())
+    }, [dispatch])
 
-    const customer = useMemo(
-        () =>
-            (sources.getIn(['ticket', 'customer']) || fromJS({})) as Map<
-                any,
-                any
-            >,
-        [sources]
-    )
+    const customer =
+        sources.getIn(['ticket', 'customer']) || (fromJS({}) as Map<any, any>)
 
     return (
         <Infobar
-            // $TsFixMe remove casting once props drilling removed
-            actions={actions as any}
             sources={sources}
             isRouteEditingWidgets={!!isEditingWidgets}
             identifier={(
-                ticket.get('id', params.ticketId || '') as number
+                sources.getIn(['ticket', 'id'], params.ticketId || '') as number
             ).toString()}
             customer={customer}
             widgets={widgets}
@@ -57,21 +46,9 @@ export const TicketInfobarContainer = ({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        ticket: state.ticket,
-        widgets: state.widgets,
-        sources: getSourcesWithCustomer(state),
-    }),
-    (dispatch: StoreDispatch) => ({
-        actions: {
-            fetchPreviewCustomer: bindActionCreators(
-                fetchPreviewCustomer,
-                dispatch
-            ),
-            widgets: bindActionCreators(WidgetActions, dispatch),
-        },
-    })
-)
+const connector = connect((state: RootState) => ({
+    widgets: getWidgetsState(state),
+    sources: getSourcesWithCustomer(state),
+}))
 
 export default connector(TicketInfobarContainer)

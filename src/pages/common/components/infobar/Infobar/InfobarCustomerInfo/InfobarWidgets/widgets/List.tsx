@@ -2,7 +2,6 @@ import React, {Component, createContext} from 'react'
 import classnames from 'classnames'
 import {Map, List} from 'immutable'
 
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget'
 
 import {compare} from 'utils'
@@ -20,7 +19,6 @@ export const WidgetListContext = createContext<WidgetListContextType>({
 const DEFAULT_LIST_LIMIT = 3
 
 type OwnProps = {
-    editing?: Editing
     source: List<Map<string, unknown>>
     widget: Map<string, unknown>
     template: Map<unknown, unknown>
@@ -40,7 +38,6 @@ class ListInfobarWidget extends Component<OwnProps> {
             source,
             widget,
             template,
-            editing,
             isParentList,
             removeBorderTop = false,
         } = this.props
@@ -161,8 +158,6 @@ class ListInfobarWidget extends Component<OwnProps> {
                             parent={updatedTemplate}
                             widget={widget}
                             template={passedTemplate}
-                            editing={editing}
-                            isEditing={isEditing}
                             open={i === 0}
                             removeBorderTop={i === 0 && removeBorderTop}
                         />

@@ -226,24 +226,17 @@ describe('widgets infobar utils', () => {
     })
 
     describe('guessFieldValueFromRawData()', () => {
-        it('should return an empty string because passed data is undefined', () => {
-            expect(utils.guessFieldValueFromRawData(undefined, '')).toEqual('')
-        })
-
-        it('should return an empty string because passed data is null', () => {
-            expect(utils.guessFieldValueFromRawData(null, '')).toEqual('')
-        })
-
         it('should return passed data because passed type is `text`', () => {
             const passedData = 'foo'
-            expect(
-                utils.guessFieldValueFromRawData(passedData, 'text')
-            ).toEqual(passedData)
+            expect(utils.guessFieldValueFromRawData(passedData, 'text')).toBe(
+                passedData
+            )
         })
 
         it('should return a datetime label because passed type is `date`', () => {
+            const passedData = '2017-12-14T16:34'
             expect(
-                utils.guessFieldValueFromRawData('foo', 'date')
+                utils.guessFieldValueFromRawData(passedData, 'date')
             ).toMatchSnapshot()
         })
 
@@ -254,12 +247,12 @@ describe('widgets infobar utils', () => {
             const year = `${currentYear - expectedAge}-01-01`
             expect(
                 utils.guessFieldValueFromRawData(`${year} 00:05:00`, 'age')
-            ).toEqual(`${expectedAge} (${year})`)
+            ).toBe(`${expectedAge} (${year})`)
         })
 
         it('should return passed data because passed type is `age` and passed data is not a valid datetime', () => {
             const passedData = '20180101-05 00:'
-            expect(utils.guessFieldValueFromRawData(passedData, 'age')).toEqual(
+            expect(utils.guessFieldValueFromRawData(passedData, 'age')).toBe(
                 passedData
             )
         })
@@ -272,7 +265,7 @@ describe('widgets infobar utils', () => {
 
         it('should return passed data because passed type is `url` and passed data is not an url', () => {
             const passedData = 'httpsgorgiasio'
-            expect(utils.guessFieldValueFromRawData(passedData, 'url')).toEqual(
+            expect(utils.guessFieldValueFromRawData(passedData, 'url')).toBe(
                 passedData
             )
         })
@@ -288,30 +281,9 @@ describe('widgets infobar utils', () => {
 
         it('should return passed data because passed type is `email` and passed data is not an email address', () => {
             const passedData = 'developersgorgias.io'
-            expect(
-                utils.guessFieldValueFromRawData(passedData, 'email')
-            ).toEqual(passedData)
-        })
-
-        it('should return `true` because passed type is `boolean` and passed data is a `true` value', () => {
-            expect(utils.guessFieldValueFromRawData(true, 'boolean')).toBe(true)
-            expect(utils.guessFieldValueFromRawData('true', 'boolean')).toBe(
-                true
+            expect(utils.guessFieldValueFromRawData(passedData, 'email')).toBe(
+                passedData
             )
-            expect(utils.guessFieldValueFromRawData('1', 'boolean')).toBe(true)
-            expect(utils.guessFieldValueFromRawData(1, 'boolean')).toBe(true)
-            expect(utils.guessFieldValueFromRawData(42, 'boolean')).toBe(true)
-        })
-
-        it('should return `false` because passed type is `boolean` and passed data is a `false` value', () => {
-            expect(utils.guessFieldValueFromRawData(false, 'boolean')).toBe(
-                false
-            )
-            expect(utils.guessFieldValueFromRawData('false', 'boolean')).toBe(
-                false
-            )
-            expect(utils.guessFieldValueFromRawData('0', 'boolean')).toBe(false)
-            expect(utils.guessFieldValueFromRawData(0, 'boolean')).toBe(false)
         })
 
         const validValues: [string | number, string][] = [
@@ -352,39 +324,78 @@ describe('widgets infobar utils', () => {
                 expect(result).toMatchSnapshot()
             }
         )
-    })
-
-    describe('displayValue()', () => {
         it('should return the default value when passed an empty value', () => {
-            expect(utils.displayValue(undefined)).toEqual('-')
-            expect(utils.displayValue(null)).toEqual('-')
-            expect(utils.displayValue('')).toEqual('-')
+            expect(utils.guessFieldValueFromRawData(undefined)).toEqual('-')
+            expect(utils.guessFieldValueFromRawData(null)).toEqual('-')
+            expect(utils.guessFieldValueFromRawData('')).toEqual('-')
         })
 
-        it('should return a success badge because passed data is a `true` value', () => {
-            const {container} = render(utils.displayValue(true) as ReactElement)
-            expect(container).toMatchSnapshot()
-        })
-
-        it('should return a danger badge because passed data is a `false` value', () => {
-            const {container} = render(
-                utils.displayValue(false) as ReactElement
+        describe('should return a success badge because passed data is a `true` value', () => {
+            it('should render a badge', () => {
+                const {container} = render(
+                    utils.guessFieldValueFromRawData(true) as ReactElement
+                )
+                expect(container).toMatchSnapshot()
+            })
+            it.each([[true], ['true'], ['1'], [1], [42]])(
+                'should return a truthy badge',
+                (data) => {
+                    expect(
+                        JSON.stringify(
+                            utils.guessFieldValueFromRawData(data, 'boolean')
+                        ).includes('True')
+                    ).toBeTruthy()
+                }
             )
-            expect(container).toMatchSnapshot()
+        })
+
+        describe('should return a danger badge because passed data is a `false` value', () => {
+            it('should render a badge', () => {
+                const {container} = render(
+                    utils.guessFieldValueFromRawData(false) as ReactElement
+                )
+                expect(container).toMatchSnapshot()
+            })
+            it.each([[false], ['false'], ['0'], [0]])(
+                'should return a truthy badge',
+                (data) => {
+                    expect(
+                        JSON.stringify(
+                            utils.guessFieldValueFromRawData(data, 'boolean')
+                        ).includes('False')
+                    ).toBeTruthy()
+                }
+            )
         })
 
         it('should return a comma-separated list of rendered values because passed data is an array', () => {
             const {container} = render(
-                utils.displayValue([123, 'test', true]) as ReactElement
+                utils.guessFieldValueFromRawData([
+                    123,
+                    'test',
+                    true,
+                    null,
+                ]) as ReactElement
             )
             expect(container).toMatchSnapshot()
         })
 
+        it('should return default value when passer undefined, null or an object', () => {
+            expect(utils.guessFieldValueFromRawData({key: 'value'})).toBe('-')
+            expect(utils.guessFieldValueFromRawData(undefined)).toBe('-')
+            expect(utils.guessFieldValueFromRawData(null)).toBe('-')
+        })
+
         it('should work when passed an immutable object', () => {
-            const {container} = render(
-                utils.displayValue(fromJS({key: 'value'})) as ReactElement
+            expect(
+                utils.guessFieldValueFromRawData(fromJS({key: 'value'}))
+            ).toBe('-')
+        })
+
+        it('should return "Undetermined value" when passed an array of objects', () => {
+            expect(utils.guessFieldValueFromRawData([{foo: 'bar'}])).toBe(
+                'Undetermined value'
             )
-            expect(container).toMatchSnapshot()
         })
     })
 

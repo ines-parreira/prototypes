@@ -1,9 +1,9 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
-import {DEPRECATED_getActiveCustomer} from '../customers/selectors'
-
-import {RootState} from '../types'
+import {RootState} from 'state/types'
+import {DEPRECATED_getActiveCustomer} from 'state/customers/selectors'
+import {getTicketState} from 'state/ticket/selectors'
 
 import {itemsWithContext} from './utils'
 import {WidgetContextType, WidgetsState} from './types'
@@ -41,12 +41,16 @@ export const hasWidgetsWithContext = (context?: WidgetContextType) =>
         (widgets) => !widgets.isEmpty()
     )
 
-export const getSources = (state: RootState) => {
-    return fromJS({
-        ticket: state.ticket,
-        customer: DEPRECATED_getActiveCustomer(state),
-    }) as Map<any, any>
-}
+export const getSources = createSelector(
+    getTicketState,
+    DEPRECATED_getActiveCustomer,
+    (ticket, customer) => {
+        return fromJS({
+            ticket,
+            customer,
+        }) as Map<any, any>
+    }
+)
 
 export const getSourcesWithCustomer = createSelector(getSources, (sources) => {
     // If there's no customer and ticket is not loading then use the one from sources.

@@ -44,7 +44,7 @@ export const agents: User[] = [
         id: 2,
         firstname: 'Bob',
         email: 'agent-smith@gorgias.io',
-        role: {name: UserRole.Agent},
+        role: {name: UserRole.Admin},
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
         meta: {

@@ -116,7 +116,6 @@ describe('InfobarWidgets component', () => {
                         })}
                         widget={fromJS(shopifyWidget)}
                         source={shopifySource}
-                        editing={undefined}
                     />
                 </EditionContext.Provider>
             </Provider>
@@ -137,7 +136,6 @@ describe('InfobarWidgets component', () => {
                         })}
                         widget={fromJS(shopifyWidget)}
                         source={httpSource}
-                        editing={undefined}
                     />
                 </EditionContext.Provider>
             </Provider>
@@ -160,7 +158,6 @@ describe('InfobarWidgets component', () => {
                         })}
                         widget={fromJS(httpWidget)}
                         source={shopifySource}
-                        editing={undefined}
                     />
                 </EditionContext.Provider>
             </Provider>
@@ -189,7 +186,6 @@ describe('InfobarWidgets component', () => {
                         })}
                         widget={fromJS(httpWidget)}
                         source={shopifySource}
-                        editing={undefined}
                     />
                 </EditionContext.Provider>
             </Provider>
@@ -210,7 +206,6 @@ describe('InfobarWidgets component', () => {
                         })}
                         widget={fromJS(customerExternalDataWidget)}
                         source={customerExternalDataSource}
-                        editing={undefined}
                     />
                 </EditionContext.Provider>
             </Provider>
@@ -231,7 +226,6 @@ describe('InfobarWidgets component', () => {
                         })}
                         widget={fromJS(woocommerceDataWidget)}
                         source={woocommerceDataSource}
-                        editing={undefined}
                     />
                 </EditionContext.Provider>
             </Provider>

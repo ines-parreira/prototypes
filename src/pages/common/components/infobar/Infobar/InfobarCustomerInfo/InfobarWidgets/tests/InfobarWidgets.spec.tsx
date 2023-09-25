@@ -20,8 +20,8 @@ import {
 } from 'state/widgets/constants'
 import {WidgetContextType} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 
+import {EditionContext} from 'providers/infobar/EditionContext'
 import InfobarWidgets from '../InfobarWidgets'
 
 describe('InfobarWidgets component', () => {
@@ -37,6 +37,7 @@ describe('InfobarWidgets component', () => {
     const store = mockStore({
         customers: fromJS({active: {name: 'Johanna'}}),
         ticket: fromJS({someData: '1234'}),
+        widgets: fromJS({}),
         currentUser: fromJS(agents[0]),
         integrations: fromJS({
             integrations: [
@@ -68,14 +69,6 @@ describe('InfobarWidgets component', () => {
             ],
         }),
     })
-
-    const baseEditing = {
-        actions: {},
-        isEditing: false,
-        isDragging: false,
-        state: fromJS({}),
-        canDrop: () => true,
-    } as unknown as Editing
 
     const baseSource = fromJS({
         ticket: {
@@ -287,7 +280,6 @@ describe('InfobarWidgets component', () => {
                 <InfobarWidgets
                     widgets={null}
                     context={WidgetContextType.Ticket}
-                    editing={baseEditing}
                     source={baseSource}
                 />
             </Provider>
@@ -299,13 +291,14 @@ describe('InfobarWidgets component', () => {
     it('should display integrations with data and 3rd party / standalone widget in non-editing mode', () => {
         render(
             <Provider store={store}>
-                <InfobarWidgets
-                    widgets={baseWidgets}
-                    context={WidgetContextType.Ticket}
-                    editing={baseEditing}
-                    source={baseSource}
-                    displayTabs
-                />
+                <EditionContext.Provider value={{isEditing: false}}>
+                    <InfobarWidgets
+                        widgets={baseWidgets}
+                        context={WidgetContextType.Ticket}
+                        source={baseSource}
+                        displayTabs
+                    />
+                </EditionContext.Provider>
             </Provider>
         )
 
@@ -322,12 +315,13 @@ describe('InfobarWidgets component', () => {
     it('should display all possible widgets in editing mode', () => {
         render(
             <Provider store={store}>
-                <InfobarWidgets
-                    widgets={baseWidgets}
-                    context={WidgetContextType.Ticket}
-                    editing={{...baseEditing, isEditing: true}}
-                    source={baseSource}
-                />
+                <EditionContext.Provider value={{isEditing: true}}>
+                    <InfobarWidgets
+                        widgets={baseWidgets}
+                        context={WidgetContextType.Ticket}
+                        source={baseSource}
+                    />
+                </EditionContext.Provider>
             </Provider>
         )
         ;(baseWidgets.toJS() as typeof widgets).map((widget) => {

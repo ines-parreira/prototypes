@@ -3,15 +3,23 @@ import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody} from 'reactstrap'
+import {connect, ConnectedProps} from 'react-redux'
 
-import {WidgetType} from 'state/widgets/types'
+import {IntegrationType} from 'models/integration/constants'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {
+    removeEditedWidget,
+    startWidgetEdition,
+    stopWidgetEdition,
+} from 'state/widgets/actions'
+import {RootState} from 'state/types'
+import {WidgetType} from 'state/widgets/types'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
+import {canDrop} from 'pages/common/components/infobar/utils'
 import {CardHeaderIcon} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderIcon'
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
-import {IntegrationType} from 'models/integration/constants'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+
 import InfobarWidget from '../InfobarWidget'
 import {getWidgetTitle} from '../helpers'
 import WidgetEdit, {EditionHiddenField} from './forms/WidgetEdit'
@@ -28,7 +36,6 @@ type Props = {
     Wrapper?: ElementType
     editionHiddenFields?: EditionHiddenField[]
 
-    editing?: Editing
     parent?: Map<any, any>
     source?: Maybe<Map<string, unknown>>
     widget: Map<string, unknown>
@@ -38,9 +45,9 @@ type Props = {
     isParentList: boolean
     open: boolean
     removeBorderTop: boolean
-}
+} & ConnectedProps<typeof connector>
 
-export default class Card extends React.Component<
+export class Card extends React.Component<
     Props,
     {
         displayPopup: boolean
@@ -48,18 +55,6 @@ export default class Card extends React.Component<
     }
 > {
     uniqueId: string
-
-    static defaultProps = {
-        AfterTitle: undefined,
-        BeforeContent: undefined,
-        TitleWrapper: undefined,
-        Wrapper: undefined,
-        editionHiddenFields: undefined,
-
-        isEditing: false,
-        isParentList: false,
-        open: false,
-    }
 
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
@@ -76,13 +71,14 @@ export default class Card extends React.Component<
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const {parent, isParentList, isEditing, template, editing} = nextProps
+        const {parent, isParentList, isEditing, template, widgetsState} =
+            nextProps
 
         if (isEditing) {
             const tp = isParentList
                 ? parent?.get('templatePath', '')
                 : template.get('templatePath', '')
-            const currentlyEditedWidgetPath = editing?.state.getIn(
+            const currentlyEditedWidgetPath = widgetsState.getIn(
                 ['_internal', 'currentlyEditedWidgetPath'],
                 ''
             )
@@ -97,30 +93,30 @@ export default class Card extends React.Component<
     }
 
     deleteCard = (e: SyntheticEvent) => {
-        const {template, editing} = this.props
+        const {dispatch, template, isEditing} = this.props
 
         const ap = template.get('absolutePath') as string[]
         const tp = template.get('templatePath') as string
 
         e.stopPropagation()
-        if (editing) {
-            editing.actions.removeEditedWidget(tp, ap)
+        if (isEditing) {
+            dispatch(removeEditedWidget(tp, ap))
         }
     }
 
     deleteList = (e: SyntheticEvent) => {
-        const {parent, template, editing} = this.props
+        const {dispatch, parent, template, isEditing} = this.props
 
         e.stopPropagation()
-        if (editing) {
+        if (isEditing) {
             const ap = parent?.get('absolutePath') as string[]
             const tp = template.get('templatePath') as string
-            editing.actions.removeEditedWidget(tp, ap)
+            dispatch(removeEditedWidget(tp, ap))
         }
     }
 
     startWidgetEdition = (e: SyntheticEvent) => {
-        const {parent, isParentList, template, editing} = this.props
+        const {dispatch, parent, isParentList, template, isEditing} = this.props
 
         const templatePath = isParentList
             ? parent?.get('templatePath', '')
@@ -128,13 +124,13 @@ export default class Card extends React.Component<
 
         e.stopPropagation()
 
-        if (editing) {
-            editing.actions.startWidgetEdition(templatePath)
+        if (isEditing) {
+            dispatch(startWidgetEdition(templatePath))
         }
     }
 
     togglePopup = () => {
-        return this.props.editing?.actions.stopWidgetEdition()
+        return this.props.dispatch(stopWidgetEdition())
     }
 
     /**
@@ -143,9 +139,9 @@ export default class Card extends React.Component<
      * @private
      */
     renderPopover = () => {
-        const {editing, TitleWrapper} = this.props
+        const {isEditing, TitleWrapper} = this.props
 
-        if (!editing) {
+        if (!isEditing) {
             return null
         }
 
@@ -281,8 +277,8 @@ export default class Card extends React.Component<
             isParentList,
             source,
             widget,
+            widgetsState,
             template,
-            editing,
             open,
             removeBorderTop,
             AfterTitle,
@@ -299,13 +295,18 @@ export default class Card extends React.Component<
         >
 
         // display content (or at least space under card title) if we are in edition mode or if there is data to display
-        const shouldDisplayCardContent = editing || !childWidgets.isEmpty()
+        const shouldDisplayCardContent = isEditing || !childWidgets.isEmpty()
 
         const onlyContent = !template.getIn(['meta', 'displayCard'], true)
         const isExpandable = !isEditing && shouldDisplayCardContent
         // keep the unscoped class here to have drag and drop greying feature
         const className = classnames(css.widgetCard, 'widget-card', {
-            'can-drop': editing && editing.canDrop(ap as string),
+            'can-drop':
+                isEditing &&
+                canDrop(
+                    widgetsState.getIn(['_internal', 'drag', 'group']),
+                    ap as string
+                ),
             draggable: !isParentList,
             [css.closed]: !this.state.open && !isEditing,
             [css.onlyContent]: !isEditing && onlyContent,
@@ -462,8 +463,6 @@ export default class Card extends React.Component<
                                                 parent={template}
                                                 widget={widget}
                                                 template={passedTemplate}
-                                                editing={editing}
-                                                isEditing={isEditing}
                                                 open={
                                                     open && firstNonTextWidget
                                                 }
@@ -490,6 +489,12 @@ export default class Card extends React.Component<
         return content
     }
 }
+
+const connector = connect((state: RootState) => ({
+    widgetsState: state.widgets,
+}))
+
+export default connector(Card)
 
 function isRootWidget(templatePath: string) {
     // We must handle the case where the first widget after the wrapper

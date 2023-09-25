@@ -5,8 +5,9 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import {StoreDispatch, RootState} from 'state/types'
 
+import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
+import {StoreDispatch, RootState} from 'state/types'
 import {
     HTTP_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
@@ -15,61 +16,42 @@ import {
     SMILE_INTEGRATION_TYPE,
     BIGCOMMERCE_INTEGRATION_TYPE,
 } from 'constants/integration'
+import {assumeMock} from 'utils/testing'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import InfobarCustomerInfo, {
-    InfobarCustomerInfoContainer,
-} from '../InfobarCustomerInfo'
+import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
+jest.mock(
+    'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
+)
 jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
 jest.mock('../InfobarWidgets/InfobarWidgets', () => () => (
     <div>InfobarWidgets</div>
 ))
 
-const defaultState = {
-    ticket: fromJS({id: 123, _internal: {displayHistory: false}}),
-    customers: fromJS({
-        _internal: {
-            loading: {
-                history: false,
-            },
-        },
-        customerHistory: {hasHistory: true},
-    }),
-} as RootState
+const mockedCustomerTimelineButton = assumeMock(CustomerTimelineButton)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+const store = mockStore({
+    integrations: fromJS({
+        integrations: [{type: HTTP_INTEGRATION_TYPE}],
+    }),
+})
+
 const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
-    actions: {
-        setEditedWidgets: jest.fn(),
-        setEditionAsDirty: jest.fn(),
-        resetWidgets: jest.fn(),
-        generateAndSetWidgets: jest.fn(),
-        removeEditedWidget: jest.fn(),
-        cancelDrag: jest.fn(),
-        drag: jest.fn(),
-        drop: jest.fn(),
-        startWidgetEdition: jest.fn(),
-        stopWidgetEdition: jest.fn(),
-        updateEditedWidget: jest.fn(),
-    },
     isEditing: false,
     sources: fromJS({}),
     widgets: fromJS({}),
     customer: fromJS({id: 1, name: 'foo'}),
 }
 
-const containerMinProps: ComponentProps<typeof InfobarCustomerInfoContainer> = {
-    ...minProps,
-    hasIntegrations: true,
-    dispatch: jest.fn(),
-}
-
 describe('<InfobarCustomerInfo/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-
+        mockedCustomerTimelineButton.mockImplementation(() => (
+            <div>Customer timeline</div>
+        ))
         mockFlags({
             [FeatureFlagKey.CustomerTimelineButton]: true,
         })
@@ -77,10 +59,9 @@ describe('<InfobarCustomerInfo/>', () => {
 
     it('should not render because there is no passed customer', () => {
         const component = shallow(
-            <InfobarCustomerInfoContainer
-                {...containerMinProps}
-                customer={undefined}
-            />
+            <Provider store={store}>
+                <InfobarCustomerInfo {...minProps} customer={undefined} />{' '}
+            </Provider>
         )
 
         expect(component).toEqual({})
@@ -88,10 +69,9 @@ describe('<InfobarCustomerInfo/>', () => {
 
     it('should not render because the passed customer is empty', () => {
         const component = shallow(
-            <InfobarCustomerInfoContainer
-                {...containerMinProps}
-                customer={fromJS({})}
-            />
+            <Provider store={store}>
+                <InfobarCustomerInfo {...minProps} customer={fromJS({})} />{' '}
+            </Provider>
         )
 
         expect(component).toEqual({})
@@ -124,12 +104,14 @@ describe('<InfobarCustomerInfo/>', () => {
             })
 
             const component = shallow(
-                <InfobarCustomerInfoContainer
-                    {...containerMinProps}
-                    sources={sources}
-                    widgets={widgets}
-                    isEditing
-                />
+                <Provider store={store}>
+                    <InfobarCustomerInfo
+                        {...minProps}
+                        sources={sources}
+                        widgets={widgets}
+                        isEditing
+                    />{' '}
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -163,12 +145,14 @@ describe('<InfobarCustomerInfo/>', () => {
             })
 
             const component = shallow(
-                <InfobarCustomerInfoContainer
-                    {...containerMinProps}
-                    sources={sources}
-                    widgets={widgets}
-                    isEditing
-                />
+                <Provider store={store}>
+                    <InfobarCustomerInfo
+                        {...minProps}
+                        sources={sources}
+                        widgets={widgets}
+                        isEditing
+                    />{' '}
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -198,11 +182,13 @@ describe('<InfobarCustomerInfo/>', () => {
             })
 
             const component = shallow(
-                <InfobarCustomerInfoContainer
-                    {...containerMinProps}
-                    sources={sources}
-                    widgets={widgets}
-                />
+                <Provider store={store}>
+                    <InfobarCustomerInfo
+                        {...minProps}
+                        sources={sources}
+                        widgets={widgets}
+                    />{' '}
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -217,7 +203,6 @@ describe('<InfobarCustomerInfo/>', () => {
                 [FeatureFlagKey.CustomerTimelineButton]:
                     hasCustomerTimelineButton,
             })
-
             const sources = fromJS({
                 ticket: {
                     customer: {
@@ -245,9 +230,9 @@ describe('<InfobarCustomerInfo/>', () => {
             })
 
             const component = mount(
-                <Provider store={mockStore(defaultState)}>
-                    <InfobarCustomerInfoContainer
-                        {...containerMinProps}
+                <Provider store={store}>
+                    <InfobarCustomerInfo
+                        {...minProps}
                         sources={sources}
                         widgets={widgets}
                     />
@@ -268,12 +253,14 @@ describe('<InfobarCustomerInfo/>', () => {
         'should render only basic customer info because there is no customer data and there is some data integrations ' +
             'configured for the account',
         () => {
-            const component = shallow(
-                <InfobarCustomerInfoContainer
-                    {...containerMinProps}
-                    sources={fromJS({})}
-                    widgets={fromJS({currentContext: 'ticket'})}
-                />
+            const component = mount(
+                <Provider store={store}>
+                    <InfobarCustomerInfo
+                        {...minProps}
+                        sources={fromJS({})}
+                        widgets={fromJS({currentContext: 'ticket'})}
+                    />{' '}
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -284,13 +271,14 @@ describe('<InfobarCustomerInfo/>', () => {
         'should render basic customer info and the suggestion to add integrations because there is no customer data ' +
             'and there is no data integrations configured for the account',
         () => {
-            const component = shallow(
-                <InfobarCustomerInfoContainer
-                    {...containerMinProps}
-                    sources={fromJS({})}
-                    widgets={fromJS({currentContext: 'ticket'})}
-                    hasIntegrations={false}
-                />
+            const component = mount(
+                <Provider store={store}>
+                    <InfobarCustomerInfo
+                        {...minProps}
+                        sources={fromJS({})}
+                        widgets={fromJS({currentContext: 'ticket'})}
+                    />{' '}
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()

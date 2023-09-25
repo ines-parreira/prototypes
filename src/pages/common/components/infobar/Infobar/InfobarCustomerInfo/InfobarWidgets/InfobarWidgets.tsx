@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext, memo} from 'react'
 import classnames from 'classnames'
 import {List, Map, fromJS} from 'immutable'
 
@@ -14,10 +14,11 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetContextType, WidgetType} from 'state/widgets/types'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import {getWidgetsState} from 'state/widgets/selectors'
+import {EditionContext} from 'providers/infobar/EditionContext'
 import {canDisplayWidget} from 'pages/common/components/infobar/utils'
+import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 
 import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import css from './InfobarWidgets.less'
@@ -28,7 +29,6 @@ import InfobarWidget from './InfobarWidget'
 
 type Props = {
     context: WidgetContextType
-    editing?: Editing
     source: Map<string, unknown>
     widgets: Maybe<List<Map<string, unknown>>>
     displayTabs?: boolean
@@ -38,20 +38,21 @@ const InfobarWidgets = ({
     context,
     source = fromJS({}),
     widgets,
-    editing,
     displayTabs,
 }: Props) => {
     const integrations = useAppSelector(getIntegrations)
-
+    const widgetState = useAppSelector(getWidgetsState)
+    const {isEditing} = useContext(EditionContext)
     if (!widgets) {
         return null
     }
 
-    const isEditing = Boolean(editing?.isEditing)
-
     const className = classnames(css.widgetsList, {
         editing: isEditing,
-        [css.dragging]: !!(editing && editing.isDragging),
+        [css.dragging]: !!(
+            isEditing &&
+            widgetState.getIn(['_internal', 'drag', 'isDragging'], false)
+        ),
     })
 
     const genericSourcePath = getSourcePathFromContext(
@@ -154,26 +155,24 @@ const InfobarWidgets = ({
                 tag={null}
             >
                 <div className={className}>
-                    {renderWidgets({source, editing, preparedDisplayList})}
+                    {renderWidgets({source, isEditing, preparedDisplayList})}
                 </div>
             </DragWrapper>
         </>
     )
 }
 
-export default InfobarWidgets
+export default memo(InfobarWidgets)
 
 function renderWidgets({
     source,
-    editing,
+    isEditing,
     preparedDisplayList,
 }: {
     source: Map<string, unknown>
-    editing?: Editing
+    isEditing: boolean
     preparedDisplayList: List<Map<string, unknown>>
 }) {
-    const isEditing = Boolean(editing?.isEditing)
-
     if (!infobarWidgetShouldRender(source)) {
         return null
     }
@@ -195,13 +194,13 @@ function renderWidgets({
         if (item.get('type') === 'placeholder') {
             return (
                 <Placeholder
+                    isEditing={isEditing}
                     key={`${(
                         newItem.getIn(['template', 'path'], []) as string[]
                     ).toString()}-${index}`}
                     source={source}
                     widget={newItem.get('widget') as Map<string, unknown>}
                     template={newItem.get('template') as Map<any, any>}
-                    editing={editing}
                 />
             )
         }
@@ -214,8 +213,6 @@ function renderWidgets({
                 source={source}
                 widget={newItem.get('widget') as Map<string, unknown>}
                 template={newItem.get('template') as Map<unknown, unknown>}
-                editing={editing}
-                isEditing={isEditing}
                 open={newItem.get('open') as boolean}
             />
         )

@@ -1,9 +1,11 @@
 import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+
+import {StoreDispatch} from 'state/types'
 import {WidgetContextType} from 'state/widgets/types'
 
-import InfobarWidgetsEditionTools from '../InfobarWidgetsEditionTools'
+import {InfobarWidgetsEditionTools} from '../InfobarWidgetsEditionTools'
 
 const commonProps: ComponentProps<typeof InfobarWidgetsEditionTools> = {
     widgets: fromJS({
@@ -14,10 +16,7 @@ const commonProps: ComponentProps<typeof InfobarWidgetsEditionTools> = {
             },
         },
     }),
-    actions: {
-        submitWidgets: jest.fn(),
-        startEditionMode: jest.fn(),
-    },
+    dispatch: jest.fn() as StoreDispatch,
     context: WidgetContextType.Ticket,
 }
 

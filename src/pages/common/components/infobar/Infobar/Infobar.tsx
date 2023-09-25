@@ -1,21 +1,20 @@
 import React, {KeyboardEvent, useEffect, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
-import {connect, ConnectedProps} from 'react-redux'
 import {useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {AxiosError, CancelToken} from 'axios'
 import {usePrevious, useUpdateEffect} from 'react-use'
 
 import {isAdmin} from 'utils'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import * as infobarActions from 'state/infobar/actions'
 import * as infobarConstants from 'state/infobar/constants'
 import * as customersActions from 'state/customers/actions'
 import {setCustomer} from 'state/ticket/actions'
-import * as WidgetsActions from 'state/widgets/actions'
+import * as widgetsActions from 'state/widgets/actions'
 import history from 'pages/history'
-import {ConnectedAction, RootState} from 'state/types'
 import {WidgetContextType} from 'state/widgets/types'
 import {ApiListResponsePagination} from 'models/api/types'
 import {Customer} from 'models/customer/types'
@@ -36,83 +35,36 @@ import {SearchResponse} from 'models/search/types'
 import {setActiveCustomerAsReceiver} from 'state/newMessage/actions'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
+import useAppSelector from 'hooks/useAppSelector'
 import InfobarSearchResultsList from './InfobarSearchResultsList'
 import InfobarCustomerInfo from './InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
 import InfobarCustomerActions from './InfobarCustomerActions'
 import {ActionButtonContext} from './InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 
-export type WidgetsActionsType = {
-    cancelDrag: typeof WidgetsActions.cancelDrag
-    drag: typeof WidgetsActions.drag
-    drop: ConnectedAction<typeof WidgetsActions.drop>
-    generateAndSetWidgets: ConnectedAction<
-        typeof WidgetsActions.generateAndSetWidgets
-    >
-    removeEditedWidget: typeof WidgetsActions.removeEditedWidget
-    resetWidgets: typeof WidgetsActions.resetWidgets
-    setEditedWidgets: typeof WidgetsActions.setEditedWidgets
-    setEditionAsDirty: typeof WidgetsActions.setEditionAsDirty
-    startEditionMode: typeof WidgetsActions.startEditionMode
-    stopEditionMode: typeof WidgetsActions.stopEditionMode
-    startWidgetEdition: typeof WidgetsActions.startWidgetEdition
-    stopWidgetEdition: typeof WidgetsActions.stopWidgetEdition
-    submitWidgets: ConnectedAction<typeof WidgetsActions.submitWidgets>
-    updateEditedWidget: typeof WidgetsActions.updateEditedWidget
-}
-
 type Props = {
-    actions: {
-        fetchPreviewCustomer: ConnectedAction<
-            typeof infobarActions.fetchPreviewCustomer
-        >
-        widgets: WidgetsActionsType
-    }
     context: WidgetContextType
     customer: Map<any, any>
-    identifier: string
+    identifier?: string
     isRouteEditingWidgets: boolean
     sources: Map<any, any>
     widgets: Map<any, any>
-} & ConnectedProps<typeof connector>
+}
 
 const MERGE_ERROR_MESSAGE = `You can only edit customers and orders of the customer associated with this ticket.
 To edit this customer or order, merge both customers or change the customer associated with this ticket.`
 
 export const Infobar = ({
-    actions: {
-        fetchPreviewCustomer,
-        widgets: {
-            cancelDrag,
-            drag,
-            drop,
-            generateAndSetWidgets,
-            removeEditedWidget,
-            resetWidgets,
-            setEditedWidgets,
-            setEditionAsDirty,
-            startEditionMode,
-            startWidgetEdition,
-            stopEditionMode,
-            stopWidgetEdition,
-            submitWidgets,
-            updateEditedWidget,
-        },
-    },
     context,
-    currentUser,
     customer = fromJS({}),
-    fetchCustomerHistory,
     identifier,
     isRouteEditingWidgets,
-    searchCustomers,
-    searchSimilarCustomer,
-    setActiveCustomerAsReceiver,
-    setCustomer,
     sources,
     widgets,
 }: Props) => {
     const location = useLocation()
+    const dispatch = useAppDispatch()
+    const currentUser = useAppSelector(getCurrentUser)
     const [searchErrorMessage, setSearchErrorMessage] = useState<string | null>(
         null
     )
@@ -178,9 +130,9 @@ export const Infobar = ({
 
     useEffect(() => {
         if (isRouteEditingWidgets && !isWidgetEditing) {
-            startEditionMode(context)
+            dispatch(widgetsActions.startEditionMode(context))
         } else if (!isRouteEditingWidgets && isWidgetEditing) {
-            stopEditionMode()
+            dispatch(widgetsActions.stopEditionMode())
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isWidgetEditing, isRouteEditingWidgets])
@@ -195,7 +147,7 @@ export const Infobar = ({
 
     const [cancellableSearch] = useCancellableRequest(
         (cancelToken: CancelToken) => async (query) =>
-            await searchCustomers(query, cancelToken)
+            await dispatch(infobarActions.search(query, cancelToken))
     )
 
     const updateSimilarCustomer = async () => {
@@ -204,7 +156,9 @@ export const Infobar = ({
             return
         }
 
-        const data = (await searchSimilarCustomer(customer.get('id'))) as {
+        const data = (await dispatch(
+            infobarActions.similarCustomer(customer.get('id'))
+        )) as {
             customer: Customer
         }
         if (!data) {
@@ -237,7 +191,9 @@ export const Infobar = ({
     ) => {
         searchRank.registerResultSelection({index, id: customer.get('id')})
         setIsFetchingCustomer(true)
-        const result = (await fetchPreviewCustomer(customer.get('id'))) as {
+        const result = (await dispatch(
+            infobarActions.fetchPreviewCustomer(customer.get('id'))
+        )) as {
             type: string
             resp: ApiListResponsePagination<Customer[]>
         }
@@ -300,14 +256,16 @@ export const Infobar = ({
 
         // wait 1.5s before fetching customer history after merge (merge can take some time and is async)
         setTimeout(() => {
-            void fetchCustomerHistory(askedCustomerId, {
-                successCondition: () => {
-                    return (
-                        (customer.get('id') as number).toString() ===
-                        askedCustomerId.toString()
-                    )
-                },
-            })
+            void dispatch(
+                customersActions.fetchCustomerHistory(askedCustomerId, {
+                    successCondition: () => {
+                        return (
+                            (customer.get('id') as number).toString() ===
+                            askedCustomerId.toString()
+                        )
+                    },
+                })
+            )
         }, 1500)
     }
 
@@ -330,9 +288,9 @@ export const Infobar = ({
     }
 
     const handleSetCustomer = () => {
-        void setCustomer(selectedCustomer)
+        void dispatch(setCustomer(selectedCustomer))
             .then(returnToCurrentCustomerProfile)
-            .then(setActiveCustomerAsReceiver)
+            .then(() => dispatch(setActiveCustomerAsReceiver))
     }
 
     const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
@@ -424,20 +382,8 @@ export const Infobar = ({
                                 }}
                             >
                                 <InfobarCustomerInfo
-                                    actions={{
-                                        cancelDrag,
-                                        drag,
-                                        drop,
-                                        generateAndSetWidgets,
-                                        removeEditedWidget,
-                                        resetWidgets,
-                                        setEditedWidgets,
-                                        setEditionAsDirty,
-                                        startWidgetEdition,
-                                        stopWidgetEdition,
-                                        updateEditedWidget,
-                                    }}
                                     isEditing={isEditing}
+                                    widgets={widgets}
                                     sources={sources
                                         .setIn(
                                             ['ticket', 'customer'],
@@ -445,7 +391,6 @@ export const Infobar = ({
                                         )
                                         .set('customer', selectedCustomer)}
                                     customer={selectedCustomer}
-                                    widgets={widgets}
                                 />
                                 <MergeCustomersContainer
                                     isTicketContext={
@@ -491,25 +436,10 @@ export const Infobar = ({
                     ) : identifier ? (
                         <>
                             <InfobarCustomerInfo
-                                actions={{
-                                    cancelDrag,
-                                    drag,
-                                    drop,
-                                    generateAndSetWidgets,
-                                    removeEditedWidget,
-                                    resetWidgets,
-                                    setEditedWidgets,
-                                    setEditionAsDirty,
-                                    startWidgetEdition,
-                                    stopWidgetEdition,
-                                    updateEditedWidget,
-                                }}
                                 isEditing={isEditing}
-                                sources={sources
-                                    .setIn(['ticket', 'customer'], customer)
-                                    .set('customer', customer)}
-                                customer={customer}
                                 widgets={widgets}
+                                sources={sources}
+                                customer={customer}
                             />
                             {!suggestedCustomer.isEmpty() && !isWidgetEditing && (
                                 <>
@@ -559,20 +489,8 @@ export const Infobar = ({
                                         }}
                                     >
                                         <InfobarCustomerInfo
-                                            actions={{
-                                                cancelDrag,
-                                                drag,
-                                                drop,
-                                                generateAndSetWidgets,
-                                                removeEditedWidget,
-                                                resetWidgets,
-                                                setEditedWidgets,
-                                                setEditionAsDirty,
-                                                startWidgetEdition,
-                                                stopWidgetEdition,
-                                                updateEditedWidget,
-                                            }}
                                             isEditing={isEditing}
+                                            widgets={widgets}
                                             sources={sources
                                                 .setIn(
                                                     ['ticket', 'customer'],
@@ -583,7 +501,6 @@ export const Infobar = ({
                                                     suggestedCustomer
                                                 )}
                                             customer={suggestedCustomer}
-                                            widgets={widgets}
                                             displayTabs={false}
                                         />
                                         <MergeCustomersContainer
@@ -613,10 +530,6 @@ export const Infobar = ({
                 </div>
                 {isEditing && (
                     <InfobarWidgetsEditionTools
-                        actions={{
-                            startEditionMode,
-                            submitWidgets,
-                        }}
                         widgets={widgets}
                         context={currentContext}
                     />
@@ -626,17 +539,4 @@ export const Infobar = ({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        currentUser: getCurrentUser(state),
-    }),
-    {
-        fetchCustomerHistory: customersActions.fetchCustomerHistory,
-        searchCustomers: infobarActions.search,
-        searchSimilarCustomer: infobarActions.similarCustomer,
-        setActiveCustomerAsReceiver,
-        setCustomer,
-    }
-)
-
-export default connector(Infobar)
+export default Infobar

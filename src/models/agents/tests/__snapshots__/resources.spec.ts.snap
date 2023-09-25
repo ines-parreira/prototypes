@@ -85,7 +85,7 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
           },
           "name": "Bob Smith",
           "role": {
-            "name": "agent",
+            "name": "admin",
           },
           "settings": [],
           "timezone": "UTC",

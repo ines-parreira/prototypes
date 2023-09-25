@@ -3,18 +3,19 @@ import {Form} from 'reactstrap'
 import {Map} from 'immutable'
 
 import {PartialTemplate} from 'models/widget/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {stopWidgetEdition, updateEditedWidget} from 'state/widgets/actions'
 import {IntegrationType} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {WidgetsActionsType} from 'pages/common/components/infobar/Infobar/Infobar'
 
 type Props = {
     template: Map<string, unknown>
-    actions: WidgetsActionsType
     widget: Map<string, unknown>
 }
 
-export default function FieldEdit({template, actions, widget}: Props) {
+export default function FieldEdit({template, widget}: Props) {
+    const dispatch = useAppDispatch()
     const [title, setTitle] = useState(template.get('title', ''))
     const [type, setType] = useState(template.get('type', ''))
 
@@ -23,12 +24,12 @@ export default function FieldEdit({template, actions, widget}: Props) {
 
     const closePopup = (e?: SyntheticEvent<HTMLButtonElement>) => {
         e?.stopPropagation()
-        actions.stopWidgetEdition()
+        dispatch(stopWidgetEdition())
     }
 
     const handleSubmit = (e?: SyntheticEvent<HTMLFormElement>) => {
         e?.preventDefault()
-        actions.updateEditedWidget({title, type} as PartialTemplate)
+        dispatch(updateEditedWidget({title, type} as PartialTemplate))
         closePopup()
     }
 

@@ -1,52 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`widgets infobar utils displayValue() should return a comma-separated list of rendered values because passed data is an array 1`] = `
-<div>
-  <span>
-    123
-  </span>
-  <span>
-    , 
-    test
-  </span>
-  <span>
-    , 
-    <div
-      class="badge"
-    >
-      True
-    </div>
-  </span>
-</div>
-`;
-
-exports[`widgets infobar utils displayValue() should return a danger badge because passed data is a \`false\` value 1`] = `
-<div>
-  <div
-    class="badge"
-  >
-    False
-  </div>
-</div>
-`;
-
-exports[`widgets infobar utils displayValue() should return a success badge because passed data is a \`true\` value 1`] = `
-<div>
-  <div
-    class="badge"
-  >
-    True
-  </div>
-</div>
-`;
-
-exports[`widgets infobar utils displayValue() should work when passed an immutable object 1`] = `
-<div>
-  key
-  value
-</div>
-`;
-
 exports[`widgets infobar utils guessFieldValueFromRawData() given "-1" and "sentiment" as arguments, returns correct value 1`] = `
 <React.Fragment>
   <React.Fragment>
@@ -303,9 +256,31 @@ exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "point
 </Badge>
 `;
 
+exports[`widgets infobar utils guessFieldValueFromRawData() should return a comma-separated list of rendered values because passed data is an array 1`] = `
+<div>
+  123
+  , 
+  test
+  , 
+  true
+  , 
+  -
+</div>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should return a danger badge because passed data is a \`false\` value should render a badge 1`] = `
+<div>
+  <div
+    class="badge"
+  >
+    False
+  </div>
+</div>
+`;
+
 exports[`widgets infobar utils guessFieldValueFromRawData() should return a datetime label because passed type is \`date\` 1`] = `
 <DatetimeLabel
-  dateTime="foo"
+  dateTime="2017-12-14T16:34"
 />
 `;
 
@@ -327,6 +302,16 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should return a link
 >
   https://gorgias.io
 </a>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() should return a success badge because passed data is a \`true\` value should render a badge 1`] = `
+<div>
+  <div
+    class="badge"
+  >
+    True
+  </div>
+</div>
 `;
 
 exports[`widgets infobar utils jsonToWidgets() should convert json to widgets 1`] = `

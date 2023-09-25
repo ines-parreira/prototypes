@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {fromJS, Map, List} from 'immutable'
 
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import {
     guessFieldValueFromRawData,
     prepareWidgetToDisplay,
     stringifyRawData,
 } from 'pages/common/components/infobar/utils'
+import {EditionContext} from 'providers/infobar/EditionContext'
 import {WidgetContext, WidgetContextType} from 'providers/infobar/WidgetContext'
 import {
     HTTP_WIDGET_TYPE,
@@ -38,35 +38,31 @@ import woocommerce from './widgets/woocommerce'
 import {infobarWidgetShouldRender} from './predicates'
 
 type Props = {
-    editing?: Editing
     parent?: Map<any, any>
     source?: Maybe<Map<string, unknown>>
     widget: Map<string, unknown>
     template: Map<unknown, unknown>
-    isEditing?: boolean
     open?: boolean
     removeBorderTop?: boolean
 }
 
 export default function InfobarWidget({
-    editing,
     parent,
     source,
     widget,
     template,
-    isEditing,
     open = false,
     removeBorderTop = false,
 }: Props) {
+    const {isEditing} = useContext(EditionContext)
     if (!infobarWidgetShouldRender(source)) {
         return null
     }
-
     const preparedData = prepareWidgetToDisplay(template, source, parent)
     const {updatedTemplate, type} = preparedData
     let {data} = preparedData
 
-    const isParentList = parent && parent.get('type') === 'list'
+    const isParentList = (parent && parent.get('type') === 'list') || false
     const extensionMethodsByType = {
         [SHOPIFY_WIDGET_TYPE]: shopify,
         [RECHARGE_WIDGET_TYPE]: recharge,
@@ -134,7 +130,6 @@ export default function InfobarWidget({
                     source={data || fromJS({})}
                     widget={widget}
                     template={updatedTemplate}
-                    editing={editing}
                 />
             )
             break
@@ -151,7 +146,6 @@ export default function InfobarWidget({
                     }
                     widget={widget}
                     template={updatedTemplate}
-                    editing={editing}
                     removeBorderTop={removeBorderTop}
                 />
             )
@@ -176,7 +170,6 @@ export default function InfobarWidget({
                     source={data}
                     widget={widget}
                     template={updatedTemplate}
-                    editing={editing}
                     parent={parent}
                     open={open || !isParentList}
                     removeBorderTop={removeBorderTop}
@@ -198,7 +191,6 @@ export default function InfobarWidget({
                     )}
                     widget={widget}
                     template={updatedTemplate}
-                    editing={editing}
                     copyableValue={stringifyRawData(data, type)}
                 />
             )

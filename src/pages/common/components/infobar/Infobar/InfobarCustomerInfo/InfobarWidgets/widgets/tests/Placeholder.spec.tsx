@@ -2,7 +2,6 @@ import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import {Placeholder} from '../Placeholder'
 
 describe('PlaceholderWidget component', () => {
@@ -16,11 +15,6 @@ describe('PlaceholderWidget component', () => {
         widget: fromJS({
             type: 'shopify',
         }),
-        editing: {
-            actions: {
-                removeEditedWidget: jest.fn(),
-            },
-        } as unknown as Editing,
         integration: null,
         dispatch: jest.fn(),
     }

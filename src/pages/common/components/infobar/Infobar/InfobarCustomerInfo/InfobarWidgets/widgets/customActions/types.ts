@@ -9,6 +9,7 @@ export type JSONValue =
     | boolean
     | {[x: string]: JSONValue}
     | Array<JSONValue>
+    | null
 
 export type Link = {
     url: string

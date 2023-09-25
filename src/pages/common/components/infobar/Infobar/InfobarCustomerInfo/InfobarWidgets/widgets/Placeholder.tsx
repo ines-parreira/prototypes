@@ -4,9 +4,9 @@ import classnames from 'classnames'
 import {Map} from 'immutable'
 
 import {getIntegrationById} from 'state/integrations/selectors'
+import {removeEditedWidget} from 'state/widgets/actions'
 import {RootState} from 'state/types'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 
 import cssWrapper from './Wrapper.less'
@@ -16,22 +16,22 @@ type OwnProps = {
     source: Map<any, any>
     widget: Map<any, any>
     template: Map<any, any>
-    editing?: Editing
+    isEditing?: boolean
 }
 
 export class Placeholder extends Component<
     OwnProps & ConnectedProps<typeof connector>
 > {
     _deleteWidget = (evt: MouseEvent) => {
-        const {template, editing} = this.props
+        const {template, isEditing} = this.props
 
         const absolutePath: string[] = template.get('path')
         const templatePath: string = template.get('templatePath')
 
         evt.stopPropagation()
 
-        if (editing) {
-            editing.actions.removeEditedWidget(templatePath, absolutePath)
+        if (isEditing) {
+            this.props.dispatch(removeEditedWidget(templatePath, absolutePath))
         }
     }
 

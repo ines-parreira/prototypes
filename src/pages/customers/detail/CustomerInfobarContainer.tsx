@@ -1,11 +1,9 @@
 import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
 
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
-import {fetchPreviewCustomer} from 'state/infobar/actions'
 import {InfobarState} from 'state/infobar/types'
-import * as WidgetActions from 'state/widgets/actions'
+import * as actions from 'state/widgets/actions'
 import {WidgetContextType} from 'state/widgets/types'
 import {
     DEPRECATED_getActiveCustomer,
@@ -13,6 +11,7 @@ import {
 } from 'state/customers/selectors'
 import {getSources} from 'state/widgets/selectors'
 import {RootState} from 'state/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 
 type Props = {
     infobar: InfobarState
@@ -20,18 +19,17 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 export const CustomerInfobarContainer = ({
-    actions,
     activeCustomer,
     activeCustomerId,
     isEditingWidgets,
     sources,
     widgets,
 }: Props) => {
+    const dispatch = useAppDispatch()
     useEffect(() => {
-        actions.widgets.selectContext(WidgetContextType.Customer)
-        actions.widgets.fetchWidgets()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        dispatch(actions.selectContext(WidgetContextType.Customer))
+        void dispatch(actions.fetchWidgets())
+    }, [dispatch])
 
     if (!activeCustomerId) {
         return null
@@ -41,8 +39,6 @@ export const CustomerInfobarContainer = ({
 
     return (
         <Infobar
-            // $TsFixMe remove casting once props drilling removed
-            actions={actions as any}
             sources={sources}
             isRouteEditingWidgets={!!isEditingWidgets}
             identifier={identifier}
@@ -53,22 +49,11 @@ export const CustomerInfobarContainer = ({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        widgets: state.widgets,
-        activeCustomer: DEPRECATED_getActiveCustomer(state),
-        activeCustomerId: getActiveCustomerId(state),
-        sources: getSources(state),
-    }),
-    (dispatch) => ({
-        actions: {
-            fetchPreviewCustomer: bindActionCreators(
-                fetchPreviewCustomer,
-                dispatch
-            ),
-            widgets: bindActionCreators(WidgetActions, dispatch),
-        },
-    })
-)
+const connector = connect((state: RootState) => ({
+    widgets: state.widgets,
+    activeCustomer: DEPRECATED_getActiveCustomer(state),
+    activeCustomerId: getActiveCustomerId(state),
+    sources: getSources(state),
+}))
 
 export default connector(CustomerInfobarContainer)

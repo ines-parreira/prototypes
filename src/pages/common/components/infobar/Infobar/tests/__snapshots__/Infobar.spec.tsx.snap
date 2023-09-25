@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Infobar/> onSearchResultClick() should register search rank scenario event when user clicks the result 1`] = `
+[
+  [
+    {
+      "query": "query",
+      "requestTime": 1487076708000,
+    },
+  ],
+]
+`;
+
+exports[`<Infobar/> onSearchResultClick() should register search rank scenario event when user clicks the result 2`] = `
+[
+  [
+    {
+      "numberOfResults": 20,
+      "responseTime": 1487076708011,
+      "searchEngine": "ES",
+    },
+  ],
+]
+`;
+
+exports[`<Infobar/> onSearchResultClick() should register search rank scenario event when user clicks the result 3`] = `
+[
+  [
+    {
+      "id": 7,
+      "index": 0,
+    },
+  ],
+]
+`;
+
 exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer empty on fetch customer failure 1`] = `
 <div
   data-testid="InfobarLayout"
@@ -64,46 +98,12 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         </div>
         <div>
           searchResults: 
-          []
+          [{"id":7}]
         </div>
       </div>
     </div>
   </div>
 </div>
-`;
-
-exports[`<Infobar/> should register search rank scenario event when user clicks the result 1`] = `
-[
-  [
-    {
-      "query": "query",
-      "requestTime": 1487076708000,
-    },
-  ],
-]
-`;
-
-exports[`<Infobar/> should register search rank scenario event when user clicks the result 2`] = `
-[
-  [
-    {
-      "numberOfResults": 20,
-      "responseTime": 1487076708011,
-      "searchEngine": "ES",
-    },
-  ],
-]
-`;
-
-exports[`<Infobar/> should register search rank scenario event when user clicks the result 3`] = `
-[
-  [
-    {
-      "id": 7,
-      "index": 0,
-    },
-  ],
-]
 `;
 
 exports[`<Infobar/> should render current customer with suggested customer 1`] = `

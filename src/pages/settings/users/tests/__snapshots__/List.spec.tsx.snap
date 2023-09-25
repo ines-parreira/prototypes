@@ -233,7 +233,7 @@ exports[`<List /> should render 1`] = `
             <div
               class="badge"
             >
-              Lead agent
+              Admin
             </div>
           </span>
           <span

@@ -2,17 +2,21 @@ import React, {SyntheticEvent} from 'react'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody} from 'reactstrap'
+import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 
-import {displayValue} from 'pages/common/components/infobar/utils'
-import {WidgetsActionsType} from 'pages/common/components/infobar/Infobar/Infobar'
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {RootState} from 'state/types'
+import {
+    removeEditedWidget,
+    startWidgetEdition,
+    stopWidgetEdition,
+} from 'state/widgets/actions'
+
 import FieldEdit from './forms/FieldEdit'
 import css from './Field.less'
 import {Copy} from './CopyButton'
 
 type Props = {
-    editing?: Editing
     value: (string | number | boolean | Record<string, unknown>)[] | unknown
     type: string
     isEditing: boolean
@@ -20,12 +24,9 @@ type Props = {
     widget: Map<string, unknown>
     template: Map<string, unknown>
     copyableValue: string | null
-}
+} & ConnectedProps<typeof connector>
 
-export default class Field extends React.Component<
-    Props,
-    {displayPopup: boolean}
-> {
+export class Field extends React.Component<Props, {displayPopup: boolean}> {
     uniqueId: string
 
     static defaultProps = {
@@ -44,11 +45,11 @@ export default class Field extends React.Component<
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const {isEditing, editing, template} = nextProps
+        const {isEditing, template, widgetsState} = nextProps
 
-        if (editing) {
+        if (isEditing) {
             const tp = template.get('templatePath')
-            const currentlyEditedWidgetPath = editing.state.getIn(
+            const currentlyEditedWidgetPath = widgetsState.getIn(
                 ['_internal', 'currentlyEditedWidgetPath'],
                 ''
             )
@@ -59,24 +60,24 @@ export default class Field extends React.Component<
     }
 
     _startWidgetEdition = (e: SyntheticEvent) => {
-        const {editing, template} = this.props
+        const {dispatch, isEditing, template} = this.props
 
         e.stopPropagation()
-        if (editing) {
-            editing.actions.startWidgetEdition(
-                template.get('templatePath', '') as string
+        if (isEditing) {
+            dispatch(
+                startWidgetEdition(template.get('templatePath', '') as string)
             )
         }
     }
 
     _deleteField = (e: SyntheticEvent) => {
-        const {editing, template} = this.props
+        const {dispatch, isEditing, template} = this.props
 
         e.stopPropagation()
-        if (editing) {
+        if (isEditing) {
             const ap = template.get('absolutePath') as string[]
             const tp = template.get('templatePath') as string
-            editing.actions.removeEditedWidget(tp, ap)
+            dispatch(removeEditedWidget(tp, ap))
         }
     }
 
@@ -111,7 +112,7 @@ export default class Field extends React.Component<
     }
 
     _togglePopup = () => {
-        return this.props.editing?.actions?.stopWidgetEdition()
+        return this.props.dispatch(stopWidgetEdition())
     }
 
     /**
@@ -120,9 +121,9 @@ export default class Field extends React.Component<
      * @private
      */
     _renderPopover = () => {
-        const {editing, template, widget} = this.props
+        const {isEditing, template, widget} = this.props
 
-        if (!editing) {
+        if (!isEditing) {
             return null
         }
 
@@ -135,26 +136,21 @@ export default class Field extends React.Component<
                 trigger="legacy"
             >
                 <PopoverBody>
-                    <FieldEdit
-                        template={template}
-                        actions={editing.actions as WidgetsActionsType}
-                        widget={widget}
-                    />
+                    <FieldEdit template={template} widget={widget} />
                 </PopoverBody>
             </Popover>
         )
     }
 
     render() {
-        const {editing, isEditing, template, value, type, copyableValue} =
-            this.props
+        const {isEditing, template, value, type, copyableValue} = this.props
 
         const title = template.get('title') as string
         // keep the unscoped class here to have drag and drop greying feature
         const className = classnames(
             `${css.widgetField} widget-field draggable`,
             {
-                [css.widgetFieldEditing]: editing,
+                [css.widgetFieldEditing]: isEditing,
             }
         )
 
@@ -166,7 +162,7 @@ export default class Field extends React.Component<
                         [css.overflow]: type === 'editableList',
                     })}
                 >
-                    {displayValue(value)}
+                    {value}
                     {!isEditing && copyableValue && (
                         <Copy
                             value={copyableValue}
@@ -182,3 +178,9 @@ export default class Field extends React.Component<
         )
     }
 }
+
+const connector = connect((state: RootState) => ({
+    widgetsState: state.widgets,
+}))
+
+export default connector(Field)

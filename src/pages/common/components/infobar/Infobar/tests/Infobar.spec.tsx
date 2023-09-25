@@ -1,15 +1,19 @@
 import React, {ComponentProps, useState as mockUseState} from 'react'
 import {fireEvent, waitFor, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
 
-import {UserRole} from 'config/types/user'
-import {renderWithRouter} from 'utils/testing'
-import {
-    FETCH_PREVIEW_CUSTOMER_ERROR,
-    FETCH_PREVIEW_CUSTOMER_SUCCESS,
-} from 'state/infobar/constants'
+import {agents} from 'fixtures/agents'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+import {FETCH_PREVIEW_CUSTOMER_SUCCESS} from 'state/infobar/constants'
 import {WidgetContextType} from 'state/widgets/types'
-import {account} from 'fixtures/account'
+import {startEditionMode, stopEditionMode} from 'state/widgets/actions'
+import {
+    search,
+    similarCustomer,
+    fetchPreviewCustomer,
+} from 'state/infobar/actions'
 import {SearchEngine} from 'models/search/types'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import {mockSearchRank} from 'fixtures/searchRank'
@@ -19,6 +23,24 @@ import InfobarLayout from '../../InfobarLayout'
 import InfobarCustomerInfo from '../InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import {Infobar} from '../Infobar'
+
+const mockStore = configureMockStore()
+
+jest.mock('state/infobar/actions')
+jest.mock('state/widgets/actions')
+const mockedSearch = assumeMock(search)
+const mockedSimilarCustomer = assumeMock(similarCustomer)
+const mockedFetchPreviewCustomer = assumeMock(fetchPreviewCustomer)
+const mockedStartEditionMode = assumeMock(startEditionMode)
+const mockedStopEditionMode = assumeMock(stopEditionMode)
+
+const store = mockStore({
+    currentUser: fromJS(agents[1]),
+})
+// @ts-ignore
+store.dispatch = jest.fn((param: () => unknown | unknown) =>
+    typeof param === 'function' ? param() : param
+)
 
 jest.mock(
     '../../../Search.tsx',
@@ -93,44 +115,13 @@ jest.mock('hooks/useSearchRankScenario')
     useSearchRankScenario as jest.MockedFunction<typeof useSearchRankScenario>
 ).mockImplementation(() => mockSearchRank)
 
-const commonProps = {
-    actions: {
-        fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}})),
-        widgets: {
-            cancelDrag: jest.fn(),
-            drag: jest.fn(),
-            drop: jest.fn(),
-            generateAndSetWidgets: jest.fn(),
-            removeEditedWidget: jest.fn(),
-            resetWidgets: jest.fn(),
-            setEditedWidgets: jest.fn(),
-            setEditionAsDirty: jest.fn(),
-            startEditionMode: jest.fn(),
-            startWidgetEdition: jest.fn(),
-            stopEditionMode: jest.fn(),
-            stopWidgetEdition: jest.fn(),
-            submitWidgets: jest.fn(),
-            updateEditedWidget: jest.fn(),
-        },
-    },
-    context: 'ticket',
+const commonProps: ComponentProps<typeof Infobar> = {
+    context: WidgetContextType.Ticket,
     customer: fromJS({
         id: 2,
     }),
-    currentUser: fromJS({
-        role: {name: UserRole.Admin},
-    }),
-    fetchCustomerHistory: jest.fn(() => () => Promise.resolve()),
     identifier: '1',
     isRouteEditingWidgets: false,
-    location: {
-        search: 'searchQuery',
-        pathname: 'foo',
-        query: {},
-    },
-    searchCustomers: jest.fn(() => Promise.resolve({resp: {data: []}})),
-    searchSimilarCustomer: jest.fn(() => Promise.resolve({customer: {id: 4}})),
-    setCustomer: jest.fn(() => Promise.resolve()),
     sources: fromJS({
         ticket: {
             customer: {
@@ -149,8 +140,7 @@ const commonProps = {
             hasFetchedWidgets: true,
         },
     }),
-    currentAccount: fromJS(account),
-} as unknown as ComponentProps<typeof Infobar>
+}
 
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
 const defaultDateNowValue = 1487076708000
@@ -160,6 +150,9 @@ describe('<Infobar/>', () => {
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => defaultDateNowValue)
+        mockedSearch.mockReset()
+        mockedSimilarCustomer.mockReset()
+        mockedFetchPreviewCustomer.mockReset()
     })
 
     afterEach(() => {
@@ -167,14 +160,23 @@ describe('<Infobar/>', () => {
     })
 
     it('should render ticket context', () => {
-        const {container} = renderWithRouter(<Infobar {...commonProps} />)
+        const {container} = renderWithRouter(
+            <Provider store={store}>
+                <Infobar {...commonProps} />)
+            </Provider>
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render customer context', () => {
         const {container} = renderWithRouter(
-            <Infobar {...commonProps} context={WidgetContextType.Customer} />
+            <Provider store={store}>
+                <Infobar
+                    {...commonProps}
+                    context={WidgetContextType.Customer}
+                />
+            </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -182,7 +184,9 @@ describe('<Infobar/>', () => {
 
     it('should render loading state because the search is in progress', () => {
         const {container, getByTestId} = renderWithRouter(
-            <Infobar {...commonProps} />
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
@@ -192,12 +196,14 @@ describe('<Infobar/>', () => {
     })
 
     it('should render the error when loading error', async () => {
-        const mockedErrorSearch = jest
-            .fn()
-            .mockResolvedValue({error: 'generic_error'})
+        mockedSearch.mockImplementation(
+            () => () => Promise.resolve({error: 'generic_error'})
+        )
 
         const {container, getByTestId, getByText} = renderWithRouter(
-            <Infobar {...commonProps} searchCustomers={mockedErrorSearch} />
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
@@ -208,15 +214,16 @@ describe('<Infobar/>', () => {
     })
 
     it('should render loading state because the customer is being fetched', async () => {
+        mockedSearch.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    resp: {data: [{id: 7}, {id: 8}, {id: 9}]},
+                })
+        )
         const {container, getByTestId} = renderWithRouter(
-            <Infobar
-                {...commonProps}
-                searchCustomers={() =>
-                    Promise.resolve({
-                        resp: {data: [{id: 7}, {id: 8}, {id: 9}]},
-                    })
-                }
-            />
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
         )
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
         fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
@@ -229,20 +236,25 @@ describe('<Infobar/>', () => {
     })
 
     it('should render selected customer', async () => {
+        mockedFetchPreviewCustomer.mockImplementation(
+            (id) => () =>
+                Promise.resolve({
+                    type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                    resp: {
+                        id,
+                    },
+                })
+        )
+        mockedSearch.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    resp: {data: [{id: 7}, {id: 8}, {id: 9}]},
+                })
+        )
         const {container, getByTestId} = renderWithRouter(
-            <Infobar
-                {...commonProps}
-                actions={{
-                    ...commonProps.actions,
-                    fetchPreviewCustomer: (id) =>
-                        Promise.resolve({
-                            type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
-                            resp: {
-                                id,
-                            },
-                        }),
-                }}
-            />
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
         )
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
         fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
@@ -257,15 +269,16 @@ describe('<Infobar/>', () => {
     })
 
     it('should render search results', async () => {
+        mockedSearch.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    resp: {data: [{id: 8}, {id: 9}]},
+                })
+        )
         const {container, getByTestId} = renderWithRouter(
-            <Infobar
-                {...commonProps}
-                searchCustomers={() =>
-                    Promise.resolve({
-                        resp: {data: [{id: 8}, {id: 9}]},
-                    })
-                }
-            />
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
         )
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
         fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
@@ -275,15 +288,17 @@ describe('<Infobar/>', () => {
     })
 
     it('should render current customer with suggested customer', async () => {
+        mockedSimilarCustomer.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    customer: fromJS({id: 10}),
+                })
+        )
+
         const {container, getByText} = renderWithRouter(
-            <Infobar
-                {...commonProps}
-                searchSimilarCustomer={() =>
-                    Promise.resolve({
-                        customer: fromJS({id: 10}),
-                    })
-                }
-            />
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
         )
 
         await waitFor(() => getByText(/Another customer profile/))
@@ -292,60 +307,42 @@ describe('<Infobar/>', () => {
 
     it('should render widgets edition mode', () => {
         const {container} = renderWithRouter(
-            <Infobar
-                {...commonProps}
-                widgets={fromJS({
-                    _internal: {
-                        isEditing: true,
-                    },
-                })}
-                isRouteEditingWidgets={true}
-            />
+            <Provider store={store}>
+                <Infobar
+                    {...commonProps}
+                    widgets={fromJS({
+                        _internal: {
+                            isEditing: true,
+                        },
+                    })}
+                    isRouteEditingWidgets={true}
+                />
+            </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should not show widget edition button', () => {
-        renderWithRouter(
-            <Infobar
-                {...commonProps}
-                currentUser={fromJS({
-                    role: {name: UserRole.Agent},
-                })}
-            />
-        )
-
-        expect(
-            screen.queryByRole('button', {
-                name: /settings/,
-            })
-        ).toBeNull()
-    })
-
     describe('onSearchResultClick()', () => {
-        let customer: Map<any, any>
-        let customerId = 5
-
-        beforeEach(() => {
-            customerId = 5
-            customer = fromJS({})
-            customer.set('id', customerId)
-        })
-
         it('should reset spinner and keep customer empty on fetch customer failure', async () => {
+            mockedSearch.mockImplementation(
+                () => () =>
+                    Promise.resolve({
+                        resp: {data: [{id: 7}]},
+                    })
+            )
+
+            mockedSimilarCustomer.mockImplementation(
+                () => () =>
+                    Promise.resolve({
+                        customer: fromJS({}),
+                    })
+            )
+
             const {container, getByTestId} = renderWithRouter(
-                <Infobar
-                    {...commonProps}
-                    actions={{
-                        ...commonProps.actions,
-                        fetchPreviewCustomer: jest.fn(() =>
-                            Promise.resolve({
-                                type: FETCH_PREVIEW_CUSTOMER_ERROR,
-                            })
-                        ),
-                    }}
-                />
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>
             )
             fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
             fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
@@ -357,18 +354,84 @@ describe('<Infobar/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should start edition mode, because it is mounting in edition mode and the widgets state is not in edit mode', () => {
-            renderWithRouter(
-                <Infobar {...commonProps} isRouteEditingWidgets={true} />
+        it('should register search rank scenario event when user clicks the result', async () => {
+            const results: {id: number}[] = []
+            for (let i = 0; i < 20; i++) {
+                results.push({id: i})
+            }
+
+            mockedSearch.mockImplementation(() => () => {
+                dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
+                return Promise.resolve({
+                    resp: {
+                        data: results,
+                        searchEngine: SearchEngine.ES,
+                    },
+                })
+            })
+
+            const {getByTestId} = renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>
+            )
+
+            fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+            fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
+
+            await waitFor(() =>
+                fireEvent.click(getByTestId('InfobarSearchResultsList'))
             )
 
             expect(
-                commonProps.actions.widgets.startEditionMode
-            ).toHaveBeenNthCalledWith(1, commonProps.context)
+                (mockSearchRank.registerResultsRequest as jest.Mock).mock.calls
+            ).toMatchSnapshot()
+            expect(
+                (mockSearchRank.registerResultsResponse as jest.Mock).mock.calls
+            ).toMatchSnapshot()
+            expect(
+                (mockSearchRank.registerResultSelection as jest.Mock).mock.calls
+            ).toMatchSnapshot()
         })
+    })
 
-        it('should stop edition mode, because it is mounting in read mode and the widgets state is in edit mode', () => {
-            renderWithRouter(
+    it('should not show widget edition button', () => {
+        const store = configureMockStore()({
+            currentUser: fromJS(agents[0]),
+        })
+        // @ts-ignore
+        store.dispatch = jest.fn((param: () => unknown | unknown) =>
+            typeof param === 'function' ? param() : param
+        )
+        renderWithRouter(
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
+        )
+
+        expect(
+            screen.queryByRole('button', {
+                name: /settings/,
+            })
+        ).toBeNull()
+    })
+
+    it('should start edition mode, because it is mounting in edition mode and the widgets state is not in edit mode', () => {
+        renderWithRouter(
+            <Provider store={store}>
+                <Infobar {...commonProps} isRouteEditingWidgets={true} />
+            </Provider>
+        )
+
+        expect(mockedStartEditionMode).toHaveBeenNthCalledWith(
+            1,
+            commonProps.context
+        )
+    })
+
+    it('should stop edition mode, because it is mounting in read mode and the widgets state is in edit mode', () => {
+        renderWithRouter(
+            <Provider store={store}>
                 <Infobar
                     {...commonProps}
                     widgets={fromJS({
@@ -377,58 +440,21 @@ describe('<Infobar/>', () => {
                         },
                     })}
                 />
-            )
-
-            expect(
-                commonProps.actions.widgets.stopEditionMode
-            ).toHaveBeenNthCalledWith(1)
-        })
-    })
-
-    it('should register search rank scenario event when user clicks the result', async () => {
-        const results: {id: number}[] = []
-        for (let i = 0; i < 20; i++) {
-            results.push({id: i})
-        }
-        const {getByTestId} = renderWithRouter(
-            <Infobar
-                {...commonProps}
-                searchCustomers={() => {
-                    dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
-                    return Promise.resolve({
-                        resp: {data: results, searchEngine: SearchEngine.ES},
-                    })
-                }}
-            />
+            </Provider>
         )
 
-        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
-        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
-
-        await waitFor(() =>
-            fireEvent.click(getByTestId('InfobarSearchResultsList'))
-        )
-
-        expect(
-            (mockSearchRank.registerResultsRequest as jest.Mock).mock.calls
-        ).toMatchSnapshot()
-        expect(
-            (mockSearchRank.registerResultsResponse as jest.Mock).mock.calls
-        ).toMatchSnapshot()
-        expect(
-            (mockSearchRank.registerResultSelection as jest.Mock).mock.calls
-        ).toMatchSnapshot()
+        expect(mockedStopEditionMode).toHaveBeenNthCalledWith(1)
     })
 
     it('should end the search rank scenario when user click Back button', async () => {
+        mockedSearch.mockImplementation(() => () => {
+            dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
+            return Promise.resolve({resp: {data: [{id: 1}]}})
+        })
         const {getByText, getByTestId} = renderWithRouter(
-            <Infobar
-                {...commonProps}
-                searchCustomers={() => {
-                    dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
-                    return Promise.resolve({resp: {data: [{id: 1}]}})
-                }}
-            />
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
@@ -440,14 +466,15 @@ describe('<Infobar/>', () => {
     })
 
     it('should end the search rank scenario when user performs the second search', async () => {
+        mockedSearch.mockImplementation(() => () => {
+            dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
+            return Promise.resolve({resp: {data: [{id: 1}]}})
+        })
+
         const {getByTestId, findByTestId} = renderWithRouter(
-            <Infobar
-                {...commonProps}
-                searchCustomers={() => {
-                    dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
-                    return Promise.resolve({resp: {data: [{id: 1}]}})
-                }}
-            />
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})

@@ -42,7 +42,6 @@ const defaultTemplate: Map<string, unknown> = fromJS({
 const defaultProps: ComponentProps<typeof InfobarWidget> = {
     widget: defaultWidget,
     template: defaultTemplate,
-    isEditing: false,
     source: defaultSource,
 }
 
@@ -72,31 +71,21 @@ jest.mock('../widgets/bigcommerce', () => {
 
 describe('InfobarWidget', () => {
     describe('card widget', () => {
-        it('should display the widget if isEditing=true', () => {
-            const component = shallow(
-                <InfobarWidget {...defaultProps} isEditing={true} />
-            )
+        it('should display the widget', () => {
+            const component = shallow(<InfobarWidget {...defaultProps} />)
             expect(component.debug()).toMatchSnapshot()
         })
 
         it('should not display the widget if isEditing=false and data if falsy', () => {
             const component = shallow(
-                <InfobarWidget
-                    {...defaultProps}
-                    isEditing={false}
-                    source={undefined}
-                />
+                <InfobarWidget {...defaultProps} source={undefined} />
             )
             expect(component.debug()).toMatchSnapshot()
         })
 
         it('should not display the widget if isEditing=true and data if falsy', () => {
             const component = shallow(
-                <InfobarWidget
-                    {...defaultProps}
-                    isEditing={true}
-                    source={undefined}
-                />
+                <InfobarWidget {...defaultProps} source={undefined} />
             )
             expect(component.debug()).toMatchSnapshot()
         })
@@ -106,7 +95,6 @@ describe('InfobarWidget', () => {
                 <InfobarWidget
                     {...defaultProps}
                     widget={fromJS({type: SHOPIFY_INTEGRATION_TYPE})}
-                    isEditing={true}
                 />
             )
 
@@ -118,7 +106,6 @@ describe('InfobarWidget', () => {
                 <InfobarWidget
                     {...defaultProps}
                     widget={fromJS({type: RECHARGE_INTEGRATION_TYPE})}
-                    isEditing={true}
                 />
             )
 
@@ -130,7 +117,6 @@ describe('InfobarWidget', () => {
                 <InfobarWidget
                     {...defaultProps}
                     widget={fromJS({type: MAGENTO2_INTEGRATION_TYPE})}
-                    isEditing={true}
                 />
             )
 
@@ -142,7 +128,6 @@ describe('InfobarWidget', () => {
                 <InfobarWidget
                     {...defaultProps}
                     widget={fromJS({type: BIGCOMMERCE_INTEGRATION_TYPE})}
-                    isEditing={true}
                 />
             )
 

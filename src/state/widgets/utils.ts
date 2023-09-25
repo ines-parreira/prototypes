@@ -13,7 +13,7 @@ export function itemsWithContext(
     items: List<any> = fromJS([]),
     context: WidgetContextType
 ): List<any> {
-    // TODO(custoners-migration): update this line when we migrated widgets with a `user` context
+    // TODO(customers-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w: Map<any, any>) => {
         if (['customer', 'user'].includes(context)) {
             return ['customer', 'user'].includes(w.get('context', ''))
@@ -26,7 +26,7 @@ export function itemsWithoutContext(
     items: List<any> = fromJS([]),
     context: WidgetContextType
 ): List<any> {
-    // TODO(custoners-migration): update this line when we migrated widgets with a `user` context
+    // TODO(customers-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w: Map<any, any>) => {
         if (['customer', 'user'].includes(context)) {
             return !['customer', 'user'].includes(w.get('context', ''))
