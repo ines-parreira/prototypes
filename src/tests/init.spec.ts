@@ -8,7 +8,6 @@ import {
     initApp,
     InitAppParams,
     notifyAccountNotVerified,
-    notifyDeprecatedTld,
     notifyUserImpersonated,
     toInitialStoreState,
 } from 'init'
@@ -25,22 +24,6 @@ jest.mock('utils/datadog')
 
 describe('init', () => {
     let reduxStore: MockStoreEnhanced<unknown>
-
-    describe('notifyDeprecatedTld()', () => {
-        beforeEach(() => {
-            reduxStore = mockStore({} as RootState)
-        })
-
-        it("should not do anything because the URL's TLD is not `.io`", () => {
-            notifyDeprecatedTld('https://acme.gorgias.com/', reduxStore)
-            expect(reduxStore.getActions()).toMatchSnapshot()
-        })
-
-        it("should dispatch a notification because the URL's TLD is `.io`", () => {
-            notifyDeprecatedTld('https://acme.gorgias.io/', reduxStore)
-            expect(reduxStore.getActions()).toMatchSnapshot()
-        })
-    })
 
     describe('notifyAccountNotVerified()', () => {
         it('should not do anything because the base email integration is verified', () => {

@@ -119,34 +119,6 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
     return nextState as InitialRootState
 }
 
-// todo(@martin): delete this in 2021 if we redirect to .com automatically
-export const notifyDeprecatedTld = (url: string, reduxStore: Store) => {
-    const urlObject = new URL(url)
-
-    //eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
-    if (urlObject.hostname.match(/.io$/)) {
-        const updatedUrl = `https://${urlObject.hostname.replace(
-            /.io$/,
-            '.com'
-        )}/`
-        reduxStore.dispatch(
-            notify({
-                id: 'deprecated-tld-notification',
-                style: NotificationStyle.Banner,
-                status: NotificationStatus.Warning,
-                dismissible: false,
-                allowHTML: true,
-                message:
-                    `We\'re now a dot-com 🎉 please update your helpdesk links and bookmarks to <span class="text-primary">${updatedUrl}</span>. ` +
-                    'This message will be hidden after you login there.',
-                onClick: () => {
-                    window.location.href = updatedUrl
-                },
-            }) as any
-        )
-    }
-}
-
 export const notifyAccountNotVerified = (reduxStore: Store) => {
     const baseEmailIntegration = getBaseEmailIntegration(reduxStore.getState())
 
@@ -233,7 +205,6 @@ export function initApp({datadog, sentry}: InitAppParams) {
 
     initializeNewReleaseHandler(store)
 
-    notifyDeprecatedTld(window.location.href, store)
     notifyAccountNotVerified(store)
     notifyUserImpersonated(store)
 

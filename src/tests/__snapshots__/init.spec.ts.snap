@@ -23,29 +23,6 @@ exports[`init notifyAccountNotVerified() should dispatch a notification because 
 
 exports[`init notifyAccountNotVerified() should not do anything because the base email integration is verified 1`] = `[]`;
 
-exports[`init notifyDeprecatedTld() should dispatch a notification because the URL's TLD is \`.io\` 1`] = `
-[
-  {
-    "payload": {
-      "allowHTML": true,
-      "buttons": [],
-      "closeButton": false,
-      "dismissAfter": 0,
-      "dismissible": false,
-      "id": "deprecated-tld-notification",
-      "message": "We're now a dot-com 🎉 please update your helpdesk links and bookmarks to <span class="text-primary">https://acme.gorgias.com/</span>. This message will be hidden after you login there.",
-      "onClick": [Function],
-      "position": "top-center",
-      "status": "warning",
-      "style": "banner",
-    },
-    "type": "reapop/upsertNotification",
-  },
-]
-`;
-
-exports[`init notifyDeprecatedTld() should not do anything because the URL's TLD is not \`.io\` 1`] = `[]`;
-
 exports[`init notifyUserImpersonated() should dispatch a notification because user is impersonated 1`] = `
 [
   {
