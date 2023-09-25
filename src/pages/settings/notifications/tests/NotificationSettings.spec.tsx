@@ -72,7 +72,7 @@ describe('<NotificationSettings />', () => {
         })
         const {getByText} = render(<NotificationSettings />)
 
-        const el = getByText('Save settings')
+        const el = getByText('Save Changes')
 
         userEvent.click(el)
 

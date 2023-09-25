@@ -44,7 +44,7 @@ export default function NotificationSettings() {
                     title="Message notifications"
                 />
                 <Button isDisabled={!canSave} intent="primary" type="submit">
-                    Save settings
+                    Save Changes
                 </Button>
             </form>
         </div>
