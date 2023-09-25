@@ -62,6 +62,16 @@ src/pages/stats/revenue @gorgias/revenue
 src/pages/settings/revenue @gorgias/revenue
 src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns @gorgias/revenue
 
+# Chat widget scope @gorgias/automations-chat
+
+src/pages/integrations/integration/components/gorgias_chat @gorgias/automations-chat
+src/config/integrations/gorgias_chat.ts @gorgias/automations-chat
+src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/automations-chat
+src/models/integration/types/gorgiasChat.ts @gorgias/automations-chat
+src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/automations-chat
+src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/automations-chat
+src/rest_api/gorgias_chat_protected_api @gorgias/automations-chat
+
 # AgentXP scope @gorgias/core-frontend
 
 src/pages/common/editor @gorgias/core-frontend
