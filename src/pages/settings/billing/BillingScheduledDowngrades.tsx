@@ -14,7 +14,7 @@ const productNames: Record<ProductType, string> = {
     [ProductType.Helpdesk]: 'Helpdesk',
     [ProductType.SMS]: 'SMS Add-On',
     [ProductType.Voice]: 'Voice Add-On',
-    [ProductType.Convert]: 'Convert Add-On',
+    [ProductType.Convert]: 'Convert',
 }
 
 export default function BillingScheduledDowngrades() {
