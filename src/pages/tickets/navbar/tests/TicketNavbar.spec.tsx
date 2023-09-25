@@ -195,7 +195,7 @@ describe('<TicketNavbar/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
-        mockedServer.onGet(/\/api\/views\/*/).reply(200, {
+        mockedServer.onGet(/\/api\/views\/.*/).reply(200, {
             data: [view],
             meta: {},
         })
@@ -288,7 +288,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should dispatch a notification when failing to fetch views', (done) => {
-        mockedServer.onGet(/\/api\/views\/*/).reply(503, {message: 'error'})
+        mockedServer.onGet(/\/api\/views\/.*/).reply(503, {message: 'error'})
         renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <TicketNavbarContainer {...minProps} />

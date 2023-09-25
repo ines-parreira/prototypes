@@ -1,4 +1,8 @@
-import {OrderDirection} from 'models/api/types'
+import {ApiPaginationParams, OrderDirection} from 'models/api/types'
+
+export type ListParams = ApiPaginationParams & {
+    viewId: number
+}
 
 export enum ViewCategory {
     System = 'system',

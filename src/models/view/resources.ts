@@ -7,7 +7,7 @@ import {
     ApiPaginationParams,
 } from 'models/api/types'
 
-import {View, ViewDraft} from './types'
+import {ListParams, View, ViewDraft} from './types'
 
 type SharedView = View & {
     shared_with_teams: {id: number}[]
@@ -20,6 +20,17 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
         {
             params,
             paramsSerializer: stringify,
+        }
+    )
+}
+
+export type UseGetViewItems = Awaited<ReturnType<typeof getViewItems>>
+
+export const getViewItems = async ({viewId, ...params}: ListParams) => {
+    return await client.get<ApiListResponseCursorPagination<View[]>>(
+        `/api/views/${viewId}/items/`,
+        {
+            params,
         }
     )
 }
