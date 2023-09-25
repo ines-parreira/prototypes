@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketListContainer /> should display with default props 1`] = `
+exports[`<TicketList /> should display with default props 1`] = `
 <div
   class="d-flex flex-column"
   style="width: 100%;"
@@ -51,7 +51,7 @@ exports[`<TicketListContainer /> should display with default props 1`] = `
 </div>
 `;
 
-exports[`<TicketListContainer /> should render SearchRankProvider on search url 1`] = `
+exports[`<TicketList /> should render SearchRankProvider on search url 1`] = `
 <div
   class="d-flex flex-column"
   style="width: 100%;"
@@ -106,7 +106,7 @@ exports[`<TicketListContainer /> should render SearchRankProvider on search url 
 </div>
 `;
 
-exports[`<TicketListContainer /> should render draft dropdown when there is a draft 1`] = `
+exports[`<TicketList /> should render draft dropdown when there is a draft 1`] = `
 HTMLCollection [
   <div>
     <div

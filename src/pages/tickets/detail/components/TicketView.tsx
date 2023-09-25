@@ -1,42 +1,40 @@
 import React, {useEffect, useMemo, useRef} from 'react'
 import {fromJS, List, Map} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 
 import Timeline from 'pages/common/components/timeline/Timeline'
-import {RootState} from 'state/types'
 import {displayHistoryOnNextPage, toggleHistory} from 'state/ticket/actions'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCustomersState} from 'state/customers/selectors'
 import {getBody, getDisplayHistory} from 'state/ticket/selectors'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 
+import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {SubmitArgs} from '../TicketDetailContainer'
 import css from './TicketView.less'
 
-type OwnProps = {
+type Props = {
     hideTicket: () => Promise<void>
     isTicketHidden: boolean
     submit: (params: SubmitArgs) => any
     setStatus: (status: string) => any
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
-
-export const TicketViewContainer = ({
-    customers,
-    displayHistoryOnNextPage,
+export const TicketView = ({
     hideTicket,
-    isHistoryDisplayed,
     isTicketHidden,
     setStatus,
     submit,
-    ticket,
-    ticketBody,
-    toggleHistory,
 }: Props) => {
+    const dispatch = useAppDispatch()
     const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
+
+    const customers = useAppSelector(getCustomersState)
+    const isHistoryDisplayed = useAppSelector(getDisplayHistory)
+    const ticket = useAppSelector((state) => state.ticket)
+    const ticketBody = useAppSelector(getBody)
 
     const customerHistory = useMemo(
         () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
@@ -54,11 +52,11 @@ export const TicketViewContainer = ({
         ]) as boolean
 
         if (shouldDisplayHistoryOnNextPage !== displayHistory) {
-            toggleHistory(shouldDisplayHistoryOnNextPage)
+            dispatch(toggleHistory(shouldDisplayHistoryOnNextPage))
         }
 
         if (shouldDisplayHistoryOnNextPage) {
-            displayHistoryOnNextPage(false)
+            dispatch(displayHistoryOnNextPage(false))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -69,7 +67,7 @@ export const TicketViewContainer = ({
             customers.getIn(['customerHistory', 'hasHistory']) &&
             !isHistoryDisplayed
 
-        toggleHistory(shouldOpenHistory)
+        dispatch(toggleHistory(shouldOpenHistory))
 
         // TODO(customers-migration): ask confirmation to update this event
         logEvent(SegmentEvent.UserHistoryToggled, {
@@ -112,7 +110,9 @@ export const TicketViewContainer = ({
 
                     <div className={classnames(css.timelineContainer, 'pb-4')}>
                         <Timeline
-                            displayHistoryOnNextPage={displayHistoryOnNextPage}
+                            displayHistoryOnNextPage={() =>
+                                dispatch(displayHistoryOnNextPage())
+                            }
                             currentTicketId={ticket.get('id')}
                             customerHistory={customerHistory}
                         />
@@ -144,17 +144,4 @@ export const TicketViewContainer = ({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        customers: getCustomersState(state),
-        isHistoryDisplayed: getDisplayHistory(state),
-        ticket: state.ticket,
-        ticketBody: getBody(state),
-    }),
-    {
-        displayHistoryOnNextPage,
-        toggleHistory,
-    }
-)
-
-export default connector(TicketViewContainer)
+export default TicketView

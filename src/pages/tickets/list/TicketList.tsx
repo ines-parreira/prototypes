@@ -6,19 +6,17 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation, useParams} from 'react-router-dom'
 import decorateComponentWithProps from 'decorate-component-with-props'
 import _noop from 'lodash/noop'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import Button from 'pages/common/components/button/Button'
-import {RootState} from 'state/types'
 import {fetchTags} from 'state/tags/actions'
 import {getTickets} from 'state/tickets/selectors'
 import {
     getActiveView,
-    hasActiveView,
+    hasActiveView as getHasActiveView,
     getSelectedItemsIds,
 } from 'state/views/selectors'
 import {compactInteger} from 'utils'
@@ -37,20 +35,22 @@ import {
     TicketDraft,
 } from 'hooks/useTicketDraft'
 import useTitle from 'hooks/useTitle'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import TicketListActions from './components/TicketListActions'
-import css from './TicketListContainer.less'
+import css from './TicketList.less'
 
-export const TicketListContainer = ({
-    activeView,
-    fetchTags,
-    hasActiveView,
-    selectedItemsIds,
-    tickets,
-}: ConnectedProps<typeof connector>) => {
+const TicketList = () => {
+    const dispatch = useAppDispatch()
+
+    const activeView = useAppSelector(getActiveView)
+    const hasActiveView = useAppSelector(getHasActiveView)
+    const selectedItemsIds = useAppSelector(getSelectedItemsIds)
+    const tickets = useAppSelector(getTickets)
+
     const localForageRef = useRef<LocalForage>()
     if (!localForageRef.current) {
         localForageRef.current = LocalForageManager.getTable(DRAFT_TICKET_STORE)
@@ -75,7 +75,7 @@ export const TicketListContainer = ({
     const currentUser = useAppSelector(getCurrentUser)
 
     useEffect(() => {
-        void fetchTags()
+        void dispatch(fetchTags())
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -224,16 +224,4 @@ export const TicketListContainer = ({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        activeView: getActiveView(state),
-        hasActiveView: hasActiveView(state),
-        selectedItemsIds: getSelectedItemsIds(state),
-        tickets: getTickets(state),
-    }),
-    {
-        fetchTags,
-    }
-)
-
-export default connector(TicketListContainer)
+export default TicketList

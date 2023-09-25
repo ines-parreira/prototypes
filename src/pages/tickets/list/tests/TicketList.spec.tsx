@@ -12,8 +12,11 @@ import ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {flushPromises, renderWithRouter} from 'utils/testing'
+import {fetchTags} from 'state/tags/actions'
 
-import {TicketListContainer} from '../TicketListContainer'
+jest.mock('state/tags/actions')
+
+import TicketList from '../TicketList'
 
 const mockSetItem = jest.fn()
 const mockGetItem = jest.fn()
@@ -21,6 +24,10 @@ const mockGetTableObject = {
     getItem: mockGetItem,
     setItem: mockSetItem,
 } as unknown as LocalForage
+
+const fetchTagsMock = (
+    fetchTags as jest.MockedFunction<typeof fetchTags>
+).mockReturnValue(() => Promise.resolve(undefined))
 
 jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(mockGetTableObject)
 
@@ -81,21 +88,20 @@ const logEventMock = logEvent as jest.Mock
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
     currentUser: fromJS(user),
+    tickets: fromJS({items: []}),
+    views: fromJS({
+        active: fixtureView,
+        _internal: {
+            selectedItemsIds: [],
+        },
+    }),
 })
 
-describe('<TicketListContainer />', () => {
-    const minProps = {
-        activeView: fromJS(fixtureView),
-        fetchTags: jest.fn(),
-        hasActiveView: true,
-        selectedItemsIds: fromJS([]),
-        tickets: fromJS([]),
-    } as unknown as ComponentProps<typeof TicketListContainer>
-
+describe('<TicketList />', () => {
     it('should display with default props', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -104,16 +110,16 @@ describe('<TicketListContainer />', () => {
     it('should fetch the tags on load', () => {
         renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>
         )
-        expect(minProps.fetchTags).toHaveBeenCalled()
+        expect(fetchTagsMock).toHaveBeenCalled()
     })
 
     it('should display "New view" as title', () => {
         renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>,
             {
                 path: 'app/tickets/',
@@ -123,21 +129,19 @@ describe('<TicketListContainer />', () => {
         expect(document.title).toEqual('New view')
     })
 
-    it(`should display "${
-        minProps.activeView.get('name') as string
-    }" as title`, () => {
+    it(`should display "${fixtureView.name}" as title`, () => {
         renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>
         )
-        expect(document.title).toEqual(minProps.activeView.get('name'))
+        expect(document.title).toEqual(fixtureView.name)
     })
 
     it('should display Search as title', () => {
         renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>,
             {
                 path: 'app/tickets/',
@@ -150,7 +154,7 @@ describe('<TicketListContainer />', () => {
     it('should render SearchRankProvider on search url', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>,
             {
                 path: 'app/tickets/',
@@ -168,7 +172,7 @@ describe('<TicketListContainer />', () => {
 
         const {getByText} = renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>
         )
         await act(flushPromises)
@@ -185,7 +189,7 @@ describe('<TicketListContainer />', () => {
 
         const {getByText} = renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>
         )
         await act(flushPromises)
@@ -213,7 +217,7 @@ describe('<TicketListContainer />', () => {
 
         const {getByText} = renderWithRouter(
             <Provider store={store}>
-                <TicketListContainer {...minProps} />
+                <TicketList />
             </Provider>
         )
         await act(flushPromises)

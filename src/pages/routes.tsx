@@ -47,7 +47,7 @@ import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbar from './tickets/navbar/TicketNavbar'
-import TicketListContainer from './tickets/list/TicketListContainer'
+import TicketList from './tickets/list/TicketList'
 import TicketPrintContainer from './tickets/detail/TicketPrintContainer'
 import CustomerListContainer from './customers/list/CustomerListContainer'
 import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
@@ -190,7 +190,7 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: TicketListContainer,
+                    content: TicketList,
                     navbar: TicketNavbar,
                     infobar: OnboardingSidePanel as any,
                 })}
@@ -432,7 +432,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: TicketListContainer,
+                    content: TicketList,
                     navbar: TicketNavbar,
                     infobar: OnboardingSidePanel,
                 })}
@@ -441,7 +441,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/new/:visibility?`}
                 exact
                 render={appRender({
-                    content: TicketListContainer,
+                    content: TicketList,
                     navbar: TicketNavbar,
                     infobar: OnboardingSidePanel,
                 })}
@@ -450,7 +450,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/search`}
                 exact
                 render={appRender({
-                    content: TicketListContainer,
+                    content: TicketList,
                     navbar: TicketNavbar,
                     infobar: OnboardingSidePanel,
                 })}
@@ -459,7 +459,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:viewId/:viewSlug?`}
                 exact
                 render={appRender({
-                    content: TicketListContainer,
+                    content: TicketList,
                     navbar: TicketNavbar,
                     infobar: OnboardingSidePanel,
                 })}
