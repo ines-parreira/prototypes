@@ -70,7 +70,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         integration: fromJS({}),
         emailIntegrations: [],
         updateOrCreateIntegration: jest.fn(),
-        displayControlTicketVolume: true,
+        articleRecommendationEnabled: true,
         convertProduct: undefined,
     }
 
@@ -224,7 +224,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             currentUser={minProps.currentUser}
                             updateOrCreateIntegration={jest.fn()}
                             integration={integration}
-                            displayControlTicketVolume={true}
+                            articleRecommendationEnabled={true}
                         />
                     )
 
@@ -386,7 +386,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             currentUser={minProps.currentUser}
                             updateOrCreateIntegration={jest.fn()}
                             integration={integration}
-                            displayControlTicketVolume={true}
+                            articleRecommendationEnabled={true}
                         />
                     )
 

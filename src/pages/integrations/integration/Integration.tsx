@@ -138,7 +138,7 @@ export const IntegrationDetail = ({
         subId: string
     }>()
 
-    const [displayControlTicketVolume, setDisplayControlTicketVolume] =
+    const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
@@ -290,8 +290,8 @@ export const IntegrationDetail = ({
     useEffect(() => {
         const appId = chatApplicationIds[0]
         if (appId) {
-            setDisplayControlTicketVolume(
-                !applicationsAutomationSettings[appId]?.articleRecommendation
+            setArticleRecommendationEnabled(
+                applicationsAutomationSettings[appId]?.articleRecommendation
                     ?.enabled && hasAutomationAddOn
             )
         }
@@ -393,8 +393,8 @@ export const IntegrationDetail = ({
                         <GorgiasChatIntegrationPreferences
                             currentUser={currentUser}
                             integration={integration}
-                            displayControlTicketVolume={
-                                displayControlTicketVolume
+                            articleRecommendationEnabled={
+                                articleRecommendationEnabled
                             }
                         />
                     )

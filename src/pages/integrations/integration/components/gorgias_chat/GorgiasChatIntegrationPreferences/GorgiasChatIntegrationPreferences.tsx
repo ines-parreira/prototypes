@@ -99,7 +99,7 @@ type Props = {
     currentUser: Map<any, any>
     flags?: LDFlagSet
     integration: Map<any, any>
-    displayControlTicketVolume: boolean
+    articleRecommendationEnabled: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -442,12 +442,18 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             currentUser,
             integration,
             emailIntegrations: integrations,
-            displayControlTicketVolume,
             flags,
             convertProduct,
         } = this.props
         const chatMultiLanguagesEnabled =
             flags?.[FeatureFlagKey.ChatMultiLanguages]
+
+        const displayControlTicketVolume = !(
+            this.props.articleRecommendationEnabled &&
+            !selfServiceConfiguration?.deactivated_datetime &&
+            selfServiceConfiguration?.article_recommendation_help_center_id
+        )
+
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
         const chatTitle = integration.get('name')
