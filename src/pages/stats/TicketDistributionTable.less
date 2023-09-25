@@ -1,0 +1,29 @@
+@import (reference) '~css/new/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .table {
+        margin: 0 -@layout-spacing-m -@layout-spacing-m;
+        width: calc(100% + (@layout-spacing-m * 2));
+
+        tr {
+            border-bottom: 0;
+            td > div {
+                padding: 6px 12px;
+            }
+        }
+    }
+
+    .lastRow {
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+
+    .total {
+        .body-medium();
+    }
+
+    .card {
+        min-height: 320px;
+        overflow: auto;
+    }
+}
