@@ -361,3 +361,19 @@ export const getPrimaryLanguageFromChatConfig = (
         (meta.language || Language.EnglishUs)
     )
 }
+
+// NOTE. This is a copy of `isTextsMultiLanguage` @ gorgias/gorgias-chat.
+/**
+ * Helper to detect if `texts` is the legacy format (mono-language) or the new format (multi-language).
+ * - Legacy: `{"texts": { ...}, "sppTexts": {...}, "meta": {...}}`
+ * - New: `{"en": {"texts": {...}, "sppTexts": {...}, "meta": {...}}, "fr": {...}}`
+ */
+export const isTextsMultiLanguage = (value: unknown): boolean => {
+    if (value && typeof value === 'object' && value !== null) {
+        const objValue = value as Record<string, unknown>
+        return Object.keys(objValue).some((key) => {
+            return Object.values(Language).includes(key as Language)
+        })
+    }
+    return false
+}

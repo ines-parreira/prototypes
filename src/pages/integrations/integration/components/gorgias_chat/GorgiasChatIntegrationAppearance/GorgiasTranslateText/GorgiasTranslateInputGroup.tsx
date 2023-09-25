@@ -2,7 +2,7 @@ import {get} from 'lodash'
 import React from 'react'
 import {Col, Container, Row} from 'reactstrap'
 import {
-    Texts,
+    TextsPerLanguage,
     Translations,
 } from '../../../../../../../rest_api/gorgias_chat_protected_api/types'
 
@@ -14,7 +14,7 @@ export type Props = {
     title: string
     keys: string[]
     filtersForKeys: FilterProps
-    texts: Texts | Record<string, unknown>
+    textsPerLanguage: TextsPerLanguage | Record<string, unknown>
     translations: Translations
     saveValue: (key: string, value: string) => void
     formPropsValues: Record<string, OptionFormat>
@@ -26,7 +26,7 @@ const GorgiasTranslateInputGroup = ({
     title,
     keys,
     filtersForKeys,
-    texts,
+    textsPerLanguage,
     translations,
     saveValue,
     formPropsValues,
@@ -59,7 +59,7 @@ const GorgiasTranslateInputGroup = ({
                             <GorgiasTranslateInputField
                                 maxLength={propOption.maxLength}
                                 keyName={key}
-                                value={get(texts, key) || ''}
+                                value={get(textsPerLanguage, key) || ''}
                                 defaultValue={get(translations, key)}
                                 saveValue={saveValue}
                                 trackInputMethod={trackInputMethod}

@@ -36,11 +36,7 @@ export async function updateApplicationTexts(
         {
             applicationId,
         },
-        {
-            texts: texts.texts,
-            sspTexts: texts.sspTexts,
-            meta: texts.meta,
-        }
+        texts
     )
 }
 

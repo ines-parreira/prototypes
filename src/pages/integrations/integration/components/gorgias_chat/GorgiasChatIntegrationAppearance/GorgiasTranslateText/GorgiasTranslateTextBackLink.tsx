@@ -14,8 +14,8 @@ const GorgiasTranslateTextBackLink = ({onClick, url}: Props) => {
     return (
         <div className={css.backWrapper}>
             <Link onClick={onClick} to={url} className="d-flex">
-                <img src={ArrowBackwardIcon} alt="Back to Appearance" />
-                Back to Appearance
+                <img src={ArrowBackwardIcon} alt="Back" />
+                Back
             </Link>
         </div>
     )

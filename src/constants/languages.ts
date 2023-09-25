@@ -13,6 +13,23 @@ export enum Language {
     Czech = 'cz',
 }
 
+/**
+ * Chat widget does not use `French = 'fr'`
+ */
+export enum LanguageChat {
+    EnglishUs = 'en-US',
+    FrenchCa = 'fr-CA',
+    FrenchFr = 'fr-FR',
+    Spanish = 'es',
+    Danish = 'da',
+    Swedish = 'sv',
+    Dutch = 'nl',
+    Italian = 'it',
+    German = 'de',
+    Norwegian = 'no',
+    Czech = 'cz',
+}
+
 export enum LanguageTimeFormat {
     twelveHours,
     twentyFourHours,

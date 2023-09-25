@@ -1,9 +1,9 @@
+import {produce} from 'immer'
 import {Map} from 'immutable'
 import {set} from 'lodash'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect} from 'react-redux'
-import {produce} from 'immer'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useHistory, useLocation} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -16,34 +16,45 @@ import {
 } from 'reactstrap'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useEffectOnce} from 'react-use'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
-import * as IntegrationsActions from 'state/integrations/actions'
-import {RootState} from 'state/types'
-
+import {LanguageChat} from 'constants/languages'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
-import {notify} from 'state/notifications/actions'
-
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import * as IntegrationsActions from 'state/integrations/actions'
+import {notify} from 'state/notifications/actions'
+import {RootState} from 'state/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    getLanguagesFromChatConfig,
+    getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
+    isTextsMultiLanguage,
+    mapIntegrationLanguagesToLanguagePicker,
 } from '../../../../../../../config/integrations/gorgias_chat'
 import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
-import {IntegrationType} from '../../../../../../../models/integration/types'
+import {
+    GorgiasChatIntegration,
+    IntegrationType,
+} from '../../../../../../../models/integration/types'
+import {
+    Texts,
+    TextsLegacyMonoLanguage,
+    TextsMultiLanguage,
+    TextsPerLanguage,
+    Translations,
+} from '../../../../../../../rest_api/gorgias_chat_protected_api/types'
 import * as integrationSelectors from '../../../../../../../state/integrations/selectors'
 import {NotificationStatus} from '../../../../../../../state/notifications/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 import useIntegrationPageViewLogEvent from '../../../../hooks/useIntegrationPageViewLogEvent'
-import {
-    Texts,
-    Translations,
-} from '../../../../../../../rest_api/gorgias_chat_protected_api/types'
+
 import GorgiasTranslateExitModal from './GorgiasTranslateExitModal'
 import GorgiasTranslateInputGroup from './GorgiasTranslateInputGroup'
 import css from './GorgiasTranslateText.less'
@@ -86,13 +97,268 @@ enum LoadingState {
 function GorgiasTranslateText({
     integration,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
-    const language =
-        getSelectedLanguage(integration.getIn(['meta', 'language'])) ||
-        getSelectedLanguage(GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT)
+    const dispatch = useAppDispatch()
+    const history = useHistory()
+    const location = useLocation()
+    useIntegrationPageViewLogEvent(
+        SegmentEvent.ChatSettingsToneOfVoicePageViewed,
+        {
+            isReady: !!integration,
+            integration,
+        }
+    )
 
-    const backUrl = `/app/settings/channels/gorgias_chat/${
-        integration.get('id') as number
-    }/appearance`
+    const renameContactFormEnabled =
+        useFlags()[FeatureFlagKey.ChatRenameContactForm]
+
+    const integrationChat = integration.toJS() as GorgiasChatIntegration
+
+    const segments = location.pathname.split('/')
+    const [lastSegment, setLastSegment] = useState<string | undefined>(
+        undefined
+    )
+    const [language, setLanguage] = useState<Map<string, string> | null>(null)
+    const [hasChanges, setHasChanges] = useState(false)
+    const [isExitModalOpen, setIsExitModalOpen] = useState(false)
+    const [isLanguageChangeModalOpen, setIsLanguageChangeModalOpen] =
+        useState(false)
+    const [preModalSelectedLanguage, setPreModalSelectedLanguage] =
+        useState<LanguageChat | null>(null)
+    const [showWarning, setShowWarning] = useState(true)
+    const [translations, setTranslations] = useState<Translations>({
+        texts: {},
+        sspTexts: {},
+        meta: {},
+    })
+
+    useEffectOnce(() => {
+        setLastSegment(segments.pop() || (segments.pop() as string)) // Handle potential trailing slash.
+    })
+
+    const IsLegacyMonoLanguageMode = lastSegment === 'texts'
+    const multiLanguageInitialTextsEmptyData: TextsMultiLanguage =
+        Object.values(LanguageChat).reduce(
+            (acc, lang) => ({
+                ...acc,
+                [lang as string]: {
+                    texts: {},
+                    sspTexts: {},
+                    meta: {},
+                } as TextsPerLanguage,
+            }),
+            {} as TextsMultiLanguage
+        )
+
+    // Store the the initial state of the full multi-language format. Or is just a copy of initialTextsOfSelectedLanguage if in backward compatible mode.
+    const [initialTexts, setInitialTexts] = useState<Texts>(
+        IsLegacyMonoLanguageMode
+            ? {
+                  texts: {},
+                  sspTexts: {},
+                  meta: {},
+              }
+            : multiLanguageInitialTextsEmptyData
+    )
+
+    // Store the initial state texts of the selected language.
+    const [initialTextsOfSelectedLanguage, setInitialTextsOfSelectedLanguage] =
+        useState<TextsPerLanguage>({
+            texts: {},
+            sspTexts: {},
+            meta: {},
+        })
+    // Store the local texts changes of the selected language.
+    const [textsOfSelectedLanguage, setTextsOfSelectedLanguage] =
+        useState<TextsPerLanguage>(initialTextsOfSelectedLanguage)
+
+    const [textsLoadingState, setTextsLoadingState] = useState<LoadingState>(
+        LoadingState.NOT_LOADED
+    )
+    const [translationsLoadingState, setTranslationsLoadingState] =
+        useState<LoadingState>(LoadingState.NOT_LOADED)
+
+    const languagePickerLanguages = useMemo(
+        () => mapIntegrationLanguagesToLanguagePicker(integration),
+        [integration]
+    )
+
+    const integrationDefaultLanguage = useMemo(() => {
+        if (integrationChat.meta) {
+            return getPrimaryLanguageFromChatConfig(integrationChat.meta)
+        }
+        return null
+    }, [integrationChat])
+
+    const integrationLanguages = useMemo(() => {
+        if (integrationChat.meta) {
+            return getLanguagesFromChatConfig(integrationChat.meta)
+        }
+        return null
+    }, [integrationChat])
+
+    const languageBasedOnUrl = useMemo(() => {
+        if (
+            !integrationDefaultLanguage ||
+            !integrationLanguages ||
+            !lastSegment
+        ) {
+            return undefined
+        }
+
+        if (IsLegacyMonoLanguageMode) {
+            return getSelectedLanguage(
+                integrationDefaultLanguage as LanguageChat
+            )
+        }
+
+        if (integrationLanguages.includes(lastSegment)) {
+            return getSelectedLanguage(lastSegment as LanguageChat)
+        }
+        return getSelectedLanguage(integrationDefaultLanguage as LanguageChat)
+    }, [
+        integrationDefaultLanguage,
+        integrationLanguages,
+        lastSegment,
+        IsLegacyMonoLanguageMode,
+    ])
+
+    const dependenciesLoaded = useMemo(() => {
+        return (
+            translationsLoadingState === LoadingState.LOADED &&
+            textsLoadingState === LoadingState.LOADED
+        )
+    }, [textsLoadingState, translationsLoadingState])
+
+    useEffect(() => {
+        if (language && integration?.get('id')) {
+            history.replace(
+                `/app/settings/channels/gorgias_chat/${
+                    integration.get('id') as number
+                }/languages/${language.get('value')}`
+            )
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [integration, language])
+
+    useEffect(() => {
+        if (languageBasedOnUrl) {
+            setLanguage(languageBasedOnUrl)
+        }
+    }, [languageBasedOnUrl])
+
+    useEffect(() => {
+        if (
+            translationsLoadingState === LoadingState.NOT_LOADED &&
+            language &&
+            integrationDefaultLanguage
+        ) {
+            setTranslationsLoadingState(LoadingState.LOADING)
+
+            void IntegrationsActions.getTranslations(
+                language.get('value')
+            ).then((data: Translations) => {
+                setTranslations(data)
+                setTranslationsLoadingState(LoadingState.LOADED)
+            })
+        }
+
+        const applicationId: string = integration.getIn(['meta', 'app_id'])
+        if (
+            applicationId &&
+            textsLoadingState === LoadingState.NOT_LOADED &&
+            language &&
+            integrationDefaultLanguage &&
+            initialTexts
+        ) {
+            setTextsLoadingState(LoadingState.LOADING)
+
+            void IntegrationsActions.getApplicationTexts(applicationId).then(
+                (data: Texts) => {
+                    if (!isTextsMultiLanguage(data)) {
+                        if (IsLegacyMonoLanguageMode) {
+                            // Keep using the legacy mono-language format.
+                            setInitialTexts(data as TextsLegacyMonoLanguage)
+                            setInitialTextsOfSelectedLanguage(
+                                data as TextsPerLanguage
+                            )
+                            setTextsOfSelectedLanguage(data as TextsPerLanguage)
+                        } else {
+                            // Upgrade from legacy mono-language to to multi-language format.
+                            const textsMultiLanguage: TextsMultiLanguage = {
+                                ...multiLanguageInitialTextsEmptyData,
+                                [integrationDefaultLanguage as LanguageChat]:
+                                    data as TextsPerLanguage,
+                            }
+                            setInitialTexts(textsMultiLanguage)
+                            const textsOfSelectedLanguage =
+                                textsMultiLanguage[
+                                    language.get('value') as LanguageChat
+                                ]
+                            setInitialTextsOfSelectedLanguage(
+                                textsOfSelectedLanguage
+                            )
+                            setTextsOfSelectedLanguage(textsOfSelectedLanguage)
+                        }
+                    } else {
+                        // Merge existing TextsMultiLanguage data to multiLanguageInitialTextsEmptyData to ensure all languages are present.
+                        const textsMultiLanguage: TextsMultiLanguage = {
+                            ...multiLanguageInitialTextsEmptyData,
+                            ...(data as TextsMultiLanguage),
+                        }
+
+                        const languageEnum = language.get(
+                            'value'
+                        ) as LanguageChat
+                        const textsSelectedLanguage =
+                            textsMultiLanguage[languageEnum]
+                        setInitialTexts(textsMultiLanguage)
+                        setInitialTextsOfSelectedLanguage(textsSelectedLanguage)
+                        setTextsOfSelectedLanguage(textsSelectedLanguage)
+                    }
+
+                    setTextsLoadingState(LoadingState.LOADED)
+                }
+            )
+        }
+    }, [
+        textsLoadingState,
+        translationsLoadingState,
+        IsLegacyMonoLanguageMode,
+        integrationDefaultLanguage,
+        language,
+        initialTexts,
+        integration,
+        multiLanguageInitialTextsEmptyData,
+    ])
+
+    const handleLanguageChange = (
+        language: LanguageChat,
+        calledFromConfirmationModal = false
+    ) => {
+        if (hasChanges && !calledFromConfirmationModal) {
+            setPreModalSelectedLanguage(language)
+            setIsLanguageChangeModalOpen(true)
+            return
+        }
+
+        setTranslationsLoadingState(LoadingState.NOT_LOADED)
+        setLanguage(getSelectedLanguage(language))
+
+        // Reload the correct language customized texts.
+        const textsOfSelectedLanguage = (initialTexts as TextsMultiLanguage)[
+            language
+        ]
+        setInitialTextsOfSelectedLanguage(textsOfSelectedLanguage)
+        setTextsOfSelectedLanguage(textsOfSelectedLanguage)
+    }
+
+    const backUrl = IsLegacyMonoLanguageMode
+        ? `/app/settings/channels/gorgias_chat/${
+              integration.get('id') as number
+          }/appearance`
+        : `/app/settings/channels/gorgias_chat/${
+              integration.get('id') as number
+          }/languages`
 
     const emailCaptureEnforcement = integration.getIn([
         'meta',
@@ -100,11 +366,6 @@ function GorgiasTranslateText({
         'email_capture_enforcement',
     ])
     const filterForlEmailCaptureKeys = {emailCaptureEnforcement}
-    const renameContactFormEnabled =
-        useFlags()[FeatureFlagKey.ChatRenameContactForm]
-
-    const dispatch = useAppDispatch()
-    const history = useHistory()
 
     const dispatchNotification = useCallback(
         (
@@ -121,17 +382,7 @@ function GorgiasTranslateText({
         [dispatch]
     )
 
-    useIntegrationPageViewLogEvent(
-        SegmentEvent.ChatSettingsToneOfVoicePageViewed,
-        {
-            isReady: !!integration,
-            integration,
-        }
-    )
-
-    const [hasChanges, setHasChanges] = useState(false)
-    const [isExitModalOpen, setIsExitModalOpen] = useState(false)
-    const onClickCallback = useCallback(
+    const onClickToExit = useCallback(
         (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
             event.preventDefault()
             if (hasChanges) {
@@ -143,87 +394,89 @@ function GorgiasTranslateText({
         [hasChanges, history, backUrl]
     )
 
-    const [showWarning, setShowWarning] = useState(true)
     const closeWarning = () => {
         setShowWarning(false)
     }
 
-    const [translations, setTranslations] = useState<Texts>({
-        texts: {},
-        sspTexts: {},
-        meta: {},
-    })
-
-    const [initialTexts, setInitialTexts] = useState<Texts>({
-        texts: {},
-        sspTexts: {},
-        meta: {},
-    })
-    const [texts, setTexts] = useState<Texts>(initialTexts)
-
-    const [textsLoadingState, setTextsLoadingState] = useState<LoadingState>(
-        LoadingState.NOT_LOADED
-    )
-    const [translationsLoadingState, setTranslationsLoadingState] =
-        useState<LoadingState>(LoadingState.NOT_LOADED)
-
     const saveKeyValue = useCallback(
         (key: string, value: string) => {
             setHasChanges(true)
-            setTexts(
-                produce(texts, (textsDraft) => {
+            setTextsOfSelectedLanguage(
+                produce(textsOfSelectedLanguage, (textsDraft) => {
                     set(textsDraft, key, value || undefined)
                 })
             )
         },
-        [texts, setTexts, setHasChanges]
+        [textsOfSelectedLanguage, setTextsOfSelectedLanguage, setHasChanges]
     )
 
     const updateApplicationTexts = useCallback(async (): Promise<void> => {
         const applicationId: string = integration.getIn(['meta', 'app_id'])
-        await IntegrationsActions.updateApplicationTexts(applicationId, texts)
-    }, [integration, texts])
 
-    const onDiscarChangesAndExit = () => {
-        setTexts({...initialTexts})
-        setHasChanges(false)
-        history.push(backUrl)
-    }
-
-    const onSaveValuesAndExit = async () => {
-        try {
-            await updateApplicationTexts()
-            setHasChanges(false)
-            history.push(backUrl)
-        } catch {
-            dispatchNotification(
-                `There was a problem. We couldn't update your changes`,
-                NotificationStatus.Error
+        if (IsLegacyMonoLanguageMode) {
+            await IntegrationsActions.updateApplicationTexts(
+                applicationId,
+                textsOfSelectedLanguage
+            )
+        } else {
+            const mergedData = {
+                ...initialTexts,
+                [language?.get('value') as LanguageChat]:
+                    textsOfSelectedLanguage,
+            }
+            await IntegrationsActions.updateApplicationTexts(
+                applicationId,
+                mergedData
             )
         }
-    }
-
-    const onCloseModal = () => {
-        setIsExitModalOpen(false)
-    }
+    }, [
+        initialTexts,
+        integration,
+        language,
+        IsLegacyMonoLanguageMode,
+        textsOfSelectedLanguage,
+    ])
 
     const resetValues = useCallback(() => {
-        setTexts({...initialTexts})
+        setTextsOfSelectedLanguage({...initialTextsOfSelectedLanguage})
         setHasChanges(false)
         dispatchNotification('Discarded changes')
-    }, [setTexts, setHasChanges, initialTexts, dispatchNotification])
+    }, [
+        setTextsOfSelectedLanguage,
+        setHasChanges,
+        initialTextsOfSelectedLanguage,
+        dispatchNotification,
+    ])
 
     const submitData = useCallback(
-        async (evt: React.FormEvent<HTMLElement>) => {
-            evt.preventDefault()
+        async (evt?: React.FormEvent<HTMLElement>) => {
+            evt?.preventDefault()
 
             try {
                 await updateApplicationTexts()
-                setInitialTexts({
-                    texts: {...texts.texts},
-                    sspTexts: {...texts.sspTexts},
-                    meta: {...texts.meta},
-                })
+
+                if (IsLegacyMonoLanguageMode) {
+                    setInitialTexts(textsOfSelectedLanguage)
+                    setInitialTextsOfSelectedLanguage(textsOfSelectedLanguage)
+                } else {
+                    if (language) {
+                        setInitialTexts({
+                            ...initialTexts,
+                            [language?.get('value') as LanguageChat]:
+                                textsOfSelectedLanguage,
+                        })
+                        setInitialTextsOfSelectedLanguage(
+                            textsOfSelectedLanguage
+                        )
+                    } else {
+                        dispatchNotification(
+                            `There was a problem. We couldn't update your changes`,
+                            NotificationStatus.Error
+                        )
+                        return
+                    }
+                }
+
                 setHasChanges(false)
                 dispatchNotification('Your changes are now live')
 
@@ -239,11 +492,12 @@ function GorgiasTranslateText({
         },
         [
             updateApplicationTexts,
+            IsLegacyMonoLanguageMode,
             dispatchNotification,
-            texts,
-            setHasChanges,
-            setInitialTexts,
             integration,
+            textsOfSelectedLanguage,
+            language,
+            initialTexts,
         ]
     )
 
@@ -257,42 +511,54 @@ function GorgiasTranslateText({
         [integration]
     )
 
-    useEffect(() => {
-        if (translationsLoadingState === LoadingState.NOT_LOADED) {
-            setTranslationsLoadingState(LoadingState.LOADING)
+    const onDiscardChangesAndExit = () => {
+        setTextsOfSelectedLanguage({...initialTextsOfSelectedLanguage})
+        setHasChanges(false)
+        history.push(backUrl)
+    }
 
-            void IntegrationsActions.getTranslations(
-                language.get('value')
-            ).then((data: Translations) => {
-                setTranslations(data)
-                setTranslationsLoadingState(LoadingState.LOADED)
-            })
-        }
-
-        const applicationId: string = integration.getIn(['meta', 'app_id'])
-        if (applicationId && textsLoadingState === LoadingState.NOT_LOADED) {
-            setTextsLoadingState(LoadingState.LOADING)
-
-            void IntegrationsActions.getApplicationTexts(applicationId).then(
-                (data) => {
-                    setInitialTexts({
-                        texts: {...data.texts},
-                        sspTexts: {...data.sspTexts},
-                        meta: {...data.meta},
-                    })
-                    setTexts(data)
-                    setTextsLoadingState(LoadingState.LOADED)
-                }
+    const onSaveValuesAndExit = async () => {
+        try {
+            await submitData()
+            setHasChanges(false)
+            history.push(backUrl)
+        } catch {
+            dispatchNotification(
+                `There was a problem. We couldn't update your changes`,
+                NotificationStatus.Error
             )
         }
-    }, [
-        integration,
-        setInitialTexts,
-        setTexts,
-        language,
-        textsLoadingState,
-        translationsLoadingState,
-    ])
+    }
+
+    const onDiscardChangesAndSwitchLanguage = () => {
+        setHasChanges(false)
+        onCloseModals()
+        if (preModalSelectedLanguage) {
+            handleLanguageChange(preModalSelectedLanguage, true)
+        }
+    }
+
+    const onSaveValuesAndSwitchLanguage = async () => {
+        try {
+            await submitData()
+            setHasChanges(false)
+            onCloseModals()
+            if (preModalSelectedLanguage) {
+                handleLanguageChange(preModalSelectedLanguage, true)
+            }
+        } catch {
+            dispatchNotification(
+                `There was a problem. We couldn't update your changes`,
+                NotificationStatus.Error
+            )
+        }
+    }
+
+    const onCloseModals = () => {
+        setIsExitModalOpen(false)
+        setIsLanguageChangeModalOpen(false)
+        setPreModalSelectedLanguage(null)
+    }
 
     return (
         <div className="full-width">
@@ -301,7 +567,7 @@ function GorgiasTranslateText({
                     <Breadcrumb>
                         <BreadcrumbItem>
                             <Link
-                                onClick={onClickCallback}
+                                onClick={onClickToExit}
                                 to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
                             >
                                 Chat
@@ -323,18 +589,63 @@ function GorgiasTranslateText({
                             <Col className={css.pageColumn} md="6">
                                 <GorgiasTranslateTextBackLink
                                     url={backUrl}
-                                    onClick={onClickCallback}
+                                    onClick={onClickToExit}
                                 />
                             </Col>
                             <Col className={css.pageColumn} md="6">
-                                <div className={css.flagContainerWrapper}>
-                                    <span className={css.flagContainer}>
-                                        <FlagLanguageItem
-                                            key={language.get('value')}
-                                            code={language.get('value')}
-                                            name={language.get('label')}
-                                        />
-                                    </span>
+                                <div
+                                    className={
+                                        IsLegacyMonoLanguageMode
+                                            ? css.languageSectionLegacy
+                                            : css.languageSection
+                                    }
+                                >
+                                    {language && (
+                                        <div>
+                                            {IsLegacyMonoLanguageMode ? (
+                                                <span
+                                                    className={
+                                                        css.flagContainer
+                                                    }
+                                                >
+                                                    <FlagLanguageItem
+                                                        key={language.get(
+                                                            'value'
+                                                        )}
+                                                        code={language.get(
+                                                            'value'
+                                                        )}
+                                                        name={language.get(
+                                                            'label'
+                                                        )}
+                                                    />
+                                                </span>
+                                            ) : (
+                                                <div
+                                                    className={
+                                                        css.selectLanguageContainer
+                                                    }
+                                                >
+                                                    <SelectField
+                                                        value={language.get(
+                                                            'value'
+                                                        )}
+                                                        onChange={(language) =>
+                                                            handleLanguageChange(
+                                                                language as LanguageChat
+                                                            )
+                                                        }
+                                                        options={
+                                                            languagePickerLanguages
+                                                        }
+                                                        dropdownMenuClassName={
+                                                            css.dropdownMenu
+                                                        }
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </Col>
                         </Row>
@@ -369,98 +680,91 @@ function GorgiasTranslateText({
                 </Row>
             </Container>
 
-            {(translationsLoadingState === LoadingState.LOADED &&
-                textsLoadingState === LoadingState.LOADED && (
-                    <Form
-                        onSubmit={submitData}
-                        id="texts-form"
-                        onReset={resetValues}
-                    >
-                        <GorgiasTranslateInputGroup
-                            title="General"
-                            keys={generalKeys}
-                            filtersForKeys={{}}
-                            texts={texts}
-                            translations={translations}
-                            saveValue={saveKeyValue}
-                            formPropsValues={formProps.general}
-                            trackInputMethod={trackInput}
-                        />
+            {(dependenciesLoaded && (
+                <Form
+                    onSubmit={submitData}
+                    id="texts-form"
+                    onReset={resetValues}
+                >
+                    <GorgiasTranslateInputGroup
+                        title="General"
+                        keys={generalKeys}
+                        filtersForKeys={{}}
+                        textsPerLanguage={textsOfSelectedLanguage}
+                        translations={translations}
+                        saveValue={saveKeyValue}
+                        formPropsValues={formProps.general}
+                        trackInputMethod={trackInput}
+                    />
 
-                        <GorgiasTranslateInputGroup
-                            title={
-                                renameContactFormEnabled
-                                    ? 'Offline Capture'
-                                    : 'Contact Form'
-                            }
-                            keys={contactFormKeys}
-                            filtersForKeys={{}}
-                            texts={texts}
-                            translations={translations}
-                            saveValue={saveKeyValue}
-                            formPropsValues={formProps.contactForm}
-                            trackInputMethod={trackInput}
-                        />
-                        <GorgiasTranslateInputGroup
-                            title={`Offline Capture - Confirmation email`}
-                            keys={contactFormComfirmationEmailKeys}
-                            filtersForKeys={{}}
-                            texts={texts}
-                            translations={translations}
-                            saveValue={saveKeyValue}
-                            formPropsValues={
-                                formProps.contactFormConfirmationEmail
-                            }
-                            trackInputMethod={trackInput}
-                        />
+                    <GorgiasTranslateInputGroup
+                        title={
+                            renameContactFormEnabled
+                                ? 'Offline Capture'
+                                : 'Contact Form'
+                        }
+                        keys={contactFormKeys}
+                        filtersForKeys={{}}
+                        textsPerLanguage={textsOfSelectedLanguage}
+                        translations={translations}
+                        saveValue={saveKeyValue}
+                        formPropsValues={formProps.contactForm}
+                        trackInputMethod={trackInput}
+                    />
+                    <GorgiasTranslateInputGroup
+                        title={`Offline Capture - Confirmation email`}
+                        keys={contactFormComfirmationEmailKeys}
+                        filtersForKeys={{}}
+                        textsPerLanguage={textsOfSelectedLanguage}
+                        translations={translations}
+                        saveValue={saveKeyValue}
+                        formPropsValues={formProps.contactFormConfirmationEmail}
+                        trackInputMethod={trackInput}
+                    />
 
-                        <GorgiasTranslateInputGroup
-                            title="Dynamic wait time"
-                            keys={dynamicWaitTimeKeys}
-                            filtersForKeys={{}}
-                            texts={texts}
-                            translations={translations}
-                            saveValue={saveKeyValue}
-                            formPropsValues={formProps.dynamicWaitTime}
-                            trackInputMethod={trackInput}
-                        />
+                    <GorgiasTranslateInputGroup
+                        title="Dynamic wait time"
+                        keys={dynamicWaitTimeKeys}
+                        filtersForKeys={{}}
+                        textsPerLanguage={textsOfSelectedLanguage}
+                        translations={translations}
+                        saveValue={saveKeyValue}
+                        formPropsValues={formProps.dynamicWaitTime}
+                        trackInputMethod={trackInput}
+                    />
 
-                        <GorgiasTranslateInputGroup
-                            title="Auto-responder"
-                            keys={autoResponderKeys}
-                            filtersForKeys={{}}
-                            texts={texts}
-                            translations={translations}
-                            saveValue={saveKeyValue}
-                            formPropsValues={formProps.autoResponder}
-                            trackInputMethod={trackInput}
-                        />
+                    <GorgiasTranslateInputGroup
+                        title="Auto-responder"
+                        keys={autoResponderKeys}
+                        filtersForKeys={{}}
+                        textsPerLanguage={textsOfSelectedLanguage}
+                        translations={translations}
+                        saveValue={saveKeyValue}
+                        formPropsValues={formProps.autoResponder}
+                        trackInputMethod={trackInput}
+                    />
 
-                        <GorgiasTranslateInputGroup
-                            title="Email capture"
-                            keys={emailCaptureKeys}
-                            filtersForKeys={filterForlEmailCaptureKeys}
-                            texts={texts}
-                            translations={translations}
-                            saveValue={saveKeyValue}
-                            formPropsValues={formProps.emailCapture}
-                            trackInputMethod={trackInput}
-                        />
+                    <GorgiasTranslateInputGroup
+                        title="Email capture"
+                        keys={emailCaptureKeys}
+                        filtersForKeys={filterForlEmailCaptureKeys}
+                        textsPerLanguage={textsOfSelectedLanguage}
+                        translations={translations}
+                        saveValue={saveKeyValue}
+                        formPropsValues={formProps.emailCapture}
+                        trackInputMethod={trackInput}
+                    />
 
-                        <Container fluid className={css.buttonsContainer}>
-                            <Button
-                                type="submit"
-                                color="primary"
-                                className="mr-3"
-                            >
-                                Save Changes
-                            </Button>
-                            <Button type="reset" color="secondary">
-                                Discard Changes
-                            </Button>
-                        </Container>
-                    </Form>
-                )) || (
+                    <Container fluid className={css.buttonsContainer}>
+                        <Button type="submit" color="primary" className="mr-3">
+                            Save Changes
+                        </Button>
+                        <Button type="reset" color="secondary">
+                            Discard Changes
+                        </Button>
+                    </Container>
+                </Form>
+            )) || (
                 <div className={css.spinnerWrapper}>
                     <Spinner className={css.spinner} color="gloom" />
                 </div>
@@ -468,9 +772,15 @@ function GorgiasTranslateText({
 
             <GorgiasTranslateExitModal
                 isOpen={isExitModalOpen}
-                onClose={onCloseModal}
+                onClose={onCloseModals}
                 onConfirm={onSaveValuesAndExit}
-                onDiscard={onDiscarChangesAndExit}
+                onDiscard={onDiscardChangesAndExit}
+            />
+            <GorgiasTranslateExitModal
+                isOpen={isLanguageChangeModalOpen}
+                onClose={onCloseModals}
+                onConfirm={onSaveValuesAndSwitchLanguage}
+                onDiscard={onDiscardChangesAndSwitchLanguage}
             />
         </div>
     )
@@ -481,10 +791,14 @@ export default connect(
     mapDispatchToProps
 )(GorgiasTranslateText)
 
-function getSelectedLanguage(languageKey: string) {
-    const language = GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find((el) => {
-        return el?.get('value') === languageKey
-    })
+function getSelectedLanguage(
+    languageValue: LanguageChat
+): Map<string, string> | null {
+    if ([...Object.values(LanguageChat)].includes(languageValue)) {
+        return GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find((el) => {
+            return el?.get('value') === languageValue
+        })
+    }
 
-    return language
+    return null
 }
