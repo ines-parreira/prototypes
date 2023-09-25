@@ -3,11 +3,9 @@ import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import Clipboard from 'clipboard'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as actions from 'state/widgets/actions'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import Button from 'pages/common/components/button/Button'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
@@ -91,8 +89,6 @@ const InfobarCustomerInfo = ({
         }),
         [isEditing]
     )
-    const hasCustomerTimelineButton =
-        useFlags()[FeatureFlagKey.CustomerTimelineButton] || false
 
     const [isInitialized, setIsInitialized] = useState(false)
 
@@ -268,9 +264,7 @@ const InfobarCustomerInfo = ({
                         <CustomerNote customer={customer} />
                     </CustomerChannels>
                 </div>
-                {hasCustomerTimelineButton && (
-                    <CustomerTimelineButton isEditing={isEditing} />
-                )}
+                <CustomerTimelineButton isEditing={isEditing} />
             </div>
             {areSourcesReady(sources, widgets.get('currentContext', ''))
                 ? renderWidgets()

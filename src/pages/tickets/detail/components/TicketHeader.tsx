@@ -53,7 +53,6 @@ import css from './TicketHeader.less'
 
 type Props = {
     hasSeparateSnooze: boolean
-    hasTicketNavigationArrows: boolean
     ticket: Map<any, any>
     className: string
     hideTicket: () => Promise<void>
@@ -207,7 +206,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             className,
             currentUser,
             hasSeparateSnooze,
-            hasTicketNavigationArrows,
             removeTag,
             setAgent,
             setSubject,
@@ -320,11 +318,9 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                             timezone={timezone}
                         />
 
-                        {hasTicketNavigationArrows && (
-                            <TicketNavigationArrowPagination
-                                ticketId={ticket.get('id')}
-                            />
-                        )}
+                        <TicketNavigationArrowPagination
+                            ticketId={ticket.get('id')}
+                        />
 
                         <TicketTrash
                             className={css.headerIcon}

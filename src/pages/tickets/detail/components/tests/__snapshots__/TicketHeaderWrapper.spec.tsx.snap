@@ -5,12 +5,8 @@ exports[`<TicketHeaderWrapper/> should hide history button when on a new ticket 
   <div
     class="headerContainer"
   >
-    <div
-      class="d-flex"
-    >
-      <div>
-        TicketHeader
-      </div>
+    <div>
+      TicketHeader
     </div>
     <div>
       TicketFields
@@ -27,19 +23,8 @@ exports[`<TicketHeaderWrapper/> should render history button, ticket header and 
   <div
     class="headerContainer"
   >
-    <div
-      class="d-flex"
-    >
-      <div
-        class="historyButtonContainer d-none d-md-flex align-items-top mt-4"
-      >
-        <div>
-          HistoryButton
-        </div>
-      </div>
-      <div>
-        TicketHeader
-      </div>
+    <div>
+      TicketHeader
     </div>
     <div>
       TicketFields

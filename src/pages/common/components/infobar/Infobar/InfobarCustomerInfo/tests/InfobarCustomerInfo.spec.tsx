@@ -195,14 +195,10 @@ describe('<InfobarCustomerInfo/>', () => {
         }
     )
 
-    it.each([true, false])(
+    it(
         'sources render basic customer info and widgets because there is customer data, the user is not editing ' +
             'widgets and current widgets are not empty',
-        (hasCustomerTimelineButton) => {
-            mockFlags({
-                [FeatureFlagKey.CustomerTimelineButton]:
-                    hasCustomerTimelineButton,
-            })
+        () => {
             const sources = fromJS({
                 ticket: {
                     customer: {
@@ -239,11 +235,7 @@ describe('<InfobarCustomerInfo/>', () => {
                 </Provider>
             )
 
-            if (hasCustomerTimelineButton) {
-                expect(component.text()).toContain('Customer timeline')
-            } else {
-                expect(component.text()).not.toContain('Customer timeline')
-            }
+            expect(component.text()).toContain('Customer timeline')
 
             expect(component).toMatchSnapshot()
         }
