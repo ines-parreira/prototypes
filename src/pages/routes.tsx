@@ -1,8 +1,7 @@
-import React, {ComponentType, ReactNode, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import {
     Redirect,
     Route,
-    RouteComponentProps,
     Switch,
     useLocation,
     useRouteMatch,
@@ -161,315 +160,281 @@ import {
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
-const appRender =
-    (props: {
-        navbar?: ComponentType<any>
-        content?: ComponentType<any>
-        infobar?: ComponentType<any>
-        containerPadding?: boolean
-        infobarOnMobile?: boolean
-        noContainerWidthLimit?: boolean
-        isEditingWidgets?: boolean
-        children?: ReactNode
-    }) =>
-    (routeProps: RouteComponentProps) => {
-        return <App {...routeProps} {...props} />
-    }
-
 export default function Routes() {
-    return <Route path="/app" component={AppRoutes} />
+    return (
+        <Route path="/app">
+            <AppRoutes />
+        </Route>
+    )
 }
 
-export function AppRoutes({match: {path}}: RouteComponentProps) {
+export function AppRoutes() {
+    const {path} = useRouteMatch()
+
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
 
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: TicketList,
-                    navbar: TicketNavbar,
-                    infobar: OnboardingSidePanel as any,
-                })}
-            />
-            <Route path={`${path}/customers`} render={CustomersRoutes} />
-            <Route path={`${path}/customer`} render={CustomerRoutes} />
-            <Route path={`${path}/users`} render={UsersRoutes} />
-            <Route path={`${path}/user`} render={UserRoutes} />
-            <Route path={`${path}/ticket`} render={TicketRoutes} />
-            <Route path={`${path}/tickets`} render={TicketsRoutes} />
-            <Route path={`${path}/admin/tasks`} render={AdminTasksRoutes} />
-            <Route
-                path={`${path}/stats`}
-                render={(props) => <StatsRoutes {...props} />}
-            />
-            <Route
-                path={`${path}/automation`}
-                render={() => <AutomationRoutes />}
-            />
-            <Route
-                path={`${path}/settings`}
-                render={(props) => <SettingsRoutes {...props} />}
-            />
-            <Route
-                path={`${path}/home`}
-                render={(props) => <HomepageRoutes {...props} />}
-            />
-            <Route
-                path={`${path}/referral-program`}
-                exact
-                render={appRender({
-                    content: ReferralContent,
-                    navbar: TicketNavbar,
-                })}
-            />
+            <Route path={`${path}/`} exact>
+                <App
+                    content={TicketList}
+                    navbar={TicketNavbar}
+                    infobar={OnboardingSidePanel}
+                />
+            </Route>
+            <Route path={`${path}/customers`}>
+                <CustomersRoutes />
+            </Route>
+            <Route path={`${path}/customer`}>
+                <CustomerRoutes />
+            </Route>
+            <Route path={`${path}/users`}>
+                <UsersRoutes />
+            </Route>
+            <Route path={`${path}/user`}>
+                <UserRoutes />
+            </Route>
+            <Route path={`${path}/ticket`}>
+                <TicketRoutes />
+            </Route>
+            <Route path={`${path}/tickets`}>
+                <TicketsRoutes />
+            </Route>
+            <Route path={`${path}/admin/tasks`}>
+                <AdminTasksRoutes />
+            </Route>
+            <Route path={`${path}/stats`}>
+                <StatsRoutes />
+            </Route>
+            <Route path={`${path}/automation`}>
+                <AutomationRoutes />
+            </Route>
+            <Route path={`${path}/settings`}>
+                <SettingsRoutes />
+            </Route>
+            <Route path={`${path}/home`}>
+                <HomepageRoutes />
+            </Route>
+            <Route path={`${path}/referral-program`} exact>
+                <App content={ReferralContent} navbar={TicketNavbar} />
+            </Route>
             {!!hasSplitTicketView && (
                 <Route path={`${path}/views`}>
                     <SplitTicketViewRoutes />
                 </Route>
             )}
-            <Route component={NoMatch} />
+            <Route>
+                <NoMatch />
+            </Route>
         </Switch>
     )
 }
 
-export function CustomersRoutes({match: {path}}: RouteComponentProps) {
+export function CustomersRoutes() {
+    const {path} = useRouteMatch()
+
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: CustomerListContainer,
-                    navbar: CustomerNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/new`}
-                exact
-                render={appRender({
-                    content: CustomerListContainer,
-                    navbar: CustomerNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/search`}
-                exact
-                render={appRender({
-                    content: CustomerListContainer,
-                    navbar: CustomerNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:viewId/:viewSlug?`}
-                exact
-                render={appRender({
-                    content: CustomerListContainer,
-                    navbar: CustomerNavbarContainer,
-                })}
-            />
+            <Route path={`${path}/`} exact>
+                <App
+                    content={CustomerListContainer}
+                    navbar={CustomerNavbarContainer}
+                />
+            </Route>
+            <Route path={`${path}/new`} exact>
+                <App
+                    content={CustomerListContainer}
+                    navbar={CustomerNavbarContainer}
+                />
+            </Route>
+            <Route path={`${path}/search`} exact>
+                <App
+                    content={CustomerListContainer}
+                    navbar={CustomerNavbarContainer}
+                />
+            </Route>
+            <Route path={`${path}/:viewId/:viewSlug?`} exact>
+                <App
+                    content={CustomerListContainer}
+                    navbar={CustomerNavbarContainer}
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function CustomerRoutes({match: {path}}: RouteComponentProps) {
+export function CustomerRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/:customerId`}
-                exact
-                render={appRender({
-                    content: CustomerDetailContainer,
-                    navbar: CustomerNavbarContainer,
-                    infobar: CustomerInfobarContainer,
-                    infobarOnMobile: true,
-                })}
-            />
-            <Route
-                path={`${path}/:customerId/edit-widgets`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/:customerId`} exact>
+                <App
+                    content={CustomerDetailContainer}
+                    navbar={CustomerNavbarContainer}
+                    infobar={CustomerInfobarContainer}
+                    infobarOnMobile
+                />
+            </Route>
+            <Route path={`${path}/:customerId/edit-widgets`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         CustomerSourceContainer,
                         ADMIN_ROLE,
                         undefined,
                         location.pathname.replace('/edit-widgets', '')
-                    ),
-                    navbar: CustomerNavbarContainer,
-                    infobar: CustomerInfobarContainer,
-                    isEditingWidgets: true,
-                    noContainerWidthLimit: true,
-                    containerPadding: true,
-                })}
-            />
+                    )}
+                    navbar={CustomerNavbarContainer}
+                    infobar={CustomerInfobarContainer}
+                    isEditingWidgets
+                    noContainerWidthLimit
+                    containerPadding
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function UsersRoutes({match: {path}}: RouteComponentProps) {
+export function UsersRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: CustomerListContainer,
-                    navbar: CustomerNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/new`}
-                exact
-                render={appRender({
-                    content: CustomerListContainer,
-                    navbar: CustomerNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/search`}
-                exact
-                render={appRender({
-                    content: CustomerListContainer,
-                    navbar: CustomerNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:viewId/:viewSlug?`}
-                exact
-                render={appRender({
-                    content: CustomerListContainer,
-                    navbar: CustomerNavbarContainer,
-                })}
-            />
+            <Route path={`${path}/`} exact>
+                <App
+                    content={CustomerListContainer}
+                    navbar={CustomerNavbarContainer}
+                />
+            </Route>
+            <Route path={`${path}/new`} exact>
+                <App
+                    content={CustomerListContainer}
+                    navbar={CustomerNavbarContainer}
+                />
+            </Route>
+            <Route path={`${path}/search`} exact>
+                <App
+                    content={CustomerListContainer}
+                    navbar={CustomerNavbarContainer}
+                />
+            </Route>
+            <Route path={`${path}/:viewId/:viewSlug?`} exact>
+                <App
+                    content={CustomerListContainer}
+                    navbar={CustomerNavbarContainer}
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function UserRoutes({match: {path}}: RouteComponentProps) {
+export function UserRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/:customerId`}
-                exact
-                render={appRender({
-                    content: CustomerDetailContainer,
-                    navbar: CustomerNavbarContainer,
-                    infobar: CustomerInfobarContainer,
-                    noContainerWidthLimit: true,
-                    infobarOnMobile: true,
-                    containerPadding: true,
-                })}
-            />
-            <Route
-                path={`${path}/:customerId/edit-widgets`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/:customerId`} exact>
+                <App
+                    content={CustomerDetailContainer}
+                    navbar={CustomerNavbarContainer}
+                    infobar={CustomerInfobarContainer}
+                    noContainerWidthLimit
+                    infobarOnMobile
+                    containerPadding
+                />
+            </Route>
+            <Route path={`${path}/:customerId/edit-widgets`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         CustomerSourceContainer,
                         ADMIN_ROLE,
                         undefined,
                         location.pathname.replace('/edit-widgets', '')
-                    ),
-                    navbar: CustomerNavbarContainer,
-                    infobar: CustomerInfobarContainer,
-                    isEditingWidgets: true,
-                    noContainerWidthLimit: true,
-                    containerPadding: true,
-                })}
-            />
+                    )}
+                    navbar={CustomerNavbarContainer}
+                    infobar={CustomerInfobarContainer}
+                    isEditingWidgets
+                    noContainerWidthLimit
+                    containerPadding
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
+export function TicketRoutes() {
+    const location = useLocation()
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/:ticketId`}
-                exact
-                render={appRender({
-                    content: TicketDetailContainer,
-                    navbar: TicketNavbar,
-                    infobar: TicketInfobarContainer,
-                    infobarOnMobile: true,
-                })}
-            />
-            <Route
-                path={`${path}/:ticketId/edit-widgets`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/:ticketId`} exact>
+                <App
+                    content={TicketDetailContainer}
+                    navbar={TicketNavbar}
+                    infobar={TicketInfobarContainer}
+                    infobarOnMobile={true}
+                />
+            </Route>
+            <Route path={`${path}/:ticketId/edit-widgets`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         TicketSourceContainer,
                         ADMIN_ROLE,
                         undefined,
                         location.pathname.replace('/edit-widgets', '')
-                    ),
-                    navbar: TicketNavbar,
-                    infobar: TicketInfobarContainer,
-                    noContainerWidthLimit: true,
-                    isEditingWidgets: true,
-                    containerPadding: true,
-                })}
-            />
-            <Route
-                path={`${path}/:ticketId/print`}
-                exact
-                render={appRender({
-                    content: TicketPrintContainer,
-                })}
-            />
+                    )}
+                    navbar={TicketNavbar}
+                    infobar={TicketInfobarContainer}
+                    noContainerWidthLimit
+                    isEditingWidgets
+                    containerPadding
+                />
+            </Route>
+            <Route path={`${path}/:ticketId/print`} exact>
+                <App content={TicketPrintContainer} />
+            </Route>
         </Switch>
     )
 }
 
-export function TicketsRoutes({match: {path}}: RouteComponentProps) {
+export function TicketsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: TicketList,
-                    navbar: TicketNavbar,
-                    infobar: OnboardingSidePanel,
-                })}
-            />
-            <Route
-                path={`${path}/new/:visibility?`}
-                exact
-                render={appRender({
-                    content: TicketList,
-                    navbar: TicketNavbar,
-                    infobar: OnboardingSidePanel,
-                })}
-            />
-            <Route
-                path={`${path}/search`}
-                exact
-                render={appRender({
-                    content: TicketList,
-                    navbar: TicketNavbar,
-                    infobar: OnboardingSidePanel,
-                })}
-            />
-            <Route
-                path={`${path}/:viewId/:viewSlug?`}
-                exact
-                render={appRender({
-                    content: TicketList,
-                    navbar: TicketNavbar,
-                    infobar: OnboardingSidePanel,
-                })}
-            />
+            <Route path={`${path}/`} exact>
+                <App
+                    content={TicketList}
+                    navbar={TicketNavbar}
+                    infobar={OnboardingSidePanel}
+                />
+            </Route>
+            <Route path={`${path}/new/:visibility?`} exact>
+                <App
+                    content={TicketList}
+                    navbar={TicketNavbar}
+                    infobar={OnboardingSidePanel}
+                />
+            </Route>
+            <Route path={`${path}/search`} exact>
+                <App
+                    content={TicketList}
+                    navbar={TicketNavbar}
+                    infobar={OnboardingSidePanel}
+                />
+            </Route>
+            <Route path={`${path}/:viewId/:viewSlug?`} exact>
+                <App
+                    content={TicketList}
+                    navbar={TicketNavbar}
+                    infobar={OnboardingSidePanel}
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function StatsRoutes({match: {path}}: RouteComponentProps) {
+export function StatsRoutes() {
     const location = useLocation()
+    const {path} = useRouteMatch()
+
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
@@ -485,195 +450,158 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     return (
         <DefaultStatsFilters
             notReadyFallback={
-                <Route
-                    render={appRender({
-                        navbar: StatsNavbarContainer,
-                        children: null,
-                    })}
-                />
+                <Route>
+                    <App navbar={StatsNavbarContainer} />
+                </Route>
             }
         >
             <Switch>
-                <Route
-                    exact
-                    path={`${path}/`}
-                    render={() => (
-                        <Redirect
-                            to={`${path}/${
-                                hasLiveOverviewFeature
-                                    ? 'live-overview'
-                                    : 'support-performance-overview'
-                            }`}
-                        />
-                    )}
-                />
-                <Route
-                    exact
-                    path={`${path}/live-overview`}
-                    render={appRender({
-                        content: LiveOverview,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/live-agents`}
-                    render={appRender({
-                        content: LiveAgents,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/support-performance-overview`}
-                    render={appRender({
-                        content: SupportPerformanceOverview,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
+                <Route exact path={`${path}/`}>
+                    <Redirect
+                        to={`${path}/${
+                            hasLiveOverviewFeature
+                                ? 'live-overview'
+                                : 'support-performance-overview'
+                        }`}
+                    />
+                </Route>
+                <Route exact path={`${path}/live-overview`}>
+                    <App content={LiveOverview} navbar={StatsNavbarContainer} />
+                </Route>
+                <Route exact path={`${path}/live-agents`}>
+                    <App content={LiveAgents} navbar={StatsNavbarContainer} />
+                </Route>
+                <Route exact path={`${path}/support-performance-overview`}>
+                    <App
+                        content={SupportPerformanceOverview}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
                 <Route
                     exact
                     path={`${path}/support-performance-overview-legacy`}
-                    render={appRender({
-                        content: DEPRECATED_SupportPerformanceOverview,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/busiest-times-of-days`}
-                    render={appRender({
-                        content: SupportPerformanceBusiestTimesOfDays,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
+                >
+                    <App
+                        content={DEPRECATED_SupportPerformanceOverview}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/busiest-times-of-days`}>
+                    <App
+                        content={SupportPerformanceBusiestTimesOfDays}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
                 {hasAnalyticsTicketInsights ? (
-                    <Route
-                        exact
-                        path={`${path}/ticket-insights`}
-                        render={appRender({
-                            content: SupportPerformanceTicketInsights,
-                            navbar: StatsNavbarContainer,
-                        })}
-                    />
+                    <Route exact path={`${path}/ticket-insights`}>
+                        <App
+                            content={SupportPerformanceTicketInsights}
+                            navbar={StatsNavbarContainer}
+                        />
+                    </Route>
                 ) : (
-                    <Route
-                        exact
-                        path={`${path}/ticket-fields`}
-                        render={appRender({
-                            content: TicketFieldsStatsPagePlaceholder,
-                            navbar: StatsNavbarContainer,
-                        })}
-                    />
+                    <Route exact path={`${path}/ticket-fields`}>
+                        <App
+                            content={TicketFieldsStatsPagePlaceholder}
+                            navbar={StatsNavbarContainer}
+                        />
+                    </Route>
                 )}
-                <Route
-                    exact
-                    path={`${path}/tags`}
-                    render={appRender({
-                        content: SupportPerformanceTags,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/channels`}
-                    render={appRender({
-                        content: SupportPerformanceChannels,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/support-performance-agents`}
-                    render={appRender({
-                        content: hasAnalyticsNewAgentPerformance
-                            ? SupportPerformanceAgents
-                            : DEPRECATED_SupportPerformanceAgents,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
+                <Route exact path={`${path}/tags`}>
+                    <App
+                        content={SupportPerformanceTags}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/channels`}>
+                    <App
+                        content={SupportPerformanceChannels}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/support-performance-agents`}>
+                    <App
+                        content={
+                            hasAnalyticsNewAgentPerformance
+                                ? SupportPerformanceAgents
+                                : DEPRECATED_SupportPerformanceAgents
+                        }
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
                 {hasAnalyticsNewAgentPerformance && (
                     <Route
                         exact
                         path={`${path}/support-performance-agents-legacy`}
-                        render={appRender({
-                            content: DEPRECATED_SupportPerformanceAgents,
-                            navbar: StatsNavbarContainer,
-                        })}
-                    />
+                    >
+                        <App
+                            content={DEPRECATED_SupportPerformanceAgents}
+                            navbar={StatsNavbarContainer}
+                        />
+                    </Route>
                 )}
-                <Route
-                    exact
-                    path={`${path}/satisfaction`}
-                    render={appRender({
-                        content: SupportPerformanceSatisfaction,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/revenue`}
-                    render={appRender({
-                        content: SupportPerformanceRevenue,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/revenue/campaigns`}
-                    render={appRender({
-                        content: RevenueCampaignsStats,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/automation`}
-                    render={appRender({
-                        content: AutomationOverview,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/macros`}
-                    render={appRender({
-                        content: AutomationMacros,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/intents`}
-                    render={appRender({
-                        content: AutomationIntents,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    exact
-                    path={`${path}/${AUTOMATION_ADD_ON_PATH}`}
-                    render={appRender({
-                        content: isNewAutomationAddonEnabled
-                            ? AutomationAddOnOverview
-                            : SelfServiceStatsPage,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
+                <Route exact path={`${path}/satisfaction`}>
+                    <App
+                        content={SupportPerformanceSatisfaction}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/revenue`}>
+                    <App
+                        content={SupportPerformanceRevenue}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/revenue/campaigns`}>
+                    <App
+                        content={RevenueCampaignsStats}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/automation`}>
+                    <App
+                        content={AutomationOverview}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/macros`}>
+                    <App
+                        content={AutomationMacros}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/intents`}>
+                    <App
+                        content={AutomationIntents}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/${AUTOMATION_ADD_ON_PATH}`}>
+                    <App
+                        content={
+                            isNewAutomationAddonEnabled
+                                ? AutomationAddOnOverview
+                                : SelfServiceStatsPage
+                        }
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
                 <Route
                     exact
                     path={`${path}/${AUTOMATION_ADD_ON_FEATURES_PATH}`}
-                    render={appRender({
-                        content: SelfServiceStatsPage,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
+                >
+                    <App
+                        content={SelfServiceStatsPage}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
             </Switch>
         </DefaultStatsFilters>
     )
 }
 
-export function SettingsRoutes({match: {path}}: RouteComponentProps) {
+export function SettingsRoutes() {
+    const {path} = useRouteMatch()
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
     const satisfactionPaywallConfig = {
@@ -689,42 +617,38 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
 
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         IntegrationDetail,
                         ADMIN_ROLE,
                         PageSection.Channels,
                         `${path}/help-center`
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
 
-            <Route path={`${path}/channels`} render={ChannelsSettingsRoutes} />
-            <Route
-                path={`${path}/integrations`}
-                render={(props) => <IntegrationsSettingsRoutes {...props} />}
-            />
-            <Route
-                path={`${path}/phone-numbers`}
-                render={PhoneNumbersSettingsRoutes}
-            />
+            <Route path={`${path}/channels`}>
+                <ChannelsSettingsRoutes />
+            </Route>
+            <Route path={`${path}/integrations`}>
+                <IntegrationsSettingsRoutes />
+            </Route>
+            <Route path={`${path}/phone-numbers`}>
+                <PhoneNumbersSettingsRoutes />
+            </Route>
             {/* TODO: remove the condition once the production infrastructure is setup */}
             {window.location.hostname.indexOf('gorgias.help') === -1 && (
-                <Route
-                    path={`${path}/help-center`}
-                    render={HelpCenterSettingsRoutes}
-                />
+                <Route path={`${path}/help-center`}>
+                    <HelpCenterSettingsRoutes />
+                </Route>
             )}
-            {isDecoupleContactFormEnabled ? (
-                <Route
-                    path={`${path}/contact-form`}
-                    render={ContactFormSettingsRoutes}
-                />
-            ) : null}
+            {!!isDecoupleContactFormEnabled && (
+                <Route path={`${path}/contact-form`}>
+                    <ContactFormSettingsRoutes />
+                </Route>
+            )}
             <DeprecatedRoute
                 path={`${path}/macros`}
                 redirectTo="/app/automation/macros"
@@ -733,97 +657,81 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/rules`}
                 redirectTo="/app/automation/rules"
             />
-            <Redirect from={`${path}/self-service`} to="/app/automation" />
-            <Route
-                path={`${path}/profile`}
-                exact
-                render={appRender({
-                    content: YourProfileContainer,
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/notifications`}
-                exact
-                render={appRender({
-                    content: NotificationSettings,
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/password-2fa`}
-                exact
-                render={appRender({
-                    content: PasswordAnd2FA,
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/api`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/self-service`}>
+                <Redirect to="/app/automation" />
+            </Route>
+            <Route path={`${path}/profile`} exact>
+                <App content={YourProfileContainer} navbar={SettingsNavbar} />
+            </Route>
+            <Route path={`${path}/notifications`} exact>
+                <App content={NotificationSettings} navbar={SettingsNavbar} />
+            </Route>
+            <Route path={`${path}/password-2fa`} exact>
+                <App content={PasswordAnd2FA} navbar={SettingsNavbar} />
+            </Route>
+            <Route path={`${path}/api`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         APIView,
                         ADMIN_ROLE,
                         PageSection.Api
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/audit`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/audit`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         UserAuditList,
                         ADMIN_ROLE,
                         PageSection.Audit
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route path={`${path}/teams`} render={TeamsSettingsRoutes} />
-            <Route path={`${path}/users`} render={UsersSettingsRoutes} />
-            <Route path={`${path}/revenue`} render={RevenueSettingsRoutes} />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/teams`}>
+                <TeamsSettingsRoutes />
+            </Route>
+            <Route path={`${path}/users`}>
+                <UsersSettingsRoutes />
+            </Route>
+            <Route path={`${path}/revenue`}>
+                <RevenueSettingsRoutes />
+            </Route>
             {/* TODO(@Irinel) remove this when new billing is fully released */}
-            <Route
-                path={`${path}/billing`}
-                render={
-                    hasAccessToNewBilling
-                        ? NewBillingSettingsRoutes
-                        : BillingSettingsRoutes
-                }
-            />
-            <Route
-                path={`${path}/manage-tags`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/billing`}>
+                {hasAccessToNewBilling ? (
+                    <NewBillingSettingsRoutes />
+                ) : (
+                    <BillingSettingsRoutes />
+                )}
+            </Route>
+            <Route path={`${path}/manage-tags`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         ManageTagsContainer,
                         AGENT_ROLE,
                         PageSection.ManageTags
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route path={`${path}/import-data`} render={ImportSettingsRoutes} />
-            <Route
-                path={`${path}/access`}
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/import-data`}>
+                <ImportSettingsRoutes />
+            </Route>
+            <Route path={`${path}/access`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         Access,
                         ADMIN_ROLE,
                         PageSection.Access
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-                exact
-            />
-            <Route
-                path={`${path}/satisfaction-surveys`}
-                exact
-                render={appRender({
-                    content: withFeaturePaywall(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/satisfaction-surveys`} exact>
+                <App
+                    content={withFeaturePaywall(
                         AccountFeature.SatisfactionSurveys,
                         undefined,
                         satisfactionPaywallConfig
@@ -833,200 +741,182 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                             ADMIN_ROLE,
                             PageSection.SatisfactionSurveys
                         )
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/business-hours`}
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/business-hours`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         BusinessHours,
                         ADMIN_ROLE,
                         PageSection.BusinessHours
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-                exact
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
             <DeprecatedRoute
                 path={`${path}/ticket-assignment`}
                 exact
                 redirectTo="/app/automation/ticket-assignment"
             />
-            <Route path={`${path}/ticket-fields`} render={TicketFieldsRoutes} />
+            <Route path={`${path}/ticket-fields`}>
+                <TicketFieldsRoutes />
+            </Route>
         </Switch>
     )
 }
 
-export function TicketFieldsRoutes({match: {path}}: RouteComponentProps) {
+export function TicketFieldsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/add`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/add`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         AddTicketField,
                         ADMIN_ROLE,
                         PageSection.TicketFields
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/:id/edit`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/:id/edit`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         EditTicketField,
                         ADMIN_ROLE,
                         PageSection.TicketFields
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                exact
-                path={`${path}/`}
-                render={() => <Redirect to={`${path}/active`} />}
-            />
-            <Route
-                path={`${path}/:activeTab`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route exact path={`${path}/`}>
+                <Redirect to={`${path}/active`} />
+            </Route>
+            <Route path={`${path}/:activeTab`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         TicketFields,
                         ADMIN_ROLE,
                         PageSection.TicketFields
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function ChannelsSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function ChannelsSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <HelpCenterApiClientProvider>
             <Switch>
                 <Route
                     path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
                     exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                >
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             IntegrationDetail,
                             ADMIN_ROLE,
                             PageSection.Channels
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
             </Switch>
         </HelpCenterApiClientProvider>
     )
 }
 
-export function IntegrationsSettingsRoutes({
-    match: {path},
-}: RouteComponentProps) {
+export function IntegrationsSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <HelpCenterApiClientProvider>
             <Switch>
-                <Route
-                    path={`${path}/`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                <Route path={`${path}/`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             IntegrationsStore,
                             ADMIN_ROLE,
                             PageSection.Integrations
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/mine`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
+                <Route path={`${path}/mine`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             MyIntegrations,
                             ADMIN_ROLE,
                             PageSection.Integrations
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/app/:appId/:extra?`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
+                <Route path={`${path}/app/:appId/:extra?`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             AppDetail,
                             ADMIN_ROLE
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
                 <Route
                     path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
                     exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                >
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             IntegrationDetail,
                             ADMIN_ROLE,
                             PageSection.Integrations
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
             </Switch>
         </HelpCenterApiClientProvider>
     )
 }
 
-export function PhoneNumbersSettingsRoutes({
-    match: {path},
-}: RouteComponentProps) {
+export function PhoneNumbersSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         PhoneNumbersListContainer,
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/new`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/new`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         PhoneNumberCreateContainer,
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/:phoneNumberId`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/:phoneNumberId`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         PhoneNumberDetailContainer,
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
         </Switch>
     )
 }
@@ -1043,33 +933,32 @@ export function ContactFormSettingsRoutes() {
                             CONTACT_FORM_ABOUT_PATH,
                             CONTACT_FORM_FORMS_PATH,
                         ]}
-                        render={appRender({
-                            content: ContactFormStartView,
-                            navbar: SettingsNavbar,
-                        })}
-                    />
-                    <Route
-                        exact
-                        path={CONTACT_FORM_CREATE_PATH}
-                        render={appRender({
-                            content: ContactFormCreateView,
-                            navbar: SettingsNavbar,
-                        })}
-                    />
-                    <Route
-                        path={CONTACT_FORM_SETTINGS_PATH}
-                        render={appRender({
-                            content: ContactFormSettingsView,
-                            navbar: SettingsNavbar,
-                        })}
-                    />
+                    >
+                        <App
+                            content={ContactFormStartView}
+                            navbar={SettingsNavbar}
+                        />
+                    </Route>
+                    <Route exact path={CONTACT_FORM_CREATE_PATH}>
+                        <App
+                            content={ContactFormCreateView}
+                            navbar={SettingsNavbar}
+                        />
+                    </Route>
+                    <Route path={CONTACT_FORM_SETTINGS_PATH}>
+                        <App
+                            content={ContactFormSettingsView}
+                            navbar={SettingsNavbar}
+                        />
+                    </Route>
                 </Switch>
             </SupportedLocalesProvider>
         </HelpCenterApiClientProvider>
     )
 }
 
-export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function HelpCenterSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <HelpCenterApiClientProvider>
             <SupportedLocalesProvider>
@@ -1077,26 +966,24 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                     <Route
                         path={[`${path}/`, `${path}/about`, `${path}/manage`]}
                         exact
-                        render={appRender({
-                            content: HelpCenterStartView,
-                            navbar: SettingsNavbar,
-                        })}
-                    />
-                    <Route
-                        path={`${path}/new`}
-                        exact
-                        render={appRender({
-                            content: HelpCenterNewView,
-                            navbar: SettingsNavbar,
-                        })}
-                    />
-                    <Route
-                        path={`${path}/:helpCenterId`}
-                        render={appRender({
-                            content: CurrentHelpCenter,
-                            navbar: SettingsNavbar,
-                        })}
-                    />
+                    >
+                        <App
+                            content={HelpCenterStartView}
+                            navbar={SettingsNavbar}
+                        />
+                    </Route>
+                    <Route path={`${path}/new`} exact>
+                        <App
+                            content={HelpCenterNewView}
+                            navbar={SettingsNavbar}
+                        />
+                    </Route>
+                    <Route path={`${path}/:helpCenterId`}>
+                        <App
+                            content={CurrentHelpCenter}
+                            navbar={SettingsNavbar}
+                        />
+                    </Route>
                 </Switch>
             </SupportedLocalesProvider>
         </HelpCenterApiClientProvider>
@@ -1107,12 +994,12 @@ export function AutomationRoutes() {
     return (
         <HelpCenterApiClientProvider>
             <Switch>
-                <Route
-                    render={appRender({
-                        content: AutomationContent,
-                        navbar: AutomationNavbar,
-                    })}
-                />
+                <Route>
+                    <App
+                        content={AutomationContent}
+                        navbar={AutomationNavbar}
+                    />
+                </Route>
             </Switch>
         </HelpCenterApiClientProvider>
     )
@@ -1326,218 +1213,193 @@ function AutomationContent() {
     )
 }
 
-export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function TeamsSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         TeamsList as any,
                         ADMIN_ROLE,
                         PageSection.Teams
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/:id`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/:id`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         TeamsForm,
                         ADMIN_ROLE,
                         PageSection.Teams
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/:id/members`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/:id/members`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         List,
                         ADMIN_ROLE,
                         PageSection.Teams
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function UsersSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         TeamList as any,
                         ADMIN_ROLE,
                         PageSection.Users
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/add`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/add`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         TeamForm,
                         ADMIN_ROLE,
                         PageSection.Users
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/:id`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/:id`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         TeamForm,
                         ADMIN_ROLE,
                         PageSection.Users
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function RevenueSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <RevenueAddonApiClientProvider>
             <Switch>
-                <Route
-                    path={`${path}/click-tracking`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                <Route path={`${path}/click-tracking`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             ClickTrackingSettingsView as any,
                             ADMIN_ROLE,
                             PageSection.Users
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/bundles`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
+                <Route path={`${path}/bundles`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             BundlesView as any,
                             ADMIN_ROLE,
                             PageSection.Users
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/bundles/new`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
+                <Route path={`${path}/bundles/new`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             BundleInstallView as any,
                             ADMIN_ROLE,
                             PageSection.Users
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/bundles/:bundleId`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
+                <Route path={`${path}/bundles/:bundleId`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             BundleDetailView as any,
                             ADMIN_ROLE,
                             PageSection.Users
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
             </Switch>
         </RevenueAddonApiClientProvider>
     )
 }
 
-export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function BillingSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         BillingContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/add-payment-method`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/add-payment-method`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         CreditCardContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/change-credit-card`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/change-credit-card`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         CreditCardContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/update-billing-details`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/update-billing-details`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         BillingDetailsFormContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/plans`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/plans`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         BillingPlansContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
         </Switch>
     )
 }
 
 // TODO(@Irinel) rename to BillingSettingsRoutes once we remove the old billing
-export function NewBillingSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function NewBillingSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
             <Route
@@ -1546,133 +1408,118 @@ export function NewBillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                     `${path}/payment`,
                     `${path}/payment-history`,
                 ]}
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            >
+                <App
+                    content={memoizedWithUserRoleRequired(
                         NewBilling,
                         ADMIN_ROLE,
                         PageSection.NewBilling
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function ImportSettingsRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         ImportDataContainer,
                         ADMIN_ROLE,
                         PageSection.ImportData
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/zendesk`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/zendesk`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         ImportZendeskCreate,
                         ADMIN_ROLE,
                         PageSection.ImportData
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/zendesk/:integrationId/:extra?`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/zendesk/:integrationId/:extra?`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         ImportZendeskDetail,
                         ADMIN_ROLE,
                         PageSection.ImportData
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
         </Switch>
     )
 }
 
-export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
+export function AdminTasksRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/import-phone-number`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+            <Route path={`${path}/import-phone-number`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         ImportPhoneNumber,
                         ADMIN_ROLE,
                         PageSection.ImportPhoneNumber
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/twilio-subaccount-status`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/twilio-subaccount-status`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
                         TwilioSubaccountStatusForm,
                         ADMIN_ROLE,
                         PageSection.TwilioSubaccountStatus
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
             {window.USER_IMPERSONATED && (
                 <Route
                     path={`${path}/credit-shopify-billing-integration`}
                     exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
+                >
+                    <App
+                        content={memoizedWithUserRoleRequired(
                             CreditShopifyBillingIntegration,
                             ADMIN_ROLE,
                             PageSection.CreditShopifyBillingIntegration
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
             )}
         </Switch>
     )
 }
 
-export function HomepageRoutes({match: {path}}: RouteComponentProps) {
+export function HomepageRoutes() {
+    const {path} = useRouteMatch()
     return (
         <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    children: (
-                        <CanduContent containerId="candu-home" title="Home" />
-                    ),
-                    navbar: TicketNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/automation`}
-                exact
-                render={appRender({
-                    children: (
-                        <CanduContent
-                            containerId="candu-automation"
-                            title="Automation Add-on"
-                        />
-                    ),
-                    navbar: TicketNavbar,
-                })}
-            />
+            <Route path={`${path}/`} exact>
+                <App navbar={TicketNavbar}>
+                    <CanduContent containerId="candu-home" title="Home" />
+                </App>
+            </Route>
+            <Route path={`${path}/automation`} exact>
+                <App navbar={TicketNavbar}>
+                    <CanduContent
+                        containerId="candu-automation"
+                        title="Automation Add-on"
+                    />
+                </App>
+            </Route>
         </Switch>
     )
 }
