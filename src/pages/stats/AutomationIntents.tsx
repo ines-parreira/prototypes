@@ -16,10 +16,10 @@ import {
 } from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
 
+import useStatResource from 'hooks/reporting/useStatResource'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
 import StatsPage from './StatsPage'
-import useStatResource from './useStatResource'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import StatWrapper from './StatWrapper'

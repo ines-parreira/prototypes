@@ -31,12 +31,12 @@ import {
 } from 'config/stats'
 import useAppSelector from 'hooks/useAppSelector'
 
+import useStatResource from 'hooks/reporting/useStatResource'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
 import StatsPage from './StatsPage'
 import TagsStatsFilter from './TagsStatsFilter'
-import useStatResource from './useStatResource'
 import AgentsStatsFilter from './AgentsStatsFilter'
 import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
 import StatWrapper from './StatWrapper'

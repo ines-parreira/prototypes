@@ -19,9 +19,9 @@ import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 
-import useStatResource from '../useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

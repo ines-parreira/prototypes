@@ -16,10 +16,10 @@ import {renderWithRouter} from 'utils/testing'
 import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
 import {StatsFilters} from 'models/stat/types'
 
-import useStatResource from '../useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import AutomationIntents from '../AutomationIntents'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 

@@ -46,6 +46,7 @@ import {WorkflowConfigurationShallow} from 'pages/automation/workflows/models/wo
 
 import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import useStatResource from 'hooks/reporting/useStatResource'
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
 import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
@@ -53,7 +54,6 @@ import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
 import PeriodStatsFilter from '../PeriodStatsFilter'
 import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
-import useStatResource from '../useStatResource'
 
 import withEcommerceIntegration from '../withEcommerceIntegrations'
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'

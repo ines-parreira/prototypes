@@ -20,10 +20,10 @@ import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import {billingState} from 'fixtures/billing'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
-import useStatResource from '../useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import AutomationOverview from '../AutomationOverview'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({
     Chart: () => <canvas />,
     Bar: () => <canvas />,

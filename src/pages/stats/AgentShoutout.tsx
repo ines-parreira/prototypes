@@ -8,7 +8,7 @@ import Shoutout, {
 } from 'pages/common/components/Shoutout/Shoutout'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
-import {useShoutoutTopResults} from './useShoutoutTopResults'
+import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
 
 export default function AgentsShoutout(props: ShoutoutConfig) {
     const {useQuery, queryOrder} = props

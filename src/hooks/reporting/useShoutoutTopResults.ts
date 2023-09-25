@@ -1,9 +1,12 @@
 import _takeWhile from 'lodash/takeWhile'
+import {useMemo} from 'react'
 import {User} from 'config/types/user'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import useAppSelector from 'hooks/useAppSelector'
+import {isMetricForAgent} from 'pages/stats/common/utils'
+import {ShoutoutConfig} from 'pages/stats/shoutouts-config'
+import {getFilteredAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {notUndefined} from 'utils/types'
-import {isMetricForAgent} from './common/utils'
-import {ShoutoutConfig} from './shoutouts-config'
 
 interface GetShoutoutTopResultsArgs {
     filteredAgents: User[]
@@ -47,4 +50,21 @@ export function getShoutoutTopResults({
         agents,
         metricValue: config.formatValue(Number(firstMetric[config.measure])),
     }
+}
+
+export const useShoutoutTopResults = (
+    queryResult: MetricWithDecile,
+    config: ShoutoutConfig
+) => {
+    const filteredAgents = useAppSelector(getFilteredAgents)
+
+    return useMemo(
+        () =>
+            getShoutoutTopResults({
+                queryResult,
+                config,
+                filteredAgents,
+            }),
+        [queryResult, config, filteredAgents]
+    )
 }

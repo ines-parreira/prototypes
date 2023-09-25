@@ -37,10 +37,10 @@ import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {entitiesInitialState} from 'fixtures/entities'
 import {IntegrationType} from 'models/integration/constants'
-import useStatResource from '../../useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import SelfServiceStatsPage from '../SelfServiceStatsPage'
 
-jest.mock('../../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 jest.mock('models/selfServiceConfiguration/resources', () => ({
     fetchSelfServiceConfigurations: jest.fn(() => Promise.resolve([])),

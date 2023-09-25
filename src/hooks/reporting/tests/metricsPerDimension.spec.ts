@@ -31,9 +31,13 @@ import {
     useCustomerSatisfactionMetricPerAgent,
     useCustomFieldsTicketCount,
     customFieldsTicketCountQueryFactory,
+    useCustomTicketFieldWithBreakdown,
 } from 'hooks/reporting/metricsPerDimension'
 import {NotSpamNorTrashedTicketsFilter} from 'hooks/reporting/metricTrends'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {
+    useMetricPerDimension,
+    useMetricPerDimensionWithBreakdown,
+} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {
     HelpdeskMessageDimension,
@@ -47,6 +51,9 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useCustomTicketFieldWithBreakdownMock = assumeMock(
+    useMetricPerDimensionWithBreakdown
+)
 
 describe('metricsPerDimension', () => {
     const periodStart = moment()
@@ -860,6 +867,29 @@ describe('metricsPerDimension', () => {
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                customFieldsTicketCountQueryFactory(
+                    statsFilters,
+                    timezone,
+                    customFieldId,
+                    sorting
+                )
+            )
+        })
+    })
+    describe('useCustomFieldsTicketCountWithBreakdown', () => {
+        it('should pass the query to useCustomTicketFieldWithBreakdown hook', () => {
+            renderHook(
+                () =>
+                    useCustomTicketFieldWithBreakdown(
+                        statsFilters,
+                        timezone,
+                        customFieldId,
+                        sorting
+                    ),
+                {}
+            )
+
+            expect(useCustomTicketFieldWithBreakdownMock).toHaveBeenCalledWith(
                 customFieldsTicketCountQueryFactory(
                     statsFilters,
                     timezone,

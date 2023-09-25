@@ -17,11 +17,11 @@ import {AccountFeature} from 'state/currentAccount/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import {StatsFilters} from 'models/stat/types'
 
-import useStatResource from '../useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import TagsStatsFilter from '../TagsStatsFilter'
 import LiveAgents from '../LiveAgents'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 jest.mock(
     '../TagsStatsFilter',

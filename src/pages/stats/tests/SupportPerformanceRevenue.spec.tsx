@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
+import useStatResource from 'hooks/reporting/useStatResource'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -14,7 +15,7 @@ import {
     revenuePerDay,
     revenuePerTicket,
 } from 'fixtures/stats'
-import {renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 import {
     REVENUE_OVERVIEW,
     REVENUE_PER_AGENT,
@@ -29,11 +30,10 @@ import {StatsFilters} from 'models/stat/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import TagsStatsFilter from '../TagsStatsFilter'
-import useStatResource from '../useStatResource'
 import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
 import {IntegrationType} from '../../../models/integration/constants'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 jest.mock(
     'pages/common/components/FeaturePaywall/FeaturePaywall',
@@ -50,9 +50,7 @@ jest.mock(
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const useStatResourceMock = useStatResource as jest.MockedFunction<
-    typeof useStatResource
->
+const useStatResourceMock = assumeMock(useStatResource)
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
 let mathRandomSpy: jest.SpiedFunction<typeof Math.random>
 

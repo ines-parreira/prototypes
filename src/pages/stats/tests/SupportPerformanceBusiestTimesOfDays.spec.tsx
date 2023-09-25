@@ -14,7 +14,7 @@ import {ticketsCreatedPerHourPerWeekday} from 'fixtures/stats'
 import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
-import useStatResource from 'pages/stats/useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import {RootState, StoreDispatch} from 'state/types'
 import SupportPerformanceBusiestTimesOfDays from '../SupportPerformanceBusiestTimesOfDays'
 
@@ -24,7 +24,7 @@ jest.mock(
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
-jest.mock('pages/stats/useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 
 describe('<SupportPerformanceBusiestTimesOfDays />', () => {

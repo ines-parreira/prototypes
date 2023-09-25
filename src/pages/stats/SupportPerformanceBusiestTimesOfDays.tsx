@@ -15,7 +15,7 @@ import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import StatsPage from 'pages/stats/StatsPage'
 import StatWrapper from 'pages/stats/StatWrapper'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
-import useStatResource from 'pages/stats/useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
     getMessagingIntegrationsStatsFilter,

@@ -15,10 +15,10 @@ import {renderWithRouter} from 'utils/testing'
 import {TICKETS_CREATED_PER_CHANNEL_PER_DAY} from 'config/stats'
 import {StatsFilters} from 'models/stat/types'
 
-import useStatResource from '../useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import SupportPerformanceChannels from '../SupportPerformanceChannels'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

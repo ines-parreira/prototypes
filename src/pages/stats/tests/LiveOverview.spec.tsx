@@ -22,10 +22,10 @@ import {AccountFeature} from 'state/currentAccount/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import {StatsFilters} from 'models/stat/types'
 
+import useStatResource from 'hooks/reporting/useStatResource'
 import LiveOverview from '../LiveOverview'
-import useStatResource from '../useStatResource'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))
 jest.mock(
     '../../common/components/FeaturePaywall/FeaturePaywall',

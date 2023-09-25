@@ -2,9 +2,9 @@ import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import {assumeMock} from 'utils/testing'
-import {useAgentsSummaryMetrics} from 'pages/stats/useAgentsSummaryMetrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 
-jest.mock('pages/stats/useAgentsSummaryMetrics')
+jest.mock('hooks/reporting/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 
 describe('useAgentsSummaryMetrics', () => {

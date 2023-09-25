@@ -1,4 +1,6 @@
 import moment from 'moment-timezone'
+import _groupBy from 'lodash/groupBy'
+import {DataResponse} from 'hooks/reporting/withDeciles'
 import {Cubes} from 'models/reporting/cubes'
 
 import {formatReportingQueryDate} from 'utils/reporting'
@@ -23,41 +25,75 @@ export type TimeSeriesDataItem = {
     label?: string
 }
 
+const select =
+    <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
+    (res: DataResponse['data']['data']) => {
+        const {timeDimensions, measures} = query
+        const {dimension, dateRange, granularity} = timeDimensions[0]
+
+        const dateTimeToValuesMap = res.reduce<
+            Partial<Record<string, number[]>>
+        >((acc, item) => {
+            const key = formatReportingQueryDate(item[String(dimension)]!)
+            const values = measures.map((measure) =>
+                parseFloat(item[measure] || '0')
+            )
+            return {
+                ...acc,
+                [key]: values,
+            }
+        }, {})
+        const dateTimes = getPeriodDateTimes(dateRange, granularity)
+        return measures.map((_, index) => {
+            return dateTimes.map((dateTime) => {
+                const values = dateTimeToValuesMap[dateTime] || []
+                return {
+                    dateTime,
+                    value: values[index] || 0,
+                    label: measures[index],
+                }
+            })
+        })
+    }
+
+const objectMap = <T, S>(
+    obj: Record<string, T>,
+    fn: (o: T) => S
+): Record<string, S> => {
+    const mapped: Record<string, S> = {}
+    Object.keys(obj).forEach((key) => (mapped[key] = fn(obj[key])))
+    return mapped
+}
+
+const selectPerDimension =
+    <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
+    (res: DataResponse['data']['data']) => {
+        const {dimensions} = query
+        const data = objectMap(_groupBy(res, dimensions[0]), select(query))
+        return data
+    }
+
 export default function useTimeSeries<TCube extends Cubes>(
     query: TimeSeriesQuery<TCube>
 ) {
-    const {timeDimensions, measures} = query
-    const {dimension, dateRange, granularity} = timeDimensions[0]
     return usePostReporting<
         Record<string, string>[],
         TimeSeriesDataItem[][],
         TCube
     >([query], {
-        select: (res) => {
-            const dateTimeToValuesMap = res.data.data.reduce<
-                Partial<Record<string, number[]>>
-            >((acc, item) => {
-                const key = formatReportingQueryDate(item[String(dimension)]!)
-                const values = measures.map((measure) =>
-                    parseFloat(item[measure] || '0')
-                )
-                return {
-                    ...acc,
-                    [key]: values,
-                }
-            }, {})
-            const dateTimes = getPeriodDateTimes(dateRange, granularity)
-            return measures.map((_, index) => {
-                return dateTimes.map((dateTime) => {
-                    const values = dateTimeToValuesMap[dateTime] || []
-                    return {
-                        dateTime,
-                        value: values[index] || 0,
-                        label: measures[index],
-                    }
-                })
-            })
-        },
+        select: (res) => select<TCube>(query)(res.data.data),
+    })
+}
+
+export function useTimeSeriesPerDimension<TCube extends Cubes>(
+    query: TimeSeriesQuery<TCube>
+) {
+    return usePostReporting<
+        Record<string, string>[],
+        Record<string, TimeSeriesDataItem[][]>,
+        TCube
+    >([query], {
+        select: (res) => selectPerDimension<TCube>(query)(res.data.data),
     })
 }
 

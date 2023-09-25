@@ -21,13 +21,13 @@ import {
 } from 'models/stat/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 
+import useStatResource from 'hooks/reporting/useStatResource'
 import StatsPage from './StatsPage'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import AgentsStatsFilter from './AgentsStatsFilter'
 import StatCurrentDate from './common/components/StatCurrentDate'
 import css from './LiveAgents.less'
 import StatWrapper from './StatWrapper'
-import useStatResource from './useStatResource'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import StatsFiltersContext from './StatsFiltersContext'
 

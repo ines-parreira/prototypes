@@ -33,10 +33,11 @@ import {
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from '../timeSeries'
-import useTimeSeries from '../useTimeSeries'
+import useTimeSeries, {useTimeSeriesPerDimension} from '../useTimeSeries'
 
 jest.mock('../useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)
+const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)
 
 describe('time series', () => {
     const periodStart = '2021-05-29T00:00:00.000'
@@ -203,7 +204,7 @@ describe('time series', () => {
                 }
             )
 
-            expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+            expect(useTimeSeriesPerDimensionMock.mock.calls[0]).toEqual([
                 {
                     measures: [
                         TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,

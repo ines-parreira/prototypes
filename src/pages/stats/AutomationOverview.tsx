@@ -21,11 +21,11 @@ import {
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 
+import useStatResource from 'hooks/reporting/useStatResource'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
 import StatsPage from './StatsPage'
-import useStatResource from './useStatResource'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import StatWrapper from './StatWrapper'

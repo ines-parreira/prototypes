@@ -11,6 +11,7 @@ import {
 import {
     MetricWithDecile,
     useMetricPerDimension,
+    useMetricPerDimensionWithBreakdown,
 } from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -306,6 +307,21 @@ export const useCustomFieldsTicketCount = (
     sorting?: OrderDirection
 ): MetricWithDecile =>
     useMetricPerDimension(
+        customFieldsTicketCountQueryFactory(
+            statsFilters,
+            timezone,
+            customFieldId,
+            sorting
+        )
+    )
+
+export const useCustomTicketFieldWithBreakdown = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    sorting?: OrderDirection
+): MetricWithDecile =>
+    useMetricPerDimensionWithBreakdown(
         customFieldsTicketCountQueryFactory(
             statsFilters,
             timezone,

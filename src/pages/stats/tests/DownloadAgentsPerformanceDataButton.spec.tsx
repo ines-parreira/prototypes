@@ -5,11 +5,11 @@ import {agents} from 'fixtures/agents'
 import {assumeMock} from 'utils/testing'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/DownloadAgentsPerformanceDataButton'
-import {useAgentsMetrics} from 'pages/stats/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'pages/stats/useAgentsSummaryMetrics'
+import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 
-jest.mock('pages/stats/useAgentsMetrics')
-jest.mock('pages/stats/useAgentsSummaryMetrics')
+jest.mock('hooks/reporting/useAgentsMetrics')
+jest.mock('hooks/reporting/useAgentsSummaryMetrics')
 jest.mock('services/reporting/agentsPerformanceReportingService')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)

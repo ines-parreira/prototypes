@@ -12,10 +12,10 @@ import {renderWithRouter} from 'utils/testing'
 import {integrationsState} from 'fixtures/integrations'
 import {StatsFilters} from 'models/stat/types'
 
-import useStatResource from '../useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import AutomationMacros from '../AutomationMacros'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

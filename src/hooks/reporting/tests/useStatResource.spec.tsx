@@ -22,7 +22,9 @@ import {statFetched} from 'state/entities/stats/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import useStatResource, {DEFAULT_ERROR_MESSAGE} from '../useStatResource'
+import useStatResource, {
+    DEFAULT_ERROR_MESSAGE,
+} from 'hooks/reporting/useStatResource'
 
 jest.mock('state/notifications/actions')
 const notifyMock = notify as jest.Mock

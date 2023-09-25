@@ -1,5 +1,10 @@
+import {
+    TicketCustomFieldsTicketCountData,
+    withBreakdown,
+} from 'hooks/reporting/withBreakdown'
 import {withDeciles} from 'hooks/reporting/withDeciles'
 import {Cubes} from 'models/reporting/cubes'
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {usePostReporting} from 'models/reporting/queries'
 import {postReporting} from 'models/reporting/resources'
 import {ReportingQuery} from 'models/reporting/types'
@@ -73,6 +78,39 @@ export function useMetricPerDimension<TCube extends Cubes>(
                 ? {
                       ...(dimensionId
                           ? selectMetric(query, dimensionId)(metricData.data)
+                          : {value: null, decile: null}),
+                      allData: metricData?.data,
+                  }
+                : null,
+    }
+}
+
+export function useMetricPerDimensionWithBreakdown(
+    query: ReportingQuery<HelpdeskMessageCubeWithJoins>,
+    dimensionId?: string
+): MetricWithDecile {
+    const metricData = usePostReporting<
+        TicketCustomFieldsTicketCountData[],
+        TicketCustomFieldsTicketCountData[]
+    >([query], {
+        select: (data) => {
+            return data.data.data
+        },
+        queryFn: () =>
+            postReporting<TicketCustomFieldsTicketCountData[]>([query]).then(
+                withBreakdown
+            ),
+        queryKey: ['reporting', 'post-reporting-breakdown', query], //TODO: The issue - even though the queries were made with different queryFn and select function they were kept under the same key
+    })
+
+    return {
+        isFetching: metricData.isFetching,
+        isError: metricData.isError,
+        data:
+            metricData.data !== undefined
+                ? {
+                      ...(dimensionId
+                          ? selectMetric(query, dimensionId)(metricData.data) // TODO: Select metric from tree structure
                           : {value: null, decile: null}),
                       allData: metricData?.data,
                   }

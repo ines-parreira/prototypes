@@ -34,11 +34,11 @@ import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import {account} from 'fixtures/account'
 
+import useStatResource from 'hooks/reporting/useStatResource'
 import TagsStatsFilter from '../TagsStatsFilter'
 import DEPRECATED_SupportPerformanceOverview from '../DEPRECATED_SupportPerformanceOverview'
-import useStatResource from '../useStatResource'
 
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({
     Bar: () => <canvas />,
     Line: () => <canvas />,

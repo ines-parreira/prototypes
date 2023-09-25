@@ -36,7 +36,10 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-import useTimeSeries, {TimeSeriesQuery} from './useTimeSeries'
+import useTimeSeries, {
+    TimeSeriesQuery,
+    useTimeSeriesPerDimension,
+} from './useTimeSeries'
 
 export const ticketsCreatedQueryFactory = (
     statsFilters: StatsFilters,
@@ -231,7 +234,7 @@ export const useCustomFieldsTicketCountTimeSeries = (
     granularity: ReportingGranularity,
     customFieldId: string
 ) => {
-    return useTimeSeries({
+    return useTimeSeriesPerDimension({
         ...customFieldsTicketCountQueryFactory(
             filters,
             timezone,

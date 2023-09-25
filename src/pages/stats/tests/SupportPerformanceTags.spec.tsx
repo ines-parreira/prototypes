@@ -12,7 +12,7 @@ import {renderWithRouter} from 'utils/testing'
 import {integrationsState} from 'fixtures/integrations'
 import {StatsFilters} from 'models/stat/types'
 
-import useStatResource from '../useStatResource'
+import useStatResource from 'hooks/reporting/useStatResource'
 import SupportPerformanceTags from '../SupportPerformanceTags'
 import TagsStatsFilter from '../TagsStatsFilter'
 
@@ -22,7 +22,7 @@ jest.mock(
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
-jest.mock('../useStatResource')
+jest.mock('hooks/reporting/useStatResource')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<

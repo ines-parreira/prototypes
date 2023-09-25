@@ -6,8 +6,8 @@ import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {AgentsTable} from 'pages/stats/AgentsTable'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {assumeMock} from 'utils/testing'
-import {useAgentsMetrics} from 'pages/stats/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'pages/stats/useAgentsSummaryMetrics'
+import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 
 import SupportPerformanceAgents, {
     AGENT_PERFORMANCE_SECTION_TITLE,
@@ -17,8 +17,8 @@ import SupportPerformanceAgents, {
 jest.unmock('react-router-dom')
 
 jest.mock('state/ui/stats/agentPerformanceSlice')
-jest.mock('pages/stats/useAgentsMetrics')
-jest.mock('pages/stats/useAgentsSummaryMetrics')
+jest.mock('hooks/reporting/useAgentsMetrics')
+jest.mock('hooks/reporting/useAgentsSummaryMetrics')
 jest.mock('pages/stats/AgentsTable.tsx')
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const AgentsTableMock = assumeMock(AgentsTable)
