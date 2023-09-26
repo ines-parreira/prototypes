@@ -119,7 +119,7 @@ export const TicketDetailContainer = ({
     const {data: voiceCallsData, isLoading: isVoiceCallsDataLoading} =
         useListVoiceCalls(
             {ticket_id: ticket.get('id')},
-            {enabled: useNewVoiceCallUI}
+            {enabled: useNewVoiceCallUI && !!ticket.get('id')}
         )
     const location = useLocation<{
         source?: string
