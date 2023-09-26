@@ -194,7 +194,7 @@ export class Card extends React.Component<
         if (link && !TitleWrapper) {
             content = (
                 <a
-                    href={renderTemplate(link, source)}
+                    href={renderTemplate(link, source?.toJS())}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
