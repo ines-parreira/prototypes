@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
 import _debounce from 'lodash/debounce'
 import {useHistory, useLocation} from 'react-router-dom'
@@ -23,6 +23,12 @@ import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
+import CopyText from 'pages/common/components/CopyText'
+import settingsCss from 'pages/settings/settings.less'
+import Accordion from 'pages/common/components/accordion/Accordion'
+import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
+import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
@@ -33,6 +39,7 @@ import {
 
 import {useHelpCenterPreferencesSettings} from '../providers/HelpCenterPreferencesSettings'
 import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
+import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
 import {CustomDomain} from './CustomDomain'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {SubdomainSection} from './SubdomainSection'
@@ -58,7 +65,22 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [showWarning, setShowWarning] = useState(true)
 
     const {getHelpCenterCustomDomain} = useHelpCenterActions()
-    const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
+    const {
+        preferences,
+        updatePreferences,
+        savePreferences,
+        canSavePreferences,
+        isSavingInProgress,
+    } = useHelpCenterPreferencesSettings()
+    const isPreferencesFetched = useMemo(
+        () => preferences.availableLanguages.length > 0,
+        [preferences.availableLanguages]
+    )
+
+    const helpCenterUrl = useMemo(() => {
+        const domain = getHelpCenterDomain(helpCenter)
+        return getAbsoluteUrl({domain})
+    }, [helpCenter])
 
     const subdomainError = subdomainValue
         ? getSubdomainValidationError(subdomainValue, isSubdomainAvailable)
@@ -192,6 +214,17 @@ export const HelpCenterInstallationView: React.FC = () => {
     }
 
     useEffect(() => {
+        if (canSavePreferences && !isSavingInProgress && isPreferencesFetched) {
+            void savePreferences()
+        }
+    }, [
+        canSavePreferences,
+        savePreferences,
+        isSavingInProgress,
+        isPreferencesFetched,
+    ])
+
+    useEffect(() => {
         setIsSubdomainAvailable(true)
 
         void checkSubdomainAvailability()
@@ -251,15 +284,50 @@ export const HelpCenterInstallationView: React.FC = () => {
                         </div>
                     </LinkAlert>
                 )}
+                {canUseHelpCenterAutoEmbed ? (
+                    // The new Publish section
+                    <div className={css.cards}>
+                        <Accordion>
+                            <AccordionItem>
+                                <AccordionHeader>
+                                    <div>
+                                        <div className={css.cardHeader}>
+                                            Share your Help Center using a
+                                            subdomain or custom domain
+                                        </div>
+                                        <CopyText text={helpCenterUrl} />
+                                    </div>
+                                </AccordionHeader>
+                                <AccordionBody>
+                                    <div className={css.subdomainSection}>
+                                        <SubdomainSection
+                                            value={subdomainValue}
+                                            caption="The URL used to access your help center."
+                                            placeholder="brand-name"
+                                            onChange={setSubdomainValue}
+                                            error={subdomainError}
+                                        />
+                                    </div>
+                                    <CustomDomain />
+                                </AccordionBody>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+                ) : (
+                    // The old Publish section
+                    <>
+                        <SubdomainSection
+                            value={subdomainValue}
+                            caption="This is the URL that can be used to access your help center."
+                            placeholder="brand-name"
+                            onChange={setSubdomainValue}
+                            error={subdomainError}
+                        />
+                        <CustomDomain className={settingsCss.mb40} />
+                    </>
+                )}
             </section>
-            <SubdomainSection
-                value={subdomainValue}
-                caption="This is the URL that can be used to access your help center."
-                placeholder="brand-name"
-                onChange={setSubdomainValue}
-                error={subdomainError}
-            />
-            <CustomDomain />
+
             <section className="mb-4">
                 <h3 className={css.sectionTitle}>Track</h3>
             </section>
@@ -276,11 +344,6 @@ export const HelpCenterInstallationView: React.FC = () => {
                         : null
                 }
             />
-            {canUseHelpCenterAutoEmbed && (
-                <div style={{color: 'red', padding: '0 0 24px 0'}}>
-                    New Publish content
-                </div>
-            )}
 
             <div className={css.ctasGroup}>
                 <div className={css.leftSideButtons}>

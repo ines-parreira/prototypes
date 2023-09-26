@@ -29,6 +29,7 @@ export const StatusCheck = ({
                 className="mr-4"
                 isDisabled={isLoading}
                 onClick={onCheckStatus}
+                intent="secondary"
             >
                 {isLoading ? (
                     <Row noGutters data-testid="icon-loading">

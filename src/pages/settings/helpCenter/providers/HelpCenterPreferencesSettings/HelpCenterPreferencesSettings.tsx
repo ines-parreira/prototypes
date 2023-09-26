@@ -51,6 +51,7 @@ type HelpCenterPreferencesContext = {
     savePreferences: () => Promise<void>
     resetPreferences: () => void
     canSavePreferences: boolean
+    isSavingInProgress: boolean
 }
 
 const defaultPreferences: HelpCenterPreferencesState = {
@@ -72,6 +73,7 @@ const PreferencesContext = createContext<HelpCenterPreferencesContext>({
     savePreferences: () => Promise.resolve(),
     resetPreferences: () => null,
     canSavePreferences: false,
+    isSavingInProgress: false,
 })
 
 // This provider holds all the preferences
@@ -87,6 +89,7 @@ export const HelpCenterPreferencesSettings = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [preferences, updatePreferences] =
         useState<HelpCenterPreferencesState>(defaultPreferences)
+    const [isSavingInProgress, setIsSavingInProgress] = useState(false)
 
     const defaultLanguageChanged = useMemo(
         () => helpCenter.default_locale !== preferences.defaultLanguage,
@@ -141,6 +144,7 @@ export const HelpCenterPreferencesSettings = ({
     const savePreferences = async () => {
         if (!client) return
 
+        setIsSavingInProgress(true)
         try {
             if (seoChanged) {
                 const {seoMeta} = preferences
@@ -208,6 +212,8 @@ export const HelpCenterPreferencesSettings = ({
             )
 
             reportError(err as Error)
+        } finally {
+            setIsSavingInProgress(false)
         }
     }
 
@@ -311,6 +317,7 @@ export const HelpCenterPreferencesSettings = ({
                 savePreferences,
                 resetPreferences: updatePreferencesFromData,
                 canSavePreferences,
+                isSavingInProgress,
             }}
         >
             {children}

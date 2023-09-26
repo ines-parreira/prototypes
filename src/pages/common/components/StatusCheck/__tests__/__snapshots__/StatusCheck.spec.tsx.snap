@@ -7,7 +7,7 @@ exports[`<StatusCheck /> matches snapshot 1`] = `
   >
     <button
       aria-disabled="false"
-      class="wrapper mr-4 fill primary medium"
+      class="wrapper mr-4 fill secondary medium"
       type="button"
     >
       <span

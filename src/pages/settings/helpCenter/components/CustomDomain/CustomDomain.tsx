@@ -42,7 +42,11 @@ const tooltips = {
         'We are validating your setup, make sure that your DNS is correctly set up. This can take up to one hour.',
 }
 
-export const CustomDomain = () => {
+export type CustomDomainProps = {
+    className?: string
+}
+
+export const CustomDomain = ({className}: CustomDomainProps) => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
     const helpCenterId = useHelpCenterIdParam()
@@ -228,13 +232,13 @@ export const CustomDomain = () => {
     }
 
     return (
-        <section className={settingsCss.mb40}>
+        <section className={className}>
             <div className={css.domainForm}>
                 <div className={css.domainInput}>
                     <InputField
                         className={settingsCss.mb16}
                         isDisabled={!!currentDomain?.status}
-                        caption="Redirect from your gorgias.help subdomain to this custom domain."
+                        caption="Redirect from your subdomain to this custom domain."
                         label="Custom domain"
                         name="domain"
                         placeholder="help.brand-name.com"
@@ -250,6 +254,7 @@ export const CustomDomain = () => {
                     data-testid="create-domain-btn"
                     isDisabled={!domainValue || createDomainDto.loading}
                     onClick={handleOnClickAddDomain}
+                    intent="secondary"
                 >
                     {createDomainDto.loading ? (
                         <span>Creating domain</span>
