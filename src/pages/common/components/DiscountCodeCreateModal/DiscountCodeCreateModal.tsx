@@ -191,7 +191,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                             </FormText>
                         </FormGroup>
                     )}
-                    <FormGroup>
+                    <FormGroup inline check>
                         <CheckBox
                             className="mb-3"
                             isChecked={isOneTime}
