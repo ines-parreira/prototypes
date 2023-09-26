@@ -11,12 +11,10 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
-import {useAbilityChecker} from '../hooks/useHelpCenterApi'
 import IconButton from '../../../common/components/button/IconButton'
-import ConfirmationPopover from '../../../common/components/popover/ConfirmationPopover'
 import css from './HelpCenterTable.less'
+import StoreName from './StoreName'
 
 type Props = {
     isLoading: boolean
@@ -24,28 +22,17 @@ type Props = {
     locales: {
         [key: string]: Locale
     }
-    onToggle: (helpCenterId: number, toggle: boolean) => void
     onClick: (helpCenter: HelpCenter) => void
     duplicateHelpCenter: (helpCenter: HelpCenter) => void
-    deleteHelpCenter: (helpCenter: HelpCenter) => void
 }
 
 export const HelpCenterTable: React.FC<Props> = ({
     isLoading,
     list,
     locales,
-    onToggle,
     onClick,
     duplicateHelpCenter,
-    deleteHelpCenter,
 }) => {
-    const handleToggle =
-        (helpCenterId: number) =>
-        (isToggled: boolean, event?: MouseEvent<HTMLLabelElement>): void => {
-            event?.stopPropagation()
-            onToggle(helpCenterId, isToggled)
-        }
-
     const handleDuplicate = useCallback(
         (helpCenter: HelpCenter, event: MouseEvent): void => {
             event.stopPropagation()
@@ -55,8 +42,6 @@ export const HelpCenterTable: React.FC<Props> = ({
         [duplicateHelpCenter]
     )
 
-    const {isPassingRulesCheck} = useAbilityChecker()
-
     if (isLoading) {
         return <Loader />
     }
@@ -64,17 +49,19 @@ export const HelpCenterTable: React.FC<Props> = ({
     return (
         <TableWrapper className={css.tableWrapper}>
             <TableHead className={css.tableHead}>
-                <HeaderCell size="smallest" />
-                <HeaderCellProperty title="Help Center name" />
+                <HeaderCellProperty
+                    className={css.headerHelpCenterName}
+                    title="Help Center name"
+                />
+                <HeaderCellProperty title="Store" />
                 <HeaderCellProperty title="Languages" />
                 <HeaderCellProperty title="Last updated" />
+                <HeaderCell />
                 <HeaderCell />
             </TableHead>
             <TableBody>
                 {list.map((helpCenter) => {
                     const {id} = helpCenter
-
-                    const activated = !Boolean(helpCenter.deactivated_datetime)
 
                     return (
                         <TableBodyRow
@@ -82,19 +69,11 @@ export const HelpCenterTable: React.FC<Props> = ({
                             key={id}
                             onClick={() => onClick(helpCenter)}
                         >
-                            <BodyCell size="smallest" className={css.actions}>
-                                <ToggleInput
-                                    isToggled={activated}
-                                    onClick={handleToggle(id)}
-                                    isDisabled={
-                                        !isPassingRulesCheck(({can}) =>
-                                            can('update', 'HelpCenterEntity')
-                                        )
-                                    }
-                                />
-                            </BodyCell>
                             <BodyCell className={css.helpCenterName}>
                                 {helpCenter.name}
+                            </BodyCell>
+                            <BodyCell className={css.storeName}>
+                                <StoreName name={helpCenter.shop_name} />
                             </BodyCell>
                             <BodyCell size="small">
                                 <LanguageList
@@ -113,7 +92,7 @@ export const HelpCenterTable: React.FC<Props> = ({
                                 )}
                             </BodyCell>
 
-                            <BodyCell className={css.lastBodyCell}>
+                            <BodyCell>
                                 <IconButton
                                     className="mr-1"
                                     fillStyle="ghost"
@@ -125,36 +104,17 @@ export const HelpCenterTable: React.FC<Props> = ({
                                 >
                                     file_copy
                                 </IconButton>
-
-                                <ConfirmationPopover
-                                    buttonProps={{
-                                        intent: 'destructive',
-                                    }}
-                                    content={
-                                        <>
-                                            You are about to delete{' '}
-                                            <b>{helpCenter.name}</b>.
-                                        </>
-                                    }
-                                    id={`delete-button-${id}`}
-                                    onConfirm={() =>
-                                        deleteHelpCenter(helpCenter)
-                                    }
-                                    placement="left"
+                            </BodyCell>
+                            <BodyCell className={css.lastBodyCell}>
+                                <IconButton
+                                    className="mr-1"
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                    onClick={() => onClick(helpCenter)}
+                                    title="Open Help Center"
                                 >
-                                    {({uid, onDisplayConfirmation}) => (
-                                        <IconButton
-                                            className="mr-1"
-                                            id={uid}
-                                            fillStyle="ghost"
-                                            intent="destructive"
-                                            onClick={onDisplayConfirmation}
-                                            title="Delete Help Center"
-                                        >
-                                            delete
-                                        </IconButton>
-                                    )}
-                                </ConfirmationPopover>
+                                    chevron_right
+                                </IconButton>
                             </BodyCell>
                         </TableBodyRow>
                     )

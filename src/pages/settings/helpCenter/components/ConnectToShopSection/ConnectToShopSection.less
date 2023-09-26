@@ -40,7 +40,10 @@
     }
 
     .store-name {
-        color: var(--neutral-grey-6);
+        color: var(
+            --classic-neutral-grey-6,
+            var(--classic-neutral-grey-6, #1d365c)
+        );
         font-weight: bold;
     }
 
@@ -52,5 +55,9 @@
 
     .connectDescription {
         margin-bottom: 24px;
+    }
+
+    .title {
+        font-weight: 600;
     }
 }

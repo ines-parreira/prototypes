@@ -159,7 +159,11 @@ const CurrentHelpCenter: React.FC = () => {
                 <Route
                     path={`${path}/publish-track`}
                     exact
-                    component={HelpCenterPublishAndTrackView}
+                    render={() => (
+                        <HelpCenterPreferencesSettings helpCenter={helpCenter}>
+                            <HelpCenterPublishAndTrackView />
+                        </HelpCenterPreferencesSettings>
+                    )}
                 />
                 <Route
                     path={`${path}/import/csv/column-matching`}

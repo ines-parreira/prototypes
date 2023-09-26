@@ -129,8 +129,6 @@ describe('<ContactFormInfoSection />', () => {
             </DefaultProviders>
         )
 
-        expect(
-            screen.getAllByText('Edit the subject of the contact form').length
-        ).toBe(1)
+        expect(screen.getAllByText('Contact form subject').length).toBe(1)
     })
 })

@@ -200,7 +200,7 @@ const ContactFormInfoSection = () => {
                     />
                     {isSubjectLinesAvailable && contactForm.subject_lines && (
                         <SubjectLines
-                            title="Edit the subject of the contact form"
+                            title="Contact form subject"
                             description="Here is a default list of subject lines. If there is no subject added, user can freely type any subject."
                             subjectLines={contactForm.subject_lines}
                             updateSubjectLines={(subjectLines) => {

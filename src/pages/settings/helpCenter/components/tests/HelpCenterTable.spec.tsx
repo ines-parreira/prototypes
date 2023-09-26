@@ -13,18 +13,14 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 
 describe('<HelpCenterTable />', () => {
     const mockedOnClick = jest.fn()
-    const mockedOnToggle = jest.fn()
     const mockedDuplicateHelpCenter = jest.fn()
-    const mockedDeleteHelpCenter = jest.fn()
 
     const props: ComponentProps<typeof HelpCenterTable> = {
         isLoading: false,
         list: getHelpCentersResponseFixture.data,
         locales: _keyBy<Locale>(getLocalesResponseFixture, 'code'),
         onClick: mockedOnClick,
-        onToggle: mockedOnToggle,
         duplicateHelpCenter: mockedDuplicateHelpCenter,
-        deleteHelpCenter: mockedDeleteHelpCenter,
     }
 
     it('should display the table correctly when loading', () => {
@@ -58,25 +54,5 @@ describe('<HelpCenterTable />', () => {
         fireEvent.click(duplicateButton)
 
         expect(mockedDuplicateHelpCenter).toHaveBeenCalledWith(firstHelpCenter)
-    })
-
-    it('should delete a Help Center', () => {
-        const firstHelpCenter = props.list[0]
-
-        const component = render(
-            <HelpCenterTable {...props} list={[firstHelpCenter]} />
-        )
-
-        const deleteButton = component.getByTitle(/Delete Help Center/)
-
-        fireEvent.click(deleteButton)
-
-        const deleteConfirmButton = component.getByRole('button', {
-            name: 'Confirm',
-        })
-
-        fireEvent.click(deleteConfirmButton)
-
-        expect(mockedDeleteHelpCenter).toHaveBeenCalledWith(firstHelpCenter)
     })
 })

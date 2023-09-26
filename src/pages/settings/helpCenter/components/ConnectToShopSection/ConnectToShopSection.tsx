@@ -49,11 +49,11 @@ export const ConnectToShopSection = ({
 
     return (
         <section className={settingsCss.mb40}>
-            <h3>Connect to Shopify store</h3>
+            <h3 className={css.title}>Connect store</h3>
 
             <p className={css.connectDescription}>
                 A store connection is required to use Automation Add-on features
-                in Help Center. Currently only available for Shopify stores.
+                and enable auto-embedding for Shopify stores.
             </p>
 
             {shopName ? (

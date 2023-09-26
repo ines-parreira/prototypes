@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {produce} from 'immer'
 import {keyBy as _keyBy} from 'lodash'
 import moment from 'moment'
 import {Container} from 'reactstrap'
@@ -17,11 +16,7 @@ import {
     useProductBannerStorage,
 } from 'hooks/useProductBannerStorage'
 import {NotificationStatus} from 'state/notifications/types'
-import {
-    helpCenterCreated,
-    helpCenterDeleted,
-    helpCentersFetched,
-} from 'state/entities/helpCenter/helpCenters'
+import {helpCenterCreated} from 'state/entities/helpCenter/helpCenters'
 import {StandaloneBanner} from '../StandaloneBanner'
 import HelpCenterTable from '../HelpCenterTable'
 
@@ -122,83 +117,6 @@ export const ManageHelpCenters = ({
         [client, dispatch, navigateToArticles]
     )
 
-    const deleteHelpCenter = useCallback(
-        (helpCenter: HelpCenter): void => {
-            const errorNotification = notify({
-                status: NotificationStatus.Error,
-                allowHTML: true,
-                message: `Something went wrong. We could not delete <b>${helpCenter.name}</b>.`,
-            })
-
-            if (!client) {
-                void dispatch(errorNotification)
-
-                return
-            }
-
-            void client
-                .deleteHelpCenter(helpCenter.id)
-                .then(() => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            allowHTML: true,
-                            message: `<b>${helpCenter.name}</b> successfully deleted.`,
-                        })
-                    )
-
-                    dispatch(helpCenterDeleted(helpCenter.id))
-                })
-                .catch(() => {
-                    void dispatch(errorNotification)
-                })
-        },
-        [client, dispatch]
-    )
-
-    const toggleActivation = useCallback(
-        async (helpCenterId: number, activated: boolean) => {
-            if (client) {
-                try {
-                    const helpCenterIndex = helpCenterList.findIndex(
-                        ({id}) => id === helpCenterId
-                    )
-                    const {data} = await client.updateHelpCenter(
-                        {help_center_id: helpCenterId},
-                        {
-                            deactivated: !activated,
-                        }
-                    )
-                    const helpCenterListUpdated = produce(
-                        helpCenterList,
-                        (helpCenters) => {
-                            helpCenters[helpCenterIndex] = data
-                        }
-                    )
-                    dispatch(helpCentersFetched(helpCenterListUpdated))
-                    void dispatch(
-                        notify({
-                            message: `Help Center ${
-                                activated ? 'activated' : 'deactivated'
-                            }`,
-                            status: NotificationStatus.Success,
-                        })
-                    )
-                } catch (e) {
-                    void dispatch(
-                        notify({
-                            message:
-                                'Something went wrong saving the Help Center',
-                            status: NotificationStatus.Error,
-                        })
-                    )
-                    throw e
-                }
-            }
-        },
-        [helpCenterList, client, dispatch]
-    )
-
     useEffect(() => {
         const productBannerInfo = getProductBanner(
             PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP
@@ -261,8 +179,6 @@ export const ManageHelpCenters = ({
                             locales={localesByCode}
                             onClick={navigateToArticles}
                             duplicateHelpCenter={duplicateHelpCenter}
-                            deleteHelpCenter={deleteHelpCenter}
-                            onToggle={toggleActivation}
                         />
                     </div>
                 </div>

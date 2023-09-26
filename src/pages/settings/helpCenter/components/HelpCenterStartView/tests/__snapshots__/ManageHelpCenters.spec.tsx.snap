@@ -24,8 +24,27 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                 class="headerRow"
               >
                 <td
-                  class="wrapper smallest"
-                />
+                  class="wrapper headerHelpCenterName normal"
+                >
+                  <div
+                    class="content"
+                  >
+                    <div
+                      class="cell"
+                    >
+                      <span
+                        class="title"
+                      >
+                        Help Center name
+                      </span>
+                      <i
+                        class="material-icons md-1 directionIcon"
+                      >
+                        arrow_upward
+                      </i>
+                    </div>
+                  </div>
+                </td>
                 <td
                   class="wrapper normal"
                 >
@@ -38,7 +57,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       <span
                         class="title"
                       >
-                        Help Center name
+                        Store
                       </span>
                       <i
                         class="material-icons md-1 directionIcon"
@@ -95,6 +114,9 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                 <td
                   class="wrapper normal"
                 />
+                <td
+                  class="wrapper normal"
+                />
               </tr>
             </thead>
             <tbody
@@ -104,40 +126,25 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                 class="row tableBodyRow isClickable"
               >
                 <td
-                  class="wrapper actions smallest"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <div>
-                      <label
-                        aria-checked="true"
-                        class="label label"
-                        for="toggle-button-1"
-                        role="switch"
-                      >
-                        <input
-                          checked=""
-                          class="input"
-                          disabled=""
-                          id="toggle-button-1"
-                          name="toggle-button-1"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </td>
-                <td
                   class="wrapper helpCenterName normal"
                 >
                   <div
                     class="cellContent"
                   >
                     ACME Help Center
+                  </div>
+                </td>
+                <td
+                  class="wrapper storeName normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div
+                      class="noStore"
+                    >
+                      No store connected
+                    </div>
                   </div>
                 </td>
                 <td
@@ -173,7 +180,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   </div>
                 </td>
                 <td
-                  class="wrapper lastBodyCell normal"
+                  class="wrapper normal"
                 >
                   <div
                     class="cellContent"
@@ -190,17 +197,24 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                         file_copy
                       </i>
                     </button>
+                  </div>
+                </td>
+                <td
+                  class="wrapper lastBodyCell normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
-                      id="delete-button-1"
-                      title="Delete Help Center"
+                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      title="Open Help Center"
                       type="button"
                     >
                       <i
                         class="material-icons icon"
                       >
-                        delete
+                        chevron_right
                       </i>
                     </button>
                   </div>
@@ -210,40 +224,25 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                 class="row tableBodyRow isClickable"
               >
                 <td
-                  class="wrapper actions smallest"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <div>
-                      <label
-                        aria-checked="true"
-                        class="label label"
-                        for="toggle-button-3"
-                        role="switch"
-                      >
-                        <input
-                          checked=""
-                          class="input"
-                          disabled=""
-                          id="toggle-button-3"
-                          name="toggle-button-3"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </td>
-                <td
                   class="wrapper helpCenterName normal"
                 >
                   <div
                     class="cellContent"
                   >
                     ACME Help Center 2
+                  </div>
+                </td>
+                <td
+                  class="wrapper storeName normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div
+                      class="noStore"
+                    >
+                      No store connected
+                    </div>
                   </div>
                 </td>
                 <td
@@ -290,7 +289,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   </div>
                 </td>
                 <td
-                  class="wrapper lastBodyCell normal"
+                  class="wrapper normal"
                 >
                   <div
                     class="cellContent"
@@ -307,17 +306,24 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                         file_copy
                       </i>
                     </button>
+                  </div>
+                </td>
+                <td
+                  class="wrapper lastBodyCell normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
-                      id="delete-button-2"
-                      title="Delete Help Center"
+                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      title="Open Help Center"
                       type="button"
                     >
                       <i
                         class="material-icons icon"
                       >
-                        delete
+                        chevron_right
                       </i>
                     </button>
                   </div>
@@ -326,34 +332,6 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
               <tr
                 class="row tableBodyRow isClickable"
               >
-                <td
-                  class="wrapper actions smallest"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <div>
-                      <label
-                        aria-checked="true"
-                        class="label label"
-                        for="toggle-button-5"
-                        role="switch"
-                      >
-                        <input
-                          checked=""
-                          class="input"
-                          disabled=""
-                          id="toggle-button-5"
-                          name="toggle-button-5"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </td>
                 <td
                   class="wrapper helpCenterName normal"
                 >
@@ -364,6 +342,19 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   </div>
                 </td>
                 <td
+                  class="wrapper storeName normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div
+                      class="noStore"
+                    >
+                      No store connected
+                    </div>
+                  </div>
+                </td>
+                <td
                   class="wrapper small"
                 >
                   <div
@@ -407,7 +398,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   </div>
                 </td>
                 <td
-                  class="wrapper lastBodyCell normal"
+                  class="wrapper normal"
                 >
                   <div
                     class="cellContent"
@@ -424,17 +415,24 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                         file_copy
                       </i>
                     </button>
+                  </div>
+                </td>
+                <td
+                  class="wrapper lastBodyCell normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
-                      id="delete-button-3"
-                      title="Delete Help Center"
+                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      title="Open Help Center"
                       type="button"
                     >
                       <i
                         class="material-icons icon"
                       >
-                        delete
+                        chevron_right
                       </i>
                     </button>
                   </div>
@@ -443,33 +441,6 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
               <tr
                 class="row tableBodyRow isClickable"
               >
-                <td
-                  class="wrapper actions smallest"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <div>
-                      <label
-                        aria-checked="false"
-                        class="label label"
-                        for="toggle-button-7"
-                        role="switch"
-                      >
-                        <input
-                          class="input"
-                          disabled=""
-                          id="toggle-button-7"
-                          name="toggle-button-7"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </td>
                 <td
                   class="wrapper helpCenterName normal"
                 >
@@ -480,6 +451,19 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   </div>
                 </td>
                 <td
+                  class="wrapper storeName normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div
+                      class="noStore"
+                    >
+                      No store connected
+                    </div>
+                  </div>
+                </td>
+                <td
                   class="wrapper small"
                 >
                   <div
@@ -523,7 +507,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   </div>
                 </td>
                 <td
-                  class="wrapper lastBodyCell normal"
+                  class="wrapper normal"
                 >
                   <div
                     class="cellContent"
@@ -540,17 +524,24 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                         file_copy
                       </i>
                     </button>
+                  </div>
+                </td>
+                <td
+                  class="wrapper lastBodyCell normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
-                      id="delete-button-4"
-                      title="Delete Help Center"
+                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      title="Open Help Center"
                       type="button"
                     >
                       <i
                         class="material-icons icon"
                       >
-                        delete
+                        chevron_right
                       </i>
                     </button>
                   </div>

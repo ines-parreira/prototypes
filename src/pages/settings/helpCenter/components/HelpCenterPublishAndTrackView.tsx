@@ -31,6 +31,8 @@ import {
     isValidSubdomain,
 } from '../utils/validations'
 
+import {useHelpCenterPreferencesSettings} from '../providers/HelpCenterPreferencesSettings'
+import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {CustomDomain} from './CustomDomain'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {SubdomainSection} from './SubdomainSection'
@@ -38,6 +40,7 @@ import {SubdomainSection} from './SubdomainSection'
 import css from './HelpCenterPublishAndTrackView.less'
 import GoogleAnalyticsSection from './GoogleAnalyticSection'
 import {UpdateToggle} from './UpdateToggle'
+import {ConnectToShopSection} from './ConnectToShopSection'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -53,6 +56,9 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
     const [showWarning, setShowWarning] = useState(true)
+
+    const {getHelpCenterCustomDomain} = useHelpCenterActions()
+    const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
 
     const subdomainError = subdomainValue
         ? getSubdomainValidationError(subdomainValue, isSubdomainAvailable)
@@ -170,6 +176,21 @@ export const HelpCenterInstallationView: React.FC = () => {
         ]
     )
 
+    const onConnectedShopChange = ({
+        shop_name,
+        self_service_deactivated,
+    }: {
+        shop_name: string | null
+        self_service_deactivated?: boolean
+    }) => {
+        updatePreferences({
+            connectedShop: {
+                shopName: shop_name,
+                selfServiceDeactivated: Boolean(self_service_deactivated),
+            },
+        })
+    }
+
     useEffect(() => {
         setIsSubdomainAvailable(true)
 
@@ -187,6 +208,11 @@ export const HelpCenterInstallationView: React.FC = () => {
         setGaid(helpCenter.gaid)
     }, [helpCenter.subdomain, helpCenter.gaid])
 
+    useEffect(() => {
+        void getHelpCenterCustomDomain()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
         <HelpCenterPageWrapper
             helpCenter={helpCenter}
@@ -194,13 +220,17 @@ export const HelpCenterInstallationView: React.FC = () => {
             isDirty={isNewSubdomainValid || isUpdatedGaid}
             onSaveChanges={handleOnSave}
         >
+            <ConnectToShopSection
+                onUpdate={onConnectedShopChange}
+                shopName={preferences.connectedShop.shopName}
+            />
             <section className="mb-4">
                 <h3 className={css.sectionTitle}>Publish</h3>
                 <UpdateToggle
                     activated={!Boolean(helpCenter.deactivated_datetime)}
-                    description="Publishing Help Center only makes it available to anyone with the direct link. It does not make it automatically available to your customers until you add the link to Help Center on your website."
+                    description="You must set your Help Center live to make it visible to customers via the direct link or embed options."
                     fieldName="deactivated"
-                    label="Publish Help Center"
+                    label="Set Help Center live"
                 />
                 {showWarning && (
                     <LinkAlert
@@ -334,7 +364,8 @@ export const HelpCenterInstallationView: React.FC = () => {
                     {(onClick) => (
                         <Button
                             className={css['delete-btn']}
-                            intent="secondary"
+                            intent="destructive"
+                            fillStyle="ghost"
                             onClick={onClick}
                         >
                             <i className="material-icons">delete</i>

@@ -5,13 +5,15 @@ exports[`<ConnectToShopSection /> renders in disabled state while fetching data 
   <section
     class="mb40"
   >
-    <h3>
-      Connect to Shopify store
+    <h3
+      class="title"
+    >
+      Connect store
     </h3>
     <p
       class="connectDescription"
     >
-      A store connection is required to use Automation Add-on features in Help Center. Currently only available for Shopify stores.
+      A store connection is required to use Automation Add-on features and enable auto-embedding for Shopify stores.
     </p>
     <button
       aria-disabled="false"
