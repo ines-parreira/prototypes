@@ -5,8 +5,13 @@ import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
 import {useAsyncFn, useEffectOnce, useKey, usePrevious} from 'react-use'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {MacroActionName} from 'models/macroAction/types'
-import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+    TicketStatus,
+} from 'business/types/ticket'
 import {getInvalidTicketFieldIds} from 'utils/customFields'
 import useSearch from 'hooks/useSearch'
 import useTitle from 'hooks/useTitle'
@@ -66,6 +71,8 @@ import {
 import Loader from 'pages/common/components/Loader/Loader'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useListVoiceCalls} from 'models/voiceCall/queries'
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 
@@ -108,6 +115,12 @@ export const TicketDetailContainer = ({
     const {customer: customerId} = useSearch<{customer?: string}>()
     const ticketIdParamRef = useRef(ticketIdParam)
     const {setRecentItem} = useRecentItems<PickedTicket>(RecentItems.Tickets)
+    const useNewVoiceCallUI = useFlags()[FeatureFlagKey.NewVoiceCallUI]
+    const {data: voiceCallsData, isLoading: isVoiceCallsDataLoading} =
+        useListVoiceCalls(
+            {ticket_id: ticket.get('id')},
+            {enabled: useNewVoiceCallUI}
+        )
     const location = useLocation<{
         source?: string
         sender?: string
@@ -151,6 +164,12 @@ export const TicketDetailContainer = ({
 
     const title = ticket.get('id') ? ticket.get('subject') : 'New ticket'
     useTitle(isLoading ? undefined : title)
+
+    const isLoadingPhoneTicketData =
+        useNewVoiceCallUI &&
+        ticket.get('channel') === TicketChannel.Phone &&
+        !voiceCallsData &&
+        isVoiceCallsDataLoading
 
     useEffect(() => {
         void fetchTags()
@@ -593,7 +612,7 @@ export const TicketDetailContainer = ({
         })
     }
 
-    if (isLoading) {
+    if (isLoading || isLoadingPhoneTicketData) {
         return <Loader message="Loading ticket..." />
     }
 

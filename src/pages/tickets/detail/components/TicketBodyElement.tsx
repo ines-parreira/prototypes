@@ -2,6 +2,7 @@ import {fromJS, Map} from 'immutable'
 import {Moment} from 'moment'
 import React from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {PHONE_EVENTS} from 'constants/event'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -37,6 +38,8 @@ import {
 } from 'state/ticket/selectors'
 import {reportError} from 'utils/errors'
 import {generateTicketMessagesId} from 'utils'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {isVoiceCall} from 'models/voiceCall/types'
 import {TicketEventPrivateReplyData} from '../../../../models/event/types'
 
 interface Props {
@@ -64,6 +67,7 @@ const TicketBodyElement = ({
     const lastCustomerMessage = useAppSelector(getLastCustomerMessage)
     const lastReadMessage = useAppSelector(getLastReadMessage)
     const ticket = useAppSelector(getTicketState)
+    const useNewVoiceCallUI = useFlags()[FeatureFlagKey.NewVoiceCallUI]
 
     const isDeprecatedPrivateEvent = (ticketEvent: TicketEvent) => {
         if (!ticketEvent.data) {
@@ -130,6 +134,10 @@ const TicketBodyElement = ({
 
     if (isTicketAISuggestion(element)) {
         return <AISuggestion isCollapsed={!isLast} ticket={ticket.toJS()} />
+    }
+
+    if (useNewVoiceCallUI && isVoiceCall(element)) {
+        return <div>Voice call</div>
     }
 
     if (!isTicketEvent(element)) {

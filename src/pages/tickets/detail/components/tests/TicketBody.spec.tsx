@@ -22,6 +22,15 @@ jest.mock('pages/tickets/detail/components/TicketHeaderWrapper', () => () => (
     <p>TicketHeaderWrapper</p>
 ))
 
+jest.mock(
+    'state/queries/selectors',
+    () =>
+        ({
+            ...jest.requireActual('state/queries/selectors'),
+            getQueryTimestamp: jest.fn(() => jest.fn()),
+        } as Record<string, unknown>)
+)
+
 jest.mock('state/billing/selectors')
 
 jest.mock('react-virtuoso', () => {

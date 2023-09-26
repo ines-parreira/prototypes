@@ -55,4 +55,5 @@ export enum FeatureFlagKey {
     ContactFormOrderManagement = 'contact-form-order-management',
     NewAutomationAddon = 'new-automation-add-on',
     CustomerTimelineButton = 'customer-timeline-button',
+    NewVoiceCallUI = 'new-voice-call-ui',
 }

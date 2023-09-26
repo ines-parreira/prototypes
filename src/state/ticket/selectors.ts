@@ -18,6 +18,11 @@ import {
     TicketSatisfactionSurvey,
 } from 'models/ticket/types'
 
+import {appQueryClient} from 'api/queryClient'
+import {listVoiceCalls} from 'models/voiceCall/resources'
+import {voiceCallsKeys} from 'models/voiceCall/queries'
+import {VoiceCall} from 'models/voiceCall/types'
+import {getQueriesState, getQueryTimestamp} from 'state/queries/selectors'
 import {TicketState, TicketStateWithoutImmutable} from './types'
 
 export const getTicketState = (state: RootState): TicketState =>
@@ -182,6 +187,24 @@ export const getTicketFieldState = createSelector(
     (state) => state.custom_fields || {}
 )
 
+const getVoiceCallQueryTimestamp = createSelector(
+    getTicketState,
+    getQueriesState,
+    (ticket, queries) => {
+        const voiceCallQueryKey = voiceCallsKeys.list({
+            ticket_id: ticket.get('id'),
+        })
+
+        return getQueryTimestamp(voiceCallQueryKey)({queries})
+    }
+)
+
+const getVoiceCalls = createSelector(getTicketState, (ticket) =>
+    appQueryClient.getQueryData<Awaited<ReturnType<typeof listVoiceCalls>>>(
+        voiceCallsKeys.list({ticket_id: ticket.get('id')})
+    )
+)
+
 // return elements we display in the body of a ticket (messages, events, etc.)
 export const getBody = createImmutableSelector(
     getMessages,
@@ -191,6 +214,8 @@ export const getBody = createImmutableSelector(
     getRuleSuggestion,
     getAISuggestion,
     getTicketFieldState,
+    getVoiceCallQueryTimestamp,
+    getVoiceCalls,
     (
         messages,
         pendingMessages,
@@ -198,7 +223,9 @@ export const getBody = createImmutableSelector(
         satisfactionSurveys,
         ruleSuggestion,
         aiSuggestion,
-        ticketFieldState
+        ticketFieldState,
+        _,
+        voiceCallsData
     ) => {
         const nextMessages = messages.map((message) => {
             return message!.set('isMessage', true)
@@ -226,6 +253,11 @@ export const getBody = createImmutableSelector(
             return event.set('isEvent', true)
         }) as List<any>
 
+        const nextVoiceCalls =
+            voiceCallsData?.data?.map((voiceCall: VoiceCall) => {
+                return fromJS(voiceCall) as List<any>
+            }) ?? fromJS([])
+
         const nextSatisfactionSurveys = satisfactionSurveys.map(
             (satisfactionSurveys: Map<any, any>) => {
                 return satisfactionSurveys.set('isSatisfactionSurvey', true)
@@ -235,6 +267,7 @@ export const getBody = createImmutableSelector(
         let body = nextMessages
             .concat(failedPendingMessages)
             .concat(nextEvents)
+            .concat(nextVoiceCalls)
             .concat(nextSatisfactionSurveys)
             .sortBy(
                 (element: Map<any, any>) =>

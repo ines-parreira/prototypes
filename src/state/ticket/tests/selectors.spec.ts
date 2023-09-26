@@ -21,6 +21,15 @@ jest.mock('models/ticket/predicates', () => {
     } as Record<any, any>
 })
 
+jest.mock(
+    'state/queries/selectors',
+    () =>
+        ({
+            ...jest.requireActual('state/queries/selectors'),
+            getQueryTimestamp: jest.fn(() => jest.fn()),
+        } as Record<string, unknown>)
+)
+
 const mockShouldMessagesBeGrouped = assumeMock(shouldMessagesBeGrouped)
 
 describe('ticket selectors', () => {
