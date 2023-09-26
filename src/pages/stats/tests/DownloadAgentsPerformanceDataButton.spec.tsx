@@ -1,10 +1,14 @@
 import React from 'react'
-import {render, screen, fireEvent} from '@testing-library/react'
+import {render, screen, fireEvent, act} from '@testing-library/react'
 
 import {agents} from 'fixtures/agents'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {assumeMock} from 'utils/testing'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
-import {DownloadAgentsPerformanceDataButton} from 'pages/stats/DownloadAgentsPerformanceDataButton'
+import {
+    DownloadAgentsPerformanceDataButton,
+    DOWNLOAD_DATA_BUTTON_LABEL,
+} from 'pages/stats/DownloadAgentsPerformanceDataButton'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 
@@ -14,6 +18,8 @@ jest.mock('services/reporting/agentsPerformanceReportingService')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 const saveReportMock = assumeMock(saveReport)
+jest.mock('store/middlewares/segmentTracker')
+const logEventMock = assumeMock(logEvent)
 
 describe('DownloadAgentsPerformanceDataButton', () => {
     const metricReturnValue = {
@@ -62,14 +68,19 @@ describe('DownloadAgentsPerformanceDataButton', () => {
         },
     }
 
-    useAgentsMetricsMock.mockReturnValue(agentsMetricsReturnValue)
-    useAgentsSummaryMetricsMock.mockReturnValue(agentsSummaryMetricsReturnValue)
+    beforeEach(() => {
+        useAgentsMetricsMock.mockReturnValue(agentsMetricsReturnValue)
+        useAgentsSummaryMetricsMock.mockReturnValue(
+            agentsSummaryMetricsReturnValue
+        )
+    })
 
     it('should render', () => {
         render(<DownloadAgentsPerformanceDataButton />)
 
         expect(screen.getByRole('button')).toBeInTheDocument()
     })
+
     it('should call saveReport on click', () => {
         render(<DownloadAgentsPerformanceDataButton />)
 
@@ -92,5 +103,20 @@ describe('DownloadAgentsPerformanceDataButton', () => {
             'aria-disabled',
             'true'
         )
+    })
+
+    it('should send event to segment and call saveReport on download data button click', () => {
+        const {getByText} = render(<DownloadAgentsPerformanceDataButton />)
+        act(() => {
+            fireEvent.click(getByText(DOWNLOAD_DATA_BUTTON_LABEL))
+        })
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatDownloadClicked,
+            expect.objectContaining({
+                name: 'all-metrics',
+            })
+        )
+        expect(saveReportMock).toHaveBeenCalled()
     })
 })

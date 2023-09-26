@@ -4,8 +4,9 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
-const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
+export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 const DOWNLOAD_BUTTON_TITLE = 'Download Agents Performance Data'
 
 export const DownloadAgentsPerformanceDataButton = () => {
@@ -16,9 +17,12 @@ export const DownloadAgentsPerformanceDataButton = () => {
         <Button
             intent="secondary"
             fillStyle="ghost"
-            onClick={async () =>
+            onClick={async () => {
+                logEvent(SegmentEvent.StatDownloadClicked, {
+                    name: 'all-metrics',
+                })
                 await saveReport(reportData, summaryData, period)
-            }
+            }}
             isDisabled={isLoading || summaryIsLoading}
             title={DOWNLOAD_BUTTON_TITLE}
         >
