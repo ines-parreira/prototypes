@@ -59,9 +59,15 @@ describe('StatsNavbarView', () => {
                 </Provider>
             )
 
-            expect(
-                screen.getByRole('link', {name: /Agents(.*)new/})
-            ).toHaveAttribute('href', '/app/stats/support-performance-agents')
+            const agentsPerformanceLink = screen
+                .getAllByRole('link', {name: new RegExp('Agents')})
+                .find(
+                    (el) =>
+                        el.getAttribute('href') ===
+                        '/app/stats/support-performance-agents'
+                )
+
+            expect(agentsPerformanceLink).toBeInTheDocument()
         })
     })
 
