@@ -31,7 +31,7 @@ export function useVisualBuilderNodeProps({
         visualBuilderNodeIdEditing,
         setVisualBuilderNodeIdEditing,
         setVisualBuilderChoiceEventIdEditing,
-        hasVariablesUsedInChildren,
+        checkNodeHasVariablesUsedInChildren,
     } = useWorkflowEditorContext()
 
     const isSelected = visualBuilderNodeIdEditing === id
@@ -75,17 +75,18 @@ export function useVisualBuilderNodeProps({
             .filter((e) => e.source === id)
             .map((e) => e.target).length > 1
 
-    // only compute this when the node is selected for performance reasons
-    const doesNodeHaveVariablesUsedInChildren =
-        isSelected && hasVariablesUsedInChildren(id)
+    const hasVariablesUsedInChildren = useMemo(
+        () => checkNodeHasVariablesUsedInChildren(id),
+        [id, checkNodeHasVariablesUsedInChildren]
+    )
     const deleteProps: VisualBuilderDeleteProps = useMemo(
         () => ({
             nodeId: id,
             hasMultipleChildren,
-            hasVariablesUsedInChildren: doesNodeHaveVariablesUsedInChildren,
+            hasVariablesUsedInChildren,
             dispatch,
         }),
-        [id, hasMultipleChildren, dispatch, doesNodeHaveVariablesUsedInChildren]
+        [id, hasMultipleChildren, hasVariablesUsedInChildren, dispatch]
     )
 
     return {

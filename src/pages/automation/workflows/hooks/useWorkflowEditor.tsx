@@ -53,7 +53,7 @@ export type WorkflowEditorContext = {
     handleSave: () => Promise<void>
     handleDiscard: () => void
     checkInvalidVariablesForNode: (text: string, nodeId: string) => boolean
-    hasVariablesUsedInChildren: (nodeId: string) => boolean
+    checkNodeHasVariablesUsedInChildren: (nodeId: string) => boolean
     dispatch: React.Dispatch<VisualBuilderGraphAction>
     visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null
     setVisualBuilderNodeIdEditing: React.Dispatch<
@@ -367,7 +367,7 @@ export function useWorkflowEditor(
         [visualBuilderGraphDirty]
     )
 
-    const hasVariablesUsedInChildren = useCallback(
+    const checkNodeHasVariablesUsedInChildren = useCallback(
         (nodeId: string) => {
             const currentNode = visualBuilderGraphDirty.nodes.find(
                 (n) => n.id === nodeId
@@ -447,7 +447,7 @@ export function useWorkflowEditor(
         isSavePending,
         isDirty: isVisualBuilderGraphDirty,
         checkInvalidVariablesForNode,
-        hasVariablesUsedInChildren,
+        checkNodeHasVariablesUsedInChildren,
         handleValidate,
         handleSave,
         handleDiscard,
@@ -500,7 +500,7 @@ export function createWorkflowEditorContextForPreview(
         isSavePending: false,
         isDirty: false,
         checkInvalidVariablesForNode: () => false,
-        hasVariablesUsedInChildren: () => false,
+        checkNodeHasVariablesUsedInChildren: () => false,
         handleValidate: () => null,
         handleSave: () => Promise.resolve(),
         handleDiscard: () => null,
