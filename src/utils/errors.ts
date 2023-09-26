@@ -21,6 +21,9 @@ const IGNORED_ERRORS = [
     'Error: Network Error', // https://linear.app/gorgias/issue/COR-1223/ignore-all-axios-network-errors
     /^Error: timeout of \d+ms exceeded$/, // https://linear.app/gorgias/issue/COR-1223/ignore-all-axios-network-errors
     'ResizeObserver loop limit exceeded', // https://linear.app/gorgias/issue/PLTCO-2300/mute-or-ignore-resizeobserver-warning
+    'UnknownError (31000): An unknown error has occurred. See error details for more information.', // https://linear.app/gorgias/issue/PHO-546/unknownerror-unknownerror-31000-an-unknown-error-has-occurred-see
+    'TransportError (31009): No transport available to send or receive messages', // https://linear.app/gorgias/issue/PHO-405/transporterror-transporterror-31009-no-transport-available-to-send-or
+    'ConnectionError (31005): A connection error occurred during the call', // https://linear.app/gorgias/issue/PHO-404/connectionerror-connectionerror-31005-a-connection-error-occurred
 ]
 
 export type InitErrorReporterParams = {

@@ -21,6 +21,9 @@ exports[`errors util initErrorReporter should init sentry 1`] = `
         "Error: Network Error",
         /\\^Error: timeout of \\\\d\\+ms exceeded\\$/,
         "ResizeObserver loop limit exceeded",
+        "UnknownError (31000): An unknown error has occurred. See error details for more information.",
+        "TransportError (31009): No transport available to send or receive messages",
+        "ConnectionError (31005): A connection error occurred during the call",
       ],
       "integrations": [
         BrowserTracing {
