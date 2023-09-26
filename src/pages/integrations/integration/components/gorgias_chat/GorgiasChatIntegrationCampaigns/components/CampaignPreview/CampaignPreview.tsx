@@ -59,6 +59,7 @@ const CampaignPreview = ({
             avatar={avatar}
             chatTitle={chatTitle}
             html={html}
+            mainColor={mainColor}
             products={products}
             shouldHideReplyInput={shouldHideReplyInput}
             translatedTexts={translatedTexts}

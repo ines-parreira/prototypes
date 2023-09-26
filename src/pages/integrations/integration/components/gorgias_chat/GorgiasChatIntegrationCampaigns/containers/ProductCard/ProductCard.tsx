@@ -32,7 +32,7 @@ type Props = {
 }
 
 export const ProductCard = ({
-    color = DEFAULT_COLOR,
+    color,
     currency,
     image,
     isHeadlessStore,
@@ -54,7 +54,7 @@ export const ProductCard = ({
     if (isEditOn && image) {
         return (
             <ProductCardEdit
-                bgColor={getBackgroundColorVariant(color)}
+                bgColor={getBackgroundColorVariant(color || DEFAULT_COLOR)}
                 image={image}
                 position={position}
                 onClickCancel={handleClickCancel}
@@ -65,7 +65,7 @@ export const ProductCard = ({
 
     return (
         <ProductCardView
-            bgColor={getBackgroundColorVariant(color)}
+            bgColor={getBackgroundColorVariant(color || DEFAULT_COLOR)}
             currency={currency}
             image={image}
             isHeadlessStore={isHeadlessStore}

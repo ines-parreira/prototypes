@@ -12,6 +12,7 @@ import {CampaignProduct} from '../../../../types/CampaignProduct'
 import css from './ProductCarousel.less'
 
 type Props = {
+    mainColor?: string
     products: CampaignProduct[]
     configuration?: {
         frameGutter: number
@@ -22,6 +23,7 @@ type Props = {
 }
 
 export const ProductCarousel = ({
+    mainColor,
     products,
     configuration = DEFAULT_CAROUSEL_CONFIGURATION,
 }: Props) => {
@@ -101,6 +103,7 @@ export const ProductCarousel = ({
                             <ProductCard
                                 currency={product.currency}
                                 image={product.featured_image}
+                                color={mainColor}
                                 price={product.price}
                                 position={product.position}
                                 productId={product.id}

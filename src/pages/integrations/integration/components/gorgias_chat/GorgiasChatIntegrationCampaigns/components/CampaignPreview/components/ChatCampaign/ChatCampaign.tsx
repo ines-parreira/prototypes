@@ -68,6 +68,7 @@ type Props = {
     avatar?: GorgiasChatAvatarSettings
     chatTitle?: string
     html: string
+    mainColor?: string
     products?: CampaignProduct[]
     shouldHideReplyInput?: boolean
     translatedTexts: Record<string, string>
@@ -80,6 +81,7 @@ export const ChatCampaign = ({
     avatar,
     chatTitle,
     html,
+    mainColor,
     products = [],
     shouldHideReplyInput = false,
     translatedTexts,
@@ -172,7 +174,10 @@ export const ChatCampaign = ({
             )}
             {products.length > 0 && (
                 <div className={css.carouselContainer}>
-                    <ProductCarousel products={products} />
+                    <ProductCarousel
+                        products={products}
+                        mainColor={mainColor}
+                    />
                 </div>
             )}
 

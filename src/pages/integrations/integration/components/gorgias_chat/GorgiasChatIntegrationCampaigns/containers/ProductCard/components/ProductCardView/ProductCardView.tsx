@@ -4,6 +4,7 @@ import Button from 'pages/common/components/button/Button'
 
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
+import {getContrastColor} from 'gorgias-design-system/utils'
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
 import {BaseProductCard} from '../BaseProductCard'
@@ -36,6 +37,7 @@ export const ProductCardView = ({
     const buttonStyle = useMemo(
         () => ({
             backgroundColor: bgColor,
+            color: getContrastColor(bgColor),
         }),
         [bgColor]
     )

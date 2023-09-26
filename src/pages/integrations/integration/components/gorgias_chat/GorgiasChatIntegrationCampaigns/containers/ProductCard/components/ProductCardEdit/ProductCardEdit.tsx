@@ -2,6 +2,7 @@ import React, {ChangeEvent, useEffect, useMemo, useState} from 'react'
 
 import {InputRange} from 'pages/common/forms/input/InputRange'
 
+import {getContrastColor} from 'gorgias-design-system/utils'
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
 import {BaseProductCard} from '../BaseProductCard'
@@ -47,6 +48,7 @@ export const ProductCardEdit = ({
     const buttonStyle = useMemo(
         () => ({
             backgroundColor: bgColor,
+            color: getContrastColor(bgColor),
         }),
         [bgColor]
     )
