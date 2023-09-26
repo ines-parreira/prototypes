@@ -5,6 +5,7 @@ import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
 import {useAsyncFn, useEffectOnce, useKey, usePrevious} from 'react-use'
 
+import {MacroActionName} from 'models/macroAction/types'
 import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
 import {getInvalidTicketFieldIds} from 'utils/customFields'
 import useSearch from 'hooks/useSearch'
@@ -205,8 +206,17 @@ export const TicketDetailContainer = ({
         const sourceType = newMessage.getIn(['newMessage', 'source', 'type'])
         submittedTicket = ticket.setIn(['newMessage', 'sender'], sender)
 
+        const hasInternalNoteAction = (
+            ticket.getIn(
+                ['state', 'appliedMacro', 'actions'],
+                fromJS([])
+            ) as List<Map<any, any>>
+        ).some(
+            (action) => action?.get('name') === MacroActionName.AddInternalNote
+        )
+
         // Ensure that a customer is always set on the ticket when created
-        if (sourceType !== 'internal-note') {
+        if (sourceType !== 'internal-note' && !hasInternalNoteAction) {
             submittedTicket = ticket.set('customer', receiver)
         }
 

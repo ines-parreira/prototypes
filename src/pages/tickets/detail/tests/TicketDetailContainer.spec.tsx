@@ -11,6 +11,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
+import {MacroActionName} from 'models/macroAction/types'
 import client from 'models/api/resources'
 import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
@@ -824,6 +825,45 @@ describe('TicketDetailContainer component', () => {
         )
 
         expect(minProps.setCustomer).not.toBeCalled()
+    })
+
+    it('should not set customer when ticket created has internal note action', async () => {
+        const submitMock = jest.fn()
+
+        const ticket = newTicket.setIn(
+            ['state', 'appliedMacro', 'actions'],
+            fromJS([{name: MacroActionName.AddInternalNote}])
+        )
+
+        const {getByTestId} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        canSendMessage={true}
+                        ticket={ticket}
+                        submitTicket={submitMock}
+                        newMessage={fromJS({
+                            newMessage: {
+                                receiver: {
+                                    name: 'foo',
+                                },
+                            },
+                        })}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            }
+        )
+
+        userEvent.click(getByTestId('TicketView-submit'))
+        await waitFor(() =>
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+            expect(submitMock.mock.calls[0][0].get('customer')).toBeUndefined()
+        )
     })
 
     it('should defer sending new message when new message is of type email', async () => {
