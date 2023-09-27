@@ -41,7 +41,6 @@ const link = (config: Config): Decorator => ({
         const {url} = contentState.getEntity(entityKey).getData()
         return (
             <LinkPopover
-                id={entityKey}
                 url={url}
                 onEdit={
                     config.isActive()

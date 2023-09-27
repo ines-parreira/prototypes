@@ -1,130 +1,138 @@
-import React, {Component, MouseEvent} from 'react'
+import React, {
+    MouseEvent,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import {Popover} from 'reactstrap'
-import {connect, ConnectedProps} from 'react-redux'
 
-import {RootState} from 'state/types'
+import useAppSelector from 'hooks/useAppSelector'
+import useId from 'hooks/useId'
 import IconButton from 'pages/common/components/button/IconButton'
 import {ModalContext} from 'pages/common/components/modal/Modal'
+import {RootState} from 'state/types'
 
 import css from './LinkPopover.less'
 
 type Props = {
-    id: string
-    url: string
-    onEdit?: (arg0: string) => void
-    onDelete?: (arg0: string) => void
     children?: React.ReactNode
-} & ConnectedProps<typeof connector>
-
-type State = {
-    isOpen: boolean
+    url: string
+    onDelete?: () => void
+    onEdit?: () => void
 }
 
-export class LinkPopoverContainer extends Component<Props, State> {
-    state: State = {
-        isOpen: false,
-    }
+export default function LinkPopover({children, url, onDelete, onEdit}: Props) {
+    const id = useId()
 
-    timeout?: number | null
+    const [isOpen, setIsOpen] = useState(false)
+    const timeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const isEditingLink = useAppSelector(
+        (state: RootState) => state.ui.editor.isEditingLink
+    )
 
-    componentWillUnmount() {
-        if (this.timeout) {
-            window.clearTimeout(this.timeout)
-        }
-    }
+    useEffect(
+        () => () => {
+            if (timeout.current) {
+                clearTimeout(timeout.current)
+            }
+        },
+        []
+    )
 
-    _onMouseEnter = (e: MouseEvent) => {
-        const {isEditingLink} = this.props
+    const handleMouseEnter = useCallback(
+        (e: MouseEvent) => {
+            e.preventDefault()
+            if (timeout.current) {
+                clearTimeout(timeout.current)
+            }
+            if (!isEditingLink) {
+                setIsOpen(true)
+            }
+        },
+        [isEditingLink]
+    )
+
+    const handleMouseLeave = useCallback((e: MouseEvent) => {
         e.preventDefault()
-        if (this.timeout) {
-            window.clearTimeout(this.timeout)
-        }
-        if (!isEditingLink) {
-            this.setState({isOpen: true})
-        }
-    }
-
-    _onMouseLeave = (e: MouseEvent) => {
-        e.preventDefault()
-        this.timeout = window.setTimeout(() => {
-            this.setState({isOpen: false})
+        timeout.current = setTimeout(() => {
+            setIsOpen(false)
         }, 250)
-    }
+    }, [])
 
-    _onEditClick = (e: MouseEvent) => {
-        e.preventDefault()
-        this.props.onEdit && this.props.onEdit(this.props.id)
-        this.setState({isOpen: false})
-    }
+    const handleClickEdit = useCallback(
+        (e: MouseEvent) => {
+            e.preventDefault()
+            if (onEdit) onEdit()
+            setIsOpen(false)
+        },
+        [onEdit]
+    )
 
-    _onDeleteClick = (e: MouseEvent) => {
-        e.preventDefault()
-        this.props.onDelete && this.props.onDelete(this.props.id)
-    }
+    const handleClickDelete = useCallback(
+        (e: MouseEvent) => {
+            e.preventDefault()
+            if (onDelete) onDelete()
+        },
+        [onDelete]
+    )
 
-    render() {
-        const id = `link-${this.props.id}`
-        return (
-            <a
-                id={id}
-                href={this.props.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={this._onMouseEnter}
-                onMouseLeave={this._onMouseLeave}
-            >
-                {this.props.children}
-                <ModalContext.Consumer>
-                    {(context) => (
-                        <Popover
-                            isOpen={this.state.isOpen}
-                            target={id}
-                            placement="bottom-start"
-                            className={css.wrapper}
-                            innerClassName={css.inner}
-                            onMouseEnter={this._onMouseEnter}
-                            onMouseLeave={this._onMouseLeave}
-                            trigger="legacy"
-                            container={context.ref}
+    const linkId = `link-${id}`
+
+    return (
+        <a
+            id={linkId}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            {children}
+            <ModalContext.Consumer>
+                {(context) => (
+                    <Popover
+                        isOpen={isOpen}
+                        target={linkId}
+                        placement="bottom-start"
+                        className={css.wrapper}
+                        innerClassName={css.inner}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        trigger="legacy"
+                        container={context.ref}
+                    >
+                        <a
+                            className={css.url}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
-                            <a
-                                className={css.url}
-                                href={this.props.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            {url}
+                        </a>
+                        {onEdit && (
+                            <IconButton
+                                size="small"
+                                intent="secondary"
+                                onClick={handleClickEdit}
+                                className={css.edit}
                             >
-                                {this.props.url}
-                            </a>
-                            {this.props.onEdit && (
-                                <IconButton
-                                    size="small"
-                                    intent="secondary"
-                                    onClick={this._onEditClick}
-                                    className={css.edit}
-                                >
-                                    edit
-                                </IconButton>
-                            )}
-                            {this.props.onDelete && (
-                                <IconButton
-                                    size="small"
-                                    intent="secondary"
-                                    className={css.delete}
-                                    onClick={this._onDeleteClick}
-                                >
-                                    clear
-                                </IconButton>
-                            )}
-                        </Popover>
-                    )}
-                </ModalContext.Consumer>
-            </a>
-        )
-    }
+                                edit
+                            </IconButton>
+                        )}
+                        {onDelete && (
+                            <IconButton
+                                size="small"
+                                intent="secondary"
+                                className={css.delete}
+                                onClick={handleClickDelete}
+                            >
+                                clear
+                            </IconButton>
+                        )}
+                    </Popover>
+                )}
+            </ModalContext.Consumer>
+        </a>
+    )
 }
-
-const connector = connect((state: RootState) => ({
-    isEditingLink: state.ui.editor.isEditingLink,
-}))
-
-export default connector(LinkPopoverContainer)

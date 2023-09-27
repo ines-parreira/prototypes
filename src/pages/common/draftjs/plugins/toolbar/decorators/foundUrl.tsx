@@ -49,14 +49,10 @@ const foundUrl = (): Decorator => ({
         })
     },
     component: (props: DecoratorComponentProps) => {
-        const {decoratedText, children, offsetKey} = props
+        const {decoratedText, children} = props
         const links = linkify.match(decoratedText)
         const url = links && links[0] ? links[0].url : ''
-        return (
-            <LinkPopover id={offsetKey} url={url}>
-                {children}
-            </LinkPopover>
-        )
+        return <LinkPopover url={url}>{children}</LinkPopover>
     },
 })
 

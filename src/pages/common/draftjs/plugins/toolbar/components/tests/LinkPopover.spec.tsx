@@ -6,7 +6,9 @@ import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
 import Modal from 'pages/common/components/modal/Modal'
-import {LinkPopoverContainer} from '../LinkPopover'
+import LinkPopover from '../LinkPopover'
+
+jest.mock('hooks/useId', () => () => 1)
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -16,20 +18,17 @@ jest.spyOn(window, 'clearTimeout')
 describe('<LinkPopover />', () => {
     let store = mockStore({})
     beforeEach(() => {
-        store = mockStore({isEditingLink: false})
+        store = mockStore({ui: {editor: {isEditingLink: false}}})
     })
 
     const minProps = {
-        id: 1,
         url: 'http://gorgias.com',
-    } as unknown as ComponentProps<typeof LinkPopoverContainer>
+    } as unknown as ComponentProps<typeof LinkPopover>
 
     it('should render a link', () => {
         const {baseElement} = render(
             <Provider store={store}>
-                <LinkPopoverContainer {...minProps}>
-                    I am a link
-                </LinkPopoverContainer>
+                <LinkPopover {...minProps}>I am a link</LinkPopover>
             </Provider>
         )
         expect(baseElement).toMatchSnapshot()
@@ -39,9 +38,7 @@ describe('<LinkPopover />', () => {
         const label = 'hover me'
         const {getByText, queryByText} = render(
             <Provider store={store}>
-                <LinkPopoverContainer {...minProps}>
-                    {label}
-                </LinkPopoverContainer>
+                <LinkPopover {...minProps}>{label}</LinkPopover>
             </Provider>
         )
 
@@ -57,15 +54,15 @@ describe('<LinkPopover />', () => {
 
         const {getByText} = render(
             <Provider store={store}>
-                <LinkPopoverContainer {...minProps} {...props}>
+                <LinkPopover {...minProps} {...props}>
                     {label}
-                </LinkPopoverContainer>
+                </LinkPopover>
             </Provider>
         )
 
         fireEvent.mouseOver(getByText(label))
         fireEvent.click(getByText('edit'))
-        expect(props.onEdit).toHaveBeenCalledWith(minProps.id)
+        expect(props.onEdit).toHaveBeenCalledWith()
     })
 
     it('should render a popover with deletion action', () => {
@@ -76,15 +73,15 @@ describe('<LinkPopover />', () => {
 
         const {getByText} = render(
             <Provider store={store}>
-                <LinkPopoverContainer {...minProps} {...props}>
+                <LinkPopover {...minProps} {...props}>
                     {label}
-                </LinkPopoverContainer>
+                </LinkPopover>
             </Provider>
         )
 
         fireEvent.mouseOver(getByText(label))
         fireEvent.click(getByText('clear'))
-        expect(props.onDelete).toHaveBeenCalledWith(minProps.id)
+        expect(props.onDelete).toHaveBeenCalledWith()
     })
 
     it('should render the popover on a specified modal', () => {
@@ -93,9 +90,7 @@ describe('<LinkPopover />', () => {
         const {baseElement, getByText} = render(
             <Provider store={store}>
                 <Modal isOpen onClose={_noop}>
-                    <LinkPopoverContainer {...minProps}>
-                        {label}
-                    </LinkPopoverContainer>
+                    <LinkPopover {...minProps}>{label}</LinkPopover>
                 </Modal>
             </Provider>
         )
@@ -109,9 +104,7 @@ describe('<LinkPopover />', () => {
         const label = 'hover me'
         const {getByText, queryByText} = render(
             <Provider store={store}>
-                <LinkPopoverContainer {...minProps}>
-                    {label}
-                </LinkPopoverContainer>
+                <LinkPopover {...minProps}>{label}</LinkPopover>
             </Provider>
         )
 
@@ -124,9 +117,7 @@ describe('<LinkPopover />', () => {
         const label = 'hover me'
         const {getByText, unmount} = render(
             <Provider store={store}>
-                <LinkPopoverContainer {...minProps}>
-                    {label}
-                </LinkPopoverContainer>
+                <LinkPopover {...minProps}>{label}</LinkPopover>
             </Provider>
         )
 
