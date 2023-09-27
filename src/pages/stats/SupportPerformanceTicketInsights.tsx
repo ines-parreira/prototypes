@@ -27,7 +27,7 @@ export default function SupportPerformanceTicketInsights() {
                 </>
             }
         >
-            <DashboardSection>
+            <DashboardSection className="pb-0">
                 <CustomFieldSelect />
             </DashboardSection>
             <DashboardSection>

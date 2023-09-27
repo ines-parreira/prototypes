@@ -1,0 +1,31 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .button {
+        max-width: 240px;
+    }
+    .buttonText {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .dropdownItem {
+        max-width: 400px;
+    }
+
+    .dropdownItemContent {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .tooltip {
+        font-size: @heading-sub-section-regular-font-size;
+    }
+}

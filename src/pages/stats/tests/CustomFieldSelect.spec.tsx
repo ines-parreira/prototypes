@@ -1,5 +1,5 @@
 import {UseQueryResult} from '@tanstack/react-query'
-import {act, render, screen} from '@testing-library/react'
+import {act, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,6 +11,7 @@ import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
     CustomFieldSelect,
     SELECT_FIELD_LABEL,
+    TOOLTIP_CONTENT,
 } from 'pages/stats/CustomFieldSelect'
 import {RootState} from 'state/types'
 import {
@@ -34,6 +35,26 @@ describe('<CustomFieldSelec />', () => {
         },
     } as unknown as RootState
 
+    useCustomFieldDefinitionsMock.mockReturnValue({
+        data: {data: ticketFieldDefinitions},
+        isLoading: false,
+    } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+
+    it('should render loading Skeleton when CustomFields loading', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {data: ticketFieldDefinitions},
+            isLoading: true,
+        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <CustomFieldSelect />
+            </Provider>
+        )
+
+        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+    })
+
     it('should select first of the active fields ', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
@@ -54,29 +75,8 @@ describe('<CustomFieldSelec />', () => {
         expect(screen.getByText(SELECT_FIELD_LABEL)).toBeInTheDocument()
     })
 
-    it('should not render if less then 2 options available', () => {
-        const selectedCustomFieldId = ticketFieldDefinitions[0].id
-        const state = {
-            ui: {
-                [ticketInsightsSlice.name]: {selectedCustomFieldId},
-            },
-        }
-        useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: [ticketFieldDefinitions[0]]},
-            isLoading: false,
-        } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
-
-        const {container} = render(
-            <Provider store={mockStore(state)}>
-                <CustomFieldSelect />
-            </Provider>
-        )
-
-        expect(container).toBeEmptyDOMElement()
-    })
-
     it.each([{data: undefined}, undefined])(
-        'should not render if empty response %#',
+        'should render if empty response %#',
         (response) => {
             const selectedCustomFieldId = ticketFieldDefinitions[0].id
             const state = {
@@ -89,13 +89,13 @@ describe('<CustomFieldSelec />', () => {
                 isLoading: false,
             } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
 
-            const {container} = render(
+            render(
                 <Provider store={mockStore(state)}>
                     <CustomFieldSelect />
                 </Provider>
             )
 
-            expect(container).toBeEmptyDOMElement()
+            expect(screen.getByText(SELECT_FIELD_LABEL)).toBeInTheDocument()
         }
     )
 
@@ -157,5 +157,21 @@ describe('<CustomFieldSelec />', () => {
         expect(store.getActions()).toContainEqual(
             setSelectedCustomFieldId(selectField.id)
         )
+    })
+
+    it('should render a Tooltip', async () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <CustomFieldSelect />
+            </Provider>
+        )
+
+        act(() => {
+            userEvent.hover(screen.getByText('info'))
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText(TOOLTIP_CONTENT)).toBeInTheDocument()
+        })
     })
 })
