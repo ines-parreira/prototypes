@@ -46,27 +46,29 @@ class RecentChatsItem extends Component<ItemProps> {
         })
 
         return (
-            <Link
-                onClick={() => {
-                    logEvent(SegmentEvent.RecentActivityClicked, {
-                        position,
-                        ticket: recentTicket.toJS(),
-                    })
-                    ;(
-                        this.context as {
-                            closePanel: () => void
-                        }
-                    ).closePanel()
-                }}
-                to={`/app/ticket/${recentTicket.get('id') as number}`}
-                className={linkClasses}
-                title={customerName}
-            >
-                <span>
-                    <SourceIcon type={channel} />
-                    <span>{customerName}</span>
-                </span>
-            </Link>
+            <div className={navbarCss['link-wrapper']}>
+                <Link
+                    onClick={() => {
+                        logEvent(SegmentEvent.RecentActivityClicked, {
+                            position,
+                            ticket: recentTicket.toJS(),
+                        })
+                        ;(
+                            this.context as {
+                                closePanel: () => void
+                            }
+                        ).closePanel()
+                    }}
+                    to={`/app/ticket/${recentTicket.get('id') as number}`}
+                    className={linkClasses}
+                    title={customerName}
+                >
+                    <span className={css['chat-title']}>
+                        <SourceIcon type={channel} />
+                        <span>{customerName}</span>
+                    </span>
+                </Link>
+            </div>
         )
     }
 }
@@ -89,25 +91,18 @@ class RecentChats extends Component<Props> {
         }
 
         return (
-            <div className={css.component}>
-                <div
-                    className={classnames(
-                        navbarCss.category,
-                        css.chatsCategory
-                    )}
-                >
-                    <h4 className={navbarCss['category-title']}>
-                        <span>Chat & messaging</span>
-                    </h4>
-                    <div className={navbarCss.menu}>
-                        {tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
-                            <RecentChatsItem
-                                key={e!.get('id')}
-                                recentTicket={e!}
-                                position={index! + 1}
-                            />
-                        ))}
-                    </div>
+            <div className={navbarCss.category}>
+                <h4 className={navbarCss['category-title']}>
+                    <span>Chat & messaging</span>
+                </h4>
+                <div className={navbarCss.menu}>
+                    {tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
+                        <RecentChatsItem
+                            key={e!.get('id')}
+                            recentTicket={e!}
+                            position={index! + 1}
+                        />
+                    ))}
                 </div>
             </div>
         )

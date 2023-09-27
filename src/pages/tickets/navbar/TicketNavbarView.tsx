@@ -93,16 +93,22 @@ export function TicketNavbarViewContainer({
         >
             {(isOver) => {
                 return (
-                    <div id={ticketNavbarId} ref={wrapperRef}>
+                    <div
+                        className={classnames(navbarCss['link-wrapper'], {
+                            [navbarCss.isNested]: view.section_id != null,
+                        })}
+                        id={ticketNavbarId}
+                        ref={wrapperRef}
+                    >
                         <Link
                             className={classnames(navbarCss.link, {
-                                active: view.id === activeViewId && !isOver,
-                                focused:
+                                active:
+                                    view.id === activeViewId &&
                                     window.location.pathname.startsWith(
-                                        `/app/tickets/${view.id}/`
-                                    ) && !isOver,
+                                        '/app/tickets'
+                                    ) &&
+                                    !isOver,
                                 [navbarCss.isDragged]: isDragging,
-                                [navbarCss.isNested]: view.section_id != null,
                             })}
                             to={`/app/tickets/${view.id}/${encodeURIComponent(
                                 view.slug

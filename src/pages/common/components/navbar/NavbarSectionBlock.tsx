@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import css from './NavbarSectionBlock.less'
 
 type Props = {
+    className?: string
     name: string
     isExpanded: boolean
     children: ReactNode
@@ -12,6 +13,7 @@ type Props = {
 }
 
 const NavbarSectionBlock = ({
+    className,
     name,
     isExpanded,
     children,
@@ -20,12 +22,7 @@ const NavbarSectionBlock = ({
 }: Props) => {
     return (
         <>
-            <div
-                className={classnames(
-                    css.section,
-                    'd-flex align-items-center flex-grow'
-                )}
-            >
+            <div className={classnames(css.section, className)}>
                 <div className={css.toggleSectionIconWrapper}>
                     <i
                         onClick={onToggle}
@@ -37,13 +34,7 @@ const NavbarSectionBlock = ({
                         {isExpanded ? 'arrow_drop_down' : 'arrow_right'}
                     </i>
                 </div>
-                <div
-                    onClick={onToggle}
-                    className={classnames(
-                        css.nameWrapper,
-                        'd-flex align-items-center flex-grow'
-                    )}
-                >
+                <div onClick={onToggle} className={css.nameWrapper}>
                     {icon && <div className={css.iconWrapper}>{icon}</div>}
                     <span className={css.name}>{name}</span>
                 </div>

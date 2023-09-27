@@ -237,38 +237,52 @@ class ViewNavbarView extends Component<Props, State> {
                                 }
 
                                 return (
-                                    <Link
+                                    <div
                                         key={key}
-                                        to={this._getViewUrl(objectName, view)}
-                                        className={classes}
-                                        title={`${
-                                            view.get('name') as string
-                                        } ${count}`}
-                                        onClick={() => {
-                                            ;(
-                                                this.context as {
-                                                    closePanel: () => void
-                                                }
-                                            ).closePanel()
-                                        }}
+                                        className={classnames(
+                                            navbarCss['link-wrapper'],
+                                            navbarCss.isNested
+                                        )}
                                     >
-                                        <span
-                                            className={navbarCss['item-name']}
+                                        <Link
+                                            to={this._getViewUrl(
+                                                objectName,
+                                                view
+                                            )}
+                                            className={classes}
+                                            title={`${
+                                                view.get('name') as string
+                                            } ${count}`}
+                                            onClick={() => {
+                                                ;(
+                                                    this.context as {
+                                                        closePanel: () => void
+                                                    }
+                                                ).closePanel()
+                                            }}
                                         >
-                                            <ViewName
-                                                viewName={view.get('name')}
-                                            />
-                                        </span>
-                                        <span
-                                            className={navbarCss['item-count']}
-                                        >
-                                            <ViewCount
-                                                viewCount={viewCount}
-                                                viewId={view.get('id')}
-                                                isDeactivated={false}
-                                            />
-                                        </span>
-                                    </Link>
+                                            <span
+                                                className={
+                                                    navbarCss['item-name']
+                                                }
+                                            >
+                                                <ViewName
+                                                    viewName={view.get('name')}
+                                                />
+                                            </span>
+                                            <span
+                                                className={
+                                                    navbarCss['item-count']
+                                                }
+                                            >
+                                                <ViewCount
+                                                    viewCount={viewCount}
+                                                    viewId={view.get('id')}
+                                                    isDeactivated={false}
+                                                />
+                                            </span>
+                                        </Link>
+                                    </div>
                                 )
                             })
                         )}

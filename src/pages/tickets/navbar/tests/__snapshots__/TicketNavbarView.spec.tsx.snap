@@ -5,6 +5,7 @@ exports[`<TicketNavbarView/> should render 1`] = `
   class="wrapper view"
 >
   <div
+    class="link-wrapper"
     draggable="true"
     id="ticket-navbar-view-7"
   >

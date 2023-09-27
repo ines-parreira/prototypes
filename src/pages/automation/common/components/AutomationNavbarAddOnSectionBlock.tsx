@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 
 import cssNavbar from 'assets/css/navbar.less'
 import {getIconFromType} from 'state/integrations/helpers'
@@ -11,6 +12,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
 
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
+import css from './AutomationNavbarAddOnSectionBlock.less'
 
 type Props = {
     shopType: ShopType
@@ -47,26 +49,41 @@ const AutomationNavbarAddOnSectionBlock = ({
                     src={getIconSrc()}
                 />
             }
+            className={css.section}
             {...props}
         >
             {hasAutomationAddOn ? (
                 <>
-                    <NavbarLink
-                        to={`/app/automation/${shopType}/${shopName}/flows`}
-                        isNested
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        <span className={cssNavbar['item-name']}>
-                            Flow builder
-                        </span>
-                    </NavbarLink>
-                    <NavbarLink
-                        to={`/app/automation/${shopType}/${shopName}/quick-responses`}
-                        isNested
+                        <NavbarLink
+                            to={`/app/automation/${shopType}/${shopName}/flows`}
+                            isNested
+                        >
+                            <span className={cssNavbar['item-name']}>
+                                Flow builder
+                            </span>
+                        </NavbarLink>
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        <span className={cssNavbar['item-name']}>
-                            Quick response flows
-                        </span>
-                    </NavbarLink>
+                        <NavbarLink
+                            to={`/app/automation/${shopType}/${shopName}/quick-responses`}
+                            isNested
+                        >
+                            <span className={cssNavbar['item-name']}>
+                                Quick response flows
+                            </span>
+                        </NavbarLink>
+                    </div>
                 </>
             ) : (
                 <>
@@ -95,7 +112,12 @@ const AutomationNavbarAddOnSectionBlock = ({
                 </>
             )}
             {shopType === 'shopify' && (
-                <>
+                <div
+                    className={classNames(
+                        cssNavbar['link-wrapper'],
+                        cssNavbar.isNested
+                    )}
+                >
                     <NavbarLink
                         to={`/app/automation/shopify/${shopName}/order-management`}
                         isNested
@@ -104,17 +126,24 @@ const AutomationNavbarAddOnSectionBlock = ({
                             Order management flows
                         </span>
                     </NavbarLink>
-                </>
+                </div>
             )}
             {hasAutomationAddOn ? (
-                <NavbarLink
-                    to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
-                    isNested
+                <div
+                    className={classNames(
+                        cssNavbar['link-wrapper'],
+                        cssNavbar.isNested
+                    )}
                 >
-                    <span className={cssNavbar['item-name']}>
-                        Article recommendation
-                    </span>
-                </NavbarLink>
+                    <NavbarLink
+                        to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                        isNested
+                    >
+                        <span className={cssNavbar['item-name']}>
+                            Article recommendation
+                        </span>
+                    </NavbarLink>
+                </div>
             ) : (
                 <AutomationNavbarAddOnPaywallNavbarLink
                     to="/app/automation/article-recommendation"
@@ -128,14 +157,21 @@ const AutomationNavbarAddOnSectionBlock = ({
                     </span>
                 </AutomationNavbarAddOnPaywallNavbarLink>
             )}
-            <NavbarLink
-                to={`/app/automation/${shopType}/${shopName}/connected-channels`}
-                isNested
+            <div
+                className={classNames(
+                    cssNavbar['link-wrapper'],
+                    cssNavbar.isNested
+                )}
             >
-                <span className={cssNavbar['item-name']}>
-                    Connected channels
-                </span>
-            </NavbarLink>
+                <NavbarLink
+                    to={`/app/automation/${shopType}/${shopName}/connected-channels`}
+                    isNested
+                >
+                    <span className={cssNavbar['item-name']}>
+                        Connected channels
+                    </span>
+                </NavbarLink>
+            </div>
         </NavbarSectionBlock>
     )
 }

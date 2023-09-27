@@ -19,19 +19,17 @@ const AutomationNavbarAddOnPaywallView = () => {
 
     return (
         <>
-            <div className="mt-4">
-                {PAYWALL_ITEMS.map((paywallItem) => (
-                    <AutomationNavbarAddOnPaywallNavbarLink
-                        key={paywallItem.name}
-                        to={`/app/automation/${paywallItem.slug}`}
-                        onSubscribeToAutomationAddOnClick={() => {
-                            setIsAutomationSubscriptionModalOpen(true)
-                        }}
-                    >
-                        {paywallItem.name}
-                    </AutomationNavbarAddOnPaywallNavbarLink>
-                ))}
-            </div>
+            {PAYWALL_ITEMS.map((paywallItem) => (
+                <AutomationNavbarAddOnPaywallNavbarLink
+                    key={paywallItem.name}
+                    to={`/app/automation/${paywallItem.slug}`}
+                    onSubscribeToAutomationAddOnClick={() => {
+                        setIsAutomationSubscriptionModalOpen(true)
+                    }}
+                >
+                    {paywallItem.name}
+                </AutomationNavbarAddOnPaywallNavbarLink>
+            ))}
             <AutomationSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationSubscriptionModalOpen}

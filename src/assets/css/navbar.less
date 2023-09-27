@@ -7,7 +7,7 @@
 
     .category-title {
         .caption-allcaps();
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-4);
         display: flex;
         height: 32px;
         line-height: 32px;
@@ -17,7 +17,7 @@
     }
 
     .icon {
-        font-size: 16px;
+        font-size: 20px;
         line-height: inherit;
         margin-right: 8px;
         vertical-align: inherit;
@@ -45,9 +45,7 @@
         user-select: none;
         transition: @item-transition;
         color: var(--neutral-grey-4);
-        height: 28px;
-        line-height: 28px;
-        padding: 0 20px;
+        padding: 4px 8px;
 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -57,24 +55,25 @@
             opacity: 0.3;
         }
 
-        &.isNested {
-            padding-left: 42px;
-        }
-
         &:global.active,
-        &:global.focused,
+        &:global:active,
         &:global:hover {
-            font-weight: 600;
+            background-color: var(--neutral-grey-5);
+            border-radius: 4px;
             color: var(--neutral-grey-2);
 
             :local .item-count {
-                font-weight: 600;
                 color: var(--neutral-grey-2);
             }
         }
 
-        &:global.focused {
+        &:global.active {
             background-color: var(--main-primary);
+            color: var(--neutral-grey-0);
+
+            :local .item-count {
+                color: var(--neutral-grey-0);
+            }
         }
     }
 
@@ -84,5 +83,14 @@
 
     .badge {
         margin-left: 10px;
+    }
+
+    .link-wrapper {
+        padding-right: 12px;
+        padding-left: 12px;
+
+        &.isNested {
+            padding-left: 40px;
+        }
     }
 }

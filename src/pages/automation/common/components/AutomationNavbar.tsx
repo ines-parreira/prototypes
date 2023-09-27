@@ -1,20 +1,21 @@
 import React from 'react'
+import classNames from 'classnames'
 
-import css from 'assets/css/navbar.less'
+import navbarCss from 'assets/css/navbar.less'
 
-import {hasAgentPrivileges} from 'utils'
-import Navbar from 'pages/common/components/Navbar'
-import NavbarLink from 'pages/common/components/navbar/NavbarLink'
-import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import useAppSelector from 'hooks/useAppSelector'
+import Navbar from 'pages/common/components/Navbar'
+import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
+import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     getHasAutomationAddOn,
     getHasLegacyAutomationAddOnFeatures,
 } from 'state/billing/selectors'
+import {hasAgentPrivileges} from 'utils'
 
-import AutomationNavbarAddOnView from './AutomationNavbarAddOnView'
 import AutomationNavbarAddOnPaywallView from './AutomationNavbarAddOnPaywallView'
+import AutomationNavbarAddOnView from './AutomationNavbarAddOnView'
 
 const AutomationNavbar = () => {
     const currentUser = useAppSelector(getCurrentUser)
@@ -25,13 +26,23 @@ const AutomationNavbar = () => {
 
     return (
         <Navbar activeContent="automation">
-            <div className={css.category}>
+            <div
+                className={classNames(
+                    navbarCss.category,
+                    navbarCss['link-wrapper']
+                )}
+            >
                 <NavbarLink to="/app/automation/macros">Macros</NavbarLink>
             </div>
-            <NavbarLink to="/app/automation/rules">Rules</NavbarLink>
-            <NavbarLink to="/app/automation/ticket-assignment">
-                Ticket assignment
-            </NavbarLink>
+            <div className={navbarCss['link-wrapper']}>
+                <NavbarLink to="/app/automation/rules">Rules</NavbarLink>
+            </div>
+
+            <div className={navbarCss['link-wrapper']}>
+                <NavbarLink to="/app/automation/ticket-assignment">
+                    Ticket assignment
+                </NavbarLink>
+            </div>
             {hasAgentPrivileges(currentUser) && (
                 <NavbarBlock icon="auto_awesome" title="automation add-on">
                     {hasAutomationAddOn || hasLegacyAutomationAddOnFeatures ? (

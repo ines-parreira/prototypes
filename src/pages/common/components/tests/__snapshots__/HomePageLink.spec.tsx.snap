@@ -36,7 +36,7 @@ exports[`<HomePageLink /> should render the link if candu has some nodes injecte
       href="/app/home"
     >
       <span
-        class="flex"
+        class="title"
       >
         <i
           class="material-icons icon"

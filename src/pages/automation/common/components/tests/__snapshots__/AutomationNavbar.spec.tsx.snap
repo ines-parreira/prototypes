@@ -116,7 +116,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         class="navbar-content"
       >
         <div
-          class="category"
+          class="category link-wrapper"
         >
           <a
             class="link"
@@ -126,20 +126,28 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             Macros
           </a>
         </div>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/rules"
+        <div
+          class="link-wrapper"
         >
-          Rules
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/ticket-assignment"
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/rules"
+          >
+            Rules
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
         >
-          Ticket assignment
-        </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ticket-assignment"
+          >
+            Ticket assignment
+          </a>
+        </div>
         <div
           class="wrapper section"
         >
@@ -161,39 +169,39 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </div>
             </h4>
             <div
-              class="mt-3"
+              class="section section"
             >
               <div
-                class="section d-flex align-items-center flex-grow"
+                class="toggleSectionIconWrapper"
+              >
+                <i
+                  class="toggleSectionIcon material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
+              <div
+                class="nameWrapper"
               >
                 <div
-                  class="toggleSectionIconWrapper"
+                  class="iconWrapper"
                 >
-                  <i
-                    class="toggleSectionIcon material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
+                  <img
+                    alt="shopify logo"
+                    role="presentation"
+                    src="/assets/img/integrations/shopify.png"
+                  />
                 </div>
-                <div
-                  class="nameWrapper d-flex align-items-center flex-grow"
+                <span
+                  class="name"
                 >
-                  <div
-                    class="iconWrapper"
-                  >
-                    <img
-                      alt="shopify logo"
-                      role="presentation"
-                      src="/assets/img/integrations/shopify.png"
-                    />
-                  </div>
-                  <span
-                    class="name"
-                  >
-                    gorgiastest
-                  </span>
-                </div>
+                  gorgiastest
+                </span>
               </div>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -205,6 +213,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Flow builder
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -216,6 +228,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Quick response flows
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -227,6 +243,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Order management flows
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -238,6 +258,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Article recommendation
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -249,37 +273,41 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Connected channels
                 </span>
               </a>
+            </div>
+            <div
+              class="section section"
+            >
               <div
-                class="section d-flex align-items-center flex-grow"
+                class="toggleSectionIconWrapper"
+              >
+                <i
+                  class="toggleSectionIcon material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
+              <div
+                class="nameWrapper"
               >
                 <div
-                  class="toggleSectionIconWrapper"
+                  class="iconWrapper"
                 >
-                  <i
-                    class="toggleSectionIcon material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
+                  <img
+                    alt="bigcommerce logo"
+                    role="presentation"
+                    src="/assets/img/integrations/bigcommerce-white.svg"
+                  />
                 </div>
-                <div
-                  class="nameWrapper d-flex align-items-center flex-grow"
+                <span
+                  class="name"
                 >
-                  <div
-                    class="iconWrapper"
-                  >
-                    <img
-                      alt="bigcommerce logo"
-                      role="presentation"
-                      src="/assets/img/integrations/bigcommerce-white.svg"
-                    />
-                  </div>
-                  <span
-                    class="name"
-                  >
-                    gorgiastest.mybigcommerce.com
-                  </span>
-                </div>
+                  gorgiastest.mybigcommerce.com
+                </span>
               </div>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -291,6 +319,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Flow builder
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -302,6 +334,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Quick response flows
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -313,6 +349,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Article recommendation
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -487,7 +527,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         class="navbar-content"
       >
         <div
-          class="category"
+          class="category link-wrapper"
         >
           <a
             class="link"
@@ -497,20 +537,28 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             Macros
           </a>
         </div>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/rules"
+        <div
+          class="link-wrapper"
         >
-          Rules
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/ticket-assignment"
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/rules"
+          >
+            Rules
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
         >
-          Ticket assignment
-        </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ticket-assignment"
+          >
+            Ticket assignment
+          </a>
+        </div>
         <div
           class="wrapper section"
         >
@@ -532,39 +580,39 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </div>
             </h4>
             <div
-              class="mt-3"
+              class="section section"
             >
               <div
-                class="section d-flex align-items-center flex-grow"
+                class="toggleSectionIconWrapper"
+              >
+                <i
+                  class="toggleSectionIcon material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
+              <div
+                class="nameWrapper"
               >
                 <div
-                  class="toggleSectionIconWrapper"
+                  class="iconWrapper"
                 >
-                  <i
-                    class="toggleSectionIcon material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
+                  <img
+                    alt="shopify logo"
+                    role="presentation"
+                    src="/assets/img/integrations/shopify.png"
+                  />
                 </div>
-                <div
-                  class="nameWrapper d-flex align-items-center flex-grow"
+                <span
+                  class="name"
                 >
-                  <div
-                    class="iconWrapper"
-                  >
-                    <img
-                      alt="shopify logo"
-                      role="presentation"
-                      src="/assets/img/integrations/shopify.png"
-                    />
-                  </div>
-                  <span
-                    class="name"
-                  >
-                    gorgiastest
-                  </span>
-                </div>
+                  gorgiastest
+                </span>
               </div>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link isNested item"
                 data-active-class-name="active"
@@ -585,6 +633,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link isNested item"
                 data-active-class-name="active"
@@ -605,6 +657,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -616,6 +672,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   Order management flows
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link isNested item"
                 data-active-class-name="active"
@@ -636,6 +696,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -810,7 +874,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         class="navbar-content"
       >
         <div
-          class="category"
+          class="category link-wrapper"
         >
           <a
             class="link"
@@ -820,20 +884,28 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             Macros
           </a>
         </div>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/rules"
+        <div
+          class="link-wrapper"
         >
-          Rules
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/ticket-assignment"
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/rules"
+          >
+            Rules
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
         >
-          Ticket assignment
-        </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ticket-assignment"
+          >
+            Ticket assignment
+          </a>
+        </div>
         <div
           class="wrapper section"
         >
@@ -855,7 +927,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </div>
             </h4>
             <div
-              class="mt-4"
+              class="link-wrapper"
             >
               <a
                 class="link item"
@@ -873,6 +945,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link item"
                 data-active-class-name="active"
@@ -889,6 +965,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link item"
                 data-active-class-name="active"
@@ -905,6 +985,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link item"
                 data-active-class-name="active"
@@ -1084,7 +1168,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         class="navbar-content"
       >
         <div
-          class="category"
+          class="category link-wrapper"
         >
           <a
             class="link"
@@ -1094,20 +1178,28 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             Macros
           </a>
         </div>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/rules"
+        <div
+          class="link-wrapper"
         >
-          Rules
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/ticket-assignment"
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/rules"
+          >
+            Rules
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
         >
-          Ticket assignment
-        </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ticket-assignment"
+          >
+            Ticket assignment
+          </a>
+        </div>
         <div
           class="wrapper section"
         >
@@ -1129,39 +1221,39 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </div>
             </h4>
             <div
-              class="mt-3"
+              class="section section"
             >
               <div
-                class="section d-flex align-items-center flex-grow"
+                class="toggleSectionIconWrapper"
+              >
+                <i
+                  class="toggleSectionIcon material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
+              <div
+                class="nameWrapper"
               >
                 <div
-                  class="toggleSectionIconWrapper"
+                  class="iconWrapper"
                 >
-                  <i
-                    class="toggleSectionIcon material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
+                  <img
+                    alt="shopify logo"
+                    role="presentation"
+                    src="/assets/img/integrations/shopify.png"
+                  />
                 </div>
-                <div
-                  class="nameWrapper d-flex align-items-center flex-grow"
+                <span
+                  class="name"
                 >
-                  <div
-                    class="iconWrapper"
-                  >
-                    <img
-                      alt="shopify logo"
-                      role="presentation"
-                      src="/assets/img/integrations/shopify.png"
-                    />
-                  </div>
-                  <span
-                    class="name"
-                  >
-                    gorgiastest
-                  </span>
-                </div>
+                  gorgiastest
+                </span>
               </div>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1173,6 +1265,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Flow builder
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1184,6 +1280,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Quick response flows
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1195,6 +1295,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Order management flows
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1206,6 +1310,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Article recommendation
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1217,37 +1325,41 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Connected channels
                 </span>
               </a>
+            </div>
+            <div
+              class="section section"
+            >
               <div
-                class="section d-flex align-items-center flex-grow"
+                class="toggleSectionIconWrapper"
+              >
+                <i
+                  class="toggleSectionIcon material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
+              <div
+                class="nameWrapper"
               >
                 <div
-                  class="toggleSectionIconWrapper"
+                  class="iconWrapper"
                 >
-                  <i
-                    class="toggleSectionIcon material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
+                  <img
+                    alt="bigcommerce logo"
+                    role="presentation"
+                    src="/assets/img/integrations/bigcommerce-white.svg"
+                  />
                 </div>
-                <div
-                  class="nameWrapper d-flex align-items-center flex-grow"
+                <span
+                  class="name"
                 >
-                  <div
-                    class="iconWrapper"
-                  >
-                    <img
-                      alt="bigcommerce logo"
-                      role="presentation"
-                      src="/assets/img/integrations/bigcommerce-white.svg"
-                    />
-                  </div>
-                  <span
-                    class="name"
-                  >
-                    gorgiastest.mybigcommerce.com
-                  </span>
-                </div>
+                  gorgiastest.mybigcommerce.com
+                </span>
               </div>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1259,6 +1371,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Flow builder
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1270,6 +1386,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Quick response flows
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1281,6 +1401,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Article recommendation
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1455,7 +1579,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         class="navbar-content"
       >
         <div
-          class="category"
+          class="category link-wrapper"
         >
           <a
             class="link"
@@ -1465,20 +1589,28 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             Macros
           </a>
         </div>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/rules"
+        <div
+          class="link-wrapper"
         >
-          Rules
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/ticket-assignment"
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/rules"
+          >
+            Rules
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
         >
-          Ticket assignment
-        </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ticket-assignment"
+          >
+            Ticket assignment
+          </a>
+        </div>
         <div
           class="wrapper section"
         >
@@ -1500,39 +1632,39 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </div>
             </h4>
             <div
-              class="mt-3"
+              class="section section"
             >
               <div
-                class="section d-flex align-items-center flex-grow"
+                class="toggleSectionIconWrapper"
+              >
+                <i
+                  class="toggleSectionIcon material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
+              <div
+                class="nameWrapper"
               >
                 <div
-                  class="toggleSectionIconWrapper"
+                  class="iconWrapper"
                 >
-                  <i
-                    class="toggleSectionIcon material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
+                  <img
+                    alt="shopify logo"
+                    role="presentation"
+                    src="/assets/img/integrations/shopify.png"
+                  />
                 </div>
-                <div
-                  class="nameWrapper d-flex align-items-center flex-grow"
+                <span
+                  class="name"
                 >
-                  <div
-                    class="iconWrapper"
-                  >
-                    <img
-                      alt="shopify logo"
-                      role="presentation"
-                      src="/assets/img/integrations/shopify.png"
-                    />
-                  </div>
-                  <span
-                    class="name"
-                  >
-                    gorgiastest
-                  </span>
-                </div>
+                  gorgiastest
+                </span>
               </div>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link isNested item"
                 data-active-class-name="active"
@@ -1553,6 +1685,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link isNested item"
                 data-active-class-name="active"
@@ -1573,6 +1709,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1584,6 +1724,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   Order management flows
                 </span>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link isNested item"
                 data-active-class-name="active"
@@ -1604,6 +1748,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
               <a
                 class="link isNested"
                 data-active-class-name="active"
@@ -1778,7 +1926,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         class="navbar-content"
       >
         <div
-          class="category"
+          class="category link-wrapper"
         >
           <a
             class="link"
@@ -1788,20 +1936,28 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             Macros
           </a>
         </div>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/rules"
+        <div
+          class="link-wrapper"
         >
-          Rules
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/ticket-assignment"
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/rules"
+          >
+            Rules
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
         >
-          Ticket assignment
-        </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ticket-assignment"
+          >
+            Ticket assignment
+          </a>
+        </div>
         <div
           class="wrapper section"
         >
@@ -1823,7 +1979,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </div>
             </h4>
             <div
-              class="mt-4"
+              class="link-wrapper"
             >
               <a
                 class="link item"
@@ -1841,6 +1997,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link item"
                 data-active-class-name="active"
@@ -1857,6 +2017,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link item"
                 data-active-class-name="active"
@@ -1873,6 +2037,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                   arrow_circle_up
                 </i>
               </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
               <a
                 class="link item"
                 data-active-class-name="active"
@@ -2052,7 +2220,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         class="navbar-content"
       >
         <div
-          class="category"
+          class="category link-wrapper"
         >
           <a
             class="link"
@@ -2062,20 +2230,28 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
             Macros
           </a>
         </div>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/rules"
+        <div
+          class="link-wrapper"
         >
-          Rules
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/ticket-assignment"
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/rules"
+          >
+            Rules
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
         >
-          Ticket assignment
-        </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ticket-assignment"
+          >
+            Ticket assignment
+          </a>
+        </div>
       </div>
       <div
         data-candu-id="navbar-menu-spacer"
@@ -2236,7 +2412,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         class="navbar-content"
       >
         <div
-          class="category"
+          class="category link-wrapper"
         >
           <a
             class="link"
@@ -2246,20 +2422,28 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
             Macros
           </a>
         </div>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/rules"
+        <div
+          class="link-wrapper"
         >
-          Rules
-        </a>
-        <a
-          class="link"
-          data-active-class-name="active"
-          href="/app/automation/ticket-assignment"
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/rules"
+          >
+            Rules
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
         >
-          Ticket assignment
-        </a>
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ticket-assignment"
+          >
+            Ticket assignment
+          </a>
+        </div>
       </div>
       <div
         data-candu-id="navbar-menu-spacer"

@@ -1,33 +1,13 @@
 :local {
-    .toggleSectionIconWrapper {
-        min-width: 12px;
-        height: 12px;
-        overflow: hidden;
-        position: relative;
-        margin-right: 10px;
-    }
-
-    .toggleSectionIcon {
-        font-size: 16px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
     .nameWrapper {
-        cursor: pointer;
-        height: 28px;
-        margin-right: 6px;
-        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        padding: 4px 12px;
     }
 
     .name {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        flex: 1;
-        margin-right: 8px;
+        margin-left: 4px;
 
         .emoji {
             margin-right: 8px;
@@ -36,14 +16,14 @@
 
     .editSectionIcon {
         border: none;
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-4) !important;
         font-size: 14px;
         line-height: 20px;
         padding: 3px 6px;
         opacity: 0;
         transition: opacity 0.3s ease-in;
         width: 26px;
-        transform: translateX(8px);
+        margin-right: 6px;
 
         &:hover,
         &:focus {
@@ -93,12 +73,7 @@
     }
 
     .section {
-        color: var(--neutral-grey-4);
-        font-weight: 600;
-
         &:hover {
-            color: var(--neutral-grey-4);
-
             .editSectionIcon {
                 opacity: 1;
             }

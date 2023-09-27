@@ -1,23 +1,18 @@
 :local {
     .link {
-        margin: 0 8px;
-        width: calc(~'100% - 16px');
+        margin: 0 12px;
         border-radius: 4px;
-        padding: 0 14px;
+        padding: 0 8px;
         text-transform: inherit;
-
-        &:hover {
-            background-color: var(--neutral-grey-5);
-            font-weight: 500;
-        }
-
-        :global(.material-icons) {
-            font-size: 18px;
-            margin-right: 4px;
-        }
+        cursor: pointer;
     }
 
     .hiddenLink {
         display: none;
+    }
+
+    .title {
+        align-items: center;
+        display: flex;
     }
 }

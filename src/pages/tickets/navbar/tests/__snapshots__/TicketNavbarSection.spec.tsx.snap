@@ -2,30 +2,34 @@
 
 exports[`<TicketNavbarSection/> should render a section (views collapsed) 1`] = `
 <div
-  class="wrapper section"
+  class="wrapper section section"
 >
   <div
     class="wrapper"
   >
     <div
-      class="nameWrapper d-flex align-items-center flex-grow"
+      class="nameWrapper"
       draggable="true"
       id="ticket-navbar-section-1"
     >
       <div
-        class="toggleSectionIconWrapper"
+        class="nameWrapper"
       >
-        <i
-          class="toggleSectionIcon material-icons"
+        <div
+          class="toggleSectionIconWrapper"
         >
-          arrow_right
-        </i>
-      </div>
-      <div
-        class="name flex-grow"
-        title="foo"
-      >
-        foo
+          <i
+            class="toggleSectionIcon material-icons"
+          >
+            arrow_right
+          </i>
+        </div>
+        <div
+          class="name name"
+          title="foo"
+        >
+          foo
+        </div>
       </div>
       <div
         class="dropdown"
@@ -73,30 +77,34 @@ exports[`<TicketNavbarSection/> should render a section (views collapsed) 1`] = 
 
 exports[`<TicketNavbarSection/> should render a section (views expanded) 1`] = `
 <div
-  class="wrapper section"
+  class="wrapper section section"
 >
   <div
     class="wrapper"
   >
     <div
-      class="nameWrapper d-flex align-items-center flex-grow"
+      class="nameWrapper"
       draggable="true"
       id="ticket-navbar-section-1"
     >
       <div
-        class="toggleSectionIconWrapper"
+        class="nameWrapper"
       >
-        <i
-          class="toggleSectionIcon material-icons"
+        <div
+          class="toggleSectionIconWrapper"
         >
-          arrow_drop_down
-        </i>
-      </div>
-      <div
-        class="name flex-grow"
-        title="foo"
-      >
-        foo
+          <i
+            class="toggleSectionIcon material-icons"
+          >
+            arrow_drop_down
+          </i>
+        </div>
+        <div
+          class="name name"
+          title="foo"
+        >
+          foo
+        </div>
       </div>
       <div
         class="dropdown"

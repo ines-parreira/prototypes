@@ -2,9 +2,9 @@
     .button {
         color: var(--neutral-grey-4) !important;
         justify-content: start;
-        margin: 0 8px;
-        padding: 0 14px !important;
-        width: calc(~'100% - 16px');
+        margin: 0 12px;
+        padding: 0 8px !important;
+        height: 28px;
 
         &:hover {
             color: var(--neutral-grey-2) !important;
@@ -19,5 +19,11 @@
         span {
             margin-right: 8px;
         }
+    }
+
+    .icon {
+        // overrides specifity in ButtonIconLabel
+        font-size: 20px !important;
+        margin-right: 8px !important;
     }
 }

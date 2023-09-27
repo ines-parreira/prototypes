@@ -1,14 +1,15 @@
+@import (reference) '~css/typography.less';
+
 :local {
     .toggleSectionIconWrapper {
-        min-width: 12px;
+        min-width: 20px;
         height: 12px;
         overflow: hidden;
         position: relative;
-        margin-right: 10px;
     }
 
     .toggleSectionIcon {
-        font-size: 16px;
+        font-size: 18px;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -16,8 +17,10 @@
     }
 
     .nameWrapper {
-        flex: 1;
+        display: flex;
+        align-items: center;
         min-width: 0;
+        padding: 0 8px;
     }
 
     .iconWrapper {
@@ -34,15 +37,8 @@
     }
 
     .section {
+        .body-semibold();
         color: var(--neutral-grey-4);
-        font-weight: 600;
         cursor: pointer;
-        height: 28px;
-        margin-right: 6px;
-        padding: 0 20px;
-
-        &:hover {
-            color: var(--neutral-grey-4);
-        }
     }
 }

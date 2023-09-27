@@ -432,7 +432,7 @@ exports[`<Navbar /> should render the spotlight search if enabled 1`] = `
           class="wrapper"
         >
           <i
-            class="material-icons icon isLeft medium"
+            class="material-icons icon isLeft icon medium"
           >
             search
           </i>

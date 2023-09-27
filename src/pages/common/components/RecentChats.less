@@ -1,27 +1,25 @@
 @import (reference) '~css/typography';
 
 :local {
-    .component {
-        .menuItem {
-            align-items: center;
+    .menuItem {
+        align-items: center;
 
-            &:global > span i.icon {
-                width: 1.2em;
-                float: none !important;
-                margin: inherit;
-                margin-right: 6px;
-            }
+        &:global > span i.icon {
+            width: 1.2em;
+            float: none !important;
+            margin: inherit;
+            margin-right: 8px;
+        }
+    }
+
+    .hasSomethingNew {
+        &,
+        & > * {
+            color: var(--neutral-grey-2) !important;
         }
 
-        .hasSomethingNew {
-            &,
-            & > * {
-                color: var(--neutral-grey-2) !important;
-            }
-
-            span > span {
-                font-weight: 600;
-            }
+        span > span {
+            font-weight: 600;
         }
     }
 
@@ -32,7 +30,8 @@
         left: 40px !important;
     }
 
-    .chatsCategory:last-child {
-        padding-bottom: 11px;
+    .chat-title {
+        display: flex;
+        align-items: center;
     }
 }

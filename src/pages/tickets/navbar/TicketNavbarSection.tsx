@@ -6,6 +6,7 @@ import {useDrag} from 'react-dnd'
 
 import {UserRole} from 'config/types/user'
 import {ViewVisibility} from 'models/view/types'
+import navbarSectionCss from 'pages/common/components/navbar/NavbarSectionBlock.less'
 import {RootState} from 'state/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {hasRole} from 'utils'
@@ -68,7 +69,9 @@ export function TicketNavbarSectionContainer({
         <TicketNavbarDropTarget
             accept={TicketNavbarElementType.Section}
             canDrop={(item) => sections[item.id].private === section.private}
-            className={classnames(css.section, {[css.isDragged]: isDragging})}
+            className={classnames(navbarSectionCss.section, css.section, {
+                [css.isDragged]: isDragging,
+            })}
             onDrop={handleDrop}
             shallow={false}
         >
@@ -83,31 +86,39 @@ export function TicketNavbarSectionContainer({
                 bottomIndicatorClassName={css.viewIntoSectionIndicator}
             >
                 <div
-                    className={classnames(
-                        css.nameWrapper,
-                        'd-flex align-items-center flex-grow'
-                    )}
+                    className={navbarSectionCss.nameWrapper}
                     id={ticketNavbarSectionId}
                     ref={nameRef}
                 >
-                    <div className={css.toggleSectionIconWrapper}>
-                        <i
+                    <div className={css.nameWrapper}>
+                        <div
+                            className={
+                                navbarSectionCss.toggleSectionIconWrapper
+                            }
+                        >
+                            <i
+                                onClick={handleClick}
+                                className={classnames(
+                                    navbarSectionCss.toggleSectionIcon,
+                                    'material-icons'
+                                )}
+                            >
+                                {isExpanded ? 'arrow_drop_down' : 'arrow_right'}
+                            </i>
+                        </div>
+                        <div
                             onClick={handleClick}
                             className={classnames(
-                                css.toggleSectionIcon,
-                                'material-icons'
+                                navbarSectionCss.name,
+                                css.name
                             )}
+                            title={section.name}
                         >
-                            {isExpanded ? 'arrow_drop_down' : 'arrow_right'}
-                        </i>
-                    </div>
-                    <div
-                        onClick={handleClick}
-                        className={classnames(css.name, 'flex-grow')}
-                        title={section.name}
-                    >
-                        {!!emoji && <span className={css.emoji}>{emoji}</span>}
-                        {section.name}
+                            {!!emoji && (
+                                <span className={css.emoji}>{emoji}</span>
+                            )}
+                            {section.name}
+                        </div>
                     </div>
                     {(onSectionDeleteClick || onSectionRenameClick) && (
                         <Dropdown

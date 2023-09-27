@@ -2,6 +2,7 @@ import React, {ReactNode, useRef, useState} from 'react'
 import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 
+import cssNavbar from 'assets/css/navbar.less'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import NavbarLink, {
@@ -30,18 +31,20 @@ const AutomationNavbarAddOnPaywallNavbarLink = ({
 
     return (
         <>
-            <NavbarLink className={css.item} {...props}>
-                <div className={css.name}>{children}</div>
-                <i
-                    ref={iconRef}
-                    className={classnames('material-icons md-2', css.icon)}
-                    onMouseEnter={() => {
-                        setIsPopoverOpen(true)
-                    }}
-                >
-                    arrow_circle_up
-                </i>
-            </NavbarLink>
+            <div className={cssNavbar['link-wrapper']}>
+                <NavbarLink className={css.item} {...props}>
+                    <div className={css.name}>{children}</div>
+                    <i
+                        ref={iconRef}
+                        className={classnames('material-icons md-2', css.icon)}
+                        onMouseEnter={() => {
+                            setIsPopoverOpen(true)
+                        }}
+                    >
+                        arrow_circle_up
+                    </i>
+                </NavbarLink>
+            </div>
             {iconRef.current && (
                 <Popover
                     placement="top"

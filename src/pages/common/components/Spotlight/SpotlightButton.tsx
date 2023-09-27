@@ -29,7 +29,7 @@ const SpotlightButton = () => {
                 fillStyle="ghost"
                 onClick={handleClick}
             >
-                <ButtonIconLabel icon="search" />
+                <ButtonIconLabel icon="search" iconClassName={css.icon} />
                 Search
             </Button>
             <Tooltip

@@ -30,7 +30,7 @@ export const HomePageLink = () => {
                         navBarCss['category-title']
                     )}
                 >
-                    <span className="flex">
+                    <span className={css.title}>
                         <i
                             className={classnames(
                                 'material-icons',

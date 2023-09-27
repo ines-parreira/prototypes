@@ -296,27 +296,34 @@ const SettingsNavbar = () => {
                             }
 
                             return (
-                                <Link
+                                <div
                                     key={to}
-                                    to={`/app/settings/${to}`}
-                                    className={classnames(css.link, {
-                                        active: isActive,
-                                    })}
-                                    onClick={() => {
-                                        logEvent(
-                                            SegmentEvent.SettingsNavigationClicked,
-                                            {
-                                                title: text,
-                                                account_domain:
-                                                    account.get('domain'),
-                                            }
-                                        )
-                                        dispatch(closePanels())
-                                    }}
+                                    className={classnames(
+                                        css['link-wrapper'],
+                                        css.isNested
+                                    )}
                                 >
-                                    {computedText}
-                                    {extra}
-                                </Link>
+                                    <Link
+                                        to={`/app/settings/${to}`}
+                                        className={classnames(css.link, {
+                                            active: isActive,
+                                        })}
+                                        onClick={() => {
+                                            logEvent(
+                                                SegmentEvent.SettingsNavigationClicked,
+                                                {
+                                                    title: text,
+                                                    account_domain:
+                                                        account.get('domain'),
+                                                }
+                                            )
+                                            dispatch(closePanels())
+                                        }}
+                                    >
+                                        {computedText}
+                                        {extra}
+                                    </Link>
+                                </div>
                             )
                         }
                     )

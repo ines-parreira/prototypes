@@ -28,20 +28,28 @@ exports[`StatsNavbarView should render 1`] = `
           <div
             class="menu"
           >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/live-overview"
+            <div
+              class="link-wrapper isNested"
             >
-              Overview
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/live-agents"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/live-overview"
+              >
+                Overview
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
             >
-              Agents
-            </a>
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/live-agents"
+              >
+                Agents
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -68,62 +76,94 @@ exports[`StatsNavbarView should render 1`] = `
           <div
             class="menu"
           >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/support-performance-overview"
+            <div
+              class="link-wrapper isNested"
             >
-              Overview
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/support-performance-agents"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/support-performance-overview"
+              >
+                Overview
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
             >
-              Agents
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/busiest-times-of-days"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/support-performance-agents"
+              >
+                Agents
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
             >
-              Busiest times of days
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/ticket-fields"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/busiest-times-of-days"
+              >
+                Busiest times of days
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
             >
-              Ticket Fields
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/tags"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/ticket-fields"
+              >
+                Ticket Fields
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
             >
-              Tags
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/channels"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/tags"
+              >
+                Tags
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
             >
-              Channels
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/satisfaction"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/channels"
+              >
+                Channels
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
             >
-              Satisfaction
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/revenue"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/satisfaction"
+              >
+                Satisfaction
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
             >
-              Revenue
-            </a>
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/revenue"
+              >
+                Revenue
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -150,36 +190,48 @@ exports[`StatsNavbarView should render 1`] = `
           <div
             class="menu"
           >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/macros"
+            <div
+              class="link-wrapper isNested"
             >
-              Macros
-            </a>
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/intents"
-            >
-              Intents
-            </a>
-            <a
-              class="link item"
-              data-active-class-name="active"
-              href="automation-add-on-features"
-            >
-              <div
-                class="name"
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/macros"
               >
-                Automation add-on
-              </div>
-              <i
-                class="material-icons md-2 icon"
+                Macros
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/intents"
               >
-                arrow_circle_up
-              </i>
-            </a>
+                Intents
+              </a>
+            </div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link item"
+                data-active-class-name="active"
+                href="automation-add-on-features"
+              >
+                <div
+                  class="name"
+                >
+                  Automation add-on
+                </div>
+                <i
+                  class="material-icons md-2 icon"
+                >
+                  arrow_circle_up
+                </i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -209,20 +261,28 @@ exports[`StatsNavbarView should render 1`] = `
         <div
           class="menu"
         >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/live-overview"
+          <div
+            class="link-wrapper isNested"
           >
-            Overview
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/live-agents"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/live-overview"
+            >
+              Overview
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
           >
-            Agents
-          </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/live-agents"
+            >
+              Agents
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -249,62 +309,94 @@ exports[`StatsNavbarView should render 1`] = `
         <div
           class="menu"
         >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/support-performance-overview"
+          <div
+            class="link-wrapper isNested"
           >
-            Overview
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/support-performance-agents"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/support-performance-overview"
+            >
+              Overview
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
           >
-            Agents
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/busiest-times-of-days"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/support-performance-agents"
+            >
+              Agents
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
           >
-            Busiest times of days
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/ticket-fields"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/busiest-times-of-days"
+            >
+              Busiest times of days
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
           >
-            Ticket Fields
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/tags"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/ticket-fields"
+            >
+              Ticket Fields
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
           >
-            Tags
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/channels"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/tags"
+            >
+              Tags
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
           >
-            Channels
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/satisfaction"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/channels"
+            >
+              Channels
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
           >
-            Satisfaction
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/revenue"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/satisfaction"
+            >
+              Satisfaction
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
           >
-            Revenue
-          </a>
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/revenue"
+            >
+              Revenue
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -331,36 +423,48 @@ exports[`StatsNavbarView should render 1`] = `
         <div
           class="menu"
         >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/macros"
+          <div
+            class="link-wrapper isNested"
           >
-            Macros
-          </a>
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/stats/intents"
-          >
-            Intents
-          </a>
-          <a
-            class="link item"
-            data-active-class-name="active"
-            href="automation-add-on-features"
-          >
-            <div
-              class="name"
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/macros"
             >
-              Automation add-on
-            </div>
-            <i
-              class="material-icons md-2 icon"
+              Macros
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/intents"
             >
-              arrow_circle_up
-            </i>
-          </a>
+              Intents
+            </a>
+          </div>
+          <div
+            class="link-wrapper"
+          >
+            <a
+              class="link item"
+              data-active-class-name="active"
+              href="automation-add-on-features"
+            >
+              <div
+                class="name"
+              >
+                Automation add-on
+              </div>
+              <i
+                class="material-icons md-2 icon"
+              >
+                arrow_circle_up
+              </i>
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React, {ReactNode, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import classNames from 'classnames'
 
 import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -84,77 +85,151 @@ export default function StatsNavbarView() {
         <>
             <NavbarBlock icon="adjust" title="Live">
                 <div className={cssNavbar.menu}>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/live-overview"
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        Overview
-                    </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/live-agents"
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/live-overview"
+                        >
+                            Overview
+                        </NavbarLink>
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        Agents
-                    </NavbarLink>
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/live-agents"
+                        >
+                            Agents
+                        </NavbarLink>
+                    </div>
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="insights" title="Support Performance">
                 <div className={cssNavbar.menu}>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/support-performance-overview"
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        Overview
-                    </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/support-performance-agents"
-                    >
-                        Agents
-                    </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/busiest-times-of-days"
-                    >
-                        Busiest times of days
-                    </NavbarLink>
-                    {hasAnalyticsTicketInsights ? (
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/ticket-insights"
+                            to="/app/stats/support-performance-overview"
                         >
-                            Ticket insights
+                            Overview
                         </NavbarLink>
-                    ) : (
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/ticket-fields"
+                            to="/app/stats/support-performance-agents"
                         >
-                            Ticket Fields
+                            Agents
                         </NavbarLink>
-                    )}
-                    <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/tags">
-                        Tags
-                    </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/channels"
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        Channels
-                    </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/satisfaction"
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/busiest-times-of-days"
+                        >
+                            Busiest times of days
+                        </NavbarLink>
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        Satisfaction
-                    </NavbarLink>
+                        {hasAnalyticsTicketInsights ? (
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/ticket-insights"
+                            >
+                                Ticket insights
+                            </NavbarLink>
+                        ) : (
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/ticket-fields"
+                            >
+                                Ticket Fields
+                            </NavbarLink>
+                        )}
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/tags"
+                        >
+                            Tags
+                        </NavbarLink>
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/channels"
+                        >
+                            Channels
+                        </NavbarLink>
+                    </div>
+
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/satisfaction"
+                        >
+                            Satisfaction
+                        </NavbarLink>
+                    </div>
                     {!isConvertSubscriber && (
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/revenue"
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
                         >
-                            Revenue
-                        </NavbarLink>
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/revenue"
+                            >
+                                Revenue
+                            </NavbarLink>
+                        </div>
                     )}
                 </div>
             </NavbarBlock>
@@ -169,18 +244,32 @@ export default function StatsNavbarView() {
                         //     Overview
                         // </NavbarLink>
                     }
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/macros"
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        Macros
-                    </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/intents"
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/macros"
+                        >
+                            Macros
+                        </NavbarLink>
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        Intents
-                    </NavbarLink>
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/intents"
+                        >
+                            Intents
+                        </NavbarLink>
+                    </div>
                     {!hasAutomationAddOn ? (
                         <>
                             {automationAddon.map((aao) => (
@@ -206,13 +295,20 @@ export default function StatsNavbarView() {
                     ) : (
                         <>
                             {automationAddon.map((aao) => (
-                                <NavbarLink
-                                    {...COMMON_NAV_LINK_PROPS}
-                                    to={aao.to}
+                                <div
                                     key={aao.to}
+                                    className={classNames(
+                                        cssNavbar['link-wrapper'],
+                                        cssNavbar.isNested
+                                    )}
                                 >
-                                    {aao.label}
-                                </NavbarLink>
+                                    <NavbarLink
+                                        {...COMMON_NAV_LINK_PROPS}
+                                        to={aao.to}
+                                    >
+                                        {aao.label}
+                                    </NavbarLink>
+                                </div>
                             ))}
                         </>
                     )}
@@ -220,24 +316,38 @@ export default function StatsNavbarView() {
             </NavbarBlock>
             {isConvertSubscriber && (
                 <NavbarBlock icon="attach_money" title="Convert">
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/revenue"
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
                     >
-                        Overview
-                    </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/revenue/campaigns"
-                    >
-                        Campaigns
-                        <Badge
-                            type={ColorType.Blue}
-                            className={cssNavbar.badge}
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/revenue"
                         >
-                            BETA
-                        </Badge>
-                    </NavbarLink>
+                            Overview
+                        </NavbarLink>
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/revenue/campaigns"
+                        >
+                            Campaigns
+                            <Badge
+                                type={ColorType.Blue}
+                                className={cssNavbar.badge}
+                            >
+                                BETA
+                            </Badge>
+                        </NavbarLink>
+                    </div>
                 </NavbarBlock>
             )}
         </>

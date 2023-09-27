@@ -96,7 +96,7 @@ const AutomationNavbarAddOnView = () => {
 
     return (
         <>
-            <div className="mt-3">
+            <>
                 {sortedStoreIntegrations.map((storeIntegration) => {
                     const shopType = storeIntegration.type
                     const shopName =
@@ -131,7 +131,7 @@ const AutomationNavbarAddOnView = () => {
                         Add a store integration to start using add-on features
                     </Alert>
                 )}
-            </div>
+            </>
             <AutomationSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationSubscriptionModalOpen}
