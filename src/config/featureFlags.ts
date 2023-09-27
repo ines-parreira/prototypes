@@ -25,7 +25,6 @@ export enum FeatureFlagKey {
     EnforceTicketsOnES = 'enforce-tickets-on-es',
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',
-    FlowsVariables = 'flows-variables',
     HelpCenterAutoEmbed = 'help-center-auto-embed',
     HelpCenterMigrationConfig = 'migration-config',
     ElasticsearchTicketSearch = 'elasticsearch-ticket-search',

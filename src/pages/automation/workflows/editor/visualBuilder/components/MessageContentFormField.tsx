@@ -2,9 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 
 import {EditorState} from 'draft-js'
 import Immutable from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {convertToHTML} from 'utils/editor'
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -27,6 +25,16 @@ type MessageContentFormFieldProps = {
 }
 
 const textLimit = 5000
+const toolbarActions = [
+    ActionName.Bold,
+    ActionName.Italic,
+    ActionName.Underline,
+    ActionName.Link,
+    ActionName.Image,
+    ActionName.Emoji,
+    ActionName.ProductPicker,
+    ActionName.FlowVariable,
+]
 
 export default function MessageContentFormField({
     content,
@@ -82,22 +90,7 @@ export default function MessageContentFormField({
             ),
         })
     }
-    const areVariablesEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.FlowsVariables]
 
-    const toolbarActions = useMemo(
-        () => [
-            ActionName.Bold,
-            ActionName.Italic,
-            ActionName.Underline,
-            ActionName.Link,
-            ActionName.Image,
-            ActionName.Emoji,
-            ActionName.ProductPicker,
-            ...(areVariablesEnabled ? [ActionName.FlowVariable] : []),
-        ],
-        [areVariablesEnabled]
-    )
     const attachments = useMemo(
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         () => Immutable.fromJS(content.attachments ?? []),
