@@ -1,10 +1,6 @@
 export enum FeatureFlagKey {
-    AnalyticsNewAgentPerformance = 'analytics-new-agent-performance',
     AnalyticsChannelFilter = 'analytics-channel-filter',
-    AnalyticsExportAgentsPerformance = 'analytics-export-agents-performance',
-    AnalyticsNewAgentPerformanceHeatmaps = 'analytics-new-agent-performance-heatmaps',
     AnalyticsPerformanceTips = 'analytics-performance-tips',
-    AnalyticsNewAgentPerformanceShoutouts = 'analytics-new-agent-performance-shoutouts',
     AnalyticsTicketInsights = 'analytics-ticket-insights',
     AnalyticsTicketInsightsTopFields = 'analytics-ticket-insights-top-fields',
     BigCommerceCreateOrder = 'bigcommerce-create-order',

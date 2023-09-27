@@ -65,9 +65,6 @@ describe('StatsNavbarView', () => {
 
     describe('New Agents Performance', () => {
         it('should render the link to new agents page when having flag enabled', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.AnalyticsNewAgentPerformance]: true,
-            }))
             render(
                 <Provider store={mockStore(defaultState)}>
                     <DndProvider backend={HTML5Backend}>

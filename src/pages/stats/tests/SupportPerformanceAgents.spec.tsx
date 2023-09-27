@@ -1,10 +1,10 @@
 import {render, screen} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
+import AgentsShoutouts from 'pages/stats/AgentsShoutouts'
+import {HeatmapSwitch} from 'pages/stats/HeatmapSwitch'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {AgentsTable} from 'pages/stats/AgentsTable'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {assumeMock} from 'utils/testing'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
@@ -17,20 +17,44 @@ import SupportPerformanceAgents, {
 jest.unmock('react-router-dom')
 
 jest.mock('state/ui/stats/agentPerformanceSlice')
-jest.mock('hooks/reporting/useAgentsMetrics')
-jest.mock('hooks/reporting/useAgentsSummaryMetrics')
 jest.mock('pages/stats/AgentsTable.tsx')
-jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const AgentsTableMock = assumeMock(AgentsTable)
+jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
+jest.mock('pages/stats/HeatmapSwitch.tsx')
+const HeatmapSwitchMock = assumeMock(HeatmapSwitch)
+jest.mock('pages/stats/AgentsShoutouts.tsx')
+const AgentsShoutoutsMock = assumeMock(AgentsShoutouts)
+jest.mock('hooks/reporting/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
+jest.mock('hooks/reporting/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 
-const cellMock = () => <div />
+const componentMock = () => <div />
 
 describe('SupportPerformanceAgents', () => {
-    AgentsTableMock.mockImplementation(cellMock)
-    SupportPerformanceFiltersMock.mockImplementation(cellMock)
+    SupportPerformanceFiltersMock.mockImplementation(componentMock)
+    AgentsShoutoutsMock.mockImplementation(componentMock)
+    HeatmapSwitchMock.mockImplementation(componentMock)
+    AgentsTableMock.mockImplementation(componentMock)
+    useAgentsMetricsMock.mockReturnValue({
+        reportData: {
+            closedTicketsMetric: {
+                isFetching: false,
+                isError: false,
+                data: {allData: [], value: null},
+            },
+        },
+    } as any)
+    useAgentsSummaryMetricsMock.mockReturnValue({
+        summaryData: {
+            closedTicketsMetric: {
+                isFetching: false,
+                isError: false,
+                data: {value: 2},
+            },
+        },
+    } as any)
 
     it('should render the page title and section title', () => {
         render(
@@ -46,29 +70,6 @@ describe('SupportPerformanceAgents', () => {
     })
 
     it('should render the export data button', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsExportAgentsPerformance]: true,
-        }))
-
-        useAgentsMetricsMock.mockReturnValue({
-            reportData: {
-                closedTicketsMetric: {
-                    isFetching: false,
-                    isError: false,
-                    data: {allData: [], value: null},
-                },
-            },
-        } as any)
-        useAgentsSummaryMetricsMock.mockReturnValue({
-            summaryData: {
-                closedTicketsMetric: {
-                    isFetching: false,
-                    isError: false,
-                    data: {value: 2},
-                },
-            },
-        } as any)
-
         render(
             <MemoryRouter>
                 <SupportPerformanceAgents />
@@ -78,5 +79,16 @@ describe('SupportPerformanceAgents', () => {
         const button = screen.getByText(/Download data/)
 
         expect(button).toBeInTheDocument()
+    })
+
+    it('should render the HeatmapSwitch and Agents Shoutout', () => {
+        render(
+            <MemoryRouter>
+                <SupportPerformanceAgents />
+            </MemoryRouter>
+        )
+
+        expect(HeatmapSwitchMock).toHaveBeenCalled()
+        expect(AgentsShoutoutsMock).toHaveBeenCalled()
     })
 })

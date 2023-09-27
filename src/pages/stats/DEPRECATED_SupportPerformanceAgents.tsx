@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {FeatureFlagKey} from 'config/featureFlags'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -32,8 +30,6 @@ import StatsFiltersContext from './StatsFiltersContext'
 const SUPPORT_PERFORMANCE_AGENTS_STAT_NAME = 'support-performance-agents'
 
 export default function DEPRECATED_SupportPerformanceAgents() {
-    const hasAnalyticsNewAgentPerformance: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
 
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
@@ -69,7 +65,7 @@ export default function DEPRECATED_SupportPerformanceAgents() {
     return (
         <StatsFiltersContext.Provider value={pageStatsFilters}>
             <div className="full-width">
-                {hasAnalyticsNewAgentPerformance && isVersionBannerVisible ? (
+                {isVersionBannerVisible ? (
                     <BannerNotification
                         actionHTML={
                             <Link to="/app/stats/support-performance-agents">

@@ -1,11 +1,10 @@
 import React from 'react'
 
+import css from 'pages/stats/AgentsShoutouts.less'
 import AgentsShoutout from './AgentShoutout'
 import {shoutoutsConfig} from './shoutouts-config'
 
-import css from './AgentsShoutoutsGrid.less'
-
-export default function AgentsShoutoutsGrid() {
+export default function AgentsShoutouts() {
     return (
         <div
             className={css.grid}

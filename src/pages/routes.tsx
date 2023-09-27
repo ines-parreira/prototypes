@@ -438,8 +438,6 @@ export function StatsRoutes() {
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
-    const hasAnalyticsNewAgentPerformance: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
     const isNewAutomationAddonEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewAutomationAddon]
     const hasAnalyticsTicketInsights: boolean | undefined =
@@ -521,25 +519,16 @@ export function StatsRoutes() {
                 </Route>
                 <Route exact path={`${path}/support-performance-agents`}>
                     <App
-                        content={
-                            hasAnalyticsNewAgentPerformance
-                                ? SupportPerformanceAgents
-                                : DEPRECATED_SupportPerformanceAgents
-                        }
+                        content={SupportPerformanceAgents}
                         navbar={StatsNavbarContainer}
                     />
                 </Route>
-                {hasAnalyticsNewAgentPerformance && (
-                    <Route
-                        exact
-                        path={`${path}/support-performance-agents-legacy`}
-                    >
-                        <App
-                            content={DEPRECATED_SupportPerformanceAgents}
-                            navbar={StatsNavbarContainer}
-                        />
-                    </Route>
-                )}
+                <Route exact path={`${path}/support-performance-agents-legacy`}>
+                    <App
+                        content={DEPRECATED_SupportPerformanceAgents}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
                 <Route exact path={`${path}/satisfaction`}>
                     <App
                         content={SupportPerformanceSatisfaction}
