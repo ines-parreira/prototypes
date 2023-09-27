@@ -1,14 +1,14 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
 import React from 'react'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import * as resources from '../resources'
 import {useListVoiceCalls} from '../queries'
 
 const listVoiceCallsSpy = jest.spyOn(resources, 'listVoiceCalls')
 
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 const wrapper = ({children}: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
