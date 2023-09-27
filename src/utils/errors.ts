@@ -12,8 +12,8 @@ import {
     isStaging,
 } from 'utils/environment'
 
-const TRACE_SAMPLE_RATE = 0.001
-const IGNORED_ERRORS = [
+export const TRACE_SAMPLE_RATE = 0.001
+export const IGNORED_ERRORS = [
     'fb_xd_fragment', // Facebook borked
     'ResizeObserver loop completed with undelivered notifications',
     'TypeError: Failed to fetch', // https://linear.app/gorgias/issue/COR-1014/typeerror-failed-to-fetch
@@ -25,6 +25,14 @@ const IGNORED_ERRORS = [
     'TransportError (31009): No transport available to send or receive messages', // https://linear.app/gorgias/issue/PHO-405/transporterror-transporterror-31009-no-transport-available-to-send-or
     'ConnectionError (31005): A connection error occurred during the call', // https://linear.app/gorgias/issue/PHO-404/connectionerror-connectionerror-31005-a-connection-error-occurred
 ]
+export const DENY_URLS = [
+    // Chrome extensions
+    /extensions\//i,
+    /^chrome:\/\//i,
+    /draft-js\/lib/i, // Draft JS errors
+    /analytics\.min\.js/i, // https://linear.app/gorgias/issue/PLTCO-1017/typeerror-cannot-read-property-page-of-undefined
+]
+export const ERROR_EXTRA_CONSOLE_LOG_MESSAGE = 'Error extra:'
 
 export type InitErrorReporterParams = {
     dsn: string
@@ -56,13 +64,7 @@ export function initErrorReporter({
         ],
         tracesSampleRate: TRACE_SAMPLE_RATE,
         ignoreErrors: IGNORED_ERRORS,
-        denyUrls: [
-            // Chrome extensions
-            /extensions\//i,
-            /^chrome:\/\//i,
-            /draft-js\/lib/i, // Draft JS errors
-            /analytics\.min\.js/i, // https://linear.app/gorgias/issue/PLTCO-1017/typeerror-cannot-read-property-page-of-undefined
-        ],
+        denyUrls: DENY_URLS,
     })
     Sentry.setTag('language', 'javascript')
     if (currentAccount) {
@@ -81,7 +83,7 @@ export function reportError(error: Error, options?: Partial<ScopeContext>) {
     if (isDevelopment() || isStaging()) {
         console.error(error)
         if (options?.extra) {
-            console.error('Error extra:', options.extra)
+            console.error(ERROR_EXTRA_CONSOLE_LOG_MESSAGE, options.extra)
         }
     }
     if (isStaging() || isProduction()) {

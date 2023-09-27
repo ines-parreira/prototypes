@@ -1,17 +1,22 @@
 import {captureException, init, setTag, setUser} from '@sentry/react'
 import {ScopeContext} from '@sentry/types'
 import {Metric, onINP} from 'web-vitals'
+import {BrowserTracing, Transaction} from '@sentry/tracing'
 import {BrowserTracingOptions} from '@sentry/tracing/types/browser/browsertracing'
-import {Transaction} from '@sentry/tracing'
 
 import {
+    DENY_URLS,
+    ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
+    IGNORED_ERRORS,
     initErrorReporter,
     InitErrorReporterParams,
     PatchedBrowserTracing,
     reportError,
+    TRACE_SAMPLE_RATE,
     withInpMeasurements,
 } from 'utils/errors'
 import {
+    assumeMock,
     mockDevelopmentEnvironment,
     mockProductionEnvironment,
     mockStagingEnvironment,
@@ -26,9 +31,9 @@ jest.mock('web-vitals')
 const captureExceptionMock = captureException as jest.MockedFunction<
     typeof captureException
 >
-const initMock = init as jest.MockedFunction<typeof init>
-const setUserMock = setUser as jest.MockedFunction<typeof setUser>
-const setTagMock = setTag as jest.MockedFunction<typeof setTag>
+const initMock = assumeMock(init)
+const setUserMock = assumeMock(setUser)
+const setTagMock = assumeMock(setTag)
 
 const consoleErrorMock = jest.fn()
 global.console.error = consoleErrorMock
@@ -57,7 +62,21 @@ describe('errors util', () => {
         it('should init sentry', () => {
             initErrorReporter(defaultInitOptions)
 
-            expect(initMock.mock.calls).toMatchSnapshot()
+            expect(initMock).toHaveBeenCalledWith({
+                dsn: defaultInitOptions.dsn,
+                release: defaultInitOptions.release,
+                environment: defaultInitOptions.environment,
+                tracesSampleRate: TRACE_SAMPLE_RATE,
+                ignoreErrors: IGNORED_ERRORS,
+                denyUrls: DENY_URLS,
+                enabled: true,
+                integrations: [expect.any(BrowserTracing)],
+            })
+        })
+
+        it('should set tag "language" equal "javascript"', () => {
+            initErrorReporter(defaultInitOptions)
+
             expect(setTagMock).toHaveBeenCalledWith('language', 'javascript')
         })
 
@@ -66,6 +85,7 @@ describe('errors util', () => {
                 ...defaultInitOptions,
                 currentAccount: account,
             })
+
             expect(setTagMock).toHaveBeenCalledWith(
                 'account.domain',
                 account.domain
@@ -77,19 +97,26 @@ describe('errors util', () => {
                 ...defaultInitOptions,
                 currentUser: user,
             })
-            expect(setUserMock.mock.calls).toMatchSnapshot()
+
+            expect(setUserMock).toHaveBeenCalledWith({
+                id: user.id.toString(),
+                name: user.name,
+                email: user.email,
+            })
         })
 
-        it.each<[string, string]>([
-            [
-                'IE8',
-                'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)',
-            ],
-            [
-                'mobile safari',
-                'Mozilla/5.0 (iPhone; CPU iPhone OS 15_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Mobile/15E148 Safari/604.1',
-            ],
-        ])('should disable reporting for %s', (testName, userAgent) => {
+        it.each([
+            {
+                browser: 'IE8',
+                userAgent:
+                    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)',
+            },
+            {
+                browser: 'mobile safari',
+                userAgent:
+                    'Mozilla/5.0 (iPhone; CPU iPhone OS 15_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Mobile/15E148 Safari/604.1',
+            },
+        ])('should disable reporting for $browser', ({userAgent}) => {
             userAgentMock.mockReturnValue(userAgent)
 
             initErrorReporter(defaultInitOptions)
@@ -103,6 +130,7 @@ describe('errors util', () => {
     })
 
     describe('reportError', () => {
+        const testError = Error('Test error')
         const defaultOptions: Partial<ScopeContext> = {
             extra: {
                 foo: 'bar',
@@ -111,26 +139,43 @@ describe('errors util', () => {
 
         it('should only display error on the console in development environment', () => {
             mockDevelopmentEnvironment()
-            reportError(Error('Test error'), defaultOptions)
+
+            reportError(testError, defaultOptions)
 
             expect(captureExceptionMock).not.toBeCalled()
-            expect(consoleErrorMock.mock.calls).toMatchSnapshot()
+            expect(consoleErrorMock).toHaveBeenCalledWith(testError)
+            expect(consoleErrorMock).toHaveBeenCalledWith(
+                ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
+                defaultOptions.extra
+            )
         })
 
         it('should only report error to Sentry in production environment', () => {
             mockProductionEnvironment()
-            reportError(new Error('Test error'), defaultOptions)
+
+            reportError(testError, defaultOptions)
 
             expect(consoleErrorMock).not.toHaveBeenCalled()
-            expect(captureExceptionMock.mock.calls).toMatchSnapshot()
+            expect(captureExceptionMock).toHaveBeenCalledWith(
+                testError,
+                defaultOptions
+            )
         })
 
         it('should report error to Sentry and display error on the console in staging environment', () => {
             mockStagingEnvironment()
-            reportError(new Error('Test error'), defaultOptions)
 
-            expect(captureExceptionMock.mock.calls).toMatchSnapshot()
-            expect(consoleErrorMock.mock.calls).toMatchSnapshot()
+            reportError(testError, defaultOptions)
+
+            expect(captureExceptionMock).toHaveBeenCalledWith(
+                testError,
+                defaultOptions
+            )
+            expect(consoleErrorMock).toHaveBeenCalledWith(testError)
+            expect(consoleErrorMock).toHaveBeenCalledWith(
+                ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
+                defaultOptions.extra
+            )
         })
     })
 
