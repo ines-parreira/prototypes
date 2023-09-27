@@ -5,8 +5,9 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import StatsPage from 'pages/stats/StatsPage'
+import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
 import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
+import StatsPage from 'pages/stats/StatsPage'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
@@ -14,6 +15,8 @@ export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
 export default function SupportPerformanceTicketInsights() {
     const hasAnalyticsTicketInsightsTopFields: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsTicketInsightsTopFields]
+    const hasAnalyticsTicketInsightsFieldTrends: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsTicketInsightsFieldTrends]
 
     return (
         <StatsPage
@@ -31,6 +34,11 @@ export default function SupportPerformanceTicketInsights() {
                 {hasAnalyticsTicketInsightsTopFields && (
                     <DashboardGridCell size={5}>
                         <TicketDistributionTable />
+                    </DashboardGridCell>
+                )}
+                {hasAnalyticsTicketInsightsFieldTrends && (
+                    <DashboardGridCell size={7}>
+                        <TicketInsightsFieldTrend />
                     </DashboardGridCell>
                 )}
             </DashboardSection>

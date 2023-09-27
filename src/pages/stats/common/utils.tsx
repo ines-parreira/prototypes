@@ -306,6 +306,19 @@ export const formatLabeledTimeSeriesData = (
     )
 }
 
+export const formatLabeledTooltipTimeSeriesData = (
+    data: TimeSeriesDataItem[][] = [],
+    legendInfo: {labels: string[]; tooltips: string[]},
+    granularity: ReportingGranularity
+) => {
+    const format = getFormat(granularity)
+
+    return data.map((items, index) => ({
+        ...formatTimeSeries(legendInfo.labels[index], items, format),
+        tooltip: legendInfo.tooltips[index],
+    }))
+}
+
 export const isMetricForAgent = (
     metric: ReportingMetricItem,
     agentId: number | string

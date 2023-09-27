@@ -44,4 +44,17 @@ describe('<LineChart />', () => {
         expect(getByLabelText(ticketsCreatedDataItem.label)).toBeInTheDocument()
         expect(getAllByRole('checkbox').length).toBe(1)
     })
+
+    it('should render the interactive legend with default dataset visibility', () => {
+        const {queryByRole} = render(
+            <LineChart
+                data={[ticketsCreatedDataItem]}
+                displayLegend
+                toggleLegend
+                defaultDatasetVisibility={{0: false}}
+            />
+        )
+
+        expect(queryByRole('checkbox')).not.toBeChecked()
+    })
 })

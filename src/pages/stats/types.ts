@@ -5,6 +5,7 @@ export type OneDimensionalDataItem = {
 
 export type TwoDimensionalDataItem = {
     label: string
+    tooltip?: string
     values: {
         x: string
         y: number

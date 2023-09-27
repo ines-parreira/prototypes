@@ -7,6 +7,10 @@ import BodyCell, {
 } from 'pages/common/components/table/cells/BodyCell'
 import GaugeCellAddon from 'pages/common/components/table/addons/GaugeCellAddon'
 import Tooltip from 'pages/common/components/Tooltip'
+import {
+    TICKET_CUSTOM_FIELDS_API_SEPARATOR,
+    TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
+} from './utils'
 import css from './DistributionCategoryCell.less'
 
 type Props = {
@@ -15,8 +19,6 @@ type Props = {
 }
 
 const cellColor = colors['📺 Classic'].Accessory.Blue_bg.value
-const CATEGORY_API_SEPARATOR = '::'
-const CATEGORY_NEW_SEPARATOR = ' > '
 
 export const DistributionCategoryCell = ({
     category,
@@ -35,8 +37,8 @@ export const DistributionCategoryCell = ({
     }, [])
 
     const content = category
-        ?.split(CATEGORY_API_SEPARATOR)
-        .join(CATEGORY_NEW_SEPARATOR)
+        ?.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)
+        .join(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR)
 
     const tooltipTargetID = `category-${category.replace(/[^a-zA-Z0-9]/g, '_')}`
 

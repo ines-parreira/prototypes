@@ -8,6 +8,9 @@ export const NUMBER_TICK_FORMATTER = new Intl.NumberFormat('en-US', {
     compactDisplay: 'short',
 } as Intl.NumberFormatOptions)
 
+export const TICKET_CUSTOM_FIELDS_API_SEPARATOR = '::'
+export const TICKET_CUSTOM_FIELDS_NEW_SEPARATOR = ' > '
+
 export function getGradient(
     color: string,
     canvasArea?: ChartArea,

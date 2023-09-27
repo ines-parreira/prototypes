@@ -232,13 +232,15 @@ export const useCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    customFieldId: string
+    customFieldId: string,
+    sorting?: OrderDirection
 ) => {
     return useTimeSeriesPerDimension({
         ...customFieldsTicketCountQueryFactory(
             filters,
             timezone,
-            customFieldId
+            customFieldId,
+            sorting
         ),
         timeDimensions: [
             {

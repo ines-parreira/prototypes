@@ -20,6 +20,7 @@ import {
     formatMetricValue,
     formatNumber,
     formatTimeSeriesData,
+    formatLabeledTooltipTimeSeriesData,
     SHORT_FORMAT,
     NOT_AVAILABLE_TEXT,
     useStatsViewFilters,
@@ -372,6 +373,48 @@ describe('stats components utils', () => {
                 )
             ).toMatchObject([
                 {label: 'test label', values: [{x: '12:00 AM', y: 2}]},
+            ])
+        })
+    })
+
+    describe('formatLabeledTooltipTimeSeriesData', () => {
+        it('should return the time series data with tooltip for line chart legend', () => {
+            expect(
+                formatLabeledTooltipTimeSeriesData(
+                    [
+                        [
+                            {
+                                dateTime: '2020-01-01T00:00:00.000',
+                                value: 1,
+                            },
+                            {
+                                dateTime: '2020-01-01T00:00:00.000',
+                                value: 2,
+                            },
+                        ],
+                    ],
+                    {labels: ['test label'], tooltips: ['test tooltip']},
+                    ReportingGranularity.Month
+                )
+            ).toMatchObject([
+                {
+                    label: 'test label',
+                    tooltip: 'test tooltip',
+                    values: [
+                        {
+                            x: moment('2020-01-01T00:00:00.000').format(
+                                SHORT_FORMAT
+                            ),
+                            y: 1,
+                        },
+                        {
+                            x: moment('2020-01-01T00:00:00.000').format(
+                                SHORT_FORMAT
+                            ),
+                            y: 2,
+                        },
+                    ],
+                },
             ])
         })
     })

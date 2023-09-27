@@ -5,6 +5,7 @@ import {
     ChartOptions,
     Scale,
     TooltipItem,
+    ScriptableScaleContext,
 } from 'chart.js'
 import React, {useCallback, useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
@@ -35,6 +36,7 @@ type Props = {
     isLoading?: boolean
     displayLegend?: boolean
     toggleLegend?: boolean
+    defaultDatasetVisibility?: Record<number, boolean | undefined> | null
     _displayLegacyTooltip?: boolean
     _renderLegacyTooltipLabel?: (tooltipItem: TooltipItem<'line'>) => string
     greyArea?: GreyArea
@@ -73,9 +75,6 @@ const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = fromJS({
     responsive: true,
     scales: {
         x: {
-            border: {
-                color: colors['📺 Classic'].Neutral.Grey_3.value,
-            },
             grid: {
                 display: false,
             },
@@ -144,12 +143,13 @@ export default function LineChart({
     greyArea,
     customColors,
     isCurvedLine = true,
-    yAxisBeginAtZero = false,
+    yAxisBeginAtZero = true,
     legendOnLeft = false,
     toggleLegend = false,
     renderXTickLabel,
     yAxisScale = {},
     wrapperclassNames,
+    defaultDatasetVisibility = null,
 }: Props) {
     const [chart, setChart] = useState<Chart>()
     const [chartArea, setChartArea] = useState<ChartArea>()
@@ -158,9 +158,10 @@ export default function LineChart({
         (index: number) => customColors?.[index] || STAT_COLORS[index],
         [customColors]
     )
-    const [linesVisibility, setLinesVisibility] = useState<
-        Record<number, boolean | undefined>
-    >({})
+    const [linesVisibility, setLinesVisibility] = useState<Record<
+        number,
+        boolean | undefined
+    > | null>(defaultDatasetVisibility)
 
     const formattedData = useMemo<ChartData<'line'>>(() => {
         const labels = Array.from(
@@ -190,10 +191,20 @@ export default function LineChart({
                     label: item.label,
                     data: item.values.map((value) => value.y),
                     pointBackgroundColor: color,
+                    ...(defaultDatasetVisibility && {
+                        hidden: !defaultDatasetVisibility[index],
+                    }),
                 }
             }),
         }
-    }, [chartArea, chartContext, data, hasBackground, chartColors])
+    }, [
+        chartArea,
+        chartContext,
+        data,
+        hasBackground,
+        chartColors,
+        defaultDatasetVisibility,
+    ])
 
     const lineOptions = useMemo(
         () =>
@@ -209,6 +220,20 @@ export default function LineChart({
                                 callback: renderYTickLabel,
                             },
                             beginAtZero: yAxisBeginAtZero,
+                            grid: {
+                                color: (context: ScriptableScaleContext) => {
+                                    if (
+                                        context.tick.value === 0 &&
+                                        data.length === 0
+                                    ) {
+                                        return colors['📺 Classic'].Main.Primary
+                                            .value
+                                    }
+
+                                    return colors['📺 Classic'].Neutral.Grey_2
+                                        .value
+                                },
+                            },
                             ...yAxisScale,
                         },
                         x: {
@@ -245,14 +270,15 @@ export default function LineChart({
         [
             yLabel,
             renderYTickLabel,
+            yAxisBeginAtZero,
+            yAxisScale,
+            renderXTickLabel,
             _displayLegacyTooltip,
             _renderLegacyTooltipLabel,
-            isCurvedLine,
-            yAxisBeginAtZero,
             greyArea,
-            renderXTickLabel,
-            yAxisScale,
+            isCurvedLine,
             options,
+            data.length,
         ]
     )
 
@@ -277,12 +303,13 @@ export default function LineChart({
                     className={classNames(css.legend, {
                         [css.legendOnLeft]: legendOnLeft,
                     })}
-                    items={data.map(({label}, index) => ({
+                    items={data.map(({label, tooltip}, index) => ({
                         label,
+                        tooltip,
                         color: chartColors(index),
                         ...(toggleLegend && {
                             isChecked:
-                                linesVisibility[index] ??
+                                linesVisibility?.[index] ??
                                 chart?.isDatasetVisible(index),
                             onChange: () => {
                                 chart?.setDatasetVisibility(

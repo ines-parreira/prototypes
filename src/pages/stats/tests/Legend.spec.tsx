@@ -1,5 +1,6 @@
 import React from 'react'
-import {render, screen} from '@testing-library/react'
+import {render, act, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import colors from 'assets/tokens/colors.json'
 
@@ -36,5 +37,33 @@ describe('<Legend />', () => {
         expect(
             container.querySelectorAll("input[type='checkbox']")
         ).toHaveLength(0)
+    })
+
+    it('should render the legend with tooltip', async () => {
+        const itemsWithTooltip = items.map((item) => ({
+            ...item,
+            tooltip: 'Tooltip content',
+        }))
+        render(<Legend items={itemsWithTooltip} />)
+
+        act(() => {
+            userEvent.hover(screen.getByText(itemsWithTooltip[0].label))
+        })
+
+        expect(await screen.findByRole('tooltip')).toBeInTheDocument()
+    })
+
+    it('should render  the checkbox legend with tooltip', async () => {
+        const itemsWithTooltip = items.map((item) => ({
+            ...item,
+            tooltip: 'Tooltip content',
+        }))
+        render(<Legend items={itemsWithTooltip} toggleLegend />)
+
+        act(() => {
+            userEvent.hover(screen.getByText(itemsWithTooltip[0].label))
+        })
+
+        expect(await screen.findByRole('tooltip')).toBeInTheDocument()
     })
 })
