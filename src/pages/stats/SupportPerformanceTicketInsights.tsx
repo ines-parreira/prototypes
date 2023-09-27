@@ -9,7 +9,7 @@ import StatsPage from 'pages/stats/StatsPage'
 import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket insights'
+export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
 
 export default function SupportPerformanceTicketInsights() {
     const hasAnalyticsTicketInsightsTopFields: boolean | undefined =

@@ -113,7 +113,7 @@ export default function StatsNavbarView() {
                     </div>
                 </div>
             </NavbarBlock>
-            <NavbarBlock icon="insights" title="Support Performance">
+            <NavbarBlock icon="emoji_events" title="Support Performance">
                 <div className={cssNavbar.menu}>
                     <div
                         className={classNames(
@@ -160,41 +160,6 @@ export default function StatsNavbarView() {
                             cssNavbar.isNested
                         )}
                     >
-                        {hasAnalyticsTicketInsights ? (
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/ticket-insights"
-                            >
-                                Ticket insights
-                            </NavbarLink>
-                        ) : (
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/ticket-fields"
-                            >
-                                Ticket Fields
-                            </NavbarLink>
-                        )}
-                    </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/tags"
-                        >
-                            Tags
-                        </NavbarLink>
-                    </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
-                        )}
-                    >
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/channels"
@@ -233,17 +198,43 @@ export default function StatsNavbarView() {
                     )}
                 </div>
             </NavbarBlock>
-            <NavbarBlock icon="bolt" title="Automation">
+            <NavbarBlock icon="lightbulb" title="Ticket Insights">
                 <div className={cssNavbar.menu}>
-                    {
-                        // TMP: This link will come back when the page will be reworked
-                        // <NavbarLink
-                        //     {...COMMON_NAV_LINK_PROPS}
-                        //     to="/app/stats/automation"
-                        // >
-                        //     Overview
-                        // </NavbarLink>
-                    }
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
+                        {hasAnalyticsTicketInsights ? (
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/ticket-insights"
+                            >
+                                Ticket Fields
+                            </NavbarLink>
+                        ) : (
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/ticket-fields"
+                            >
+                                Ticket Fields
+                            </NavbarLink>
+                        )}
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/tags"
+                        >
+                            Tags
+                        </NavbarLink>
+                    </div>
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
@@ -270,6 +261,19 @@ export default function StatsNavbarView() {
                             Intents
                         </NavbarLink>
                     </div>
+                </div>
+            </NavbarBlock>
+            <NavbarBlock icon="bolt" title="Automation">
+                <div className={cssNavbar.menu}>
+                    {
+                        // TMP: This link will come back when the page will be reworked
+                        // <NavbarLink
+                        //     {...COMMON_NAV_LINK_PROPS}
+                        //     to="/app/stats/automation"
+                        // >
+                        //     Overview
+                        // </NavbarLink>
+                    }
                     {!hasAutomationAddOn ? (
                         <>
                             {automationAddon.map((aao) => (

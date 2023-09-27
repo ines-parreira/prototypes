@@ -68,7 +68,7 @@ exports[`StatsNavbarView should render 1`] = `
               <i
                 class="material-icons icon"
               >
-                insights
+                emoji_events
               </i>
               Support Performance
             </div>
@@ -107,28 +107,6 @@ exports[`StatsNavbarView should render 1`] = `
                 href="/app/stats/busiest-times-of-days"
               >
                 Busiest times of days
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/stats/ticket-fields"
-              >
-                Ticket Fields
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/stats/tags"
-              >
-                Tags
               </a>
             </div>
             <div
@@ -182,14 +160,36 @@ exports[`StatsNavbarView should render 1`] = `
               <i
                 class="material-icons icon"
               >
-                bolt
+                lightbulb
               </i>
-              Automation
+              Ticket Insights
             </div>
           </h4>
           <div
             class="menu"
           >
+            <div
+              class="link-wrapper isNested"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/ticket-fields"
+              >
+                Ticket Fields
+              </a>
+            </div>
+            <div
+              class="link-wrapper isNested"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/stats/tags"
+              >
+                Tags
+              </a>
+            </div>
             <div
               class="link-wrapper isNested"
             >
@@ -212,6 +212,32 @@ exports[`StatsNavbarView should render 1`] = `
                 Intents
               </a>
             </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper section"
+      >
+        <div
+          class="category"
+        >
+          <h4
+            class="category-title"
+          >
+            <div
+              class="title"
+            >
+              <i
+                class="material-icons icon"
+              >
+                bolt
+              </i>
+              Automation
+            </div>
+          </h4>
+          <div
+            class="menu"
+          >
             <div
               class="link-wrapper"
             >
@@ -301,7 +327,7 @@ exports[`StatsNavbarView should render 1`] = `
             <i
               class="material-icons icon"
             >
-              insights
+              emoji_events
             </i>
             Support Performance
           </div>
@@ -340,28 +366,6 @@ exports[`StatsNavbarView should render 1`] = `
               href="/app/stats/busiest-times-of-days"
             >
               Busiest times of days
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/ticket-fields"
-            >
-              Ticket Fields
-            </a>
-          </div>
-          <div
-            class="link-wrapper isNested"
-          >
-            <a
-              class="link"
-              data-active-class-name="active"
-              href="/app/stats/tags"
-            >
-              Tags
             </a>
           </div>
           <div
@@ -415,14 +419,36 @@ exports[`StatsNavbarView should render 1`] = `
             <i
               class="material-icons icon"
             >
-              bolt
+              lightbulb
             </i>
-            Automation
+            Ticket Insights
           </div>
         </h4>
         <div
           class="menu"
         >
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/ticket-fields"
+            >
+              Ticket Fields
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="/app/stats/tags"
+            >
+              Tags
+            </a>
+          </div>
           <div
             class="link-wrapper isNested"
           >
@@ -445,6 +471,32 @@ exports[`StatsNavbarView should render 1`] = `
               Intents
             </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="wrapper section"
+    >
+      <div
+        class="category"
+      >
+        <h4
+          class="category-title"
+        >
+          <div
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              bolt
+            </i>
+            Automation
+          </div>
+        </h4>
+        <div
+          class="menu"
+        >
           <div
             class="link-wrapper"
           >
