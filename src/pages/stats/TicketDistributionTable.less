@@ -4,12 +4,20 @@
 :local {
     .table {
         margin: 0 -@layout-spacing-m -@layout-spacing-m;
-        width: calc(100% + (@layout-spacing-m * 2));
+        width: 480px;
 
         tr {
             border-bottom: 0;
+            td {
+                padding: 0;
+                height: 32px;
+            }
             td > div {
-                padding: 6px 12px;
+                padding: 4px 16px;
+
+                &:hover {
+                    cursor: default;
+                }
             }
         }
     }
@@ -25,5 +33,6 @@
     .card {
         min-height: 320px;
         overflow: auto;
+        width: 482px;
     }
 }

@@ -21,6 +21,12 @@ import {useTicketsDistribution} from '../useTicketsDistribution'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+const MOCK_SKELETON_TEST_ID = 'skeleton'
+
+jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
+    <div data-testid={MOCK_SKELETON_TEST_ID} />
+))
+
 jest.mock('pages/stats/useTicketsDistribution')
 const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
@@ -122,5 +128,20 @@ describe('<TicketDistributionTable>', () => {
         )
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
+    })
+
+    it('should render the table with skeletons on loading', () => {
+        useTicketsDistributionMock.mockReturnValue({
+            ...useTicketsDistributionReturnValue,
+            isFetching: true,
+        })
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketDistributionTable />
+            </Provider>
+        )
+
+        expect(screen.getByRole('table')).toBeInTheDocument()
+        expect(screen.getAllByTestId(MOCK_SKELETON_TEST_ID).length).not.toBe(0)
     })
 })

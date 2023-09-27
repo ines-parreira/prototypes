@@ -38,23 +38,38 @@ export const TicketDistributionTable = () => {
     } = useTicketsDistribution()
 
     return (
-        <ChartCard title="Top used values" className={css.card}>
+        <ChartCard
+            title="Top used values"
+            hint="Top 10 used values, as well as the number of tickets that were labeled with one of these values within the selected timeframe for the selected Ticket Field. All other values are grouped in the “Outside of Top used”."
+            className={css.card}
+        >
             {isFetching ? (
                 <TableWrapper className={css.table}>
                     <TableBody>
                         {new Array(10).fill(null).map((_, rowIndex) => (
                             <TableBodyRow key={rowIndex}>
                                 <BodyCell>
-                                    <Skeleton width={250} />
+                                    <Skeleton inline width={260} />
                                 </BodyCell>
                                 <BodyCell justifyContent="right">
-                                    <Skeleton width={50} />
+                                    <Skeleton inline width={65} />
                                 </BodyCell>
                                 <BodyCell justifyContent="right">
-                                    <Skeleton width={50} />
+                                    <Skeleton inline width={40} />
                                 </BodyCell>
                             </TableBodyRow>
                         ))}
+                        <TableBodyRow className={css.lastRow}>
+                            <BodyCell>
+                                <Skeleton width={260} />
+                            </BodyCell>
+                            <BodyCell justifyContent="right">
+                                <Skeleton width={65} />
+                            </BodyCell>
+                            <BodyCell justifyContent="right">
+                                <Skeleton width={40} />
+                            </BodyCell>
+                        </TableBodyRow>
                     </TableBody>
                 </TableWrapper>
             ) : topData.length > 0 ? (
@@ -85,7 +100,10 @@ export const TicketDistributionTable = () => {
                                         width={300}
                                         category={category}
                                     />
-                                    <BodyCell justifyContent="right">
+                                    <BodyCell
+                                        justifyContent="right"
+                                        width={100}
+                                    >
                                         {formatMetricValue(
                                             Number(
                                                 item[
@@ -97,10 +115,10 @@ export const TicketDistributionTable = () => {
                                             NOT_AVAILABLE_PLACEHOLDER
                                         )}
                                     </BodyCell>
-                                    <BodyCell justifyContent="right">
+                                    <BodyCell justifyContent="right" width={80}>
                                         {formatMetricValue(
                                             valueInPercentage,
-                                            'percent',
+                                            'percent-refined',
                                             NOT_AVAILABLE_PLACEHOLDER
                                         )}
                                     </BodyCell>
@@ -117,17 +135,17 @@ export const TicketDistributionTable = () => {
                                     />
                                     {OUTSIDE_TOP_DATA.title}
                                 </BodyCell>
-                                <BodyCell justifyContent="right">
+                                <BodyCell justifyContent="right" width={100}>
                                     {formatMetricValue(
                                         outsideTopTotal,
                                         'decimal',
                                         NOT_AVAILABLE_PLACEHOLDER
                                     )}
                                 </BodyCell>
-                                <BodyCell justifyContent="right">
+                                <BodyCell justifyContent="right" width={80}>
                                     {formatMetricValue(
                                         outsideTopTotalPercentage,
-                                        'percent',
+                                        'percent-refined',
                                         NOT_AVAILABLE_PLACEHOLDER
                                     )}
                                 </BodyCell>
@@ -135,11 +153,15 @@ export const TicketDistributionTable = () => {
                         ) : null}
 
                         <TableBodyRow className={css.lastRow}>
-                            <BodyCell className={css.total}>Total</BodyCell>
-                            <BodyCell justifyContent="right">
+                            <BodyCell className={css.total} width={300}>
+                                Total
+                            </BodyCell>
+                            <BodyCell justifyContent="right" width={100}>
                                 {formatMetricValue(ticketsCountTotal)}
                             </BodyCell>
-                            <BodyCell justifyContent="right">100%</BodyCell>
+                            <BodyCell justifyContent="right" width={80}>
+                                100%
+                            </BodyCell>
                         </TableBodyRow>
                     </TableBody>
                 </TableWrapper>
