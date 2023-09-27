@@ -96,6 +96,15 @@ const defaultState: Partial<RootState> = {
                 meta: {
                     app_id: '1',
                     language: 'en-US',
+                    languages: [
+                        {
+                            language: 'fr-FR',
+                        },
+                        {
+                            language: 'en-US',
+                            primary: true,
+                        },
+                    ],
                     preferences: {
                         auto_responder: {
                             enabled: true,
@@ -119,6 +128,15 @@ const defaultState: Partial<RootState> = {
                 meta: {
                     app_id: '2',
                     language: 'en-US',
+                    languages: [
+                        {
+                            language: 'fr-FR',
+                        },
+                        {
+                            language: 'en-US',
+                            primary: true,
+                        },
+                    ],
                     preferences: {
                         auto_responder: {
                             enabled: true,
@@ -141,6 +159,15 @@ const defaultState: Partial<RootState> = {
                 meta: {
                     app_id: '3',
                     language: 'en-US',
+                    languages: [
+                        {
+                            language: 'fr-FR',
+                        },
+                        {
+                            language: 'en-US',
+                            primary: true,
+                        },
+                    ],
                     preferences: {
                         auto_responder: {
                             enabled: true,

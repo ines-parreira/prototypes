@@ -1,12 +1,15 @@
 import React, {useMemo, useState} from 'react'
 import classnames from 'classnames'
-import {Map} from 'immutable'
+import {Map, List} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Label} from 'reactstrap'
 
 import settingsCss from 'pages/settings/settings.less'
 
-import {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
+    LanguageItem,
+} from 'config/integrations/gorgias_chat'
 import {ChatContactInfoDto} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
 import {useApplications} from 'models/integration/queries'
@@ -65,23 +68,63 @@ const ChatApplication = () => {
                     const chatAppKey =
                         applications.find(({id}) => id === chatApplicationId)
                             ?.appKey || ''
-                    const chatLanguageCode: string = chat.getIn([
-                        'meta',
-                        'language',
-                    ])
-                    const chatLanguage =
-                        GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find(
-                            (value) => value?.get('value') === chatLanguageCode
-                        )
-                    const chatLanguageName =
-                        chatLanguage !== undefined
-                            ? `(${chatLanguage.get('label')})`
-                            : ''
+
+                    let chatLanguageCodes = []
+
+                    const chatMetaLanguages: LanguageItem[] = (
+                        chat.getIn(
+                            ['meta', 'languages'],
+                            List()
+                        ) as List<LanguageItem>
+                    ).toJS()
+
+                    if (chatMetaLanguages.length) {
+                        const primaryChatLanguage = chatMetaLanguages.find(
+                            ({primary}) => primary
+                        )?.language
+
+                        const secondaryChatLanguages = chatMetaLanguages
+                            .filter(({primary}) => !primary)
+                            .map(({language}) => language)
+
+                        chatLanguageCodes = [
+                            primaryChatLanguage,
+                            ...secondaryChatLanguages,
+                        ]
+                    } else {
+                        const chatMetaLanguage = chat.getIn([
+                            'meta',
+                            'language',
+                        ])
+
+                        chatLanguageCodes = [chatMetaLanguage]
+                    }
+
+                    const chatLanguageNames = chatLanguageCodes.reduce(
+                        (acc: string[], languageCode) => {
+                            const chatLanguage =
+                                GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find(
+                                    (value) =>
+                                        value?.get('value') === languageCode
+                                )
+
+                            if (chatLanguage) {
+                                return [...acc, chatLanguage.get('label')]
+                            }
+
+                            return acc
+                        },
+                        []
+                    )
+
+                    const chatLanguagesLabel = chatLanguageNames.length
+                        ? `(${chatLanguageNames.join(', ')})`
+                        : ''
 
                     return {
                         label: (
                             <span>
-                                {chatName} {chatLanguageName}
+                                {chatName} {chatLanguagesLabel}
                             </span>
                         ),
                         value: chatAppKey,
