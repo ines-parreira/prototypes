@@ -23,7 +23,7 @@ import {
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     flushPromises,
     makeExecuteKeyboardAction,
@@ -42,7 +42,7 @@ import TicketView from '../components/TicketView'
 import {TicketDetailContainer} from '../TicketDetailContainer'
 
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 jest.useFakeTimers()
 
 const mockSetItem = jest.fn().mockResolvedValue(true)

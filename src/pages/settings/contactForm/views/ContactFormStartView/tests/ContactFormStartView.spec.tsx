@@ -16,7 +16,7 @@ import {
 import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView/ContactFormStartView'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {createTestQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
+import {mockQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
 import {buildSDKMocks} from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {mockResourceServerReplies} from '../../../tests/resource-mocks'
 
@@ -26,7 +26,7 @@ const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
 >
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const testQueryClient = createTestQueryClient()
+const testQueryClient = mockQueryClient()
 
 describe('<ContactFormStartView />', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>

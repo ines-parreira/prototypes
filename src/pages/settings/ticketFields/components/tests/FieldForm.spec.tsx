@@ -20,11 +20,11 @@ import {CustomField, CustomFieldInput} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
 import {renderWithRouter} from 'utils/testing'
 
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import FieldForm from '../FieldForm'
 
 const mockStore = configureMockStore([thunk])()
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 describe('<FieldForm/>', () => {
     beforeEach(() => {

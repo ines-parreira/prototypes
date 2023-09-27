@@ -15,7 +15,7 @@ import client from 'models/api/resources'
 import {renderWithRouter} from 'utils/testing'
 import {CustomField} from 'models/customField/types'
 import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import TicketFields from '../TicketFields'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -29,7 +29,7 @@ jest.mock('../components/List', () => () => {
 })
 
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 describe('<TicketFields/>', () => {
     beforeEach(() => {

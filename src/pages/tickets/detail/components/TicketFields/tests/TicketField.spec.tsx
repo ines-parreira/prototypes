@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     ticketDropdownFieldDefinition,
     ticketFieldDefinitions,
@@ -38,7 +38,7 @@ describe('<TicketField />', () => {
     }
 
     const store = mockStore(defaultState)
-    const queryClient = createTestQueryClient()
+    const queryClient = mockQueryClient()
 
     const baseFieldState = {
         hasError: false,

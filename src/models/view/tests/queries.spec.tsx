@@ -4,13 +4,13 @@ import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import client from 'models/api/resources'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useGetViewItems} from 'models/view/queries'
 import {ticket} from 'fixtures/ticket'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 const wrapper: React.FC = ({children}) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

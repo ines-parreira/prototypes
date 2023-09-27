@@ -27,13 +27,13 @@ import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {billingState} from 'fixtures/billing'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 describe('<ContactFormSettingsView />', () => {
     const FORM_ID = '1'

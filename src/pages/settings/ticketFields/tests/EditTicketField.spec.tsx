@@ -9,12 +9,12 @@ import {ticketInputFieldDefinition} from 'fixtures/customField'
 import client from 'models/api/resources'
 import {renderWithRouter} from 'utils/testing'
 
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import EditTicketField from '../EditTicketField'
 
 const mockStore = configureMockStore([thunk])()
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 describe('<EditTicketField/>', () => {
     beforeEach(() => {

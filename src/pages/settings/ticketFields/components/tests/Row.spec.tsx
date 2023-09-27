@@ -6,7 +6,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {DatetimeLabel} from 'pages/common/utils/labels'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithDnD} from 'utils/testing'
 import Row from '../Row'
 
@@ -20,7 +20,7 @@ jest.mock('pages/common/utils/labels', () => ({
 
 jest.mock('models/customField/resources')
 
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 describe('<Row />', () => {
     beforeEach(() => {

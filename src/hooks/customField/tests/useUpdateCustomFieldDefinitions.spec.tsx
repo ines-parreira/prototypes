@@ -11,7 +11,7 @@ import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {NotificationStatus} from 'state/notifications/types'
 import {
     useUpdateCustomFields,
@@ -22,7 +22,7 @@ import {assumeMock} from 'utils/testing'
 
 import {useUpdateCustomFieldDefinitions} from '../useUpdateCustomFieldDefinitions'
 
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 jest.mock('models/customField/queries')
 const useUpdateCustomFieldsMock = assumeMock(useUpdateCustomFields)

@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
@@ -24,7 +24,7 @@ jest.mock('models/customField/queries', () => {
 })
 
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 const mockStore = configureMockStore()
 
 describe('<TicketFields />', () => {

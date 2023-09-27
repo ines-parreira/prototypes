@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import client from 'models/api/resources'
 import {
     updateCustomFieldError,
@@ -23,7 +23,7 @@ jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 const mockStore = configureMockStore()
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 const ticketId = 'whateva'
 

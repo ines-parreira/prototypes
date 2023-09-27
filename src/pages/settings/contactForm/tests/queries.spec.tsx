@@ -2,7 +2,7 @@ import React from 'react'
 import _get from 'lodash/get'
 import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {
@@ -20,7 +20,7 @@ const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
 >
 
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 const wrapper: React.FC = ({children}) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

@@ -12,7 +12,7 @@ import {account as accountFixture} from 'fixtures/account'
 import {renderWithRouter} from 'utils/testing'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
 import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
 import {PageEmbedment} from 'models/contactForm/types'
@@ -46,7 +46,7 @@ describe('ContactFormPublish', () => {
         currentUser: fromJS(userFixture),
     }
 
-    const queryClient = createTestQueryClient()
+    const queryClient = mockQueryClient()
 
     const renderView = ({
         state,

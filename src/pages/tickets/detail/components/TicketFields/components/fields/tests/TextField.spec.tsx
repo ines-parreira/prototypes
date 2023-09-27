@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 import MockAdapter from 'axios-mock-adapter'
 
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import client from 'models/api/resources'
 import {
     updateCustomFieldError,
@@ -19,7 +19,7 @@ import TextField from '../TextField'
 
 const mockStore = configureMockStore()
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 const ticketId = 'whateva'
 

@@ -1,6 +1,6 @@
-import {createQueryClientWithCacheData as mockCreateQueryClientWithCacheData} from 'api/utils'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {channels as mockChannels} from 'fixtures/channels'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     getChannelById,
     getChannelBySlug,
@@ -12,9 +12,9 @@ import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
 jest.mock('api/queryClient', () => ({
-    appQueryClient: mockCreateQueryClientWithCacheData([
-        [mockChannelsQueryKeys.list(), mockChannels],
-    ]),
+    appQueryClient: mockQueryClient({
+        cachedData: [[mockChannelsQueryKeys.list(), mockChannels]],
+    }),
 }))
 
 describe('services', () => {

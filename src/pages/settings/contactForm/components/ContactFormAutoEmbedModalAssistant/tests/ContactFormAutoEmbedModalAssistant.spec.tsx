@@ -3,11 +3,11 @@ import {render, screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import userEvent from '@testing-library/user-event'
 import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {MODAL_LABELS} from '../constants'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
 
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')

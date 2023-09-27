@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import React from 'react'
 
 import client from 'models/api/resources'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     useCreateCustomField,
     useDeleteCustomFieldValue,
@@ -26,7 +26,7 @@ import {
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 describe('queries.spec.tsx', () => {
     beforeEach(() => {

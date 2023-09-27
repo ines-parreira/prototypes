@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {NotificationStatus} from 'state/notifications/types'
 import {
     useCreateCustomField,
@@ -17,7 +17,7 @@ import {assumeMock} from 'utils/testing'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {useCreateCustomFieldDefinition} from '../useCreateCustomFieldDefinition'
 
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 jest.mock('models/customField/queries')
 const useCreateCustomFieldMock = assumeMock(useCreateCustomField)

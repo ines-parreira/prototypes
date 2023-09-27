@@ -9,6 +9,7 @@ jest.mock('init')
 jest.mock('state/queries/actions', () => ({
     updateQueryTimestamp: jest.fn((arg: unknown) => arg),
 }))
+
 jest.mock(
     'api/queryClient',
     () =>

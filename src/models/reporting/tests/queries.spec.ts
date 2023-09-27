@@ -5,7 +5,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 
-import {createTestQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {doNotRetry40XErrorsHandler, usePostReporting} from '../queries'
 import {postReporting} from '../resources'
 
@@ -51,7 +51,7 @@ describe('Reporting queries', () => {
             const {result, waitForNextUpdate} = renderHook(
                 () => usePostReporting(payload),
                 {
-                    wrapper: createTestQueryClientProvider(),
+                    wrapper: mockQueryClientProvider(),
                 }
             )
             await waitForNextUpdate()
@@ -80,7 +80,7 @@ describe('Reporting queries', () => {
             const {waitForNextUpdate} = renderHook(
                 () => usePostReporting(payloadWithNewFilter),
                 {
-                    wrapper: createTestQueryClientProvider(),
+                    wrapper: mockQueryClientProvider(),
                 }
             )
             await waitForNextUpdate()

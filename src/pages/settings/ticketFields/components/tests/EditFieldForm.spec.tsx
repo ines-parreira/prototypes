@@ -13,12 +13,12 @@ import client from 'models/api/resources'
 import history from 'pages/history'
 import {renderWithRouter} from 'utils/testing'
 
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import EditFieldForm from '../EditFieldForm'
 
 const mockStore = configureMockStore([thunk])()
 const mockedServer = new MockAdapter(client)
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 jest.mock('pages/history')
 

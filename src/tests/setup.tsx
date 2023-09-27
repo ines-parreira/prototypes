@@ -15,7 +15,7 @@ import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 
 import history from '../pages/history'
-import {createTestQueryClient} from './reactQueryTestingUtils'
+import {mockQueryClient} from './reactQueryTestingUtils'
 
 Enzyme.configure({adapter: new Adapter()})
 
@@ -166,9 +166,10 @@ jest.mock('../models/api/resources.ts')
 window.CSRF_TOKEN = 'abcd'
 window.GORGIAS_RELEASE = '1'
 
-const mockQueryClient = createTestQueryClient()
+// Required until we have some dispatch in
+// react query callbacks
 jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient,
+    appQueryClient: mockQueryClient(),
 }))
 
 jest.mock(

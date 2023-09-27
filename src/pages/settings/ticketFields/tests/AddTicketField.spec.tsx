@@ -7,11 +7,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import AddTicketField from '../AddTicketField'
 
 const mockStore = configureMockStore([thunk])()
-const queryClient = createTestQueryClient()
+const queryClient = mockQueryClient()
 
 describe('<AddTicketField/>', () => {
     beforeEach(() => {

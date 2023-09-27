@@ -3,8 +3,8 @@ import {IntegrationType} from 'models/integration/constants'
 import {Integration} from 'models/integration/types'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
-import {createQueryClientWithCacheData as mockCreateQueryClientWithCacheData} from 'api/utils'
 import {channels as mockChannels} from 'fixtures/channels'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import {
     getApplicationById,
@@ -16,10 +16,12 @@ import {
 import {getChannelBySlug} from 'services/channels'
 
 jest.mock('api/queryClient', () => ({
-    appQueryClient: mockCreateQueryClientWithCacheData([
-        [mockChannelsQueryKeys.list(), mockChannels],
-        [mockApplicationsQueryKeys.list(), mockApplications],
-    ]),
+    appQueryClient: mockQueryClient({
+        cachedData: [
+            [mockChannelsQueryKeys.list(), mockChannels],
+            [mockApplicationsQueryKeys.list(), mockApplications],
+        ],
+    }),
 }))
 
 describe('services', () => {

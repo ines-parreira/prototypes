@@ -15,7 +15,7 @@ import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/cur
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID} from 'pages/settings/contactForm/components/ContactFormAutoEmbedCard'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
 import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
 import {ContactForm} from 'models/contactForm/types'
@@ -43,7 +43,7 @@ describe('ContactFormPublish', () => {
         currentAccount: fromJS(account),
     }
 
-    const queryClient = createTestQueryClient()
+    const queryClient = mockQueryClient()
 
     const renderView = ({
         state,

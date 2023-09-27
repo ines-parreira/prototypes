@@ -2,8 +2,9 @@ import {cleanup, fireEvent, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import React from 'react'
 import userEvent from '@testing-library/user-event'
-import {mockStore, renderWithRQProvider} from 'utils/testing'
+import {mockStore} from 'utils/testing'
 import {whatsAppMessageTemplates as mockWhatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import WhatsAppMessageTemplateNavigator from '../WhatsAppMessageTemplateNavigator'
 
 jest.mock('models/whatsAppMessageTemplates/queries', () => ({
@@ -31,7 +32,7 @@ jest.mock(
 
 describe('WhatsAppMessageTemplateNavigator', () => {
     const renderComponent = () =>
-        renderWithRQProvider(
+        renderWithQueryClientProvider(
             <Provider store={mockStore({} as any)}>
                 <WhatsAppMessageTemplateNavigator />
             </Provider>

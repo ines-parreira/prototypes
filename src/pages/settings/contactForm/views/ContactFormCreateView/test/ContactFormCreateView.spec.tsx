@@ -13,7 +13,7 @@ import {useSupportedLocales} from 'pages/settings/helpCenter/providers/Supported
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {createTestQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
+import {mockQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
 import {buildSDKMocks} from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {mockResourceServerReplies} from '../../../tests/resource-mocks'
 
@@ -34,7 +34,7 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
 })
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 
-const testQueryClient = createTestQueryClient()
+const testQueryClient = mockQueryClient()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
