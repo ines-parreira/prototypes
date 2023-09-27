@@ -18,6 +18,7 @@ import {isDeviceTypeOperators} from '../../types/enums/DeviceTypeOperators.enum'
 import {SingleCampaignInViewOperators} from '../../types/enums/SingleCampaignInViewOperators.enum'
 
 import {TriggersProvider} from '../TriggersProvider'
+import SetupConvertBanner from '../../components/SetupConvertBanner/SetupConvertBanner'
 
 type Props = {
     count?: number
@@ -97,6 +98,7 @@ export const CampaignAudienceStep = ({
             id={CampaignStepsKeys.Audience}
             title="Choose your audience"
         >
+            <SetupConvertBanner />
             <div className="mb-4">
                 {shouldShowContactCsm && (
                     <Alert icon type={AlertType.Warning}>
