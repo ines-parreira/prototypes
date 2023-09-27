@@ -73,31 +73,37 @@ import TipsToggle from './TipsToggle'
 import withEcommerceIntegration from './withEcommerceIntegrations'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
-export const getLabel = (label?: string): string => {
-    switch (label) {
-        case AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder:
-            return 'Track order'
-        case AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns:
-            return 'Return order'
-        case AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse:
-            return 'Quick response'
-        case AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation:
-            return 'Article recommendation'
-        case AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse:
-            return 'Report issue'
-        case AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows:
-            return 'Flows'
-        case AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders:
-            return 'Autoresponders'
-        default:
-            return 'Others'
-    }
+
+export type AutomatedInteractionByFeatures = Exclude<
+    AutomationBillingEventMeasure,
+    | AutomationBillingEventMeasure.FirstResponseTimeWithAutomation
+    | AutomationBillingEventMeasure.ResolutionTimeWithAutomation
+    | AutomationBillingEventMeasure.OverallTimeSaved
+    | AutomationBillingEventMeasure.AutomationRate
+    | AutomationBillingEventMeasure.AutomatedInteractions
+>
+
+export const FEATURE_LABELS: Record<AutomatedInteractionByFeatures, string> = {
+    [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows]:
+        'Flows',
+    [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse]:
+        'Quick response flows',
+    [AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation]:
+        'Article recommendation',
+    [AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder]:
+        'Track order',
+    [AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns]:
+        'Return order',
+    [AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse]:
+        'Report order issue',
+    [AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders]:
+        'Autoresponders',
 }
 
 // Below values are from https://app.periscopedata.com/app/gorgias/1123203/[Cross]-Automation-Add-on-Performance?widget=17138886&udv=0
 export const automationRate = {
-    top10P: 0.3134,
-    avg: 0.1181,
+    top10P: 0.31,
+    avg: 0.12,
 }
 // Value to percentile
 const brackets: {value: number; result: string}[] = [
@@ -185,10 +191,18 @@ export function AutomationAddOnOverview() {
             automatedInteractionByEventTypesTimeSeries.data,
             automatedInteractionByEventTypesTimeSeries.data
                 ? automatedInteractionByEventTypesTimeSeries.data.map((item) =>
-                      getLabel(item[0].label)
+                      item[0].label
+                          ? FEATURE_LABELS[
+                                item[0].label as AutomatedInteractionByFeatures
+                            ]
+                          : 'Others'
                   )
                 : [AUTOMATED_INTERACTIONS_LABEL],
             granularity
+        ).sort(
+            (a, b) =>
+                Object.values(FEATURE_LABELS).indexOf(a.label) -
+                Object.values(FEATURE_LABELS).indexOf(b.label)
         )
 
     const showGreyArea = useMemo((): Moment[] => {
@@ -204,6 +218,12 @@ export function AutomationAddOnOverview() {
 
         return []
     }, [statsFilters.period.end_datetime, statsFilters.period.start_datetime])
+
+    const isDurationLast3Days = useMemo(() => {
+        const startdDateTime = moment(statsFilters.period.start_datetime)
+        const threeDaysAgo = moment().subtract(3, 'days')
+        return startdDateTime.isAfter(threeDaysAgo, 'date')
+    }, [statsFilters.period.start_datetime])
 
     const plotIfGrayArea = useCallback(
         (
@@ -331,10 +351,16 @@ export function AutomationAddOnOverview() {
     const percentLabel = (value: number) =>
         `${parseFloat((value * 100).toFixed(2))}%`
 
+    const renderTooltipLabel =
+        (isPercentage = false) =>
+        ({raw, dataset}: TooltipItem<'line'>) => {
+            return `${dataset?.label || ''}:  ${
+                isPercentage ? percentLabel(raw as number) : (raw as number)
+            }`
+        }
+
     const propsForPercentValues = {
-        _renderLegacyTooltipLabel: ({raw, dataset}: TooltipItem<'line'>) => {
-            return `${dataset?.label || ''}:  ${percentLabel(raw as number)}`
-        },
+        _renderLegacyTooltipLabel: renderTooltipLabel(true),
         renderYTickLabel: (value: string | number) =>
             percentLabel(value as number),
     }
@@ -357,6 +383,12 @@ export function AutomationAddOnOverview() {
                 'MMM D'
             )
         return this.getLabelForValue(index)
+    }
+
+    const getDurationLable = (trend: MetricTrend) => {
+        return trend.data?.value
+            ? formatMetricValue(trend.data?.value, 'duration')
+            : '0h 0m'
     }
 
     return (
@@ -399,7 +431,7 @@ export function AutomationAddOnOverview() {
                 }
             >
                 <div className={classnames(css.wrapper)}>
-                    {hasActivity ? (
+                    {hasActivity || isDurationLast3Days ? (
                         <Alert type={AlertType.Info} icon>
                             Data for the past 72 hours is not included on this
                             dashboard, as interactions are considered automated
@@ -464,7 +496,10 @@ export function AutomationAddOnOverview() {
                                     >
                                         You’re in the {topOrBottomPercent} of
                                         merchants. Set up all{' '}
-                                        <a href="">
+                                        <a
+                                            target="blank"
+                                            href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                                        >
                                             Automation Add-on features
                                         </a>{' '}
                                         to capture more traffic and increase
@@ -476,10 +511,12 @@ export function AutomationAddOnOverview() {
                             <BigNumberMetric
                                 isLoading={automationRateTrend.isFetching}
                             >
-                                {formatMetricValue(
-                                    automationRateValue * 100,
-                                    'percent'
-                                )}
+                                {automationRateValue
+                                    ? formatMetricValue(
+                                          automationRateValue * 100,
+                                          'percent'
+                                      )
+                                    : '-'}
                             </BigNumberMetric>
                         </MetricCard>
                     </DashboardGridCell>
@@ -499,10 +536,20 @@ export function AutomationAddOnOverview() {
                                 areTipsVisible && (
                                     <PerformanceTip showBenchmark={false}>
                                         Check out our{' '}
-                                        <a href=""> Automation Playbook</a> to
-                                        ensure you’re using Automation Add-on
-                                        features to their full potential. Visit
-                                        <a href="/app/settings/billing">
+                                        <a
+                                            target="blank"
+                                            href="https://link.gorgias.com/aut-playbook"
+                                        >
+                                            {' '}
+                                            Automation Playbook
+                                        </a>{' '}
+                                        for tactical tips on how to use
+                                        Automation Add-on features to their full
+                                        potential. Visit
+                                        <a
+                                            target="blank"
+                                            href="/app/settings/billing"
+                                        >
                                             {' '}
                                             billing
                                         </a>{' '}
@@ -537,10 +584,7 @@ export function AutomationAddOnOverview() {
                             <BigNumberMetric
                                 isLoading={firstResponseTimeTrend.isFetching}
                             >
-                                {formatMetricValue(
-                                    firstResponseTimeTrend.data?.value,
-                                    'duration'
-                                )}
+                                {getDurationLable(firstResponseTimeTrend)}
                             </BigNumberMetric>
                         </MetricCard>
                     </DashboardGridCell>
@@ -548,7 +592,7 @@ export function AutomationAddOnOverview() {
                         <MetricCard
                             title={OVERALL_TIME_SAVED_BY_YOUR_TEAM}
                             hint={{
-                                title: 'How much time agents would have spent resolving your automated interactions, based on your resolution time.',
+                                title: 'How much time agents would have spent resolving your automated interactions, based on your average resolution time.',
                             }}
                             isLoading={resolutionTimeTrend.isFetching}
                             trendBadge={
@@ -560,10 +604,7 @@ export function AutomationAddOnOverview() {
                             <BigNumberMetric
                                 isLoading={resolutionTimeTrend.isFetching}
                             >
-                                {formatMetricValue(
-                                    resolutionTimeTrend.data?.value,
-                                    'duration'
-                                )}
+                                {getDurationLable(resolutionTimeTrend)}
                             </BigNumberMetric>
                         </MetricCard>
                     </DashboardGridCell>
@@ -602,13 +643,13 @@ export function AutomationAddOnOverview() {
                                 greyArea={plotIfGrayAreaForAutomatedInteraction}
                                 hasBackground
                                 _displayLegacyTooltip
+                                _renderLegacyTooltipLabel={renderTooltipLabel()}
                                 yAxisBeginAtZero
                                 renderXTickLabel={renderXTickLabel}
                                 yAxisScale={
                                     hasActivity ? {} : {min: 0, max: 5000}
                                 }
                                 renderYTickLabel={(val) => {
-                                    window.console.log(val)
                                     return parseFloat(
                                         val.toString()
                                     ).toLocaleString()
@@ -638,6 +679,7 @@ export function AutomationAddOnOverview() {
                                 displayLegend
                                 toggleLegend
                                 legendOnLeft
+                                _renderLegacyTooltipLabel={renderTooltipLabel()}
                                 customColors={[
                                     colors['📺 Classic'].Main.Variations
                                         .Primary_3.value,
@@ -647,8 +689,8 @@ export function AutomationAddOnOverview() {
                                         .value,
                                     colors['📺 Classic'].Accessory.Green_text
                                         .value,
-                                    colors['📺 Classic'].Main.Variations
-                                        .Primary_3.value,
+                                    colors['📺 Classic'].Feedback.Variations
+                                        .Error_3.value,
                                     colors['📺 Classic'].Neutral.Grey_5.value,
                                     colors['📺 Classic'].Accessory.Yellow_text
                                         .value,
@@ -657,6 +699,7 @@ export function AutomationAddOnOverview() {
                                 yAxisScale={
                                     hasActivity ? {} : {min: 0, max: 750}
                                 }
+                                wrapperclassNames={css.chartWrapper}
                             />
                         </ChartCard>
                     </DashboardGridCell>

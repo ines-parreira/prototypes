@@ -1,5 +1,5 @@
 import moment from 'moment/moment'
-import {getLabel} from 'pages/stats/AutomationAddonOverview'
+
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {
     CURRENT_PERIOD_LABEL,
@@ -16,6 +16,10 @@ import {
     TIME_SAVED_ON_FIRST_RESPONSE,
 } from 'pages/stats/self-service/constants'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {
+    AutomatedInteractionByFeatures,
+    FEATURE_LABELS,
+} from 'pages/stats/AutomationAddonOverview'
 
 export interface Period {
     end_datetime: string
@@ -97,8 +101,9 @@ export const saveReport = async (
     ]
 
     const labels =
-        automatedInteractionByEventTypesTimeSeries.data?.map((item) =>
-            getLabel(item[0].label)
+        automatedInteractionByEventTypesTimeSeries.data?.map(
+            (item) =>
+                FEATURE_LABELS[item[0].label as AutomatedInteractionByFeatures]
         ) || []
     const performanceFeatureData = [
         [EMPTY_LABEL, ...labels],

@@ -13,14 +13,31 @@ import {billingState} from 'fixtures/billing'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 
+import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView from '../StatsNavbarView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
+function getIntegration(id: number, type: IntegrationType) {
+    return {
+        id,
+        type,
+        name: `My Phone Integration ${id}`,
+        meta: {
+            emoji: '',
+            phone_number_id: id,
+        },
+    }
+}
 describe('StatsNavbarView', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS(account),
         billing: fromJS(billingState),
+        integrations: fromJS({
+            integrations: [
+                getIntegration(1, IntegrationType.Shopify),
+                getIntegration(2, IntegrationType.Magento2),
+            ],
+        }),
     }
 
     it('should render', () => {

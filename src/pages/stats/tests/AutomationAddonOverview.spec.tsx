@@ -351,4 +351,88 @@ describe('<AutomationAddonOverview />', () => {
             })
         })
     })
+    describe.each([['show dash in case of', 0]])('%s', (testName, value) => {
+        it('should show tips with sentiment ', () => {
+            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
+            useAutomationRateTrendMock.mockReturnValue({
+                ...defaultMetricTrend,
+                data: {
+                    value,
+                    prevValue: value,
+                },
+            })
+            const screen = render(
+                <Provider store={mockStore(defaultState)}>
+                    <AutomationAddonOverview />
+                </Provider>
+            )
+            fireEvent.click(screen.getByText(/Show tips/))
+            expect(screen.getByText('-'))
+        })
+    })
+    describe.each([['FRT show 0h 0m in case of', 0]])(
+        '%s',
+        (testName, value) => {
+            it('should show tips with sentiment ', () => {
+                localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
+                useFirstResponseTimeWithAutomationTrendMock.mockReturnValue({
+                    ...defaultMetricTrend,
+                    data: {
+                        value,
+                        prevValue: value,
+                    },
+                })
+                const screen = render(
+                    <Provider store={mockStore(defaultState)}>
+                        <AutomationAddonOverview />
+                    </Provider>
+                )
+                fireEvent.click(screen.getByText(/Show tips/))
+                expect(screen.getByText('0h 0m'))
+            })
+        }
+    )
+
+    describe.each([['OTS show 0h 0m in case of', 0]])(
+        '%s',
+        (testName, value) => {
+            it('should show tips with sentiment ', () => {
+                localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
+                useResolutionTimeWithAutomationTrendMock.mockReturnValue({
+                    ...defaultMetricTrend,
+                    data: {
+                        value,
+                        prevValue: value,
+                    },
+                })
+                const screen = render(
+                    <Provider store={mockStore(defaultState)}>
+                        <AutomationAddonOverview />
+                    </Provider>
+                )
+                fireEvent.click(screen.getByText(/Show tips/))
+                expect(screen.getByText('0h 0m'))
+            })
+        }
+    )
+
+    describe.each([['AI show 0 in case of', 0]])('%s', (testName, value) => {
+        it('should show tips with sentiment ', () => {
+            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
+            useAutomatedInteractionTrendMock.mockReturnValue({
+                ...defaultMetricTrend,
+                data: {
+                    value,
+                    prevValue: value,
+                },
+            })
+            const screen = render(
+                <Provider store={mockStore(defaultState)}>
+                    <AutomationAddonOverview />
+                </Provider>
+            )
+            fireEvent.click(screen.getByText(/Show tips/))
+            expect(screen.getByText('0'))
+        })
+    })
 })

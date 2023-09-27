@@ -177,7 +177,7 @@ exports[`StatsNavbarView should render 1`] = `
               <i
                 class="material-icons md-2 icon"
               >
-                lock
+                arrow_circle_up
               </i>
             </a>
           </div>
@@ -358,7 +358,7 @@ exports[`StatsNavbarView should render 1`] = `
             <i
               class="material-icons md-2 icon"
             >
-              lock
+              arrow_circle_up
             </i>
           </a>
         </div>

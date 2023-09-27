@@ -19,6 +19,11 @@ import {
     PAGE_TITLE_AAO,
     PAGE_TITLE_AAO_FEATURES,
 } from 'pages/stats/self-service/constants'
+import {
+    getIntegrationsList,
+    hasIntegrationOfTypes,
+} from 'state/integrations/selectors'
+import {Category} from 'models/integration/types/app'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -37,6 +42,16 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.NewAutomationAddon]
 
     const isConvertSubscriber = useIsConvertSubscriber()
+    const integrationsList = useAppSelector(getIntegrationsList)
+    const hasEcommerceIntegerations = useAppSelector(
+        hasIntegrationOfTypes(
+            integrationsList
+                .filter((integration) =>
+                    integration.categories.includes(Category.ECOMMERCE)
+                )
+                .map((integration) => integration.type)
+        )
+    )
     const automationAddon: {
         label: ReactNode
         to: string
@@ -53,7 +68,7 @@ export default function StatsNavbarView() {
             label: (
                 <>
                     {PAGE_TITLE_AAO}
-                    {hasAutomationAddOn && (
+                    {hasAutomationAddOn && hasEcommerceIntegerations && (
                         <Badge
                             type={ColorType.Blue}
                             className={cssNavbar.badge}

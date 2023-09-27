@@ -582,7 +582,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -602,7 +602,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -633,7 +633,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -870,7 +870,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -886,7 +886,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -902,7 +902,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -918,7 +918,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
             </div>
@@ -1550,7 +1550,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -1570,7 +1570,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -1601,7 +1601,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -1838,7 +1838,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -1854,7 +1854,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -1870,7 +1870,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
               <a
@@ -1886,7 +1886,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <i
                   class="material-icons md-2 icon"
                 >
-                  lock
+                  arrow_circle_up
                 </i>
               </a>
             </div>

@@ -51,6 +51,7 @@ type Props = {
         min?: number
         max?: number
     }
+    wrapperclassNames?: string
 }
 
 const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = fromJS({
@@ -148,6 +149,7 @@ export default function LineChart({
     toggleLegend = false,
     renderXTickLabel,
     yAxisScale = {},
+    wrapperclassNames,
 }: Props) {
     const [chart, setChart] = useState<Chart>()
     const [chartArea, setChartArea] = useState<ChartArea>()
@@ -259,7 +261,7 @@ export default function LineChart({
     }
 
     return (
-        <div className={css.wrapper}>
+        <div className={classNames(css.wrapper, wrapperclassNames)}>
             <Line
                 data={formattedData}
                 options={lineOptions.toJS()}

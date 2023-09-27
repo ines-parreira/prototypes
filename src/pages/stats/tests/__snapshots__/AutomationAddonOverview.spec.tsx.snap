@@ -304,7 +304,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        1.81%
+                        2%
                       </div>
                       <div
                         class="tip"
@@ -325,7 +325,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                                 class="value"
                                 id="tip-tooltip-light-error"
                               >
-                                11.81%
+                                12%
                               </span>
                             </div>
                             <div>
@@ -337,7 +337,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                               <span
                                 class="value"
                               >
-                                31.34%
+                                31%
                               </span>
                             </div>
                           </div>
@@ -361,7 +361,8 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                            of merchants. Set up all
                            
                           <a
-                            href=""
+                            href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                            target="blank"
                           >
                             Automation Add-on features
                           </a>
@@ -426,13 +427,17 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                           Check out our
                            
                           <a
-                            href=""
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
                           >
-                             Automation Playbook
+                             
+                            Automation Playbook
                           </a>
-                           to ensure you’re using Automation Add-on features to their full potential. Visit
+                           
+                          for tactical tips on how to use Automation Add-on features to their full potential. Visit
                           <a
                             href="/app/settings/billing"
+                            target="blank"
                           >
                              
                             billing
@@ -627,7 +632,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                         </div>
                       </div>
                       <div
-                        class="wrapper"
+                        class="wrapper chartWrapper"
                       >
                         <div
                           class="legend legend legendOnLeft"
@@ -1045,7 +1050,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      1.81%
+                      2%
                     </div>
                     <div
                       class="tip"
@@ -1066,7 +1071,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                               class="value"
                               id="tip-tooltip-light-error"
                             >
-                              11.81%
+                              12%
                             </span>
                           </div>
                           <div>
@@ -1078,7 +1083,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                             <span
                               class="value"
                             >
-                              31.34%
+                              31%
                             </span>
                           </div>
                         </div>
@@ -1102,7 +1107,8 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                          of merchants. Set up all
                          
                         <a
-                          href=""
+                          href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                          target="blank"
                         >
                           Automation Add-on features
                         </a>
@@ -1167,13 +1173,17 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                         Check out our
                          
                         <a
-                          href=""
+                          href="https://link.gorgias.com/aut-playbook"
+                          target="blank"
                         >
-                           Automation Playbook
+                           
+                          Automation Playbook
                         </a>
-                         to ensure you’re using Automation Add-on features to their full potential. Visit
+                         
+                        for tactical tips on how to use Automation Add-on features to their full potential. Visit
                         <a
                           href="/app/settings/billing"
+                          target="blank"
                         >
                            
                           billing
@@ -1368,7 +1378,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                       </div>
                     </div>
                     <div
-                      class="wrapper"
+                      class="wrapper chartWrapper"
                     >
                       <div
                         class="legend legend legendOnLeft"
@@ -1765,7 +1775,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        21.34%
+                        21%
                       </div>
                       <div
                         class="tip"
@@ -1786,7 +1796,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                                 class="value"
                                 id="tip-tooltip-light-success"
                               >
-                                11.81%
+                                12%
                               </span>
                             </div>
                             <div>
@@ -1798,7 +1808,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                               <span
                                 class="value"
                               >
-                                31.34%
+                                31%
                               </span>
                             </div>
                           </div>
@@ -1822,7 +1832,8 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                            of merchants. Set up all
                            
                           <a
-                            href=""
+                            href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                            target="blank"
                           >
                             Automation Add-on features
                           </a>
@@ -1887,13 +1898,17 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                           Check out our
                            
                           <a
-                            href=""
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
                           >
-                             Automation Playbook
+                             
+                            Automation Playbook
                           </a>
-                           to ensure you’re using Automation Add-on features to their full potential. Visit
+                           
+                          for tactical tips on how to use Automation Add-on features to their full potential. Visit
                           <a
                             href="/app/settings/billing"
+                            target="blank"
                           >
                              
                             billing
@@ -2088,7 +2103,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                         </div>
                       </div>
                       <div
-                        class="wrapper"
+                        class="wrapper chartWrapper"
                       >
                         <div
                           class="legend legend legendOnLeft"
@@ -2506,7 +2521,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      21.34%
+                      21%
                     </div>
                     <div
                       class="tip"
@@ -2527,7 +2542,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                               class="value"
                               id="tip-tooltip-light-success"
                             >
-                              11.81%
+                              12%
                             </span>
                           </div>
                           <div>
@@ -2539,7 +2554,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                             <span
                               class="value"
                             >
-                              31.34%
+                              31%
                             </span>
                           </div>
                         </div>
@@ -2563,7 +2578,8 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                          of merchants. Set up all
                          
                         <a
-                          href=""
+                          href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                          target="blank"
                         >
                           Automation Add-on features
                         </a>
@@ -2628,13 +2644,17 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                         Check out our
                          
                         <a
-                          href=""
+                          href="https://link.gorgias.com/aut-playbook"
+                          target="blank"
                         >
-                           Automation Playbook
+                           
+                          Automation Playbook
                         </a>
-                         to ensure you’re using Automation Add-on features to their full potential. Visit
+                         
+                        for tactical tips on how to use Automation Add-on features to their full potential. Visit
                         <a
                           href="/app/settings/billing"
+                          target="blank"
                         >
                            
                           billing
@@ -2829,7 +2849,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                       </div>
                     </div>
                     <div
-                      class="wrapper"
+                      class="wrapper chartWrapper"
                     >
                       <div
                         class="legend legend legendOnLeft"
@@ -3226,7 +3246,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                       <div
                         class="wrapper heading-page-semibold"
                       >
-                        41.34%
+                        41%
                       </div>
                       <div
                         class="tip"
@@ -3247,7 +3267,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                                 class="value"
                                 id="tip-tooltip-success"
                               >
-                                11.81%
+                                12%
                               </span>
                             </div>
                             <div>
@@ -3259,7 +3279,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                               <span
                                 class="value"
                               >
-                                31.34%
+                                31%
                               </span>
                             </div>
                           </div>
@@ -3283,7 +3303,8 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                            of merchants. Set up all
                            
                           <a
-                            href=""
+                            href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                            target="blank"
                           >
                             Automation Add-on features
                           </a>
@@ -3348,13 +3369,17 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                           Check out our
                            
                           <a
-                            href=""
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
                           >
-                             Automation Playbook
+                             
+                            Automation Playbook
                           </a>
-                           to ensure you’re using Automation Add-on features to their full potential. Visit
+                           
+                          for tactical tips on how to use Automation Add-on features to their full potential. Visit
                           <a
                             href="/app/settings/billing"
+                            target="blank"
                           >
                              
                             billing
@@ -3549,7 +3574,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                         </div>
                       </div>
                       <div
-                        class="wrapper"
+                        class="wrapper chartWrapper"
                       >
                         <div
                           class="legend legend legendOnLeft"
@@ -3967,7 +3992,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                     <div
                       class="wrapper heading-page-semibold"
                     >
-                      41.34%
+                      41%
                     </div>
                     <div
                       class="tip"
@@ -3988,7 +4013,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                               class="value"
                               id="tip-tooltip-success"
                             >
-                              11.81%
+                              12%
                             </span>
                           </div>
                           <div>
@@ -4000,7 +4025,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                             <span
                               class="value"
                             >
-                              31.34%
+                              31%
                             </span>
                           </div>
                         </div>
@@ -4024,7 +4049,8 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                          of merchants. Set up all
                          
                         <a
-                          href=""
+                          href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                          target="blank"
                         >
                           Automation Add-on features
                         </a>
@@ -4089,13 +4115,17 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                         Check out our
                          
                         <a
-                          href=""
+                          href="https://link.gorgias.com/aut-playbook"
+                          target="blank"
                         >
-                           Automation Playbook
+                           
+                          Automation Playbook
                         </a>
-                         to ensure you’re using Automation Add-on features to their full potential. Visit
+                         
+                        for tactical tips on how to use Automation Add-on features to their full potential. Visit
                         <a
                           href="/app/settings/billing"
+                          target="blank"
                         >
                            
                           billing
@@ -4290,7 +4320,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                       </div>
                     </div>
                     <div
-                      class="wrapper"
+                      class="wrapper chartWrapper"
                     >
                       <div
                         class="legend legend legendOnLeft"
@@ -4704,7 +4734,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                           class="value"
                           id="tip-tooltip-success"
                         >
-                          11.81%
+                          12%
                         </span>
                       </div>
                       <div>
@@ -4716,7 +4746,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                         <span
                           class="value"
                         >
-                          31.34%
+                          31%
                         </span>
                       </div>
                     </div>
@@ -4740,7 +4770,8 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                      of merchants. Set up all
                      
                     <a
-                      href=""
+                      href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
+                      target="blank"
                     >
                       Automation Add-on features
                     </a>
@@ -4805,13 +4836,17 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                     Check out our
                      
                     <a
-                      href=""
+                      href="https://link.gorgias.com/aut-playbook"
+                      target="blank"
                     >
-                       Automation Playbook
+                       
+                      Automation Playbook
                     </a>
-                     to ensure you’re using Automation Add-on features to their full potential. Visit
+                     
+                    for tactical tips on how to use Automation Add-on features to their full potential. Visit
                     <a
                       href="/app/settings/billing"
+                      target="blank"
                     >
                        
                       billing
@@ -5006,7 +5041,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                   </div>
                 </div>
                 <div
-                  class="wrapper"
+                  class="wrapper chartWrapper"
                 >
                   <div
                     class="legend legend legendOnLeft"

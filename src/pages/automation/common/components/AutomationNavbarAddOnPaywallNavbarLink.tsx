@@ -39,7 +39,7 @@ const AutomationNavbarAddOnPaywallNavbarLink = ({
                         setIsPopoverOpen(true)
                     }}
                 >
-                    lock
+                    arrow_circle_up
                 </i>
             </NavbarLink>
             {iconRef.current && (
