@@ -95,6 +95,19 @@ enum LoadingState {
     LOADED = 'loaded',
 }
 
+export const multiLanguageInitialTextsEmptyData: TextsMultiLanguage =
+    Object.values(LanguageChat).reduce(
+        (acc, lang) => ({
+            ...acc,
+            [lang as string]: {
+                texts: {},
+                sspTexts: {},
+                meta: {},
+            } as TextsPerLanguage,
+        }),
+        {} as TextsMultiLanguage
+    )
+
 function GorgiasTranslateText({
     integration,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
@@ -137,18 +150,6 @@ function GorgiasTranslateText({
     })
 
     const IsLegacyMonoLanguageMode = lastSegment === 'texts'
-    const multiLanguageInitialTextsEmptyData: TextsMultiLanguage =
-        Object.values(LanguageChat).reduce(
-            (acc, lang) => ({
-                ...acc,
-                [lang as string]: {
-                    texts: {},
-                    sspTexts: {},
-                    meta: {},
-                } as TextsPerLanguage,
-            }),
-            {} as TextsMultiLanguage
-        )
 
     // Store the the initial state of the full multi-language format. Or is just a copy of initialTextsOfSelectedLanguage if in backward compatible mode.
     const [initialTexts, setInitialTexts] = useState<Texts>(
@@ -329,13 +330,11 @@ function GorgiasTranslateText({
         language,
         initialTexts,
         integration,
-        multiLanguageInitialTextsEmptyData,
     ])
 
     /**
      * Migrate the existing decoration intro message texts to the Tone of Voice (of the default Language).
      * when Tone of Voice don't have the texts yet (decoration texts are always present by default).
-     * Only
      */
     const migrateDecorationTextsIfNeeded = useCallback(() => {
         const introductionTextFromToneOfVoice: string | undefined =

@@ -1,4 +1,12 @@
-import React, {SyntheticEvent, useEffect, useState, useRef} from 'react'
+import React, {
+    SyntheticEvent,
+    useEffect,
+    useState,
+    useRef,
+    useMemo,
+} from 'react'
+import {produce} from 'immer'
+import {set} from 'lodash'
 import {Link, useHistory} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
@@ -40,6 +48,8 @@ import {
     GORGIAS_CHAT_DEFAULT_FONTS,
     GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT,
     LanguageItem,
+    getPrimaryLanguageFromChatConfig,
+    isTextsMultiLanguage,
 } from 'config/integrations/gorgias_chat'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {
@@ -50,6 +60,7 @@ import {
     GorgiasChatPositionAlignmentEnum,
     GorgiasChatLauncherType,
     IntegrationType,
+    GorgiasChatIntegration,
 } from 'models/integration/types'
 import {RootState} from 'state/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -74,6 +85,12 @@ import Label from 'pages/common/forms/Label/Label'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
+import {
+    Texts,
+    TextsMultiLanguage,
+    TextsPerLanguage,
+} from 'rest_api/gorgias_chat_protected_api/types'
+import {LanguageChat} from 'constants/languages'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
@@ -84,6 +101,7 @@ import {StoreNameDropdown} from './StoreNameDropdown'
 import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
 import ImageField from './components/ImageField'
 import UploadLogoCaption from './components/UploadLogoCaption'
+import {multiLanguageInitialTextsEmptyData} from './GorgiasTranslateText/GorgiasTranslateText'
 
 export enum PositionAxis {
     AXIS_X = 'axis-x',
@@ -211,6 +229,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             defaultContent
         )
     )
+    const [texts, setTexts] = useState<TextsMultiLanguage>(
+        multiLanguageInitialTextsEmptyData
+    )
+
+    const integrationChat = integration.toJS() as GorgiasChatIntegration
+    const chatApplicationId = integrationChat?.meta?.app_id
+
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
     const viewTranslateEdit =
@@ -236,6 +261,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         }
     )
 
+    const integrationDefaultLanguage = useMemo(() => {
+        if (integrationChat.meta) {
+            return getPrimaryLanguageFromChatConfig(integrationChat.meta)
+        }
+        return null
+    }, [integrationChat])
+
     useEffect(() => {
         if (isUpdate && !loading.get('integration')) {
             initState(integration)
@@ -255,6 +287,60 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [integration])
+
+    useEffect(() => {
+        if (!chatMultiLanguagesEnabled || !chatApplicationId) {
+            return
+        }
+        void IntegrationsActions.getApplicationTexts(chatApplicationId).then(
+            (data: Texts) => {
+                let textsMultiLanguage: TextsMultiLanguage | undefined =
+                    undefined
+
+                // Migrate to multi-language if needed.
+                if (!isTextsMultiLanguage(data)) {
+                    textsMultiLanguage = {
+                        ...multiLanguageInitialTextsEmptyData,
+                        [integrationDefaultLanguage as LanguageChat]:
+                            data as TextsPerLanguage,
+                    }
+                } else {
+                    textsMultiLanguage = data as TextsMultiLanguage
+                }
+
+                setTexts(textsMultiLanguage)
+
+                const textsPerLanguage =
+                    textsMultiLanguage[
+                        integrationDefaultLanguage as LanguageChat
+                    ]
+                const introductionTextFromToneOfVoice: string | undefined =
+                    textsPerLanguage?.texts?.introductionText
+                const offlineIntroductionTextsFromToneOfVoice:
+                    | string
+                    | undefined =
+                    textsPerLanguage?.texts?.offlineIntroductionText
+
+                if (introductionTextFromToneOfVoice) {
+                    setState((prevState) => ({
+                        ...prevState,
+                        introductionText: introductionTextFromToneOfVoice,
+                    }))
+                }
+                if (offlineIntroductionTextsFromToneOfVoice) {
+                    setState((prevState) => ({
+                        ...prevState,
+                        offlineIntroductionText:
+                            offlineIntroductionTextsFromToneOfVoice,
+                    }))
+                }
+            }
+        )
+    }, [
+        chatMultiLanguagesEnabled,
+        integrationDefaultLanguage,
+        chatApplicationId,
+    ])
 
     const prefillWithStorename = (shopName: string) => {
         setState((state) => ({
@@ -456,16 +542,42 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             actionToUse = actions.updateOrCreateIntegration
         }
 
-        return (actionToUse(fromJS(form)) as unknown as Promise<any>).then(
-            ({error} = {}) => {
-                if (error) {
-                    return
-                }
+        // Save `texts` if multi-language is enabled.
+        if (chatMultiLanguagesEnabled) {
+            let textsIncludingSyncedState = texts
 
-                // reload the integration
-                setState((prevState) => ({...prevState, isInitialized: false}))
+            textsIncludingSyncedState = produce(texts, (textsDraft) => {
+                const path = `${integrationDefaultLanguage as string}.texts`
+                set(
+                    textsDraft,
+                    `${path}.introductionText`,
+                    state.introductionText
+                )
+                set(
+                    textsDraft,
+                    `${path}.offlineIntroductionText`,
+                    state.offlineIntroductionText
+                )
+            })
+
+            void IntegrationsActions.updateApplicationTexts(
+                chatApplicationId as string,
+                textsIncludingSyncedState
+            )
+        }
+
+        const integrationResult = (
+            actionToUse(fromJS(form)) as unknown as Promise<any>
+        ).then(({error} = {}) => {
+            if (error) {
+                return
             }
-        )
+
+            // reload the integration
+            setState((prevState) => ({...prevState, isInitialized: false}))
+        })
+
+        return integrationResult
     }
 
     const setLanguage = (language: string) => {
