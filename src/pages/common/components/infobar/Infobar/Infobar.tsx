@@ -290,7 +290,7 @@ export const Infobar = ({
     const handleSetCustomer = () => {
         void dispatch(setCustomer(selectedCustomer))
             .then(returnToCurrentCustomerProfile)
-            .then(() => dispatch(setActiveCustomerAsReceiver))
+            .then(() => dispatch(setActiveCustomerAsReceiver()))
     }
 
     const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
