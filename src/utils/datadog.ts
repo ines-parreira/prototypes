@@ -9,20 +9,37 @@ import {
     DATADOG_RUM_APPLICATION_ID,
     DATADOG_RUM_CLIENT_TOKEN,
 } from 'config'
+import {GorgiasUIEnv} from './environment'
 
-export const initDatadogLogger = (
-    account: Account,
-    user: User,
+export const DATADOG_SITE = 'datadoghq.com'
+export const DATADOG_LOGS_SERVICE = 'web-client'
+export const DATADOG_LOGS_SAMPLE_RATE = 100
+export const DATADOG_RUM_SERVICE = 'helpdesk-web-app'
+export const DATADOG_RUM_SAMPLE_RATE = 5
+export const DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE = 0
+export const DATADOG_RUM_CUSTOM_WEB_VITAL_ACTION = 'customWebVital'
+
+export type InitDatadogLoggerOptions = {
+    account: Account
+    user: User
     version: string
-) => {
+    environment: GorgiasUIEnv
+}
+
+export const initDatadogLogger = ({
+    account,
+    user,
+    version,
+    environment,
+}: InitDatadogLoggerOptions) => {
     datadogLogs.init({
         clientToken: DATADOG_CLIENT_TOKEN,
-        site: 'datadoghq.com',
+        site: DATADOG_SITE,
         forwardErrorsToLogs: true,
         version,
-        service: 'web-client',
-        env: 'helpdesk-web-client-production',
-        sampleRate: 100,
+        env: environment,
+        service: DATADOG_LOGS_SERVICE,
+        sampleRate: DATADOG_LOGS_SAMPLE_RATE,
     })
     datadogLogs.setLoggerGlobalContext({
         user: {
@@ -35,19 +52,28 @@ export const initDatadogLogger = (
     })
 }
 
-export const initDatadogRum = (
-    account: Account,
-    user: User,
+export type InitDatadogRumOptions = {
+    account: Account
+    user: User
     version: string
-) => {
+    environment: GorgiasUIEnv
+}
+
+export const initDatadogRum = ({
+    account,
+    user,
+    version,
+    environment,
+}: InitDatadogRumOptions) => {
     datadogRum.init({
         clientToken: DATADOG_RUM_CLIENT_TOKEN,
         applicationId: DATADOG_RUM_APPLICATION_ID,
-        site: 'datadoghq.com',
-        service: 'helpdesk-web-app',
+        site: DATADOG_SITE,
+        service: DATADOG_RUM_SERVICE,
         version,
-        sampleRate: 5,
-        sessionReplaySampleRate: 0,
+        env: environment,
+        sampleRate: DATADOG_RUM_SAMPLE_RATE,
+        sessionReplaySampleRate: DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE,
         trackResources: true,
         trackLongTasks: true,
     })
@@ -58,7 +84,7 @@ export const initDatadogRum = (
     })
     onINP(
         (metric) => {
-            datadogRum.addAction('customWebVital', {
+            datadogRum.addAction(DATADOG_RUM_CUSTOM_WEB_VITAL_ACTION, {
                 inp: metric.value,
             })
         },

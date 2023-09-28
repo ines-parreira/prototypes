@@ -163,24 +163,28 @@ export type InitAppParams = {
 }
 
 export function initApp({datadog, sentry}: InitAppParams) {
+    const environment = getEnvironment()
+
     if (datadog && (isStaging() || isProduction())) {
-        initDatadogLogger(
-            window.GORGIAS_STATE.currentAccount,
-            window.GORGIAS_STATE.currentUser,
-            window.GORGIAS_RELEASE
-        )
-        initDatadogRum(
-            window.GORGIAS_STATE.currentAccount,
-            window.GORGIAS_STATE.currentUser,
-            window.GORGIAS_RELEASE
-        )
+        initDatadogLogger({
+            account: window.GORGIAS_STATE.currentAccount,
+            user: window.GORGIAS_STATE.currentUser,
+            version: window.GORGIAS_RELEASE,
+            environment,
+        })
+        initDatadogRum({
+            account: window.GORGIAS_STATE.currentAccount,
+            user: window.GORGIAS_STATE.currentUser,
+            version: window.GORGIAS_RELEASE,
+            environment,
+        })
     }
 
     if (sentry && window.SENTRY_DSN) {
         initErrorReporter({
             dsn: window.SENTRY_DSN,
             release: window.GORGIAS_RELEASE,
-            environment: getEnvironment(),
+            environment,
             currentUser: window.GORGIAS_STATE.currentUser,
             currentAccount: window.GORGIAS_STATE.currentAccount,
         })

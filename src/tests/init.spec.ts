@@ -17,6 +17,7 @@ import {mockProductionEnvironment, mockStagingEnvironment} from 'utils/testing'
 import {GorgiasInitialState, InitialReactQueryState} from 'types'
 import {account} from 'fixtures/account'
 import {initDatadogRum} from 'utils/datadog'
+import {GorgiasUIEnv} from 'utils/environment'
 
 const mockStore = configureMockStore([thunk])
 
@@ -118,22 +119,29 @@ describe('init', () => {
         })
 
         describe.each([
-            ['staging', mockStagingEnvironment],
-            ['production', mockProductionEnvironment],
-        ])('%s environment', () => {
+            {environment: GorgiasUIEnv.Staging, setup: mockStagingEnvironment},
+            {
+                environment: GorgiasUIEnv.Production,
+                setup: mockProductionEnvironment,
+            },
+        ])('$environment environment', ({environment, setup}) => {
+            beforeEach(setup)
+
             it('should not init datadog rum when datadog is disabled', () => {
                 initApp(defaultParams)
 
                 expect(initDatadogRum).not.toHaveBeenCalled()
             })
+
             it('should init datadog rum when datadog is enabled', () => {
                 initApp({...defaultParams, datadog: true})
 
-                expect(initDatadogRum).toHaveBeenLastCalledWith(
+                expect(initDatadogRum).toHaveBeenLastCalledWith({
                     account,
                     user,
-                    window.GORGIAS_RELEASE
-                )
+                    environment,
+                    version: window.GORGIAS_RELEASE,
+                })
             })
         })
     })
