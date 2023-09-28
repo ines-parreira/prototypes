@@ -111,7 +111,6 @@ import SupportPerformanceSatisfaction from './stats/SupportPerformanceSatisfacti
 import SupportPerformanceRevenue from './stats/SupportPerformanceRevenue'
 import RevenueCampaignsStats from './stats/revenue/pages/CampaignsStats'
 import SupportPerformanceOverview from './stats/SupportPerformanceOverview'
-import DEPRECATED_SupportPerformanceAgents from './stats/DEPRECATED_SupportPerformanceAgents'
 import DEPRECATED_SupportPerformanceOverview from './stats/DEPRECATED_SupportPerformanceOverview'
 import SupportPerformanceBusiestTimesOfDays from './stats/SupportPerformanceBusiestTimesOfDays'
 import LiveOverview from './stats/LiveOverview'
@@ -520,12 +519,6 @@ export function StatsRoutes() {
                 <Route exact path={`${path}/support-performance-agents`}>
                     <App
                         content={SupportPerformanceAgents}
-                        navbar={StatsNavbarContainer}
-                    />
-                </Route>
-                <Route exact path={`${path}/support-performance-agents-legacy`}>
-                    <App
-                        content={DEPRECATED_SupportPerformanceAgents}
                         navbar={StatsNavbarContainer}
                     />
                 </Route>
