@@ -62,6 +62,7 @@ import GorgiasTranslateTextBackLink from './GorgiasTranslateTextBackLink'
 import formProps from './translations-available-keys'
 
 const generalKeys = Object.keys(formProps.general)
+const introKeys = Object.keys(formProps.intro)
 const contactFormKeys = Object.keys(formProps.contactForm)
 const contactFormComfirmationEmailKeys = Object.keys(
     formProps.contactFormConfirmationEmail
@@ -329,6 +330,68 @@ function GorgiasTranslateText({
         initialTexts,
         integration,
         multiLanguageInitialTextsEmptyData,
+    ])
+
+    /**
+     * Migrate the existing decoration intro message texts to the Tone of Voice (of the default Language).
+     * when Tone of Voice don't have the texts yet (decoration texts are always present by default).
+     * Only
+     */
+    const migrateDecorationTextsIfNeeded = useCallback(() => {
+        const introductionTextFromToneOfVoice: string | undefined =
+            textsOfSelectedLanguage.texts?.introductionText
+        const offlineIntroductionTextFromToneOfVoice: string | undefined =
+            textsOfSelectedLanguage.texts?.offlineIntroductionText
+
+        let newTextsOfSelectedLanguage = textsOfSelectedLanguage
+        if (
+            !introductionTextFromToneOfVoice &&
+            integrationChat.decoration.introduction_text
+        ) {
+            newTextsOfSelectedLanguage = produce(
+                newTextsOfSelectedLanguage,
+                (textsDraft) => {
+                    set(
+                        textsDraft,
+                        `texts.introductionText`,
+                        integrationChat.decoration.introduction_text
+                    )
+                }
+            )
+        }
+
+        if (
+            !offlineIntroductionTextFromToneOfVoice &&
+            integrationChat.decoration.offline_introduction_text
+        ) {
+            newTextsOfSelectedLanguage = produce(
+                newTextsOfSelectedLanguage,
+                (textsDraft) => {
+                    set(
+                        textsDraft,
+                        `texts.offlineIntroductionText`,
+                        integrationChat.decoration.offline_introduction_text
+                    )
+                }
+            )
+        }
+        setTextsOfSelectedLanguage(newTextsOfSelectedLanguage)
+    }, [integrationChat, textsOfSelectedLanguage])
+
+    useEffect(() => {
+        if (
+            dependenciesLoaded &&
+            !IsLegacyMonoLanguageMode &&
+            integrationDefaultLanguage === language?.get('value')
+        ) {
+            migrateDecorationTextsIfNeeded()
+        }
+    }, [
+        IsLegacyMonoLanguageMode,
+        dependenciesLoaded,
+        integrationDefaultLanguage,
+        language,
+        migrateDecorationTextsIfNeeded,
     ])
 
     const handleLanguageChange = (
@@ -696,6 +759,18 @@ function GorgiasTranslateText({
                         formPropsValues={formProps.general}
                         trackInputMethod={trackInput}
                     />
+                    {!IsLegacyMonoLanguageMode && (
+                        <GorgiasTranslateInputGroup
+                            title="Intro message"
+                            keys={introKeys}
+                            filtersForKeys={{}}
+                            textsPerLanguage={textsOfSelectedLanguage}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={formProps.intro}
+                            trackInputMethod={trackInput}
+                        />
+                    )}
 
                     <GorgiasTranslateInputGroup
                         title={

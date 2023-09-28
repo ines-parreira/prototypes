@@ -15,6 +15,10 @@ export default {
             maxLength: 35,
         },
     },
+    intro: {
+        'texts.introductionText': {maxLength: 35},
+        'texts.offlineIntroductionText': {maxLength: 35},
+    },
     contactForm: {
         'texts.contactFormIntro': {maxLength: 110},
         'texts.contactFormAskSubject': {maxLength: 35},
