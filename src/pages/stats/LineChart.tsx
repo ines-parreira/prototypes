@@ -7,7 +7,7 @@ import {
     TooltipItem,
     ScriptableScaleContext,
 } from 'chart.js'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useEffect, useCallback, useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 import {fromJS, Map} from 'immutable'
 
@@ -164,6 +164,11 @@ export default function LineChart({
         number,
         boolean | undefined
     > | null>(defaultDatasetVisibility)
+
+    useEffect(
+        () => setLinesVisibility(defaultDatasetVisibility),
+        [defaultDatasetVisibility]
+    )
 
     const formattedData = useMemo<ChartData<'line'>>(() => {
         const labels = Array.from(
