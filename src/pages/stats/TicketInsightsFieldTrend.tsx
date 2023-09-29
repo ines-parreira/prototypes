@@ -43,6 +43,16 @@ export function TicketInsightsFieldTrend() {
                 wrapperclassNames={css.chart}
                 skeletonHeight={328}
                 defaultDatasetVisibility={legendDatasetVisibility}
+                options={{
+                    scales: {
+                        y: {
+                            ticks: {
+                                precision: 0,
+                            },
+                        },
+                    },
+                }}
+                _displayLegacyTooltip
             />
         </ChartCard>
     )
