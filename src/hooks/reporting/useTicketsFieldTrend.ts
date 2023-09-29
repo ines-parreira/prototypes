@@ -4,7 +4,7 @@ import _fromPairs from 'lodash/fromPairs'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
-import {getSelectedCustomFieldId} from 'state/ui/stats/ticketInsightsSlice'
+import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {OrderDirection} from 'models/api/types'
 import {periodToReportingGranularity} from 'utils/reporting'
@@ -19,14 +19,14 @@ export const useTicketsFieldTrend = (topAmount = 10) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const selectedCustomFieldId = useAppSelector(getSelectedCustomFieldId)
+    const selectedCustomField = useAppSelector(getSelectedCustomField)
     const granularity = periodToReportingGranularity(cleanStatsFilters.period)
 
     const {data = {}, isFetching} = useCustomFieldsTicketCountTimeSeries(
         cleanStatsFilters,
         userTimezone,
         granularity,
-        String(selectedCustomFieldId),
+        String(selectedCustomField.id),
         OrderDirection.Desc
     )
 

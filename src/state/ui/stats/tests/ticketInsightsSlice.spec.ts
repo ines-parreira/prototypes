@@ -1,34 +1,37 @@
 import {RootState} from 'state/types'
 import {
-    getSelectedCustomFieldId,
+    getSelectedCustomField,
     initialState,
-    setSelectedCustomFieldId,
+    setSelectedCustomField,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 
 describe('ticketInsightsSlice', () => {
-    const fieldId = 123
+    const field = {
+        id: 123,
+        isLoading: false,
+    }
 
     describe('reducers', () => {
         it('should store the selected custom field id', () => {
             const newState = ticketInsightsSlice.reducer(
                 initialState,
-                setSelectedCustomFieldId(fieldId)
+                setSelectedCustomField(field)
             )
 
-            expect(newState.selectedCustomFieldId).toEqual(fieldId)
+            expect(newState.selectedCustomField).toEqual(field)
         })
     })
 
-    describe('getSelectedCustomFieldId selector', () => {
+    describe('getSelectedCustomField selector', () => {
         const state = {
             ui: {
                 [ticketInsightsSlice.name]: {
-                    selectedCustomFieldId: fieldId,
+                    selectedCustomField: field,
                 },
             },
         } as RootState
 
-        expect(getSelectedCustomFieldId(state)).toEqual(fieldId)
+        expect(getSelectedCustomField(state)).toEqual(field)
     })
 })

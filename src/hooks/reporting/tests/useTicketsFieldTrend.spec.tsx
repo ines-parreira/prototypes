@@ -25,7 +25,7 @@ describe('useTicketsFieldTrend', () => {
         stats: initialState,
         ui: {
             [ticketInsightsSlice.name]: {
-                selectedCustomFieldId: 2,
+                selectedCustomField: {id: 2},
             },
             stats: uiStatsInitialState,
         },

@@ -16,7 +16,7 @@ import {
 import {RootState} from 'state/types'
 import {
     initialState,
-    setSelectedCustomFieldId,
+    setSelectedCustomField,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 
@@ -28,7 +28,7 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 const mockStore = configureMockStore([thunk])
 
-describe('<CustomFieldSelec />', () => {
+describe('<CustomFieldSelect />', () => {
     const defaultState = {
         ui: {
             [ticketInsightsSlice.name]: initialState,
@@ -46,12 +46,20 @@ describe('<CustomFieldSelec />', () => {
             isLoading: true,
         } as unknown as UseQueryResult<ApiListResponseCursorPagination<CustomField[]>>)
 
+        const store = mockStore(defaultState)
+
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={store}>
                 <CustomFieldSelect />
             </Provider>
         )
 
+        expect(store.getActions()).toContainEqual(
+            setSelectedCustomField({
+                id: ticketFieldDefinitions[0].id,
+                isLoading: true,
+            })
+        )
         expect(document.querySelector('.skeleton')).toBeInTheDocument()
     })
 
@@ -70,7 +78,10 @@ describe('<CustomFieldSelec />', () => {
         )
 
         expect(store.getActions()).toContainEqual(
-            setSelectedCustomFieldId(ticketFieldDefinitions[0].id)
+            setSelectedCustomField({
+                id: ticketFieldDefinitions[0].id,
+                isLoading: false,
+            })
         )
         expect(screen.getByText(SELECT_FIELD_LABEL)).toBeInTheDocument()
     })
@@ -81,7 +92,9 @@ describe('<CustomFieldSelec />', () => {
             const selectedCustomFieldId = ticketFieldDefinitions[0].id
             const state = {
                 ui: {
-                    [ticketInsightsSlice.name]: {selectedCustomFieldId},
+                    [ticketInsightsSlice.name]: {
+                        selectedCustomField: {id: selectedCustomFieldId},
+                    },
                 },
             }
             useCustomFieldDefinitionsMock.mockReturnValue({
@@ -103,7 +116,9 @@ describe('<CustomFieldSelec />', () => {
         const selectedCustomFieldId = ticketFieldDefinitions[0].id
         const state = {
             ui: {
-                [ticketInsightsSlice.name]: {selectedCustomFieldId},
+                [ticketInsightsSlice.name]: {
+                    selectedCustomField: {id: selectedCustomFieldId},
+                },
             },
         }
         useCustomFieldDefinitionsMock.mockReturnValue({
@@ -155,7 +170,7 @@ describe('<CustomFieldSelec />', () => {
         })
 
         expect(store.getActions()).toContainEqual(
-            setSelectedCustomFieldId(selectField.id)
+            setSelectedCustomField({id: selectField.id})
         )
     })
 

@@ -7,8 +7,12 @@ import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
 import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
+import {TicketFieldsBlankState} from 'pages/stats/TicketFieldsBlankState'
 import StatsPage from 'pages/stats/StatsPage'
 import {FeatureFlagKey} from 'config/featureFlags'
+
+import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import useAppSelector from 'hooks/useAppSelector'
 
 export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
 
@@ -17,6 +21,19 @@ export default function SupportPerformanceTicketInsights() {
         useFlags()[FeatureFlagKey.AnalyticsTicketInsightsTopFields]
     const hasAnalyticsTicketInsightsFieldTrends: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsTicketInsightsFieldTrends]
+
+    const selectedCustomField = useAppSelector(getSelectedCustomField)
+
+    if (
+        selectedCustomField.isLoading === false &&
+        selectedCustomField.id === null
+    ) {
+        return (
+            <StatsPage title={TICKET_INSIGHTS_PAGE_TITLE} filters={null}>
+                <TicketFieldsBlankState />
+            </StatsPage>
+        )
+    }
 
     return (
         <StatsPage
@@ -30,18 +47,21 @@ export default function SupportPerformanceTicketInsights() {
             <DashboardSection className="pb-0">
                 <CustomFieldSelect />
             </DashboardSection>
-            <DashboardSection>
-                {hasAnalyticsTicketInsightsTopFields && (
-                    <DashboardGridCell size={1}>
-                        <TicketDistributionTable />
-                    </DashboardGridCell>
-                )}
-                {hasAnalyticsTicketInsightsFieldTrends && (
-                    <DashboardGridCell size={11}>
-                        <TicketInsightsFieldTrend />
-                    </DashboardGridCell>
-                )}
-            </DashboardSection>
+
+            {selectedCustomField.id && (
+                <DashboardSection>
+                    {hasAnalyticsTicketInsightsTopFields && (
+                        <DashboardGridCell size={1}>
+                            <TicketDistributionTable />
+                        </DashboardGridCell>
+                    )}
+                    {hasAnalyticsTicketInsightsFieldTrends && (
+                        <DashboardGridCell size={11}>
+                            <TicketInsightsFieldTrend />
+                        </DashboardGridCell>
+                    )}
+                </DashboardSection>
+            )}
         </StatsPage>
     )
 }

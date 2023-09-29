@@ -2,24 +2,31 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {RootState} from 'state/types'
 
 export type TicketInsightsState = {
-    selectedCustomFieldId: number | null
+    selectedCustomField: {
+        id: number | null
+        isLoading?: boolean
+    }
 }
 
 export const initialState: TicketInsightsState = {
-    selectedCustomFieldId: null,
+    selectedCustomField: {id: null, isLoading: true},
 }
 
 export const ticketInsightsSlice = createSlice({
     name: 'ticketInsights',
     initialState,
     reducers: {
-        setSelectedCustomFieldId(state, action: PayloadAction<number | null>) {
-            state.selectedCustomFieldId = action.payload
+        setSelectedCustomField(
+            state,
+            action: PayloadAction<TicketInsightsState['selectedCustomField']>
+        ) {
+            state.selectedCustomField.id = action.payload.id
+            state.selectedCustomField.isLoading = action.payload.isLoading
         },
     },
 })
 
-export const {setSelectedCustomFieldId} = ticketInsightsSlice.actions
+export const {setSelectedCustomField} = ticketInsightsSlice.actions
 
-export const getSelectedCustomFieldId = (state: RootState) =>
-    state.ui[ticketInsightsSlice.name].selectedCustomFieldId
+export const getSelectedCustomField = (state: RootState) =>
+    state.ui[ticketInsightsSlice.name].selectedCustomField

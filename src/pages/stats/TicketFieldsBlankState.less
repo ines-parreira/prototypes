@@ -1,0 +1,25 @@
+@import (reference) '~css/new/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .wrapper {
+        .body-regular();
+        text-align: center;
+        width: 400px;
+        margin: 25vh auto 0;
+    }
+
+    .image {
+        width: 270px;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .title {
+        .heading-section-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .text {
+        margin-bottom: @layout-spacing-m;
+    }
+}
