@@ -54,6 +54,7 @@ type Props = {
         max?: number
     }
     wrapperclassNames?: string
+    skeletonHeight?: number
 }
 
 const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = fromJS({
@@ -150,6 +151,7 @@ export default function LineChart({
     yAxisScale = {},
     wrapperclassNames,
     defaultDatasetVisibility = null,
+    skeletonHeight = 250,
 }: Props) {
     const [chart, setChart] = useState<Chart>()
     const [chartArea, setChartArea] = useState<ChartArea>()
@@ -283,7 +285,7 @@ export default function LineChart({
     )
 
     if (isLoading) {
-        return <Skeleton height={250} />
+        return <Skeleton height={skeletonHeight} />
     }
 
     return (

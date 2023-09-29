@@ -5,6 +5,7 @@ import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
 import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
 import ChartCard from './ChartCard'
 import LineChart from './LineChart'
+import css from './TicketInsightsFieldTrend.less'
 
 const LINES_COLORS = [
     colors['🖥 Modern'].Main.Variations.Primary_2.value,
@@ -39,6 +40,8 @@ export function TicketInsightsFieldTrend() {
                 displayLegend
                 toggleLegend
                 legendOnLeft
+                wrapperclassNames={css.chart}
+                skeletonHeight={328}
                 defaultDatasetVisibility={legendDatasetVisibility}
             />
         </ChartCard>

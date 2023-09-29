@@ -166,7 +166,7 @@ export const TicketDistributionTable = () => {
                     </TableBody>
                 </TableWrapper>
             ) : (
-                <NoDataAvailable style={{minHeight: 200}} />
+                <NoDataAvailable style={{minHeight: 300}} />
             )}
         </ChartCard>
     )

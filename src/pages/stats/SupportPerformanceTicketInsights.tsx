@@ -32,12 +32,12 @@ export default function SupportPerformanceTicketInsights() {
             </DashboardSection>
             <DashboardSection>
                 {hasAnalyticsTicketInsightsTopFields && (
-                    <DashboardGridCell size={5}>
+                    <DashboardGridCell size={1}>
                         <TicketDistributionTable />
                     </DashboardGridCell>
                 )}
                 {hasAnalyticsTicketInsightsFieldTrends && (
-                    <DashboardGridCell size={7}>
+                    <DashboardGridCell size={11}>
                         <TicketInsightsFieldTrend />
                     </DashboardGridCell>
                 )}
