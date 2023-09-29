@@ -48,21 +48,6 @@ const ChatHomePreview: React.FC<Props> = ({
 
     return (
         <div className={css.contentContainer}>
-            {renderConversation && (
-                <Conversation
-                    avatar={
-                        <ConversationAvatars
-                            avatar={avatar}
-                            chatTitle={title}
-                        />
-                    }
-                    trailIcon={<PlaneIcon />}
-                    title={title}
-                    description={sspTexts.sendUsAMessage}
-                    variant="collapsed"
-                    style={{marginBottom: '20px'}}
-                />
-            )}
             {quickResponses.length > 0 && (
                 <List style={{marginBottom: '20px'}}>
                     {quickResponses.map((quickResponse) => (
@@ -76,6 +61,7 @@ const ChatHomePreview: React.FC<Props> = ({
             )}
             {canManageOrders && (
                 <Card
+                    style={{marginBottom: '20px'}}
                     leadIcon={<BoxIcon />}
                     title={
                         canTrackOrders
@@ -83,6 +69,20 @@ const ChatHomePreview: React.FC<Props> = ({
                             : sspTexts.manageMyOrders
                     }
                     trailIcon={<ChevronRightIcon />}
+                />
+            )}
+            {renderConversation && (
+                <Conversation
+                    avatar={
+                        <ConversationAvatars
+                            avatar={avatar}
+                            chatTitle={title}
+                        />
+                    }
+                    trailIcon={<PlaneIcon />}
+                    title={title}
+                    description={sspTexts.sendUsAMessage}
+                    variant="collapsed"
                 />
             )}
         </div>

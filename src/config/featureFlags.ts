@@ -16,6 +16,7 @@ export enum FeatureFlagKey {
     ChatSnippetV3Banner = 'chat-snippet-v3-banner',
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',
     ChatShowOrHideOnSelectedUrls = 'chat-show-or-hide-on-selected-urls',
+    ChatFlipOrderOfQuickResponsesAndFlows = 'flip-order-of-quick-responses-and-flows',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContinuousChatViewsPolling = 'continuous-chat-views-polling',
     ConvertBilling = 'revenue-billing',

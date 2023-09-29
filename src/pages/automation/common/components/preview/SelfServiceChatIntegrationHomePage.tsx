@@ -1,7 +1,9 @@
 import React from 'react'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -44,6 +46,9 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
 
     const workflowsEntrypoints = useWorkflowsEntrypoints(language)
+
+    const flipOrderOfQuickResponsesAndFlows =
+        useFlags()[FeatureFlagKey.ChatFlipOrderOfQuickResponsesAndFlows]
 
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
     const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
@@ -127,10 +132,18 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                 title={integration.name}
                 description={sspTexts.sendUsAMessage}
                 variant="collapsed"
-                style={{marginBottom: '20px'}}
             />
         )
     }
+
+    const renderWorkflowsEntrypoints = () =>
+        workflowsEntrypoints.map((entrypoint) => (
+            <ListItem
+                key={entrypoint.workflow_id}
+                label={entrypoint.label}
+                trailIcon={<ChevronRightIcon />}
+            />
+        ))
 
     return (
         <div
@@ -139,17 +152,11 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
             })}
         >
             <div className={css.contentContainer}>
-                <SelfServiceConversation />
                 {(quickResponses.length > 0 ||
                     workflowsEntrypoints.length > 0) && (
                     <List style={{marginBottom: '20px'}}>
-                        {workflowsEntrypoints.map((entrypoint) => (
-                            <ListItem
-                                key={entrypoint.workflow_id}
-                                label={entrypoint.label}
-                                trailIcon={<ChevronRightIcon />}
-                            />
-                        ))}
+                        {!flipOrderOfQuickResponsesAndFlows &&
+                            renderWorkflowsEntrypoints()}
                         {quickResponses.map((quickResponse) => (
                             <ListItem
                                 key={quickResponse.id}
@@ -162,6 +169,8 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                                 }
                             />
                         ))}
+                        {flipOrderOfQuickResponsesAndFlows &&
+                            renderWorkflowsEntrypoints()}
                     </List>
                 )}
                 {canManageOrders && (
@@ -180,6 +189,7 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                         })}
                     />
                 )}
+                <SelfServiceConversation />
             </div>
         </div>
     )
