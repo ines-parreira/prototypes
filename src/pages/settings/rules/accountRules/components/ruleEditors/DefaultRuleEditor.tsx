@@ -94,7 +94,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                 }
                 const newName =
                     ruleDraft.name === rule.name
-                        ? `${ruleDraft.name} - copy`
+                        ? `(Copy) ${ruleDraft.name}`
                         : ruleDraft.name
 
                 try {

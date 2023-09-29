@@ -203,7 +203,7 @@ export const FilterTopbar = ({
         let newActiveView = activeView.delete('id')
 
         if (pristineActiveView.get('name') === newActiveView.get('name')) {
-            const newName = `${newActiveView.get('name', '') as string} - copy`
+            const newName = `(Copy) ${newActiveView.get('name', '') as string}`
             const newSlug = slugify(newName)
 
             newActiveView = newActiveView

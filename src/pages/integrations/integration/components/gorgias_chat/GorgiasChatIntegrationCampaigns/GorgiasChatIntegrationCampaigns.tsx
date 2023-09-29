@@ -57,7 +57,7 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
                 fromJS({
                     ...campaign,
                     id: '',
-                    name: `${campaign.name} (copy)`,
+                    name: `(Copy) ${campaign.name}`,
                     deactivated_datetime: new Date().toISOString(),
                     message: {
                         text: campaign.message.text ?? '',

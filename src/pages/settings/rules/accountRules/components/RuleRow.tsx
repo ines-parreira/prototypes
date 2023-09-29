@@ -96,7 +96,7 @@ export function RuleRow({
         if (canDuplicate) {
             try {
                 const newRule = await createRule({
-                    name: `${rule.name} - copy`,
+                    name: `(Copy) ${rule.name}`,
                     description: rule.description,
                     event_types: rule.event_types,
                     code: rule.code,

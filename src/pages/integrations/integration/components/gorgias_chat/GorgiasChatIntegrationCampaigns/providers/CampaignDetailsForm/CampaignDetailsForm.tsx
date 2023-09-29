@@ -354,7 +354,7 @@ export const CampaignDetailsForm = ({
         const duplicate = {
             ...campaignData,
             id: '',
-            name: `${campaignData.name} (copy)`,
+            name: `(Copy) ${campaignData.name}`,
             created_datetime: new Date().toISOString(),
             deactivated_datetime:
                 campaignData.deactivated_datetime ?? new Date().toISOString(),

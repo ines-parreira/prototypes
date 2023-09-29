@@ -146,7 +146,7 @@ export function MacrosSettingsFormContainer({
             try {
                 const res = await createMacro({
                     actions,
-                    name: `${name} (copy)`,
+                    name: `(Copy) ${name}`,
                     language,
                 })
                 macroCreated(res)

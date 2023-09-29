@@ -111,7 +111,7 @@ describe('<MacrosSettingsTable/>', () => {
         const {actions, name} = macrosState['1']
         expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
             actions,
-            name: `${name} (copy)`,
+            name: `(Copy) ${name}`,
             language: null,
         })
         setImmediate(() => {

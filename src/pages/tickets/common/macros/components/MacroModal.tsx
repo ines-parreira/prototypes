@@ -253,7 +253,7 @@ export class MacroModalContainer extends Component<Props, State> {
         const {createMacro, currentMacro} = this.props
         const duplicateMacro = currentMacro
             .delete('id')
-            .set('name', `${currentMacro.get('name', '') as string} (copy)`)
+            .set('name', `(Copy) ${currentMacro.get('name', '') as string}`)
 
         return createMacro(duplicateMacro).then((res) => {
             // once the macro is created - search it in the list

@@ -63,7 +63,7 @@ describe('<MacrosSettingsForm/>', () => {
     }
     const duplicatedMacroFixture = {
         ...macrosFixtures[0],
-        name: `${macrosFixtures[0].name} (copy)`,
+        name: `(Copy) ${macrosFixtures[0].name}`,
         id: 5,
     }
     const mockCreateMacro: jest.MockedFunction<typeof createMacro> =
@@ -353,7 +353,7 @@ describe('<MacrosSettingsForm/>', () => {
             const {actions, name} = macrosFixtures[0]
             expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
                 actions,
-                name: `${name} (copy)`,
+                name: `(Copy) ${name}`,
                 language: null,
             })
             setImmediate(() => {
