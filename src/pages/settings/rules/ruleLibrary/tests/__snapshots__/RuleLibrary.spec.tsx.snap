@@ -5,7 +5,7 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
   class="container"
 >
   <div
-    class="libraryHeader d-flex justify-content-between"
+    class="libraryHeader autoResponders"
   >
     <div>
       <h1>
@@ -46,10 +46,7 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
     </div>
   </div>
   <div
-    class="flex autoResponders"
-  />
-  <div
-    class="libraryHeader"
+    class="libraryHeader ruleTemplates"
   >
     <h1>
       Rule Templates
@@ -57,59 +54,53 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
     <p>
       Install and adapt rule templates to streamline your team’s workflow.
     </p>
-    <p>
-      <a
-        href="https://docs.gorgias.com/en-US/rule-library-new-81974"
-        rel="noreferrer"
-        target="_blank"
+    <a
+      href="https://docs.gorgias.com/en-US/rule-library-new-81974"
+      rel="noreferrer"
+      target="_blank"
+    >
+      <i
+        class="material-icons mr-2"
       >
-        <i
-          class="material-icons mr-2"
-        >
-          menu_book
-        </i>
-        Learn About Rule Templates
-      </a>
-    </p>
+        menu_book
+      </i>
+      Learn About Rule Templates
+    </a>
   </div>
   <div
-    class="flex ruleTemplates"
+    class="card"
   >
     <div
-      class="card"
+      class="header"
+    >
+      <span
+        class="badge badge-secondary"
+        style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
+      >
+        Auto Tag
+      </span>
+    </div>
+    <div
+      class="content"
     >
       <div
-        class="header"
+        class="title"
       >
-        <span
-          class="badge badge-secondary"
-          style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
-        >
-          Auto Tag
-        </span>
+        my rule
       </div>
       <div
-        class="content"
+        class="description"
       >
-        <div
-          class="title"
-        >
-          my rule
-        </div>
-        <div
-          class="description"
-        >
-          foo
-        </div>
+        foo
       </div>
-      <div>
-        <div
-          class="ticketCount"
-        >
-          Target up to 
-          0
-           tickets/month
-        </div>
+    </div>
+    <div>
+      <div
+        class="ticketCount"
+      >
+        Target up to 
+        0
+         tickets/month
       </div>
     </div>
   </div>
@@ -121,7 +112,7 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
   class="container"
 >
   <div
-    class="libraryHeader d-flex justify-content-between"
+    class="libraryHeader autoResponders"
   >
     <div>
       <h1>
@@ -162,10 +153,7 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
     </div>
   </div>
   <div
-    class="flex autoResponders"
-  />
-  <div
-    class="libraryHeader"
+    class="libraryHeader ruleTemplates"
   >
     <h1>
       Rule Templates
@@ -173,96 +161,90 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
     <p>
       Install and adapt rule templates to streamline your team’s workflow.
     </p>
-    <p>
-      <a
-        href="https://docs.gorgias.com/en-US/rule-library-new-81974"
-        rel="noreferrer"
-        target="_blank"
+    <a
+      href="https://docs.gorgias.com/en-US/rule-library-new-81974"
+      rel="noreferrer"
+      target="_blank"
+    >
+      <i
+        class="material-icons mr-2"
       >
-        <i
-          class="material-icons mr-2"
-        >
-          menu_book
-        </i>
-        Learn About Rule Templates
-      </a>
-    </p>
+        menu_book
+      </i>
+      Learn About Rule Templates
+    </a>
   </div>
   <div
-    class="flex ruleTemplates"
+    class="card"
   >
     <div
-      class="card"
+      class="header"
     >
-      <div
-        class="header"
+      <span
+        class="badge badge-secondary"
+        style="color: rgb(148, 17, 181); background-color: rgb(237, 234, 255);"
       >
-        <span
-          class="badge badge-secondary"
-          style="color: rgb(148, 17, 181); background-color: rgb(237, 234, 255);"
-        >
-          Auto Close
-        </span>
-      </div>
-      <div
-        class="content"
-      >
-        <div
-          class="title"
-        >
-          my rule
-        </div>
-        <div
-          class="description"
-        >
-          foo
-        </div>
-      </div>
-      <div>
-        <div
-          class="ticketCount"
-        >
-          Target up to 
-          0
-           tickets/month
-        </div>
-      </div>
+        Auto Close
+      </span>
     </div>
     <div
-      class="card"
+      class="content"
     >
       <div
-        class="header"
+        class="title"
       >
-        <span
-          class="badge badge-secondary"
-          style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
-        >
-          Auto Tag
-        </span>
+        my rule
       </div>
       <div
-        class="content"
+        class="description"
       >
-        <div
-          class="title"
-        >
-          my rule
-        </div>
-        <div
-          class="description"
-        >
-          foo
-        </div>
+        foo
       </div>
-      <div>
-        <div
-          class="ticketCount"
-        >
-          Target up to 
-          0
-           tickets/month
-        </div>
+    </div>
+    <div>
+      <div
+        class="ticketCount"
+      >
+        Target up to 
+        0
+         tickets/month
+      </div>
+    </div>
+  </div>
+  <div
+    class="card"
+  >
+    <div
+      class="header"
+    >
+      <span
+        class="badge badge-secondary"
+        style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
+      >
+        Auto Tag
+      </span>
+    </div>
+    <div
+      class="content"
+    >
+      <div
+        class="title"
+      >
+        my rule
+      </div>
+      <div
+        class="description"
+      >
+        foo
+      </div>
+    </div>
+    <div>
+      <div
+        class="ticketCount"
+      >
+        Target up to 
+        0
+         tickets/month
       </div>
     </div>
   </div>

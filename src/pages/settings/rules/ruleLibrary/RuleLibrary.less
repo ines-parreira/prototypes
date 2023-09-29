@@ -1,32 +1,38 @@
-:local .container {
-    .autoResponders,
-    .ruleTemplates {
-        gap: 16px;
-        flex-wrap: wrap;
-    }
+@import (reference) '~css/new/layout.less';
 
-    .autoResponders {
-        margin-bottom: 32px;
+:local {
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: @layout-spacing-s;
     }
 
     .libraryHeader {
-        h1,
-        .searchHeader {
-            margin-bottom: 4px;
-            margin-top: 4px;
-            font-size: 24px;
-        }
+        grid-column: 1 / -1;
+
         h1 {
+            margin-bottom: @layout-spacing-xxs;
+            margin-top: @layout-spacing-xxs;
+            font-size: 24px;
             font-weight: 600;
             i {
                 color: var(--main-secondary);
             }
         }
+
         p {
             font-size: 14px;
             color: var(--neutral-grey-6);
             margin-bottom: 6px;
         }
-        margin-bottom: 18px;
+
+        &.autoResponders {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &.ruleTemplates {
+            margin-top: @layout-spacing-s;
+        }
     }
 }

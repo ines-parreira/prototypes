@@ -109,12 +109,7 @@ export function RuleLibrary({
 
     return (
         <div className={css.container}>
-            <div
-                className={classnames(
-                    css.libraryHeader,
-                    'd-flex justify-content-between'
-                )}
-            >
+            <div className={classnames(css.libraryHeader, css.autoResponders)}>
                 <div>
                     <h1>
                         <i className="material-icons mr-2">auto_awesome</i>
@@ -160,72 +155,62 @@ export function RuleLibrary({
                     </div>
                 )}
             </div>
-            <div className={classnames('flex', css.autoResponders)}>
-                {filteredRecipes.length ? (
-                    filteredRecipes
-                        .filter(
-                            (recipe) => recipe.rule.type === RuleType.Managed
-                        )
-                        .map((recipe) => (
-                            <RuleRecipeCard
-                                recipe={recipe}
-                                key={recipe.slug}
-                                isModalOpenOnLoad={activeSlug === recipe.slug}
-                                isReady={isReady}
-                                autoInstall={
-                                    autoInstall && activeSlug === recipe.slug
-                                }
-                                isInstalled={
-                                    !!installedManagedRules.find(
-                                        (slug) => slug === recipe.slug
-                                    )
-                                }
-                            />
-                        ))
-                ) : (
-                    <div>Sorry, there is no rule matching your search...</div>
-                )}
-            </div>
-            <div className={css.libraryHeader}>
+            {filteredRecipes.length ? (
+                filteredRecipes
+                    .filter((recipe) => recipe.rule.type === RuleType.Managed)
+                    .map((recipe) => (
+                        <RuleRecipeCard
+                            recipe={recipe}
+                            key={recipe.slug}
+                            isModalOpenOnLoad={activeSlug === recipe.slug}
+                            isReady={isReady}
+                            autoInstall={
+                                autoInstall && activeSlug === recipe.slug
+                            }
+                            isInstalled={
+                                !!installedManagedRules.find(
+                                    (slug) => slug === recipe.slug
+                                )
+                            }
+                        />
+                    ))
+            ) : (
+                <div>Sorry, there is no rule matching your search...</div>
+            )}
+            <div className={classnames(css.libraryHeader, css.ruleTemplates)}>
                 <h1>Rule Templates</h1>
                 <p>
                     Install and adapt rule templates to streamline your team’s
                     workflow.
                 </p>
-                <p>
-                    <a
-                        href="https://docs.gorgias.com/en-US/rule-library-new-81974"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        <i className="material-icons mr-2">menu_book</i>
-                        Learn About Rule Templates
-                    </a>
-                </p>
+                <a
+                    href="https://docs.gorgias.com/en-US/rule-library-new-81974"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <i className="material-icons mr-2">menu_book</i>
+                    Learn About Rule Templates
+                </a>
             </div>
-            <div className={classnames('flex', css.ruleTemplates)}>
-                {filteredRecipes.length ? (
-                    filteredRecipes
-                        .filter(
-                            (recipe) => recipe.rule.type !== RuleType.Managed
-                        )
-                        .map((recipe) => (
-                            <RuleRecipeCard
-                                recipe={recipe}
-                                key={recipe.slug}
-                                isModalOpenOnLoad={activeSlug === recipe.slug}
-                                isReady={isReady}
-                                isInstalled={
-                                    !!installedSlugs.find(
-                                        (slug) => slug === recipe.slug
-                                    )
-                                }
-                            />
-                        ))
-                ) : (
-                    <div>Sorry, there is no rule matching your search...</div>
-                )}
-            </div>
+            {filteredRecipes.length ? (
+                filteredRecipes
+                    .filter((recipe) => recipe.rule.type !== RuleType.Managed)
+                    .map((recipe) => (
+                        <RuleRecipeCard
+                            recipe={recipe}
+                            key={recipe.slug}
+                            isModalOpenOnLoad={activeSlug === recipe.slug}
+                            isReady={isReady}
+                            isInstalled={
+                                !!installedSlugs.find(
+                                    (slug) => slug === recipe.slug
+                                )
+                            }
+                        />
+                    ))
+            ) : (
+                <div>Sorry, there is no rule matching your search...</div>
+            )}
         </div>
     )
 }
