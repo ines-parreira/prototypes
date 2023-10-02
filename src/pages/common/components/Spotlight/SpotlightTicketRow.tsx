@@ -1,15 +1,12 @@
 import React, {ComponentProps, useMemo} from 'react'
 import moment from 'moment'
 import {fromJS} from 'immutable'
-import classnames from 'classnames'
 
-import {Ticket, TicketAssignee} from 'models/ticket/types'
+import {TicketStatus} from 'business/types/ticket'
 import {Customer} from 'models/customer/types'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import Tooltip from 'pages/common/components/Tooltip'
+import {Ticket, TicketAssignee} from 'models/ticket/types'
+import TicketIcon from 'pages/common/components/TicketIcon'
 import {UserAssigneeLabel} from 'pages/common/utils/labels'
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import useId from 'hooks/useId'
 
 import SpotlightRow from './SpotlightRow'
 import css from './SpotlightTicketRow.less'
@@ -51,7 +48,7 @@ const SpotlightTicketRow = ({
         id={id}
         index={index}
         icon={
-            <SpotlightTicketIcon
+            <TicketIcon
                 channel={item.channel}
                 isOpen={item.status === TicketStatus.Open}
             />
@@ -73,30 +70,6 @@ const SpotlightTicketRow = ({
         onClick={onClick}
     />
 )
-
-const SpotlightTicketIcon = ({
-    channel,
-    isOpen = false,
-}: {
-    channel: TicketChannel
-    isOpen?: boolean
-}) => {
-    const id = useId()
-    const iconTargetId = 'icon-' + id + '-tooltip-target'
-    return (
-        <div
-            className={classnames(css.ticketIconWrapper, {
-                [css.isOpen]: isOpen,
-            })}
-            id={iconTargetId}
-        >
-            <SourceIcon type={channel} className={css.ticketIcon} />
-            <Tooltip placement="top" target={iconTargetId}>
-                This ticket is {isOpen ? 'open' : 'closed'}
-            </Tooltip>
-        </div>
-    )
-}
 
 const SpotlightTicketInfo = ({
     customerName,

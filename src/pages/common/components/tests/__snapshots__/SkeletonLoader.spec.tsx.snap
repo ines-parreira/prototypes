@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SpotlightLoader /> should render 1`] = `
+exports[`<SkeletonLoader /> should render 1`] = `
 <div>
   <div
     class="row"

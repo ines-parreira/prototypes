@@ -3,7 +3,7 @@ import {Virtuoso, VirtuosoHandle, VirtuosoProps} from 'react-virtuoso'
 
 import {Ticket} from 'models/ticket/types'
 import {Customer} from 'models/customer/types'
-import SpotlightLoader from 'pages/common/components/Spotlight/SpotlightLoader'
+import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 
 import css from './SpotlightScrollArea.less'
 
@@ -76,7 +76,7 @@ const Footer = ({context}: {context?: VirtuosoContext}) => {
 
     return (
         <div className={css.loader}>
-            <SpotlightLoader />
+            <SkeletonLoader />
         </div>
     )
 }

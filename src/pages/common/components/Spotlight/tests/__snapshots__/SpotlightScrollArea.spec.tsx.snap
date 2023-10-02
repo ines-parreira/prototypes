@@ -39,7 +39,7 @@ exports[`<SpotlightScrollArea/> should render footer if loading 1`] = `
       class="loader"
     >
       <div>
-        SpotlightLoader
+        SkeletonLoader
       </div>
     </div>
     <div>

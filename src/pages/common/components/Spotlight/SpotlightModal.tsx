@@ -25,6 +25,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
+import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import Search from 'pages/common/components/Search'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
@@ -53,7 +54,6 @@ import {SearchEngine} from 'models/search/types'
 import {isMacOs} from 'utils/platform'
 
 import SpotlightScrollArea from './SpotlightScrollArea'
-import SpotlightLoader from './SpotlightLoader'
 import SpotlightNoResults from './SpotlightNoResults'
 import SpotlightTicketRow from './SpotlightTicketRow'
 import SpotlightCustomerRow from './SpotlightCustomerRow'
@@ -534,7 +534,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
     const modalContent = useMemo(() => {
         if (isLoading) {
-            return <SpotlightLoader className={css.loader} />
+            return <SkeletonLoader className={css.loader} />
         }
 
         if (

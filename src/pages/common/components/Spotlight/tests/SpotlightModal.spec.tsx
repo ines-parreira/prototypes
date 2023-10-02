@@ -34,8 +34,8 @@ import SpotlightCustomerRow from '../SpotlightCustomerRow'
 jest.mock('pages/history')
 jest.mock('state/notifications/actions')
 
-jest.mock('pages/common/components/Spotlight/SpotlightLoader', () => () => (
-    <div>SpotlightLoader</div>
+jest.mock('pages/common/components/SkeletonLoader', () => () => (
+    <div>SkeletonLoader</div>
 ))
 
 jest.mock(
@@ -512,10 +512,10 @@ describe('<SpotlightModal/>', () => {
         expect(mockServer.history.post).toMatchSnapshot()
     })
 
-    it('should show SpotlightLoader component while results are fetched', async () => {
+    it('should show SkeletonLoader component while results are fetched', async () => {
         jest.useFakeTimers()
 
-        const {rerender, getByPlaceholderText, container} = renderWithRouter(
+        const {rerender, getByPlaceholderText, getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
         )
         await act(flushPromises)
@@ -527,7 +527,7 @@ describe('<SpotlightModal/>', () => {
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
         jest.advanceTimersByTime(300)
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('SkeletonLoader')).toBeInTheDocument()
     })
 
     it('should show SpotlightNoResults component when no results are available ', async () => {

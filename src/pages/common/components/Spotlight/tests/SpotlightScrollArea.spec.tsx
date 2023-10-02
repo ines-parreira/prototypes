@@ -9,8 +9,8 @@ import SpotlightScrollArea, {MAX_HEIGHT} from '../SpotlightScrollArea'
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 
-jest.mock('pages/common/components/Spotlight/SpotlightLoader', () => () => (
-    <div>SpotlightLoader</div>
+jest.mock('pages/common/components/SkeletonLoader', () => () => (
+    <div>SkeletonLoader</div>
 ))
 
 describe('<SpotlightScrollArea/>', () => {

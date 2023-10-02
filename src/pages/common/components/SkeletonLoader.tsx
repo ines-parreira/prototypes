@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
-import css from './SpotlightLoader.less'
+import css from './SkeletonLoader.less'
 
 const Row = () => (
     <div className={css.row}>
@@ -20,14 +20,15 @@ const Row = () => (
 
 type Props = {
     className?: string
+    length?: number
 }
 
-const SpotlightLoader = ({className}: Props) => (
+const SkeletonLoader = ({className, length = 3}: Props) => (
     <div className={className}>
-        {Array.from({length: 3}).map((_, index) => (
+        {Array.from({length}).map((_, index) => (
             <Row key={index} />
         ))}
     </div>
 )
 
-export default SpotlightLoader
+export default SkeletonLoader

@@ -1,11 +1,11 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import SpotlightLoader from '../SpotlightLoader'
+import SkeletonLoader from '../SkeletonLoader'
 
-describe('<SpotlightLoader />', () => {
+describe('<SkeletonLoader />', () => {
     it('should render', () => {
-        const {container} = render(<SpotlightLoader />)
+        const {container} = render(<SkeletonLoader />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
