@@ -157,15 +157,10 @@ export const notifyUserImpersonated = (reduxStore: Store) => {
     }
 }
 
-export type InitAppParams = {
-    datadog: boolean
-    sentry: boolean
-}
-
-export function initApp({datadog, sentry}: InitAppParams) {
+export function initApp() {
     const environment = getEnvironment()
 
-    if (datadog && (isStaging() || isProduction())) {
+    if (isStaging() || isProduction()) {
         initDatadogLogger({
             account: window.GORGIAS_STATE.currentAccount,
             user: window.GORGIAS_STATE.currentUser,
@@ -180,7 +175,7 @@ export function initApp({datadog, sentry}: InitAppParams) {
         })
     }
 
-    if (sentry && window.SENTRY_DSN) {
+    if (window.SENTRY_DSN) {
         initErrorReporter({
             dsn: window.SENTRY_DSN,
             release: window.GORGIAS_RELEASE,
@@ -253,7 +248,4 @@ export function initApp({datadog, sentry}: InitAppParams) {
     return store
 }
 
-export const store = initApp({
-    sentry: true,
-    datadog: true,
-})
+export const store = initApp()

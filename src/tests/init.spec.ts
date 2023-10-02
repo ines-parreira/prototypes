@@ -6,22 +6,28 @@ import {EMAIL_INTEGRATION_TYPE} from 'constants/integration'
 import {initialState} from 'fixtures/initialState'
 import {
     initApp,
-    InitAppParams,
     notifyAccountNotVerified,
     notifyUserImpersonated,
     toInitialStoreState,
 } from 'init'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
-import {mockProductionEnvironment, mockStagingEnvironment} from 'utils/testing'
+import {
+    mockDevelopmentEnvironment,
+    mockProductionEnvironment,
+    mockStagingEnvironment,
+} from 'utils/testing'
 import {GorgiasInitialState, InitialReactQueryState} from 'types'
 import {account} from 'fixtures/account'
-import {initDatadogRum} from 'utils/datadog'
+import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
 import {GorgiasUIEnv} from 'utils/environment'
+import {initErrorReporter} from 'utils/errors'
 
 const mockStore = configureMockStore([thunk])
 
 jest.mock('utils/datadog')
+jest.mock('utils/errors')
+jest.mock('utils/launchDarkly')
 
 describe('init', () => {
     let reduxStore: MockStoreEnhanced<unknown>
@@ -105,44 +111,74 @@ describe('init', () => {
     })
 
     describe('initApp()', () => {
-        const defaultParams: InitAppParams = {
-            sentry: false,
-            datadog: false,
-        }
+        const defaultSentryDsn = 'test-sentry-dsn'
+        const defaultGorgiasRelease = 'test-gorgias-release'
+        const defaultGorgiasState = {
+            currentAccount: account,
+            currentUser: user,
+        } as GorgiasInitialState & InitialReactQueryState
+        const defaultEnvironment = GorgiasUIEnv.Development
 
         beforeEach(() => {
-            mockStagingEnvironment()
-            window.GORGIAS_STATE = {
-                currentAccount: account,
-                currentUser: user,
-            } as GorgiasInitialState & InitialReactQueryState
+            window.SENTRY_DSN = defaultSentryDsn
+            window.GORGIAS_RELEASE = defaultGorgiasRelease
+            window.GORGIAS_STATE = defaultGorgiasState
+            mockDevelopmentEnvironment()
         })
 
-        describe.each([
+        it.each([
             {environment: GorgiasUIEnv.Staging, setup: mockStagingEnvironment},
             {
                 environment: GorgiasUIEnv.Production,
                 setup: mockProductionEnvironment,
             },
-        ])('$environment environment', ({environment, setup}) => {
-            beforeEach(setup)
+        ])(
+            'should init datadog rum and logger on $environment environment',
+            ({setup, environment}) => {
+                setup()
 
-            it('should not init datadog rum when datadog is disabled', () => {
-                initApp(defaultParams)
-
-                expect(initDatadogRum).not.toHaveBeenCalled()
-            })
-
-            it('should init datadog rum when datadog is enabled', () => {
-                initApp({...defaultParams, datadog: true})
+                initApp()
 
                 expect(initDatadogRum).toHaveBeenLastCalledWith({
                     account,
                     user,
                     environment,
-                    version: window.GORGIAS_RELEASE,
+                    version: defaultGorgiasRelease,
                 })
+                expect(initDatadogLogger).toHaveBeenLastCalledWith({
+                    account,
+                    user,
+                    environment,
+                    version: defaultGorgiasRelease,
+                })
+            }
+        )
+
+        it('should not init datadog rum and logger on development environment', () => {
+            initApp()
+
+            expect(initDatadogRum).not.toHaveBeenCalled()
+            expect(initDatadogLogger).not.toHaveBeenCalled()
+        })
+
+        it('should init error reporter when SENTRY_DSN is defined', () => {
+            initApp()
+
+            expect(initErrorReporter).toHaveBeenLastCalledWith({
+                dsn: defaultSentryDsn,
+                release: defaultGorgiasRelease,
+                environment: defaultEnvironment,
+                currentUser: defaultGorgiasState.currentUser,
+                currentAccount: defaultGorgiasState.currentAccount,
             })
+        })
+
+        it('should not init error reporter when SENTRY_DSN is an empty string', () => {
+            window.SENTRY_DSN = ''
+
+            initApp()
+
+            expect(initErrorReporter).not.toHaveBeenCalled()
         })
     })
 })
