@@ -216,6 +216,28 @@ export const FilterTopbar = ({
             ])
         }
 
+        if (newActiveView.get('visibility') === ViewVisibility.Shared) {
+            const sharedWithUsers = newActiveView.get(
+                'shared_with_users'
+            ) as List<any>
+            newActiveView = newActiveView.set(
+                'shared_with_users',
+                sharedWithUsers.map(
+                    (user: Map<any, any>) => user.get('id') as number
+                )
+            )
+
+            const sharedWithTeams = newActiveView.get(
+                'shared_with_teams'
+            ) as List<any>
+            newActiveView = newActiveView.set(
+                'shared_with_teams',
+                sharedWithTeams.map(
+                    (team: Map<any, any>) => team.get('id') as number
+                )
+            )
+        }
+
         await submitView(newActiveView)
     }
 
