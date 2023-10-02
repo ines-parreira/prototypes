@@ -44,6 +44,7 @@ import {CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID} from './constants'
 import {SearchResult} from './search/SearchResult'
 import {SearchInput} from './search/SearchInput'
 import css from './DropdownField.less'
+import {usePredictionIconWidthAdjuster} from './hooks/usePredictionIconWidthAdjuster'
 
 type Props = {
     id: CustomFieldState['id']
@@ -168,10 +169,6 @@ export default function DropdownField({
         }
     }, [dispatch, id, isValueEmpty, value, choices])
 
-    // Fit prediction icon, trying to resize the input if necessary
-    const maxWidth = isLarge ? 136 : 82
-    const [containerWidth, setContainerWidth] = useState(maxWidth)
-    const [inputWidth, setInputWidth] = useState(maxWidth)
     const prediction = fieldState?.prediction
 
     const isPredictionCorrect =
@@ -180,21 +177,12 @@ export default function DropdownField({
         ((prediction.confirmed === true && prediction.modified === false) ||
             (prediction.confirmed === false && prediction.modified === false))
 
-    const hiddenRef = useRef<HTMLInputElement>(null)
-
-    useEffect(() => {
-        const current = hiddenRef.current
-        if (current && isPredictionCorrect) {
-            current.textContent = getStealthLabel(value)
-            const newInputWidth = Math.min(current.offsetWidth + 20, maxWidth) // 20px padding
-            setInputWidth(newInputWidth)
-            setContainerWidth(Math.max(newInputWidth + 17, maxWidth)) //17px icon
-        } else {
-            setContainerWidth(maxWidth)
-            setInputWidth(maxWidth)
-        }
-    }, [isLarge, isPredictionCorrect, maxWidth, value])
-
+    const {containerWidth, inputWidth, hiddenRef} =
+        usePredictionIconWidthAdjuster({
+            value,
+            shouldShowIcon: isPredictionCorrect,
+            isLarge,
+        })
     return (
         <>
             <Label label={label} isRequired={isRequired}>
