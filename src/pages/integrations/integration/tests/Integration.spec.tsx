@@ -59,10 +59,6 @@ jest.mock('../components/facebook/FacebookIntegrationPreferences', () => () => (
     <div>FacebookIntegrationPreferences</div>
 ))
 jest.mock(
-    '../components/facebook/FacebookIntegrationAds/FacebookIntegrationInstagramAds',
-    () => () => <div>FacebookIntegrationInstagramAds</div>
-)
-jest.mock(
     '../components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup',
     () => () => <div>FacebookIntegrationSetup</div>
 )
@@ -417,19 +413,6 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookCustomerChat}`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('should render the ads tab for a specific integration', () => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookAds}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()

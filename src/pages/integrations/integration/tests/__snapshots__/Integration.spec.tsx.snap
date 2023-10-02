@@ -18,12 +18,6 @@ exports[`<IntegrationDetail /> email should render the verification page for a 
 </div>
 `;
 
-exports[`<IntegrationDetail /> facebook should render the ads tab for a specific integration 1`] = `
-<div>
-  FacebookIntegrationInstagramAds
-</div>
-`;
-
 exports[`<IntegrationDetail /> facebook should render the customer chat tab for a specific integration 1`] = `
 <div>
   FacebookIntegrationCustomerChat

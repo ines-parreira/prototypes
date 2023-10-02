@@ -50,7 +50,6 @@ import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrati
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList'
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
-import FacebookIntegrationInstagramAds from './components/facebook/FacebookIntegrationAds/FacebookIntegrationInstagramAds'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
 
@@ -334,15 +333,6 @@ export const IntegrationDetail = ({
                 if (extra === Tab.Preferences) {
                     return (
                         <FacebookIntegrationPreferences
-                            integration={integration}
-                        />
-                    )
-                }
-
-                if (extra === Tab.FacebookAds) {
-                    return (
-                        <FacebookIntegrationInstagramAds
-                            integrations={integrationsProp}
                             integration={integration}
                         />
                     )

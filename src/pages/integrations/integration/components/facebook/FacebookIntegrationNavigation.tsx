@@ -13,21 +13,12 @@ export default class FacebookIntegrationNavigation extends Component<Props> {
         const {integration} = this.props
         const integrationId: number = integration.get('id')
         const baseURL = `/app/settings/integrations/facebook/${integrationId}`
-        const instagramAdsEnabled = integration.getIn([
-            'meta',
-            'settings',
-            'instagram_ads_enabled',
-        ])
 
         const links = [
             [`${baseURL}/overview`, 'Overview'],
             [`${baseURL}/customer_chat`, 'Customer chat'],
             [`${baseURL}/preferences`, 'Preferences'],
         ]
-
-        if (instagramAdsEnabled) {
-            links.push([`${baseURL}/ads`, 'Instagram ads'])
-        }
 
         return (
             <SecondaryNavbar>
