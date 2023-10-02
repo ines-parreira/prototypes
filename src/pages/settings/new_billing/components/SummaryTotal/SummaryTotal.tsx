@@ -61,7 +61,7 @@ const SummaryTotal = ({
                             {formatAmount(oldPrice / 100, currency)}
                         </div>
                     )}
-                    <span>
+                    <span data-testid="totalSum">
                         {formatAmount(amountSelectedPlans / 100, currency)}
                     </span>
                     /{interval}

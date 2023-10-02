@@ -387,7 +387,9 @@ exports[`UsageAndPlansView should render 1`] = `
                 <div
                   class="totalPrice"
                 >
-                  <span>
+                  <span
+                    data-testid="totalSum"
+                  >
                     $60
                   </span>
                   /

@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,7 +8,9 @@ import {createStripeCardToken} from 'utils/stripe'
 import {account} from 'fixtures/account'
 
 import {
+    AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
+    basicMonthlyAutomationPrice,
     basicMonthlyHelpdeskPrice,
     products,
 } from 'fixtures/productPrices'
@@ -17,6 +19,7 @@ import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from 'pages/settings/new_billing/
 import PaymentMethodView from '../PaymentMethodView'
 
 const mockedDispatch = jest.fn()
+
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 jest.mock('state/billing/actions', () => ({
@@ -197,5 +200,65 @@ describe('PaymentMethodView', () => {
             exp_year: 24,
             cvc: '123',
         })
+    })
+
+    it('should show the Summary component with the correct sum for trialing subscription', () => {
+        const storeWithTrialingSubscription = mockedStore({
+            ...store.getState(),
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPrice.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicMonthlyAutomationPrice.price_id,
+                    },
+                    status: 'trialing',
+                },
+            }),
+        })
+        const {getByText, getByTestId} = screen
+
+        renderWithRouter(
+            <Provider store={storeWithTrialingSubscription}>
+                <PaymentMethodView
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                />
+            </Provider>
+        )
+
+        expect(getByText('Summary')).toBeInTheDocument()
+
+        //We show the total sum based on the selected products from the redux store,
+        //not from the session storage, which is used only for canceled subscriptions
+        expect(getByTestId('totalSum')).toHaveTextContent('$90')
+    })
+
+    it('should show the Summary component with the correct sums for canceled subscription', () => {
+        const storeWithCanceledSubscription = mockedStore({
+            ...store.getState(),
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: null,
+            }),
+        })
+        const {getByText, getByTestId} = screen
+
+        renderWithRouter(
+            <Provider store={storeWithCanceledSubscription}>
+                <PaymentMethodView
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                />
+            </Provider>
+        )
+
+        expect(getByText('Summary')).toBeInTheDocument()
+
+        //Even though there are no current products (as we have for canceled subscription),
+        //we still show the total sum based on the selected products from the session storage
+        expect(getByTestId('totalSum')).toHaveTextContent('$60')
     })
 })
