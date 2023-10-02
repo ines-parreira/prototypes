@@ -122,7 +122,6 @@ import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
 import CreditShopifyBillingIntegration from './tasks/detail/CreditShopifyBillingIntegration'
 import EditTicketField from './settings/ticketFields/EditTicketField'
-import DeprecatedRoute from './common/components/DeprecatedRoute'
 import {RevenueAddonApiClientProvider} from './settings/revenue/hooks/useRevenueAddonApi'
 import {
     BundlesView,
@@ -631,17 +630,6 @@ export function SettingsRoutes() {
                     <ContactFormSettingsRoutes />
                 </Route>
             )}
-            <DeprecatedRoute
-                path={`${path}/macros`}
-                redirectTo="/app/automation/macros"
-            />
-            <DeprecatedRoute
-                path={`${path}/rules`}
-                redirectTo="/app/automation/rules"
-            />
-            <Route path={`${path}/self-service`}>
-                <Redirect to="/app/automation" />
-            </Route>
             <Route path={`${path}/profile`} exact>
                 <App content={YourProfileContainer} navbar={SettingsNavbar} />
             </Route>
@@ -737,11 +725,6 @@ export function SettingsRoutes() {
                     navbar={SettingsNavbar}
                 />
             </Route>
-            <DeprecatedRoute
-                path={`${path}/ticket-assignment`}
-                exact
-                redirectTo="/app/automation/ticket-assignment"
-            />
             <Route path={`${path}/ticket-fields`}>
                 <TicketFieldsRoutes />
             </Route>
