@@ -23,6 +23,14 @@ const accessSettings = fromJS({
         allowed_domains: ['gorgias.com', 'gorgias.io'],
     },
 })
+const accessSettingsStar = fromJS({
+    id: 1,
+    type: AccountSettingType.Access,
+    data: {
+        signup_mode: AccountSettingAccessSignupMode.AllowedDomains,
+        allowed_domains: ['*.*'],
+    },
+})
 const accessSettingsGeneric = fromJS({
     id: 1,
     type: AccountSettingType.Access,
@@ -63,6 +71,22 @@ describe('<Access/>', () => {
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should show an error and block submit when using just wildcards as a domain', () => {
+        const {getByText} = render(
+            <Provider store={mockStore()}>
+                <AccessContainer
+                    accountDomain="acme"
+                    accessSettings={accessSettingsStar}
+                    submitSetting={jest.fn()}
+                />
+            </Provider>
+        )
+
+        expect(() =>
+            getByText('You cannot use only wildcards as a domain.')
+        ).not.toThrow()
     })
 
     it('should show an error and block submit when using a generic domain', () => {

@@ -45,6 +45,9 @@ function splitDomains(domains: string): string[] {
 }
 
 function validateDomain(domain: string): string | undefined {
+    if (domain.match(/^[*.]+$/)) {
+        return 'You cannot use only wildcards as a domain.'
+    }
     if (FORBIDDEN_DOMAINS.includes(domain)) {
         return 'Generic domain: ' + domain
     }
