@@ -20,7 +20,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import InputField from 'pages/common/forms/input/InputField'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
 import CopyText from 'pages/common/components/CopyText'
@@ -63,6 +63,8 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
     const [showWarning, setShowWarning] = useState(true)
+    const [showConnectToStoreWarning, setShowConnectToStoreWarning] =
+        useState(true)
 
     const {getHelpCenterCustomDomain} = useHelpCenterActions()
     const {
@@ -75,6 +77,10 @@ export const HelpCenterInstallationView: React.FC = () => {
     const isPreferencesFetched = useMemo(
         () => preferences.availableLanguages.length > 0,
         [preferences.availableLanguages]
+    )
+    const isConnectedToShop = useMemo(
+        () => Boolean(preferences.connectedShop.shopName),
+        [preferences.connectedShop.shopName]
     )
 
     const helpCenterUrl = useMemo(() => {
@@ -265,28 +271,21 @@ export const HelpCenterInstallationView: React.FC = () => {
                     fieldName="deactivated"
                     label="Set Help Center live"
                 />
-                {showWarning && (
-                    <LinkAlert
-                        actionLabel="Learn more"
-                        type={AlertType.Warning}
-                        className={css.alert}
-                        actionHref="https://docs.gorgias.com/en-US/help-center---setup-81865#link-to-shopify"
-                        onClose={() => {
-                            setShowWarning(false)
-                        }}
-                    >
-                        <div className={css.alertContent}>
-                            <img src={warningIcon} alt="warning icon" />
-                            <div>
-                                Don't forget to connect Help Center to your
-                                website.
-                            </div>
-                        </div>
-                    </LinkAlert>
-                )}
                 {canUseHelpCenterAutoEmbed ? (
                     // The new Publish section
                     <div className={css.cards}>
+                        {!isConnectedToShop && showConnectToStoreWarning && (
+                            <Alert
+                                type={AlertType.Warning}
+                                icon
+                                onClose={() =>
+                                    setShowConnectToStoreWarning(false)
+                                }
+                            >
+                                Connect Shopify to enable auto-embedding to your
+                                website.
+                            </Alert>
+                        )}
                         <Accordion>
                             <AccordionItem>
                                 <AccordionHeader>
@@ -299,6 +298,28 @@ export const HelpCenterInstallationView: React.FC = () => {
                                     </div>
                                 </AccordionHeader>
                                 <AccordionBody>
+                                    {showWarning && (
+                                        <LinkAlert
+                                            actionLabel="Learn more"
+                                            type={AlertType.Warning}
+                                            className={css.alert}
+                                            actionHref="https://docs.gorgias.com/en-US/help-center---setup-81865#link-to-shopify"
+                                            onClose={() => {
+                                                setShowWarning(false)
+                                            }}
+                                        >
+                                            <div className={css.alertContent}>
+                                                <img
+                                                    src={warningIcon}
+                                                    alt="warning icon"
+                                                />
+                                                <div>
+                                                    Don't forget to link the
+                                                    Help Center to your website.
+                                                </div>
+                                            </div>
+                                        </LinkAlert>
+                                    )}
                                     <div className={css.subdomainSection}>
                                         <SubdomainSection
                                             value={subdomainValue}

@@ -13,6 +13,7 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import settingsCss from 'pages/settings/settings.less'
 
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useShopifyStoreWithChatConnectionsOptions} from '../../hooks/useShopifyStoreWithChatConnectionsOptions'
 
 import css from './ConnectToShopSection.less'
@@ -32,6 +33,7 @@ export const ConnectToShopSection = ({
     const [disconnectModalOpen, setDisconnectModalOpen] = useState(false)
     const [connectModalOpen, setConnectModalOpen] = useState(false)
     const [selectedShop, setSelectedShop] = useState(shopName)
+    const [showWarning, setShowWarning] = useState(true)
 
     useEffect(() => {
         setSelectedShop(shopName)
@@ -75,7 +77,7 @@ export const ConnectToShopSection = ({
                         </Button>
                         <ConfirmButton
                             confirmationButtonIntent="destructive"
-                            confirmationContent="Disconnecting this store will remove automation features from your Help Center."
+                            confirmationContent="Auto-embedding and automation features will no longer be available."
                             confirmationTitle={<b>Disconnect store?</b>}
                             confirmLabel="Disconnect"
                             fillStyle="ghost"
@@ -145,7 +147,7 @@ export const ConnectToShopSection = ({
             <DEPRECATED_Modal
                 isOpen={connectModalOpen}
                 className={css['modal-centered']}
-                header="Connect a Shopify store"
+                header={shopName ? 'Change store' : 'Connect store'}
                 onClose={() => setConnectModalOpen(false)}
                 footer={
                     <div>
@@ -169,14 +171,27 @@ export const ConnectToShopSection = ({
                                 setConnectModalOpen(false)
                             }}
                         >
-                            Connect
+                            {shopName ? 'Change Store' : 'Connect'}
                         </Button>
                     </div>
                 }
             >
                 <>
-                    <div className={css.selectStoreLabel}>Select store</div>
-
+                    <div className={css.selectStoreLabel}>
+                        A store connection is required to use Automation Add-on
+                        features and enable auto-embedding for Shopify stores.
+                    </div>
+                    {shopName && selectedShop !== shopName && showWarning && (
+                        <Alert
+                            type={AlertType.Warning}
+                            className={css.alert}
+                            icon
+                            onClose={() => setShowWarning(false)}
+                        >
+                            Make sure to re-embed the Help Center back to all
+                            applicable pages.
+                        </Alert>
+                    )}
                     <SelectField
                         value={selectedShop}
                         fullWidth
