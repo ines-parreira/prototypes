@@ -167,7 +167,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
             <li>
               <a
                 class="actionLink"
-                href="https://app.livestorm.co/gorgias-1/help-center-on-demand?utm_source=Livestorm+company+page"
+                href="https://link.gorgias.com/helpcenter-webinar"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -176,7 +176,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
                 >
                   ondemand_video
                 </i>
-                Monthly Webinar
+                live webinar
               </a>
             </li>
           </ul>

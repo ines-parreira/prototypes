@@ -14,9 +14,9 @@ export const ABOUT_PAGE: ProductDetail = {
                 'https://docs.gorgias.com/en-US/articles/help-center-18396',
             others: [
                 {
-                    title: 'Monthly Webinar',
+                    title: 'live webinar',
                     icon: 'ondemand_video',
-                    url: 'https://app.livestorm.co/gorgias-1/help-center-on-demand?utm_source=Livestorm+company+page',
+                    url: 'https://link.gorgias.com/helpcenter-webinar',
                 },
             ],
         },
