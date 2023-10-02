@@ -1,13 +1,15 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {act, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import userEvent from '@testing-library/user-event'
 import {ticketFieldDefinitions} from 'fixtures/customField'
-import {CustomField} from 'models/customField/types'
+
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {ApiListResponseCursorPagination} from 'models/api/types'
+import {CustomField} from 'models/customField/types'
 import {
     CustomFieldSelect,
     SELECT_FIELD_LABEL,
@@ -19,8 +21,6 @@ import {
     setSelectedCustomField,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
-
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/customField/useCustomFieldDefinitions')
@@ -57,6 +57,7 @@ describe('<CustomFieldSelect />', () => {
         expect(store.getActions()).toContainEqual(
             setSelectedCustomField({
                 id: ticketFieldDefinitions[0].id,
+                label: ticketFieldDefinitions[0].label,
                 isLoading: true,
             })
         )
@@ -80,6 +81,7 @@ describe('<CustomFieldSelect />', () => {
         expect(store.getActions()).toContainEqual(
             setSelectedCustomField({
                 id: ticketFieldDefinitions[0].id,
+                label: ticketFieldDefinitions[0].label,
                 isLoading: false,
             })
         )
@@ -170,7 +172,11 @@ describe('<CustomFieldSelect />', () => {
         })
 
         expect(store.getActions()).toContainEqual(
-            setSelectedCustomField({id: selectField.id})
+            setSelectedCustomField({
+                id: selectField.id,
+                label: selectField.label,
+                isLoading: false,
+            })
         )
     })
 

@@ -11,6 +11,7 @@ type Props<T> = {
     level?: number
     RowContentComponent: FC<T>
     rowContentProps: WithChildren<T>
+    innerClassName?: string
 }
 
 export const TableBodyRowExpandable = <T,>({
@@ -18,6 +19,7 @@ export const TableBodyRowExpandable = <T,>({
     tableBodyRowProps,
     RowContentComponent,
     rowContentProps,
+    innerClassName,
 }: Props<T>) => {
     const [isExpanded, setIsExpanded] = useState(false)
     return (
@@ -27,6 +29,7 @@ export const TableBodyRowExpandable = <T,>({
                     onClick={() => setIsExpanded(!isExpanded)}
                     width={24}
                     style={{paddingLeft: `${level * 24}px`}}
+                    innerClassName={innerClassName}
                 >
                     {rowContentProps.children.length > 0 && (
                         <i

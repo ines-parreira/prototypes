@@ -28,6 +28,7 @@ import {ApiListResponseCursorPagination} from 'models/api/types'
 import {CustomField} from 'models/customField/types'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {assumeMock} from 'utils/testing'
+import {CustomFieldsTicketCountBreakdownReport} from '../CustomFieldsTicketCountBreakdownReport'
 
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
@@ -45,6 +46,10 @@ jest.mock('hooks/customField/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
+jest.mock('pages/stats/CustomFieldsTicketCountBreakdownReport.tsx')
+const CustomFieldsTicketCountBreakdownReportMock = assumeMock(
+    CustomFieldsTicketCountBreakdownReport
+)
 const componentMock = () => <div />
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -75,6 +80,9 @@ describe('<SupportPerformanceTicketInsights />', () => {
         CustomFieldSelectMock.mockImplementation(componentMock)
         TicketDistributionTableMock.mockImplementation(componentMock)
         TicketInsightsFieldTrendMock.mockImplementation(componentMock)
+        CustomFieldsTicketCountBreakdownReportMock.mockImplementation(
+            componentMock
+        )
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
     })
 
@@ -171,5 +179,14 @@ describe('<SupportPerformanceTicketInsights />', () => {
 
         expect(TicketDistributionTableMock).not.toHaveBeenCalled()
         expect(TicketInsightsFieldTrendMock).not.toHaveBeenCalled()
+    })
+
+    it('should render the CustomFieldsTicketCountBreakdownReport', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsTicketInsightsFieldBreakdown]: true,
+        }))
+        render(<CustomFieldsTicketCountBreakdownReport />)
+
+        expect(CustomFieldsTicketCountBreakdownReportMock).toHaveBeenCalled()
     })
 })

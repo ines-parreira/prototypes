@@ -8,6 +8,7 @@ import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessa
 import {usePostReporting} from 'models/reporting/queries'
 import {postReporting} from 'models/reporting/resources'
 import {ReportingQuery} from 'models/reporting/types'
+import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 
 type Requested = {
     isFetching: boolean
@@ -24,6 +25,12 @@ export type MetricWithDecile<TCube extends Cubes = Cubes> = Requested & {
         value: number | null
         decile: number | null
         allData: QueryReturnType<TCube>
+    } | null
+}
+
+export type MetricWithBreakdown = Requested & {
+    data: {
+        allData: WithChildren<TicketCustomFieldsTicketCountData>[]
     } | null
 }
 
@@ -86,21 +93,20 @@ export function useMetricPerDimension<TCube extends Cubes>(
 }
 
 export function useMetricPerDimensionWithBreakdown(
-    query: ReportingQuery<HelpdeskMessageCubeWithJoins>,
-    dimensionId?: string
-): MetricWithDecile {
+    query: ReportingQuery<HelpdeskMessageCubeWithJoins>
+): MetricWithBreakdown {
     const metricData = usePostReporting<
-        TicketCustomFieldsTicketCountData[],
-        TicketCustomFieldsTicketCountData[]
+        WithChildren<TicketCustomFieldsTicketCountData>[],
+        WithChildren<TicketCustomFieldsTicketCountData>[]
     >([query], {
         select: (data) => {
             return data.data.data
         },
         queryFn: () =>
-            postReporting<TicketCustomFieldsTicketCountData[]>([query]).then(
-                withBreakdown
-            ),
-        queryKey: ['reporting', 'post-reporting-breakdown', query], //TODO: The issue - even though the queries were made with different queryFn and select function they were kept under the same key
+            postReporting<WithChildren<TicketCustomFieldsTicketCountData[]>>([
+                query,
+            ]).then((data) => withBreakdown(data)),
+        queryKey: ['reporting', 'post-reporting-breakdown', query],
     })
 
     return {
@@ -109,9 +115,6 @@ export function useMetricPerDimensionWithBreakdown(
         data:
             metricData.data !== undefined
                 ? {
-                      ...(dimensionId
-                          ? selectMetric(query, dimensionId)(metricData.data) // TODO: Select metric from tree structure
-                          : {value: null, decile: null}),
                       allData: metricData?.data,
                   }
                 : null,

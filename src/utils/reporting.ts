@@ -15,6 +15,11 @@ import {StatsFilters} from 'models/stat/types'
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
 
+export const getFilterDateRange = (statsFilters: StatsFilters) => [
+    formatReportingQueryDate(statsFilters.period.start_datetime),
+    formatReportingQueryDate(statsFilters.period.end_datetime),
+]
+
 export type StatsFiltersMembers = Record<
     'periodStart' | 'periodEnd',
     Cubes['filters']
@@ -24,7 +29,7 @@ export type StatsFiltersMembers = Record<
 export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: TicketMember.PeriodStart,
     periodEnd: TicketMember.PeriodEnd,
-    channels: TicketMember.Channel, //TODO: how to replace it in runtime with flags?
+    channels: TicketMember.Channel,
     integrations: TicketMessagesMember.Integration,
     agents: TicketMember.AssigneeUserId,
     tags: TicketMember.Tags,

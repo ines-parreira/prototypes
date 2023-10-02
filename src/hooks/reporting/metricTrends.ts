@@ -32,6 +32,7 @@ import {StatsFilters} from 'models/stat/types'
 import {
     AutomationAddonStatsFiltersMembers,
     formatReportingQueryDate,
+    getFilterDateRange,
     getPreviousPeriod,
     HelpdeskMessagesStatsFiltersMembers,
     statsFiltersToReportingFilters,
@@ -93,10 +94,7 @@ export const firstResponseTimeQueryFactory = (
         {
             member: TicketMessagesMember.FirstHelpdeskMessageDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: [
-                formatReportingQueryDate(statsFilters.period.start_datetime),
-                formatReportingQueryDate(statsFilters.period.end_datetime),
-            ],
+            values: getFilterDateRange(statsFilters),
         },
     ]
     if (agents?.length) {
@@ -279,10 +277,7 @@ export const ticketsCreatedQueryFactory = (
         {
             member: TicketMember.CreatedDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: [
-                formatReportingQueryDate(statsFilters.period.start_datetime),
-                formatReportingQueryDate(statsFilters.period.end_datetime),
-            ],
+            values: getFilterDateRange(statsFilters),
         },
         ...NotSpamNorTrashedTicketsFilter,
     ]
@@ -335,10 +330,7 @@ export const ticketsRepliedQueryFactory = (
         {
             member: HelpdeskMessageMember.SentDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: [
-                formatReportingQueryDate(filters.period.start_datetime),
-                formatReportingQueryDate(filters.period.end_datetime),
-            ],
+            values: getFilterDateRange(filters),
         },
         {
             member: TicketMember.PeriodEnd,
@@ -385,10 +377,7 @@ export const messagesSentQueryFactory = (
         {
             member: HelpdeskMessageMember.SentDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: [
-                formatReportingQueryDate(filters.period.start_datetime),
-                formatReportingQueryDate(filters.period.end_datetime),
-            ],
+            values: getFilterDateRange(filters),
         },
         ...statsFiltersToReportingFilters(
             HelpdeskMessagesStatsFiltersMembers,
@@ -410,10 +399,7 @@ const automationAddOnDefaultFilters = (filters: StatsFilters) => [
     {
         member: AutomationBillingEventMember.CreatedDate,
         operator: ReportingFilterOperator.InDateRange,
-        values: [
-            formatReportingQueryDate(filters.period.start_datetime),
-            formatReportingQueryDate(filters.period.end_datetime),
-        ],
+        values: getFilterDateRange(filters),
     },
     ...statsFiltersToReportingFilters(
         AutomationAddonStatsFiltersMembers,

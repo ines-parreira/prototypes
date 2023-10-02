@@ -152,7 +152,7 @@ describe('useMetricPerDimensionWithBreakdown', () => {
     const metricValue = 5
     const data = [
         {
-            [BREAKDOWN_FIELD]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`, // TODO: check if higher level tags can have their own metrics
+            [BREAKDOWN_FIELD]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`,
             [VALUE_FIELD]: String(metricValue),
         },
         {
@@ -169,7 +169,7 @@ describe('useMetricPerDimensionWithBreakdown', () => {
 
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(
-            withBreakdown({data: mockedResponse}).data as any
+            withBreakdown({data: mockedResponse} as any).data as any
         )
 
         const {result} = renderHook(() =>
@@ -180,7 +180,6 @@ describe('useMetricPerDimensionWithBreakdown', () => {
             isFetching: mockedResponse.isFetching,
             isError: mockedResponse.isError,
             data: {
-                value: null,
                 allData: [
                     {
                         [BREAKDOWN_FIELD]: ticketField,
@@ -199,44 +198,6 @@ describe('useMetricPerDimensionWithBreakdown', () => {
                         ],
                     },
                 ],
-                decile: null,
-            },
-        })
-    })
-
-    it.skip('should return data per tag value', () => {
-        usePostReportingMock.mockReturnValue(
-            withBreakdown({data: mockedResponse}).data as any
-        )
-
-        const {result} = renderHook(() =>
-            useMetricPerDimensionWithBreakdown(query, ticketFieldL2_1)
-        )
-
-        expect(result.current).toEqual({
-            isFetching: mockedResponse.isFetching,
-            isError: mockedResponse.isError,
-            data: {
-                value: String(metricValue),
-                allData: [
-                    {
-                        [BREAKDOWN_FIELD]: ticketField,
-                        [VALUE_FIELD]: String(10),
-                        children: [
-                            {
-                                ...data[0],
-                                [BREAKDOWN_FIELD]: ticketFieldL2_1,
-                                children: [],
-                            },
-                            {
-                                ...data[1],
-                                [BREAKDOWN_FIELD]: ticketFieldL2_2,
-                                children: [],
-                            },
-                        ],
-                    },
-                ],
-                decile: null,
             },
         })
     })

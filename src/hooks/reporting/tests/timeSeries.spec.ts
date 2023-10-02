@@ -248,7 +248,8 @@ describe('time series', () => {
                     ],
                     timeDimensions: [
                         {
-                            dimension: HelpdeskMessageDimension.SentDatetime,
+                            dimension:
+                                TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
                             granularity: ReportingGranularity.Day,
                             dateRange: [periodStart, periodEnd],
                         },

@@ -9,6 +9,7 @@ import {
     ticketsRepliedQueryFactory,
 } from 'hooks/reporting/metricTrends'
 import {
+    MetricWithBreakdown,
     MetricWithDecile,
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
@@ -320,7 +321,7 @@ export const useCustomTicketFieldWithBreakdown = (
     timezone: string,
     customFieldId: string,
     sorting?: OrderDirection
-): MetricWithDecile =>
+): MetricWithBreakdown =>
     useMetricPerDimensionWithBreakdown(
         customFieldsTicketCountQueryFactory(
             statsFilters,

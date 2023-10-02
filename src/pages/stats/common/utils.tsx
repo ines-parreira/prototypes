@@ -286,8 +286,10 @@ export const formatMetricTrend = (
 }
 
 export const SHORT_FORMAT = 'MMM Do, YYYY'
-const getFormat = (granularity: ReportingGranularity) =>
+
+export const getFormat = (granularity: ReportingGranularity) =>
     granularity === 'hour' ? 'LT' : SHORT_FORMAT
+
 const formatTimeSeries = (
     label: string,
     items: TimeSeriesDataItem[],
@@ -299,6 +301,7 @@ const formatTimeSeries = (
         y: item.value,
     })),
 })
+
 export const formatTimeSeriesData = (
     data: TimeSeriesDataItem[][] = [],
     label: string,

@@ -43,6 +43,8 @@ export const CustomFieldSelect = () => {
         dispatch(
             setSelectedCustomField({
                 id: activeFields[0] !== undefined ? activeFields[0].id : null,
+                label:
+                    activeFields[0] !== undefined ? activeFields[0].label : '',
                 isLoading,
             })
         )
@@ -78,6 +80,8 @@ export const CustomFieldSelect = () => {
                             dispatch(
                                 setSelectedCustomField({
                                     id: field.id,
+                                    label: field.label,
+                                    isLoading,
                                 })
                             )
                             setIsOpen(false)

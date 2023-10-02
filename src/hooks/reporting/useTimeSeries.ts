@@ -1,9 +1,7 @@
-import moment from 'moment-timezone'
 import _groupBy from 'lodash/groupBy'
+import moment from 'moment-timezone'
 import {DataResponse} from 'hooks/reporting/withDeciles'
 import {Cubes} from 'models/reporting/cubes'
-
-import {formatReportingQueryDate} from 'utils/reporting'
 import {usePostReporting} from 'models/reporting/queries'
 import {
     Cube,
@@ -11,6 +9,8 @@ import {
     ReportingQuery,
     ReportingTimeDimension,
 } from 'models/reporting/types'
+
+import {formatReportingQueryDate} from 'utils/reporting'
 
 export type TimeSeriesQuery<TCube extends Cube = Cube> = Omit<
     ReportingQuery<TCube>,
@@ -65,12 +65,13 @@ const objectMap = <T, S>(
     return mapped
 }
 
+type TimeSeriesPerDimension = Record<string, TimeSeriesDataItem[][]>
+
 const selectPerDimension =
     <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
-    (res: DataResponse['data']['data']) => {
+    (res: DataResponse['data']['data']): TimeSeriesPerDimension => {
         const {dimensions} = query
-        const data = objectMap(_groupBy(res, dimensions[0]), select(query))
-        return data
+        return objectMap(_groupBy(res, dimensions[0]), select(query))
     }
 
 export default function useTimeSeries<TCube extends Cubes>(
@@ -97,10 +98,10 @@ export function useTimeSeriesPerDimension<TCube extends Cubes>(
     })
 }
 
-function getPeriodDateTimes(
+export function getPeriodDateTimes(
     dateRange: string[],
     granularity: ReportingGranularity
-) {
+): string[] {
     // Cube always returns weeks starting with Monday,
     // but Moment.js derives the starting day of the week from
     // locale which in our case is `currentUser.language`.

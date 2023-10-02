@@ -1,3 +1,4 @@
+import {OrderDirection} from 'models/api/types'
 import {RootState} from 'state/types'
 import {
     getSelectedCustomField,
@@ -7,19 +8,27 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 
 describe('ticketInsightsSlice', () => {
+    const fieldId = 123
+    const fieldLabel = 'someLabel'
     const field = {
-        id: 123,
+        id: fieldId,
+        label: fieldLabel,
         isLoading: false,
     }
 
     describe('reducers', () => {
-        it('should store the selected custom field id', () => {
+        it('should store the selected custom field id and label', () => {
             const newState = ticketInsightsSlice.reducer(
                 initialState,
-                setSelectedCustomField(field)
+                setSelectedCustomField({
+                    id: fieldId,
+                    label: fieldLabel,
+                    isLoading: false,
+                })
             )
 
-            expect(newState.selectedCustomField).toEqual(field)
+            expect(newState.selectedCustomField.id).toEqual(fieldId)
+            expect(newState.selectedCustomField.label).toEqual(fieldLabel)
         })
     })
 
@@ -27,11 +36,18 @@ describe('ticketInsightsSlice', () => {
         const state = {
             ui: {
                 [ticketInsightsSlice.name]: {
-                    selectedCustomField: field,
+                    selectedCustomField: {
+                        id: fieldId,
+                        label: fieldLabel,
+                        isLoading: false,
+                    },
+                    order: OrderDirection.Asc,
                 },
             },
-        } as RootState
+        } as unknown as RootState
 
         expect(getSelectedCustomField(state)).toEqual(field)
+        expect(getSelectedCustomField(state).id).toEqual(fieldId)
+        expect(getSelectedCustomField(state).label).toEqual(fieldLabel)
     })
 })

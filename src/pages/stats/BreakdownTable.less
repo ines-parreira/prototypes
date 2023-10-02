@@ -24,7 +24,7 @@
             td {
                 position: sticky;
                 top: 0;
-                height: 56px;
+                height: 40px;
                 z-index: 3;
                 background-color: var(--neutral-grey-0);
             }
@@ -37,7 +37,7 @@
         }
 
         tr {
-            height: 56px;
+            height: 40px;
 
             td {
                 &.withShadow {
@@ -71,6 +71,29 @@
                 }
             }
         }
+    }
+
+    .categoryHeader {
+        min-width: 320px;
+        width: 320px;
+    }
+
+    .categoryColumn {
+        min-width: 250px;
+        width: 250px;
+    }
+
+    .small,
+    .BodyCellContent {
+        padding: 8px 16px;
+    }
+
+    .BodyCellContent {
+        min-width: 120px;
+    }
+
+    .NoDataAvailable {
+        min-height: 660px;
     }
 
     .pagination {

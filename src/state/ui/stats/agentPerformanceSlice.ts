@@ -13,6 +13,7 @@ import {TableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
 import {isMetricForAgent} from 'pages/stats/common/utils'
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
+import {periodToReportingGranularity} from 'utils/reporting'
 
 type AgentPerformanceSorting = {
     field: TableColumn
@@ -168,6 +169,9 @@ export const getCleanStatsFiltersWithTimezone = createSelector(
         return {
             userTimezone: timezone || DEFAULT_TIMEZONE,
             cleanStatsFilters: cleanStatsFilters || pageStatsFilters,
+            granularity: periodToReportingGranularity(
+                cleanStatsFilters?.period || pageStatsFilters?.period
+            ),
         }
     }
 )

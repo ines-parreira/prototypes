@@ -18,6 +18,7 @@ import {
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
+import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     TicketMessagesMember,
     TicketMessagesSegment,
@@ -30,7 +31,7 @@ import {
 import {StatsFilters} from 'models/stat/types'
 import {
     AutomationAddonStatsFiltersMembers,
-    formatReportingQueryDate,
+    getFilterDateRange,
     HelpdeskMessagesStatsFiltersMembers,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
@@ -77,12 +78,7 @@ export const ticketsCreatedQueryFactory = (
             {
                 dimension: TicketDimension.CreatedDatetime,
                 granularity,
-                dateRange: [
-                    formatReportingQueryDate(
-                        statsFilters.period.start_datetime
-                    ),
-                    formatReportingQueryDate(statsFilters.period.end_datetime),
-                ],
+                dateRange: getFilterDateRange(statsFilters),
             },
         ],
         timezone,
@@ -118,10 +114,7 @@ export function useTicketsClosedTimeSeries(
             {
                 dimension: TicketDimension.ClosedDatetime,
                 granularity,
-                dateRange: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
+                dateRange: getFilterDateRange(filters),
             },
         ],
         timezone,
@@ -159,10 +152,7 @@ export function useTicketsRepliedTimeSeries(
             {
                 dimension: HelpdeskMessageDimension.SentDatetime,
                 granularity,
-                dateRange: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
+                dateRange: getFilterDateRange(filters),
             },
         ],
         timezone,
@@ -207,10 +197,7 @@ export function useMessagesSentTimeSeries(
             {
                 dimension: HelpdeskMessageDimension.SentDatetime,
                 granularity,
-                dateRange: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
+                dateRange: getFilterDateRange(filters),
             },
         ],
         timezone,
@@ -244,12 +231,10 @@ export const useCustomFieldsTicketCountTimeSeries = (
         ),
         timeDimensions: [
             {
-                dimension: HelpdeskMessageDimension.SentDatetime,
+                dimension:
+                    TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
                 granularity,
-                dateRange: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
+                dateRange: getFilterDateRange(filters),
             },
         ],
         timezone,
@@ -269,10 +254,7 @@ export function useAutomationRateTimeSeries(
             {
                 dimension: AutomationBillingEventDimension.CreatedDate,
                 granularity,
-                dateRange: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
+                dateRange: getFilterDateRange(filters),
             },
         ],
         timezone,
@@ -301,10 +283,7 @@ export function useAutomatedInteractionTimeSeries(
             {
                 dimension: AutomationBillingEventDimension.CreatedDate,
                 granularity,
-                dateRange: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
+                dateRange: getFilterDateRange(filters),
             },
         ],
         timezone,
@@ -342,10 +321,7 @@ export function useAutomatedInteractionByEventTypesTimeSeries(
             {
                 dimension: AutomationBillingEventDimension.CreatedDate,
                 granularity,
-                dateRange: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
+                dateRange: getFilterDateRange(filters),
             },
         ],
         timezone,

@@ -3,6 +3,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import {ReportingGranularity} from 'models/reporting/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -64,6 +65,7 @@ describe('<PercentageOfClosedTicketsCellSummary>', () => {
                 end_datetime: '1970-01-01T00:00:00+00:00',
             },
         },
+        granularity: ReportingGranularity.Day,
     })
 
     it('should render value as percentage', () => {

@@ -1,12 +1,15 @@
 import {
     BREAKDOWN_FIELD,
+    selectTimeSeriesWithBreakdown,
     selectWithBreakdown,
-    TicketCustomFieldsTicketCountData,
     TAG_SEPARATOR,
+    TicketCustomFieldsTicketCountData,
+    TicketCustomFieldsTicketCountTimeSeriesData,
     VALUE_FIELD,
     withBreakdown,
 } from 'hooks/reporting/withBreakdown'
-import {DataResponse} from 'hooks/reporting/withDeciles'
+import {OrderDirection} from 'models/api/types'
+import {UsePostReportingQueryData} from 'models/reporting/queries'
 
 describe('withBreakdown', () => {
     const tagL1_1 = 'asd'
@@ -31,11 +34,11 @@ describe('withBreakdown', () => {
         [BREAKDOWN_FIELD]: tag,
         [VALUE_FIELD]: '1',
     }))
-    const response: DataResponse<TicketCustomFieldsTicketCountData> = {
+    const response = {
         data: {
             data: results,
         },
-    }
+    } as UsePostReportingQueryData<TicketCustomFieldsTicketCountData[]>
 
     describe('withBreakdown', () => {
         it('should replace the response data with data with data breakdown', () => {
@@ -104,6 +107,262 @@ describe('withBreakdown', () => {
                             [BREAKDOWN_FIELD]: tagL2_4,
                             [VALUE_FIELD]: '1',
                             children: [],
+                        },
+                    ],
+                },
+            ])
+        })
+
+        it('should handle timnSeries data', () => {
+            const results = customTags.map((tag) => ({
+                [BREAKDOWN_FIELD]: tag,
+                [VALUE_FIELD]: '1',
+            }))
+
+            const breakdown = selectWithBreakdown(results)
+
+            expect(breakdown).toEqual([
+                {
+                    [BREAKDOWN_FIELD]: tagL1_1,
+                    [VALUE_FIELD]: '4',
+                    children: [
+                        {
+                            [BREAKDOWN_FIELD]: tagL2_1,
+                            [VALUE_FIELD]: '2',
+                            children: [
+                                {
+                                    [BREAKDOWN_FIELD]: tagL3_1,
+                                    [VALUE_FIELD]: '1',
+                                    children: [],
+                                },
+                                {
+                                    [BREAKDOWN_FIELD]: tagL3_2,
+                                    [VALUE_FIELD]: '1',
+                                    children: [],
+                                },
+                            ],
+                        },
+                        {
+                            [BREAKDOWN_FIELD]: tagL2_2,
+                            [VALUE_FIELD]: '1',
+                            children: [
+                                {
+                                    [BREAKDOWN_FIELD]: tagL3_3,
+                                    [VALUE_FIELD]: '1',
+                                    children: [],
+                                },
+                            ],
+                        },
+                        {
+                            [BREAKDOWN_FIELD]: tagL2_3,
+                            [VALUE_FIELD]: '1',
+                            children: [
+                                {
+                                    [BREAKDOWN_FIELD]: tagL3_4,
+                                    [VALUE_FIELD]: '1',
+                                    children: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    [BREAKDOWN_FIELD]: tagL1_2,
+                    [VALUE_FIELD]: '1',
+                    children: [
+                        {
+                            [BREAKDOWN_FIELD]: tagL2_4,
+                            [VALUE_FIELD]: '1',
+                            children: [],
+                        },
+                    ],
+                },
+            ])
+        })
+    })
+
+    describe('selectTimeSeriesWithBreakdown', () => {
+        const tag1 = `${tagL1_1}${TAG_SEPARATOR}${tagL2_1}${TAG_SEPARATOR}${tagL3_1}`
+        const tag2 = `${tagL1_1}${TAG_SEPARATOR}${tagL2_1}${TAG_SEPARATOR}${tagL3_2}`
+        const tag3 = `${tagL1_1}${TAG_SEPARATOR}${tagL2_2}${TAG_SEPARATOR}${tagL3_3}`
+        const customFields = [tag1, tag2, tag3]
+        const day1Value = 2
+        const day2Value = 3
+        const day3Value = 4
+
+        const timeSeriesData: TicketCustomFieldsTicketCountTimeSeriesData[] =
+            customFields.map((tag) => ({
+                [BREAKDOWN_FIELD]: tag,
+                timeSeries: [
+                    {
+                        label: tag,
+                        dateTime: '2022-01-02T00:00:00.000',
+                        value: day1Value,
+                    },
+                    {
+                        label: tag,
+                        dateTime: '2022-01-03T00:00:00.000',
+                        value: day2Value,
+                    },
+                    {
+                        label: tag,
+                        dateTime: '2022-01-04T00:00:00.000',
+                        value: day3Value,
+                    },
+                ],
+            }))
+        const defaultOrder = OrderDirection.Asc
+
+        it('should return hierarchy with timeSeries and subtotals', () => {
+            const results = selectTimeSeriesWithBreakdown(
+                timeSeriesData,
+                defaultOrder
+            )
+
+            expect(results).toEqual([
+                {
+                    [VALUE_FIELD]:
+                        [tagL3_1, tagL3_2, tagL3_3].length *
+                        (day1Value + day2Value + day3Value),
+                    [BREAKDOWN_FIELD]: tagL1_1,
+                    children: [
+                        {
+                            [VALUE_FIELD]:
+                                [tagL3_1, tagL3_2].length *
+                                (day1Value + day2Value + day3Value),
+                            [BREAKDOWN_FIELD]: tagL2_1,
+                            children: [
+                                {
+                                    [VALUE_FIELD]:
+                                        day1Value + day2Value + day3Value,
+                                    [BREAKDOWN_FIELD]: tagL3_2,
+                                    children: [],
+                                    timeSeries: [
+                                        {
+                                            dateTime: '2022-01-02T00:00:00.000',
+                                            label: tag2,
+                                            value: day1Value,
+                                        },
+                                        {
+                                            dateTime: '2022-01-03T00:00:00.000',
+                                            label: tag2,
+                                            value: day2Value,
+                                        },
+                                        {
+                                            dateTime: '2022-01-04T00:00:00.000',
+                                            label: tag2,
+                                            value: day3Value,
+                                        },
+                                    ],
+                                },
+                                {
+                                    [VALUE_FIELD]: 9,
+                                    [BREAKDOWN_FIELD]: tagL3_1,
+                                    children: [],
+                                    timeSeries: [
+                                        {
+                                            dateTime: '2022-01-02T00:00:00.000',
+                                            label: tag1,
+                                            value: day1Value,
+                                        },
+                                        {
+                                            dateTime: '2022-01-03T00:00:00.000',
+                                            label: tag1,
+                                            value: day2Value,
+                                        },
+                                        {
+                                            dateTime: '2022-01-04T00:00:00.000',
+                                            label: tag1,
+                                            value: day3Value,
+                                        },
+                                    ],
+                                },
+                            ],
+                            timeSeries: [
+                                {
+                                    dateTime: '2022-01-02T00:00:00.000',
+                                    label: tag2,
+                                    value:
+                                        [tagL3_1, tagL3_2].length * day1Value,
+                                },
+                                {
+                                    dateTime: '2022-01-03T00:00:00.000',
+                                    label: tag2,
+                                    value:
+                                        [tagL3_1, tagL3_2].length * day2Value,
+                                },
+                                {
+                                    dateTime: '2022-01-04T00:00:00.000',
+                                    label: tag2,
+                                    value:
+                                        [tagL3_1, tagL3_2].length * day3Value,
+                                },
+                            ],
+                        },
+                        {
+                            [VALUE_FIELD]:
+                                [tagL3_3].length *
+                                (day1Value + day2Value + day3Value),
+                            [BREAKDOWN_FIELD]: tagL2_2,
+                            children: [
+                                {
+                                    [VALUE_FIELD]:
+                                        day1Value + day2Value + day3Value,
+                                    [BREAKDOWN_FIELD]: tagL3_3,
+                                    children: [],
+                                    timeSeries: [
+                                        {
+                                            dateTime: '2022-01-02T00:00:00.000',
+                                            label: tag3,
+                                            value: day1Value,
+                                        },
+                                        {
+                                            dateTime: '2022-01-03T00:00:00.000',
+                                            label: tag3,
+                                            value: day2Value,
+                                        },
+                                        {
+                                            dateTime: '2022-01-04T00:00:00.000',
+                                            label: tag3,
+                                            value: day3Value,
+                                        },
+                                    ],
+                                },
+                            ],
+                            timeSeries: [
+                                {
+                                    dateTime: '2022-01-02T00:00:00.000',
+                                    label: tag3,
+                                    value: day1Value,
+                                },
+                                {
+                                    dateTime: '2022-01-03T00:00:00.000',
+                                    label: tag3,
+                                    value: day2Value,
+                                },
+                                {
+                                    dateTime: '2022-01-04T00:00:00.000',
+                                    label: tag3,
+                                    value: day3Value,
+                                },
+                            ],
+                        },
+                    ],
+                    timeSeries: [
+                        {
+                            dateTime: '2022-01-02T00:00:00.000',
+                            label: tag3,
+                            value: 6,
+                        },
+                        {
+                            dateTime: '2022-01-03T00:00:00.000',
+                            label: tag3,
+                            value: 9,
+                        },
+                        {
+                            dateTime: '2022-01-04T00:00:00.000',
+                            label: tag3,
+                            value: 12,
                         },
                     ],
                 },

@@ -2,6 +2,7 @@ export enum FeatureFlagKey {
     AnalyticsChannelFilter = 'analytics-channel-filter',
     AnalyticsPerformanceTips = 'analytics-performance-tips',
     AnalyticsTicketInsights = 'analytics-ticket-insights',
+    AnalyticsTicketInsightsFieldBreakdown = 'analytics-ticket-insights-field-breakdown',
     AnalyticsTicketInsightsTopFields = 'analytics-ticket-insights-top-fields',
     AnalyticsTicketInsightsFieldTrends = 'analytics-ticket-insights-field-trends',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
