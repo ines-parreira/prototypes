@@ -1178,7 +1178,7 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "product_id": "prod_Mwy3exdalDFouZ",
             "name": "Convert Trial Monthly",
             "currency": "usd",
-            "extra_ticket_cost": 0,
+            "extra_ticket_cost": 1,
             "price_id": "price_1NdBfmI9qXomtXqSFfC7T2xX",
             "amount": 0,
             "internal_id": "convert-01-monthly-usd-5",

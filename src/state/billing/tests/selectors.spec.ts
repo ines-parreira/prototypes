@@ -496,6 +496,14 @@ describe('billing selectors', () => {
         })
     })
 
+    describe('getCheapestConvertPrice', () => {
+        it('should return the cheapest non-zero Convert price', () => {
+            expect(selectors.getCheapestConvertPrice(state)).toEqual(
+                convertPrice1
+            )
+        })
+    })
+
     describe('getCurrentHelpdeskName', () => {
         it('should return the current product name', () => {
             expect(selectors.getCurrentHelpdeskName(state)).toBe('Basic')

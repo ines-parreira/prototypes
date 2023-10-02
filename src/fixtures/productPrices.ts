@@ -766,7 +766,7 @@ export const convertPrice0: ConvertPrice = {
     name: 'Convert Trial Monthly',
     price_id: 'price_1NdBfmI9qXomtXqSFfC7T2xX',
     product_id: 'prod_Mwy3exdalDFouZ',
-    extra_ticket_cost: 0,
+    extra_ticket_cost: 1,
 }
 
 export const convertPrice1: ConvertPrice = {

@@ -421,6 +421,13 @@ export const getCheapestVoicePrice = createSelector(
     (voiceProduct, interval) => getCheapestPrice(voiceProduct?.prices, interval)
 )
 
+export const getCheapestConvertPrice = createSelector(
+    getConvertProduct,
+    getCurrentHelpdeskInterval,
+    (convertProduct, interval) =>
+        getCheapestPrice(convertProduct?.prices, interval)
+)
+
 export const getCheapestProductPrices = createSelector(
     getHelpdeskPrices,
     getAutomationPrices,

@@ -19,6 +19,7 @@ import {
 import Tooltip from 'pages/common/components/Tooltip'
 import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages} from 'state/billing/types'
+import CounterText from '../CounterText'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
@@ -119,30 +120,6 @@ const ProductPlanSelection = ({
         },
         [type]
     )
-
-    const getCounterText = useMemo(() => {
-        if (selectedPlan && isTrialPrice(selectedPlan, type)) {
-            return (
-                <>
-                    <strong>
-                        ${(selectedPlan?.extra_ticket_cost ?? 0).toFixed(2)}
-                    </strong>{' '}
-                    {PRODUCT_INFO[type].perTicket}
-                </>
-            )
-        }
-        if (selectedPlan && isAAOLegacyPrice(selectedPlan, type)) {
-            return (
-                <>
-                    <strong>
-                        ${(selectedPlan?.amount / 100 ?? 0).toFixed(2)}
-                    </strong>
-                    /{interval}
-                </>
-            )
-        }
-        return `${PRODUCT_INFO[type].counter}/${interval}`
-    }, [interval, selectedPlan, type])
 
     const options = useMemo(
         () => [
@@ -301,7 +278,13 @@ const ProductPlanSelection = ({
                             dropdownMenuClassName={css.select}
                         />
                         <div className={css.counter}>
-                            <div>{getCounterText}</div>
+                            <div>
+                                <CounterText
+                                    price={selectedPlan}
+                                    type={type}
+                                    interval={interval}
+                                />
+                            </div>
                             <i
                                 id={`priceSelectInfo_${type}`}
                                 className="material-icons"

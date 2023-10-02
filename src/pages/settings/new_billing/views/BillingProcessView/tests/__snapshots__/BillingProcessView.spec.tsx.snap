@@ -171,7 +171,9 @@ exports[`UsageAndPlansView should render 1`] = `
                     class="counter"
                   >
                     <div>
-                      tickets/month
+                      tickets
+                      /
+                      month
                     </div>
                     <i
                       class="material-icons"

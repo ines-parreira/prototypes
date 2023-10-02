@@ -1,11 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
+import ConvertSubscriptionModal from 'pages/settings/new_billing/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
 import css from './CampaignInfobarPaywall.less'
 
 const CampaignInfobarPaywall = () => {
+    const [isConvertModalOpened, setIsConvertModalOpened] = useState(false)
     const openModal = () => {
-        // TODO: TBD in follow-up task
+        setIsConvertModalOpened(true)
+    }
+
+    const closeModal = () => {
+        setIsConvertModalOpened(false)
     }
 
     return (
@@ -27,8 +33,15 @@ const CampaignInfobarPaywall = () => {
                 type={AlertType.Info}
             >
                 Sort your campaigns with custom segments by subscribing to
-                Revenue add-on
+                Convert
             </Alert>
+
+            <ConvertSubscriptionModal
+                canduId={'campaign-list-convert-modal-body'}
+                isOpen={isConvertModalOpened}
+                onClose={closeModal}
+                onSubscribe={closeModal}
+            />
         </div>
     )
 }

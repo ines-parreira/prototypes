@@ -2287,7 +2287,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
   {
     "amount": 0,
     "currency": "usd",
-    "extra_ticket_cost": 0,
+    "extra_ticket_cost": 1,
     "internal_id": "convert-01-monthly-usd-5",
     "interval": "month",
     "name": "Convert Trial Monthly",
@@ -4416,7 +4416,7 @@ exports[`billing selectors getProducts should return products 1`] = `
       {
         "amount": 0,
         "currency": "usd",
-        "extra_ticket_cost": 0,
+        "extra_ticket_cost": 1,
         "internal_id": "convert-01-monthly-usd-5",
         "interval": "month",
         "name": "Convert Trial Monthly",

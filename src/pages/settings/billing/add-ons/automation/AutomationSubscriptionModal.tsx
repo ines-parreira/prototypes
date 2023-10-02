@@ -13,7 +13,6 @@ import {
     getAutomationProduct,
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
-    getCurrentProducts,
     getHasAutomationAddOn,
     getHelpdeskPrices,
 } from 'state/billing/selectors'
@@ -38,6 +37,7 @@ import {
     getCurrentAccountState,
     isTrialing,
 } from 'state/currentAccount/selectors'
+import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import AutomationPlanSubscriptionDescription from './AutomationPlanSubscriptionDescription'
 import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'
@@ -119,14 +119,7 @@ const AutomationSubscriptionModal = ({
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
 
-    const currentProducts = useAppSelector(getCurrentProducts)
-
-    const currentPriceIds: string[] = currentProducts
-        ? [
-              currentProducts.helpdesk?.price_id,
-              currentProducts.automation?.price_id || '',
-          ].filter(Boolean)
-        : []
+    const currentPriceIds: string[] = useCurrentPriceIds()
 
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
         useAsyncFn(async (prices: string[]) => {
