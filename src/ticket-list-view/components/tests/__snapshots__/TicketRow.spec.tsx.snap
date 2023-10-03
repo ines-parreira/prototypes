@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketRow /> should display a ticket basic information 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="ticketIconWrapper isOpen icon"
+    id="icon-mocked-tooltip-target"
+  >
+    <i
+      class="icon d-inline-block material-icons ticketIcon"
+    >
+      email
+    </i>
+  </div>
+  <div
+    class="panel"
+  >
+    <div
+      class="subjectWrapper"
+    >
+      <div
+        class="subject withCounter"
+      >
+        Great ticket
+      </div>
+      <div
+        class="badge counter"
+      >
+        1
+      </div>
+    </div>
+    <div
+      class="excerptWrapper"
+    >
+      <div
+        class="excerpt"
+      />
+      <div
+        class="elapsedTime"
+      >
+        6 years ago
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -7,6 +7,7 @@ import {
     ApiPaginationParams,
 } from 'models/api/types'
 
+import {Ticket} from 'models/ticket/types'
 import {ListParams, View, ViewDraft} from './types'
 
 type SharedView = View & {
@@ -27,7 +28,7 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
 export type UseGetViewItems = Awaited<ReturnType<typeof getViewItems>>
 
 export const getViewItems = async ({viewId, ...params}: ListParams) => {
-    return await client.get<ApiListResponseCursorPagination<View[]>>(
+    return await client.get<ApiListResponseCursorPagination<Ticket[]>>(
         `/api/views/${viewId}/items/`,
         {
             params,

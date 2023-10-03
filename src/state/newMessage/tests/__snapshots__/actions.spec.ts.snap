@@ -705,6 +705,7 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
               "via": "helpdesk",
             },
           ],
+          "messages_count": 1,
           "meta": null,
           "opened_datetime": null,
           "receiver": {

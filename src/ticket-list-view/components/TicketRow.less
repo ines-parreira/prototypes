@@ -1,0 +1,71 @@
+@import (reference) '~css/typography';
+
+:local {
+    .wrapper {
+        display: flex;
+        padding: 16px 12px;
+
+        &:hover {
+            border-radius: 4px;
+            box-shadow: inset 4px 0 0 var(--main-primary);
+            background: var(--main-primary-0);
+            cursor: pointer;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 8px;
+        }
+    }
+
+    .icon {
+        flex-shrink: 0;
+        margin-right: 8px;
+    }
+
+    .panel {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .subjectWrapper {
+        display: flex;
+        justify-content: space-between;
+
+        .subject {
+            .body-regular();
+            color: var(--neutral-grey-6);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
+            &.withCounter {
+                font-weight: 600;
+            }
+        }
+
+        .counter {
+            margin-left: 16px;
+        }
+    }
+
+    .excerptWrapper {
+        display: flex;
+        color: var(--neutral-grey-5);
+        margin-top: 4px;
+        .caption-regular();
+
+        .excerpt {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .elapsedTime {
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+    }
+}

@@ -1,15 +1,17 @@
 import React, {ReactNode} from 'react'
+import classNames from 'classnames'
 
 import css from './Panel.less'
 
 type Props = {
     children: ReactNode
+    className?: string
     width?: number
 }
 
-export default function Panel({children, width}: Props) {
+export default function Panel({children, className, width}: Props) {
     return (
-        <div className={css.panel} style={{width}}>
+        <div className={classNames(css.panel, className)} style={{width}}>
             {children}
         </div>
     )

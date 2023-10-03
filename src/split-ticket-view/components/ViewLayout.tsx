@@ -2,6 +2,7 @@ import React from 'react'
 import {useParams} from 'react-router-dom'
 
 import {Config, Panel, Panels} from 'panels'
+import {TicketListView} from 'ticket-list-view'
 
 type Params = {
     viewId: string
@@ -9,7 +10,6 @@ type Params = {
 
 export default function View() {
     const {viewId} = useParams<Params>()
-
     const panelsConfig: Config = [
         [200, 200, 350],
         [300, 300, 450],
@@ -22,7 +22,7 @@ export default function View() {
                 <p>navbar</p>
             </Panel>
             <Panel>
-                <p>view {viewId}</p>
+                <TicketListView viewId={viewId} />
             </Panel>
             <Panel>
                 <p>ticket</p>

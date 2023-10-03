@@ -37,32 +37,33 @@ export type Ticket = {
     id: number
     assignee_user: TicketAssignee | null
     assignee_team: Pick<Team, 'id' | 'name' | 'decoration'> | null
-    messages: TicketElement[]
-    status: TicketStatus
-    subject: string
     channel: TicketChannel
-    custom_fields?: CustomFields
-    receiver: Actor
-    sender: Actor
-    tags: Pick<Tag, 'name' | 'id' | 'decoration'>[]
-    events: InternalTicketEvent[]
-    customer: Customer | null
-    from_agent: boolean
-    created_datetime: string
-    opened_datetime: string | null
-    updated_datetime: string | null
     closed_datetime: string | null
-    snooze_datetime: string | null
-    trashed_datetime: string | null
+    created_datetime: string
+    customer: Customer | null
+    custom_fields?: CustomFields
+    events: InternalTicketEvent[]
+    excerpt?: string
+    external_id: string | null
+    from_agent: boolean
+    is_unread: boolean
+    language: string | null
     last_message_datetime: string | null
     last_received_message_datetime: string | null
+    messages: TicketElement[]
+    messages_count: number
     meta: Record<string, unknown> | null
+    opened_datetime: string | null
+    receiver: Actor
+    sender: Actor
+    snooze_datetime: string | null
+    status: TicketStatus
+    subject: string
+    tags: Pick<Tag, 'name' | 'id' | 'decoration'>[]
+    trashed_datetime: string | null
+    updated_datetime: string | null
     uri: string
-    external_id: string | null
     via: TicketVia
-    is_unread: boolean
-    excerpt?: string
-    language: string | null
 }
 
 type InternalTicketEvent = Pick<

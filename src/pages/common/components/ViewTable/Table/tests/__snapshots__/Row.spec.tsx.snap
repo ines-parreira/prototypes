@@ -126,6 +126,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           "lastname": "Plugaru",
         },
         "id": 152,
+        "messages_count": 1,
         "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
         "customer": Immutable.Map {
           "id": 34,
@@ -665,6 +666,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           "lastname": "Plugaru",
         },
         "id": 152,
+        "messages_count": 1,
         "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
         "customer": Immutable.Map {
           "id": 34,
@@ -1211,6 +1213,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           "lastname": "Plugaru",
         },
         "id": 152,
+        "messages_count": 1,
         "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
         "customer": Immutable.Map {
           "id": 34,
@@ -1775,6 +1778,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           "lastname": "Plugaru",
         },
         "id": 1,
+        "messages_count": 1,
         "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
         "customer": Immutable.Map {
           "id": 34,
@@ -2314,6 +2318,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           "lastname": "Plugaru",
         },
         "id": 1,
+        "messages_count": 1,
         "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
         "customer": Immutable.Map {
           "id": 34,
@@ -2860,6 +2865,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           "lastname": "Plugaru",
         },
         "id": 1,
+        "messages_count": 1,
         "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
         "customer": Immutable.Map {
           "id": 34,

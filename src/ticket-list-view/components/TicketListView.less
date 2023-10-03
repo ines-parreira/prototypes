@@ -1,0 +1,73 @@
+@import (reference) '~css/typography';
+
+:local {
+    .wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .list {
+        padding: 16px;
+        overflow-y: scroll;
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    .loader {
+        :global(.react-loading-skeleton) {
+            --base-color: var(--neutral-grey-2);
+            --highlight-color: var(--neutral-grey-1);
+        }
+
+        div {
+            padding: 16px 12px;
+            height: 40px;
+            box-sizing: content-box;
+            width: calc(100% - 16px);
+
+            &:not(:last-of-type) {
+                margin-bottom: auto;
+            }
+        }
+    }
+
+    .empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+        color: var(--neutral-grey-4);
+
+        .emptyTitle {
+            .heading-subsection-semibold();
+        }
+
+        .description {
+            .body-regular();
+            margin-top: 8px;
+        }
+    }
+
+    .titleWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 12px 8px 12px 24px;
+    }
+
+    .title {
+        .heading-subsection-semibold();
+    }
+
+    .sortingSelect {
+        height: fit-content;
+        width: fit-content !important;
+    }
+
+    .dropdown {
+        width: 130px;
+    }
+}

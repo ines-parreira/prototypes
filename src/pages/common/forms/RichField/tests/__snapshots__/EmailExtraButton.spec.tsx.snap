@@ -604,6 +604,7 @@ Some signature",
               "via": "helpdesk",
             },
           ],
+          "messages_count": 1,
           "meta": null,
           "opened_datetime": null,
           "receiver": {
