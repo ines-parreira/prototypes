@@ -1,3 +1,5 @@
+import React from 'react'
+import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 import {
     LocaleCode,
     LocalSocialNavigationLink,
@@ -153,3 +155,52 @@ export const CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY =
     'gorgias-contact-form-alert-acknowledged'
 
 export const HELP_CENTER_ROOT_CATEGORY_ID = 0
+
+export enum ManuallyEmbedOptions {
+    SHOPIFY = 'shopify',
+    OTHER = 'other',
+}
+export const MANUALLY_EMBED_TABS = [
+    {
+        label: 'Shopify Website',
+        value: ManuallyEmbedOptions.SHOPIFY,
+    },
+    {
+        label: 'Any Other Website',
+        value: ManuallyEmbedOptions.OTHER,
+    },
+]
+
+export const MANUALLY_EMBED_STEPS = {
+    [ManuallyEmbedOptions.SHOPIFY]: [
+        <InstallationStep index={1} key="shopify_step_1">
+            Go to your store's admin panel and under <b>Online Store</b>, select{' '}
+            <b>Pages</b>.
+        </InstallationStep>,
+        <InstallationStep index={2} key="shopify_step_2">
+            Select the page where you want to embed your Help Center
+        </InstallationStep>,
+        <InstallationStep index={3} key="shopify_step_3">
+            Under the <b>Content</b> section, click{' '}
+            <i className="material-icons">code</i> <b>Show HTML</b>
+        </InstallationStep>,
+        <InstallationStep index={4} key="shopify_step_4">
+            Copy and paste the code snippet below into the container
+        </InstallationStep>,
+        <InstallationStep index={5} key="shopify_step_5">
+            Save changes
+        </InstallationStep>,
+    ],
+    [ManuallyEmbedOptions.OTHER]: [
+        <InstallationStep index={1} key="other_step_1">
+            Edit the source code of your website
+        </InstallationStep>,
+        <InstallationStep index={2} key="other_step_2">
+            Add the code snippet anywhere between &lt;body&gt; and &lt;/body&gt;
+            where you want your Help Center to be displayed on the page
+        </InstallationStep>,
+        <InstallationStep index={3} key="other_step_3">
+            Save the file and commit changes
+        </InstallationStep>,
+    ],
+}

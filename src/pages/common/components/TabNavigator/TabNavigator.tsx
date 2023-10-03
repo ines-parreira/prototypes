@@ -73,6 +73,7 @@ const TabNavigator = ({
                         tabIndex={tabIndex + 1}
                         className={classnames(css.tab, {
                             [css.activeTab]: tab.value === activeTab,
+                            ['activeTab']: tab.value === activeTab,
                         })}
                         onFocus={() => {
                             onTabChange(tab.value)

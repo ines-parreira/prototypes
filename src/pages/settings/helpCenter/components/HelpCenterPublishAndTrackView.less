@@ -81,4 +81,26 @@
         cursor: pointer;
         padding-bottom: 8px;
     }
+
+    .tabNavigator {
+        border-bottom: 1px solid var(--neutral-grey-3);
+
+        & :global(.activeTab)::before {
+            position: absolute;
+            left: 16px;
+            bottom: 0;
+            width: calc(100% - 32px);
+            height: 1px;
+            content: '';
+
+            border-bottom: 2px solid var(--main-primary);
+        }
+    }
+
+    .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin: 24px 0;
+    }
 }

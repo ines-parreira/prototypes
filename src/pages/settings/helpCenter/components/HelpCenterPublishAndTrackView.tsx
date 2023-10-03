@@ -29,6 +29,9 @@ import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
+import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
@@ -40,6 +43,11 @@ import {
 import {useHelpCenterPreferencesSettings} from '../providers/HelpCenterPreferencesSettings'
 import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
+import {
+    MANUALLY_EMBED_STEPS,
+    MANUALLY_EMBED_TABS,
+    ManuallyEmbedOptions,
+} from '../constants'
 import {CustomDomain} from './CustomDomain'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {SubdomainSection} from './SubdomainSection'
@@ -65,6 +73,9 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [showWarning, setShowWarning] = useState(true)
     const [showConnectToStoreWarning, setShowConnectToStoreWarning] =
         useState(true)
+    const [activeTab, setActiveTab] = useState<string>(
+        ManuallyEmbedOptions.SHOPIFY
+    )
 
     const {getHelpCenterCustomDomain} = useHelpCenterActions()
     const {
@@ -287,6 +298,56 @@ export const HelpCenterInstallationView: React.FC = () => {
                             </Alert>
                         )}
                         <Accordion>
+                            <AccordionItem>
+                                <AccordionHeader>
+                                    <div>
+                                        <div className={css.cardHeader}>
+                                            Manually embed with code
+                                        </div>
+                                        <div>
+                                            Use HTML to manually display your
+                                            Help Center on specific pages of
+                                            your website.
+                                            <br />
+                                            Note: You must have access to your
+                                            site theme.
+                                        </div>
+                                    </div>
+                                </AccordionHeader>
+                                <AccordionBody>
+                                    <TabNavigator
+                                        tabs={MANUALLY_EMBED_TABS}
+                                        className={css.tabNavigator}
+                                        activeTab={activeTab}
+                                        onTabChange={(tab) => setActiveTab(tab)}
+                                    />
+                                    <>
+                                        <div className={css.steps}>
+                                            {MANUALLY_EMBED_STEPS[
+                                                activeTab as keyof typeof MANUALLY_EMBED_STEPS
+                                            ].map((step: JSX.Element) => step)}
+                                        </div>
+                                        <Alert
+                                            type={AlertType.Warning}
+                                            className={settingsCss.mb24}
+                                        >
+                                            Make sure to insert the code on{' '}
+                                            <b>all pages</b> you wish to display
+                                            your Help Center.
+                                        </Alert>
+                                        <InstallationCodeSnippet
+                                            onCopy={() =>
+                                                logEvent(
+                                                    SegmentEvent.HelpCenterManualEmbedCopyCode
+                                                )
+                                            }
+                                            code={
+                                                '<div>This will be the code<script/></div>'
+                                            }
+                                        />
+                                    </>
+                                </AccordionBody>
+                            </AccordionItem>
                             <AccordionItem>
                                 <AccordionHeader>
                                     <div>
