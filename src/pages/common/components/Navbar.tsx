@@ -916,7 +916,7 @@ export class Navbar extends Component<Props, State> {
                     className={classnames(css['sidebar-resizer'], {
                         [css.isTouched]: this.state.isResizing,
                     })}
-                    style={{left: `${this.state.navbarWidth - 3}px`}}
+                    style={{left: `${this.state.navbarWidth}px`}}
                     onMouseDown={this.startResizing}
                     onTouchMove={this.startResizing}
                 />

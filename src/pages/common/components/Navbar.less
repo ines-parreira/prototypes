@@ -205,9 +205,20 @@
     .navbar-content {
         flex: 1;
         overflow: auto;
-        background-color: transparent !important;
-        margin: 0;
         padding-bottom: 24px;
+        margin-right: 3px;
+
+        scrollbar-color: var(--neutral-grey-5) var(--neutral-grey-6);
+        scrollbar-width: thin;
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--neutral-grey-5);
+            visibility: initial;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: var(--neutral-grey-6);
+        }
     }
 
     .icon {

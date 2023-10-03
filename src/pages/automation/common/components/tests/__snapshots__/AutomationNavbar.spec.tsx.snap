@@ -405,7 +405,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 235px;"
+      style="left: 238px;"
     />
   </div>
 </div>
@@ -752,7 +752,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 235px;"
+      style="left: 238px;"
     />
   </div>
 </div>
@@ -1046,7 +1046,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 235px;"
+      style="left: 238px;"
     />
   </div>
 </div>
@@ -1457,7 +1457,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 235px;"
+      style="left: 238px;"
     />
   </div>
 </div>
@@ -1804,7 +1804,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 235px;"
+      style="left: 238px;"
     />
   </div>
 </div>
@@ -2098,7 +2098,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 235px;"
+      style="left: 238px;"
     />
   </div>
 </div>
@@ -2290,7 +2290,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 235px;"
+      style="left: 238px;"
     />
   </div>
 </div>
@@ -2482,7 +2482,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 235px;"
+      style="left: 238px;"
     />
   </div>
 </div>
