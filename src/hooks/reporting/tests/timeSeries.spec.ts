@@ -114,6 +114,11 @@ describe('time series', () => {
                             values: ['0'],
                         },
                         {
+                            member: TicketMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [periodStart],
+                        },
+                        {
                             member: TicketMember.PeriodEnd,
                             operator: ReportingFilterOperator.BeforeDate,
                             values: [periodEnd],
@@ -162,6 +167,11 @@ describe('time series', () => {
                     ],
                     timezone,
                     filters: [
+                        {
+                            member: TicketMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [periodStart],
+                        },
                         {
                             member: TicketMember.PeriodEnd,
                             operator: ReportingFilterOperator.BeforeDate,

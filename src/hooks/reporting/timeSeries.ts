@@ -172,6 +172,11 @@ export function useTicketsRepliedTimeSeries(
                 values: ['0'],
             },
             {
+                member: TicketMember.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: [filters.period.start_datetime],
+            },
+            {
                 member: TicketMember.PeriodEnd,
                 operator: ReportingFilterOperator.BeforeDate,
                 values: [filters.period.end_datetime],
@@ -202,6 +207,11 @@ export function useMessagesSentTimeSeries(
         ],
         timezone,
         filters: [
+            {
+                member: TicketMember.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: [filters.period.start_datetime],
+            },
             {
                 member: TicketMember.PeriodEnd,
                 operator: ReportingFilterOperator.BeforeDate,

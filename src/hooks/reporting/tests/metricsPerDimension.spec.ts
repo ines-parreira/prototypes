@@ -10,28 +10,28 @@ import {
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {
-    TicketMeasure,
     TicketDimension,
+    TicketMeasure,
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
     closedTicketsPerAgentQueryFactory,
-    firstResponseTimeMetricPerAgentQueryFactory,
-    ticketsRepliedMetricPerAgentQueryFactory,
     customerSatisfactionMetricPerAgentQueryFactory,
-    useClosedTicketsMetricPerAgent,
+    customFieldsTicketCountQueryFactory,
+    firstResponseTimeMetricPerAgentQueryFactory,
     messagesSentMetricPerAgentQueryFactory,
     resolutionTimeMetricPerAgentQueryFactory,
-    useFirstResponseTimeMetricPerAgent,
-    useTicketsRepliedMetricPerAgent,
-    useMessagesSentMetricPerAgent,
-    useResolutionTimeMetricPerAgent,
+    ticketsRepliedMetricPerAgentQueryFactory,
+    useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useCustomFieldsTicketCount,
-    customFieldsTicketCountQueryFactory,
     useCustomTicketFieldWithBreakdown,
+    useFirstResponseTimeMetricPerAgent,
+    useMessagesSentMetricPerAgent,
+    useResolutionTimeMetricPerAgent,
+    useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {NotSpamNorTrashedTicketsFilter} from 'hooks/reporting/metricTrends'
 import {
@@ -224,6 +224,11 @@ describe('metricsPerDimension', () => {
                         ],
                     },
                     {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
+                    {
                         member: TicketMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [formatReportingQueryDate(periodEnd)],
@@ -285,7 +290,11 @@ describe('metricsPerDimension', () => {
                             formatReportingQueryDate(periodEnd),
                         ],
                     },
-
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
                     {
                         member: TicketMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
@@ -483,6 +492,11 @@ describe('metricsPerDimension', () => {
                 dimensions: [HelpdeskMessageDimension.SenderId],
                 filters: [
                     {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
+                    {
                         member: TicketMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [formatReportingQueryDate(periodEnd)],
@@ -538,6 +552,11 @@ describe('metricsPerDimension', () => {
             ).toEqual({
                 dimensions: [HelpdeskMessageDimension.SenderId],
                 filters: [
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [formatReportingQueryDate(periodStart)],
+                    },
                     {
                         member: TicketMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,

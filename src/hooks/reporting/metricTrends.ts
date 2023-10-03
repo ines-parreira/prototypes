@@ -333,6 +333,11 @@ export const ticketsRepliedQueryFactory = (
             values: getFilterDateRange(filters),
         },
         {
+            member: TicketMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [formatReportingQueryDate(filters.period.start_datetime)],
+        },
+        {
             member: TicketMember.PeriodEnd,
             operator: ReportingFilterOperator.BeforeDate,
             values: [formatReportingQueryDate(filters.period.end_datetime)],
@@ -369,6 +374,11 @@ export const messagesSentQueryFactory = (
     dimensions: [],
     timezone,
     filters: [
+        {
+            member: TicketMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [formatReportingQueryDate(filters.period.start_datetime)],
+        },
         {
             member: TicketMember.PeriodEnd,
             operator: ReportingFilterOperator.BeforeDate,

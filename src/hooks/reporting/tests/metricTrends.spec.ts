@@ -18,10 +18,10 @@ import {
     automationRateQueryFactory,
     firstResponseTimeWithAutomationQueryFactory,
     messagesSentQueryFactory,
+    NotSpamNorTrashedTicketsFilter,
     overallTimeSavedWithAutomationQueryFactory,
     resolutionTimeWithAutomationQueryFactory,
     ticketsRepliedQueryFactory,
-    NotSpamNorTrashedTicketsFilter,
     useAutomatedInteractionsTrend,
     useAutomationRateTrend,
     useClosedTicketsTrend,
@@ -93,6 +93,11 @@ describe('metric trends', () => {
                         values: [periodStart, periodEnd],
                     },
                     {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
                         member: TicketMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
@@ -126,6 +131,11 @@ describe('metric trends', () => {
                 measures: [HelpdeskMessageMeasure.MessageCount],
                 dimensions: [],
                 filters: [
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
                     {
                         member: TicketMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
