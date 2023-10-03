@@ -7,14 +7,14 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
     aria-describedby="modal-3-desc"
     aria-labelledby="modal-3-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog large"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"
@@ -114,14 +114,14 @@ exports[`<ImportArticlesModal /> snapshots import in progress 1`] = `
     aria-describedby="modal-4-desc"
     aria-labelledby="modal-4-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog large"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"
@@ -174,14 +174,14 @@ exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
     aria-describedby="modal-5-desc"
     aria-labelledby="modal-5-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog large"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"
@@ -295,14 +295,14 @@ exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog large"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"
@@ -388,14 +388,14 @@ exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
     aria-describedby="modal-2-desc"
     aria-labelledby="modal-2-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog large"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"
@@ -519,14 +519,14 @@ exports[`<ImportArticlesModal /> snapshots providers fetching error 1`] = `
     aria-describedby="modal-6-desc"
     aria-labelledby="modal-6-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog large"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"

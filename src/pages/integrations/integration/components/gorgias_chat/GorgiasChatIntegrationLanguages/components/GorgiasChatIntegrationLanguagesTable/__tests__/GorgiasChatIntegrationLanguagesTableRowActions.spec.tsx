@@ -1,9 +1,44 @@
-import React from 'react'
+import React, {ComponentProps, ReactNode} from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import Modal from 'pages/common/components/modal/Modal'
+
 import {GorgiasChatIntegrationLanguagesTableRowActions} from '../GorgiasChatIntegrationLanguagesTableRowActions'
 import {LanguageItemRow} from '../types'
+
+jest.mock('pages/common/components/modal/Modal', () => {
+    return ({children, isOpen, onClose}: ComponentProps<typeof Modal>) => (
+        <div>
+            {isOpen ? children : null}
+            <div onClick={onClose}>Close</div>
+        </div>
+    )
+})
+
+jest.mock(
+    'pages/common/components/modal/ModalBody',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
+
+jest.mock(
+    'pages/common/components/modal/ModalHeader',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
+
+jest.mock(
+    'pages/common/components/modal/ModalActionsFooter',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
 
 describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
     it('renders actions if show actions is enabled', () => {
@@ -17,7 +52,7 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: true,
         } as LanguageItemRow
 
-        const {getByText, queryByTestId} = render(
+        const {getByText} = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
@@ -26,9 +61,9 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
         )
 
         getByText('Customize')
-        expect(queryByTestId('more-actions-button')).toBeInTheDocument()
-        expect(queryByTestId('action-set-default-button')).toBeInTheDocument()
-        expect(queryByTestId('action-delete-button')).toBeInTheDocument()
+        expect(getByText('more_vert')).toBeInTheDocument()
+        expect(getByText(/make default language/i)).toBeInTheDocument()
+        expect(getByText(/delete/i)).toBeInTheDocument()
     })
 
     it('renders no actions if show actions is disabled', () => {
@@ -42,7 +77,7 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: false,
         } as LanguageItemRow
 
-        const {getByText, queryByTestId} = render(
+        const {queryByText} = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
@@ -50,12 +85,10 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             />
         )
 
-        getByText('Customize')
-        expect(queryByTestId('more-actions-button')).not.toBeInTheDocument()
-        expect(
-            queryByTestId('action-set-default-button')
-        ).not.toBeInTheDocument()
-        expect(queryByTestId('action-delete-button')).not.toBeInTheDocument()
+        queryByText('Customize')
+        expect(queryByText('more_vert')).not.toBeInTheDocument()
+        expect(queryByText(/make default language/i)).not.toBeInTheDocument()
+        expect(queryByText(/delete/i)).not.toBeInTheDocument()
     })
 
     it('calls onClickSetDefault with passed language', () => {
@@ -69,7 +102,7 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: true,
         } as LanguageItemRow
 
-        render(
+        const {getByText} = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
@@ -77,8 +110,8 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             />
         )
 
-        userEvent.click(screen.getByTestId('more-actions-button'))
-        userEvent.click(screen.getByTestId('action-set-default-button'))
+        userEvent.click(getByText('more_vert'))
+        userEvent.click(getByText(/make default language/i))
         expect(onSetDefaultMock).toHaveBeenCalledWith(language)
     })
 
@@ -93,7 +126,7 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: true,
         } as LanguageItemRow
 
-        render(
+        const {getByText, queryByText} = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
@@ -101,14 +134,16 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             />
         )
 
-        userEvent.click(screen.getByTestId('more-actions-button'))
-        userEvent.click(screen.getByTestId('action-delete-button'))
+        userEvent.click(getByText('more_vert'))
+        userEvent.click(getByText(/delete/i))
 
-        expect(screen.getByRole('dialog')).toHaveClass('open')
+        const content =
+            /By deleting this language, your chat will not be displayed/
+        expect(getByText(content)).toBeInTheDocument()
 
-        userEvent.click(screen.getByTestId('discard-delete-button'))
+        userEvent.click(getByText(/keep language/i))
 
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        expect(queryByText(content)).not.toBeInTheDocument()
         expect(onDeleteMock).not.toHaveBeenCalled()
     })
 
@@ -123,7 +158,7 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: true,
         } as LanguageItemRow
 
-        render(
+        const {getByText, queryByText} = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
@@ -131,14 +166,22 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             />
         )
 
-        userEvent.click(screen.getByTestId('more-actions-button'))
-        userEvent.click(screen.getByTestId('action-delete-button'))
+        userEvent.click(getByText('more_vert'))
 
-        expect(screen.getByRole('dialog')).toHaveClass('open')
+        userEvent.click(getByText(/delete/i))
 
-        userEvent.click(screen.getByTestId('confirm-delete-button'))
+        const content =
+            /By deleting this language, your chat will not be displayed/
+        expect(getByText(content)).toBeInTheDocument()
 
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        userEvent.click(
+            screen.getByRole('button', {
+                name: /Delete/i,
+            })
+        )
+
+        expect(queryByText(content)).not.toBeInTheDocument()
+
         expect(onDeleteMock).toHaveBeenCalledWith(language)
     })
 })

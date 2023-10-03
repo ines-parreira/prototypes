@@ -7,14 +7,14 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
     aria-describedby="modal-6-desc"
     aria-labelledby="modal-6-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog medium scrollableDialog"
     >
       <div
-        class="modalContent scrollableContent default"
+        class="modalContent scrollableContent"
       >
         <div
           class="wrapper"
@@ -210,14 +210,14 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
     aria-describedby="modal-8-desc"
     aria-labelledby="modal-8-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog small"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"
@@ -277,14 +277,14 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog medium scrollableDialog"
     >
       <div
-        class="modalContent scrollableContent default"
+        class="modalContent scrollableContent"
       >
         <div
           class="wrapper"
@@ -950,14 +950,14 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
     aria-describedby="modal-5-desc"
     aria-labelledby="modal-5-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog small"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"
@@ -1017,14 +1017,14 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
     aria-describedby="modal-9-desc"
     aria-labelledby="modal-9-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog medium scrollableDialog"
     >
       <div
-        class="modalContent scrollableContent default"
+        class="modalContent scrollableContent"
       >
         <div
           class="wrapper"
@@ -1220,14 +1220,14 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
     aria-describedby="modal-11-desc"
     aria-labelledby="modal-11-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog small"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"

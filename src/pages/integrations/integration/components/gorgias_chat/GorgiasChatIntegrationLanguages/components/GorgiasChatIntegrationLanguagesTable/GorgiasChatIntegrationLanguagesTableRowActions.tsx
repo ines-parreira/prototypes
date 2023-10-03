@@ -52,8 +52,8 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                     >
                         <DropdownToggle disabled={language.primary} tag="span">
                             <i
-                                className="material-icons"
                                 data-testid="more-actions-button"
+                                className="material-icons"
                                 id={`more-actions-${language.language}-help`}
                                 style={{
                                     fontSize: 20,

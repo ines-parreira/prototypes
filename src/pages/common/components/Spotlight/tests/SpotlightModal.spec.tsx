@@ -139,12 +139,10 @@ describe('<SpotlightModal/>', () => {
             <WrappedSpotlightModal {...minProps} isOpen={false} />
         )
         await act(flushPromises)
+        rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
 
         const searchInput = getByPlaceholderText('Search...')
 
-        expect(searchInput).not.toEqual(document.activeElement)
-
-        rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
         expect(searchInput).toEqual(document.activeElement)
     })
 

@@ -6,17 +6,17 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
 <body>
   <div />
   <div
-    aria-describedby="modal-5-desc"
-    aria-labelledby="modal-5-title"
+    aria-describedby="modal-2-desc"
+    aria-labelledby="modal-2-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div>
           <form>
@@ -26,7 +26,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
               <div>
                 <div
                   class="title"
-                  id="modal-5-title"
+                  id="modal-2-title"
                 >
                   Create team
                 </div>
@@ -42,7 +42,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
             </div>
             <div
               class="wrapper"
-              id="modal-5-desc"
+              id="modal-2-desc"
             >
               <label
                 class="label label"
@@ -175,7 +175,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-3"
+    id="floating-ui-0"
   />
 </body>
 `;

@@ -10,11 +10,11 @@ import React, {
     useImperativeHandle,
     useMemo,
     useRef,
-    useState,
 } from 'react'
 import {createPortal} from 'react-dom'
 import classnames from 'classnames'
 import {useKey} from 'react-use'
+import {CSSTransition} from 'react-transition-group'
 
 import useId from 'hooks/useId'
 
@@ -49,7 +49,6 @@ export const ModalContext = createContext<ModalContextState>({
 
 const Modal = (
     {
-        animation = 'default',
         children,
         className,
         classNameDialog,
@@ -77,19 +76,14 @@ const Modal = (
         containerNodeRef.current = containerNode
     }
 
-    const [bounceModal, setBounceModal] = useState(false)
     const randomId = useId()
     const modalId = id || 'modal-' + randomId
     const bodyId = `${modalId}-desc`
     const labelId = `${modalId}-title`
 
     const handleCloseRequest = useCallback(() => {
-        if (isOpen) {
-            if (isClosable) {
-                onClose()
-            } else {
-                setBounceModal(true)
-            }
+        if (isOpen && isClosable) {
+            onClose()
         }
     }, [isClosable, isOpen, onClose])
 
@@ -104,6 +98,7 @@ const Modal = (
         },
         [handleCloseRequest]
     )
+
     const contextValue = useMemo(
         () => ({
             bodyId,
@@ -117,50 +112,61 @@ const Modal = (
         [bodyId, id, isScrollable, isClosable, labelId, onClose, ref]
     )
 
-    const modal = (
-        <ModalContext.Provider value={contextValue}>
-            <div
-                className={classnames(css.modal, className, {
-                    [css[animation]]: animation !== 'none',
-                    [css.open]: isOpen,
-                })}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={labelId}
-                aria-describedby={bodyId}
-                onClick={handleClose}
-            >
-                <div
-                    className={classnames(
-                        css.dialog,
-                        {
-                            [css[size!]]: !!size,
-                            [css.scrollableDialog]: isScrollable,
-                        },
-                        classNameDialog
-                    )}
-                >
-                    <div
-                        ref={ref}
-                        className={classnames(
-                            css.modalContent,
-                            {
-                                [css.scrollableContent]: isScrollable,
-                                [css.bounceModal]: bounceModal,
-                                [css[animation]]: animation !== 'none',
-                            },
-                            classNameContent
-                        )}
-                        onTransitionEnd={() => setBounceModal(false)}
-                    >
-                        {children}
-                    </div>
-                </div>
-            </div>
-        </ModalContext.Provider>
+    return (
+        <CSSTransition
+            in={isOpen}
+            timeout={200}
+            classNames={{
+                enter: css.modalEnter,
+                enterActive: css.modalEnterActive,
+                exit: css.modalExit,
+                exitActive: css.modalExitActive,
+            }}
+            mountOnEnter
+            unmountOnExit
+        >
+            <>
+                {createPortal(
+                    <ModalContext.Provider value={contextValue}>
+                        <div
+                            className={classnames(className, css.modal)}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby={labelId}
+                            aria-describedby={bodyId}
+                            onClick={handleClose}
+                        >
+                            <div
+                                className={classnames(
+                                    css.dialog,
+                                    {
+                                        [css[size!]]: !!size,
+                                        [css.scrollableDialog]: isScrollable,
+                                    },
+                                    classNameDialog
+                                )}
+                            >
+                                <div
+                                    ref={ref}
+                                    className={classnames(
+                                        css.modalContent,
+                                        {
+                                            [css.scrollableContent]:
+                                                isScrollable,
+                                        },
+                                        classNameContent
+                                    )}
+                                >
+                                    {children}
+                                </div>
+                            </div>
+                        </div>
+                    </ModalContext.Provider>,
+                    containerNodeRef.current
+                )}
+            </>
+        </CSSTransition>
     )
-
-    return createPortal(modal, containerNodeRef.current)
 }
 
 export default forwardRef(Modal)

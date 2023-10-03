@@ -9,14 +9,14 @@ exports[`<Modal /> should display the modal on the provided container 1`] = `
       aria-describedby="modal-6-desc"
       aria-labelledby="modal-6-title"
       aria-modal="true"
-      class="modal default open"
+      class="modal"
       role="dialog"
     >
       <div
         class="dialog"
       >
         <div
-          class="modalContent default"
+          class="modalContent"
         >
           <div
             class="wrapper"
@@ -59,14 +59,14 @@ exports[`<Modal /> should render an opened modal 1`] = `
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"

@@ -1,6 +1,5 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {omit} from 'lodash'
-
 import {fireEvent, render} from '@testing-library/react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
@@ -25,6 +24,30 @@ import FieldForm from '../FieldForm'
 
 const mockStore = configureMockStore([thunk])()
 const queryClient = mockQueryClient()
+
+jest.mock(
+    'pages/common/components/modal/Modal',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
+
+jest.mock(
+    'pages/common/components/modal/ModalBody',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
+
+jest.mock(
+    'pages/common/components/modal/ModalHeader',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
 
 describe('<FieldForm/>', () => {
     beforeEach(() => {

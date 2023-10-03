@@ -30,43 +30,65 @@ describe('<RequestApp />', () => {
     })
 
     it('should focus the textarea when the modal is open', () => {
-        render(
+        const {queryByText} = render(
             <Provider store={mockStore()}>
                 <RequestApp />
             </Provider>
         )
 
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        expect(
+            queryByText(
+                /Provide any relevant details such as app name, or app category/i
+            )
+        ).not.toBeInTheDocument()
         fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
 
         expect(screen.getByRole('textbox')).toHaveFocus()
     })
 
     it('should open the modal on Request App Click', () => {
-        render(
+        const {queryByText} = render(
             <Provider store={mockStore()}>
                 <RequestApp />
             </Provider>
         )
 
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        expect(
+            queryByText(
+                /Provide any relevant details such as app name, or app category/i
+            )
+        ).not.toBeInTheDocument()
         fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
 
-        expect(screen.getByRole('dialog')).toHaveClass('open')
+        expect(
+            queryByText(
+                /Provide any relevant details such as app name, or app category/i
+            )
+        ).toBeInTheDocument()
     })
 
-    it('should close the modal on Cancel Click', () => {
-        render(
+    it('should close the modal on Cancel Click', async () => {
+        const {queryByText} = render(
             <Provider store={mockStore()}>
                 <RequestApp />
             </Provider>
         )
 
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        expect(
+            queryByText(
+                /Provide any relevant details such as app name, or app category/i
+            )
+        ).not.toBeInTheDocument()
         fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
         fireEvent.click(screen.getByRole('button', {name: 'Cancel'}))
 
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        await waitFor(() =>
+            expect(
+                queryByText(
+                    /Provide any relevant details such as app name, or app category/i
+                )
+            ).not.toBeInTheDocument()
+        )
     })
 
     it('should have the Submit Request button disabled without description', () => {
@@ -104,13 +126,17 @@ describe('<RequestApp />', () => {
             .spyOn(client, 'requestNewIntegration')
             .mockReturnValue(new Promise((resolve) => resolve(payload)))
 
-        render(
+        const {queryByText} = render(
             <Provider store={mockStore()}>
                 <RequestApp />
             </Provider>
         )
 
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        expect(
+            queryByText(
+                /Provide any relevant details such as app name, or app category/i
+            )
+        ).not.toBeInTheDocument()
         fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
 
         fireEvent.change(screen.getByRole('textbox'), {
@@ -125,9 +151,12 @@ describe('<RequestApp />', () => {
                 message: 'Thank you for your feedback!',
                 status: NotificationStatus.Success,
             })
+            expect(
+                queryByText(
+                    /Provide any relevant details such as app name, or app category/i
+                )
+            ).not.toBeInTheDocument()
         })
-
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
     })
 
     it('should not send the request on Submit Request Click when error', async () => {
@@ -136,13 +165,17 @@ describe('<RequestApp />', () => {
             .spyOn(client, 'requestNewIntegration')
             .mockReturnValue(new Promise((resolve, reject) => reject(payload)))
 
-        render(
+        const {queryByText} = render(
             <Provider store={mockStore()}>
                 <RequestApp />
             </Provider>
         )
 
-        expect(screen.getByRole('dialog')).not.toHaveClass('open')
+        expect(
+            queryByText(
+                /Provide any relevant details such as app name, or app category/i
+            )
+        ).not.toBeInTheDocument()
         fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
 
         fireEvent.change(screen.getByRole('textbox'), {
@@ -160,6 +193,10 @@ describe('<RequestApp />', () => {
             })
         })
 
-        expect(screen.getByRole('dialog')).toHaveClass('open')
+        expect(
+            queryByText(
+                /Provide any relevant details such as app name, or app category/i
+            )
+        ).toBeInTheDocument()
     })
 })

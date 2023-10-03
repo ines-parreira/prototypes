@@ -695,6 +695,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 onKeyDown={handleKeyDown}
                 externalInputRef={spotlightSearchInputRef}
                 shouldResetInput={!isOpen}
+                autoFocus
             />
             <TabNavigator
                 tabs={navigatorTabs}

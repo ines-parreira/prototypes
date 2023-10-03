@@ -7,14 +7,14 @@ exports[`<ProviderSelectModal /> should match snapshot 1`] = `
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog small"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper modalHeader"

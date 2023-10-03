@@ -26,24 +26,13 @@
         background-color: fade(black, 50%);
         height: 100%;
         left: 0;
-        opacity: 0;
         outline: 0;
         overflow-x: hidden;
         overflow-y: auto;
         position: fixed;
         top: 0;
-        pointer-events: none;
         width: 100%;
         z-index: 1050;
-    }
-
-    .open {
-        opacity: 1;
-        pointer-events: visible;
-
-        .modalContent {
-            transform: translateY(0);
-        }
     }
 
     .modalContent {
@@ -58,7 +47,6 @@
             );
         display: flex;
         flex-direction: column;
-        transform: translateY(-50px);
         width: 100%;
     }
 
@@ -71,13 +59,25 @@
         height: 90vh;
     }
 
-    .default {
-        transition: all 0.2s ease-out;
+    .modalEnter .modalContent {
+        transform: translateY(-50px);
+        opacity: 0;
     }
 
-    .modal {
-        .bounceModal {
-            transform: scale(1.02);
-        }
+    .modalEnterActive .modalContent {
+        opacity: 1;
+        transition: all 0.2s;
+        transform: translateY(0);
+    }
+
+    .modalExit .modalContent {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .modalExitActive .modalContent {
+        opacity: 0;
+        transition: all 0.2s;
+        transform: translateY(-50px);
     }
 }

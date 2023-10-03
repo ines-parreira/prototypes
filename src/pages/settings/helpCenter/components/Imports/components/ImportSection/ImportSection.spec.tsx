@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {Provider as ReduxProvider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
@@ -33,6 +33,30 @@ import {
 } from './fixtures/migration-providers'
 import ImportSection, {ACTIVE_MIGRATION_UPDATE_TIMEOUT} from './ImportSection'
 import {sessionHasProgressStatus} from './utils'
+
+jest.mock(
+    'pages/common/components/modal/Modal',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
+
+jest.mock(
+    'pages/common/components/modal/ModalBody',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
+
+jest.mock(
+    'pages/common/components/modal/ModalHeader',
+    () =>
+        ({children}: {children: ReactNode}) => {
+            return <div>{children}</div>
+        }
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

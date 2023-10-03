@@ -10,14 +10,14 @@ exports[`OrderModal should render Create Order 1`] = `
         aria-describedby="modal-1-desc"
         aria-labelledby="modal-1-title"
         aria-modal="true"
-        class="modal default open"
+        class="modal"
         role="dialog"
       >
         <div
           class="dialog medium scrollableDialog"
         >
           <div
-            class="modalContent scrollableContent default"
+            class="modalContent scrollableContent"
           >
             <div
               class="wrapper"
@@ -308,13 +308,13 @@ exports[`OrderModal should render Create Order 1`] = `
                   >
                     <label
                       class="label label"
-                      for="checkbox-22"
+                      for="checkbox-4"
                     >
                       <input
                         checked=""
                         class="input"
-                        id="checkbox-22"
-                        name="checkbox-22"
+                        id="checkbox-4"
+                        name="checkbox-4"
                         type="checkbox"
                       />
                       Shipping address is same as billing address
@@ -400,397 +400,12 @@ exports[`OrderModal should render Create Order 1`] = `
     </div>
   </div>
   <div
-    aria-describedby="modal-3-desc"
-    aria-labelledby="modal-3-title"
-    aria-modal="true"
-    class="modal default"
-    role="dialog"
-  >
-    <div
-      class="dialog small scrollableDialog"
-    >
-      <div
-        class="modalContent scrollableContent default"
-      >
-        <div
-          class="wrapper scrollable"
-        >
-          <form
-            class=""
-          >
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-4"
-              >
-                First Name
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-4"
-                  name="firstName"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-6"
-              >
-                Last Name
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-6"
-                  name="lastName"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-8"
-              >
-                Company
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-8"
-                  name="company"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="wrapper"
-            >
-              <label
-                class="label label"
-              >
-                Phone
-              </label>
-              <span
-                class="wrapper group horizontal"
-              >
-                <button
-                  aria-disabled="false"
-                  class="wrapper button fill secondary medium left isAuxiliaryButton"
-                  type="button"
-                >
-                  <span
-                    role="img"
-                    style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
-                  >
-                    🇺🇸
-                  </span>
-                  <span
-                    class="ml-2 dropdown-toggle"
-                  >
-                    +
-                    1
-                  </span>
-                </button>
-                <div
-                  class="wrapper right isNested"
-                >
-                  <input
-                    class="input"
-                    data-1p-ignore="true"
-                    id="input-text-10"
-                    name="input-text-10"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </span>
-            </div>
-            <div
-              class="mb-2 topPadded"
-            >
-              <label
-                class="label label"
-                for="input-text-11"
-              >
-                Address 1
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-11"
-                  name="address1"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-13"
-              >
-                Address 2
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-13"
-                  name="address2"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-15"
-              >
-                City
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-15"
-                  name="city"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="wrapper"
-            >
-              <label
-                class="label label"
-              >
-                Country
-              </label>
-              <div
-                class="wrapper"
-                role="listbox"
-                tabindex="0"
-              >
-                <div
-                  class="inputWrapper"
-                >
-                  <span
-                    class="affix prefix"
-                  >
-                    <span
-                      role="img"
-                      style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
-                    >
-                      🇺🇸
-                    </span>
-                  </span>
-                  <div
-                    class="input"
-                  >
-                    United States
-                  </div>
-                  <i
-                    class="affix suffix toggle material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
-                </div>
-              </div>
-            </div>
-            <div
-              class="wrapper"
-            >
-              <label
-                class="label label"
-              >
-                State or province
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-                role="listbox"
-                tabindex="0"
-              >
-                <div
-                  class="inputWrapper"
-                >
-                  <div
-                    class="input isGreyed"
-                  >
-                    Select state or province...
-                  </div>
-                  <i
-                    class="affix suffix toggle material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
-                </div>
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-19"
-              >
-                ZIP/Postal code
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-19"
-                  name="zip"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mt-3 mb-3"
-            >
-              <label
-                class="label label"
-                for="checkbox-21"
-              >
-                <input
-                  checked=""
-                  class="input"
-                  id="checkbox-21"
-                  name="checkbox-21"
-                  type="checkbox"
-                />
-                Save to customer's address book
-              </label>
-            </div>
-          </form>
-        </div>
-        <div
-          class="wrapper wrapper"
-        >
-          <div
-            class="actions"
-          >
-            <button
-              aria-disabled="false"
-              class="wrapper fill secondary medium"
-              tabindex="0"
-              type="button"
-            >
-              Cancel
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper fill primary medium"
-              tabindex="0"
-              type="button"
-            >
-              Create Address
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
     data-floating-ui-portal=""
     id="floating-ui-0"
   />
   <div
     data-floating-ui-portal=""
     id="floating-ui-2"
-  />
-  <div
-    data-floating-ui-portal=""
-    id="floating-ui-4"
-  />
-  <div
-    data-floating-ui-portal=""
-    id="floating-ui-9"
   />
 </body>
 `;
@@ -802,17 +417,17 @@ exports[`OrderModal should render Duplicate Order 1`] = `
       id="App"
     >
       <div
-        aria-describedby="modal-23-desc"
-        aria-labelledby="modal-23-title"
+        aria-describedby="modal-5-desc"
+        aria-labelledby="modal-5-title"
         aria-modal="true"
-        class="modal default open"
+        class="modal"
         role="dialog"
       >
         <div
           class="dialog medium scrollableDialog"
         >
           <div
-            class="modalContent scrollableContent default"
+            class="modalContent scrollableContent"
           >
             <div
               class="wrapper"
@@ -820,7 +435,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               <div>
                 <div
                   class="title"
-                  id="modal-23-title"
+                  id="modal-5-title"
                 >
                   Duplicate order
                 </div>
@@ -980,8 +595,8 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                         >
                           <input
                             class="input"
-                            id="input-text-24"
-                            name="input-text-24"
+                            id="input-text-6"
+                            name="input-text-6"
                             placeholder="Search products..."
                             type="text"
                             value=""
@@ -1103,14 +718,14 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                   >
                     <label
                       class="label isDisabled label"
-                      for="checkbox-44"
+                      for="checkbox-8"
                     >
                       <input
                         checked=""
                         class="input"
                         disabled=""
-                        id="checkbox-44"
-                        name="checkbox-44"
+                        id="checkbox-8"
+                        name="checkbox-8"
                         type="checkbox"
                       />
                       Shipping address is same as billing address
@@ -1198,397 +813,12 @@ exports[`OrderModal should render Duplicate Order 1`] = `
     </div>
   </div>
   <div
-    aria-describedby="modal-25-desc"
-    aria-labelledby="modal-25-title"
-    aria-modal="true"
-    class="modal default"
-    role="dialog"
-  >
-    <div
-      class="dialog small scrollableDialog"
-    >
-      <div
-        class="modalContent scrollableContent default"
-      >
-        <div
-          class="wrapper scrollable"
-        >
-          <form
-            class=""
-          >
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-26"
-              >
-                First Name
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-26"
-                  name="firstName"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-28"
-              >
-                Last Name
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-28"
-                  name="lastName"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-30"
-              >
-                Company
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-30"
-                  name="company"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="wrapper"
-            >
-              <label
-                class="label label"
-              >
-                Phone
-              </label>
-              <span
-                class="wrapper group horizontal"
-              >
-                <button
-                  aria-disabled="false"
-                  class="wrapper button fill secondary medium left isAuxiliaryButton"
-                  type="button"
-                >
-                  <span
-                    role="img"
-                    style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
-                  >
-                    🇺🇸
-                  </span>
-                  <span
-                    class="ml-2 dropdown-toggle"
-                  >
-                    +
-                    1
-                  </span>
-                </button>
-                <div
-                  class="wrapper right isNested"
-                >
-                  <input
-                    class="input"
-                    data-1p-ignore="true"
-                    id="input-text-32"
-                    name="input-text-32"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </span>
-            </div>
-            <div
-              class="mb-2 topPadded"
-            >
-              <label
-                class="label label"
-                for="input-text-33"
-              >
-                Address 1
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-33"
-                  name="address1"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-35"
-              >
-                Address 2
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-35"
-                  name="address2"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-37"
-              >
-                City
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-37"
-                  name="city"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="wrapper"
-            >
-              <label
-                class="label label"
-              >
-                Country
-              </label>
-              <div
-                class="wrapper"
-                role="listbox"
-                tabindex="0"
-              >
-                <div
-                  class="inputWrapper"
-                >
-                  <span
-                    class="affix prefix"
-                  >
-                    <span
-                      role="img"
-                      style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
-                    >
-                      🇺🇸
-                    </span>
-                  </span>
-                  <div
-                    class="input"
-                  >
-                    United States
-                  </div>
-                  <i
-                    class="affix suffix toggle material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
-                </div>
-              </div>
-            </div>
-            <div
-              class="wrapper"
-            >
-              <label
-                class="label label"
-              >
-                State or province
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-                role="listbox"
-                tabindex="0"
-              >
-                <div
-                  class="inputWrapper"
-                >
-                  <div
-                    class="input isGreyed"
-                  >
-                    Select state or province...
-                  </div>
-                  <i
-                    class="affix suffix toggle material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
-                </div>
-              </div>
-            </div>
-            <div
-              class="mb-2"
-            >
-              <label
-                class="label label"
-                for="input-text-41"
-              >
-                ZIP/Postal code
-                <abbr
-                  aria-label="required"
-                  class="abbr"
-                  title="required"
-                >
-                  *
-                </abbr>
-              </label>
-              <div
-                class="wrapper"
-              >
-                <input
-                  class="input"
-                  data-1p-ignore="true"
-                  id="input-text-41"
-                  name="zip"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="mt-3 mb-3"
-            >
-              <label
-                class="label label"
-                for="checkbox-43"
-              >
-                <input
-                  checked=""
-                  class="input"
-                  id="checkbox-43"
-                  name="checkbox-43"
-                  type="checkbox"
-                />
-                Save to customer's address book
-              </label>
-            </div>
-          </form>
-        </div>
-        <div
-          class="wrapper wrapper"
-        >
-          <div
-            class="actions"
-          >
-            <button
-              aria-disabled="false"
-              class="wrapper fill secondary medium"
-              tabindex="0"
-              type="button"
-            >
-              Cancel
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper fill primary medium"
-              tabindex="0"
-              type="button"
-            >
-              Create Address
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
     data-floating-ui-portal=""
-    id="floating-ui-13"
+    id="floating-ui-9"
   />
   <div
     data-floating-ui-portal=""
-    id="floating-ui-15"
-  />
-  <div
-    data-floating-ui-portal=""
-    id="floating-ui-17"
-  />
-  <div
-    data-floating-ui-portal=""
-    id="floating-ui-19"
+    id="floating-ui-11"
   />
 </body>
 `;

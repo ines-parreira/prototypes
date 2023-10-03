@@ -268,17 +268,17 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
     </div>
   </div>
   <div
-    aria-describedby="modal-4-desc"
-    aria-labelledby="modal-4-title"
+    aria-describedby="modal-2-desc"
+    aria-labelledby="modal-2-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal"
     role="dialog"
   >
     <div
       class="dialog"
     >
       <div
-        class="modalContent default"
+        class="modalContent"
       >
         <div
           class="wrapper"
@@ -286,7 +286,7 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
           <div>
             <div
               class="title"
-              id="modal-4-title"
+              id="modal-2-title"
             >
               Create Phone Number
             </div>
@@ -305,7 +305,7 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
         >
           <div
             class="wrapper"
-            id="modal-4-desc"
+            id="modal-2-desc"
           >
             <div
               class="row"
@@ -319,7 +319,7 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                   <div>
                     <label
                       class="label label"
-                      for="input-text-5"
+                      for="input-text-3"
                     >
                       Title
                       <abbr
@@ -335,8 +335,8 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                     >
                       <input
                         class="input"
-                        id="input-text-5"
-                        name="input-text-5"
+                        id="input-text-3"
+                        name="input-text-3"
                         placeholder="Ex: Company Support Line"
                         required=""
                         type="text"

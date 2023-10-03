@@ -239,20 +239,20 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
   aria-describedby="modal-1-desc"
   aria-labelledby="modal-1-title"
   aria-modal="true"
-  class="modal spotlightModal default open"
+  class="spotlightModal modal"
   role="dialog"
 >
   <div
     class="dialog large scrollableDialog"
   >
     <div
-      class="modalContent scrollableContent default spotlightModalContent"
+      class="modalContent scrollableContent spotlightModalContent"
     >
       <div
         class="component searchInput"
       >
         <div
-          class="wrapper input textInput shortcuts-enable"
+          class="wrapper isFocused input textInput shortcuts-enable"
         >
           <span
             class="prefix"
@@ -378,17 +378,17 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
 
 exports[`<SpotlightModal/> should reset search after closing and end previous searchRank scenario 1`] = `
 <div
-  aria-describedby="modal-63-desc"
-  aria-labelledby="modal-63-title"
+  aria-describedby="modal-62-desc"
+  aria-labelledby="modal-62-title"
   aria-modal="true"
-  class="modal spotlightModal default open"
+  class="spotlightModal modal modalEnter modalEnterActive"
   role="dialog"
 >
   <div
     class="dialog large scrollableDialog"
   >
     <div
-      class="modalContent scrollableContent default spotlightModalContent"
+      class="modalContent scrollableContent spotlightModalContent"
     >
       <div
         class="component searchInput"
@@ -407,8 +407,8 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
           </span>
           <input
             class="input"
-            id="input-text-64"
-            name="input-text-64"
+            id="input-text-63"
+            name="input-text-63"
             placeholder="Search..."
             type="text"
             value=""
@@ -449,7 +449,7 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-63-desc"
+        id="modal-62-desc"
       >
         <div
           class="wrapper"
@@ -523,14 +523,14 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
   aria-describedby="modal-3-desc"
   aria-labelledby="modal-3-title"
   aria-modal="true"
-  class="modal spotlightModal default open"
+  class="spotlightModal modal"
   role="dialog"
 >
   <div
     class="dialog large scrollableDialog"
   >
     <div
-      class="modalContent scrollableContent default spotlightModalContent"
+      class="modalContent scrollableContent spotlightModalContent"
     >
       <div
         class="component searchInput"
@@ -662,17 +662,17 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
 
 exports[`<SpotlightModal/> should show SpotlightNoResults component when no results are available  1`] = `
 <div
-  aria-describedby="modal-47-desc"
-  aria-labelledby="modal-47-title"
+  aria-describedby="modal-46-desc"
+  aria-labelledby="modal-46-title"
   aria-modal="true"
-  class="modal spotlightModal default open"
+  class="spotlightModal modal"
   role="dialog"
 >
   <div
     class="dialog large scrollableDialog"
   >
     <div
-      class="modalContent scrollableContent default spotlightModalContent"
+      class="modalContent scrollableContent spotlightModalContent"
     >
       <div
         class="component searchInput"
@@ -691,8 +691,8 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
           </span>
           <input
             class="input"
-            id="input-text-48"
-            name="input-text-48"
+            id="input-text-47"
+            name="input-text-47"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -733,7 +733,7 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-47-desc"
+        id="modal-46-desc"
       >
         <div
           class="wrapper"
