@@ -5,19 +5,22 @@ import TicketSnooze from '../TicketSnooze'
 
 describe('<TicketSnooze/>', () => {
     describe('rendering', () => {
-        it('should render an icon with a tooltip', async () => {
-            const {container, getByText} = render(
-                <TicketSnooze datetime="2017-12-22 17:00" timezone="utc" />
-            )
-            expect(container.firstChild).toMatchSnapshot()
-            fireEvent.mouseOver(getByText('snooze'))
-            await waitFor(() => getByText(/2017/))
-            expect(getByText(/2017/)).toMatchSnapshot()
+        it('should render null if no datetime is provided', () => {
+            const {queryByText} = render(<TicketSnooze timezone="utc" />)
+            expect(queryByText('Snoozed')).not.toBeInTheDocument()
         })
 
-        it('should render null', () => {
-            const {container} = render(<TicketSnooze timezone="utc" />)
-            expect(container.firstChild).toBe(null)
+        it('should render a badge with a tooltip', async () => {
+            const {getByText} = render(
+                <TicketSnooze datetime="2017-12-22 17:00" timezone="utc" />
+            )
+            const el = getByText('Snoozed')
+            expect(el).toBeInTheDocument()
+
+            fireEvent.mouseOver(el)
+            await waitFor(() => getByText(/2017/))
+
+            expect(getByText(/Snoozed until/)).toBeInTheDocument()
         })
     })
 })

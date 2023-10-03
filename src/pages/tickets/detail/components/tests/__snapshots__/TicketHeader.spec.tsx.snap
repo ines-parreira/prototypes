@@ -54,117 +54,21 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
           </li>
         </ul>
       </div>
-      <div
-        class="dropdown"
-      >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="btn-transparent btn btn-secondary btn-sm"
-          id="ticket-actions-button"
-          type="button"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            more_vert
-          </i>
-        </button>
-        <span />
-        <div
-          aria-hidden="true"
-          class="actionsDropdown dropdown-menu dropdown-menu-right"
-          role="menu"
-          tabindex="-1"
-        >
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              snooze
-            </i>
-            Snooze
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              call_merge
-            </i>
-            Merge ticket
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              event_note
-            </i>
-            Display
-             
-            all events
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              print
-            </i>
-            Print ticket
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <span>
-              <i
-                class="icon material-icons"
-              >
-                not_interested
-              </i>
-              Mark as spam
-            </span>
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <div
-              class="text-danger"
-            >
-              <i
-                class="icon material-icons"
-              >
-                delete
-              </i>
-              Delete
-            </div>
-          </button>
-        </div>
+      <div>
+        Snooze
       </div>
+      <button
+        aria-disabled="false"
+        class="wrapper button ghost secondary medium"
+        id="ticket-actions-button"
+        type="button"
+      >
+        <i
+          class="icon material-icons"
+        >
+          more_vert
+        </i>
+      </button>
     </div>
   </div>
   <div
@@ -634,117 +538,21 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
           flag
         </i>
       </div>
-      <div
-        class="dropdown"
-      >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="btn-transparent btn btn-secondary btn-sm"
-          id="ticket-actions-button"
-          type="button"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            more_vert
-          </i>
-        </button>
-        <span />
-        <div
-          aria-hidden="true"
-          class="actionsDropdown dropdown-menu dropdown-menu-right"
-          role="menu"
-          tabindex="-1"
-        >
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              snooze
-            </i>
-            Snooze
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              call_merge
-            </i>
-            Merge ticket
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              event_note
-            </i>
-            Display
-             
-            all events
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              print
-            </i>
-            Print ticket
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <span>
-              <i
-                class="icon material-icons"
-              >
-                undo
-              </i>
-              Unmark as spam
-            </span>
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <div
-              class="text-danger"
-            >
-              <i
-                class="icon material-icons"
-              >
-                delete
-              </i>
-              Delete
-            </div>
-          </button>
-        </div>
+      <div>
+        Snooze
       </div>
+      <button
+        aria-disabled="false"
+        class="wrapper button ghost secondary medium"
+        id="ticket-actions-button"
+        type="button"
+      >
+        <i
+          class="icon material-icons"
+        >
+          more_vert
+        </i>
+      </button>
     </div>
   </div>
   <div
@@ -997,113 +805,21 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
           delete
         </i>
       </div>
-      <div
-        class="dropdown"
-      >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="btn-transparent btn btn-secondary btn-sm"
-          id="ticket-actions-button"
-          type="button"
-        >
-          <i
-            class="material-icons md-2"
-          >
-            more_vert
-          </i>
-        </button>
-        <span />
-        <div
-          aria-hidden="true"
-          class="actionsDropdown dropdown-menu dropdown-menu-right"
-          role="menu"
-          tabindex="-1"
-        >
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              snooze
-            </i>
-            Snooze
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              call_merge
-            </i>
-            Merge ticket
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              event_note
-            </i>
-            Display
-             
-            all events
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              print
-            </i>
-            Print ticket
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <span>
-              <i
-                class="icon material-icons"
-              >
-                not_interested
-              </i>
-              Mark as spam
-            </span>
-          </button>
-          <button
-            class="dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <i
-              class="icon material-icons"
-            >
-              undo
-            </i>
-            Undelete
-          </button>
-        </div>
+      <div>
+        Snooze
       </div>
+      <button
+        aria-disabled="false"
+        class="wrapper button ghost secondary medium"
+        id="ticket-actions-button"
+        type="button"
+      >
+        <i
+          class="icon material-icons"
+        >
+          more_vert
+        </i>
+      </button>
     </div>
   </div>
   <div

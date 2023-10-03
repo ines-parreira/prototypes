@@ -1,9 +1,7 @@
 import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
 import useAppSelector from 'hooks/useAppSelector'
 import {AgentLabel} from 'pages/common/utils/labels'
@@ -99,8 +97,6 @@ type Props = {
 }
 
 const TicketHeaderWrapper = ({hideTicket, setStatus}: Props) => {
-    const hasSeparateSnooze =
-        useFlags()[FeatureFlagKey.SeparateSnoozeButton] || false
     const ticket = useAppSelector((state) => state.ticket)
 
     const isExistingTicket = !!ticket.get('id')
@@ -109,7 +105,6 @@ const TicketHeaderWrapper = ({hideTicket, setStatus}: Props) => {
         <>
             <div className={classnames(css.headerContainer)}>
                 <TicketHeader
-                    hasSeparateSnooze={hasSeparateSnooze}
                     ticket={ticket}
                     hideTicket={hideTicket}
                     setStatus={setStatus}

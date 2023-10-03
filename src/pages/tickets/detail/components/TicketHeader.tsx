@@ -2,12 +2,6 @@ import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import moment, {Moment} from 'moment-timezone'
 import classnames from 'classnames'
-import {
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-} from 'reactstrap'
 import {Map} from 'immutable'
 
 import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
@@ -46,13 +40,11 @@ import TicketStatus from './TicketDetails/TicketStatus'
 import TicketAssignee from './TicketDetails/TicketAssignee/TicketAssignee'
 import TicketSpam from './TicketDetails/TicketSpam'
 import TicketSnooze from './TicketDetails/TicketSnooze'
-import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 import TicketTrash from './TicketDetails/TicketTrash'
 import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
 import css from './TicketHeader.less'
 
 type Props = {
-    hasSeparateSnooze: boolean
     ticket: Map<any, any>
     className: string
     hideTicket: () => Promise<void>
@@ -61,14 +53,12 @@ type Props = {
 
 type State = {
     askTrashConfirmation: boolean
-    showSnoozePicker: boolean
     isMergeTicketModalOpen: boolean
 }
 
 export class TicketHeaderContainer extends React.Component<Props, State> {
     state = {
         askTrashConfirmation: false,
-        showSnoozePicker: false,
         isMergeTicketModalOpen: false,
     }
 
@@ -128,10 +118,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         void snoozeTicket(null)
     }
 
-    _toggleSnoozePicker = () => {
-        this.setState({showSnoozePicker: !this.state.showSnoozePicker})
-    }
-
     _toggleSpam = () => {
         const spam = !this.props.ticket.get('spam')
         return this.props.setSpam(spam, () => {
@@ -184,19 +170,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                 key: 'esc',
                 action: () => this._toggleTrashConfirmation(false),
             },
-            OPEN_SNOOZE_TICKET: {
-                action: () => {
-                    this._toggleSnoozePicker()
-                },
-            },
-            CLOSE_SNOOZE_TICKET: {
-                key: 'esc',
-                action: () => {
-                    if (this.state.showSnoozePicker) {
-                        this._toggleSnoozePicker()
-                    }
-                },
-            },
         })
     }
 
@@ -205,7 +178,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             addTags,
             className,
             currentUser,
-            hasSeparateSnooze,
             removeTag,
             setAgent,
             setSubject,
@@ -216,7 +188,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             notify,
             ticketPartialUpdate,
         } = this.props
-        const {askTrashConfirmation, showSnoozePicker} = this.state
+        const {askTrashConfirmation} = this.state
         const isUpdate = !!ticket.get('id')
         const isTrashed = !!ticket.get('trashed_datetime')
         const snoozedUntil = ticket.get('snooze_datetime')
@@ -313,8 +285,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
                     <div className="d-flex justify-content-between align-items-center ml-3">
                         <TicketSnooze
-                            className={css.headerIcon}
-                            datetime={ticket.get('snooze_datetime')}
+                            datetime={snoozedUntil}
                             timezone={timezone}
                         />
 
@@ -348,12 +319,10 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
                         {isUpdate && (
                             <>
-                                {hasSeparateSnooze && (
-                                    <Snooze
-                                        until={snoozedUntil}
-                                        onUpdate={this._snoozeTicket}
-                                    />
-                                )}
+                                <Snooze
+                                    until={snoozedUntil}
+                                    onUpdate={this._snoozeTicket}
+                                />
                                 <ConfirmationPopover
                                     buttonProps={{
                                         autoFocus: true,
@@ -375,189 +344,13 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                         })
                                     }
                                 >
-                                    {({onDisplayConfirmation}) =>
-                                        hasSeparateSnooze ? (
-                                            <TicketActions
-                                                actions={createActions(
-                                                    onDisplayConfirmation
-                                                )}
-                                            />
-                                        ) : (
-                                            <UncontrolledDropdown>
-                                                <DropdownToggle
-                                                    color="secondary"
-                                                    type="button"
-                                                    size="sm"
-                                                    id="ticket-actions-button"
-                                                    className="btn-transparent"
-                                                >
-                                                    <i className="material-icons md-2">
-                                                        {showSnoozePicker
-                                                            ? 'snooze'
-                                                            : 'more_vert'}
-                                                    </i>
-                                                </DropdownToggle>
-                                                <TicketSnoozePicker
-                                                    datetime={ticket.get(
-                                                        'snooze_datetime'
-                                                    )}
-                                                    timezone={timezone}
-                                                    isOpen={showSnoozePicker}
-                                                    toggle={
-                                                        this._toggleSnoozePicker
-                                                    }
-                                                    onSubmit={
-                                                        this._snoozeTicket
-                                                    }
-                                                />
-                                                <DropdownMenu
-                                                    right
-                                                    className={
-                                                        css.actionsDropdown
-                                                    }
-                                                >
-                                                    {!hasSeparateSnooze && (
-                                                        <DropdownItem
-                                                            type="button"
-                                                            onClick={
-                                                                this
-                                                                    ._toggleSnoozePicker
-                                                            }
-                                                        >
-                                                            <i className="icon material-icons">
-                                                                snooze
-                                                            </i>
-                                                            {ticket.get(
-                                                                'snooze_datetime'
-                                                            )
-                                                                ? 'Change snooze time'
-                                                                : 'Snooze'}
-                                                        </DropdownItem>
-                                                    )}
-                                                    {!hasSeparateSnooze &&
-                                                        ticket.get(
-                                                            'snooze_datetime'
-                                                        ) && (
-                                                            <DropdownItem
-                                                                type="button"
-                                                                onClick={() =>
-                                                                    this._snoozeTicket(
-                                                                        null
-                                                                    )
-                                                                }
-                                                            >
-                                                                <i className="icon material-icons">
-                                                                    timer_off
-                                                                </i>
-                                                                Clear snooze
-                                                            </DropdownItem>
-                                                        )}
-                                                    <DropdownItem
-                                                        type="button"
-                                                        onClick={
-                                                            this
-                                                                ._toggleMergeTicketModal
-                                                        }
-                                                    >
-                                                        <i className="icon material-icons">
-                                                            call_merge
-                                                        </i>
-                                                        Merge ticket
-                                                    </DropdownItem>
-                                                    {!ticket.get(
-                                                        'is_unread'
-                                                    ) && (
-                                                        <DropdownItem
-                                                            type="button"
-                                                            onClick={markUnread}
-                                                        >
-                                                            <i className="icon material-icons">
-                                                                markunread_mailbox
-                                                            </i>
-                                                            Mark as unread
-                                                        </DropdownItem>
-                                                    )}
-                                                    <DropdownItem
-                                                        type="button"
-                                                        onClick={
-                                                            this
-                                                                ._toggleAuditLogEvents
-                                                        }
-                                                    >
-                                                        <i className="icon material-icons">
-                                                            event_note
-                                                        </i>
-                                                        {shouldDisplayAuditLogEvents
-                                                            ? 'Hide'
-                                                            : 'Display'}{' '}
-                                                        all events
-                                                    </DropdownItem>
-                                                    <DropdownItem
-                                                        type="button"
-                                                        onClick={handlePrint}
-                                                    >
-                                                        <i className="icon material-icons">
-                                                            print
-                                                        </i>
-                                                        Print ticket
-                                                    </DropdownItem>
-                                                    <DropdownItem
-                                                        type="button"
-                                                        onClick={
-                                                            this._toggleSpam
-                                                        }
-                                                    >
-                                                        {ticket.get('spam') ? (
-                                                            <span>
-                                                                <i className="icon material-icons">
-                                                                    undo
-                                                                </i>
-                                                                Unmark as spam
-                                                            </span>
-                                                        ) : (
-                                                            <span>
-                                                                <i className="icon material-icons">
-                                                                    not_interested
-                                                                </i>
-                                                                Mark as spam
-                                                            </span>
-                                                        )}
-                                                    </DropdownItem>
-                                                    {!hasRole(
-                                                        currentUser,
-                                                        UserRole.Agent
-                                                    ) ? null : isTrashed ? (
-                                                        <DropdownItem
-                                                            type="button"
-                                                            onClick={
-                                                                this
-                                                                    ._unTrashTicket
-                                                            }
-                                                        >
-                                                            <i className="icon material-icons">
-                                                                undo
-                                                            </i>
-                                                            Undelete
-                                                        </DropdownItem>
-                                                    ) : (
-                                                        <DropdownItem
-                                                            type="button"
-                                                            onClick={
-                                                                onDisplayConfirmation
-                                                            }
-                                                        >
-                                                            <div className="text-danger">
-                                                                <i className="icon material-icons">
-                                                                    delete
-                                                                </i>
-                                                                Delete
-                                                            </div>
-                                                        </DropdownItem>
-                                                    )}
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>
-                                        )
-                                    }
+                                    {({onDisplayConfirmation}) => (
+                                        <TicketActions
+                                            actions={createActions(
+                                                onDisplayConfirmation
+                                            )}
+                                        />
+                                    )}
                                 </ConfirmationPopover>
                             </>
                         )}

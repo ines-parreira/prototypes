@@ -56,6 +56,8 @@ jest.mock('reactstrap', () => {
 
 jest.mock('store/middlewares/segmentTracker')
 
+jest.mock('../Snooze', () => () => <div>Snooze</div>)
+
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
 >
@@ -79,7 +81,6 @@ describe('<TicketHeader />', () => {
 
     const minProps = {
         className: '',
-        hasSeparateSnooze: false,
         ticket: fromJS(_omit(ticket, 'id')),
     } as ComponentProps<typeof TicketHeader>
 
@@ -178,61 +179,6 @@ describe('<TicketHeader />', () => {
                 }
             )
         })
-    })
-
-    it('should display the snooze icon when the snooze picker is opened', async () => {
-        const {getByText, getAllByText} = render(
-            <Provider store={mockStore(defaultStore)}>
-                <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(/more_vert/))
-        fireEvent.click(getByText(/Snooze/))
-        await waitFor(() => {
-            expect(getAllByText(/snooze/).length).toBe(2)
-        })
-    })
-
-    it('should change snooze label and display the clear snooze action when ticket is snoozed', () => {
-        const snoozedTicket = fromJS({
-            ...ticket,
-            snooze_datetime: '2021-07-08T12:31:51.827563+00:00',
-        })
-        const {getByText} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultStore,
-                    ticket: snoozedTicket,
-                })}
-            >
-                <TicketHeader {...minProps} ticket={snoozedTicket} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(/more_vert/))
-        expect(getByText(/Clear snooze/)).toBeTruthy()
-    })
-
-    it('should un-snooze the ticket when clicking clear snooze action', () => {
-        const snoozedTicket = fromJS({
-            ...ticket,
-            snooze_datetime: '2021-07-08T12:31:51.827563+00:00',
-        })
-        const {getByText} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultStore,
-                    ticket: snoozedTicket,
-                })}
-            >
-                <TicketHeader {...minProps} ticket={snoozedTicket} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(/more_vert/))
-        fireEvent.click(getByText(/Clear snooze/))
-        expect(ticketActions.snoozeTicket).toHaveBeenNthCalledWith(1, null)
     })
 
     it('should display the delete action for lead and admin agents', () => {
