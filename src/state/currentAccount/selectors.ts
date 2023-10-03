@@ -13,6 +13,7 @@ import {
     AccountSettingType,
     ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
+    AccountSettingViewsVisibility,
 } from './types'
 
 export const getCurrentAccountState = (state: RootState) =>
@@ -137,6 +138,14 @@ export const getBusinessHoursSettings = createSelector(
             : (setting.toJS() as AccountSettingBusinessHours)
 )
 
+export const getViewsVisibilitySettings = createSelector(
+    createSettingByTypeSelector(AccountSettingType.ViewsVisibility),
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingViewsVisibility)
+)
+
 export const getBusinessHoursRangesByUserTimezone = createSelector(
     getBusinessHoursSettings,
     getTimezone,
@@ -198,8 +207,7 @@ export const DEPRECATED_getViewsOrderingSetting = createSettingByTypeSelector(
 )
 export const getViewsOrderingSetting = createSelector(
     DEPRECATED_getViewsOrderingSetting,
-    (setting) =>
-        setting.toJS() as ViewsOrderingAccountSetting | Record<string, unknown>
+    (setting) => setting.toJS() as ViewsOrderingAccountSetting
 )
 export const getAccessSettings = createSettingByTypeSelector(
     AccountSettingType.Access

@@ -329,6 +329,32 @@ describe('current account selectors', () => {
         })
     })
 
+    describe('getViewsVisibilitySettings', () => {
+        it('should return the setting', () => {
+            expect(
+                selectors.getViewsVisibilitySettings(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        fromJS([{type: AccountSettingType.ViewsVisibility}])
+                    )
+                )
+            ).toEqual({type: AccountSettingType.ViewsVisibility})
+        })
+
+        it('should return undefined when there is no setting', () => {
+            expect(
+                selectors.getViewsVisibilitySettings(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        fromJS([{type: 'unknown'}])
+                    )
+                )
+            ).toBe(undefined)
+        })
+    })
+
     describe('currentAccountHasFeature()', () => {
         it.each(Object.values(AccountFeature))(
             'should return true for feature %s',

@@ -142,6 +142,8 @@ describe('current account actions', () => {
                     views: {
                         1: {display_order: 2},
                     },
+                    views_top: {},
+                    views_bottom: {},
                     view_sections: {},
                 },
                 id: 1,

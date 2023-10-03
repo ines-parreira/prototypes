@@ -49,6 +49,8 @@ exports[`current account actions submitSettingSuccess should dispatch the next s
             "display_order": 2,
           },
         },
+        "views_bottom": {},
+        "views_top": {},
       },
       "id": 1,
       "type": "views-ordering",

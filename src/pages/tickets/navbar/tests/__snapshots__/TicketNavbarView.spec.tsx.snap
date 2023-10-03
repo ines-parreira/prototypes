@@ -14,7 +14,7 @@ exports[`<TicketNavbarView/> should render 1`] = `
       to="/app/tickets/7/new-%26-open-tickets"
     >
       <span
-        class="item-name flex-grow"
+        class="item-name link"
       >
         <div
           data-testid="ViewName"

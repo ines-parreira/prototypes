@@ -1,40 +1,31 @@
 import classnames from 'classnames'
 import React, {useMemo, useRef} from 'react'
 import {useDrag} from 'react-dnd'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
 import {UserRole} from 'config/types/user'
+import useAppSelector from 'hooks/useAppSelector'
 import {View, ViewVisibility} from 'models/view/types'
-import ViewCount from 'pages/common/components/ViewCount/ViewCount'
-import ViewName from 'pages/common/components/ViewName/ViewName'
-import {RootState} from 'state/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {activeViewIdSet} from 'state/ui/views/actions'
+import {getActiveView} from 'state/views/selectors'
 import {hasRole} from 'utils'
 
 import css from './TicketNavbarView.less'
 import TicketNavbarDropTarget from './TicketNavbarDropTarget'
+import TicketNavbarViewLink from './TicketNavbarViewLink'
 
-type OwnProps = {
+type Props = {
     className?: string
     view: View
     viewCount: number | undefined
 }
 
-export function TicketNavbarViewContainer({
-    activeViewId,
-    activeViewIdSet,
-    className,
-    currentUser,
-    sections,
-    view,
-    views,
-    viewCount,
-}: OwnProps & ConnectedProps<typeof connector>) {
+const TicketNavbarView = ({className, view, viewCount}: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
-    const ticketNavbarId = `ticket-navbar-view-${view.id}`
+    const activeView = useAppSelector(getActiveView)
+    const currentUser = useAppSelector((state) => state.currentUser)
+    const sections = useAppSelector((state) => state.entities.sections)
+    const views = useAppSelector((state) => state.entities.views)
 
     const canDrag = useMemo(
         () =>
@@ -93,64 +84,24 @@ export function TicketNavbarViewContainer({
         >
             {(isOver) => {
                 return (
-                    <div
-                        className={classnames(navbarCss['link-wrapper'], {
-                            [navbarCss.isNested]: view.section_id != null,
-                        })}
-                        id={ticketNavbarId}
+                    <TicketNavbarViewLink
                         ref={wrapperRef}
-                    >
-                        <Link
-                            className={classnames(navbarCss.link, {
-                                active:
-                                    view.id === activeViewId &&
-                                    window.location.pathname.startsWith(
-                                        '/app/tickets'
-                                    ) &&
-                                    !isOver,
-                                [navbarCss.isDragged]: isDragging,
-                            })}
-                            to={`/app/tickets/${view.id}/${encodeURIComponent(
-                                view.slug
-                            )}`}
-                            onClick={() => activeViewIdSet(view.id)}
-                        >
-                            <span
-                                className={classnames(
-                                    navbarCss['item-name'],
-                                    'flex-grow'
-                                )}
-                            >
-                                <ViewName
-                                    viewName={view.name}
-                                    emoji={view.decoration?.emoji}
-                                />
-                            </span>
-                            <span className={navbarCss['item-count']}>
-                                <ViewCount
-                                    viewId={view.id}
-                                    viewCount={viewCount}
-                                    isDeactivated={!!view.deactivated_datetime}
-                                />
-                            </span>
-                        </Link>
-                    </div>
+                        view={view}
+                        viewCount={viewCount}
+                        className={classnames({
+                            active:
+                                view.id === activeView.get('id') &&
+                                window.location.pathname.startsWith(
+                                    '/app/tickets'
+                                ) &&
+                                !isOver,
+                            [navbarCss.isDragged]: isDragging,
+                        })}
+                    />
                 )
             }}
         </TicketNavbarDropTarget>
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        activeViewId: state.ui.views.activeViewId,
-        currentUser: state.currentUser,
-        sections: state.entities.sections,
-        views: state.entities.views,
-    }),
-    {
-        activeViewIdSet,
-    }
-)
-
-export default connector(TicketNavbarViewContainer)
+export default TicketNavbarView

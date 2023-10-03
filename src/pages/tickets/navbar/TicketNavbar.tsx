@@ -5,10 +5,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 import {DropTargetMonitor} from 'react-dnd'
 
-import GorgiasApi from 'services/gorgiasApi'
-import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {tryLocalStorage} from 'services/common/utils'
+import navbarCss from 'assets/css/navbar.less'
 
 import {
     UserRole,
@@ -16,6 +13,7 @@ import {
     UserSettingType,
     UserViewsOrderingSettingData,
 } from 'config/types/user'
+import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import {createAccountSetting, updateAccountSetting} from 'models/account'
 import {
@@ -28,19 +26,21 @@ import {Section, SectionDraft} from 'models/section/types'
 import {createUserSetting, updateUserSetting} from 'models/user/resources'
 import {fetchViewsPaginated, updateView} from 'models/view/resources'
 import {View, ViewCategoryNavbar, ViewVisibility} from 'models/view/types'
-import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import Navbar from 'pages/common/components/Navbar'
+import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import RecentChats from 'pages/common/components/RecentChats'
+import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
+import {tryLocalStorage} from 'services/common/utils'
+import GorgiasApi from 'services/gorgiasApi'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-
 import {submitSettingSuccess as submitAccountSettingSuccess} from 'state/currentAccount/actions'
+import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
 import {
     AccountSetting,
     AccountSettingType,
     AccountViewsOrderingSettingData,
 } from 'state/currentAccount/types'
 import {submitSettingSuccess} from 'state/currentUser/actions'
-import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
 import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
 import {
     sectionUpdated,
@@ -53,15 +53,20 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
 import {
-    getPrivateTicketNavbarElements,
-    getPublicTicketNavbarElements,
-} from 'state/ui/ticketNavbar/selectors'
-import {activeViewIdSet} from 'state/ui/views/actions'
-import {
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,
 } from 'state/ui/ticketNavbar/actions'
+import {
+    getPrivateTicketNavbarElements,
+    getPublicTicketNavbarElements,
+} from 'state/ui/ticketNavbar/selectors'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+import {activeViewIdSet} from 'state/ui/views/actions'
 import {fetchViewsSuccess} from 'state/views/actions'
+import {
+    getTopSystemTicketNavbarElementsByCategory,
+    getBottomSystemTicketNavbarElementsByCategory,
+} from 'state/views/selectors'
 
 import {hasRole} from 'utils'
 
@@ -73,12 +78,23 @@ import TicketNavbarDropTarget, {
     TicketNavbarDropDirection,
     TicketNavbarDropResult,
 } from './TicketNavbarDropTarget'
+import TicketNavbarViewLink from './TicketNavbarViewLink'
 
 import css from './TicketNavbar.less'
 
 const viewCategories = {
     public: 'Shared views',
     private: 'Private views',
+}
+
+const systemViewIcons = {
+    all: 'people',
+    closed: 'check',
+    inbox: 'inbox',
+    snoozed: 'snooze',
+    spam: 'error_outline',
+    trash: 'delete',
+    unassigned: 'assignment_ind',
 }
 
 export function TicketNavbarContainer({
@@ -120,6 +136,16 @@ export function TicketNavbarContainer({
         () => hasRole(currentUser, UserRole.Agent),
         [currentUser]
     )
+
+    const systemTopElements = useAppSelector(
+        getTopSystemTicketNavbarElementsByCategory
+    )
+
+    const systemBottomElements = useAppSelector(
+        getBottomSystemTicketNavbarElementsByCategory
+    )
+
+    const viewsCount = useAppSelector((state) => state.entities.viewsCount)
 
     useEffect(() => {
         void (async () => {
@@ -361,7 +387,7 @@ export function TicketNavbarContainer({
                           } as AccountSetting)
                         : createAccountSetting({
                               type: AccountSettingType.ViewsOrdering,
-                              data: nextSettingData,
+                              data: nextSettingData as AccountViewsOrderingSettingData,
                           }))
                     submitAccountSettingSuccess(resp.data, !!accountSetting)
                 }
@@ -419,6 +445,23 @@ export function TicketNavbarContainer({
     return (
         <Navbar activeContent="tickets" navbarContentRef={scrollableAreaRef}>
             <RecentChats />
+            {!!systemTopElements.length && (
+                <div className={navbarCss.category}>
+                    {systemTopElements.map((element) => (
+                        <TicketNavbarViewLink
+                            key={`view-${element.data.id}`}
+                            icon={
+                                systemViewIcons[
+                                    (element.data as View)
+                                        .slug as keyof typeof systemViewIcons
+                                ]
+                            }
+                            view={element.data as View}
+                            viewCount={viewsCount[element.data.id]}
+                        />
+                    ))}
+                </div>
+            )}
             {categories.map((category) => (
                 <TicketNavbarDropTarget
                     type={TicketNavbarElementType.Category}
@@ -477,6 +520,23 @@ export function TicketNavbarContainer({
                     </NavbarBlock>
                 </TicketNavbarDropTarget>
             ))}
+            {!!systemBottomElements.length && (
+                <div className={navbarCss.category}>
+                    {systemBottomElements.map((element) => (
+                        <TicketNavbarViewLink
+                            key={`view-${element.data.id}`}
+                            icon={
+                                systemViewIcons[
+                                    (element.data as View)
+                                        .slug as keyof typeof systemViewIcons
+                                ]
+                            }
+                            view={element.data as View}
+                            viewCount={viewsCount[element.data.id]}
+                        />
+                    ))}
+                </div>
+            )}
             <SectionFormModal
                 isNewSection={isNewSection}
                 isOpen={isSectionFormModalOpened}

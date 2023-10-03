@@ -5,8 +5,12 @@ import moment from 'moment'
 import {UserSettingType} from 'config/types/user'
 import * as viewsConfig from 'config/views'
 import {OrderDirection} from 'models/api/types'
-import {ViewType, ViewVisibility} from 'models/view/types'
-import {DEPRECATED_getViewsOrderingSetting} from 'state/currentAccount/selectors'
+import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
+import {
+    DEPRECATED_getViewsOrderingSetting,
+    getViewsOrderingSetting,
+    getViewsVisibilitySettings,
+} from 'state/currentAccount/selectors'
 import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
@@ -15,9 +19,13 @@ import {RootState} from 'state/types'
 import {createImmutableSelector, isCurrentlyOnView} from 'utils'
 import {BASE_VIEW_ID} from 'constants/view'
 
+import {TicketNavbarElement} from 'pages/tickets/navbar/TicketNavbarContent'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {getDefaultTicketView} from 'state/ui/ticketNavbar/selectors'
+
 import {sortViews} from './utils'
 import {ViewsState} from './types'
+import {SYSTEM_VIEWS} from './constants'
 
 export const getViewsState = (state: RootState): ViewsState =>
     state.views || fromJS({})
@@ -26,6 +34,74 @@ export const getViews = createImmutableSelector(
     getViewsState,
     (state) => state.get('items', fromJS([])) as List<any>
 )
+
+export const getSystemTicketNavbarElementsByCategory = (
+    category: 'views_top' | 'views_bottom'
+) =>
+    createSelector(
+        getViews,
+        getViewsOrderingSetting,
+        getViewsVisibilitySettings,
+        (
+            views: List<Map<any, any>>,
+            viewsOrderingSettings,
+            viewsVisibilitySettings
+        ) => {
+            const hiddenViews = viewsVisibilitySettings?.data.hidden_views
+            const systemViewsNames = SYSTEM_VIEWS.filter(
+                (view) => view.category === category
+            ).map(({name}) => name)
+            const systemViewCategory =
+                category === 'views_top'
+                    ? ViewCategory.SystemTop
+                    : ViewCategory.SystemBottom
+
+            return (
+                views
+                    .filter((view) => {
+                        const viewName: string = view?.get('name')
+
+                        return !!(
+                            systemViewsNames.includes(viewName) &&
+                            (view?.get('category') as string | null) ===
+                                systemViewCategory &&
+                            !hiddenViews?.includes(view?.get('id'))
+                        )
+                    })
+                    .sort((first, second) => {
+                        const firstViewDisplayOrder =
+                            viewsOrderingSettings.data[category]?.[
+                                (first.get('id') as number).toString()
+                            ]?.display_order ||
+                            (SYSTEM_VIEWS.find(
+                                (view) => view.name === first.get('name')
+                            )?.displayOrder as number)
+                        const secondViewDisplayOrder =
+                            viewsOrderingSettings.data[category]?.[
+                                (second.get('id') as number).toString()
+                            ]?.display_order ||
+                            (SYSTEM_VIEWS.find(
+                                (view) => view.name === second.get('name')
+                            )?.displayOrder as number)
+
+                        return firstViewDisplayOrder - secondViewDisplayOrder
+                    })
+                    .toJS() as View[]
+            ).map(
+                (view) =>
+                    ({
+                        data: view,
+                        type: TicketNavbarElementType.View,
+                    } as unknown as TicketNavbarElement)
+            )
+        }
+    )
+
+export const getTopSystemTicketNavbarElementsByCategory =
+    getSystemTicketNavbarElementsByCategory('views_top')
+
+export const getBottomSystemTicketNavbarElementsByCategory =
+    getSystemTicketNavbarElementsByCategory('views_bottom')
 
 export const getActiveView = createImmutableSelector(
     getViewsState,

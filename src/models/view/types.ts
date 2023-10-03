@@ -6,6 +6,8 @@ export type ListParams = ApiPaginationParams & {
 
 export enum ViewCategory {
     System = 'system',
+    SystemTop = 'system-top',
+    SystemBottom = 'system-bottom',
 }
 
 export enum ViewType {
@@ -58,7 +60,7 @@ export type ViewDraft = {
     fields: ViewField[]
     filters: string
     filters_ast: Record<string, unknown>
-    group_by: Maybe<ViewField>
+    group_by?: ViewField | null
     name: string
     order_by: ViewField
     order_dir: OrderDirection

@@ -202,12 +202,9 @@ class ViewNavbarView extends Component<Props, State> {
                         ) : (
                             displayedViews.map((view: Map<any, any>) => {
                                 const isCurrentView =
-                                    activeView.get('id') === view.get('id')
-                                const isFocused =
+                                    activeView.get('id') === view.get('id') &&
                                     window.location.pathname.startsWith(
-                                        `/app/tickets/${
-                                            view.get('id') as number
-                                        }/`
+                                        '/app/tickets/'
                                     )
 
                                 const key = `${view.get('slug') as string}-${
@@ -215,7 +212,6 @@ class ViewNavbarView extends Component<Props, State> {
                                 }`
                                 const classes = classnames(navbarCss.link, {
                                     active: isCurrentView,
-                                    focused: isFocused,
                                 })
 
                                 const viewCount = this.props.getViewCount(

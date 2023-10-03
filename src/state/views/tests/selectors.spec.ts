@@ -6,11 +6,13 @@ import {UserSettingType} from 'config/types/user'
 import {getExpirationTimeForCount} from 'config/views'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
+import {newViews} from 'models/view/mocks'
 import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
 import {initialState as currentAccountInitialState} from 'state/currentAccount/reducers'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import {RootState} from 'state/types'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
@@ -551,6 +553,77 @@ describe('selectors', () => {
             )
             const state = {views: viewState} as RootState
             expect(selectors.shouldFetchActiveViewTickets(state)).toBe(true)
+        })
+
+        describe('getTicketNavbarElementsByCategory', () => {
+            const settings = [
+                ...account.settings,
+                {
+                    type: AccountSettingType.ViewsOrdering,
+                    id: 1,
+                    data: {
+                        views_top: {
+                            [newViews[2].id]: {
+                                display_order: 1,
+                            },
+                            [newViews[0].id]: {
+                                display_order: 2,
+                            },
+                        },
+                        views_bottom: {
+                            [newViews[3].id]: {
+                                display_order: 2,
+                            },
+                            [newViews[1].id]: {
+                                display_order: 1,
+                            },
+                        },
+                    },
+                },
+            ]
+            const currentAccount = currentAccountInitialState
+                .mergeDeep(account)
+                .set('settings', fromJS(settings))
+            const state = {
+                views: initialState.set('items', fromJS(newViews)),
+                currentAccount,
+            } as RootState
+
+            it('should return the ordered views matching with the correct category', () => {
+                expect(
+                    selectors.getSystemTicketNavbarElementsByCategory(
+                        'views_bottom'
+                    )(state)
+                ).toEqual([
+                    {data: newViews[1], type: TicketNavbarElementType.View},
+                    {data: newViews[3], type: TicketNavbarElementType.View},
+                ])
+            })
+
+            it('should return the visible views', () => {
+                expect(
+                    selectors.getSystemTicketNavbarElementsByCategory(
+                        'views_bottom'
+                    )({
+                        ...state,
+                        currentAccount: currentAccount.setIn(
+                            ['settings'],
+                            fromJS([
+                                ...settings,
+                                {
+                                    type: AccountSettingType.ViewsVisibility,
+                                    id: 10,
+                                    data: {
+                                        hidden_views: [newViews[3].id],
+                                    },
+                                },
+                            ])
+                        ),
+                    })
+                ).toEqual([
+                    {data: newViews[1], type: TicketNavbarElementType.View},
+                ])
+            })
         })
     })
 })

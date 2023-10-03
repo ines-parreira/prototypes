@@ -5,10 +5,14 @@ exports[`ticketNavbar reducer optimisticAccountSettingsReset action should reset
   "optimisticAccountSettings": {
     "view_sections": {},
     "views": {},
+    "views_bottom": {},
+    "views_top": {},
   },
   "optimisticUserSettings": {
     "view_sections": {},
     "views": {},
+    "views_bottom": {},
+    "views_top": {},
   },
 }
 `;
@@ -26,10 +30,14 @@ exports[`ticketNavbar reducer optimisticAccountSettingsSet action should set the
         "display_order": 1,
       },
     },
+    "views_bottom": {},
+    "views_top": {},
   },
   "optimisticUserSettings": {
     "view_sections": {},
     "views": {},
+    "views_bottom": {},
+    "views_top": {},
   },
 }
 `;
@@ -39,10 +47,14 @@ exports[`ticketNavbar reducer optimisticUserSettingsReset action should reset th
   "optimisticAccountSettings": {
     "view_sections": {},
     "views": {},
+    "views_bottom": {},
+    "views_top": {},
   },
   "optimisticUserSettings": {
     "view_sections": {},
     "views": {},
+    "views_bottom": {},
+    "views_top": {},
   },
 }
 `;
@@ -52,6 +64,8 @@ exports[`ticketNavbar reducer optimisticUserSettingsSet action should set the us
   "optimisticAccountSettings": {
     "view_sections": {},
     "views": {},
+    "views_bottom": {},
+    "views_top": {},
   },
   "optimisticUserSettings": {
     "view_sections": {

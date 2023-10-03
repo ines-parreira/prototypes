@@ -1,6 +1,6 @@
 import {PayloadActionCreator} from '@reduxjs/toolkit'
 
-import {View} from '../../../models/view/types'
+import {View} from 'models/view/types'
 
 import {
     VIEWS_FETCHED,

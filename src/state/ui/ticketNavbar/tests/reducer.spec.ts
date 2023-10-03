@@ -16,6 +16,8 @@ describe('ticketNavbar reducer', () => {
                         views: {
                             1: {display_order: 1},
                         },
+                        views_top: {},
+                        views_bottom: {},
                         view_sections: {},
                     },
                 },
@@ -51,6 +53,8 @@ describe('ticketNavbar reducer', () => {
                     views: {
                         1: {display_order: 1},
                     },
+                    views_top: {},
+                    views_bottom: {},
                     view_sections: {
                         1: {display_order: 2},
                     },

@@ -1,13 +1,12 @@
 import {createSelector} from 'reselect'
 
 import {UserViewsOrderingSettingData} from 'config/types/user'
-import {View, ViewType, ViewVisibility} from 'models/view/types'
+import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
 import {TicketNavbarElement} from 'pages/tickets/navbar/TicketNavbarContent'
 import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
 import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
 import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
-
 import {TicketNavbarElementType} from './types'
 
 const createTicketNavbarElementsSelector = (visibility: ViewVisibility) => {
@@ -37,7 +36,13 @@ const createTicketNavbarElementsSelector = (visibility: ViewVisibility) => {
                         view.type === ViewType.TicketList &&
                         (visibility === ViewVisibility.Private
                             ? view.visibility === ViewVisibility.Private
-                            : view.visibility !== ViewVisibility.Private)
+                            : view.visibility !== ViewVisibility.Private &&
+                              (view.category
+                                  ? ![
+                                        ViewCategory.SystemBottom,
+                                        ViewCategory.SystemTop,
+                                    ].includes(view.category)
+                                  : true))
                 )
                 .map((view) => ({
                     data: view,

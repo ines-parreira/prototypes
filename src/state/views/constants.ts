@@ -48,3 +48,41 @@ export const ADD_RECENT_VIEW = 'ADD_RECENT_VIEW'
 export const UPDATE_RECENT_VIEWS = 'UPDATE_RECENT_VIEWS'
 
 export const GOTO_ACTIVE_VIEW = 'GOTO_ACTIVE_VIEW'
+
+export const SYSTEM_VIEWS = [
+    {
+        name: 'Inbox',
+        displayOrder: 0,
+        category: 'views_top',
+    },
+    {
+        name: 'Unassigned',
+        displayOrder: 1,
+        category: 'views_top',
+    },
+    {
+        name: 'All',
+        displayOrder: 2,
+        category: 'views_top',
+    },
+    {
+        name: 'Snoozed',
+        displayOrder: 3,
+        category: 'views_top',
+    },
+    {
+        name: 'Closed',
+        displayOrder: 0,
+        category: 'views_bottom',
+    },
+    {
+        name: 'Trash',
+        displayOrder: 1,
+        category: 'views_bottom',
+    },
+    {
+        name: 'Spam',
+        displayOrder: 2,
+        category: 'views_bottom',
+    },
+]

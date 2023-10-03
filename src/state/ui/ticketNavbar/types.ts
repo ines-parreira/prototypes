@@ -1,5 +1,5 @@
-import {UserViewsOrderingSettingData} from '../../../config/types/user'
-import {AccountViewsOrderingSettingData} from '../../currentAccount/types'
+import {UserViewsOrderingSettingData} from 'config/types/user'
+import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
 
 export type TicketNavbarState = {
     optimisticAccountSettings: AccountViewsOrderingSettingData

@@ -16,6 +16,8 @@ describe('account resources', () => {
             views: {
                 1: {display_order: 0},
             },
+            views_top: {},
+            views_bottom: {},
             view_sections: {1: {display_order: 1}},
         },
         id: 2,

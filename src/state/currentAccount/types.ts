@@ -10,11 +10,12 @@ export enum AccountStatus {
 }
 
 export enum AccountSettingType {
-    BusinessHours = 'business-hours',
-    TicketAssignment = 'ticket-assignment',
-    SatisfactionSurveys = 'satisfaction-surveys',
-    ViewsOrdering = 'views-ordering',
     Access = 'access',
+    BusinessHours = 'business-hours',
+    SatisfactionSurveys = 'satisfaction-surveys',
+    TicketAssignment = 'ticket-assignment',
+    ViewsOrdering = 'views-ordering',
+    ViewsVisibility = 'views-visibility',
 }
 
 export enum AccountFeature {
@@ -58,6 +59,7 @@ export type AccountSetting =
     | AccountSettingSatisfactionSurvey
     | ViewsOrderingAccountSetting
     | AccountSettingAccess
+    | AccountSettingViewsVisibility
 
 export type AccountSettingBusinessHours = {
     id: number
@@ -98,6 +100,8 @@ export type AccountSettingSatisfactionSurvey = {
 
 export type AccountViewsOrderingSettingData = {
     views: Record<string, {display_order: number}>
+    views_top: Record<string, {display_order: number}>
+    views_bottom: Record<string, {display_order: number}>
     view_sections: Record<string, {display_order: number}>
 }
 
@@ -115,6 +119,14 @@ export type AccountSettingAccess = {
 export enum AccountSettingAccessSignupMode {
     Invite = 'invite',
     AllowedDomains = 'allowed-domains',
+}
+
+export type AccountSettingViewsVisibility = {
+    id: number
+    type: AccountSettingType.ViewsVisibility
+    data: {
+        hidden_views: number[]
+    }
 }
 
 export type AccountFeatureMetadata = {

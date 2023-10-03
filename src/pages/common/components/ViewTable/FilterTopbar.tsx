@@ -299,7 +299,9 @@ export const FilterTopbar = ({
         [isViewDirty]
     )
 
-    const isSystemView = activeView.get('category') === ViewCategory.System
+    const isSystemView = Object.values(ViewCategory).includes(
+        activeView.get('category')
+    )
 
     useUnmount(cancelFetchViewItemsCancellable)
 

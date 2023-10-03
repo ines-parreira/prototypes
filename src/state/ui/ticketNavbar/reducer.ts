@@ -11,6 +11,8 @@ import {TicketNavbarState} from './types'
 const initialOptimisticSettings = {
     views: {},
     view_sections: {},
+    views_top: {},
+    views_bottom: {},
 }
 
 export const initialState: TicketNavbarState = {

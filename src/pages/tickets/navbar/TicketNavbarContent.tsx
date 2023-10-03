@@ -18,14 +18,15 @@ import {
 } from 'state/ui/ticketNavbar/actions'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 
-import TicketNavbarSection from './TicketNavbarSection'
-import TicketNavbarView from './TicketNavbarView'
-import css from './TicketNavbarContent.less'
+import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
 import TicketNavbarDropTarget, {
     TicketNavbarDragObject,
     TicketNavbarDropResult,
     TicketNavbarDropDirection,
 } from './TicketNavbarDropTarget'
+import TicketNavbarSection from './TicketNavbarSection'
+import TicketNavbarView from './TicketNavbarView'
+import css from './TicketNavbarContent.less'
 
 export type TicketNavbarSectionElement = {
     data: Section
@@ -128,7 +129,9 @@ export function TicketNavbarContentContainer({
             if (isPrivate) {
                 optimisticUserSettingsSet(nextSettings)
             } else {
-                optimisticAccountSettingsSet(nextSettings)
+                optimisticAccountSettingsSet(
+                    nextSettings as AccountViewsOrderingSettingData
+                )
             }
 
             onSubmitMoveItem(

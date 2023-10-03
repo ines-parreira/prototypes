@@ -3,7 +3,7 @@
 exports[`account resources createAccountSetting should resolve on success 1`] = `
 {
   "config": {
-    "data": "{"data":{"views":{"1":{"display_order":0}},"view_sections":{"1":{"display_order":1}}},"type":"views-ordering"}",
+    "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"type":"views-ordering"}",
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "Content-Type": "application/json;charset=utf-8",
@@ -37,6 +37,8 @@ exports[`account resources createAccountSetting should resolve on success 1`] = 
           "display_order": 0,
         },
       },
+      "views_bottom": {},
+      "views_top": {},
     },
     "id": 2,
     "type": "views-ordering",
@@ -52,7 +54,7 @@ exports[`account resources createAccountSetting should resolve on success 1`] = 
 exports[`account resources updateAccountSetting should resolve on success 1`] = `
 {
   "config": {
-    "data": "{"data":{"views":{"1":{"display_order":0}},"view_sections":{"1":{"display_order":1}}},"id":2,"type":"views-ordering"}",
+    "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"id":2,"type":"views-ordering"}",
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "Content-Type": "application/json;charset=utf-8",
@@ -86,6 +88,8 @@ exports[`account resources updateAccountSetting should resolve on success 1`] = 
           "display_order": 0,
         },
       },
+      "views_bottom": {},
+      "views_top": {},
     },
     "id": 2,
     "type": "views-ordering",
@@ -109,7 +113,7 @@ exports[`account resources updateAccountSetting should resolve on success 2`] = 
   "post": [],
   "put": [
     {
-      "data": "{"data":{"views":{"1":{"display_order":0}},"view_sections":{"1":{"display_order":1}}},"id":2,"type":"views-ordering"}",
+      "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"id":2,"type":"views-ordering"}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

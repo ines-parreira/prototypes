@@ -77,6 +77,8 @@ const defaultState: Partial<RootState> = {
             optimisticAccountSettings: {
                 views: {},
                 view_sections: {},
+                views_top: {},
+                views_bottom: {},
             },
             optimisticUserSettings: {
                 views: {},
