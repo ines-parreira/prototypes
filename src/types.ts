@@ -112,6 +112,6 @@ export type InitialRootState = {
 export type NonEmptyArray<T> = [T, ...T[]]
 
 export type InitialReactQueryState = {
-    channels: Channel[]
-    applications: Application[]
+    channels?: Channel[]
+    applications?: Application[]
 }

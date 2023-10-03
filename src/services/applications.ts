@@ -18,16 +18,14 @@ export type {
 const STALE_TIME = 1 * 60 * 60 * 1000
 const CACHE_TIME = STALE_TIME + 60 * 1000
 
-const INITIAL_DATA = mockPaginatedApplicationsList(
-    window.GORGIAS_STATE.applications
-)
+const INITIAL_DATA = window?.GORGIAS_STATE?.applications ?? []
 
 export const useApplications: () => Application[] = () => {
     return (
         useListApplications({
             staleTime: STALE_TIME,
             cacheTime: CACHE_TIME,
-            initialData: INITIAL_DATA,
+            initialData: mockPaginatedApplicationsList(INITIAL_DATA),
         })?.data?.data ?? []
     )
 }
@@ -37,7 +35,7 @@ export function getApplications(): Application[] {
         Awaited<ReturnType<typeof listApplications>>
     >(applicationsQueryKeys.list())
 
-    return queryData?.data ?? INITIAL_DATA?.data ?? []
+    return queryData?.data ?? INITIAL_DATA
 }
 
 export function getApplicationById(id: string): Application | undefined {

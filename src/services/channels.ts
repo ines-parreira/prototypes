@@ -15,14 +15,14 @@ export type {
 const STALE_TIME = 1 * 60 * 60 * 1000
 const CACHE_TIME = STALE_TIME + 60 * 1000
 
-const INITIAL_DATA = mockPaginatedChannelsList(window.GORGIAS_STATE.channels)
+const INITIAL_DATA = window?.GORGIAS_STATE?.channels ?? []
 
 export const useChannels: () => Channel[] = () => {
     return (
         useListChannels({
             staleTime: STALE_TIME,
             cacheTime: CACHE_TIME,
-            initialData: INITIAL_DATA,
+            initialData: mockPaginatedChannelsList(INITIAL_DATA),
         })?.data?.data ?? []
     )
 }
@@ -32,7 +32,7 @@ export function getChannels(): Channel[] {
         Awaited<ReturnType<typeof listChannels>>
     >(channelsQueryKeys.list())
 
-    return queryData?.data ?? INITIAL_DATA?.data ?? []
+    return queryData?.data ?? INITIAL_DATA
 }
 
 export function getChannelBySlug(slug: string): Channel | undefined {
