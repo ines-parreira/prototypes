@@ -624,6 +624,33 @@ describe('selectors', () => {
                     {data: newViews[1], type: TicketNavbarElementType.View},
                 ])
             })
+
+            it('should include hidden views if includeHiddenViews is true', () => {
+                expect(
+                    selectors.getSystemTicketNavbarElementsByCategory(
+                        'views_bottom',
+                        true
+                    )({
+                        ...state,
+                        currentAccount: currentAccount.setIn(
+                            ['settings'],
+                            fromJS([
+                                ...settings,
+                                {
+                                    type: AccountSettingType.ViewsVisibility,
+                                    id: 10,
+                                    data: {
+                                        hidden_views: [newViews[3].id],
+                                    },
+                                },
+                            ])
+                        ),
+                    })
+                ).toEqual([
+                    {data: newViews[1], type: TicketNavbarElementType.View},
+                    {data: newViews[3], type: TicketNavbarElementType.View},
+                ])
+            })
         })
     })
 })

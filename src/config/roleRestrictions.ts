@@ -81,4 +81,7 @@ export const roleRestrictionConfigs: Record<
     [PageSection.CreditShopifyBillingIntegration]: {
         pageHeader: SectionPageHeader.CreditShopifyBillingIntegration,
     },
+    [PageSection.SidebarSettings]: {
+        pageHeader: SectionPageHeader.SidebarSettings,
+    },
 }

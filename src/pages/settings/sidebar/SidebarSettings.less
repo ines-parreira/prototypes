@@ -1,0 +1,50 @@
+@import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/new/util.less';
+@import (reference) '~css/new/layout';
+
+:local {
+    .container {
+        @media @mobiles {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .contentWrapper {
+        max-width: unset;
+    }
+
+    .infoContent {
+        max-width: 680px;
+
+        @media @mobiles {
+            max-width: inherit;
+            width: 100%;
+        }
+    }
+
+    .heading {
+        .body-semibold();
+    }
+
+    .infoText {
+        .body-regular();
+    }
+
+    .preview {
+        background: var(--neutral-grey-1);
+        height: 100%;
+        width: 30%;
+        padding: @layout-spacing-m 7.5%;
+
+        @media @mobiles {
+            max-width: inherit;
+            width: 100%;
+        }
+
+        img {
+            max-width: 100%;
+        }
+    }
+}

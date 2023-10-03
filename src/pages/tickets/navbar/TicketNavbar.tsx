@@ -64,8 +64,8 @@ import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {activeViewIdSet} from 'state/ui/views/actions'
 import {fetchViewsSuccess} from 'state/views/actions'
 import {
-    getTopSystemTicketNavbarElementsByCategory,
-    getBottomSystemTicketNavbarElementsByCategory,
+    getTopSystemTicketNavbarElements,
+    getBottomSystemTicketNavbarElements,
 } from 'state/views/selectors'
 
 import {hasRole} from 'utils'
@@ -137,12 +137,10 @@ export function TicketNavbarContainer({
         [currentUser]
     )
 
-    const systemTopElements = useAppSelector(
-        getTopSystemTicketNavbarElementsByCategory
-    )
+    const systemTopElements = useAppSelector(getTopSystemTicketNavbarElements)
 
     const systemBottomElements = useAppSelector(
-        getBottomSystemTicketNavbarElementsByCategory
+        getBottomSystemTicketNavbarElements
     )
 
     const viewsCount = useAppSelector((state) => state.entities.viewsCount)

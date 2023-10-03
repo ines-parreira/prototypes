@@ -55,6 +55,7 @@ import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
 
 import NotificationSettings from './settings/notifications/NotificationSettings'
+import SidebarSettings from './settings/sidebar/SidebarSettings'
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import PasswordAnd2FA from './settings/yourProfile/PasswordAnd2FA'
 import APIView from './settings/api/APIView'
@@ -596,6 +597,9 @@ export function SettingsRoutes() {
     const hasAccessToNewBilling: boolean | undefined =
         useFlags()[FeatureFlagKey.NewBillingInterface]
 
+    const isNavbarImprovementsEnabled: boolean =
+        useFlags()[FeatureFlagKey.NavbarImprovements] || false
+
     return (
         <Switch>
             <Route path={`${path}/`} exact>
@@ -725,6 +729,18 @@ export function SettingsRoutes() {
                     navbar={SettingsNavbar}
                 />
             </Route>
+            {isNavbarImprovementsEnabled && (
+                <Route path={`${path}/sidebar`}>
+                    <App
+                        content={memoizedWithUserRoleRequired(
+                            SidebarSettings,
+                            ADMIN_ROLE,
+                            PageSection.SidebarSettings
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
+            )}
             <Route path={`${path}/ticket-fields`}>
                 <TicketFieldsRoutes />
             </Route>

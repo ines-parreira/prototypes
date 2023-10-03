@@ -53,4 +53,5 @@ export enum FeatureFlagKey {
     NewAutomationAddon = 'new-automation-add-on',
     CustomerTimelineButton = 'customer-timeline-button',
     NewVoiceCallUI = 'new-voice-call-ui',
+    NavbarImprovements = 'navbar-improvements',
 }

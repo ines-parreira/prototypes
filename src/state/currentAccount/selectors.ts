@@ -11,9 +11,9 @@ import {
     AccountSettingBusinessHours,
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
+    AccountSettingViewsVisibility,
     ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
-    AccountSettingViewsVisibility,
 } from './types'
 
 export const getCurrentAccountState = (state: RootState) =>

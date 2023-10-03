@@ -154,6 +154,12 @@ const CATEGORIES: Category[] = [
         links: [
             {
                 requiredRole: ADMIN_ROLE,
+                to: 'sidebar',
+                text: 'Sidebar',
+                requiredFeatureFlags: [FeatureFlagKey.NavbarImprovements],
+            },
+            {
+                requiredRole: ADMIN_ROLE,
                 to: 'phone-numbers',
                 text: 'Phone numbers',
             },

@@ -36,7 +36,8 @@ export const getViews = createImmutableSelector(
 )
 
 export const getSystemTicketNavbarElementsByCategory = (
-    category: 'views_top' | 'views_bottom'
+    category: 'views_top' | 'views_bottom',
+    includeHiddenViews = false
 ) =>
     createSelector(
         getViews,
@@ -61,12 +62,18 @@ export const getSystemTicketNavbarElementsByCategory = (
                     .filter((view) => {
                         const viewName: string = view?.get('name')
 
-                        return !!(
-                            systemViewsNames.includes(viewName) &&
-                            (view?.get('category') as string | null) ===
-                                systemViewCategory &&
-                            !hiddenViews?.includes(view?.get('id'))
-                        )
+                        return includeHiddenViews
+                            ? !!(
+                                  systemViewsNames.includes(viewName) &&
+                                  (view?.get('category') as string | null) ===
+                                      systemViewCategory
+                              )
+                            : !!(
+                                  systemViewsNames.includes(viewName) &&
+                                  (view?.get('category') as string | null) ===
+                                      systemViewCategory &&
+                                  !hiddenViews?.includes(view?.get('id'))
+                              )
                     })
                     .sort((first, second) => {
                         const firstViewDisplayOrder =
@@ -97,11 +104,17 @@ export const getSystemTicketNavbarElementsByCategory = (
         }
     )
 
-export const getTopSystemTicketNavbarElementsByCategory =
+export const getTopSystemTicketNavbarElements =
     getSystemTicketNavbarElementsByCategory('views_top')
 
-export const getBottomSystemTicketNavbarElementsByCategory =
+export const getTopSystemTicketNavbarWithHiddenElements =
+    getSystemTicketNavbarElementsByCategory('views_top', true)
+
+export const getBottomSystemTicketNavbarElements =
     getSystemTicketNavbarElementsByCategory('views_bottom')
+
+export const getBottomSystemTicketNavbarWithHiddenElements =
+    getSystemTicketNavbarElementsByCategory('views_bottom', true)
 
 export const getActiveView = createImmutableSelector(
     getViewsState,
