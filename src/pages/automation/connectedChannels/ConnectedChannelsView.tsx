@@ -129,7 +129,11 @@ const ConnectedChannelsView = () => {
     const hasHelpCenterChannel = channels.some(
         (channel) => channel.type === TicketChannel.HelpCenter
     )
-    const hasChannels = hasChatChannel || hasHelpCenterChannel
+    const hasContactFormChannel = channels.some(
+        (channel) => channel.type === TicketChannel.ContactForm
+    )
+    const hasChannels =
+        hasChatChannel || hasHelpCenterChannel || hasContactFormChannel
     const isLoading =
         !selfServiceConfiguration ||
         isWorkflowsFetchPending ||
@@ -148,7 +152,10 @@ const ConnectedChannelsView = () => {
         <AutomationView title="Connected channels" isLoading={isLoading}>
             <AutomationViewContent description="Manage features enabled per channel connected to this store.">
                 {hasChannels && (
-                    <div className={css.channelsContainer}>
+                    <div
+                        className={css.channelsContainer}
+                        data-testid="connected-channels"
+                    >
                         <ConnectedChannelsViewContext.Provider
                             value={connectedChannelsViewContext}
                         >
