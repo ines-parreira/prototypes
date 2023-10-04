@@ -35,7 +35,7 @@ export default function reducer(
                 }),
                 {}
             )
-            return state.mergeIn(['all', fromJS(teams)])
+            return state.mergeIn(['all'], fromJS(teams))
         }
         case constants.FETCH_TEAM_MEMBERS_SUCCESS: {
             return state.setIn(

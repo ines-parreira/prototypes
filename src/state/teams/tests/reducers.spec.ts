@@ -59,4 +59,23 @@ describe('teams reducers', () => {
             })
         ).toMatchSnapshot()
     })
+
+    it('should update the state with the fetched teams when action type is FETCH_TEAMS_SUCCESS', () => {
+        expect(
+            reducer(initialState, {
+                type: constants.FETCH_TEAMS_SUCCESS,
+                payload: [
+                    {id: 1, name: 'Team 1'},
+                    {id: 2, name: 'Team 2'},
+                ],
+            })
+        ).toEqual(
+            fromJS({
+                all: {
+                    '1': {id: 1, name: 'Team 1'},
+                    '2': {id: 2, name: 'Team 2'},
+                },
+            })
+        )
+    })
 })
