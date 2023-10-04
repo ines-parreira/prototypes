@@ -41,23 +41,40 @@ describe('<TicketDistributionTable>', () => {
         },
     } as unknown as RootState
 
+    const maxTicketCount = 16
     const data = [
         {
             [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
                 'Level 0',
-            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: '5',
+            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: '4',
         },
         {
             [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
                 'Level 0::Level 1',
-            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: '15',
+            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
+                String(maxTicketCount),
         },
     ]
 
     const useTicketsDistributionReturnValue: ReturnType<
         typeof useTicketsDistribution
     > = {
-        topData: data,
+        topData: data.map((item) => ({
+            category:
+                item[TicketCustomFieldsDimension.TicketCustomFieldsValueString],
+            value: Number(
+                item[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]
+            ),
+            valueInPercentage:
+                (100 *
+                    Number(
+                        item[
+                            TicketCustomFieldsMeasure
+                                .TicketCustomFieldsTicketCount
+                        ]
+                    )) /
+                maxTicketCount,
+        })),
         outsideTopTotal: 0,
         outsideTopTotalPercentage: 0,
         ticketsCountTotal: 20,

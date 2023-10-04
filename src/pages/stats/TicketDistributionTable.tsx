@@ -8,10 +8,6 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import GaugeCellAddon from 'pages/common/components/table/addons/GaugeCellAddon'
 import {
-    TicketCustomFieldsDimension,
-    TicketCustomFieldsMeasure,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {
     NOT_AVAILABLE_PLACEHOLDER,
     formatMetricValue,
 } from 'pages/stats/common/utils'
@@ -75,56 +71,30 @@ export const TicketDistributionTable = () => {
             ) : topData.length > 0 ? (
                 <TableWrapper className={css.table}>
                     <TableBody>
-                        {topData.map((item, index) => {
-                            const valueInPercentage =
-                                (100 *
-                                    Number(
-                                        item[
-                                            TicketCustomFieldsMeasure
-                                                .TicketCustomFieldsTicketCount
-                                        ]
-                                    )) /
-                                ticketsCountTotal
-
-                            const category =
-                                item[
-                                    TicketCustomFieldsDimension
-                                        .TicketCustomFieldsValueString
-                                ] || NOT_AVAILABLE_PLACEHOLDER
-
-                            return (
-                                <TableBodyRow key={index}>
-                                    <DistributionCategoryCell
-                                        key={category}
-                                        progress={valueInPercentage}
-                                        width={300}
-                                        category={category}
-                                    />
-                                    <BodyCell
-                                        justifyContent="right"
-                                        width={100}
-                                    >
-                                        {formatMetricValue(
-                                            Number(
-                                                item[
-                                                    TicketCustomFieldsMeasure
-                                                        .TicketCustomFieldsTicketCount
-                                                ]
-                                            ),
-                                            'decimal',
-                                            NOT_AVAILABLE_PLACEHOLDER
-                                        )}
-                                    </BodyCell>
-                                    <BodyCell justifyContent="right" width={80}>
-                                        {formatMetricValue(
-                                            valueInPercentage,
-                                            'percent-refined',
-                                            NOT_AVAILABLE_PLACEHOLDER
-                                        )}
-                                    </BodyCell>
-                                </TableBodyRow>
-                            )
-                        })}
+                        {topData.map((item, index) => (
+                            <TableBodyRow key={index}>
+                                <DistributionCategoryCell
+                                    key={item.category}
+                                    progress={item.valueInPercentage}
+                                    width={300}
+                                    category={item.category}
+                                />
+                                <BodyCell justifyContent="right" width={100}>
+                                    {formatMetricValue(
+                                        item.value,
+                                        'decimal',
+                                        NOT_AVAILABLE_PLACEHOLDER
+                                    )}
+                                </BodyCell>
+                                <BodyCell justifyContent="right" width={80}>
+                                    {formatMetricValue(
+                                        item.valueInPercentage,
+                                        'percent-refined',
+                                        NOT_AVAILABLE_PLACEHOLDER
+                                    )}
+                                </BodyCell>
+                            </TableBodyRow>
+                        ))}
 
                         {outsideTopTotal ? (
                             <TableBodyRow>
