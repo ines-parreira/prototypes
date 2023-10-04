@@ -18,8 +18,11 @@ import _mapValues from 'lodash/mapValues'
 
 import {LanguageCode} from '../models/workflowConfiguration.types'
 import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
-import {verifyPayloadSize} from '../utils/payloadLengthCheck'
 import {decodeVariablesQuotes} from '../models/variables.model'
+import {
+    getPayloadSizeToLimitRate,
+    isPayloadTooLarge,
+} from '../utils/payloadSize'
 import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
@@ -85,6 +88,18 @@ export default function useWorkflowTranslations(
         isNew,
         isWorkflowLoaded,
     ])
+
+    const computeCurrentTranslationSizeToLimitRate = useCallback(
+        (graph: VisualBuilderGraph) => {
+            const translations = snapshotTranslations(
+                graph,
+                currentLanguage,
+                translationsByLangDirty
+            )[currentLanguage]
+            return getPayloadSizeToLimitRate(translations)
+        },
+        [currentLanguage, translationsByLangDirty]
+    )
 
     // to be used to compare against the initially fetched configuration to determine if it's dirty or not
     // TODO make node ids and edge ids stable so that we can compare the graphes directly
@@ -245,24 +260,24 @@ export default function useWorkflowTranslations(
         },
         [currentLanguage, availableLanguages, switchLanguage]
     )
-    const validateTranslationsPayloadSize = useCallback(
+    const getLangsOfTooLargeTranslations = useCallback(
         (graph: VisualBuilderGraph) => {
-            if (!configurationInternalId) return
             const nextTranslationsByLangDirty = snapshotTranslations(
                 graph,
                 currentLanguage,
                 translationsByLangDirty
             )
-            for (const languageCode of availableLanguages) {
-                verifyPayloadSize(nextTranslationsByLangDirty[languageCode])
-            }
+            const tooLargeLangs: LanguageCode[] = []
+            Object.entries(nextTranslationsByLangDirty).forEach(
+                ([lang, translations]) => {
+                    if (isPayloadTooLarge(translations)) {
+                        tooLargeLangs.push(lang as LanguageCode)
+                    }
+                }
+            )
+            return tooLargeLangs
         },
-        [
-            currentLanguage,
-            availableLanguages,
-            translationsByLangDirty,
-            configurationInternalId,
-        ]
+        [currentLanguage, translationsByLangDirty]
     )
 
     const areTranslationsDirty = useMemo(
@@ -288,9 +303,9 @@ export default function useWorkflowTranslations(
         translateKey,
         setCurrentLanguage,
         switchLanguage,
-        translationsByLang,
-        validateTranslationsPayloadSize,
+        getLangsOfTooLargeTranslations,
         translateGraph,
+        computeCurrentTranslationSizeToLimitRate,
     }
 }
 

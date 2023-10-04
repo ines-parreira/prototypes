@@ -7,6 +7,7 @@ import React, {
     useRef,
     useMemo,
 } from 'react'
+import {useThrottleFn} from 'react-use'
 
 import {
     LanguageCode,
@@ -23,7 +24,6 @@ import {
     transformVisualBuilderGraphIntoWfConfiguration,
     walkVisualBuilderGraph,
 } from '../models/visualBuilderGraph.model'
-import {verifyPayloadSize} from '../utils/payloadLengthCheck'
 import {
     extractVariablesFromText,
     getAvailableFlowVariableListForNode,
@@ -32,6 +32,10 @@ import {
     buildFlowVariableFromNode,
     findVariable,
 } from '../models/variables.model'
+import {
+    getPayloadSizeToLimitRate,
+    isPayloadTooLarge,
+} from '../utils/payloadSize'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
@@ -78,6 +82,8 @@ export type WorkflowEditorContext = {
             | null
         >
     >
+    translationSizeToLimitRate: number
+    configurationSizeToLimitRate: number
 }
 
 export const WorkflowEditorContext = createContext<
@@ -169,8 +175,9 @@ export function useWorkflowEditor(
         currentLanguage,
         switchLanguage,
         setCurrentLanguage,
-        validateTranslationsPayloadSize,
+        getLangsOfTooLargeTranslations,
         translateGraph,
+        computeCurrentTranslationSizeToLimitRate,
     } = useWorkflowTranslations(
         visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
         visualBuilderGraphDirty.available_languages ?? ['en-US'],
@@ -233,6 +240,22 @@ export function useWorkflowEditor(
     )
     const isDirty = isVisualBuilderGraphDirty || areTranslationsDirty
 
+    const configurationDirtySizeToLimitRate = useThrottleFn(
+        (graph) =>
+            getPayloadSizeToLimitRate(
+                emptyTranslatedTexts(
+                    transformVisualBuilderGraphIntoWfConfiguration(graph)
+                )
+            ),
+        500,
+        [visualBuilderGraphDirty]
+    )
+    const currentTranslationSizeToLimitRate = useThrottleFn(
+        (graph) => computeCurrentTranslationSizeToLimitRate(graph),
+        500,
+        [visualBuilderGraphDirty]
+    )
+
     const handleValidate = useCallback(() => {
         const configurationDirty =
             transformVisualBuilderGraphIntoWfConfiguration(
@@ -274,46 +297,53 @@ export function useWorkflowEditor(
             })
             return 'Complete steps in all available languages in order to create a flow'
         }
+        const tooLargeLangs = getLangsOfTooLargeTranslations(
+            visualBuilderGraphDirty
+        )
+        if (tooLargeLangs.length > 0) {
+            const nextGraph = switchLanguage(
+                visualBuilderGraphDirty,
+                tooLargeLangs[0]
+            )
+            dispatch({
+                type: 'RESET_GRAPH',
+                graph: nextGraph,
+            })
+            return 'This flow is too large to save. Please remove unnecessary steps and shorten response text in order to save'
+        }
+
         return null
     }, [
         translateGraph,
         visualBuilderGraphDirty,
         getLangsOfIncompleteTranslations,
+        getLangsOfTooLargeTranslations,
         switchLanguage,
         dispatch,
     ])
 
     const handleSave = useCallback(async () => {
+        if (!isDirty) return
+
         const configurationDirty =
             transformVisualBuilderGraphIntoWfConfiguration(
                 visualBuilderGraphDirty
             )
-        if (validate(configurationDirty)) {
-            return
-        }
-
-        const isVariablesValidationFailed = checkGraphVariablesValidity(
-            visualBuilderGraphDirty,
-            translateGraph
-        )
-
-        if (isVariablesValidationFailed) return
-        if (!isDirty) return
 
         setIsSavePending(true)
         try {
-            validateTranslationsPayloadSize(visualBuilderGraphDirty)
-            const empyTranslationText = verifyPayloadSize(
-                emptyTranslatedTexts(configurationDirty)
-            )
             // why saving order differ depending on isNew?
             // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
             if (isNew) {
-                await upsertWorkflowConfiguration(empyTranslationText)
+                await upsertWorkflowConfiguration(
+                    emptyTranslatedTexts(configurationDirty)
+                )
                 await saveTranslations(visualBuilderGraphDirty)
             } else {
                 await saveTranslations(visualBuilderGraphDirty)
-                await upsertWorkflowConfiguration(empyTranslationText)
+                await upsertWorkflowConfiguration(
+                    emptyTranslatedTexts(configurationDirty)
+                )
             }
         } catch (e) {
             setIsSavePending(false)
@@ -323,12 +353,10 @@ export function useWorkflowEditor(
         setIsSavePending(false)
     }, [
         isDirty,
-        translateGraph,
         upsertWorkflowConfiguration,
         visualBuilderGraphDirty,
         saveTranslations,
         isNew,
-        validateTranslationsPayloadSize,
     ])
 
     const handleDiscard = useCallback(() => {
@@ -463,6 +491,8 @@ export function useWorkflowEditor(
         visualBuilderChoiceEventIdEditing,
         setVisualBuilderChoiceEventIdEditing,
         translateGraph,
+        translationSizeToLimitRate: currentTranslationSizeToLimitRate ?? 0,
+        configurationSizeToLimitRate: configurationDirtySizeToLimitRate ?? 0,
     }
 }
 
@@ -487,6 +517,9 @@ function validate(conf: WorkflowConfiguration): Maybe<string> {
         return 'Complete or delete incomplete steps in order to save'
     if (conf.steps.length === 1)
         return 'You must add at least one step after the trigger button in order to save'
+    if (isPayloadTooLarge(emptyTranslatedTexts(conf))) {
+        return 'This flow is too large to save. Please remove unnecessary steps in order to save'
+    }
 }
 
 export function createWorkflowEditorContextForPreview(
@@ -522,5 +555,7 @@ export function createWorkflowEditorContextForPreview(
         visualBuilderChoiceEventIdEditing: null,
         setVisualBuilderChoiceEventIdEditing: () => null,
         translateGraph: (graph) => graph,
+        translationSizeToLimitRate: 0,
+        configurationSizeToLimitRate: 0,
     }
 }

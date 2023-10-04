@@ -27,6 +27,7 @@ import {
     VisualBuilderNode,
     isMultipleChoicesNodeType,
 } from './visualBuilderGraph.types'
+import {decodeVariablesQuotes} from './variables.model'
 
 export const buildEdgeCommonProperties: () => Pick<
     Edge,
@@ -53,11 +54,27 @@ export function areGraphsEqual(
             {
                 ...g,
                 nodes: g.nodes
-                    .map(({id, type, data}) => ({
-                        id,
-                        type,
-                        data: _omit(data, ['isGreyedOut']),
-                    }))
+                    .map((node) => {
+                        const data = _omit(node.data, ['isGreyedOut'])
+
+                        if (node.type === 'automated_message') {
+                            return {
+                                id: node.id,
+                                type: node.type,
+                                data: {
+                                    ...data,
+                                    content: {
+                                        ...node.data.content,
+                                        html: decodeVariablesQuotes(
+                                            node.data.content.html
+                                        ),
+                                    },
+                                },
+                            }
+                        }
+
+                        return {id: node.id, type: node.type, data}
+                    })
                     .sort((a, b) => a.id.localeCompare(b.id)),
                 edges: g.edges
                     .map(({source, target, data}) => ({

@@ -73,7 +73,9 @@ export default function MessageContentFormField({
             html_tkey,
             text: text,
             text_tkey,
-            attachments: content.attachments,
+            ...(typeof content.attachments === 'undefined'
+                ? {}
+                : {attachments: content.attachments}),
         })
     }
     const handleAddAttachment = (attachment: ProductCardAttachment) => {

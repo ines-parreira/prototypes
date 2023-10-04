@@ -1,8 +1,13 @@
-import React, {PropsWithChildren, ReactNode, useCallback, useRef} from 'react'
+import React, {
+    PropsWithChildren,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useRef,
+} from 'react'
 import {Container} from 'reactstrap'
 import {useEffectOnce} from 'react-use'
 
-import axios from 'axios'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -14,7 +19,10 @@ import useSearch from 'hooks/useSearch'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import {supportedLanguages} from '../models/workflowConfiguration.types'
-import {WORKFLOW_TEMPLATES} from '../constants'
+import {
+    MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD,
+    WORKFLOW_TEMPLATES,
+} from '../constants'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 import {
     useWorkflowEditorContext,
@@ -26,10 +34,6 @@ import useWorkflowChannelSupport, {
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
 
-import {
-    PayloadSizeLimitError,
-    SIZE_LIMIT_ERROR,
-} from '../utils/payloadLengthCheck'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
@@ -83,6 +87,7 @@ function WorkflowEditorViewWrapped({
         shopType,
         shopName
     )
+    const canShowSizeLimitWarning = useRef(true)
 
     // flags
     const isDirty = workflowEditorContext.isDirty
@@ -91,6 +96,43 @@ function WorkflowEditorViewWrapped({
     const workflowNameIsErrored =
         workflowEditorContext.visualBuilderGraph.name.trim().length === 0 ||
         workflowEditorContext.visualBuilderGraph.name.length > 100
+
+    useEffect(() => {
+        if (!isDirty) {
+            return
+        }
+
+        if (
+            workflowEditorContext.configurationSizeToLimitRate >=
+            MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD
+        ) {
+            if (canShowSizeLimitWarning.current) {
+                notifyMerchant({
+                    message: `You've reached 75% of storage capacity for this flow. To avoid errors when saving and to keep things running smoothly, try removing unnecessary steps`,
+                    status: NotificationStatus.Warning,
+                })
+                canShowSizeLimitWarning.current = false
+            }
+        } else if (
+            workflowEditorContext.translationSizeToLimitRate >=
+            MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD
+        ) {
+            if (canShowSizeLimitWarning.current) {
+                notifyMerchant({
+                    message: `You've reached 75% of storage capacity for this flow. To avoid errors when saving and to keep things running smoothly, try keeping response text concise and removing unnecessary steps`,
+                    status: NotificationStatus.Warning,
+                })
+                canShowSizeLimitWarning.current = false
+            }
+        } else {
+            canShowSizeLimitWarning.current = true
+        }
+    }, [
+        isDirty,
+        workflowEditorContext.configurationSizeToLimitRate,
+        workflowEditorContext.translationSizeToLimitRate,
+        notifyMerchant,
+    ])
 
     // handlers
     const handleDiscard = () => {
@@ -120,15 +162,9 @@ function WorkflowEditorViewWrapped({
                 })
             }
         } catch (e) {
-            let message =
-                'An error happened trying to save the flow, please try again or contact support'
-            if (
-                e instanceof PayloadSizeLimitError ||
-                (axios.isAxiosError(e) && e.response?.status === 413)
-            )
-                message = SIZE_LIMIT_ERROR
             notifyMerchant({
-                message,
+                message:
+                    'An error happened trying to save the flow, please try again or contact support',
                 status: NotificationStatus.Error,
             })
             return
