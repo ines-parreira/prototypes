@@ -53,6 +53,11 @@ jest.mock('pages/tickets/detail/components/SatisfactionSurvey', () => () => (
 ))
 
 jest.mock(
+    'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCall',
+    () => () => <p>Voice call</p>
+)
+
+jest.mock(
     'pages/tickets/detail/components/TicketMessages/TicketMessages',
     () => () => <p>TicketMessages</p>
 )

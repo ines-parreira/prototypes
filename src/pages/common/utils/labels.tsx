@@ -52,53 +52,49 @@ type AgentLabelProps = {
     name?: string
     maxWidth?: string
     className?: string
-    profilePictureUrl?: string
+    profilePictureUrl?: string | null
     shouldDisplayAvatar?: boolean
 }
 
-export class AgentLabel extends Component<AgentLabelProps> {
-    static defaultProps = {
-        name: '',
-        className: '',
-        profilePictureUrl: '',
-        shouldDisplayAvatar: false,
+export function AgentLabel({
+    name = '',
+    className = '',
+    profilePictureUrl = '',
+    shouldDisplayAvatar = false,
+    maxWidth,
+}: AgentLabelProps) {
+    const showAvatar = shouldDisplayAvatar || profilePictureUrl
+    const style: CSSProperties = {}
+
+    if (maxWidth) {
+        style.maxWidth = `${maxWidth}px`
     }
 
-    render() {
-        const {
-            name,
-            maxWidth,
-            className,
-            profilePictureUrl,
-            shouldDisplayAvatar,
-        } = this.props
-        const showAvatar = shouldDisplayAvatar || profilePictureUrl
-        const style: CSSProperties = {}
-        if (maxWidth) {
-            style.maxWidth = `${maxWidth}px`
-        }
+    return (
+        <div className={classnames(css.AgentLabel, className)}>
+            {showAvatar ? (
+                <Avatar
+                    name={name}
+                    url={profilePictureUrl}
+                    size={26}
+                    className={css.avatar}
+                />
+            ) : (
+                <span
+                    className="material-icons md-2"
+                    data-testid="accountCircle"
+                >
+                    account_circle
+                </span>
+            )}
 
-        return (
-            <div className={classnames(css.AgentLabel, className)}>
-                {showAvatar ? (
-                    <Avatar
-                        name={name}
-                        url={profilePictureUrl}
-                        size={26}
-                        className={css.avatar}
-                    />
-                ) : (
-                    <span className="material-icons md-2">account_circle</span>
-                )}
-
-                {name && (
-                    <span className={css.name} style={style}>
-                        {name}
-                    </span>
-                )}
-            </div>
-        )
-    }
+            {name && (
+                <span className={css.name} style={style}>
+                    {name}
+                </span>
+            )}
+        </div>
+    )
 }
 
 /**

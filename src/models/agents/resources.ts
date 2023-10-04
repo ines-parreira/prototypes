@@ -22,3 +22,8 @@ export const fetchAgents = async (options: FetchAgentsOptions = {}) => {
         }
     )
 }
+
+export const fetchAgent = async (id: number) => {
+    const res = await client.get<User>(`/api/users/${id}`)
+    return res.data
+}

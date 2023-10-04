@@ -112,9 +112,7 @@ exports[`<SharedBody/> render() should render 1`] = `
         close
       </ForwardRef>
       <AgentLabel
-        className=""
         name="User 2"
-        profilePictureUrl=""
         shouldDisplayAvatar={true}
       />
     </ListGroupItem>
@@ -133,9 +131,7 @@ exports[`<SharedBody/> render() should render 1`] = `
         close
       </ForwardRef>
       <AgentLabel
-        className=""
         name="User 3"
-        profilePictureUrl=""
         shouldDisplayAvatar={true}
       />
     </ListGroupItem>

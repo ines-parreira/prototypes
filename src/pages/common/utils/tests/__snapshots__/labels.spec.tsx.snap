@@ -1,107 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components utils: labels <AgentLabel/> render() should not render the name of the agent because no name is passed 1`] = `
-<div
-  class="AgentLabel"
->
-  <div
-    class="component hasImage square avatar"
-    style="width: 26px; height: 26px;"
-  >
-    <div
-      class="initials"
-      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
-    >
-      <span
-        style="line-height: 28px;"
-      />
-    </div>
-    <img
-      alt="avatar"
-      class="gravatar"
-      src="https://gorgias.io/profilepicture.png"
-    />
-  </div>
-  
-</div>
-`;
-
-exports[`components utils: labels <AgentLabel/> render() should render the agent icon because no profile picture url nor the \`avatar\` option are passed 1`] = `
-<div
-  class="AgentLabel"
->
-  <span
-    class="material-icons md-2"
-  >
-    account_circle
-  </span>
-  <span
-    class="name"
-  >
-    Marie Curie
-  </span>
-</div>
-`;
-
-exports[`components utils: labels <AgentLabel/> render() should render the avatar because a profile picture url is passed 1`] = `
-<div
-  class="AgentLabel"
->
-  <div
-    class="component hasImage square avatar"
-    style="width: 26px; height: 26px;"
-  >
-    <div
-      class="initials"
-      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
-    >
-      <span
-        style="line-height: 28px;"
-      >
-        MC
-      </span>
-    </div>
-    <img
-      alt="avatar"
-      class="gravatar"
-      src="https://gorgias.io/profilepicture.png"
-    />
-  </div>
-  <span
-    class="name"
-  >
-    Marie Curie
-  </span>
-</div>
-`;
-
-exports[`components utils: labels <AgentLabel/> render() should render the avatar because the \`avatar\` option is passed but no profile picture url is passed 1`] = `
-<div
-  class="AgentLabel"
->
-  <div
-    class="component square avatar"
-    style="width: 26px; height: 26px;"
-  >
-    <div
-      class="initials"
-      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
-    >
-      <span
-        style="line-height: 28px;"
-      >
-        MC
-      </span>
-    </div>
-  </div>
-  <span
-    class="name"
-  >
-    Marie Curie
-  </span>
-</div>
-`;
-
 exports[`components utils: labels <DatetimeLabel/> render() should render a modified date because integrationType is Recharge 1`] = `
 <span>
   <span
@@ -129,20 +27,8 @@ exports[`components utils: labels <TeamLabel/> render() should render with defau
   class="TeamLabel"
 >
   <div
-    class="component square avatar"
-    style="width: 26px; height: 26px;"
-  >
-    <div
-      class="initials"
-      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
-    >
-      <span
-        style="line-height: 28px;"
-      >
-        T1
-      </span>
-    </div>
-  </div>
+    data-testid="avatar"
+  />
   <span
     class="name"
   >
@@ -156,20 +42,8 @@ exports[`components utils: labels <TeamLabel/> render() should render with defau
   class="TeamLabel"
 >
   <div
-    class="component square avatar"
-    style="width: 26px; height: 26px;"
-  >
-    <div
-      class="initials"
-      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
-    >
-      <span
-        style="line-height: 28px;"
-      >
-        T1
-      </span>
-    </div>
-  </div>
+    data-testid="avatar"
+  />
   <span
     class="name"
   >
@@ -305,25 +179,8 @@ exports[`components utils: labels RenderLabel distribution assignee label 1`] = 
   class="assigneeLabelContainer"
 >
   <div
-    class="component hasImage square assigneeLabelAvatar"
-    style="width: 26px; height: 26px;"
-  >
-    <div
-      class="initials"
-      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
-    >
-      <span
-        style="line-height: 28px;"
-      >
-        M
-      </span>
-    </div>
-    <img
-      alt="avatar"
-      class="gravatar"
-      src="https://gorgias.io/avatar.png"
-    />
-  </div>
+    data-testid="avatar"
+  />
   <div
     class="d-inline-block"
   >
@@ -337,20 +194,8 @@ exports[`components utils: labels RenderLabel distribution assignee_team label 1
   class="assigneeLabelContainer"
 >
   <div
-    class="component square assigneeLabelAvatar"
-    style="width: 26px; height: 26px;"
-  >
-    <div
-      class="initials"
-      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
-    >
-      <span
-        style="line-height: 28px;"
-      >
-        T1
-      </span>
-    </div>
-  </div>
+    data-testid="avatar"
+  />
   <div
     class="d-inline-block"
   >

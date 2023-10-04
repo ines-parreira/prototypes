@@ -30,10 +30,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
         by
       </span>
       <AgentLabel
-        className=""
         name="Alex Plugaru"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <div>
         <span
@@ -92,10 +89,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
         by
       </span>
       <AgentLabel
-        className=""
         name="Alex Plugaru"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <div>
         <span
@@ -154,10 +148,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Instagram D
         by
       </span>
       <AgentLabel
-        className=""
         name="Alex Plugaru"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
     </div>
     <Connect(DatetimeLabelContainer)
@@ -198,10 +189,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
         by
       </span>
       <AgentLabel
-        className=""
         name="Alex Plugaru"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
     </div>
     <Connect(DatetimeLabelContainer)
@@ -286,10 +274,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
         by
       </span>
       <AgentLabel
-        className=""
         name="Alex Plugaru"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
     </div>
     <Connect(DatetimeLabelContainer)
@@ -342,10 +327,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
         by
       </span>
       <AgentLabel
-        className=""
         name="Alex Plugaru"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
     </div>
     <Connect(DatetimeLabelContainer)

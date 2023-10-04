@@ -21,7 +21,9 @@ export const getPaginatedAgents: Selector<RootState, Agents> =
 
 export const getAgents = createImmutableSelector(
     getState,
-    (state: AgentsState) => (state.get('all') as List<any>) || fromJS([])
+    (state: AgentsState) => {
+        return (state.get('all') as List<any>) || fromJS([])
+    }
 )
 
 export const getAgentsJS = makeGetPlainJS<User[]>(getAgents)

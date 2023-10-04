@@ -118,10 +118,8 @@ exports[`<TicketAssignee/> render() should display the email of the agent assign
     type="button"
   >
     <AgentLabel
-      className=""
       maxWidth="100"
       name="steve@acme.gorgias.io"
-      profilePictureUrl=""
       shouldDisplayAvatar={true}
     />
   </DropdownToggle>
@@ -195,7 +193,6 @@ exports[`<TicketAssignee/> render() should display the email of the agent assign
           <AgentLabel
             className="assigneeLabel"
             name="steve@acme.gorgias.io"
-            profilePictureUrl=""
             shouldDisplayAvatar={true}
           />
           <i
@@ -241,7 +238,6 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
     type="button"
   >
     <AgentLabel
-      className=""
       maxWidth="100"
       name="Steve Frizeli"
       profilePictureUrl="profilePictureUrl"
@@ -318,7 +314,6 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
           <AgentLabel
             className="assigneeLabel"
             name="Steve Frizeli"
-            profilePictureUrl=""
             shouldDisplayAvatar={true}
           />
           <i
@@ -364,10 +359,8 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
     type="button"
   >
     <AgentLabel
-      className=""
       maxWidth="100"
       name="steve@acme.gorgias.io"
-      profilePictureUrl=""
       shouldDisplayAvatar={true}
     />
   </DropdownToggle>
@@ -454,7 +447,6 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
           <AgentLabel
             className="assigneeLabel"
             name="steve@acme.gorgias.io"
-            profilePictureUrl=""
             shouldDisplayAvatar={true}
           />
           <i
@@ -1401,9 +1393,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                             type="button"
                           >
                             <AgentLabel
-                              className=""
                               name="User 1"
-                              profilePictureUrl=""
                               shouldDisplayAvatar={true}
                             >
                               <div
@@ -1475,9 +1465,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                             type="button"
                           >
                             <AgentLabel
-                              className=""
                               name="User 2"
-                              profilePictureUrl=""
                               shouldDisplayAvatar={true}
                             >
                               <div

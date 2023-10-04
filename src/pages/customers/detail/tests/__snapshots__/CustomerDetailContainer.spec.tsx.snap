@@ -58,6 +58,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
             >
               <span
                 class="material-icons md-2"
+                data-testid="accountCircle"
               >
                 account_circle
               </span>

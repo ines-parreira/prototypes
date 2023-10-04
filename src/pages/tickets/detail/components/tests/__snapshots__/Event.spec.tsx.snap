@@ -63,10 +63,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
         by
       </span>
       <AgentLabel
-        className=""
         name="Acme Support"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"
@@ -194,10 +191,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
         by
       </span>
       <AgentLabel
-        className=""
         name="Acme Support"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"
@@ -315,10 +309,7 @@ exports[`Event component should display correctly a failed event for a Shopify O
         by
       </span>
       <AgentLabel
-        className=""
         name="Acme Support"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"
@@ -436,10 +427,7 @@ exports[`Event component should display correctly a successful event for a Recha
         by
       </span>
       <AgentLabel
-        className=""
         name="Acme Support"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"
@@ -556,10 +544,7 @@ exports[`Event component should display correctly a successful event for a Recha
         by
       </span>
       <AgentLabel
-        className=""
         name="Acme Support"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"
@@ -666,10 +651,7 @@ exports[`Event component should display correctly a successful event for a Shopi
         by
       </span>
       <AgentLabel
-        className=""
         name="Acme Support"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"
@@ -776,10 +758,7 @@ exports[`Event component should display correctly a successful event for a Shopi
         by
       </span>
       <AgentLabel
-        className=""
         name="Acme Support"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"
@@ -900,10 +879,7 @@ exports[`Event component should display the correct label for an action 1`] = `
         by
       </span>
       <AgentLabel
-        className=""
         name="Acme Support"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"
@@ -1010,10 +986,7 @@ exports[`Event component should fallback to email when user has no name 1`] = `
         by
       </span>
       <AgentLabel
-        className=""
         name="support@acme.gorgias.io"
-        profilePictureUrl=""
-        shouldDisplayAvatar={false}
       />
       <ForwardRef
         fillStyle="ghost"

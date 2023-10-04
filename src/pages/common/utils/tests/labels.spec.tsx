@@ -4,6 +4,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import * as Avatar from 'pages/common/components/Avatar/Avatar'
 import {IntegrationType} from '../../../../models/integration/types'
 import {
     TicketChannel,
@@ -29,7 +30,12 @@ const mockStore = configureMockStore()
 
 jest.mock('../../components/Tooltip', () => () => 'TooltipMock')
 
+const AvatarSpy = jest.spyOn(Avatar, 'default')
+
 describe('components utils: labels', () => {
+    beforeEach(() => {
+        AvatarSpy.mockClear()
+    })
     describe('RenderLabel', () => {
         describe('distribution', () => {
             ;[
@@ -147,6 +153,10 @@ describe('components utils: labels', () => {
                 },
             ].forEach(({type, value, wrapper}) => {
                 it(`${type} label`, () => {
+                    AvatarSpy.mockImplementation((() => (
+                        <div data-testid="avatar" />
+                    )) as jest.Mock)
+
                     let result
                     if (wrapper) {
                         result = wrapper(
@@ -238,41 +248,49 @@ describe('components utils: labels', () => {
     })
 
     describe('<AgentLabel/>', () => {
-        describe('render()', () => {
-            it('should render the avatar because a profile picture url is passed', () => {
-                const {container} = render(
-                    <labels.AgentLabel
-                        name="Marie Curie"
-                        profilePictureUrl="https://gorgias.io/profilepicture.png"
-                    />
-                )
+        it('should render the avatar because a profile picture url is passed', () => {
+            AvatarSpy.mockImplementation((() => (
+                <div data-testid="avatar" />
+            )) as jest.Mock)
+            const {getByTestId} = render(
+                <labels.AgentLabel
+                    name="Marie Curie"
+                    profilePictureUrl="https://gorgias.io/profilepicture.png"
+                />
+            )
 
-                expect(container.firstChild).toMatchSnapshot()
-            })
+            const avatar = getByTestId('avatar')
+            expect(avatar).toBeInTheDocument()
+        })
 
-            it('should render the avatar because the `avatar` option is passed but no profile picture url is passed', () => {
-                const {container} = render(
-                    <labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />
-                )
+        it('should render the avatar because the `avatar` option is passed but no profile picture url is passed', () => {
+            AvatarSpy.mockImplementation((() => (
+                <div data-testid="avatar" />
+            )) as jest.Mock)
+            const {getByTestId} = render(
+                <labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />
+            )
 
-                expect(container.firstChild).toMatchSnapshot()
-            })
+            const avatar = getByTestId('avatar')
+            expect(avatar).toBeInTheDocument()
+        })
 
-            it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
-                const {container} = render(
-                    <labels.AgentLabel name="Marie Curie" />
-                )
+        it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
+            const {getByTestId} = render(
+                <labels.AgentLabel name="Marie Curie" />
+            )
+            const agentIcon = getByTestId('accountCircle')
 
-                expect(container.firstChild).toMatchSnapshot()
-            })
+            expect(agentIcon).toBeInTheDocument()
+        })
 
-            it('should not render the name of the agent because no name is passed', () => {
-                const {container} = render(
-                    <labels.AgentLabel profilePictureUrl="https://gorgias.io/profilepicture.png" />
-                )
+        it('should not render the name of the agent because no name is passed', () => {
+            const {container} = render(
+                <labels.AgentLabel profilePictureUrl="https://gorgias.io/profilepicture.png" />
+            )
 
-                expect(container.firstChild).toMatchSnapshot()
-            })
+            const name = container.querySelector('.name')
+            expect(name).not.toBeInTheDocument()
         })
     })
 

@@ -41,6 +41,7 @@ import {generateTicketMessagesId} from 'utils'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {isVoiceCall} from 'models/voiceCall/types'
 import {TicketEventPrivateReplyData} from '../../../../models/event/types'
+import TicketVoiceCall from './TicketVoiceCall/TicketVoiceCall'
 
 interface Props {
     element: TicketElement | TicketMessage[]
@@ -137,7 +138,7 @@ const TicketBodyElement = ({
     }
 
     if (useNewVoiceCallUI && isVoiceCall(element)) {
-        return <div>Voice call</div>
+        return <TicketVoiceCall voiceCall={element} />
     }
 
     if (!isTicketEvent(element)) {
