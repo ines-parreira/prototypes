@@ -54,4 +54,5 @@ export enum FeatureFlagKey {
     CustomerTimelineButton = 'customer-timeline-button',
     NewVoiceCallUI = 'new-voice-call-ui',
     NavbarImprovements = 'navbar-improvements',
+    DateAndTimeFormattingUserSetting = 'date-and-time-formatting-user-setting',
 }

@@ -1,3 +1,4 @@
+@import '~css/new/layout';
 @import '~css/new/mixins';
 @import (reference) '~css/typography';
 
@@ -107,5 +108,23 @@
             padding-left: 0;
             width: 100%;
         }
+    }
+
+    .headingSection {
+        .heading-section-semibold();
+    }
+
+    .section {
+        margin-top: @layout-spacing-m;
+        margin-bottom: @layout-spacing-l;
+    }
+
+    .headingSubsection {
+        .heading-subsection-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .subsection {
+        margin-top: @layout-spacing-m;
     }
 }

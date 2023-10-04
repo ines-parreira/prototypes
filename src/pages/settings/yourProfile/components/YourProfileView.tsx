@@ -22,6 +22,9 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Group from 'pages/common/components/layout/Group'
 import settingsCss from 'pages/settings/settings.less'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+import DateAndTimeFormatting from './DateAndTimeFormatting'
 
 const defaultContent: Pick<
     State,
@@ -65,6 +68,7 @@ type State = {
     }
     password_confirmation?: string
     timezone: string
+    hasDateAndTimeFormattingUserSetting?: boolean
 }
 
 export class YourProfileView extends Component<Props, State> {
@@ -80,6 +84,9 @@ export class YourProfileView extends Component<Props, State> {
                 isLoading: false,
                 preferences: props.preferences.get('data'),
                 hasChangedEmail: false,
+                hasDateAndTimeFormattingUserSetting: getLDClient().variation(
+                    FeatureFlagKey.DateAndTimeFormattingUserSetting || false
+                ),
             },
             this._getForm(props)
         )
@@ -152,139 +159,201 @@ export class YourProfileView extends Component<Props, State> {
         })
     }
 
+    async componentDidMount() {
+        await getLDClient().waitUntilReady()
+        this.setState({
+            hasDateAndTimeFormattingUserSetting: getLDClient().variation(
+                FeatureFlagKey.DateAndTimeFormattingUserSetting || false
+            ),
+        })
+    }
+
     render() {
-        const {isLoading, hasChangedEmail, password_confirmation} = this.state
+        const {
+            isLoading,
+            hasChangedEmail,
+            password_confirmation,
+            hasDateAndTimeFormattingUserSetting,
+        } = this.state
 
         return (
             <div className="full-width">
                 <PageHeader title="Your profile" />
                 <Container fluid className={settingsCss.pageContainer}>
-                    <div
-                        className={classnames(
-                            'heading-subsection-semibold',
-                            settingsCss.mb16
-                        )}
-                    >
+                    <div className={settingsCss.headingSection}>
                         Personal information
                     </div>
                     <Form onSubmit={this._handleSubmit}>
                         <div className="flex flex-wrap">
                             <div className={settingsCss.leftSideWrapper}>
-                                <InputField
-                                    name="name"
-                                    label="Your name"
-                                    placeholder="John Doe"
-                                    isRequired
-                                    value={this.state.name}
-                                    onChange={(name) => this.setState({name})}
-                                    className={settingsCss.inputField}
-                                />
-                                <InputField
-                                    type="email"
-                                    name="email"
-                                    label="Your email"
-                                    placeholder="john.doe@acme.com"
-                                    isRequired
-                                    value={this.state.email}
-                                    onChange={this._onEmailChange}
-                                    className={settingsCss.inputField}
-                                />
-                                {hasChangedEmail ? (
+                                <div className={settingsCss.section}>
                                     <InputField
-                                        type="password"
-                                        name="password_confirmation"
-                                        label="Password confirmation"
-                                        placeholder="Your password"
+                                        name="name"
+                                        label="Your name"
+                                        placeholder="John Doe"
                                         isRequired
-                                        value={password_confirmation}
-                                        onChange={(password_confirmation) =>
-                                            this.setState({
-                                                password_confirmation,
-                                            })
+                                        value={this.state.name}
+                                        onChange={(name) =>
+                                            this.setState({name})
                                         }
                                         className={settingsCss.inputField}
                                     />
-                                ) : null}
-                                <InputField
-                                    type="text"
-                                    name="bio"
-                                    label="Your bio"
-                                    caption={
-                                        <span>
-                                            Your bio can be used in signatures
-                                            as a variable. Admins can set up
-                                            signatures{' '}
-                                            <Link to="/app/settings/channels/email">
-                                                in each email integration
-                                            </Link>
-                                        </span>
-                                    }
-                                    value={this.state.bio}
-                                    onChange={(bio) => this.setState({bio})}
-                                    className={settingsCss.inputField}
-                                />
-                                <FormGroup className={settingsCss.inputField}>
-                                    <Label className="control-label">
-                                        Timezone
-                                    </Label>
-                                    <SelectField
-                                        value={this.state.timezone}
-                                        options={_sortBy(
-                                            moment.tz
-                                                .names()
-                                                .filter(
-                                                    (name) =>
-                                                        name !==
-                                                        'US/Pacific-New'
-                                                )
-                                                /*
-                                            US/Pacific-New is not supposed to be a valid timezone and as such, pytz
-                                            (the validator on backend) doesn't allow it, so we skip it.
-                                            More info at: https://github.com/moment/moment-timezone/issues/498
-                                            */
-                                                .map((name) => ({
-                                                    value: name,
-                                                    label: `(UTC${moment
-                                                        .tz(name)
-                                                        .format('Z')}) ${name}`,
-                                                })),
-                                            (item) =>
-                                                moment
-                                                    .tz(item.value)
-                                                    .utcOffset()
-                                        )}
-                                        onChange={(value) =>
-                                            this.setState({
-                                                timezone: value.toString(),
-                                            })
-                                        }
-                                        fullWidth
+                                    <InputField
+                                        type="email"
+                                        name="email"
+                                        label="Your email"
+                                        placeholder="john.doe@acme.com"
+                                        isRequired
+                                        value={this.state.email}
+                                        onChange={this._onEmailChange}
+                                        className={settingsCss.inputField}
                                     />
-                                </FormGroup>
-                                <FormGroup className={settingsCss.inputField}>
-                                    <Label className="control-label">
-                                        Language
-                                    </Label>
-                                    <SelectField
-                                        value={this.state.language}
-                                        onChange={(value) =>
-                                            this.setState({
-                                                language: value.toString(),
-                                            })
+                                    {hasChangedEmail ? (
+                                        <InputField
+                                            type="password"
+                                            name="password_confirmation"
+                                            label="Password confirmation"
+                                            placeholder="Your password"
+                                            isRequired
+                                            value={password_confirmation}
+                                            onChange={(password_confirmation) =>
+                                                this.setState({
+                                                    password_confirmation,
+                                                })
+                                            }
+                                            className={settingsCss.inputField}
+                                        />
+                                    ) : null}
+                                    <InputField
+                                        type="text"
+                                        name="bio"
+                                        label="Your bio"
+                                        caption={
+                                            <span>
+                                                Your bio can be used in
+                                                signatures as a variable. Admins
+                                                can set up signatures{' '}
+                                                <Link to="/app/settings/channels/email">
+                                                    in each email integration
+                                                </Link>
+                                            </span>
                                         }
-                                        options={AVAILABLE_LANGUAGES.map(
-                                            (locale) => ({
-                                                value: locale.localeName,
-                                                label: locale.displayName,
-                                            })
-                                        )}
-                                        fullWidth
+                                        value={this.state.bio}
+                                        onChange={(bio) => this.setState({bio})}
+                                        className={settingsCss.inputField}
                                     />
-                                    <FormText color="muted">
-                                        Changing the language only changes the
-                                        time format
-                                    </FormText>
-                                </FormGroup>
+                                </div>
+                                <div className={settingsCss.headingSection}>
+                                    Date and time settings
+                                </div>
+                                <div className={settingsCss.section}>
+                                    <FormGroup
+                                        className={settingsCss.inputField}
+                                    >
+                                        <Label className="control-label">
+                                            Timezone
+                                        </Label>
+                                        <SelectField
+                                            value={this.state.timezone}
+                                            options={_sortBy(
+                                                moment.tz
+                                                    .names()
+                                                    .filter(
+                                                        (name) =>
+                                                            name !==
+                                                            'US/Pacific-New'
+                                                    )
+                                                    /*
+                                                US/Pacific-New is not supposed to be a valid timezone and as such, pytz
+                                                (the validator on backend) doesn't allow it, so we skip it.
+                                                More info at: https://github.com/moment/moment-timezone/issues/498
+                                                */
+                                                    .map((name) => ({
+                                                        value: name,
+                                                        label: `(UTC${moment
+                                                            .tz(name)
+                                                            .format(
+                                                                'Z'
+                                                            )}) ${name}`,
+                                                    })),
+                                                (item) =>
+                                                    moment
+                                                        .tz(item.value)
+                                                        .utcOffset()
+                                            )}
+                                            onChange={(value) =>
+                                                this.setState({
+                                                    timezone: value.toString(),
+                                                })
+                                            }
+                                            fullWidth
+                                        />
+                                    </FormGroup>
+                                    {hasDateAndTimeFormattingUserSetting ? (
+                                        <DateAndTimeFormatting
+                                            dateFormat={
+                                                this.state.preferences.get(
+                                                    'date_format'
+                                                ) as string
+                                            }
+                                            timeFormat={
+                                                this.state.preferences.get(
+                                                    'time_format'
+                                                ) as string
+                                            }
+                                            onSelectDateFormat={(
+                                                value: string
+                                            ) =>
+                                                this.setState({
+                                                    preferences:
+                                                        this.state.preferences.set(
+                                                            'date_format',
+                                                            value
+                                                        ),
+                                                })
+                                            }
+                                            onSelectTimeFormat={(
+                                                value: string
+                                            ) =>
+                                                this.setState({
+                                                    preferences:
+                                                        this.state.preferences.set(
+                                                            'time_format',
+                                                            value
+                                                        ),
+                                                })
+                                            }
+                                        />
+                                    ) : (
+                                        <FormGroup
+                                            className={settingsCss.inputField}
+                                        >
+                                            <Label className="control-label">
+                                                Language
+                                            </Label>
+                                            <SelectField
+                                                value={this.state.language}
+                                                onChange={(value) =>
+                                                    this.setState({
+                                                        language:
+                                                            value.toString(),
+                                                    })
+                                                }
+                                                options={AVAILABLE_LANGUAGES.map(
+                                                    (locale) => ({
+                                                        value: locale.localeName,
+                                                        label: locale.displayName,
+                                                    })
+                                                )}
+                                                fullWidth
+                                            />
+                                            <FormText color="muted">
+                                                Changing the language only
+                                                changes the time format
+                                            </FormText>
+                                        </FormGroup>
+                                    )}
+                                </div>
                             </div>
                             <FormGroup
                                 className={classnames(
@@ -357,198 +426,203 @@ export class YourProfileView extends Component<Props, State> {
                             </FormGroup>
                         </div>
                         <div className={settingsCss.contentWrapper}>
-                            <div
-                                className={classnames(
-                                    'heading-subsection-semibold',
-                                    settingsCss.mb16
-                                )}
-                            >
-                                My Macro Preferences
+                            <div className={settingsCss.headingSection}>
+                                Account preferences
                             </div>
-
-                            <FormGroup
-                                className={classnames(
-                                    settingsCss.inputField,
-                                    settingsCss.mb32,
-                                    'body-regular'
-                                )}
-                            >
-                                <Group
-                                    orientation="vertical"
-                                    className={settingsCss.inputField}
-                                >
-                                    <ToggleInput
-                                        name="prefill_best_macro"
-                                        isToggled={
-                                            this.state.preferences.get(
-                                                'prefill_best_macro'
-                                            ) as boolean
-                                        }
-                                        onClick={(value: boolean) =>
-                                            this.setState({
-                                                preferences:
-                                                    this.state.preferences.set(
-                                                        'prefill_best_macro',
-                                                        value
-                                                    ),
-                                            })
-                                        }
+                            <div className={settingsCss.section}>
+                                <div className={settingsCss.headingSubsection}>
+                                    Macro display
+                                </div>
+                                <div className={settingsCss.subsection}>
+                                    <FormGroup
+                                        className={classnames(
+                                            settingsCss.inputField,
+                                            'body-regular'
+                                        )}
                                     >
-                                        Macro prediction
-                                    </ToggleInput>
-                                    <FormText color="muted">
-                                        Automatically select macros based on
-                                        ticket content.{' '}
-                                        <a
-                                            href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                        <Group
+                                            orientation="vertical"
+                                            className={settingsCss.inputField}
                                         >
-                                            Learn more
-                                        </a>
-                                    </FormText>
-                                </Group>
-                                <Group
-                                    orientation="vertical"
-                                    className={settingsCss.inputField}
-                                >
-                                    <ToggleInput
-                                        name="show_macros"
-                                        isToggled={
-                                            this.state.preferences.get(
-                                                'show_macros'
-                                            ) as boolean
-                                        }
-                                        onClick={(value: boolean) =>
-                                            this.setState({
-                                                preferences:
-                                                    this.state.preferences.set(
-                                                        'show_macros',
-                                                        value
-                                                    ),
-                                            })
-                                        }
-                                    >
-                                        Display macro search view by default
-                                    </ToggleInput>
-                                    <FormText color="muted">
-                                        Always display the macro search view
-                                        when responding to incoming emails.{' '}
-                                        <a
-                                            href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                            <ToggleInput
+                                                name="prefill_best_macro"
+                                                isToggled={
+                                                    this.state.preferences.get(
+                                                        'prefill_best_macro'
+                                                    ) as boolean
+                                                }
+                                                onClick={(value: boolean) =>
+                                                    this.setState({
+                                                        preferences:
+                                                            this.state.preferences.set(
+                                                                'prefill_best_macro',
+                                                                value
+                                                            ),
+                                                    })
+                                                }
+                                            >
+                                                Macro prediction
+                                            </ToggleInput>
+                                            <FormText color="muted">
+                                                Automatically select macros
+                                                based on ticket content.{' '}
+                                                <a
+                                                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    Learn more
+                                                </a>
+                                            </FormText>
+                                        </Group>
+                                        <Group
+                                            orientation="vertical"
+                                            className={settingsCss.inputField}
                                         >
-                                            Learn more
-                                        </a>
-                                    </FormText>
-                                </Group>
-                                <Group
-                                    orientation="vertical"
-                                    className={settingsCss.inputField}
-                                >
-                                    <ToggleInput
-                                        name="show_macros_suggestions"
-                                        isToggled={
-                                            this.state.preferences.get(
-                                                'show_macros_suggestions',
-                                                true
-                                            ) as boolean
-                                        }
-                                        onClick={(value: boolean) =>
-                                            this.setState({
-                                                preferences:
-                                                    this.state.preferences.set(
+                                            <ToggleInput
+                                                name="show_macros"
+                                                isToggled={
+                                                    this.state.preferences.get(
+                                                        'show_macros'
+                                                    ) as boolean
+                                                }
+                                                onClick={(value: boolean) =>
+                                                    this.setState({
+                                                        preferences:
+                                                            this.state.preferences.set(
+                                                                'show_macros',
+                                                                value
+                                                            ),
+                                                    })
+                                                }
+                                            >
+                                                Display macro search view by
+                                                default
+                                            </ToggleInput>
+                                            <FormText color="muted">
+                                                Always display the macro search
+                                                view when responding to incoming
+                                                emails.{' '}
+                                                <a
+                                                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    Learn more
+                                                </a>
+                                            </FormText>
+                                        </Group>
+                                        <Group
+                                            orientation="vertical"
+                                            className={settingsCss.inputField}
+                                        >
+                                            <ToggleInput
+                                                name="show_macros_suggestions"
+                                                isToggled={
+                                                    this.state.preferences.get(
                                                         'show_macros_suggestions',
-                                                        value
-                                                    ),
-                                            })
-                                        }
-                                    >
-                                        Macro suggestions
-                                    </ToggleInput>
-                                    <FormText color="muted">
-                                        Display suggested macros that can be
-                                        applied to tickets with one click.{' '}
-                                        <a
-                                            href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Learn more
-                                        </a>
-                                    </FormText>
-                                </Group>
-                            </FormGroup>
-                            <FormGroup
-                                className={classnames(
-                                    settingsCss.inputField,
-                                    settingsCss.mb40
-                                )}
-                            >
-                                <div
+                                                        true
+                                                    ) as boolean
+                                                }
+                                                onClick={(value: boolean) =>
+                                                    this.setState({
+                                                        preferences:
+                                                            this.state.preferences.set(
+                                                                'show_macros_suggestions',
+                                                                value
+                                                            ),
+                                                    })
+                                                }
+                                            >
+                                                Macro suggestions
+                                            </ToggleInput>
+                                            <FormText color="muted">
+                                                Display suggested macros that
+                                                can be applied to tickets with
+                                                one click.{' '}
+                                                <a
+                                                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    Learn more
+                                                </a>
+                                            </FormText>
+                                        </Group>
+                                    </FormGroup>
+                                </div>
+                                <FormGroup
                                     className={classnames(
-                                        'heading-subsection-semibold',
-                                        settingsCss.mb16
+                                        settingsCss.inputField,
+                                        settingsCss.mb40
                                     )}
                                 >
-                                    Forward calls to an external number
-                                </div>
-                                <p className="body-regular">
-                                    When you are routed a call in Gorgias,
-                                    forward the call to a mobile device or
-                                    landline.
-                                </p>
-
-                                <ToggleInput
-                                    className={settingsCss.inputField}
-                                    name="forward_calls"
-                                    isToggled={
-                                        (this.state.preferences.get(
-                                            'forward_calls'
-                                        ) as boolean) ?? false
-                                    }
-                                    onClick={(value: boolean) => {
-                                        this.setState({
-                                            preferences:
-                                                this.state.preferences.set(
-                                                    'forward_calls',
-                                                    value
-                                                ),
-                                        })
-                                    }}
-                                >
-                                    Enable call forwarding
-                                </ToggleInput>
-                                {this.state.preferences.get(
-                                    'forward_calls'
-                                ) && (
-                                    <div style={{marginLeft: '50px'}}>
-                                        <PhoneNumberInput
-                                            value={
-                                                (this.state.preferences.get(
-                                                    'forwarding_phone_number'
-                                                ) as string) ?? ''
-                                            }
-                                            onChange={(value: string) => {
-                                                this.setState({
-                                                    preferences:
-                                                        this.state.preferences.set(
-                                                            'forwarding_phone_number',
-                                                            value === ''
-                                                                ? null
-                                                                : value
-                                                        ),
-                                                })
-                                            }}
-                                            allowedCountries={Object.values(
-                                                CallForwardingCountries
-                                            )}
-                                            autoFocus
-                                        />
+                                    <div
+                                        className={
+                                            settingsCss.headingSubsection
+                                        }
+                                    >
+                                        Forward calls to an external number
                                     </div>
-                                )}
-                            </FormGroup>
+                                    <p className="body-regular">
+                                        When you are routed a call in Gorgias,
+                                        forward the call to a mobile device or
+                                        landline.
+                                    </p>
+
+                                    <ToggleInput
+                                        className={classnames(
+                                            settingsCss.inputField,
+                                            settingsCss.subsection
+                                        )}
+                                        name="forward_calls"
+                                        isToggled={
+                                            (this.state.preferences.get(
+                                                'forward_calls'
+                                            ) as boolean) ?? false
+                                        }
+                                        onClick={(value: boolean) => {
+                                            this.setState({
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'forward_calls',
+                                                        value
+                                                    ),
+                                            })
+                                        }}
+                                    >
+                                        Enable call forwarding
+                                    </ToggleInput>
+                                    {this.state.preferences.get(
+                                        'forward_calls'
+                                    ) && (
+                                        <div style={{marginLeft: '50px'}}>
+                                            <PhoneNumberInput
+                                                value={
+                                                    (this.state.preferences.get(
+                                                        'forwarding_phone_number'
+                                                    ) as string) ?? ''
+                                                }
+                                                onChange={(value: string) => {
+                                                    this.setState({
+                                                        preferences:
+                                                            this.state.preferences.set(
+                                                                'forwarding_phone_number',
+                                                                value === ''
+                                                                    ? null
+                                                                    : value
+                                                            ),
+                                                    })
+                                                }}
+                                                allowedCountries={Object.values(
+                                                    CallForwardingCountries
+                                                )}
+                                                autoFocus
+                                            />
+                                        </div>
+                                    )}
+                                </FormGroup>
+                            </div>
                         </div>
 
                         <Button type="submit" isLoading={isLoading}>

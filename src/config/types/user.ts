@@ -120,6 +120,8 @@ export type UserPreferences = {
     forwarding_phone_number?: string
     macros_default_to_search_popover?: boolean
     prefill_best_macro?: boolean
+    date_format?: 'en_US' | 'en_GB'
+    time_format?: 'AM/PM' | '24-hour'
 }
 
 export type UserTicketSettings = {

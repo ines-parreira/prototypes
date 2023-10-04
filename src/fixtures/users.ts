@@ -12,6 +12,8 @@ export const user: User = {
                 available: true,
                 hide_tips: true,
                 forward_calls: false,
+                date_format: 'en_US',
+                time_format: 'AM/PM',
             },
             id: 3,
             type: UserSettingType.Preferences,

@@ -21,3 +21,16 @@ export type FetchAgentsOptions = Omit<
         roles?: UserRole[]
         relationships?: AgentsRelationshipsParam
     }
+
+export const DateFormattingSetting = {
+    en_GB: {
+        label: 'Day/Month/Year',
+        caption: `Example: 1 Jan, ${new Date().getFullYear()}`,
+    },
+    en_US: {
+        label: 'Month/Day/Year',
+        caption: `Example: Jan 1, ${new Date().getFullYear()}`,
+    },
+}
+
+export const TimeFormattingSetting = ['24-hour', 'AM/PM']

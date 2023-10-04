@@ -2,12 +2,14 @@ import React, {ComponentProps, SyntheticEvent} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {user} from 'fixtures/users'
 
+import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
+import {getLDClient} from 'utils/launchDarkly'
 import {YourProfileView} from '../components/YourProfileView'
 
 const mockedStore = configureMockStore([thunk])
@@ -17,6 +19,15 @@ const minProps: ComponentProps<typeof YourProfileView> = {
     submitSetting: jest.fn(),
     preferences: fromJS({data: {}}),
 }
+jest.mock('moment-timezone', () => {
+    return {
+        tz: {names: () => []},
+    }
+})
+jest.mock('utils/launchDarkly')
+const variationMock = getLDClient().variation as jest.Mock
+;(getLDClient().waitForInitialization as jest.Mock).mockResolvedValue({})
+
 const defaultState = {}
 
 describe('YourProfileView', () => {
@@ -24,6 +35,7 @@ describe('YourProfileView', () => {
 
     beforeEach(() => {
         global.Date.now = jest.fn(() => 1587000000000)
+        variationMock.mockImplementation(() => true)
     })
 
     afterEach(() => {
@@ -31,11 +43,17 @@ describe('YourProfileView', () => {
     })
 
     describe('render', () => {
-        it('should render current user profile form', () => {
-            const component = shallow(<YourProfileView {...minProps} />)
+        it.each([true, false])(
+            'should render current user profile form',
+            (hasDateAndTimeFormattingUserSetting) => {
+                variationMock.mockImplementation(
+                    () => hasDateAndTimeFormattingUserSetting
+                )
+                const component = shallow(<YourProfileView {...minProps} />)
 
-            expect(component).toMatchSnapshot()
-        })
+                expect(component).toMatchSnapshot()
+            }
+        )
 
         it('should expand to show the phone number field when enabling call forwarding', async () => {
             const {findByText, getByLabelText} = render(
@@ -114,6 +132,57 @@ describe('YourProfileView', () => {
                         expect(component.state.password_confirmation).toBe('')
                         done()
                     })
+            }
+        )
+
+        it(
+            'should submit user data and update user preferences because ' +
+                'date format and time format preferences were changed',
+            () => {
+                const updateCurrentUserSpy = jest.fn(() =>
+                    Promise.resolve(user)
+                )
+                const submitSettingSpy = jest
+                    .fn()
+                    .mockReturnValueOnce(Promise.resolve())
+
+                const preferences: Map<any, any> = fromJS({
+                    data: {
+                        date_format: Object.keys(DateFormattingSetting)[1], // en_US
+                        time_format: TimeFormattingSetting[1], // AM/PM
+                        foo: 'bar',
+                    },
+                })
+                const expectedPreferences: Map<any, any> = fromJS({
+                    data: {
+                        date_format: Object.keys(DateFormattingSetting)[0], // en_GB
+                        time_format: TimeFormattingSetting[0], // 24-hour
+                        foo: 'bar',
+                    },
+                })
+
+                const {getByLabelText} = render(
+                    <Provider store={mockedStore(defaultState)}>
+                        <YourProfileView
+                            {...minProps}
+                            updateCurrentUser={updateCurrentUserSpy}
+                            submitSetting={submitSettingSpy}
+                            preferences={fromJS(preferences)}
+                        />
+                    </Provider>
+                )
+
+                fireEvent.click(
+                    getByLabelText(DateFormattingSetting.en_GB.label) // en_GB
+                )
+                fireEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
+
+                fireEvent.click(screen.getByText('Save Changes'))
+
+                expect(submitSettingSpy).toHaveBeenCalledWith(
+                    expectedPreferences.toJS(),
+                    false
+                )
             }
         )
     })
