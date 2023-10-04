@@ -29,6 +29,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import history from 'pages/history'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import {transformBundleError} from '../../utils/transformBundleError'
 import pageCss from './BundlesView.less'
 
 export const BundleInstallView = () => {
@@ -64,13 +65,14 @@ export const BundleInstallView = () => {
             action = 'manual-install'
         }
 
+        const integrationId =
+            currentStoreIntegration && currentStoreIntegration?.get('id')
+
         try {
             const {data} = await client.post<RevenueBundleActionResponse>(
                 `/api/revenue-addon-bundle/${action}/`,
                 {
-                    integration_id:
-                        currentStoreIntegration &&
-                        currentStoreIntegration?.get('id'),
+                    integration_id: integrationId,
                 }
             )
 
@@ -84,10 +86,13 @@ export const BundleInstallView = () => {
             history.push(`/app/settings/revenue/bundles/${data.id}`)
         } catch (e) {
             void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: "Couldn't install bundle",
-                })
+                notify(
+                    transformBundleError(
+                        e,
+                        "Couldn't install bundle",
+                        integrationId
+                    )
+                )
             )
         }
     }, [currentStoreIntegration])

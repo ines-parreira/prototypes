@@ -33,6 +33,7 @@ import {getIconFromType} from 'state/integrations/helpers'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useRevenueAddonApi} from '../../hooks/useRevenueAddonApi'
 import Loader from '../../../../common/components/Loader/Loader'
+import {transformBundleError} from '../../utils/transformBundleError'
 import pageCss from './BundlesView.less'
 
 export const BundleDetailView = () => {
@@ -124,10 +125,13 @@ export const BundleDetailView = () => {
                 )
             } catch (error) {
                 void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: "Couldn't uninstall bundle",
-                    })
+                    notify(
+                        transformBundleError(
+                            error,
+                            "Couldn't uninstall bundle",
+                            bundle.shop_integration_id
+                        )
+                    )
                 )
             }
         }, [bundle])
@@ -153,10 +157,13 @@ export const BundleDetailView = () => {
                 )
             } catch (error) {
                 void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: "Couldn't install bundle",
-                    })
+                    notify(
+                        transformBundleError(
+                            error,
+                            "Couldn't install bundle",
+                            bundle.shop_integration_id
+                        )
+                    )
                 )
             }
         }, [bundle])
