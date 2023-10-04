@@ -23,6 +23,7 @@ import {CustomFieldSelect} from 'pages/stats/CustomFieldSelect'
 import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
 import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
 import {TicketFieldsBlankState} from 'pages/stats/TicketFieldsBlankState'
+import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
 
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {CustomField} from 'models/customField/types'
@@ -40,6 +41,10 @@ jest.mock('pages/stats/TicketDistributionTable.tsx')
 const TicketDistributionTableMock = assumeMock(TicketDistributionTable)
 jest.mock('pages/stats/TicketInsightsFieldTrend.tsx')
 const TicketInsightsFieldTrendMock = assumeMock(TicketInsightsFieldTrend)
+jest.mock('pages/stats/DownloadTicketFieldsDataButton.tsx')
+const DownloadTicketFieldsDataButtonMock = assumeMock(
+    DownloadTicketFieldsDataButton
+)
 jest.mock('pages/stats/TicketFieldsBlankState.tsx')
 const TicketFieldsBlankStateMock = assumeMock(TicketFieldsBlankState)
 jest.mock('hooks/customField/useCustomFieldDefinitions')
@@ -84,6 +89,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
             componentMock
         )
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
+        DownloadTicketFieldsDataButtonMock.mockImplementation(componentMock)
     })
 
     it('should render the page title', () => {

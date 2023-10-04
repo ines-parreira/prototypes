@@ -35,7 +35,7 @@ const CATEGORY_COLUMN_WIDTH = 250
 const DATA_COLUMN_WIDTH = 120
 const TICKET_INSIGHTS_TABLE_DAILY_FORMAT = 'ddd, MMM D'
 
-const formatDates =
+export const formatDates =
     (granularity: ReportingGranularity) => (dateTime: string) => {
         let format = getFormat(granularity)
         if (granularity === ReportingGranularity.Day) {

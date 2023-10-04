@@ -9,6 +9,7 @@ import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
 import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
 import {TicketFieldsBlankState} from 'pages/stats/TicketFieldsBlankState'
+import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
 import StatsPage from 'pages/stats/StatsPage'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -42,9 +43,14 @@ export default function SupportPerformanceTicketInsights() {
         <StatsPage
             title={TICKET_INSIGHTS_PAGE_TITLE}
             filters={
-                <>
-                    <SupportPerformanceFilters />
-                </>
+                selectedCustomField.id ? (
+                    <>
+                        <SupportPerformanceFilters />
+                        <DownloadTicketFieldsDataButton
+                            selectedCustomFieldId={selectedCustomField.id}
+                        />
+                    </>
+                ) : null
             }
         >
             <DashboardSection className="pb-0">
