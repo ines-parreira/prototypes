@@ -34,12 +34,12 @@ export const withBreakdown = <
 
 export type TicketCustomFieldsTicketCountData = {
     [BREAKDOWN_FIELD]: string | null
-    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: string | null
+    [VALUE_FIELD]: string | null
 }
 
 export type TicketCustomFieldsTicketCountTimeSeriesData = {
     [BREAKDOWN_FIELD]: string
-    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]?: number
+    [VALUE_FIELD]?: number
     timeSeries: TimeSeriesDataItem[]
 }
 

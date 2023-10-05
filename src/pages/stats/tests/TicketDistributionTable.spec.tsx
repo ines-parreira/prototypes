@@ -1,22 +1,19 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
 import {
-    TicketDistributionTable,
     OUTSIDE_TOP_DATA,
+    TicketDistributionTable,
 } from 'pages/stats/TicketDistributionTable'
-import {initialState} from 'state/stats/reducers'
-import {RootState, StoreDispatch} from 'state/types'
-import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {assumeMock} from 'utils/testing'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
 import {useTicketsDistribution} from '../useTicketsDistribution'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -31,16 +28,6 @@ jest.mock('pages/stats/useTicketsDistribution')
 const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
 describe('<TicketDistributionTable>', () => {
-    const defaultState = {
-        stats: initialState,
-        ui: {
-            [ticketInsightsSlice.name]: {
-                selectedCustomFieldId: 2,
-            },
-            stats: uiStatsInitialState,
-        },
-    } as unknown as RootState
-
     const maxTicketCount = 16
     const data = [
         {
@@ -87,7 +74,7 @@ describe('<TicketDistributionTable>', () => {
 
     it('should render the table', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore({})}>
                 <TicketDistributionTable />
             </Provider>
         )
@@ -104,7 +91,7 @@ describe('<TicketDistributionTable>', () => {
 
     it('should render the total value', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore({})}>
                 <TicketDistributionTable />
             </Provider>
         )
@@ -123,7 +110,7 @@ describe('<TicketDistributionTable>', () => {
             outsideTopTotalPercentage: 50,
         })
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore({})}>
                 <TicketDistributionTable />
             </Provider>
         )
@@ -139,7 +126,7 @@ describe('<TicketDistributionTable>', () => {
         })
 
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore({})}>
                 <TicketDistributionTable />
             </Provider>
         )
@@ -153,7 +140,7 @@ describe('<TicketDistributionTable>', () => {
             isFetching: true,
         })
         render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider store={mockStore({})}>
                 <TicketDistributionTable />
             </Provider>
         )

@@ -1,4 +1,4 @@
-import {act, render, screen} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -163,6 +163,26 @@ describe('<AgentTable>', () => {
             </Provider>
         )
         expect(screen.getByText('Average')).toBeInTheDocument()
+    })
+
+    it('should handle table scrolling', async () => {
+        render(
+            <Provider store={mockStore({})}>
+                <AgentsTable />
+            </Provider>
+        )
+        act(() => {
+            const tableRow = document.getElementsByClassName('container')[0]
+            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('cell', {
+                    name: new RegExp('Average'),
+                })
+            ).toHaveClass('withShadow')
+        })
     })
 
     describe('Pagination', () => {

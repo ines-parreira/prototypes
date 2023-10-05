@@ -1,20 +1,29 @@
-import {render, screen} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {NumberedPagination} from 'pages/common/components/Paginations'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     CUSTOM_FIELD_COLUMN_LABEL,
+    CUSTOM_FIELDS_PER_PAGE,
     CustomFieldsTicketCountBreakdownTable,
     TOTAL_COLUMN_LABEL,
 } from 'pages/stats/CustomFieldsTicketCountBreakdownTable'
 import {RootState, StoreDispatch} from 'state/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+import {
+    initialState,
+    ticketInsightsSlice,
+    toggleOrder,
+} from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -23,13 +32,18 @@ jest.mock('hooks/reporting/useCustomFieldsTicketCountPerCustomFields')
 const useCustomFieldsTicketCountPerCustomFieldsMock = assumeMock(
     useCustomFieldsTicketCountPerCustomFields
 )
-
 jest.mock('state/ui/stats/agentPerformanceSlice')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
+jest.mock('pages/common/components/Paginations')
+const NumberedPaginationMock = assumeMock(NumberedPagination)
+jest.mock('pages/stats/NoDataAvailable')
+const NoDataAvailableMock = assumeMock(NoDataAvailable)
+const componentMock = () => <div />
 
 describe('<CustomFieldsTicketCountBreakdownTable />', () => {
+    const customFieldId = 123
     const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
@@ -40,6 +54,9 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         stats: fromJS({
             filters: defaultStatsFilters,
         }),
+        ui: {
+            [ticketInsightsSlice.name]: initialState,
+        },
     } as unknown as RootState
     const exampleData = [
         {
@@ -83,21 +100,29 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         },
     ]
 
-    getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
-        userTimezone: 'someTimezone',
-        cleanStatsFilters: defaultStatsFilters,
-        granularity: ReportingGranularity.Day,
-    })
-    useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
-        data: exampleData,
-        dateTimes: [],
-        order: OrderDirection.Asc,
-        isLoading: false,
+    const dateTimes = [
+        '2021-05-01T00:00:00+02:00',
+        '2021-05-02T00:00:00+02:00',
+        '2021-05-04T23:59:59+02:00',
+    ]
+
+    beforeEach(() => {
+        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+            userTimezone: 'someTimezone',
+            cleanStatsFilters: defaultStatsFilters,
+            granularity: ReportingGranularity.Day,
+        })
+        useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+            data: exampleData,
+            dateTimes,
+            order: OrderDirection.Asc,
+            isLoading: false,
+        })
+        NoDataAvailableMock.mockImplementation(componentMock)
+        NumberedPaginationMock.mockImplementation(componentMock)
     })
 
     it('should render the title', () => {
-        const customFieldId = 123
-
         render(
             <Provider store={mockStore(defaultState)}>
                 <CustomFieldsTicketCountBreakdownTable
@@ -108,5 +133,117 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
 
         expect(screen.getByText(TOTAL_COLUMN_LABEL)).toBeInTheDocument()
         expect(screen.getByText(CUSTOM_FIELD_COLUMN_LABEL)).toBeInTheDocument()
+    })
+
+    it('should render NoData component when no data available', () => {
+        useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+            data: [],
+            dateTimes: [],
+            order: OrderDirection.Asc,
+            isLoading: false,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <CustomFieldsTicketCountBreakdownTable
+                    selectedCustomFieldId={customFieldId}
+                />
+            </Provider>
+        )
+
+        expect(NoDataAvailableMock).toHaveBeenCalled()
+    })
+
+    it('should trigger ordering action when category label clicked', () => {
+        const store = mockStore(defaultState)
+
+        render(
+            <Provider store={store}>
+                <CustomFieldsTicketCountBreakdownTable
+                    selectedCustomFieldId={customFieldId}
+                />
+            </Provider>
+        )
+        act(() => {
+            const categoryLabel = screen.getByText(CUSTOM_FIELD_COLUMN_LABEL)
+            userEvent.click(categoryLabel)
+        })
+
+        expect(store.getActions()).toContainEqual(toggleOrder())
+    })
+
+    it('should handle table scrolling', async () => {
+        const store = mockStore(defaultState)
+
+        render(
+            <Provider store={store}>
+                <CustomFieldsTicketCountBreakdownTable
+                    selectedCustomFieldId={customFieldId}
+                />
+            </Provider>
+        )
+        act(() => {
+            const tableRow = document.getElementsByClassName('container')[0]
+            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('cell', {
+                    name: new RegExp(CUSTOM_FIELD_COLUMN_LABEL),
+                })
+            ).toHaveClass('withShadow')
+        })
+
+        act(() => {
+            const tableRow = document.getElementsByClassName('container')[0]
+            fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('cell', {
+                    name: new RegExp(CUSTOM_FIELD_COLUMN_LABEL),
+                })
+            ).not.toHaveClass('withShadow')
+        })
+    })
+
+    it('should render loading skeletons when loading in progress', () => {
+        useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+            data: [],
+            dateTimes,
+            order: OrderDirection.Asc,
+            isLoading: true,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <CustomFieldsTicketCountBreakdownTable
+                    selectedCustomFieldId={customFieldId}
+                />
+            </Provider>
+        )
+
+        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+    })
+
+    it(`should render pagination when more then ${CUSTOM_FIELDS_PER_PAGE} top level Custom Fields available`, () => {
+        useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+            data: Array(CUSTOM_FIELDS_PER_PAGE + 1).fill(exampleData[0]),
+            dateTimes,
+            order: OrderDirection.Asc,
+            isLoading: true,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <CustomFieldsTicketCountBreakdownTable
+                    selectedCustomFieldId={customFieldId}
+                />
+            </Provider>
+        )
+
+        expect(NumberedPaginationMock).toHaveBeenCalled()
     })
 })

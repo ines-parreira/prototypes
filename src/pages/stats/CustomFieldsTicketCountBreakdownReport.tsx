@@ -4,6 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
 import {CustomFieldsTicketCountBreakdownTable} from 'pages/stats/CustomFieldsTicketCountBreakdownTable'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import {TicketInsightsValueModeSwitch} from 'pages/stats/TicketInsightsValueModeSwitch'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
 const REPORT_TITLE = 'All used values'
@@ -18,6 +19,7 @@ export const CustomFieldsTicketCountBreakdownReport = () => {
             title={`${REPORT_TITLE}: ${label}`}
             hint={REPORT_HINT}
             noPadding={true}
+            titleExtra={<TicketInsightsValueModeSwitch />}
         >
             {id !== null ? (
                 <CustomFieldsTicketCountBreakdownTable

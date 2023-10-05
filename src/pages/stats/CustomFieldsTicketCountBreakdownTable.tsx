@@ -2,34 +2,38 @@ import classNames from 'classnames'
 import moment from 'moment/moment'
 import React, {UIEventHandler, useState} from 'react'
 import useMeasure from 'react-use/lib/useMeasure'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {OrderDirection} from 'models/api/types'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {
     BREAKDOWN_FIELD,
     TicketCustomFieldsTicketCountTimeSeriesData,
     VALUE_FIELD,
 } from 'hooks/reporting/withBreakdown'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import {TableBodyRowExpandable} from 'pages/common/components/table/TableBodyRowExpandable'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/BreakdownTable.less'
-import {getFormat} from 'pages/stats/common/utils'
+import {formatMetricValue, getFormat} from 'pages/stats/common/utils'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {toggleOrder} from 'state/ui/stats/ticketInsightsSlice'
+import {
+    getValueMode,
+    toggleOrder,
+    ValueMode,
+} from 'state/ui/stats/ticketInsightsSlice'
 
 export const CUSTOM_FIELD_COLUMN_LABEL = 'Value / Category'
 export const TOTAL_COLUMN_LABEL = 'Total'
-const PER_PAGE = 10
+export const CUSTOM_FIELDS_PER_PAGE = 10
 const EXPAND_COLUMN_WIDTH = 45
 const CATEGORY_COLUMN_WIDTH = 250
 const DATA_COLUMN_WIDTH = 120
@@ -44,6 +48,11 @@ export const formatDates =
 
         return moment(dateTime).format(format)
     }
+
+const formatAccordingToValueMode = (valueMode: ValueMode) => (value: number) =>
+    valueMode === ValueMode.Percentage
+        ? formatMetricValue(value, 'percent')
+        : formatMetricValue(value, 'integer')
 
 export const CustomFieldsTicketCountBreakdownTable = ({
     selectedCustomFieldId,
@@ -107,13 +116,15 @@ export const CustomFieldsTicketCountBreakdownTable = ({
 
                     <TableBody>
                         {isLoading
-                            ? Array.from(Array(PER_PAGE)).map((_, index) => (
-                                  <LoadingRow
-                                      key={index}
-                                      dateTimes={dateTimes}
-                                      isTableScrolled={isTableScrolled}
-                                  />
-                              ))
+                            ? Array.from(Array(CUSTOM_FIELDS_PER_PAGE)).map(
+                                  (_, index) => (
+                                      <LoadingRow
+                                          key={index}
+                                          dateTimes={dateTimes}
+                                          isTableScrolled={isTableScrolled}
+                                      />
+                                  )
+                              )
                             : customFieldDataRows.map((row) => (
                                   <TableBodyRowExpandable<DataRowProps>
                                       key={row[BREAKDOWN_FIELD]}
@@ -132,9 +143,11 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                 </TableWrapper>
             </div>
             <div>
-                {customFieldDataRows.length >= PER_PAGE && (
+                {customFieldDataRows.length >= CUSTOM_FIELDS_PER_PAGE && (
                     <NumberedPagination
-                        count={Math.ceil(customFieldDataRows.length / PER_PAGE)}
+                        count={Math.ceil(
+                            customFieldDataRows.length / CUSTOM_FIELDS_PER_PAGE
+                        )}
                         page={currentPage}
                         onChange={setCurrentPage}
                         className={css.pagination}
@@ -158,6 +171,8 @@ const CustomFieldsTicketCountDataRowContent = ({
     [VALUE_FIELD]: value,
     level = 0,
 }: DataRowProps) => {
+    const valueMode = useAppSelector(getValueMode)
+
     return (
         <>
             <BodyCell
@@ -178,7 +193,7 @@ const CustomFieldsTicketCountDataRowContent = ({
                 innerClassName={classNames(css.BodyCellContent)}
                 justifyContent={'right'}
             >
-                {value}
+                {formatAccordingToValueMode(valueMode)(value ?? 0)}
             </BodyCell>
             {timeSeries.map((data) => (
                 <BodyCell
@@ -186,7 +201,7 @@ const CustomFieldsTicketCountDataRowContent = ({
                     innerClassName={classNames(css.BodyCellContent)}
                     justifyContent={'right'}
                 >
-                    {data?.value}
+                    {formatAccordingToValueMode(valueMode)(data?.value)}
                 </BodyCell>
             ))}
         </>

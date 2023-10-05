@@ -38,6 +38,7 @@ describe('<CustomFieldsTicketCountBreakdownReport />', () => {
             componentMock
         )
     })
+
     it('should render CustomFieldsTicketCountBreakdownTable when custom field id is available', () => {
         getSelectedCustomFieldMock.mockReturnValue({
             id: 123,
@@ -54,6 +55,7 @@ describe('<CustomFieldsTicketCountBreakdownReport />', () => {
         expect(CustomFieldsTicketCountBreakdownTableMock).toHaveBeenCalled()
         expect(NoDataAvailableMock).not.toHaveBeenCalled()
     })
+
     it('should render NoData when custom field id is not available', () => {
         getSelectedCustomFieldMock.mockReturnValue({
             id: null,

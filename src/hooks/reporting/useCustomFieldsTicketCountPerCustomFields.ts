@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+import _zip from 'lodash/zip'
 import {OrderDirection} from 'models/api/types'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
@@ -9,12 +10,42 @@ import {
     BREAKDOWN_FIELD,
     selectTimeSeriesWithBreakdown,
     TicketCustomFieldsTicketCountTimeSeriesData,
+    VALUE_FIELD,
 } from 'hooks/reporting/withBreakdown'
 import useAppSelector from 'hooks/useAppSelector'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
-import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
+import {
+    getCustomFieldsOrder,
+    getValueMode,
+    ValueMode,
+} from 'state/ui/stats/ticketInsightsSlice'
 import {getFilterDateRange} from 'utils/reporting'
+import {notUndefined} from 'utils/types'
+
+const breakdownTimeSeries = (
+    timeSeriesData: Record<string, TimeSeriesDataItem[][]>,
+    order: OrderDirection
+): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
+    const timeSeriesObjects = Object.keys(timeSeriesData).map((key) => ({
+        [BREAKDOWN_FIELD]: key,
+        timeSeries: timeSeriesData[key][0],
+    }))
+
+    return selectTimeSeriesWithBreakdown(timeSeriesObjects, order)
+}
+
+const displayAs =
+    (valueMode: ValueMode) =>
+    (
+        data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[]
+    ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
+        if (valueMode === ValueMode.TotalCount) {
+            return data
+        }
+
+        return replaceValuesWithPercentages(data)
+    }
 
 export const useCustomFieldsTicketCountPerCustomFields = (
     selectedCustomFieldId: number
@@ -24,6 +55,7 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     isLoading: boolean
     order: OrderDirection
 } => {
+    const valueMode = useAppSelector(getValueMode)
     const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -43,9 +75,11 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     const data = useMemo(
         () =>
             timeSeriesData !== undefined
-                ? breakdownTimeSeries(timeSeriesData, order)
+                ? displayAs(valueMode)(
+                      breakdownTimeSeries(timeSeriesData, order)
+                  )
                 : [],
-        [timeSeriesData, order]
+        [timeSeriesData, order, valueMode]
     )
 
     return {
@@ -56,14 +90,31 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     }
 }
 
-function breakdownTimeSeries(
-    timeSeriesData: Record<string, TimeSeriesDataItem[][]>,
-    order: OrderDirection
+export function replaceValuesWithPercentages(
+    data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[]
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] {
-    const timeSeriesObjects = Object.keys(timeSeriesData).map((key) => ({
-        [BREAKDOWN_FIELD]: key,
-        timeSeries: timeSeriesData[key][0],
-    }))
+    const currentLevelSum = data.reduce(
+        (acc, currentValue) => acc + (currentValue?.[VALUE_FIELD] || 0),
+        0
+    )
+    const columnsSum = _zip(...data.map((item) => item.timeSeries))
+    const sums = columnsSum.map((column) => {
+        return column.filter(notUndefined).reduce((sum, point) => ({
+            ...sum,
+            value: sum.value + point.value,
+        }))
+    })
 
-    return selectTimeSeriesWithBreakdown(timeSeriesObjects, order)
+    return data.map((item) => ({
+        ...item,
+        [VALUE_FIELD]: ((item?.[VALUE_FIELD] || 0) / currentLevelSum) * 100,
+        timeSeries: item.timeSeries.map((item, index) => ({
+            ...item,
+            value:
+                sums[index].value !== 0
+                    ? (item.value / sums[index].value) * 100
+                    : 0,
+        })),
+        children: replaceValuesWithPercentages(item.children),
+    }))
 }

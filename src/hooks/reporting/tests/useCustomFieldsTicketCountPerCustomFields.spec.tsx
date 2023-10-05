@@ -3,16 +3,23 @@ import {renderHook} from '@testing-library/react-hooks/dom'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {ReportingGranularity} from 'models/reporting/types'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
+import {
+    replaceValuesWithPercentages,
+    useCustomFieldsTicketCountPerCustomFields,
+} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
+import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock} from 'utils/testing'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
+import {
+    getCustomFieldsOrder,
+    getValueMode,
+    ValueMode,
+} from 'state/ui/stats/ticketInsightsSlice'
+import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('hooks/reporting/timeSeries')
@@ -25,6 +32,7 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 )
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getCustomFieldOrderMock = assumeMock(getCustomFieldsOrder)
+const getValueModeMock = assumeMock(getValueMode)
 
 describe('useCustomFieldsTicketCountPerCustomFields', () => {
     const selectedCustomFieldId = 123
@@ -74,6 +82,7 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             isLoading,
         } as UseQueryResult<Record<string, TimeSeriesDataItem[][]>>)
         getCustomFieldOrderMock.mockReturnValue(defaultOrder)
+        getValueModeMock.mockReturnValue(ValueMode.TotalCount)
     })
 
     it('should select value per dimension and dateTIme', () => {
@@ -147,6 +156,207 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             ],
             isLoading: isLoading,
             order: defaultOrder,
+        })
+    })
+
+    describe('replaceValuesWithPercentages', () => {
+        getValueModeMock.mockReturnValue(ValueMode.Percentage)
+        const input = [
+            {
+                'TicketCustomFields.ticketCount': 668,
+                'TicketCustomFields.valueString': 'abc',
+                children: [
+                    {
+                        'TicketCustomFields.ticketCount': 668,
+                        'TicketCustomFields.valueString': 'xyz',
+                        children: [],
+                        timeSeries: [
+                            {
+                                dateTime: '2021-05-01T00:00:00+02:00',
+                                value: 456,
+                            },
+                            {
+                                dateTime: '2021-05-02T00:00:00+02:00',
+                                value: 123,
+                            },
+                            {
+                                dateTime: '2021-05-03T00:00:00+02:00',
+                                value: 0,
+                            },
+                            {
+                                dateTime: '2021-05-04T23:59:59+02:00',
+                                value: 89,
+                            },
+                        ],
+                    },
+                ],
+                timeSeries: [
+                    {
+                        dateTime: '2021-05-01T00:00:00+02:00',
+                        value: 456,
+                    },
+                    {
+                        dateTime: '2021-05-02T00:00:00+02:00',
+                        value: 123,
+                    },
+                    {
+                        dateTime: '2021-05-03T00:00:00+02:00',
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2021-05-04T23:59:59+02:00',
+                        value: 89,
+                    },
+                ],
+            },
+            {
+                'TicketCustomFields.ticketCount': 668,
+                'TicketCustomFields.valueString': 'asd',
+                children: [
+                    {
+                        'TicketCustomFields.ticketCount': 668,
+                        'TicketCustomFields.valueString': 'qwe',
+                        children: [],
+                        timeSeries: [
+                            {
+                                dateTime: '2021-05-01T00:00:00+02:00',
+                                value: 456,
+                            },
+                            {
+                                dateTime: '2021-05-02T00:00:00+02:00',
+                                value: 123,
+                            },
+                            {
+                                dateTime: '2021-05-03T00:00:00+02:00',
+                                value: 0,
+                            },
+                            {
+                                dateTime: '2021-05-04T23:59:59+02:00',
+                                value: 89,
+                            },
+                        ],
+                    },
+                ],
+                timeSeries: [
+                    {
+                        dateTime: '2021-05-01T00:00:00+02:00',
+                        value: 456,
+                    },
+                    {
+                        dateTime: '2021-05-02T00:00:00+02:00',
+                        value: 123,
+                    },
+                    {
+                        dateTime: '2021-05-03T00:00:00+02:00',
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2021-05-04T23:59:59+02:00',
+                        value: 89,
+                    },
+                ],
+            },
+        ]
+
+        it('should replace values with percentages', () => {
+            const result = replaceValuesWithPercentages(input)
+
+            expect(result).toEqual([
+                {
+                    'TicketCustomFields.ticketCount': 50,
+                    'TicketCustomFields.valueString': 'abc',
+                    children: [
+                        {
+                            'TicketCustomFields.ticketCount': 100,
+                            'TicketCustomFields.valueString': 'xyz',
+                            children: [],
+                            timeSeries: [
+                                {
+                                    dateTime: '2021-05-01T00:00:00+02:00',
+                                    value: 100,
+                                },
+                                {
+                                    dateTime: '2021-05-02T00:00:00+02:00',
+                                    value: 100,
+                                },
+                                {
+                                    dateTime: '2021-05-03T00:00:00+02:00',
+                                    value: 0,
+                                },
+                                {
+                                    dateTime: '2021-05-04T23:59:59+02:00',
+                                    value: 100,
+                                },
+                            ],
+                        },
+                    ],
+                    timeSeries: [
+                        {
+                            dateTime: '2021-05-01T00:00:00+02:00',
+                            value: 50,
+                        },
+                        {
+                            dateTime: '2021-05-02T00:00:00+02:00',
+                            value: 50,
+                        },
+                        {
+                            dateTime: '2021-05-03T00:00:00+02:00',
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2021-05-04T23:59:59+02:00',
+                            value: 50,
+                        },
+                    ],
+                },
+                {
+                    'TicketCustomFields.ticketCount': 50,
+                    'TicketCustomFields.valueString': 'asd',
+                    children: [
+                        {
+                            'TicketCustomFields.ticketCount': 100,
+                            'TicketCustomFields.valueString': 'qwe',
+                            children: [],
+                            timeSeries: [
+                                {
+                                    dateTime: '2021-05-01T00:00:00+02:00',
+                                    value: 100,
+                                },
+                                {
+                                    dateTime: '2021-05-02T00:00:00+02:00',
+                                    value: 100,
+                                },
+                                {
+                                    dateTime: '2021-05-03T00:00:00+02:00',
+                                    value: 0,
+                                },
+                                {
+                                    dateTime: '2021-05-04T23:59:59+02:00',
+                                    value: 100,
+                                },
+                            ],
+                        },
+                    ],
+                    timeSeries: [
+                        {
+                            dateTime: '2021-05-01T00:00:00+02:00',
+                            value: 50,
+                        },
+                        {
+                            dateTime: '2021-05-02T00:00:00+02:00',
+                            value: 50,
+                        },
+                        {
+                            dateTime: '2021-05-03T00:00:00+02:00',
+                            value: 0,
+                        },
+                        {
+                            dateTime: '2021-05-04T23:59:59+02:00',
+                            value: 50,
+                        },
+                    ],
+                },
+            ])
         })
     })
 })

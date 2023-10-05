@@ -1,17 +1,17 @@
-import {useMemo} from 'react'
 import _flatten from 'lodash/flatten'
 import _fromPairs from 'lodash/fromPairs'
+import {useMemo} from 'react'
+import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {OrderDirection} from 'models/api/types'
+import {
+    TICKET_CUSTOM_FIELDS_API_SEPARATOR,
+    TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
+} from 'pages/stats/utils'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {OrderDirection} from 'models/api/types'
 import {periodToReportingGranularity} from 'utils/reporting'
-import {
-    TICKET_CUSTOM_FIELDS_NEW_SEPARATOR,
-    TICKET_CUSTOM_FIELDS_API_SEPARATOR,
-} from 'pages/stats/utils'
 
 const DATASET_VISIBILITY_ITEMS = 3
 
