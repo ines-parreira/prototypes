@@ -19,6 +19,7 @@ export enum TicketMessagesSegment {
 }
 
 export enum TicketMessagesMember {
+    PeriodStart = 'TicketMessages.periodStart',
     FirstMessageChannel = 'TicketMessages.firstMessageChannel',
     Integration = 'TicketMessages.integration',
     FirstHelpdeskMessageDatetime = 'TicketMessages.firstHelpdeskMessageDatetime',

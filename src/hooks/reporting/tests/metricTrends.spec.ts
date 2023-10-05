@@ -78,7 +78,7 @@ describe('metric trends', () => {
     }
     const timezone = 'someTimeZone'
 
-    describe('getTicketsRepliedQuery', () => {
+    describe('ticketsRepliedQueryFactory', () => {
         it('should build a query', () => {
             const query = ticketsRepliedQueryFactory(statsFilters, timezone)
 
@@ -123,7 +123,7 @@ describe('metric trends', () => {
         })
     })
 
-    describe('getMessagesSentQuery', () => {
+    describe('messagesSentQueryFactory', () => {
         it('should create a query', () => {
             const query = messagesSentQueryFactory(statsFilters, timezone)
 
@@ -161,6 +161,7 @@ describe('metric trends', () => {
             })
         })
     })
+
     describe('Automation add-on', () => {
         const statsFilters: StatsFilters = {
             period: {

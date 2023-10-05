@@ -287,6 +287,11 @@ export const ticketsCreatedQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: agents.map((agent) => agent.toString()),
         })
+        commonFilters.push({
+            member: TicketMessagesMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [statFiltersWithoutAgents.period.start_datetime],
+        })
     }
 
     return {

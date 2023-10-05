@@ -64,7 +64,12 @@ export const ticketsCreatedQueryFactory = (
         commonFilters.push({
             member: TicketMessagesMember.FirstHelpdeskMessageUserId,
             operator: ReportingFilterOperator.Equals,
-            values: agents.map((agent) => agent.toString()),
+            values: agents.map(String),
+        })
+        commonFilters.push({
+            member: TicketMessagesMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [statFiltersWithoutAgents.period.start_datetime],
         })
     }
 

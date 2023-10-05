@@ -1,6 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {OrderDirection} from 'models/api/types'
 import {
     AutomationBillingEventMeasure,
     AutomationBillingEventMember,
@@ -10,12 +11,20 @@ import {
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMeasure,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {
+    TicketMessagesMember,
+    TicketMessagesSegment,
+} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -24,6 +33,7 @@ import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 
 import {
+    ticketsCreatedQueryFactory,
     useAutomatedInteractionByEventTypesTimeSeries,
     useAutomatedInteractionTimeSeries,
     useAutomationRateTimeSeries,
@@ -51,28 +61,153 @@ describe('time series', () => {
     const timezone = 'UTC'
     const granularity = ReportingGranularity.Day
 
-    describe.each([
-        ['useTicketsCreatedTimeSeries', useTicketsCreatedTimeSeries],
-        ['useTicketsClosedTimeSeries', useTicketsClosedTimeSeries],
-    ])('%s', (_testName, useTrendFn) => {
-        it('should create reporting filters', () => {
-            renderHook(() =>
-                useTrendFn(
-                    {
-                        period: {
-                            start_datetime: '2021-05-29T00:00:00+02:00',
-                            end_datetime: '2021-06-04T23:59:59+02:00',
+    describe.each([['useTicketsClosedTimeSeries', useTicketsClosedTimeSeries]])(
+        '%s',
+        (_testName, useTrendFn) => {
+            it('should create reporting filters', () => {
+                renderHook(() =>
+                    useTrendFn(
+                        {
+                            period: {
+                                start_datetime: '2021-05-29T00:00:00+02:00',
+                                end_datetime: '2021-06-04T23:59:59+02:00',
+                            },
+                            channels: [TicketChannel.Email, TicketChannel.Chat],
+                            integrations: [1],
+                            agents: [2],
+                            tags: [1, 2],
                         },
-                        channels: [TicketChannel.Email, TicketChannel.Chat],
-                        integrations: [1],
-                        agents: [2],
-                        tags: [1, 2],
-                    },
-                    'America/Los_angeles',
-                    ReportingGranularity.Week
+                        'America/Los_angeles',
+                        ReportingGranularity.Week
+                    )
                 )
+                expect(useTimeSeriesMock.mock.calls[0]).toMatchSnapshot()
+            })
+        }
+    )
+
+    describe('ticketsCreatedQueryFactory', () => {
+        it('should build expected query', () => {
+            const query = ticketsCreatedQueryFactory(
+                statsFilters,
+                timezone,
+                granularity
             )
-            expect(useTimeSeriesMock.mock.calls[0]).toMatchSnapshot()
+
+            expect(query).toEqual({
+                measures: [TicketMeasure.TicketCount],
+                order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
+                dimensions: [],
+                filters: [
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                ],
+                segments: [],
+                timeDimensions: [
+                    {
+                        dimension: TicketDimension.CreatedDatetime,
+                        granularity: ReportingGranularity.Day,
+                        dateRange: [periodStart, periodEnd],
+                    },
+                ],
+                timezone,
+            })
+        })
+
+        it('should build expected query with Agents filter', () => {
+            const agentIds = [1, 2]
+            const filters = {
+                ...statsFilters,
+                agents: agentIds,
+            }
+            const query = ticketsCreatedQueryFactory(
+                filters,
+                timezone,
+                granularity
+            )
+
+            expect(query).toEqual({
+                measures: [TicketMeasure.TicketCount],
+                order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
+                dimensions: [],
+                filters: [
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMessagesMember.FirstHelpdeskMessageUserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: agentIds.map(String),
+                    },
+                    {
+                        member: TicketMessagesMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                ],
+                segments: [TicketMessagesSegment.TicketCreatedByAgent],
+                timeDimensions: [
+                    {
+                        dimension: TicketDimension.CreatedDatetime,
+                        granularity: ReportingGranularity.Day,
+                        dateRange: [periodStart, periodEnd],
+                    },
+                ],
+                timezone,
+            })
+        })
+    })
+
+    describe('useTicketsCreatedTimeSeries', () => {
+        it('should pass the query to the useTimeSeriesHook', () => {
+            renderHook(
+                ({statsFilters, timezone}) =>
+                    useTicketsCreatedTimeSeries(
+                        statsFilters,
+                        timezone,
+                        granularity
+                    ),
+                {initialProps: {statsFilters, timezone, granularity}}
+            )
+
+            expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+                ticketsCreatedQueryFactory(statsFilters, timezone, granularity),
+            ])
         })
     })
 
