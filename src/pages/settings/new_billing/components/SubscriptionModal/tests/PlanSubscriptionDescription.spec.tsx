@@ -19,7 +19,7 @@ describe('PlanSubscriptionDescription', () => {
         isStarterPlan: false,
         isTrialing: false,
         isEnterprisePlan: false,
-        selectedPrice: convertProduct.prices[0],
+        selectedPrice: convertProduct.prices[1],
         setSelectedPrice: setSelectedPriceMock,
         setIsSubscriptionEnabled: setIsSubscriptionEnabledMock,
     } as PlanSubscriptionDescriptionProps

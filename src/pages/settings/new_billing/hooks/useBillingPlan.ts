@@ -53,6 +53,7 @@ import {
     setHelpdeskNotification,
     setConvertNotification,
 } from '../views/BillingProcessView/utils'
+import {getDefaultConvertPriceIndex} from '../utils/getDefaultConvertPriceIndex'
 
 export type BillingPlansProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
@@ -150,8 +151,10 @@ export const useBillingPlans = ({
     const convertPrices = useAppSelector(getConvertProduct)?.prices.filter(
         (price) => (filterByInterval ? price.interval === interval : true)
     )
-    const convertInitialIndex =
-        convertPrices?.findIndex((price) => !!price.amount) ?? 0
+    const convertInitialIndex = getDefaultConvertPriceIndex(
+        convertPrices,
+        helpdeskProduct?.name
+    )
 
     // Selected plans
     const [selectedPlans, setSelectedPlans] = useState<SelectedPlans>({

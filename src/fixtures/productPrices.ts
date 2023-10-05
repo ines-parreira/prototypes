@@ -761,7 +761,7 @@ export const convertPrice0: ConvertPrice = {
     amount: 0,
     currency: 'usd',
     num_quota_tickets: 0,
-    internal_id: 'convert-01-monthly-usd-5',
+    internal_id: 'convert-00-monthly-usd-5',
     interval: PlanInterval.Month,
     name: 'Convert Trial Monthly',
     price_id: 'price_1NdBfmI9qXomtXqSFfC7T2xX',
@@ -781,7 +781,7 @@ export const convertPrice1: ConvertPrice = {
     extra_ticket_cost: 0,
 }
 
-const convertPrice2: ConvertPrice = {
+export const convertPrice2: ConvertPrice = {
     amount: 285,
     currency: 'usd',
     num_quota_tickets: 30000,
@@ -789,6 +789,18 @@ const convertPrice2: ConvertPrice = {
     interval: PlanInterval.Month,
     name: 'Convert 30,000 Monthly',
     price_id: 'price_1NdXfXI9qXomtXqS0CDMe7Yy',
+    product_id: 'prod_Mwy3exdalDFouZ',
+    extra_ticket_cost: 0,
+}
+
+export const convertPrice3: ConvertPrice = {
+    amount: 570,
+    currency: 'usd',
+    num_quota_tickets: 50000,
+    internal_id: 'convert-03-monthly-usd-5',
+    interval: PlanInterval.Month,
+    name: 'Convert 50,000 Monthly',
+    price_id: 'price_1NmZrmH2GG3UYmlxBGfOOSLS',
     product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
 }
@@ -840,7 +852,7 @@ export const smsProduct: Product<SMSOrVoicePrice> = {
 export const convertProduct: Product<ConvertPrice> = {
     id: CONVERT_PRODUCT_ID,
     type: ProductType.Convert,
-    prices: [convertPrice1, convertPrice2, convertPrice0],
+    prices: [convertPrice0, convertPrice1, convertPrice2, convertPrice3],
 }
 
 export const products: Product<
