@@ -19,6 +19,10 @@ import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
 export const parameters = {
     chromatic: {disableSnapshot: true},
+    viewMode: 'docs',
+    docs: {
+        canvas: { sourceState: 'shown' },
+    },
     options: {
         storySort: {
             order: [

@@ -22,7 +22,7 @@ Please `cat ~/.npmrc` and ensure that `@gorgias:registry=https://npm.pkg.github.
 
 ## Installation
 
-```sh
+```bash
 git clone git@github.com:gorgias/helpdesk-web-app.git
 cd helpdesk-web-app
 yarn install
@@ -32,7 +32,7 @@ yarn install
 
 Start the development server with:
 
-```sh
+```bash
 yarn serve
 ```
 
@@ -42,7 +42,7 @@ The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should work ou
 
 Start the Storybook with:
 
-```sh
+```bash
 yarn storybook
 ```
 
@@ -75,7 +75,7 @@ yarn jest   # Only unit tests
 
 Running `yarn install` leads to error
 
-```
+```bash
 ➤ YN0035: │ @gorgias/javascript-shared-config@npm:0.1.0: The remote server failed to provide the requested resource
 ➤ YN0035: │   Response Code: 404 (Not Found)
 ➤ YN0035: │   Request Method: GET
@@ -88,26 +88,28 @@ This is because the is no registry configured with access to the package @gorgia
 
 #### Possible solution
 
--   Ensure you have yarn installed, if not [Yarn installation](https://yarnpkg.com/getting-started/install)
--   Configure registry for gorgias packages. For this:
-    -   follow https://github.com/gorgias/gorgias/blob/main/README.md#setup-npm-to-access-private-packages to configure npm access to GitHub registry
-    -   create your ~/.yarnrc.yml file
-    ```sh
-    npmRegistryServer: "https://registry.yarnpkg.com"
-    npmScopes:
-      gorgias:
-        npmPublishRegistry: https://npm.pkg.github.com/
-        npmRegistryServer: https://npm.pkg.github.com/
-        npmAlwaysAuth: true
-        npmAuthToken: _YOUR_TOKEN_
-    ```
+- Ensure you have yarn installed, if not [Yarn installation](https://yarnpkg.com/getting-started/install)
+- Configure registry for gorgias packages. For this:
+  - follow https://github.com/gorgias/gorgias/blob/main/README.md#setup-npm-to-access-private-packages to configure npm access to GitHub registry
+  - create your ~/.yarnrc.yml file
+
+  ```bash
+  npmRegistryServer: "https://registry.yarnpkg.com"
+  npmScopes:
+    gorgias:
+      npmPublishRegistry: https://npm.pkg.github.com/
+      npmRegistryServer: https://npm.pkg.github.com/
+      npmAlwaysAuth: true
+      npmAuthToken: _YOUR_TOKEN_
+  ```
+
     -   `npmAuthToken` can be found in your ~/.npmrc
 
 ### ERR_OSSL_EVP_UNSUPPORTED
 
 When running `yarn install` or `yarn serve` on node 18.21 following error might occur:
 
-```sh
+```bash
   this[kHandle] = new _Hash(algorithm, xofLen);
                   ^
 
@@ -140,7 +142,7 @@ error Command failed with exit code 1.
 
 Run
 
-```sh
+```bash
 export NODE_OPTIONS=--openssl-legacy-provider
 ```
 

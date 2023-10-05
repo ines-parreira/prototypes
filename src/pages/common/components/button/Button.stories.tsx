@@ -1,9 +1,9 @@
-import React, {ComponentProps} from 'react'
-import {Meta, Story} from '@storybook/react'
+import {ComponentProps} from 'react'
+import {Meta, StoryObj} from '@storybook/react'
 
 import Button from './Button'
 
-const storyConfig: Meta = {
+const storyConfig: Meta<typeof Button> = {
     title: 'General/Button/Button',
     component: Button,
     argTypes: {
@@ -36,9 +36,8 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof Button>> = (props) => (
-    <Button {...props} />
-)
+type Story = StoryObj<typeof Button>
+
 const templateParameters = {
     controls: {
         include: [
@@ -61,22 +60,38 @@ const defaultProps: ComponentProps<typeof Button> = {
     size: 'medium',
 }
 
-export const Primary = Template.bind({})
-Primary.args = defaultProps
-Primary.parameters = templateParameters
-
-export const Secondary = Template.bind({})
-Secondary.args = {
-    ...defaultProps,
-    intent: 'secondary',
+/** This should be the button that we use to suggest to the user to do something */
+export const Primary: Story = {
+    args: defaultProps,
+    parameters: {
+        ...templateParameters,
+    },
 }
-Secondary.parameters = templateParameters
 
-export const Destructive = Template.bind({})
-Destructive.args = {
-    ...defaultProps,
-    intent: 'destructive',
+/** Another description on the story, overriding the comments */
+export const Secondary: Story = {
+    args: {
+        ...defaultProps,
+        intent: 'secondary',
+    },
+    parameters: {
+        ...templateParameters,
+    },
 }
-Destructive.parameters = templateParameters
+
+export const Destructive: Story = {
+    args: {
+        ...defaultProps,
+        intent: 'destructive',
+    },
+    parameters: {
+        ...templateParameters,
+        docs: {
+            description: {
+                story: 'Only for destructive action!',
+            },
+        },
+    },
+}
 
 export default storyConfig

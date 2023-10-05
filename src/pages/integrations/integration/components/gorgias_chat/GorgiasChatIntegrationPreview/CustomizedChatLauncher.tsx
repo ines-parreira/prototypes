@@ -1,22 +1,22 @@
-import React from 'react'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {addLinkToDownloadFonts} from 'pages/settings/common/FontSelectField/FontSelectField'
-import {assetsUrl} from 'utils'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
+
+import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
+
+import Launcher from 'gorgias-design-system/Launcher/Launcher'
 
 import {
     GorgiasChatLauncherType,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
+import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 
-import Launcher from 'gorgias-design-system/Launcher/Launcher'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
-import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
+import {addLinkToDownloadFonts} from 'pages/settings/common/FontSelectField/FontSelectField'
+import {assetsUrl} from 'utils'
 
 import css from './CustomizedChatLauncher.less'
 

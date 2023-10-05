@@ -1,48 +1,47 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import {ThemeProvider} from '@emotion/react'
+import styled from '@emotion/styled'
 import classnames from 'classnames'
+import {List} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import styled from '@emotion/styled'
-import {ThemeProvider} from '@emotion/react'
-import {List} from 'immutable'
-
-import Collapse from 'pages/common/components/Collapse/Collapse'
-import useAppSelector from 'hooks/useAppSelector'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
 import ConversationHeader, {
     ConversationHeaderVariant,
 } from 'gorgias-design-system/Header/ConversationHeader'
 import WidgetHeader from 'gorgias-design-system/Header/WidgetHeader'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
-import {Language} from 'constants/languages'
+import useAppSelector from 'hooks/useAppSelector'
+
+import Collapse from 'pages/common/components/Collapse/Collapse'
+import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
     isAutoresponderReply,
-    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     LanguageItem,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
+    GorgiasChatLauncherType,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
-    GorgiasChatLauncherType,
 } from '../../../../../../models/integration/types'
-import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
 
 import css from './ChatIntegrationPreview.less'
 import {
     getTextColorBasedOnBackground,
     getThemeBasedOnContrast,
 } from './color-utils'
-import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 import CustomizedChatLauncher from './CustomizedChatLauncher'
+import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 import {AddIcon, PlaneIcon} from './icon-utils'
 
 export type ChatTheme = {

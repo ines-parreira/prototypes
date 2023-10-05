@@ -48,3 +48,4 @@ v8-compile-cache-*
 
 # Storybook
 build-storybook.log
+storybook-static

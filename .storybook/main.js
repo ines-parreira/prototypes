@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
 
 const srcDir = path.join(__dirname, '../src')
-
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const cssLoaderOptions = {
@@ -17,7 +16,8 @@ const styleBundleFile = __PRODUCTION__
     : '[name].css'
 
 module.exports = {
-    stories: [`${srcDir}/**/*.stories.@(js|jsx|ts|tsx|mdx)`],
+    stories: ['../src/**/*.mdx', `${srcDir}/**/*.stories.@(js|jsx|ts|tsx|mdx)`],
+    staticDirs: [`${srcDir}`],
     addons: [
         '@storybook/addon-docs',
         '@storybook/addon-links',
@@ -65,10 +65,9 @@ module.exports = {
             shouldRemoveUndefinedFromOptional: true,
         },
     },
-    core: {
-        builder: 'webpack5',
-    },
     webpackFinal: async (config) => {
+        const {global, ...alias} = config.resolve.alias
+        config.resolve.alias = alias
         config.module.rules.push({
             test: /\.css$/i,
             exclude: /node_modules/,
@@ -82,7 +81,6 @@ module.exports = {
         })
         config.module.rules.push({
             test: /\.less$/i,
-            exclude: /node_modules/,
             use: [
                 {
                     loader: MiniCssExtractPlugin.loader,
@@ -127,5 +125,12 @@ module.exports = {
         )
 
         return config
+    },
+    framework: {
+        name: '@storybook/react-webpack5',
+        options: {},
+    },
+    docs: {
+        autodocs: true,
     },
 }

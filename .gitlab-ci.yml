@@ -69,6 +69,7 @@ Install dependencies:
   extends: .yarn cache
   stage: bootstrap
   script:
+    - apt-get update && apt-get install -y zip
     # Update npm config to enable yarn to access private GitHub packages.
     - npm set @gorgias:registry https://npm.pkg.github.com/
     - npm set //npm.pkg.github.com/:_authToken $GITHUB_READ_PACKAGES_TOKEN
@@ -216,7 +217,7 @@ Publish Chromatic:
     - if: $CI_COMMIT_BRANCH != "main"
       when: manual
   script:
-    - yarn chromatic --project-token=${CHROMATIC_PROJECT_TOKEN}
+    - yarn chromatic --zip --project-token=${CHROMATIC_PROJECT_TOKEN}
 
 Force deploy production:
   extends: .deploy production

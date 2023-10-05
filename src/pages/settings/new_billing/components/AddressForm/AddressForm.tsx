@@ -133,7 +133,6 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                             isRequired
                             className={css.formLabel}
                             htmlFor="country"
-                            css={css.formaLabel}
                         >
                             Country
                         </Label>

@@ -1,112 +1,108 @@
+import classNames from 'classnames'
+import {produce} from 'immer'
+import {fromJS, List, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {set} from 'lodash'
+import _cloneDeep from 'lodash/cloneDeep'
+import _defaults from 'lodash/defaults'
+import _merge from 'lodash/merge'
 import React, {
     SyntheticEvent,
     useEffect,
-    useState,
-    useRef,
     useMemo,
+    useRef,
+    useState,
 } from 'react'
-import {produce} from 'immer'
-import {set} from 'lodash'
-import {Link, useHistory} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, List, Map} from 'immutable'
-import _defaults from 'lodash/defaults'
-import _merge from 'lodash/merge'
-import _cloneDeep from 'lodash/cloneDeep'
+import {Link, useHistory} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
     Form,
     Label as ReactStrapLabel,
 } from 'reactstrap'
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import InputField from 'pages/common/forms/input/InputField'
-
-import * as ToggleButton from 'pages/common/components/ToggleButton'
-import Button from 'pages/common/components/button/Button'
-import * as IntegrationsActions from 'state/integrations/actions'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
-    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
+    getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_DEFAULT_FONTS,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
+    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
+    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
+    GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    GORGIAS_CHAT_WIDGET_POSITION_OPTIONS,
     GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS,
-    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
-    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_POSITION_OPTIONS,
-    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-    GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-    GORGIAS_CHAT_DEFAULT_FONTS,
-    GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT,
-    LanguageItem,
-    getPrimaryLanguageFromChatConfig,
     isTextsMultiLanguage,
+    LanguageItem,
 } from 'config/integrations/gorgias_chat'
-import * as integrationSelectors from 'state/integrations/selectors'
+import {LanguageChat} from 'constants/languages'
+import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import {
-    GorgiasChatAvatarSettings,
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
+    GorgiasChatAvatarSettings,
+    GorgiasChatIntegration,
+    GorgiasChatLauncherType,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
-    GorgiasChatLauncherType,
     IntegrationType,
-    GorgiasChatIntegration,
 } from 'models/integration/types'
-import {RootState} from 'state/types'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+
+import * as ToggleButton from 'pages/common/components/ToggleButton'
 import Tooltip from 'pages/common/components/Tooltip'
 import ColorField from 'pages/common/forms/ColorField'
-import FileField from 'pages/common/forms/FileField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import FileField from 'pages/common/forms/FileField'
+
+import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
+import Label from 'pages/common/forms/Label/Label'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import AutoResponderMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AutoResponderMessages'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import {ChatIntegrationPreviewProvider} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreviewProvider'
 import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
-import AutoResponderMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AutoResponderMessages'
 import OfflineMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OfflineMessages'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
-import Label from 'pages/common/forms/Label/Label'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
-import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import {
     Texts,
     TextsMultiLanguage,
     TextsPerLanguage,
 } from 'rest_api/gorgias_chat_protected_api/types'
-import {LanguageChat} from 'constants/languages'
+import * as IntegrationsActions from 'state/integrations/actions'
+import * as integrationSelectors from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import {defaultChatFontFamily} from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
-
-import css from './GorgiasChatIntegrationAppearance.less'
-import {StoreNameDropdown} from './StoreNameDropdown'
 import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
 import ImageField from './components/ImageField'
 import UploadLogoCaption from './components/UploadLogoCaption'
-import {multiLanguageInitialTextsEmptyData} from './GorgiasTranslateText/GorgiasTranslateText'
 
-export enum PositionAxis {
-    AXIS_X = 'axis-x',
-    AXIS_Y = 'axis-y',
-}
+import css from './GorgiasChatIntegrationAppearance.less'
+import {multiLanguageInitialTextsEmptyData} from './GorgiasTranslateText/GorgiasTranslateText'
+import {StoreNameDropdown} from './StoreNameDropdown'
 
 export const defaultContent = {
     type: IntegrationType.GorgiasChat,
