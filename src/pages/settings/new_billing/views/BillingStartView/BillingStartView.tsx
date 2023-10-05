@@ -3,6 +3,7 @@ import {Container} from 'reactstrap'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
+import {useAsyncFn} from 'react-use'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -17,6 +18,7 @@ import {
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     getCurrentAutomationProduct,
+    getCurrentConvertProduct,
     getCurrentHelpdeskProduct,
     getCurrentProductsUsage,
     getCurrentSMSProduct,
@@ -69,6 +71,7 @@ const BillingStartView = () => {
     const automationProduct = useAppSelector(getCurrentAutomationProduct)
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const smsProduct = useAppSelector(getCurrentSMSProduct)
+    const convertProduct = useAppSelector(getCurrentConvertProduct)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const payment = useAppSelector(paymentMethod)
     const isPaymentShopify = payment === 'shopify'
@@ -263,48 +266,47 @@ const BillingStartView = () => {
         }
     }, [currentUsage, dispatch, isCurrentHelpdeskLegacy, periodEnd])
 
-    // A separate useEffect to avoid re-rendering notification on set convert banner
-    useEffect(() => {
-        if (!currentUsage?.convert || convertBanner) {
-            return
+    const [
+        {loading: isLoadingConvertBundleCheck, value: convertBundleCheckValue},
+        handleConvertBundleCheck,
+    ] = useAsyncFn(async () => {
+        const client = await getRevenueAddonApiClient()
+        const {data: bundleList} = await client.list_bundle_installation()
+        if (bundleList.length > 0) {
+            return true
         }
 
-        const setBannerForConvert = async () => {
-            const client = await getRevenueAddonApiClient()
-            const {data: bundleList} = await client.list_bundle_installation()
-            if (bundleList.length > 0) {
-                return
-            }
-
-            setConvertBanner({
-                description: 'Get started with your Convert plan',
-                type: AlertType.Info,
+        setConvertBanner({
+            description: 'Get started with your Convert plan',
+            type: AlertType.Info,
+        })
+        void dispatch(
+            notify({
+                message: `Your Convert subscription has been activated!`,
+                style: NotificationStyle.Banner,
+                status: NotificationStatus.Success,
+                actionHTML: (
+                    <a href="/app/settings/revenue/bundles" rel="noreferrer">
+                        Set Up Convert
+                    </a>
+                ),
             })
-            void dispatch(
-                notify({
-                    message: `Your Convert subscription has been activated!`,
-                    style: NotificationStyle.Banner,
-                    status: NotificationStatus.Success,
-                    actionHTML: (
-                        <a
-                            href="/app/settings/revenue/bundles"
-                            rel="noreferrer"
-                        >
-                            Set Up Convert
-                        </a>
-                    ),
-                })
-            )
-        }
+        )
 
-        void setBannerForConvert()
-    }, [
-        currentUsage,
-        dispatch,
-        isCurrentHelpdeskLegacy,
-        periodEnd,
-        convertBanner,
-    ])
+        return true
+    }, [])
+
+    useEffect(() => {
+        if (
+            convertProduct &&
+            !isLoadingConvertBundleCheck &&
+            !convertBundleCheckValue
+        ) {
+            void handleConvertBundleCheck()
+        }
+        // trigger useEffect only when convertProduct is changed
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [convertProduct])
 
     if (!hasAccessToNewBilling) {
         return null
