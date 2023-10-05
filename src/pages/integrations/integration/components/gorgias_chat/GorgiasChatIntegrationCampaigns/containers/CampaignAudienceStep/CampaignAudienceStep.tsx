@@ -19,6 +19,7 @@ import {SingleCampaignInViewOperators} from '../../types/enums/SingleCampaignInV
 
 import {TriggersProvider} from '../TriggersProvider'
 import SetupConvertBanner from '../../components/SetupConvertBanner/SetupConvertBanner'
+import {AdvancedTriggersTooltip} from '../../components/AdvancedTriggersTooltip'
 
 type Props = {
     count?: number
@@ -120,6 +121,9 @@ export const CampaignAudienceStep = ({
                     isShopifyStore={isShopifyStore}
                     isConvertSubscriber={isConvertSubscriber}
                     onClick={addTrigger}
+                />
+                <AdvancedTriggersTooltip
+                    isConvertSubscriber={isConvertSubscriber}
                 />
             </div>
 

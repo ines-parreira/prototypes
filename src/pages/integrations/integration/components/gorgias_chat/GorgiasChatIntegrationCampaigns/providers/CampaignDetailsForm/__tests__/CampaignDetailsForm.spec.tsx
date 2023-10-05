@@ -23,7 +23,15 @@ import {CampaignTriggerKey} from '../../../types/enums/CampaignTriggerKey.enum'
 
 jest.mock('utils/launchDarkly')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
-
+jest.mock(
+    'pages/settings/new_billing/components/ConvertSubscriptionModal',
+    () => {
+        return jest.fn(() => {
+            // This is a mock implementation of ConvertSubscriptionModal
+            return <div data-testid="mock-convert-subscription-modal" />
+        })
+    }
+)
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {integrations: fromJS(integrationsState)} as RootState
 
