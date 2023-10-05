@@ -8,19 +8,37 @@ import configureMockStore from 'redux-mock-store'
 
 import MockAdapter from 'axios-mock-adapter'
 import {fireEvent, render, waitFor} from '@testing-library/react'
-import {IntegrationType} from 'models/integration/types'
+import {IntegrationType, ShopifyIntegrationMeta} from 'models/integration/types'
 
 import client from 'models/api/resources'
 import {flushPromises} from 'utils/testing'
 
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {BundleInstallView} from '../BundleInstallView'
-import * as isConvertSubscriberHook from '../../../../../common/hooks/useIsConvertSubscriber'
 
 const mockStore = configureMockStore([thunk])
 
 const mockedServer = new MockAdapter(client)
 
 const defaultState = {
+    integrations: fromJS({
+        integrations: [
+            {
+                id: 1,
+                type: IntegrationType.Shopify,
+                name: 'My shopify store',
+                meta: {
+                    oauth: {
+                        status: 'success',
+                        scope: `['read_script_tags', 'write_script_tags']`,
+                    },
+                } as Partial<ShopifyIntegrationMeta> as unknown as ShopifyIntegrationMeta,
+            },
+        ],
+    }),
+}
+
+const defaultStateWithoutScopes = {
     integrations: fromJS({
         integrations: [
             {
@@ -85,5 +103,26 @@ describe('<BundleInstallView />', () => {
                 JSON.stringify({integration_id: 1})
             )
         })
+    })
+
+    it('cant submit form when using 1-click installation for Shopify without scopes', () => {
+        const {getByText} = render(
+            <MemoryRouter>
+                <Provider store={mockStore(defaultStateWithoutScopes)}>
+                    <BundleInstallView />
+                </Provider>
+            </MemoryRouter>
+        )
+
+        fireEvent.click(getByText('Select a store'))
+        fireEvent.click(getByText('My shopify store'))
+
+        expect(getByText(/Update Shopify app permissions/i)).toBeInTheDocument()
+
+        expect(
+            getByText('Install', {
+                selector: 'button',
+            }).getAttribute('aria-disabled')
+        ).toBe('true')
     })
 })

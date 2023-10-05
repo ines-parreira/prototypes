@@ -1,5 +1,5 @@
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
@@ -29,6 +29,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import history from 'pages/history'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import warningIcon from 'assets/img/icons/warning.svg'
 import {transformBundleError} from '../../utils/transformBundleError'
 import pageCss from './BundlesView.less'
 
@@ -52,9 +54,36 @@ export const BundleInstallView = () => {
 
     const [hasStoreError, setHasStoreError] = useState(false)
 
+    const currentStoreIntegrationId = useMemo((): number | null => {
+        if (!currentStoreIntegration) {
+            return null
+        }
+        return currentStoreIntegration?.get('id') as number
+    }, [currentStoreIntegration])
+
+    const showUpdatePermissionsBanner = useMemo(() => {
+        if (
+            !currentStoreIntegration ||
+            currentInstallationMethod === RevenueBundleInstallationMethod.Manual
+        ) {
+            return false
+        }
+
+        const scopes = currentStoreIntegration?.getIn([
+            'meta',
+            'oauth',
+            'scope',
+        ]) as List<string> | undefined
+
+        return (
+            !scopes?.includes('write_script_tags') ||
+            !scopes?.includes('read_script_tags')
+        )
+    }, [currentInstallationMethod, currentStoreIntegration])
+
     const [{loading: isSubmitting}, installBundle] = useAsyncFn(async () => {
         setHasStoreError(!currentStoreIntegration)
-        if (!currentStoreIntegration) {
+        if (!currentStoreIntegrationId) {
             return
         }
 
@@ -65,14 +94,11 @@ export const BundleInstallView = () => {
             action = 'manual-install'
         }
 
-        const integrationId =
-            currentStoreIntegration && currentStoreIntegration?.get('id')
-
         try {
             const {data} = await client.post<RevenueBundleActionResponse>(
                 `/api/revenue-addon-bundle/${action}/`,
                 {
-                    integration_id: integrationId,
+                    integration_id: currentStoreIntegrationId,
                 }
             )
 
@@ -89,13 +115,13 @@ export const BundleInstallView = () => {
                 notify(
                     transformBundleError(
                         e,
-                        "Couldn't install bundle",
-                        integrationId
+                        "We couldn't install the bundle. Please try again.",
+                        currentStoreIntegrationId
                     )
                 )
             )
         }
-    }, [currentStoreIntegration])
+    }, [currentStoreIntegration, currentStoreIntegrationId])
 
     const isConvertSubscriber = useIsConvertSubscriber()
     if (!isConvertSubscriber) {
@@ -148,16 +174,43 @@ export const BundleInstallView = () => {
                                 setCurrentStoreIntegration(storeIntegration)
                             }}
                             hasError={hasStoreError}
-                            storeIntegrationId={
-                                currentStoreIntegration &&
-                                currentStoreIntegration?.get('id')
-                            }
+                            storeIntegrationId={currentStoreIntegrationId}
                         />
                         {hasStoreError && (
                             <div className={pageCss.error}>
                                 This field is required.
                             </div>
                         )}
+                        {showUpdatePermissionsBanner &&
+                            currentStoreIntegrationId && (
+                                <Alert
+                                    className="mt-4"
+                                    type={AlertType.Warning}
+                                >
+                                    <p className={pageCss.alertText}>
+                                        <img
+                                            src={warningIcon}
+                                            alt="icon"
+                                            className={pageCss.alertBannerIcon}
+                                        />
+                                        <b>
+                                            Update Shopify app permissions to
+                                            use 1-click installation
+                                        </b>
+                                    </p>
+                                    <p>
+                                        Please go to the{' '}
+                                        <Link
+                                            to={`/app/settings/integrations/shopify/${currentStoreIntegrationId}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Shopify integration settings page
+                                        </Link>{' '}
+                                        and click <b>Update App Permissions</b>.
+                                    </p>
+                                </Alert>
+                            )}
                     </div>
                     <div className={pageCss.section}>
                         <div className={pageCss.sectionHeading}>
@@ -198,6 +251,7 @@ export const BundleInstallView = () => {
                         <Button
                             onClick={installBundle}
                             isLoading={isSubmitting}
+                            isDisabled={showUpdatePermissionsBanner}
                         >
                             {currentInstallationMethod ===
                             RevenueBundleInstallationMethod.OneClick
