@@ -16,7 +16,7 @@ export const SUBSCRIPTION_MANAGEMENT: WorkflowTemplate = {
     ): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,
-            name: 'Warranty policy',
+            name: 'Subscription management',
             account_id,
             entrypoint: {
                 label: `🗓️ I need help managing my subscription`,
