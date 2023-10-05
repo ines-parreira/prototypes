@@ -13,7 +13,6 @@ import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
@@ -23,6 +22,7 @@ import {
     LanguageItem,
     mapIntegrationLanguagesToLanguagePicker,
     mapLanguagePickerToIntegrationLanguages,
+    getGorgiasChatLanguageOptions,
 } from 'config/integrations/gorgias_chat'
 
 import {
@@ -121,6 +121,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
 
     const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
 
@@ -432,7 +433,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 </div>
                                 <LanguagePicker
                                     languages={languagePickerLanguages}
-                                    availableLanguages={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                    availableLanguages={getGorgiasChatLanguageOptions(
+                                        enableNewLanguages
+                                    ).toJS()}
                                     onSelectLanguageChange={(languages) =>
                                         handleLanguageChange(languages)
                                     }
@@ -450,7 +453,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                             typeof SelectField
                                         >['onChange']
                                     }
-                                    options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                    options={getGorgiasChatLanguageOptions(
+                                        enableNewLanguages
+                                    ).toJS()}
                                     className={css.languageSelect}
                                     dropdownMenuClassName={
                                         css.languageSelectDropdownMenu

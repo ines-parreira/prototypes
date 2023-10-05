@@ -80,7 +80,7 @@ declare namespace Components {
        */
       deleted_datetime?: string | null; // date-time
       category_id: number | null;
-      available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
       help_center_id: number;
       id: number;
     }
@@ -92,7 +92,7 @@ declare namespace Components {
       deleted_datetime?: string | null; // date-time
       category_id: number | null;
       help_center_id: number;
-      available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
       rating: {
         up: number;
         down: number;
@@ -105,7 +105,7 @@ declare namespace Components {
         excerpt: string;
         content: string;
         slug: string;
-        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
         article_id: number;
         category_id: number | null;
         article_unlisted_id: string;
@@ -133,7 +133,7 @@ declare namespace Components {
       excerpt: string;
       content: string;
       slug: string;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -183,7 +183,7 @@ declare namespace Components {
       excerpt: string;
       content: string;
       slug: string;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -206,7 +206,7 @@ declare namespace Components {
       excerpt: string;
       content: string;
       slug: string;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -228,7 +228,7 @@ declare namespace Components {
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
       unlisted_id: string;
-      available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
       category_id: number | null;
       help_center_id: number;
       id: number;
@@ -325,7 +325,7 @@ declare namespace Components {
       category_id: number;
       category_unlisted_id: string;
       parent_category_id: number | null;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       seo_meta: {
         title: string | null;
         description: string | null;
@@ -365,7 +365,7 @@ declare namespace Components {
       unlisted_id: string;
       category_id: number | null;
       help_center_id: number;
-      available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
       translation_versions: {
         current: {
           created_datetime: string; // date-time
@@ -374,7 +374,7 @@ declare namespace Components {
           title: string;
           excerpt: string;
           slug: string;
-          locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+          locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
           article_id: number;
           category_id: number | null;
           article_unlisted_id: string;
@@ -392,7 +392,7 @@ declare namespace Components {
           title: string;
           excerpt: string;
           slug: string;
-          locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+          locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
           article_id: number;
           category_id: number | null;
           article_unlisted_id: string;
@@ -414,7 +414,7 @@ declare namespace Components {
         title: string;
         excerpt: string;
         slug: string;
-        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
         article_id: number;
         category_id: number | null;
         article_unlisted_id: string;
@@ -432,7 +432,7 @@ declare namespace Components {
         title: string;
         excerpt: string;
         slug: string;
-        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
         article_id: number;
         category_id: number | null;
         article_unlisted_id: string;
@@ -459,7 +459,7 @@ declare namespace Components {
       deleted_datetime?: string | null; // date-time
       unlisted_id: string;
       help_center_id: number;
-      available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
       translation: {
         /**
          * Creation date
@@ -476,7 +476,7 @@ declare namespace Components {
         category_id: number;
         category_unlisted_id: string;
         parent_category_id: number | null;
-        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
         seo_meta: {
           title: string | null;
           description: string | null;
@@ -510,7 +510,7 @@ declare namespace Components {
       deleted_datetime?: string | null; // date-time
       unlisted_id: string;
       help_center_id: number;
-      available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      available_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
       translation: LocalCategoryTranslation;
       id: number;
     }
@@ -614,7 +614,7 @@ declare namespace Components {
        * example:
        * en-US
        */
-      default_locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * Source of the creation of the contact form
        * example:
@@ -774,7 +774,7 @@ declare namespace Components {
          * example:
          * fr-FR
          */
-        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
         /**
          * The title of the article in the `locale`'s translation.
          * example:
@@ -839,7 +839,7 @@ declare namespace Components {
        * example:
        * fr-FR
        */
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * The title of the article in the `locale`'s translation.
        * example:
@@ -928,7 +928,7 @@ declare namespace Components {
          * example:
          * fr-FR
          */
-        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
         /**
          * If the parent_category_is set to null change the category's parent to the root category
          * If it's set to a number set it to that specific category
@@ -988,7 +988,7 @@ declare namespace Components {
        * example:
        * fr-FR
        */
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * If the parent_category_is set to null change the category's parent to the root category
        * If it's set to a number set it to that specific category
@@ -1061,7 +1061,7 @@ declare namespace Components {
        * example:
        * en-US
        */
-      default_locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * Email integration used to receive this contact form inquiries
        * example:
@@ -1119,7 +1119,7 @@ declare namespace Components {
        * example:
        * fr-FR
        */
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * The SEO meta attributes of the help center in the `locale`'s translation.
        */
@@ -1165,7 +1165,7 @@ declare namespace Components {
        * mysubdomain
        */
       subdomain?: string;
-      default_locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * Should be a valid URL.
        */
@@ -1247,7 +1247,7 @@ declare namespace Components {
        * example:
        * fr-FR
        */
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * The group of the navigation link.
        */
@@ -1428,8 +1428,8 @@ declare namespace Components {
       name: string;
       subdomain: string;
       deactivated_datetime: string | null; // date-time
-      readonly default_locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
-      supported_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      readonly default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      supported_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
       favicon_url?: string | null;
       brand_logo_url?: string | null;
       brand_logo_light_url?: string | null;
@@ -1462,6 +1462,7 @@ declare namespace Components {
        * 2
        */
       automation_settings_id: number | null;
+      account_id: number;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
     }
@@ -1482,8 +1483,8 @@ declare namespace Components {
       name: string;
       subdomain: string;
       deactivated_datetime: string | null; // date-time
-      readonly default_locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
-      supported_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      readonly default_locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      supported_locales: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
       favicon_url?: string | null;
       brand_logo_url?: string | null;
       brand_logo_light_url?: string | null;
@@ -1534,7 +1535,7 @@ declare namespace Components {
       banner_text: string | null;
       banner_image_url?: string | null;
       banner_image_vertical_offset: number;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       seo_meta: {
         title: string | null;
         description: string | null;
@@ -1609,7 +1610,7 @@ declare namespace Components {
       excerpt: string;
       content: string;
       slug: string;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -1643,7 +1644,7 @@ declare namespace Components {
       category_id: number;
       category_unlisted_id: string;
       parent_category_id: number | null;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       seo_meta: {
         title: string | null;
         description: string | null;
@@ -1667,7 +1668,7 @@ declare namespace Components {
     }
     export interface LocaleDto {
       name: string;
-      code: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      code: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
     }
     export interface NavigationLinkDto {
       /**
@@ -1685,7 +1686,7 @@ declare namespace Components {
       id: number;
       label: string;
       value: string;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       group: "header" | "footer";
       meta?: NavigationLinkMeta;
       help_center_id: number;
@@ -1705,7 +1706,7 @@ declare namespace Components {
       title: string;
       excerpt: string;
       slug: string;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       article_id: number;
       category_id: number | null;
       article_unlisted_id: string;
@@ -2024,7 +2025,7 @@ declare namespace Components {
        * example:
        * en-US
        */
-      default_locale?: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      default_locale?: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * Email integration used to receive this contact form inquiries
        * example:
@@ -2170,7 +2171,7 @@ declare namespace Components {
        * mysubdomain
        */
       subdomain?: string;
-      default_locale?: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      default_locale?: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       /**
        * Should be a valid URL.
        */
@@ -2369,7 +2370,7 @@ declare namespace Components {
     export interface WorkflowHandoverDto {
       contact_form_uid?: string;
       help_center_id?: number;
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      locale: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       workflow_entrypoint_label: string;
       workflow_configuration_id: string;
       workflow_execution_id: string;
@@ -2566,6 +2567,18 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.CreateHelpCenterWithAccountIdDto;
     namespace Responses {
       export type $201 = Components.Schemas.HelpCenterDto;
+    }
+  }
+  namespace CreateHelpCenterShopifyPageEmbedment {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export type RequestBody = Components.Schemas.CreateShopifyPageEmbedmentDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.PageEmbedmentDto;
     }
   }
   namespace CreateHelpCenterTranslation {
@@ -2789,7 +2802,7 @@ declare namespace Paths {
     namespace Parameters {
       export type HelpCenterId = number;
       export type Id = number;
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       export type LocaleFallback = boolean;
       export type VersionStatus = "latest_draft" | "current";
     }
@@ -2827,7 +2840,7 @@ declare namespace Paths {
     namespace Parameters {
       export type HelpCenterId = number;
       export type Id = number;
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       export type LocaleFallback = boolean;
     }
     export interface PathParameters {
@@ -2860,7 +2873,7 @@ declare namespace Paths {
       export type Depth = number;
       export type Fields = string[];
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type ParentCategoryId = number;
@@ -3005,7 +3018,7 @@ declare namespace Paths {
     namespace Parameters {
       export type Group = "header" | "footer";
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
@@ -3081,7 +3094,7 @@ declare namespace Paths {
       export type HasCategory = boolean;
       export type HelpCenterId = number;
       export type Ids = number[];
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type Page = any;
@@ -3109,7 +3122,7 @@ declare namespace Paths {
     namespace Parameters {
       export type HasArticles = boolean;
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type Page = any;
@@ -3135,7 +3148,7 @@ declare namespace Paths {
       export type CategoryId = number;
       export type HelpCenterId = number;
       export type Ids = number[];
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type Page = any;
@@ -3281,7 +3294,7 @@ declare namespace Paths {
     namespace Parameters {
       export type Group = "header" | "footer";
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
       export type Page = any;
@@ -3355,7 +3368,7 @@ declare namespace Paths {
     namespace Parameters {
       export type Group = "header" | "footer";
       export type HelpCenterId = number;
-      export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      export type Locale = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
@@ -4364,6 +4377,18 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListContactFormShopifyPages.Responses.$200>
+  /**
+   * createHelpCenterShopifyPageEmbedment - Create a Help Center Form Shopify Page Embedment
+   * 
+   * The creation endpoint accepts 2 payloads:
+   *     - {title: string; pageUrlPath: string} - embed in a new page
+   *     - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page
+   */
+  'createHelpCenterShopifyPageEmbedment'(
+    parameters?: Parameters<Paths.CreateHelpCenterShopifyPageEmbedment.PathParameters> | null,
+    data?: Paths.CreateHelpCenterShopifyPageEmbedment.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateHelpCenterShopifyPageEmbedment.Responses.$201>
 }
 
 export interface PathsDictionary {
@@ -5270,6 +5295,20 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListContactFormShopifyPages.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/shopify-page-embedments']: {
+    /**
+     * createHelpCenterShopifyPageEmbedment - Create a Help Center Form Shopify Page Embedment
+     * 
+     * The creation endpoint accepts 2 payloads:
+     *     - {title: string; pageUrlPath: string} - embed in a new page
+     *     - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateHelpCenterShopifyPageEmbedment.PathParameters> | null,
+      data?: Paths.CreateHelpCenterShopifyPageEmbedment.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateHelpCenterShopifyPageEmbedment.Responses.$201>
   }
 }
 

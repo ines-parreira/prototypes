@@ -81,9 +81,9 @@ export const HelpCenterTable: React.FC<Props> = ({
                                     defaultLanguage={
                                         locales[helpCenter.default_locale]
                                     }
-                                    languageList={helpCenter.supported_locales.map(
-                                        (code) => locales[code]
-                                    )}
+                                    languageList={helpCenter.supported_locales
+                                        .filter((code) => locales[code])
+                                        .map((code) => locales[code])}
                                 />
                             </BodyCell>
                             <BodyCell>

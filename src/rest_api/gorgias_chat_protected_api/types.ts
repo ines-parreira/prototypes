@@ -27,6 +27,10 @@ export type TextsMultiLanguage = {
     [LanguageChat.Norwegian]: TextsPerLanguage
     [LanguageChat.Spanish]: TextsPerLanguage
     [LanguageChat.Swedish]: TextsPerLanguage
+    [LanguageChat.EnglishGb]: TextsPerLanguage
+    [LanguageChat.Finnish]: TextsPerLanguage
+    [LanguageChat.PortugueseBrazil]: TextsPerLanguage
+    [LanguageChat.Japanese]: TextsPerLanguage
 }
 
 export type Texts = TextsLegacyMonoLanguage | TextsMultiLanguage

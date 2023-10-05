@@ -1,5 +1,6 @@
 export type ChannelLanguageCode =
     | 'en-US'
+    | 'en-GB'
     | 'fr-FR'
     | 'fr-CA'
     | 'es-ES'
@@ -10,6 +11,9 @@ export type ChannelLanguageCode =
     | 'no-NO'
     | 'it-IT'
     | 'sv-SE'
+    | 'fi-FI'
+    | 'ja-JP'
+    | 'pt-BR'
 
 type GetShortCode<
     C extends string,

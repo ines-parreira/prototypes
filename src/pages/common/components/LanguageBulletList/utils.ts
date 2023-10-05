@@ -9,6 +9,10 @@ import itIt from 'assets/img/flags/it-it.svg'
 import noNo from 'assets/img/flags/no-no.svg'
 import esEs from 'assets/img/flags/es-es.svg'
 import svSe from 'assets/img/flags/sv-se.svg'
+import fiFi from 'assets/img/flags/fi-fi.svg'
+import ptBr from 'assets/img/flags/pt-br.svg'
+import jaJp from 'assets/img/flags/ja-jp.svg'
+import enGb from 'assets/img/flags/en-gb.svg'
 
 import {Locale} from '../../../../models/helpCenter/types'
 
@@ -23,11 +27,16 @@ const flagsMap: {[key: string]: string} = {
     sv: 'sv-se',
     en: 'en-us',
     fr: 'fr-fr',
+    pt: 'pt-br',
+    fi: 'fi-fi',
+    ja: 'ja-jp',
 }
 
 // TODO: create ENUM from FLAGS somewhere in a shared folder
 const FLAGS: {[key: string]: string} = {
     'en-us': enUs,
+    'en-gb': enGb,
+    'fi-fi': fiFi,
     'fr-fr': frFr,
     'fr-ca': frCa,
     'cs-cz': csCz,
@@ -38,6 +47,8 @@ const FLAGS: {[key: string]: string} = {
     'no-no': noNo,
     'es-es': esEs,
     'sv-se': svSe,
+    'pt-br': ptBr,
+    'ja-jp': jaJp,
 }
 
 export function getEmojiFlag(code: string): string {

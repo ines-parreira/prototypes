@@ -2,6 +2,7 @@ import {useEffect, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {List, Map, fromJS} from 'immutable'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Language} from 'constants/languages'
 import {
     mapLanguageOptionsToLanguageDropdown,
@@ -12,6 +13,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {IntegrationType} from 'models/integration/constants'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {LanguageItemRow} from './types'
 
 const getLanguageLabel = (languageItem: LanguageItem) => {
@@ -37,10 +39,15 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
     loading,
 }: UseGorgiasChatIntegrationLanguagesTableProps) => {
     const [languages, setLanguages] = useState<LanguageItem[]>([])
+    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
 
     const languagesAvailable = useMemo(
-        () => mapLanguageOptionsToLanguageDropdown(integration),
-        [integration]
+        () =>
+            mapLanguageOptionsToLanguageDropdown(
+                integration,
+                enableNewLanguages
+            ),
+        [integration, enableNewLanguages]
     )
 
     const languagesRows: LanguageItemRow[] = useMemo(() => {

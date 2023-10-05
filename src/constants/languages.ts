@@ -1,33 +1,41 @@
 export enum Language {
+    Czech = 'cz',
+    Danish = 'da',
+    Dutch = 'nl',
+    EnglishGb = 'en-GB',
     EnglishUs = 'en-US',
+    Finnish = 'fi',
     French = 'fr',
     FrenchCa = 'fr-CA',
     FrenchFr = 'fr-FR',
-    Spanish = 'es',
-    Danish = 'da',
-    Swedish = 'sv',
-    Dutch = 'nl',
-    Italian = 'it',
     German = 'de',
+    Italian = 'it',
+    Japanese = 'ja',
     Norwegian = 'no',
-    Czech = 'cz',
+    PortugueseBrazil = 'pt-BR',
+    Spanish = 'es',
+    Swedish = 'sv',
 }
 
 /**
  * Chat widget does not use `French = 'fr'`
  */
 export enum LanguageChat {
+    Czech = 'cz',
+    Danish = 'da',
+    Dutch = 'nl',
+    EnglishGb = 'en-GB',
     EnglishUs = 'en-US',
+    Finnish = 'fi',
     FrenchCa = 'fr-CA',
     FrenchFr = 'fr-FR',
-    Spanish = 'es',
-    Danish = 'da',
-    Swedish = 'sv',
-    Dutch = 'nl',
-    Italian = 'it',
     German = 'de',
+    Italian = 'it',
+    Japanese = 'ja',
     Norwegian = 'no',
-    Czech = 'cz',
+    PortugueseBrazil = 'pt-BR',
+    Spanish = 'es',
+    Swedish = 'sv',
 }
 
 export enum LanguageTimeFormat {

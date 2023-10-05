@@ -27,6 +27,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             shop_name: null,
             email_integration: null,
             automation_settings_id: null,
+            account_id: 1,
         },
         {
             id: 2,
@@ -53,6 +54,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             shop_name: null,
             email_integration: null,
             automation_settings_id: null,
+            account_id: 1,
         },
         {
             id: 3,
@@ -79,6 +81,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             shop_name: null,
             email_integration: null,
             automation_settings_id: null,
+            account_id: 1,
         },
         {
             id: 4,
@@ -105,6 +108,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             shop_name: null,
             email_integration: null,
             automation_settings_id: null,
+            account_id: 1,
         },
     ],
     object: 'list',

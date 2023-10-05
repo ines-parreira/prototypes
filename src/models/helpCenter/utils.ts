@@ -63,6 +63,7 @@ export function flattenCategories(
 function assertIsLocaleCode(code: unknown): asserts code is LocaleCode {
     const allowedCodes = [
         'en-US',
+        'en-GB',
         'fr-FR',
         'fr-CA',
         'es-ES',
@@ -73,6 +74,9 @@ function assertIsLocaleCode(code: unknown): asserts code is LocaleCode {
         'no-NO',
         'it-IT',
         'sv-SE',
+        'fi-FI',
+        'ja-JP',
+        'pt-BR',
     ]
     if (allowedCodes.indexOf(String(code)) === -1) {
         throw new TypeError(`${String(code)} is not a supported locale code`)

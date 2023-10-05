@@ -2,6 +2,7 @@ import React, {useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 import {ReactCountryFlag} from 'react-country-flag'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -12,6 +13,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     LanguageCode,
     supportedLanguages,
@@ -34,13 +36,22 @@ export default function WorkflowLanguageSelect({
 }: Props) {
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
-    const sortedLanguages = useMemo(
-        () => [
+    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
+
+    const sortedLanguages = useMemo(() => {
+        let filteredLanguages = [
             ...supportedLanguages.filter(({code}) => available.includes(code)),
             ...supportedLanguages.filter(({code}) => !available.includes(code)),
-        ],
-        [available]
-    )
+        ]
+
+        if (!enableNewLanguages) {
+            const unsupportedCodes = ['en-GB', 'fi-FI', 'ja-JP', 'pt-BR']
+            filteredLanguages = filteredLanguages.filter(
+                ({code}) => !unsupportedCodes.includes(code)
+            )
+        }
+        return filteredLanguages
+    }, [available, enableNewLanguages])
     const [
         languagePendingDeletionConfirmation,
         setLanguagePendingDeletionConfirmation,

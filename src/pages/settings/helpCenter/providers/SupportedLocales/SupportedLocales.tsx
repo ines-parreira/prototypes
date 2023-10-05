@@ -6,6 +6,8 @@ import React, {
     useState,
 } from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {Locale} from '../../../../../models/helpCenter/types'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 
@@ -18,18 +20,32 @@ type Props = {
 export const SupportedLocalesProvider: React.FC<Props> = ({children}) => {
     const {client} = useHelpCenterApi()
     const [locales, setLocales] = useState<Locale[]>([])
+    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
 
     useEffect(() => {
         async function init() {
             if (client && locales.length === 0) {
                 const response = await client.listLocales()
 
-                setLocales(response.data)
+                let localesResponse = response.data
+
+                if (!enableNewLanguages) {
+                    const unsupportedCodes = [
+                        'en-GB',
+                        'fi-FI',
+                        'ja-JP',
+                        'pt-BR',
+                    ]
+                    localesResponse = localesResponse.filter(
+                        ({code}) => !unsupportedCodes.includes(code)
+                    )
+                }
+                setLocales(localesResponse)
             }
         }
 
         void init()
-    }, [client, locales])
+    }, [client, locales, enableNewLanguages])
 
     return (
         <SupportedLocalesContext.Provider value={locales}>

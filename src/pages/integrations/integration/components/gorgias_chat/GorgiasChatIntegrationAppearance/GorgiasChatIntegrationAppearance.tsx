@@ -37,7 +37,6 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_OPTIONS,
@@ -45,6 +44,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS,
     isTextsMultiLanguage,
     LanguageItem,
+    getGorgiasChatLanguageOptions,
 } from 'config/integrations/gorgias_chat'
 import {LanguageChat} from 'constants/languages'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
@@ -234,6 +234,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
     const viewTranslateEdit =
         useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
     const shouldShowLauncherCustomization =
@@ -895,24 +896,23 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     className={css.formGroup}
                                     type="select"
                                     value={language}
-                                    options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                    options={getGorgiasChatLanguageOptions(
+                                        enableNewLanguages
+                                    ).toJS()}
                                     onChange={setLanguage}
                                     label="Language"
                                 >
-                                    {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
-                                        (option) => {
-                                            const value = option?.get('value')
-                                            const label = option?.get('label')
-                                            return (
-                                                <option
-                                                    key={value}
-                                                    value={value}
-                                                >
-                                                    {label}
-                                                </option>
-                                            )
-                                        }
-                                    )}
+                                    {getGorgiasChatLanguageOptions(
+                                        enableNewLanguages
+                                    ).map((option) => {
+                                        const value = option?.get('value')
+                                        const label = option?.get('label')
+                                        return (
+                                            <option key={value} value={value}>
+                                                {label}
+                                            </option>
+                                        )
+                                    })}
                                 </DEPRECATED_InputField>
                             )}
                         </div>

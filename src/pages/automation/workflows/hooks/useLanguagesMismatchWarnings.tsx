@@ -19,10 +19,16 @@ import useWorkflowApi from './useWorkflowApi'
 
 function getChannelLanguageLabel(l: ChannelLanguage): string {
     switch (l) {
+        case 'en-GB':
+            return 'English (GB)'
+        case 'en-US':
+            return 'English (US)'
         case 'fr-FR':
             return 'French (FR)'
         case 'fr-CA':
             return 'French (CA)'
+        case 'pt-BR':
+            return 'Portuguese (BR)'
     }
     switch (l.slice(0, 2)) {
         case 'en':
@@ -45,6 +51,10 @@ function getChannelLanguageLabel(l: ChannelLanguage): string {
             return 'Italian'
         case 'sv':
             return 'Swedish'
+        case 'fi':
+            return 'Finnish'
+        case 'ja':
+            return 'Japanese'
     }
     return 'Unknown'
 }

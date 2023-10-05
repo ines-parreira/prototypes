@@ -69,11 +69,13 @@ const WorkflowsList = ({
                                 defaultLanguage={
                                     getLanguageList(
                                         entrypoint.available_languages
-                                    )[0]
+                                    )[0] as any
                                 }
-                                languageList={getLanguageList(
-                                    entrypoint.available_languages
-                                ).reverse()}
+                                languageList={
+                                    getLanguageList(
+                                        entrypoint.available_languages
+                                    ).reverse() as any
+                                }
                             />
                         </BodyCell>
                         <BodyCell size="smallest">

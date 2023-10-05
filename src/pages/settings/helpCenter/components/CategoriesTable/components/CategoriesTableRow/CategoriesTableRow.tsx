@@ -130,7 +130,9 @@ const DroppableCategoriesTableRow = ({
 
     const languageList = useMemo(() => {
         if (category.available_locales.length > 0) {
-            return category.available_locales.map((code) => localesByCode[code])
+            return category.available_locales
+                .filter((code) => localesByCode[code])
+                .map((code) => localesByCode[code])
         }
 
         return [localesByCode[category.translation.locale]]

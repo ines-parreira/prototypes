@@ -1111,6 +1111,7 @@
                         "schema": {
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -1120,7 +1121,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ],
                             "type": "string"
                         }
@@ -1267,6 +1271,7 @@
                         "schema": {
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -1276,7 +1281,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ],
                             "type": "string"
                         }
@@ -1516,6 +1524,7 @@
                         "schema": {
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -1525,7 +1534,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ],
                             "type": "string"
                         }
@@ -1679,6 +1691,7 @@
                         "schema": {
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -1688,7 +1701,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ],
                             "type": "string"
                         }
@@ -1879,6 +1895,7 @@
                         "schema": {
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -1888,7 +1905,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ],
                             "type": "string"
                         }
@@ -2092,6 +2112,7 @@
                         "schema": {
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -2101,7 +2122,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ],
                             "type": "string"
                         }
@@ -2918,6 +2942,7 @@
                         "schema": {
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -2927,7 +2952,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ],
                             "type": "string"
                         }
@@ -3069,6 +3097,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -3078,7 +3107,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -3126,6 +3158,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -3135,7 +3168,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -3361,6 +3397,44 @@
                     }
                 },
                 "tags": ["contact-form-shopify-pages"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/shopify-page-embedments": {
+            "post": {
+                "operationId": "createHelpCenterShopifyPageEmbedment",
+                "summary": "Create a Help Center Form Shopify Page Embedment",
+                "description": "The creation endpoint accepts 2 payloads:\n    - {title: string; pageUrlPath: string} - embed in a new page\n    - {position: PageEmbedmentPosition, pageExternalId: string} - embed in an existing page",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateShopifyPageEmbedmentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageEmbedmentDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-shopify-page-embedments"]
             }
         }
     },
@@ -3760,6 +3834,7 @@
                     "default_locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -3769,7 +3844,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -3867,6 +3945,7 @@
                         "readOnly": true,
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -3876,7 +3955,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ]
                     },
                     "supported_locales": {
@@ -3885,6 +3967,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -3894,7 +3977,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -4169,6 +4255,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -4178,7 +4265,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -4280,6 +4370,7 @@
                         "readOnly": true,
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -4289,7 +4380,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ]
                     },
                     "supported_locales": {
@@ -4298,6 +4392,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -4307,7 +4402,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -4364,6 +4462,7 @@
                         "description": "Automation settings id in help center",
                         "example": 2
                     },
+                    "account_id": {"type": "number"},
                     "translations": {
                         "minItems": 1,
                         "type": "array",
@@ -4399,7 +4498,8 @@
                     "source",
                     "gaid",
                     "email_integration",
-                    "automation_settings_id"
+                    "automation_settings_id",
+                    "account_id"
                 ]
             },
             "HelpCentersListPageDto": {
@@ -4437,6 +4537,7 @@
                     "default_locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -4446,7 +4547,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -4616,6 +4720,7 @@
                         "example": "fr-FR",
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -4625,7 +4730,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -4861,6 +4969,7 @@
                     "code": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -4870,7 +4979,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     }
@@ -4909,6 +5021,7 @@
                         "example": "fr-FR",
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -4918,7 +5031,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -5019,6 +5135,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -5028,7 +5145,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -5100,6 +5220,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -5109,7 +5230,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -5171,6 +5295,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -5180,7 +5305,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -5314,6 +5442,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -5323,7 +5452,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -5404,6 +5536,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -5413,7 +5546,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -5464,6 +5600,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -5473,7 +5610,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -5542,6 +5682,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -5551,7 +5692,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -5621,6 +5765,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -5630,7 +5775,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -5698,6 +5846,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -5707,7 +5856,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -5772,6 +5924,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -5781,7 +5934,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -5840,6 +5996,7 @@
                             "type": "string",
                             "enum": [
                                 "en-US",
+                                "en-GB",
                                 "fr-FR",
                                 "fr-CA",
                                 "es-ES",
@@ -5849,7 +6006,10 @@
                                 "da-DK",
                                 "no-NO",
                                 "it-IT",
-                                "sv-SE"
+                                "sv-SE",
+                                "fi-FI",
+                                "ja-JP",
+                                "pt-BR"
                             ]
                         }
                     },
@@ -5891,6 +6051,7 @@
                         "example": "fr-FR",
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -5900,7 +6061,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -6003,6 +6167,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -6012,7 +6177,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -6092,6 +6260,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -6101,7 +6270,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -6362,6 +6534,7 @@
                         "example": "en-US",
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -6371,7 +6544,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -6470,6 +6646,7 @@
                         "example": "en-US",
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -6479,7 +6656,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -6586,6 +6766,7 @@
                         "example": "en-US",
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -6595,7 +6776,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -6774,6 +6958,7 @@
                         "example": "fr-FR",
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -6783,7 +6968,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -6821,6 +7009,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -6830,7 +7019,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },
@@ -6941,6 +7133,7 @@
                     "locale": {
                         "enum": [
                             "en-US",
+                            "en-GB",
                             "fr-FR",
                             "fr-CA",
                             "es-ES",
@@ -6950,7 +7143,10 @@
                             "da-DK",
                             "no-NO",
                             "it-IT",
-                            "sv-SE"
+                            "sv-SE",
+                            "fi-FI",
+                            "ja-JP",
+                            "pt-BR"
                         ],
                         "type": "string"
                     },

@@ -89,7 +89,8 @@ export type WorkflowTransition = {
 }
 
 export const supportedLanguages = [
-    {code: 'en-US', label: 'English'} as const,
+    {code: 'en-US', label: 'English (US)'} as const,
+    {code: 'en-GB', label: 'English (GB)'} as const,
     {code: 'fr-FR', label: 'French (FR)'} as const,
     {code: 'fr-CA', label: 'French (CA)'} as const,
     {code: 'es-ES', label: 'Spanish'} as const,
@@ -100,6 +101,9 @@ export const supportedLanguages = [
     {code: 'no-NO', label: 'Norwegian'} as const,
     {code: 'it-IT', label: 'Italian'} as const,
     {code: 'sv-SE', label: 'Swedish'} as const,
+    {code: 'fi-FI', label: 'Finnish'} as const,
+    {code: 'ja-JP', label: 'Japanese'} as const,
+    {code: 'pt-BR', label: 'Portuguese (BR)'} as const,
 ] as const
 export type LanguageCode = typeof supportedLanguages[number]['code']
 

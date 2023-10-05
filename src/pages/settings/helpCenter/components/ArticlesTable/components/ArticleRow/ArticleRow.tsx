@@ -76,7 +76,9 @@ export const ArticleRow = ({
 
     const languageList = useMemo(() => {
         if (article.available_locales.length > 0) {
-            return article.available_locales.map((code) => localesByCode[code])
+            return article.available_locales
+                .filter((code) => localesByCode[code])
+                .map((code) => localesByCode[code])
         }
 
         return [localesByCode[article.translation.locale]]

@@ -43,6 +43,7 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT_UI: List<
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
     fromJS([
         {value: Language.EnglishUs, label: 'English - US'},
+        {value: Language.EnglishGb, label: 'English - GB'},
         {value: Language.FrenchFr, label: 'French - FR'},
         {value: Language.FrenchCa, label: 'French - CA'},
         {value: Language.Spanish, label: 'Spanish'},
@@ -53,7 +54,40 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
         {value: Language.German, label: 'German'},
         {value: Language.Norwegian, label: 'Norwegian'},
         {value: Language.Czech, label: 'Czech'},
+        {value: Language.Finnish, label: 'Finnish'},
+        {value: Language.PortugueseBrazil, label: 'Portuguese - BR'},
+        {value: Language.Japanese, label: 'Japanese'},
     ])
+
+// TODO: remove this function and use GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS once all languages are supported without feature flag
+export const getGorgiasChatLanguageOptions = (
+    enableNewLanguages?: boolean
+): List<Map<string, string>> => {
+    const baseLanguages = [
+        {value: Language.EnglishUs, label: 'English - US'},
+        {value: Language.FrenchFr, label: 'French - FR'},
+        {value: Language.FrenchCa, label: 'French - CA'},
+        {value: Language.Spanish, label: 'Spanish'},
+        {value: Language.Danish, label: 'Danish'},
+        {value: Language.Swedish, label: 'Swedish'},
+        {value: Language.Italian, label: 'Italian'},
+        {value: Language.Dutch, label: 'Dutch'},
+        {value: Language.German, label: 'German'},
+        {value: Language.Norwegian, label: 'Norwegian'},
+        {value: Language.Czech, label: 'Czech'},
+    ]
+    const newLanguages = [
+        {value: Language.EnglishGb, label: 'English - GB'},
+        {value: Language.Finnish, label: 'Finnish'},
+        {value: Language.PortugueseBrazil, label: 'Portuguese - BR'},
+        {value: Language.Japanese, label: 'Japanese'},
+    ]
+
+    return fromJS([
+        ...baseLanguages,
+        ...(enableNewLanguages ? newLanguages : []),
+    ]) as List<Map<string, string>>
+}
 
 export const GORGIAS_CHAT_WIDGET_TEXTS: {
     [locale: string]: {[key: string]: string}
@@ -308,7 +342,8 @@ export const mapLanguagePickerToIntegrationLanguages = (
  * @returns List of languages that are not yet added to the integration to display in the language dropdown
  */
 export const mapLanguageOptionsToLanguageDropdown = (
-    integration: Map<any, any>
+    integration: Map<any, any>,
+    enableNewLanguages: boolean
 ): LanguagePickerItem[] => {
     const languageIntegration = integration.getIn([
         'meta',
@@ -320,7 +355,7 @@ export const mapLanguageOptionsToLanguageDropdown = (
         >) || fromJS([])
     ).toJS()
     const languageOptions: LanguagePickerItem[] =
-        GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()
+        getGorgiasChatLanguageOptions(enableNewLanguages).toJS()
 
     if (!languagesIntegration && !languageIntegration)
         return GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT_UI.toJS() as LanguagePickerItem[]

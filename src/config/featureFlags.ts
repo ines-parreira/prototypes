@@ -55,4 +55,5 @@ export enum FeatureFlagKey {
     NewVoiceCallUI = 'new-voice-call-ui',
     NavbarImprovements = 'navbar-improvements',
     DateAndTimeFormattingUserSetting = 'date-and-time-formatting-user-setting',
+    EnableNewLanguages = 'enable-new-languages',
 }
