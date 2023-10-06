@@ -21,6 +21,18 @@ export const isTicketEvent = (
     obj: Record<string, unknown>
 ): obj is TicketEvent => obj.isEvent as boolean
 
+export function isTicketMessageSourceType(
+    input: unknown
+): input is TicketMessageSourceType {
+    return Object.values<string>(TicketMessageSourceType).includes(
+        input as string
+    )
+}
+
+export function isTicketChannel(input: unknown): input is TicketChannel {
+    return Object.values<string>(TicketChannel).includes(input as string)
+}
+
 export const isTicketContactReasonSuggestion = (obj: Record<string, unknown>) =>
     obj.isContactReasonSuggestion as boolean
 

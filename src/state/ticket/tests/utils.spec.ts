@@ -1817,6 +1817,16 @@ describe('ticket utils', () => {
         it('should return the human readable string from unknown channel-like string', () => {
             expect(humanizeChannel('test-test_test')).toEqual('Test test test')
         })
+
+        it('should convert source types to channel names', () => {
+            expect(
+                humanizeChannel(TicketMessageSourceType.InternalNote)
+            ).toEqual('Internal Note')
+
+            expect(
+                humanizeChannel(TicketMessageSourceType.WhatsAppMessage)
+            ).toEqual('WhatsApp')
+        })
     })
 
     describe('buildFirstTicketMessage', () => {

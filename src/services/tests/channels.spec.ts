@@ -6,6 +6,7 @@ import {
     getChannelBySlug,
     getChannels,
     isLegacyChannel,
+    isNewChannel,
     toChannel,
 } from 'services/channels'
 import {IntegrationType} from 'models/integration/constants'
@@ -67,10 +68,33 @@ describe('services', () => {
                 expect(
                     isLegacyChannel(TicketMessageSourceType.FacebookMessenger)
                 ).toBe(true)
+                expect(
+                    isLegacyChannel(TicketMessageSourceType.WhatsAppMessage)
+                ).toBe(true)
             })
 
             it('should return false for new channels', () => {
                 expect(isLegacyChannel('tiktok-shop')).toBe(false)
+            })
+        })
+
+        describe('isNewChannel()', () => {
+            it('should return false for legacy channels', () => {
+                expect(isNewChannel('email')).toBe(false)
+                expect(isNewChannel(IntegrationType.Sms)).toBe(false)
+                expect(isNewChannel(TicketChannel.FacebookMention)).toBe(false)
+                expect(
+                    isNewChannel(TicketMessageSourceType.FacebookMessenger)
+                ).toBe(false)
+                expect(
+                    isNewChannel(TicketMessageSourceType.WhatsAppMessage)
+                ).toBe(false)
+            })
+
+            it('should return true for new channels', () => {
+                expect(isNewChannel('tiktok-shop')).toBe(true)
+                expect(isNewChannel('google-business-manager')).toBe(true)
+                expect(isNewChannel(toChannel('tiktok-shop')!)).toBe(true)
             })
         })
 

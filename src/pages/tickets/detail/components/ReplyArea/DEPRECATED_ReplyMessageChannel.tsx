@@ -25,8 +25,8 @@ import {RootState} from 'state/types'
 
 import ConvertToForwardPopover from './ConvertToForwardPopover'
 import MultiSelectAsyncField from './MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField'
-import MessageSourceFields from './MessageSourceFields/MessageSourceFields'
-import css from './ReplyMessageChannel.less'
+import DEPRECATED_MessageSourceFields from './MessageSourceFields/DEPRECATED_MessageSourceFields'
+import css from './DEPRECATED_ReplyMessageChannel.less'
 
 const changeReceiversAllowedSourceTypes = [
     TicketMessageSourceType.Email,
@@ -549,7 +549,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                     </UncontrolledDropdown>
                 </div>
                 {isNewMessagePublic ? (
-                    <MessageSourceFields
+                    <DEPRECATED_MessageSourceFields
                         canOpen={this.canChangeReceivers()}
                         isOpenDefault={this.state.isReceiversAreaOpen}
                         ref={(ref) => (this.multiSelectAsyncFieldRef = ref)}

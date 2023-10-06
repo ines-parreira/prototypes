@@ -56,4 +56,5 @@ export enum FeatureFlagKey {
     NavbarImprovements = 'navbar-improvements',
     DateAndTimeFormattingUserSetting = 'date-and-time-formatting-user-setting',
     EnableNewLanguages = 'enable-new-languages',
+    TaapNewReplyMessageChannelSelector = 'taap-new-reply-message-channel-selector',
 }

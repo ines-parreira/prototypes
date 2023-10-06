@@ -15,7 +15,8 @@ import {Tag} from 'models/tag/types'
 import {Team} from 'models/team/types'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {Event} from '../event/types'
+import {Event} from 'models/event/types'
+import {Integration} from 'models/integration/types'
 
 export type TicketSearchOptions = ApiPaginationParams &
     OrderParams<TicketSearchSortableProperties> & {
@@ -64,6 +65,13 @@ export type Ticket = {
     updated_datetime: string | null
     uri: string
     via: TicketVia
+    reply_options?: TicketReplyOptions
+}
+
+export type TicketReplyOptions = Record<string, TicketReplyOption>
+export type TicketReplyOption = {
+    answerable: boolean
+    integrations?: Array<Pick<Integration, 'id' | 'name'> & {address: string}>
 }
 
 type InternalTicketEvent = Pick<

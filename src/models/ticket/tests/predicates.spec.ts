@@ -8,6 +8,8 @@ import {
     isFailed,
     isGorgiasContactFormTicketMeta,
     isPending,
+    isTicketChannel,
+    isTicketMessageSourceType,
     shouldMessagesBeGrouped,
 } from '../predicates'
 import {TicketMessage, ActionStatus} from '../types'
@@ -298,6 +300,46 @@ describe('predicates', () => {
             }
 
             expect(isGorgiasContactFormTicketMeta(input)).toBeTruthy()
+        })
+    })
+
+    describe('isTicketMessageSourceType()', () => {
+        it('should return true for valid ticket message source types', () => {
+            expect(isTicketMessageSourceType('email')).toBe(true)
+            expect(isTicketMessageSourceType('sms')).toBe(true)
+            expect(
+                isTicketMessageSourceType(
+                    TicketMessageSourceType.WhatsAppMessage
+                )
+            ).toBe(true)
+        })
+
+        it('should return false for invalid ticket message source types', () => {
+            expect(isTicketMessageSourceType(null)).toBe(false)
+            expect(isTicketMessageSourceType(undefined)).toBe(false)
+            expect(isTicketMessageSourceType('nope')).toBe(false)
+            expect(isTicketMessageSourceType(123)).toBe(false)
+            expect(isTicketMessageSourceType(TicketChannel.WhatsApp)).toBe(
+                false
+            )
+        })
+    })
+
+    describe('isTicketChannel()', () => {
+        it('should return true for valid ticket channels', () => {
+            expect(isTicketChannel('email')).toBe(true)
+            expect(isTicketChannel('sms')).toBe(true)
+            expect(isTicketChannel(TicketChannel.WhatsApp)).toBe(true)
+        })
+
+        it('should return false for invalid ticket channels', () => {
+            expect(isTicketChannel(null)).toBe(false)
+            expect(isTicketChannel(undefined)).toBe(false)
+            expect(isTicketChannel('nope')).toBe(false)
+            expect(isTicketChannel(123)).toBe(false)
+            expect(
+                isTicketChannel(TicketMessageSourceType.WhatsAppMessage)
+            ).toBe(false)
         })
     })
 })

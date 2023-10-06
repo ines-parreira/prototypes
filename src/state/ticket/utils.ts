@@ -41,7 +41,10 @@ import {unescapeQuoteEntities} from 'utils/html'
 
 import {EventType} from 'models/event/types'
 import {humanize} from 'business/format'
-import {isGorgiasContactFormTicketMeta} from 'models/ticket/predicates'
+import {
+    isGorgiasContactFormTicketMeta,
+    isTicketMessageSourceType,
+} from 'models/ticket/predicates'
 import {getProperty} from './selectors'
 import {EMPTY_SENDER, TICKET_CHANNEL_NAMES} from './constants'
 import {TicketState} from './types'
@@ -1162,9 +1165,23 @@ export function normalizeAddress(
     return address.toLowerCase()
 }
 
-export function humanizeChannel(channel: string) {
-    const existing = TICKET_CHANNEL_NAMES[channel as TicketChannel]
-    if (existing) return existing
+export function humanizeChannel(channel: string): string {
+    const existing = TICKET_CHANNEL_NAMES[channel]
+    if (existing) {
+        return existing
+    }
+
+    if (isTicketMessageSourceType(channel)) {
+        if (channel === TicketMessageSourceType.InternalNote) {
+            return humanize(channel)
+        }
+
+        const channelFromSource = ticketConfig.sourceTypeToChannel(channel)
+        return (
+            TICKET_CHANNEL_NAMES[channelFromSource] ??
+            humanize(channelFromSource)
+        )
+    }
 
     return humanize(channel)
 }

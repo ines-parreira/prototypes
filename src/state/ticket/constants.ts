@@ -80,30 +80,29 @@ export const MERGE_TICKET = 'MERGE_TICKET'
 export const MERGE_CUSTOMER = 'MERGE_CUSTOMER'
 export const MERGE_CUSTOMER_EXTERNAL_DATA = 'MERGE_CUSTOMER_EXTERNAL_DATA'
 
-export const TICKET_CHANNEL_NAMES: Record<TicketChannel, string> =
-    Object.freeze({
-        [TicketChannel.Aircall]: 'Aircall',
-        [TicketChannel.Api]: 'Api',
-        [TicketChannel.Chat]: 'Chat',
-        [TicketChannel.ContactForm]: 'Contact Form',
-        [TicketChannel.Email]: 'Email',
-        [TicketChannel.FacebookMention]: 'Facebook Mention',
-        [TicketChannel.FacebookMessenger]: 'Facebook Messenger',
-        [TicketChannel.FacebookRecommendations]: 'Facebook Recommendations',
-        [TicketChannel.Facebook]: 'Facebook',
-        [TicketChannel.HelpCenter]: 'Help Center',
-        [TicketChannel.InstagramAdComment]: 'Instagram Ad Comment',
-        [TicketChannel.InstagramComment]: 'Instagram Comment',
-        [TicketChannel.InstagramDirectMessage]: 'Instagram Direct Message',
-        [TicketChannel.InstagramMention]: 'Instagram Mention',
-        [TicketChannel.InternalNote]: 'Internal Note',
-        [TicketChannel.Phone]: 'Phone',
-        [TicketChannel.Sms]: 'SMS',
-        [TicketChannel.TwitterDirectMessage]: 'Twitter Direct Message',
-        [TicketChannel.Twitter]: 'Twitter',
-        [TicketChannel.WhatsApp]: 'WhatsApp',
-        [TicketChannel.YotpoReview]: 'Yotpo Review',
-    })
+export const TICKET_CHANNEL_NAMES: Record<string, string> = Object.freeze({
+    [TicketChannel.Aircall]: 'Aircall',
+    [TicketChannel.Api]: 'Api',
+    [TicketChannel.Chat]: 'Chat',
+    [TicketChannel.ContactForm]: 'Contact Form',
+    [TicketChannel.Email]: 'Email',
+    [TicketChannel.FacebookMention]: 'Facebook Mention',
+    [TicketChannel.FacebookMessenger]: 'Facebook Messenger',
+    [TicketChannel.FacebookRecommendations]: 'Facebook Recommendations',
+    [TicketChannel.Facebook]: 'Facebook',
+    [TicketChannel.HelpCenter]: 'Help Center',
+    [TicketChannel.InstagramAdComment]: 'Instagram Ad Comment',
+    [TicketChannel.InstagramComment]: 'Instagram Comment',
+    [TicketChannel.InstagramDirectMessage]: 'Instagram Direct Message',
+    [TicketChannel.InstagramMention]: 'Instagram Mention',
+    [TicketChannel.InternalNote]: 'Internal Note',
+    [TicketChannel.Phone]: 'Phone',
+    [TicketChannel.Sms]: 'SMS',
+    [TicketChannel.TwitterDirectMessage]: 'Twitter Direct Message',
+    [TicketChannel.Twitter]: 'Twitter',
+    [TicketChannel.WhatsApp]: 'WhatsApp',
+    [TicketChannel.YotpoReview]: 'Yotpo Review',
+})
 
 export const EMPTY_SENDER = {name: '', address: ''}
 

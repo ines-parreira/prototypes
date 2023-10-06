@@ -3,7 +3,10 @@ import {ApiListResponseCursorPagination} from 'models/api/types'
 import {channelsQueryKeys, useListChannels} from 'models/channel/queries'
 import {listChannels} from 'models/channel/resources'
 import {Channel, ChannelLike, LegacyChannel} from 'models/channel/types'
-import {TicketChannel} from 'business/types/ticket'
+import {
+    isTicketChannel,
+    isTicketMessageSourceType,
+} from 'models/ticket/predicates'
 
 export type {
     Channel,
@@ -62,8 +65,11 @@ export function toChannels(input: ChannelLike[]): Channel[] {
 export function isLegacyChannel(
     channel: ChannelLike
 ): channel is LegacyChannel {
-    const name = toChannel(channel)?.slug
-    return name ? Object.values<string>(TicketChannel).includes(name) : false
+    return isTicketMessageSourceType(channel) || isTicketChannel(channel)
+}
+
+export function isNewChannel(channel: ChannelLike): channel is Channel {
+    return !isLegacyChannel(channel)
 }
 
 function mockPaginatedChannelsList(

@@ -12,6 +12,16 @@ export const channels: Channel[] = [
         updated_datetime: '2023-06-19T14:42:42.424242+00:00',
     },
     {
+        id: '23a01473-69f6-4fd3-8f91-301d2cddffb1',
+        live_messaging: false,
+        logo_url:
+            'https://gorgias-assets.gorgias.io/static/public/img/google-business-messenger.svg',
+        name: 'Google Business Messenger',
+        slug: 'google-business-messenger',
+        created_datetime: '2023-06-19T14:42:42.424242+00:00',
+        updated_datetime: '2023-06-19T14:42:42.424242+00:00',
+    },
+    {
         id: '8fca4b89-8929-4c99-ac91-0504c281102f',
         live_messaging: false,
         logo_url:

@@ -2,6 +2,10 @@ import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 
 import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {
     CHAT_SOURCE,
     EMAIL_SOURCE,
@@ -21,9 +25,9 @@ import {
 } from 'config/ticket'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
-import {ReplyMessageChannelContainer} from '../ReplyMessageChannel'
+import {ReplyMessageChannelContainer} from '../DEPRECATED_ReplyMessageChannel'
 
-jest.mock('../MessageSourceFields/MessageSourceFields', () => () => (
+jest.mock('../MessageSourceFields/DEPRECATED_MessageSourceFields', () => () => (
     <div>MessageSourceFields</div>
 ))
 jest.mock('../ConvertToForwardPopover', () => () => (
@@ -50,18 +54,26 @@ describe('ReplyMessageChannel component', () => {
     }
 
     it('new ticket', () => {
+        const ticket = fromJS({
+            reply_options: {
+                'internal-note': {
+                    answerable: true,
+                },
+            },
+        })
+
+        const store = configureMockStore([thunk])({
+            ticket,
+        })
+
         const {container} = render(
-            <ReplyMessageChannelContainer
-                {...minProps}
-                ticket={fromJS({
-                    reply_options: {
-                        'internal-note': {
-                            answerable: true,
-                        },
-                    },
-                })}
-                isNewMessagePublic
-            />
+            <Provider store={store}>
+                <ReplyMessageChannelContainer
+                    {...minProps}
+                    ticket={ticket}
+                    isNewMessagePublic
+                />
+            </Provider>
         )
         expect(container).toMatchSnapshot()
     })
@@ -177,35 +189,50 @@ describe('ReplyMessageChannel component', () => {
     })
 
     it('should render option for sending WhatsApp templates for new ticket', () => {
+        const ticket = fromJS({
+            reply_options: {},
+        })
+
+        const store = configureMockStore([thunk])({
+            ticket,
+        })
+
         const {getByText} = render(
-            <ReplyMessageChannelContainer
-                {...minProps}
-                ticket={fromJS({
-                    reply_options: {},
-                })}
-                isNewMessagePublic
-                hasWhatsAppIntegration
-                whatsAppMessageTemplatesEnabled
-            />
+            <Provider store={store}>
+                <ReplyMessageChannelContainer
+                    {...minProps}
+                    ticket={ticket}
+                    isNewMessagePublic
+                    hasWhatsAppIntegration
+                    whatsAppMessageTemplatesEnabled
+                />
+            </Provider>
         )
         expect(getByText(/whatsapp/i)).toBeVisible()
     })
 
     it('should render option for replying to WhatsApp message for existing ticket', () => {
+        const ticket = fromJS({
+            id: 12,
+            reply_options: {
+                [TicketMessageSourceType.WhatsAppMessage]: {
+                    answerable: true,
+                },
+            },
+        })
+        const store = configureMockStore([thunk])({
+            ticket,
+        })
+
         const {getByText} = render(
-            <ReplyMessageChannelContainer
-                {...minProps}
-                ticket={fromJS({
-                    id: 12,
-                    reply_options: {
-                        [TicketMessageSourceType.WhatsAppMessage]: {
-                            answerable: true,
-                        },
-                    },
-                })}
-                isNewMessagePublic
-                hasWhatsAppIntegration
-            />
+            <Provider store={store}>
+                <ReplyMessageChannelContainer
+                    {...minProps}
+                    ticket={ticket}
+                    isNewMessagePublic
+                    hasWhatsAppIntegration
+                />
+            </Provider>
         )
         expect(getByText(/whatsapp/i)).toBeVisible()
     })

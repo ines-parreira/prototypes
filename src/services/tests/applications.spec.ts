@@ -1,10 +1,10 @@
+import {channels as mockChannels} from 'fixtures/channels'
 import {applications as mockApplications} from 'fixtures/applications'
-import {IntegrationType} from 'models/integration/constants'
-import {Integration} from 'models/integration/types'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
-import {channels as mockChannels} from 'fixtures/channels'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {IntegrationType} from 'models/integration/constants'
+import {Integration} from 'models/integration/types'
 
 import {
     getApplicationById,
