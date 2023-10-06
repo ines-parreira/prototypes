@@ -163,7 +163,7 @@ exports[`<LineItemRow/> should render for multi-currency order 1`] = `
         class="d-inline-block text-center"
       >
         <span>
-          $1.00
+          ¥100
         </span>
       </div>
       <span

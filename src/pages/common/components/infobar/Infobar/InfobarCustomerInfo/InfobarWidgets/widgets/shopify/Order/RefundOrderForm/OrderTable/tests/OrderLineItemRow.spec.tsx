@@ -32,7 +32,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
             />
@@ -68,7 +67,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="JPY"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
             />
@@ -95,7 +93,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
             />
@@ -116,7 +113,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
             />
@@ -143,7 +139,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable={false}
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
             />
@@ -162,7 +157,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 keepLineItemQuantityAsDefault={false}
                 hasMultipleGateways={false}
@@ -186,7 +180,6 @@ describe('<LineItemRow/>', () => {
                     isRestockable
                     shopName="storegorgias3"
                     currencyCode="USD"
-                    shopCurrencyCode="USD"
                     onChange={onChange}
                     hasMultipleGateways={false}
                 />
@@ -215,7 +208,6 @@ describe('<LineItemRow/>', () => {
                     isRestockable
                     shopName="storegorgias3"
                     currencyCode="USD"
-                    shopCurrencyCode="USD"
                     onChange={onChange}
                     hasMultipleGateways={false}
                 />
@@ -245,7 +237,6 @@ describe('<LineItemRow/>', () => {
                     isRestockable
                     shopName="storegorgias3"
                     currencyCode="USD"
-                    shopCurrencyCode="USD"
                     onChange={onChange}
                     hasMultipleGateways={false}
                 />
@@ -272,7 +263,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
             />
@@ -295,7 +285,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
             />
@@ -325,7 +314,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
             />
@@ -347,7 +335,6 @@ describe('<LineItemRow/>', () => {
                 isRestockable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={true}
             />

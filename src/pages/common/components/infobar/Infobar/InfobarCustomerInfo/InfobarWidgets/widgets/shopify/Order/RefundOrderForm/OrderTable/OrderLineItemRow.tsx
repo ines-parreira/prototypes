@@ -20,7 +20,6 @@ type Props = {
     isRestockable: boolean | null
     shopName: string
     currencyCode: string
-    shopCurrencyCode: string
     keepLineItemQuantityAsDefault?: boolean
     onChange: (lineItem: Map<string, any>, index: number) => void
     hasMultipleGateways: boolean
@@ -32,7 +31,6 @@ function OrderLineItemRow({
     isRestockable,
     shopName,
     currencyCode,
-    shopCurrencyCode,
     onChange,
     keepLineItemQuantityAsDefault = true,
     hasMultipleGateways,
@@ -136,15 +134,15 @@ function OrderLineItemRow({
             )
         }
 
-        const price = getOrderLineItemPrice(lineItem, shopCurrencyCode)
+        const price = getOrderLineItemPrice(lineItem, currencyCode)
         const discountedPrice = getOrderLineItemDiscountedPrice(
             lineItem,
-            shopCurrencyCode,
+            currencyCode,
             maxQuantity
         )
         const formattedDiscountedPrice = formatPrice(
             discountedPrice,
-            shopCurrencyCode
+            currencyCode
         )
         const hasDiscount = price !== formattedDiscountedPrice
 
@@ -158,7 +156,7 @@ function OrderLineItemRow({
                                     <MoneyAmount
                                         renderIfZero
                                         amount={price}
-                                        currencyCode={shopCurrencyCode}
+                                        currencyCode={currencyCode}
                                     />
                                 </del>
                             </small>
@@ -166,14 +164,14 @@ function OrderLineItemRow({
                         <MoneyAmount
                             renderIfZero
                             amount={formattedDiscountedPrice}
-                            currencyCode={shopCurrencyCode}
+                            currencyCode={currencyCode}
                         />
                     </div>
                     <span className={css.times}>x</span>
                 </div>
             </td>
         )
-    }, [lineItem, maxQuantity, shopCurrencyCode])
+    }, [lineItem, maxQuantity, currencyCode])
 
     const renderQuantity = useCallback(() => {
         if (maxQuantity === 0) {

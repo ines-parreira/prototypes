@@ -41,11 +41,6 @@ export default function RefundOrderForm({
     onNotifyChange,
 }: Props) {
     const currencyCode = payload.get('currency') as string
-    const shopCurrencyCode = order.getIn([
-        'total_price_set',
-        'shop_money',
-        'currency_code',
-    ]) as string
     const hasMultipleGateways =
         aggregateMaximumRefundableByGateway(refund).keySeq().count() > 1
 
@@ -54,7 +49,6 @@ export default function RefundOrderForm({
             <OrderTable
                 shopName={shopName}
                 currencyCode={currencyCode}
-                shopCurrencyCode={shopCurrencyCode}
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}

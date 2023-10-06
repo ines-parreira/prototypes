@@ -12,7 +12,6 @@ import css from './OrderTable.less'
 type Props = {
     shopName: string
     currencyCode: string
-    shopCurrencyCode: string
     fulfillmentStatus: FulfillmentStatus | null
     refund: Map<string, any> | null
     lineItems: List<Map<string, any>>
@@ -28,7 +27,6 @@ function OrderTable({
     refund,
     shopName,
     currencyCode,
-    shopCurrencyCode,
     keepLineItemQuantityAsDefault = true,
     hasMultipleGateways,
 }: Props) {
@@ -103,7 +101,6 @@ function OrderTable({
                             isRestockable={checkIfRestockable(lineItem)}
                             shopName={shopName}
                             currencyCode={currencyCode}
-                            shopCurrencyCode={shopCurrencyCode}
                             onChange={onLineItemChange}
                             keepLineItemQuantityAsDefault={
                                 keepLineItemQuantityAsDefault

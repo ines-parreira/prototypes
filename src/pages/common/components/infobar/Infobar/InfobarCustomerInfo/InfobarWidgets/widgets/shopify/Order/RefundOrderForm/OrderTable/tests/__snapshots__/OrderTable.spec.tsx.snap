@@ -423,7 +423,7 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
             class="mt-auto mb-auto ml-auto"
           >
             <span>
-              $1.00
+              ¥1
             </span>
           </strong>
         </div>
@@ -542,7 +542,7 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
             class="mt-auto mb-auto ml-auto"
           >
             <span>
-              $4.00
+              ¥4
             </span>
           </strong>
         </div>

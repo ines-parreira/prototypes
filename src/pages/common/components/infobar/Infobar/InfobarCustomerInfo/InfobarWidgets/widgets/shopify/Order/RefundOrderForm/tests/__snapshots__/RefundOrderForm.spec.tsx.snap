@@ -81,7 +81,6 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
         "currency": "USD",
       }
     }
-    shopCurrencyCode="USD"
     shopName="storegorgias3"
   />
   <OrderFooter
@@ -242,7 +241,6 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
         "currency": "USD",
       }
     }
-    shopCurrencyCode="JPY"
     shopName="storegorgias3"
   />
   <OrderFooter

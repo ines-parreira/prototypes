@@ -31,7 +31,6 @@ describe('<OrderTable/>', () => {
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
@@ -49,7 +48,6 @@ describe('<OrderTable/>', () => {
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
@@ -68,7 +66,6 @@ describe('<OrderTable/>', () => {
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
@@ -84,8 +81,7 @@ describe('<OrderTable/>', () => {
         const {container} = render(
             <OrderTable
                 shopName="storegorgias3"
-                currencyCode="USD"
-                shopCurrencyCode="JPY"
+                currencyCode="JPY"
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
@@ -101,8 +97,7 @@ describe('<OrderTable/>', () => {
         render(
             <OrderTable
                 shopName="storegorgias3"
-                currencyCode="USD"
-                shopCurrencyCode="JPY"
+                currencyCode="JPY"
                 lineItems={lineItems}
                 refund={refund
                     .setIn(
@@ -123,7 +118,6 @@ describe('<OrderTable/>', () => {
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
@@ -145,7 +139,6 @@ describe('<OrderTable/>', () => {
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 lineItems={lineItems.setIn([0, 'quantity'], 3)}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
@@ -169,7 +162,6 @@ describe('<OrderTable/>', () => {
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="USD"
-                shopCurrencyCode="USD"
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
