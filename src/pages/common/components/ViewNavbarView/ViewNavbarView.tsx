@@ -202,10 +202,7 @@ class ViewNavbarView extends Component<Props, State> {
                         ) : (
                             displayedViews.map((view: Map<any, any>) => {
                                 const isCurrentView =
-                                    activeView.get('id') === view.get('id') &&
-                                    window.location.pathname.startsWith(
-                                        '/app/tickets/'
-                                    )
+                                    activeView.get('id') === view.get('id')
 
                                 const key = `${view.get('slug') as string}-${
                                     view.get('id') as number

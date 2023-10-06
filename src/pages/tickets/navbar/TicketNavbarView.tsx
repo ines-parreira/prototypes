@@ -89,12 +89,7 @@ const TicketNavbarView = ({className, view, viewCount}: Props) => {
                         view={view}
                         viewCount={viewCount}
                         className={classnames({
-                            active:
-                                view.id === activeView.get('id') &&
-                                window.location.pathname.startsWith(
-                                    '/app/tickets'
-                                ) &&
-                                !isOver,
+                            active: view.id === activeView.get('id') && !isOver,
                             [navbarCss.isDragged]: isDragging,
                         })}
                     />

@@ -2,6 +2,7 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
+import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
 import {UserSettingType} from 'config/types/user'
 import {getExpirationTimeForCount} from 'config/views'
 import {account} from 'fixtures/account'
@@ -11,11 +12,13 @@ import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
 import {initialState as currentAccountInitialState} from 'state/currentAccount/reducers'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
+
 import {RootState} from 'state/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
+import {SYSTEM_VIEWS} from '../constants'
 
 describe('selectors', () => {
     beforeEach(() => {
@@ -651,6 +654,179 @@ describe('selectors', () => {
                     {data: newViews[3], type: TicketNavbarElementType.View},
                 ])
             })
+        })
+    })
+
+    describe('getDefaultTicketView', () => {
+        let state: RootState
+
+        const views = {
+            '2': {
+                id: 2,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+                section_id: 1,
+            },
+            '10': {
+                id: 10,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+                section_id: 1,
+            },
+            '5': {
+                id: 5,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Private,
+                section_id: null,
+            },
+            '123': {
+                id: 123,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Private,
+                section_id: 3,
+            },
+            '1234': {
+                id: 123,
+                type: ViewType.CustomerList,
+                visibility: ViewVisibility.Private,
+                section_id: null,
+            },
+        }
+
+        beforeEach(() => {
+            state = {
+                entities: {
+                    views,
+                    sections: {
+                        '1': {
+                            id: 1,
+                            private: false,
+                        },
+                        '3': {
+                            id: 3,
+                            private: true,
+                        },
+                    },
+                },
+                currentAccount: fromJS({
+                    ...account,
+                    settings: [
+                        {
+                            id: 3,
+                            type: AccountSettingType.ViewsOrdering,
+                            data: {
+                                views: {
+                                    2: {display_order: 3},
+                                    10: {display_order: 2},
+                                },
+                                view_sections: {
+                                    1: {display_order: 1},
+                                },
+                            },
+                        },
+                    ],
+                }),
+                currentUser: fromJS({
+                    ...user,
+                    settings: [
+                        {
+                            id: 2,
+                            type: UserSettingType.ViewsOrdering,
+                            data: {
+                                views: {
+                                    5: {display_order: 4},
+                                    123: {display_order: 6},
+                                },
+                                view_sections: {
+                                    3: {
+                                        display_order: 5,
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                }),
+                ui: {
+                    ticketNavbar: ticketNavbarInitialState,
+                },
+            } as any
+        })
+
+        it('should return null when no view is available', () => {
+            expect(
+                selectors.getDefaultTicketView({
+                    ...state,
+                    entities: {...state.entities, views: {}},
+                })
+            ).toBeNull()
+        })
+
+        it('should return the first view', () => {
+            expect(selectors.getDefaultTicketView(state)).toMatchObject(
+                state.entities.views['10']
+            )
+        })
+
+        it('should return the first view matching the category order stored in local storage', () => {
+            localStorage.setItem(
+                'viewCategories',
+                JSON.stringify([ViewVisibility.Private])
+            )
+
+            expect(selectors.getDefaultTicketView(state)).toMatchObject(
+                state.entities.views['5']
+            )
+        })
+
+        it('should return the first available top system view', () => {
+            const systemView = {
+                id: 1,
+                name: SYSTEM_VIEWS[1].name,
+                category: ViewCategory.SystemTop,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            } as unknown as View
+
+            expect(
+                selectors.getDefaultTicketView({
+                    ...state,
+                    entities: {
+                        ...state.entities,
+                        views: {
+                            ...state.entities.views,
+                            '1': systemView,
+                        },
+                    },
+                    views: fromJS({
+                        items: Object.values({...views, systemView}),
+                    }),
+                })
+            ).toMatchObject(systemView)
+        })
+
+        it('should return the first available bottom system view', () => {
+            const systemView = {
+                id: 1,
+                name: SYSTEM_VIEWS[4].name,
+                category: ViewCategory.SystemBottom,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            } as unknown as View
+
+            expect(
+                selectors.getDefaultTicketView({
+                    ...state,
+                    entities: {
+                        ...state.entities,
+                        views: {
+                            '1': systemView,
+                        },
+                    },
+                    views: fromJS({
+                        items: Object.values({systemView}),
+                    }),
+                })
+            ).toMatchObject(systemView)
         })
     })
 })

@@ -9,7 +9,6 @@ import {RootState} from 'state/types'
 
 import {initialState} from '../reducer'
 import {
-    getDefaultTicketView,
     getPrivateTicketNavbarElements,
     getPublicTicketNavbarElements,
 } from '../selectors'
@@ -145,23 +144,6 @@ describe('selectors', () => {
                     entities: {...state.entities, sections: {}},
                 })
             ).toMatchSnapshot()
-        })
-    })
-
-    describe('getDefaultTicketView', () => {
-        it('should return null when no view is available', () => {
-            expect(
-                getDefaultTicketView({
-                    ...state,
-                    entities: {...state.entities, views: {}},
-                })
-            ).toBeNull()
-        })
-
-        it('should return the first view', () => {
-            expect(getDefaultTicketView(state)).toMatchObject(
-                state.entities.views['10']
-            )
         })
     })
 })

@@ -5,7 +5,13 @@ import moment from 'moment'
 import {UserSettingType} from 'config/types/user'
 import * as viewsConfig from 'config/views'
 import {OrderDirection} from 'models/api/types'
-import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
+import {
+    View,
+    ViewCategory,
+    ViewCategoryNavbar,
+    ViewType,
+    ViewVisibility,
+} from 'models/view/types'
 import {
     DEPRECATED_getViewsOrderingSetting,
     getViewsOrderingSetting,
@@ -21,7 +27,11 @@ import {BASE_VIEW_ID} from 'constants/view'
 
 import {TicketNavbarElement} from 'pages/tickets/navbar/TicketNavbarContent'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {getDefaultTicketView} from 'state/ui/ticketNavbar/selectors'
+import {
+    getPrivateTicketNavbarElements,
+    getPublicTicketNavbarElements,
+} from 'state/ui/ticketNavbar/selectors'
+import {tryLocalStorage} from 'services/common/utils'
 
 import {sortViews} from './utils'
 import {ViewsState} from './types'
@@ -468,5 +478,42 @@ export const shouldFetchActiveViewTickets = createSelector(
             return false
         }
         return true
+    }
+)
+
+export const getDefaultTicketView = createSelector(
+    getPublicTicketNavbarElements,
+    getPrivateTicketNavbarElements,
+    getTopSystemTicketNavbarElements,
+    getBottomSystemTicketNavbarElements,
+    (
+        publicElements,
+        privateElements,
+        topSystemElements,
+        bottomSystemElements
+    ) => {
+        if (topSystemElements[0]?.data) {
+            return topSystemElements[0].data
+        }
+
+        const viewCategories = tryLocalStorage(() =>
+            window.localStorage.getItem('viewCategories')
+        )
+        const [firstCategory] = viewCategories
+            ? (JSON.parse(viewCategories) as ViewCategoryNavbar[])
+            : [ViewVisibility.Public]
+
+        const firstElement =
+            firstCategory === ViewVisibility.Private && privateElements[0]
+                ? privateElements[0]
+                : publicElements[0]
+
+        if (!firstElement) return null
+
+        if (firstElement.type === TicketNavbarElementType.View) {
+            return firstElement.data
+        }
+
+        return firstElement.children[0] || bottomSystemElements[0]?.data || null
     }
 )

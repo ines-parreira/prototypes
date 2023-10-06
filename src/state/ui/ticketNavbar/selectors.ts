@@ -110,18 +110,3 @@ export const getPrivateTicketNavbarElements =
 export const getPublicTicketNavbarElements = createTicketNavbarElementsSelector(
     ViewVisibility.Public
 )
-
-export const getDefaultTicketView = createSelector(
-    getPublicTicketNavbarElements,
-    (publicTicketNavbarElements) => {
-        const firstElement = publicTicketNavbarElements[0]
-
-        if (!firstElement) return null
-
-        if (firstElement.type === TicketNavbarElementType.View) {
-            return firstElement.data
-        }
-
-        return firstElement.children[0] || null
-    }
-)

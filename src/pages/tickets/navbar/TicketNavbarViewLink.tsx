@@ -43,11 +43,7 @@ const TicketNavbarViewLink = forwardRef(
                         navbarCss.link,
                         {
                             [navbarCss.isNested]: view.section_id != null,
-                            active:
-                                view.id === activeView.get('id') &&
-                                window.location.pathname.startsWith(
-                                    '/app/tickets/'
-                                ),
+                            active: view.id === activeView.get('id'),
                         },
                         className
                     )}
