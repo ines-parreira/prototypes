@@ -24,6 +24,7 @@ import {
 } from 'pages/settings/contactForm/constants'
 import BackLink from 'pages/settings/contactForm/components/BackLink/BackLink'
 import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
+import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
 import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
 
 const ContactFormPublish = (): JSX.Element => {
@@ -32,6 +33,8 @@ const ContactFormPublish = (): JSX.Element => {
         enabled: Boolean(contactForm.shop_name),
     })
     const {copyButtonText} = useClipboard('#copy-shareable-link')
+
+    const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
 
     const onCopyClick = () => {
         logEvent(SegmentEvent.HelpCenterContactFormCopyLink)
@@ -95,12 +98,18 @@ const ContactFormPublish = (): JSX.Element => {
 
                         <ContactFormAutoEmbedPublishSection
                             isDisabled={
-                                getPageEmbedments.isLoading &&
-                                !getPageEmbedments.isFetched
+                                isLoading ||
+                                !isWorking ||
+                                (getPageEmbedments.isLoading &&
+                                    !getPageEmbedments.isFetched)
                             }
                             contactFormId={contactForm.id}
                             contactFormShopName={contactForm.shop_name}
-                            pageEmbedments={getPageEmbedments.data ?? []}
+                            pageEmbedments={
+                                isLoading || !isWorking
+                                    ? []
+                                    : getPageEmbedments.data ?? []
+                            }
                         />
 
                         <section>

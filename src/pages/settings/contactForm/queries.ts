@@ -130,6 +130,7 @@ export const useGetShopifyPages = <
                 contact_form_id: contactFormId,
             }),
         enabled: !!client,
+        retry: false,
         ...overrides,
     })
 }

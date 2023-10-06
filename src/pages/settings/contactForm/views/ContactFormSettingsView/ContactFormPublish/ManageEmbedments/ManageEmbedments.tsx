@@ -39,6 +39,7 @@ import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
+import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
 import css from './ManageEmbedments.less'
 
 type ManageEmbedmentsProps = {
@@ -81,14 +82,18 @@ const ManageEmbedments = ({
         number | null
     >(null)
 
-    useEffect(() => {
-        // If there are no embedments, redirect to the publish page
-        if (embedments.length) return
+    const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
 
-        history.push(
-            insertContactFormIdParam(CONTACT_FORM_PUBLISH_PATH, contactForm.id)
-        )
-    }, [embedments.length, history, contactForm])
+    useEffect(() => {
+        if ((!isWorking && !isLoading) || !embedments.length) {
+            history.push(
+                insertContactFormIdParam(
+                    CONTACT_FORM_PUBLISH_PATH,
+                    contactForm.id
+                )
+            )
+        }
+    }, [embedments.length, history, contactForm, isWorking, isLoading])
 
     useEffect(() => {
         setDraftPositions({

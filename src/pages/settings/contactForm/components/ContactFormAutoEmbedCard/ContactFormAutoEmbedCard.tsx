@@ -248,7 +248,9 @@ const ContactFormAutoEmbedCard = ({
                 <Button
                     isDisabled={needScopeUpdate || isDisabled}
                     isLoading={
-                        getShopifyPages.isFetching && !getShopifyPages.isFetched
+                        getShopifyPages.isFetching &&
+                        !getShopifyPages.isFetched &&
+                        !getShopifyPages.isError
                     }
                     onClick={openEmbedFormWizard}
                     data-testid={
