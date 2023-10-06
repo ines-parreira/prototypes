@@ -253,7 +253,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                 class="cell"
               >
                 <span
-                  class="title"
+                  class="title headerCellTitle"
                 >
                   Campaign name
                 </span>
@@ -275,7 +275,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                 class="cell"
               >
                 <span
-                  class="title"
+                  class="title headerCellTitle"
                 >
                   Creation date
                 </span>
@@ -767,7 +767,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                 class="cell"
               >
                 <span
-                  class="title"
+                  class="title headerCellTitle"
                 >
                   Campaign name
                 </span>
@@ -789,7 +789,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> Campaign actions should display the 
                 class="cell"
               >
                 <span
-                  class="title"
+                  class="title headerCellTitle"
                 >
                   Creation date
                 </span>
@@ -1479,7 +1479,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
                 class="cell"
               >
                 <span
-                  class="title"
+                  class="title headerCellTitle"
                 >
                   Campaign name
                 </span>
@@ -1501,7 +1501,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> should display the list correctly 1`
                 class="cell"
               >
                 <span
-                  class="title"
+                  class="title headerCellTitle"
                 >
                   Creation date
                 </span>

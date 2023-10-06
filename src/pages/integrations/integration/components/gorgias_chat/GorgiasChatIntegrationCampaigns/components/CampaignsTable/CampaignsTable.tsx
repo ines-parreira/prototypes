@@ -178,6 +178,7 @@ export const CampaignsTable = ({
                         }
                         title="Campaign name"
                         onClick={handleChangeSort('name')}
+                        titleClassName={css.headerCellTitle}
                     />
                     <HeaderCellProperty
                         isOrderedBy={sortBy === 'created_datetime'}
@@ -188,9 +189,13 @@ export const CampaignsTable = ({
                         }
                         title="Creation date"
                         onClick={handleChangeSort('created_datetime')}
+                        titleClassName={css.headerCellTitle}
                     />
                     {chatMultiLanguagesEnabled && (
-                        <HeaderCellProperty title="Language" />
+                        <HeaderCellProperty
+                            title="Language"
+                            titleClassName={css.headerCellTitle}
+                        />
                     )}
                     <HeaderCellProperty title="" style={{width: 110}} />
                 </TableHead>

@@ -13,6 +13,7 @@ import css from './HeaderCellProperty.less'
 type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
     className?: string
+    titleClassName?: string
     direction?: Maybe<OrderDirection>
     isOrderedBy?: boolean
     onClick?: () => void
@@ -26,6 +27,7 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
 export default function HeaderCellProperty({
     children,
     className,
+    titleClassName,
     direction,
     isOrderedBy,
     onClick,
@@ -55,7 +57,9 @@ export default function HeaderCellProperty({
                         justifyContent && css[justifyContent]
                     )}
                 >
-                    <span className={css.title}>{title}</span>
+                    <span className={classnames(css.title, titleClassName)}>
+                        {title}
+                    </span>
                     {tooltip && (
                         <span>
                             <StatsHelpIcon ref={tooltipRef} />
