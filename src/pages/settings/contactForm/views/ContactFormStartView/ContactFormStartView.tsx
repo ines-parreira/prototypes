@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {
     Link,
     NavLink,
@@ -53,7 +53,11 @@ const ContactFormStartView = ({
     const handleAddHelpCenter = () => history.push(CONTACT_FORM_CREATE_PATH)
 
     const getContactFormList = useGetContactFormList({
-        onError: (err) => {
+        retry: false,
+    })
+
+    useEffect(() => {
+        if (getContactFormList.isError && getContactFormList.error) {
             void notify({
                 status: NotificationStatus.Error,
                 message: 'Failed to fetch Contact Forms',
@@ -62,13 +66,12 @@ const ContactFormStartView = ({
             history.push(CONTACT_FORM_HOME_ROUTES.About)
             reportError(
                 new Error('Failed to fetch Contact Forms'),
-                err instanceof Error
-                    ? {extra: {message: err.message}}
+                getContactFormList.error instanceof Error
+                    ? {extra: {message: getContactFormList.error.message}}
                     : undefined
             )
-        },
-        retry: false,
-    })
+        }
+    }, [getContactFormList.error, getContactFormList.isError, history, notify])
 
     // until the first request is done, we don't know how many manual contact forms to display
     // so we return null until we have the data
