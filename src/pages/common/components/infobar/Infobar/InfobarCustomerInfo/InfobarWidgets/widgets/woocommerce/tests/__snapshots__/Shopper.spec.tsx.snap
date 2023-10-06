@@ -14,7 +14,13 @@ exports[`Shopper card <TitleWrapper/> should render it children, plus woocommerc
   <span
     class="container"
   >
-    Shopper
+    <a
+      href="https://woo-generously-electronic-soul.wpcomstaging.com/wp-admin/user-edit.php?user_id=1234"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Shopper
+    </a>
   </span>
 </span>
 `;

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Order card <TitleWrapper/> should render the order 1`] = `
+<span
+  class="container"
+>
+  <a
+    href="https://woo-generously-electronic-soul.wpcomstaging.com/wp-admin/post.php?post=1234&action=edit"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    #1234
+  </a>
+</span>
+`;

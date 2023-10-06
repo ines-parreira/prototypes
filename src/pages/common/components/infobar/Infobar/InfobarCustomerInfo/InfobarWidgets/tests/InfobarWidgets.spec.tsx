@@ -65,6 +65,9 @@ describe('InfobarWidgets component', () => {
                     id: ecommerceIntegrationId,
                     type: IntegrationType.Ecommerce,
                     name: 'my little ecommerce integration',
+                    meta: {
+                        store_uuid: ecommerceStoreUUID,
+                    },
                 },
             ],
         }),

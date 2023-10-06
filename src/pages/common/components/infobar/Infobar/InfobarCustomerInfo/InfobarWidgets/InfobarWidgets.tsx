@@ -4,7 +4,12 @@ import {List, Map, fromJS} from 'immutable'
 
 import {compare} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {Integration, IntegrationType} from 'models/integration/types'
+import {
+    EcommerceIntegration,
+    Integration,
+    IntegrationType,
+    isEcommerceIntegration,
+} from 'models/integration/types'
 import {getSourcePathFromContext} from 'state/widgets/utils'
 import {getIntegrations} from 'state/integrations/selectors'
 import {
@@ -20,7 +25,6 @@ import {canDisplayWidget} from 'pages/common/components/infobar/utils'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
 import Placeholder from './widgets/Placeholder'
@@ -276,27 +280,16 @@ function getPreparedDisplayList({
                     widgetType
                 ) as string[]
                 const integrationId = widget.get('integration_id') as number
-                const ecommerceData: Record<string, CustomerEcommerceData> = (
-                    source.getIn(sourcePath) as Map<
-                        string,
-                        CustomerEcommerceData
-                    >
-                )?.toJS()
-                if (!ecommerceData) {
+                integration = integrations.find(
+                    (integration) => integration.id === integrationId
+                ) as EcommerceIntegration
+                if (!integration || !isEcommerceIntegration(integration)) {
                     return
                 }
-
-                const currentEcommerceDataEntry = Object.entries(
-                    ecommerceData
-                ).find(
-                    ([, customerEcommerceData]) =>
-                        customerEcommerceData.store.helpdesk_integration_id ===
-                        integrationId
-                )
-                if (!currentEcommerceDataEntry) {
+                const currentStoreUUID = integration?.meta.store_uuid
+                if (!currentStoreUUID) {
                     return
                 }
-                const [currentStoreUUID] = currentEcommerceDataEntry
                 sourcePath.push(currentStoreUUID)
             } else {
                 let selectedIntegrations: Integration[] = []

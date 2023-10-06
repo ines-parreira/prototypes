@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
-import {TitleWrapper} from '../Shopper'
+import {TitleWrapper} from '../Order'
 
 const ecomStore = {
     deleted_datetime: null,
@@ -27,12 +27,12 @@ jest.mock('../useStore', () => {
     }
 })
 
-describe('Shopper card', () => {
+describe('Order card', () => {
     describe('<TitleWrapper/>', () => {
-        it('should render it children, plus woocommerce logo and title', () => {
+        it('should render the order', () => {
             const {container} = render(
                 <TitleWrapper source={fromJS({external_id: '1234'})}>
-                    Shopper
+                    Order
                 </TitleWrapper>
             )
 

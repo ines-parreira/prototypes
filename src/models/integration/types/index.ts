@@ -21,6 +21,7 @@ import type {TwitterIntegration} from './twitter'
 import type {BigCommerceIntegration} from './bigcommerce'
 import type {WhatsAppIntegration} from './whatsapp'
 import type {AppIntegration} from './app'
+import {EcommerceIntegration} from './ecommerce'
 
 export type {IntegrationDecoration} from './base'
 
@@ -54,6 +55,7 @@ export * from './twitter'
 export * from './bigcommerce'
 export * from './whatsapp'
 export * from './app'
+export * from './ecommerce'
 
 export type Integration =
     | EmailIntegration
@@ -79,6 +81,7 @@ export type Integration =
     | BigCommerceIntegration
     | WhatsAppIntegration
     | AppIntegration
+    | EcommerceIntegration
 
 export type IntegrationRequest = {
     description: string
