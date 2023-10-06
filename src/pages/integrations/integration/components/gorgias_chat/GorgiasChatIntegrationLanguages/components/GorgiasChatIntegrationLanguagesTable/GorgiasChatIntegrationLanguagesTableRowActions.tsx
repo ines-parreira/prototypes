@@ -71,8 +71,8 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                                 target={`more-actions-${language.language}-help`}
                                 placement="bottom-end"
                             >
-                                Change your default language to delete{' '}
-                                {language.label}.
+                                Set a different default language to delete this
+                                one.
                             </Tooltip>
                         </DropdownToggle>
 
