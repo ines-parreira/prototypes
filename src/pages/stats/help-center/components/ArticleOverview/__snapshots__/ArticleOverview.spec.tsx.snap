@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ArticleOverview /> should render 1`] = `
+<div>
+  <div
+    class="wrapper card"
+  >
+    <div
+      class="title"
+    >
+      Article views
+      <div
+        class="wrapper tooltip"
+      >
+        <i
+          class="material-icons-outlined icon"
+          id="tooltip-1"
+        >
+          info
+        </i>
+      </div>
+      <div
+        class="trendBadge"
+      >
+        <div
+          class="trend positive"
+          id="badge-2"
+        >
+          +100%
+        </div>
+      </div>
+    </div>
+    <div
+      class="wrapper heading-page-semibold"
+    >
+      <span
+        class="bigNumber"
+      >
+        2
+      </span>
+      <span
+        class="from caption-regular"
+      >
+        from 
+        1
+      </span>
+    </div>
+    <div
+      class="tip"
+    >
+      <div
+        class="wrapper neutral"
+      >
+        <div
+          class="iconWrapper"
+        >
+          <i
+            class="material-icons-outlined icon neutral"
+          >
+            lightbulb
+          </i>
+          <span>
+            Tip
+          </span>
+        </div>
+        Check out our
+         
+        <a
+          href="https://docs.gorgias.com/en-US"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Help Docs
+        </a>
+         
+        to learn about strategies you can use to increase article views for your Help Center.
+      </div>
+    </div>
+  </div>
+</div>
+`;
