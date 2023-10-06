@@ -1,5 +1,6 @@
 import React, {useCallback, useState, useContext} from 'react'
 import {Map, fromJS} from 'immutable'
+import _last from 'lodash/last'
 import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 
@@ -59,10 +60,7 @@ export default function Wrapper({widget, template, source}: Props) {
     const templatePath = template.get('templatePath', '') as string
 
     const widgetType = widget.get('type') as WidgetType
-    const integration = useIntegration(
-        widget.get('integration_id') as number,
-        widgetType
-    )
+    const integration = useIntegration(absolutePath, widgetType)
 
     const widgetName = getWidgetTitle({
         source: source?.toJS(),
@@ -217,7 +215,9 @@ export default function Wrapper({widget, template, source}: Props) {
     )
 }
 
-function useIntegration(integrationId: number, widgetType: WidgetType) {
+function useIntegration(absolutePath: string[], widgetType: WidgetType) {
+    const integrationId = parseInt(_last(absolutePath) || '')
+
     const integration = useAppSelector(
         integrationsSelectors.getIntegrationById(integrationId)
     )

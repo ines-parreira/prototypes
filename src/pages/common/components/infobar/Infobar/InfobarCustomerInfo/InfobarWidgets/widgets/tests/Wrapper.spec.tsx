@@ -46,7 +46,7 @@ const store = mockStore({
 const shopifyWidget = {
     id: 4,
     type: IntegrationType.Shopify,
-    integration_id: 2,
+    integration_id: 1,
     template: {
         type: 'wrapper',
         widgets: [],
@@ -59,7 +59,7 @@ const shopifySource = fromJS({foo: 'foo value'})
 const httpWidget = {
     id: 5,
     type: IntegrationType.Http,
-    integration_id: 1,
+    integration_id: 2,
     template: {
         type: 'wrapper',
         widgets: [],
