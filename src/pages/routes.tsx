@@ -448,7 +448,7 @@ export function StatsRoutes() {
         <DefaultStatsFilters
             notReadyFallback={
                 <Route>
-                    <App navbar={StatsNavbarContainer} />
+                    <App navbar={StatsNavbarContainer}>{null}</App>
                 </Route>
             }
         >
