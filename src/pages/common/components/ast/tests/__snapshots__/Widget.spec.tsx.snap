@@ -4,6 +4,7 @@ exports[`ast Widget SelfServiceFlowSelect should render SelfServiceFlowSelect fi
 <InputField
   caseInsensitive={false}
   inline={false}
+  min="0"
   onChange={[Function]}
   placeholder=""
   required={false}
@@ -86,6 +87,7 @@ exports[`ast Widget should render InputField (eq operator) 1`] = `
 <InputField
   caseInsensitive={false}
   inline={false}
+  min="0"
   onChange={[Function]}
   placeholder=""
   required={false}

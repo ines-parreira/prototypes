@@ -140,6 +140,11 @@ export class Widget extends Component<Props, State> {
             }))
         }
 
+        if (typeof newValue === 'number' && !isNaN(newValue) && newValue < 0) {
+            const absValue = Math.abs(newValue)
+            newValue = absValue
+        }
+
         return actions.modifyCodeAST(parent, newValue, RuleOperation.Update)
     }
 
@@ -160,6 +165,7 @@ export class Widget extends Component<Props, State> {
                 placeholder={(config.placeholder as string) || ''}
                 required={(config.required as boolean) || false}
                 inline={compact || false}
+                min="0"
                 caseInsensitive={caseInsensitive}
             />
         )
