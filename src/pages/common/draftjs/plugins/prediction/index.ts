@@ -3,6 +3,7 @@ import {EditorState, SelectionState} from 'draft-js'
 import axios, {CancelTokenSource} from 'axios'
 import {Map} from 'immutable'
 
+import {debounce} from 'lodash'
 import {Plugin, PluginMethods} from '../types'
 import {createClient} from '../../../../../models/api/resources'
 
@@ -181,7 +182,16 @@ const completePrediction = (
     plugin.setEditorState(newEditorState)
 }
 
-const predictionPlugin = (config: {context: Map<any, any>}): Plugin => {
+const predictionPlugin = (config: {
+    context: Map<any, any>
+    debounce?: boolean
+}): Plugin => {
+    let lastQuery: string | null = null
+    const debouncedRequestPrediction = debounce(requestPrediction, 250, {
+        leading: true,
+        trailing: true,
+    })
+
     return {
         // $TsFixMe remove casting once decorators is migrated
         decorators: decorators as any,
@@ -256,11 +266,21 @@ const predictionPlugin = (config: {context: Map<any, any>}): Plugin => {
                 // and at the end of the block
                 start === blockText.length &&
                 // and text is longer than 1 char
-                blockText.length > 1 &&
+                blockText.trim().length > 1 &&
                 // and not in cache
-                !inCache(blockText)
+                !inCache(blockText) &&
+                // and content has changed
+                // (focus/blur events trigger onChange)
+                blockText !== lastQuery
             ) {
-                void requestPrediction(blockText, config.context, plugin)
+                lastQuery = blockText
+                config.debounce
+                    ? void debouncedRequestPrediction(
+                          blockText,
+                          config.context,
+                          plugin
+                      )
+                    : void requestPrediction(blockText, config.context, plugin)
                 return newEditorState
             }
 

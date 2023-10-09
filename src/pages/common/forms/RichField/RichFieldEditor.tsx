@@ -86,6 +86,7 @@ export type Props = {
     readOnly?: boolean
     spellCheck?: boolean
     predictionContext?: Map<any, any>
+    predictionDebounce?: boolean
     ticket?: any
     isFocused: boolean
     isRequired: boolean
@@ -204,6 +205,7 @@ export class RichFieldEditor extends Component<Props, State> {
         if (this.props.predictionContext) {
             this.predictionPlugin = createPredictionPlugin({
                 context: this.props.predictionContext,
+                debounce: this.props.predictionDebounce,
             })
 
             plugins.push(this.predictionPlugin)

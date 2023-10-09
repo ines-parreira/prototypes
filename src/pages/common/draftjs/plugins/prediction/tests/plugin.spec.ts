@@ -50,7 +50,10 @@ beforeEach(() => {
 
 describe('prediction plugin', () => {
     const createEmptyStatePredictionPlugin = (context = defaultContext) => {
-        const predictionPlugin = createPredictionPlugin({context})
+        const predictionPlugin = createPredictionPlugin({
+            context,
+            debounce: true,
+        })
         const state = EditorState.createEmpty()
         const pluginMethods = DraftTestUtils.mockPluginMethods(state)
         return {
@@ -152,6 +155,20 @@ describe('prediction plugin', () => {
             })
         })
 
+        it('should throttle request prediction', async () => {
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
+            const text = 'Hi'
+            await typeAndPredict(text, '', predictionPlugin, pluginMethods)
+            await typeAndPredict(' ', '', predictionPlugin, pluginMethods)
+            await typeAndPredict('M', '', predictionPlugin, pluginMethods)
+            await typeAndPredict('a', '', predictionPlugin, pluginMethods)
+            await typeAndPredict('y', '', predictionPlugin, pluginMethods)
+
+            const predictionCalls = getPredictionCalls()
+            expect(predictionCalls).toHaveLength(1)
+        })
+
         it('should display the prediction', async () => {
             const {predictionPlugin, pluginMethods} =
                 createEmptyStatePredictionPlugin()
@@ -203,7 +220,7 @@ describe('prediction plugin', () => {
             )
             await typeAndPredict('P', '', predictionPlugin, pluginMethods)
 
-            expect(getPredictionCalls()).toHaveLength(2)
+            expect(getPredictionCalls()).toHaveLength(1)
             expectToBeTextWithoutPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
                 'Hi P'
