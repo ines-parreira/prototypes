@@ -1,10 +1,12 @@
 import {Store} from 'redux'
 
+import {NodeEnv, envVars} from 'utils/environment'
+
 import {InitialRootState} from '../types'
 
 let configureStore: (initialState: InitialRootState) => Store
 
-if (process.env.NODE_ENV === 'production') {
+if (envVars.NODE_ENV === NodeEnv.Production) {
     // eslint-disable-next-line
     configureStore = require('./configureStore.prod').default
 } else {

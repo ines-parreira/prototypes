@@ -13,6 +13,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {NavLinkProps} from 'react-router-dom'
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
+import {envVars} from 'utils/environment'
 
 import history from '../pages/history'
 import {mockQueryClient} from './reactQueryTestingUtils'
@@ -21,7 +22,7 @@ Enzyme.configure({adapter: new Adapter()})
 
 // Set default moment timezone
 const moment = jest.requireActual('moment-timezone')
-;(moment as {tz: MomentTimezone}).tz.setDefault(process.env.TZ || 'UTC')
+;(moment as {tz: MomentTimezone}).tz.setDefault(envVars.TZ || 'UTC')
 
 Object.defineProperty(window, 'ResizeObserver', {
     value: function () {
