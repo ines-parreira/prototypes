@@ -459,48 +459,26 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               </p>
             </div>
           </div>
-          <div
-            className="formSection"
-          >
-            <h4
-              className="title mb-1"
-            >
-              Control ticket volume
-              <TagLabel
-                className="controlTicketVolumeTag ml-2"
-                style={{}}
-              >
-                <span
-                  className="material-icons mr-1"
-                >
-                  auto_awesome
-                </span>
-                Automation Add-on
-              </TagLabel>
-            </h4>
-            <div>
-              <p
-                className="mb-4"
-              >
-                Require customers to go through automated flows before being able to send a live message or contact form by removing the “Send us a message” button. This helps deflect repetitive questions and reduce your overall ticket volume.
-              </p>
-              <div
-                className="formGroup d-flex"
-              >
-                <ToggleInput
-                  isToggled={false}
-                  onClick={[Function]}
-                />
-                <div
-                  className="toggleInfo ml-1"
-                >
-                  <b>
-                    Remove “Send us a message” button
-                  </b>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ControlTicketVolumeControls
+            articleRecommendationEnabled={true}
+            integration={
+              Immutable.Map {
+                "id": 2,
+                "type": "gorgias_chat",
+                "meta": Immutable.Map {
+                  "language": "en-US",
+                  "shop_integration_id": 1,
+                },
+                "decoration": Immutable.Map {
+                  "main_color": "#789c5d",
+                  "conversation_color": "#08d123",
+                },
+              }
+            }
+            isToggled={false}
+            onToggle={[Function]}
+            selfServiceConfiguration={null}
+          />
           <div
             className="formSection"
           >
@@ -1010,48 +988,26 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               </p>
             </div>
           </div>
-          <div
-            className="formSection"
-          >
-            <h4
-              className="title mb-1"
-            >
-              Control ticket volume
-              <TagLabel
-                className="controlTicketVolumeTag ml-2"
-                style={{}}
-              >
-                <span
-                  className="material-icons mr-1"
-                >
-                  auto_awesome
-                </span>
-                Automation Add-on
-              </TagLabel>
-            </h4>
-            <div>
-              <p
-                className="mb-4"
-              >
-                Require customers to go through automated flows before being able to send a live message or contact form by removing the “Send us a message” button. This helps deflect repetitive questions and reduce your overall ticket volume.
-              </p>
-              <div
-                className="formGroup d-flex"
-              >
-                <ToggleInput
-                  isToggled={false}
-                  onClick={[Function]}
-                />
-                <div
-                  className="toggleInfo ml-1"
-                >
-                  <b>
-                    Remove “Send us a message” button
-                  </b>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ControlTicketVolumeControls
+            articleRecommendationEnabled={true}
+            integration={
+              Immutable.Map {
+                "id": 2,
+                "type": "gorgias_chat",
+                "meta": Immutable.Map {
+                  "language": "en-US",
+                  "shop_integration_id": 1,
+                },
+                "decoration": Immutable.Map {
+                  "main_color": "#789c5d",
+                  "conversation_color": "#08d123",
+                },
+              }
+            }
+            isToggled={false}
+            onToggle={[Function]}
+            selfServiceConfiguration={null}
+          />
           <div
             className="formSection"
           >

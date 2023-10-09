@@ -28,7 +28,6 @@ import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModa
 
 import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {TagLabel} from 'pages/common/utils/labels'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
 import {getCurrentConvertProduct} from 'state/billing/selectors'
@@ -70,6 +69,7 @@ import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {isGenericEmailIntegration} from '../../email/helpers'
 import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
+import ControlTicketVolumeControls from './ControlTicketVolumeControls'
 import css from './GorgiasChatIntegrationPreferences.less'
 
 const emailCaptureOptions = [
@@ -448,12 +448,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const chatMultiLanguagesEnabled =
             flags?.[FeatureFlagKey.ChatMultiLanguages]
 
-        const displayControlTicketVolume = !(
-            this.props.articleRecommendationEnabled &&
-            !selfServiceConfiguration?.deactivated_datetime &&
-            selfServiceConfiguration?.article_recommendation_help_center_id
-        )
-
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
         const chatTitle = integration.get('name')
@@ -815,74 +809,17 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     </div>
                                 </div>
 
-                                {displayControlTicketVolume && (
-                                    <div className={css.formSection}>
-                                        <h4
-                                            className={classnames(
-                                                css.title,
-                                                'mb-1'
-                                            )}
-                                        >
-                                            Control ticket volume
-                                            <TagLabel
-                                                className={classnames(
-                                                    css.controlTicketVolumeTag,
-                                                    'ml-2'
-                                                )}
-                                            >
-                                                <span
-                                                    className={classnames(
-                                                        'material-icons',
-                                                        'mr-1'
-                                                    )}
-                                                >
-                                                    auto_awesome
-                                                </span>
-                                                {'Automation Add-on'}
-                                            </TagLabel>
-                                        </h4>
-                                        <div>
-                                            <p className="mb-4">
-                                                Require customers to go through
-                                                automated flows before being
-                                                able to send a live message or
-                                                contact form by removing the
-                                                “Send us a message” button. This
-                                                helps deflect repetitive
-                                                questions and reduce your
-                                                overall ticket volume.
-                                            </p>
-                                            <div
-                                                className={classnames(
-                                                    css.formGroup,
-                                                    'd-flex'
-                                                )}
-                                            >
-                                                <ToggleInput
-                                                    onClick={
-                                                        this
-                                                            ._setControlTicketVolume
-                                                    }
-                                                    isToggled={
-                                                        controlTicketVolume
-                                                    }
-                                                />
-
-                                                <div
-                                                    className={classnames(
-                                                        css.toggleInfo,
-                                                        'ml-1'
-                                                    )}
-                                                >
-                                                    <b>
-                                                        Remove “Send us a
-                                                        message” button
-                                                    </b>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
+                                <ControlTicketVolumeControls
+                                    integration={integration}
+                                    articleRecommendationEnabled={
+                                        this.props.articleRecommendationEnabled
+                                    }
+                                    selfServiceConfiguration={
+                                        selfServiceConfiguration
+                                    }
+                                    isToggled={controlTicketVolume}
+                                    onToggle={this._setControlTicketVolume}
+                                />
 
                                 <div className={css.formSection}>
                                     <h4 className={css.title}>
