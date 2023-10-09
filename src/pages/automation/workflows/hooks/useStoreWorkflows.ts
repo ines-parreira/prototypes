@@ -122,9 +122,16 @@ export default function useStoreWorkflows(
             setIsUpdatePending(true)
             await handleSelfServiceConfigurationUpdate((draft) => {
                 draft.workflows_entrypoints ??= []
-                draft.workflows_entrypoints.push({
-                    workflow_id: workflowId,
-                })
+
+                const alreadyPresent = draft.workflows_entrypoints.find(
+                    (e) => e.workflow_id === workflowId
+                )
+
+                if (!alreadyPresent) {
+                    draft.workflows_entrypoints.push({
+                        workflow_id: workflowId,
+                    })
+                }
             })
             setIsUpdatePending(false)
         },

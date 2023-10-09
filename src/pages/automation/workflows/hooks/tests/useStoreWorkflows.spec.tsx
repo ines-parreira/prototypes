@@ -178,4 +178,47 @@ describe('useStoreWorkflows', () => {
             mockWorkflowApi.deleteWorkflowConfiguration
         ).toHaveBeenCalledWith(mockWorkflowConfiguration('a').internal_id)
     })
+
+    it('appendWorkflowInStore', async () => {
+        const selfServiceConfiguration = {
+            workflows_entrypoints: [...entrypointsFixtures],
+        } as SelfServiceConfiguration
+
+        const handleSelfServiceConfigurationUpdateMock = jest
+            .fn()
+            .mockImplementation(
+                (
+                    patchSelfServiceConfiguration: (
+                        draft: SelfServiceConfiguration
+                    ) => void
+                ) => {
+                    patchSelfServiceConfiguration(selfServiceConfiguration)
+                }
+            )
+
+        updateMock({
+            selfServiceConfiguration,
+            handleSelfServiceConfigurationUpdate:
+                handleSelfServiceConfigurationUpdateMock,
+        })
+        const {result} = renderHook(
+            () => useStoreWorkflows('', '', () => null),
+            renderHookOptions
+        )
+        await waitFor(() =>
+            expect(result.current.isFetchPending).toEqual(false)
+        )
+        await act(() => result.current.appendWorkflowInStore('z'))
+        expect(selfServiceConfiguration.workflows_entrypoints).toEqual([
+            ...entrypointsFixtures,
+            {workflow_id: 'z'},
+        ])
+
+        // doesn’t append duplicate workflow
+        await act(() => result.current.appendWorkflowInStore('c'))
+        expect(selfServiceConfiguration.workflows_entrypoints).toEqual([
+            ...entrypointsFixtures,
+            {workflow_id: 'z'},
+        ])
+    })
 })
