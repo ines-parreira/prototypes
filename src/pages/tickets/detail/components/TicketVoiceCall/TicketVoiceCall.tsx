@@ -1,6 +1,7 @@
 import React from 'react'
-import {VoiceCall} from 'models/voiceCall/types'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import {VoiceCall, isOutboundVoiceCall} from 'models/voiceCall/types'
+import TicketVoiceCallInbound from './TicketVoiceCallInbound'
+import TicketVoiceCallOutbound from './TicketVoiceCallOutbound'
 
 type VoiceCallProps = {
     voiceCall: VoiceCall
@@ -9,26 +10,10 @@ type VoiceCallProps = {
 export default function TicketVoiceCall({voiceCall}: VoiceCallProps) {
     return (
         <div>
-            <div>VoiceCall</div>
-            Initiated by{' '}
-            {voiceCall.initiated_by_agent_id ? (
-                <VoiceCallAgentLabel
-                    agentId={voiceCall.initiated_by_agent_id}
-                    phoneNumber={voiceCall.phone_number_source}
-                />
+            {isOutboundVoiceCall(voiceCall) ? (
+                <TicketVoiceCallOutbound voiceCall={voiceCall} />
             ) : (
-                <div>
-                    Customer {voiceCall.customer_id}
-                    {voiceCall.last_answered_by_agent_id && (
-                        <>
-                            - picked up by{' '}
-                            <VoiceCallAgentLabel
-                                agentId={voiceCall.last_answered_by_agent_id}
-                                phoneNumber={voiceCall.phone_number_destination}
-                            />
-                        </>
-                    )}
-                </div>
+                <TicketVoiceCallInbound voiceCall={voiceCall} />
             )}
         </div>
     )

@@ -25,9 +25,6 @@ export const searchCustomers = async ({
     )
 
 export const getCustomer = async (id: number, cancelToken?: CancelToken) =>
-    await client.get<ApiListResponseCursorPagination<Customer>>(
-        `/api/customers/${id}`,
-        {
-            cancelToken,
-        }
-    )
+    await client.get<Customer>(`/api/customers/${id}`, {
+        cancelToken,
+    })

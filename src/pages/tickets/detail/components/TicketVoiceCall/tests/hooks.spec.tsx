@@ -1,19 +1,85 @@
 import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import * as agentsQueries from 'models/agents/queries'
-import {useAgentDetails} from '../hooks'
+import * as customersQueries from 'models/customer/queries'
+import {User} from 'config/types/user'
+import {mockStore} from 'utils/testing'
+import {useAgentDetails, useCustomerDetails} from '../hooks'
 
 const useGetAgentSpy = jest.spyOn(agentsQueries, 'useGetAgent')
+const useGetCustomerSpy = jest.spyOn(customersQueries, 'useGetCustomer')
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: any) => (
+const agentDetailsWrapper = ({children}: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
+const createCustomerDetailsWrapper =
+    (storeCustomerData: Partial<User> = {}) =>
+    ({children}: any) =>
+        (
+            <Provider
+                store={mockStore({
+                    ticket: fromJS({
+                        customer: storeCustomerData,
+                    }),
+                } as any)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    {children}
+                </QueryClientProvider>
+            </Provider>
+        )
+
 describe('hooks', () => {
+    describe('useCustomerDetails', () => {
+        it('should return customer from store when it exists and call customer is same as ticket customer', () => {
+            const {result} = renderHook(() => useCustomerDetails(1), {
+                wrapper: createCustomerDetailsWrapper({
+                    id: 1,
+                    name: 'Customer Name',
+                }),
+            })
+
+            expect(result.current.customer).toEqual({
+                id: 1,
+                name: 'Customer Name',
+            })
+        })
+
+        it('should return customer from api when call customer is not same as ticket customer', () => {
+            useGetCustomerSpy.mockReturnValue({
+                data: {data: {id: 2, name: 'Customer Name API'}},
+            } as any)
+            const {result} = renderHook(() => useCustomerDetails(2), {
+                wrapper: createCustomerDetailsWrapper({
+                    id: 1,
+                    name: 'Customer Name',
+                }),
+            })
+            expect(result.current.customer).toEqual({
+                id: 2,
+                name: 'Customer Name API',
+            })
+        })
+
+        it('should return error from api when it exists', () => {
+            useGetCustomerSpy.mockReturnValue({
+                error: {response: {status: 404}},
+            } as any)
+            const {result} = renderHook(() => useCustomerDetails(1), {
+                wrapper: createCustomerDetailsWrapper({}),
+            })
+
+            expect(result.current.error).toEqual({response: {status: 404}})
+        })
+    })
+
     describe('useAgentDetails', () => {
         it('should return agent from initial state when it exists', () => {
             window.GORGIAS_STATE = {
@@ -27,7 +93,7 @@ describe('hooks', () => {
                 },
             } as any
             const {result} = renderHook(() => useAgentDetails(1), {
-                wrapper,
+                wrapper: agentDetailsWrapper,
             })
 
             expect(result.current.data).toEqual({id: 1, name: 'Agent Name'})
@@ -43,7 +109,7 @@ describe('hooks', () => {
                 },
             } as any
             const {result} = renderHook(() => useAgentDetails(1), {
-                wrapper,
+                wrapper: agentDetailsWrapper,
             })
 
             expect(result.current.data).toEqual({
@@ -57,7 +123,7 @@ describe('hooks', () => {
                 error: {response: {status: 404}},
             } as any)
             const {result} = renderHook(() => useAgentDetails(1), {
-                wrapper,
+                wrapper: agentDetailsWrapper,
             })
 
             expect(result.current.error).toEqual({response: {status: 404}})

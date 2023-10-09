@@ -2,7 +2,7 @@ import {cleanup, render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 import {AgentLabel} from 'pages/common/utils/labels'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
-import TicketCallAgentLabel from '../VoiceCallAgentLabel/VoiceCallAgentLabel'
+import VoiceCallAgentLabel from '../VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 jest.mock('pages/common/utils/labels', () => ({
     AgentLabel: (props: ComponentProps<typeof AgentLabel>) => (
@@ -12,10 +12,10 @@ jest.mock('pages/common/utils/labels', () => ({
 
 const useAgentDetailsSpy = jest.spyOn(voiceCallHooks, 'useAgentDetails')
 
-describe('TicketCallAgentLabel', () => {
+describe('VoiceCallAgentLabel', () => {
     const renderComponent = (
-        props: ComponentProps<typeof TicketCallAgentLabel>
-    ) => render(<TicketCallAgentLabel {...props} />)
+        props: ComponentProps<typeof VoiceCallAgentLabel>
+    ) => render(<VoiceCallAgentLabel {...props} />)
 
     afterEach(() => {
         cleanup()

@@ -18,7 +18,7 @@ export type VoiceCall = {
     created_datetime: string
     updated_datetime: string
     last_answered_by_agent_id: number | null
-    initiated_by_agent_id: number | null
+    initiated_by_agent_id?: number | null
     customer_id: number
 }
 
@@ -43,3 +43,12 @@ export const isVoiceCall = (object: unknown): object is VoiceCall => {
         ? true
         : false
 }
+
+export type OutboundVoiceCall = VoiceCall & {
+    initiated_by_agent_id: number
+}
+
+export const isOutboundVoiceCall = (
+    input: unknown
+): input is OutboundVoiceCall =>
+    isVoiceCall(input) && typeof input.initiated_by_agent_id === 'number'

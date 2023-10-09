@@ -1,0 +1,33 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+@import '~css/new/mixins';
+
+:local {
+    .container {
+        padding: @layout-spacing-xs @layout-spacing-m @layout-spacing-s;
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+        margin: 0;
+        word-break: break-word;
+        overflow-y: visible;
+        gap: @layout-spacing-s;
+
+        @media @mobiles {
+            padding: 0.8em 16px;
+            margin: 0 -16px;
+        }
+
+        &:hover {
+            background: var(--neutral-grey-1);
+        }
+    }
+
+    .row {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: @layout-spacing-xs;
+    }
+}
