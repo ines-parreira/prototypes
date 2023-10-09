@@ -292,6 +292,8 @@ export enum SegmentEvent {
     FallbackWorkerStarted = 'fallback-worker-started',
     TicketPreviousNavigation = 'ticket/ticket-navigation/previous-ticket-navigation',
     TicketNextNavigation = 'ticket/ticket-navigation/next-ticket-navigation',
+    TicketKeyboardShortcutsPreviousNavigation = 'ticket/keyboard-shortcuts-navigation/previous-ticket-navigation',
+    TicketKeyboardShortcutsNextNavigation = 'ticket/keyboard-shortcuts-navigation/next-ticket-navigation',
 }
 
 export enum StatViewLinkClickedStat {

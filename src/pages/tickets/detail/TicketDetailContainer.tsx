@@ -353,6 +353,9 @@ export const TicketDetailContainer = ({
             GO_BACK: {
                 action: () => {
                     if (!isGoToPrevOrNextTicketPending) {
+                        logEvent(
+                            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation
+                        )
                         void goToPrevOrNextTicket('prev')
                     }
                 },
@@ -360,6 +363,9 @@ export const TicketDetailContainer = ({
             GO_FORWARD: {
                 action: () => {
                     if (!isGoToPrevOrNextTicketPending) {
+                        logEvent(
+                            SegmentEvent.TicketKeyboardShortcutsNextNavigation
+                        )
                         void goToPrevOrNextTicket('next')
                     }
                 },

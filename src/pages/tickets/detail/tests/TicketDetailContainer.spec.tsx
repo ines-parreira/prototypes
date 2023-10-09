@@ -1079,7 +1079,7 @@ describe('TicketDetailContainer component', () => {
         await flushPromises()
     })
 
-    it.each<[string, string, boolean, () => jest.Mock]>([
+    it.each<[string, string, boolean, () => jest.Mock, SegmentEvent]>([
         [
             'next',
             'GO_FORWARD',
@@ -1089,6 +1089,7 @@ describe('TicketDetailContainer component', () => {
                     new Promise(_noop)
                 )
             },
+            SegmentEvent.TicketKeyboardShortcutsNextNavigation,
         ],
         [
             'next',
@@ -1099,6 +1100,7 @@ describe('TicketDetailContainer component', () => {
                     new Promise(_noop)
                 )
             },
+            SegmentEvent.TicketKeyboardShortcutsNextNavigation,
         ],
         [
             'prev',
@@ -1109,6 +1111,7 @@ describe('TicketDetailContainer component', () => {
                     new Promise(_noop)
                 )
             },
+            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
         ],
         [
             'prev',
@@ -1119,10 +1122,17 @@ describe('TicketDetailContainer component', () => {
                     new Promise(_noop)
                 )
             },
+            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
         ],
     ])(
         'should debounce %s ticket calls while call is already pending',
-        (testName, actionName, isTicketNavigationAvailable, testSetup) => {
+        (
+            testName,
+            actionName,
+            isTicketNavigationAvailable,
+            testSetup,
+            trackedEvent
+        ) => {
             mockedDispatch.mockReturnValue(isTicketNavigationAvailable)
 
             const execKeyboardAction =
@@ -1146,6 +1156,7 @@ describe('TicketDetailContainer component', () => {
             expect(callMock).toHaveBeenCalledTimes(
                 isTicketNavigationAvailable ? 1 : 0
             )
+            expect(logEvent).toHaveBeenCalledWith(trackedEvent)
         }
     )
 
