@@ -15,6 +15,7 @@ import {createPortal} from 'react-dom'
 import classnames from 'classnames'
 import {useKey} from 'react-use'
 import {CSSTransition} from 'react-transition-group'
+import FocusTrap from 'focus-trap-react'
 
 import useId from 'hooks/useId'
 
@@ -34,6 +35,7 @@ type Props = {
     isScrollable?: boolean
     onClose: () => void
     size?: 'small' | 'medium' | 'large' | 'huge'
+    forceFocus?: boolean
 }
 
 type ModalContextState = {
@@ -60,6 +62,7 @@ const Modal = (
         isScrollable = false,
         onClose,
         size,
+        forceFocus = false,
     }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>
 ) => {
@@ -112,6 +115,8 @@ const Modal = (
         [bodyId, id, isScrollable, isClosable, labelId, onClose, ref]
     )
 
+    const isFocusTrapActive = forceFocus && isOpen
+
     return (
         <CSSTransition
             in={isOpen}
@@ -128,39 +133,42 @@ const Modal = (
             <>
                 {createPortal(
                     <ModalContext.Provider value={contextValue}>
-                        <div
-                            className={classnames(className, css.modal)}
-                            role="dialog"
-                            aria-modal="true"
-                            aria-labelledby={labelId}
-                            aria-describedby={bodyId}
-                            onClick={handleClose}
-                        >
+                        <FocusTrap active={isFocusTrapActive}>
                             <div
-                                className={classnames(
-                                    css.dialog,
-                                    {
-                                        [css[size!]]: !!size,
-                                        [css.scrollableDialog]: isScrollable,
-                                    },
-                                    classNameDialog
-                                )}
+                                className={classnames(className, css.modal)}
+                                role="dialog"
+                                aria-modal="true"
+                                aria-labelledby={labelId}
+                                aria-describedby={bodyId}
+                                onClick={handleClose}
                             >
                                 <div
-                                    ref={ref}
                                     className={classnames(
-                                        css.modalContent,
+                                        css.dialog,
                                         {
-                                            [css.scrollableContent]:
+                                            [css[size!]]: !!size,
+                                            [css.scrollableDialog]:
                                                 isScrollable,
                                         },
-                                        classNameContent
+                                        classNameDialog
                                     )}
                                 >
-                                    {children}
+                                    <div
+                                        ref={ref}
+                                        className={classnames(
+                                            css.modalContent,
+                                            {
+                                                [css.scrollableContent]:
+                                                    isScrollable,
+                                            },
+                                            classNameContent
+                                        )}
+                                    >
+                                        {children}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </FocusTrap>
                     </ModalContext.Provider>,
                     containerNodeRef.current
                 )}

@@ -439,8 +439,6 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
             setSearchItemsType(ViewType.TicketList)
             logEvent(SegmentEvent.GlobalSearchTicketTabClick)
         }
-
-        spotlightSearchInputRef.current?.focus()
     }
 
     const activeTab: string = useMemo(() => {
@@ -684,6 +682,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
             className={css.spotlightModal}
             classNameContent={css.spotlightModalContent}
             isScrollable
+            forceFocus
         >
             <Search
                 className={css.searchInput}

@@ -281,7 +281,7 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
         >
           <div
             class="tab activeTab"
-            tabindex="1"
+            tabindex="0"
           >
             <span
               class="tabLabel"
@@ -291,7 +291,7 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
           </div>
           <div
             class="tab"
-            tabindex="2"
+            tabindex="0"
           >
             <span
               class="tabLabel"
@@ -423,7 +423,7 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
         >
           <div
             class="tab activeTab"
-            tabindex="1"
+            tabindex="0"
           >
             <span
               class="tabLabel"
@@ -433,7 +433,7 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
           </div>
           <div
             class="tab"
-            tabindex="2"
+            tabindex="0"
           >
             <span
               class="tabLabel"
@@ -536,7 +536,7 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
         class="component searchInput"
       >
         <div
-          class="wrapper isFocused input textInput shortcuts-enable"
+          class="wrapper input textInput shortcuts-enable"
         >
           <span
             class="prefix"
@@ -565,7 +565,7 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
         >
           <div
             class="tab"
-            tabindex="1"
+            tabindex="0"
           >
             <span
               class="tabLabel"
@@ -575,7 +575,7 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
           </div>
           <div
             class="tab activeTab"
-            tabindex="2"
+            tabindex="0"
           >
             <span
               class="tabLabel"
@@ -707,7 +707,7 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
         >
           <div
             class="tab activeTab"
-            tabindex="1"
+            tabindex="0"
           >
             <span
               class="tabLabel"
@@ -717,7 +717,7 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
           </div>
           <div
             class="tab"
-            tabindex="2"
+            tabindex="0"
           >
             <span
               class="tabLabel"

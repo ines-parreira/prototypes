@@ -67,10 +67,10 @@ const TabNavigator = ({
     return (
         <div className={classnames(css.container, className)}>
             <div className={css.tabContainer} ref={tabNavigatorRef}>
-                {tabs.map((tab, tabIndex) => (
+                {tabs.map((tab, index) => (
                     <div
-                        key={tabIndex}
-                        tabIndex={tabIndex + 1}
+                        key={index}
+                        tabIndex={0}
                         className={classnames(css.tab, {
                             [css.activeTab]: tab.value === activeTab,
                             ['activeTab']: tab.value === activeTab,

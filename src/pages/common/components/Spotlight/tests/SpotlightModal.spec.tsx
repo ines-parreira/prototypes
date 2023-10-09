@@ -83,6 +83,14 @@ const mockUseRecentItems = assumeMock(useRecentItems)
 
 jest.mock('hooks/useRecentItems/useRecentItems')
 
+jest.mock(
+    'focus-trap-react',
+    () =>
+        ({children}: {children: React.ReactNode}) => {
+            return <>{children}</>
+        }
+)
+
 describe('<SpotlightModal/>', () => {
     const mockCloseModal = jest.fn()
     const minProps: ComponentProps<typeof SpotlightModal> = {
