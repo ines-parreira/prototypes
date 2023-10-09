@@ -1,6 +1,6 @@
 import moment, {Moment} from 'moment'
-import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
 import {Cubes} from 'models/reporting/cubes'
+import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
 import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
@@ -52,6 +52,32 @@ export const AutomationAddonStatsFiltersMembers: StatsFiltersMembers = {
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
 }
+
+export const NotSpamNorTrashedTicketsFilter = [
+    {
+        member: TicketMember.IsTrashed,
+        operator: ReportingFilterOperator.Equals,
+        values: ['0'],
+    },
+    {
+        member: TicketMember.IsSpam,
+        operator: ReportingFilterOperator.Equals,
+        values: ['0'],
+    },
+]
+
+export const PublicHelpdeskAndApiMessagesFilter = [
+    {
+        member: HelpdeskMessageMember.IsMessagePublic,
+        operator: ReportingFilterOperator.Equals,
+        values: ['1'],
+    },
+    {
+        member: HelpdeskMessageMember.MessageVia,
+        operator: ReportingFilterOperator.In,
+        values: ['helpdesk', 'api'],
+    },
+]
 
 export const statsFiltersToReportingFilters = (
     members: StatsFiltersMembers,

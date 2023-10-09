@@ -4,19 +4,19 @@ import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessa
 import {
     TicketDimension,
     TicketMeasure,
-    TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
 import {
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
+import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {OneDimensionalDataItem} from 'pages/stats/types'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {
     getPreviousPeriod,
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -30,16 +30,7 @@ const workloadPerChannelDistributionQueryFactory = (
     dimensions: [TicketDimension.Channel],
     segments: [TicketSegment.WorkloadTickets],
     filters: [
-        {
-            member: TicketMember.IsSpam,
-            operator: ReportingFilterOperator.Equals,
-            values: ['0'],
-        },
-        {
-            member: TicketMember.IsTrashed,
-            operator: ReportingFilterOperator.Equals,
-            values: ['0'],
-        },
+        ...NotSpamNorTrashedTicketsFilter,
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
     timezone,

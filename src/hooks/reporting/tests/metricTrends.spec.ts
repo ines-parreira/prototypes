@@ -1,24 +1,37 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {
-    HelpdeskMessageMeasure,
-    HelpdeskMessageMember,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {
     AutomationBillingEventMeasure,
     AutomationBillingEventMember,
 } from 'models/reporting/cubes/AutomationBillingEventCube'
 import {
+    HelpdeskMessageMeasure,
+    HelpdeskMessageMember,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    TicketMeasure,
+    TicketMember,
+    TicketSegment,
+} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesSegment} from 'models/reporting/cubes/TicketMessagesCube'
+import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {
+    formatReportingQueryDate,
+    getPreviousPeriod,
+    NotSpamNorTrashedTicketsFilter,
+    PublicHelpdeskAndApiMessagesFilter,
+} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
+import {
     automatedInteractionsQueryFactory,
     automationRateQueryFactory,
     firstResponseTimeWithAutomationQueryFactory,
+    messagesPerTicketTrendQueryFactory,
     messagesSentQueryFactory,
-    NotSpamNorTrashedTicketsFilter,
+    openTicketsTrendQueryFactory,
     overallTimeSavedWithAutomationQueryFactory,
     resolutionTimeWithAutomationQueryFactory,
     ticketsRepliedQueryFactory,
@@ -29,21 +42,25 @@ import {
     useFirstResponseTimeTrend,
     useFirstResponseTimeWithAutomationTrend,
     useMessagesPerTicketTrend,
+    useMessagesSentTrend,
+    useOpenTicketsTrend,
     useOverallTimeSavedWithAutomationTrend,
     useResolutionTimeTrend,
     useResolutionTimeWithAutomationTrend,
     useTicketsCreatedTrend,
+    useTicketsRepliedTrend,
 } from '../metricTrends'
 
-jest.mock('../useMetricTrend', () => (queryCreator: ReportingQuery) => ({
-    ...queryCreator,
-}))
+jest.mock('../useMetricTrend')
+const useMetricTrendMock = assumeMock(useMetricTrend)
 
 describe('metric trends', () => {
+    useMetricTrendMock.mockImplementation(
+        ((queryCreator: ReportingQuery) => queryCreator) as any
+    )
     describe.each([
         ['useCustomerSatisfactionTrend', useCustomerSatisfactionTrend],
         ['useFirstResponseTimeTrend', useFirstResponseTimeTrend],
-        ['useMessagesPerTicketTrend', useMessagesPerTicketTrend],
         ['useResolutionTimeTrend', useResolutionTimeTrend],
         ['useClosedTicketsTrend', useClosedTicketsTrend],
         ['useTicketsCreatedTrend', useTicketsCreatedTrend],
@@ -78,6 +95,94 @@ describe('metric trends', () => {
     }
     const timezone = 'someTimeZone'
 
+    describe('messagesPerTicketQueryFactory', () => {
+        it('should build a query', () => {
+            const query = messagesPerTicketTrendQueryFactory(
+                statsFilters,
+                timezone
+            )
+
+            expect(query).toEqual({
+                measures: [HelpdeskMessageMeasure.MessageCount],
+                dimensions: [],
+                filters: [
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: HelpdeskMessageMember.SentDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    ...PublicHelpdeskAndApiMessagesFilter,
+                    {
+                        member: HelpdeskMessageMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+                timezone,
+                segments: [
+                    TicketSegment.ClosedTickets,
+                    TicketMessagesSegment.ConversationStarted,
+                ],
+            })
+        })
+    })
+
+    describe('openTicketsTrendQueryFactory', () => {
+        it('should build a query', () => {
+            const query = openTicketsTrendQueryFactory(statsFilters, timezone)
+
+            expect(query).toEqual({
+                measures: [TicketMeasure.TicketCount],
+                dimensions: [],
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    {
+                        member: TicketMember.Status,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['open'],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+                timezone,
+            })
+        })
+    })
+
+    describe('useOpenTicketsTrend', () => {
+        it('should call useMetricTrend with two queries', () => {
+            renderHook(() => useOpenTicketsTrend(statsFilters, timezone))
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                openTicketsTrendQueryFactory(statsFilters, timezone),
+                openTicketsTrendQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
+        })
+    })
+
     describe('ticketsRepliedQueryFactory', () => {
         it('should build a query', () => {
             const query = ticketsRepliedQueryFactory(statsFilters, timezone)
@@ -107,6 +212,7 @@ describe('metric trends', () => {
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },
+                    ...PublicHelpdeskAndApiMessagesFilter,
                     {
                         member: HelpdeskMessageMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -120,6 +226,22 @@ describe('metric trends', () => {
                 ],
                 timezone,
             })
+        })
+    })
+
+    describe('useTicketsRepliedTrend', () => {
+        it('should call useMetricTrend with two queries', () => {
+            renderHook(() => useTicketsRepliedTrend(statsFilters, timezone))
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                ticketsRepliedQueryFactory(statsFilters, timezone),
+                ticketsRepliedQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
         })
     })
 
@@ -146,6 +268,7 @@ describe('metric trends', () => {
                         operator: ReportingFilterOperator.InDateRange,
                         values: [periodStart, periodEnd],
                     },
+                    ...PublicHelpdeskAndApiMessagesFilter,
                     {
                         member: HelpdeskMessageMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -159,6 +282,85 @@ describe('metric trends', () => {
                 ],
                 timezone,
             })
+        })
+    })
+
+    describe('useMessagesSentTrend', () => {
+        it('should call useMetricTrend with two queries', () => {
+            renderHook(() => useMessagesSentTrend(statsFilters, timezone))
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                messagesSentQueryFactory(statsFilters, timezone),
+                messagesSentQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
+        })
+    })
+
+    describe('messagesPerTicketTrendQueryFactory', () => {
+        it('should create a query', () => {
+            const query = messagesPerTicketTrendQueryFactory(
+                statsFilters,
+                timezone
+            )
+
+            expect(query).toEqual({
+                measures: [HelpdeskMessageMeasure.MessageCount],
+                dimensions: [],
+                filters: [
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: HelpdeskMessageMember.SentDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    ...PublicHelpdeskAndApiMessagesFilter,
+                    {
+                        member: HelpdeskMessageMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+                timezone,
+                segments: [
+                    TicketSegment.ClosedTickets,
+                    TicketMessagesSegment.ConversationStarted,
+                ],
+            })
+        })
+    })
+
+    describe('useMessagesPerTicketTrend', () => {
+        it('should call useMetricTrend with two queries', () => {
+            renderHook(() => useMessagesPerTicketTrend(statsFilters, timezone))
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                messagesPerTicketTrendQueryFactory(statsFilters, timezone),
+                messagesPerTicketTrendQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
         })
     })
 

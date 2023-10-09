@@ -35,22 +35,11 @@ import {
     getFilterDateRange,
     getPreviousPeriod,
     HelpdeskMessagesStatsFiltersMembers,
+    NotSpamNorTrashedTicketsFilter,
+    PublicHelpdeskAndApiMessagesFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
-
-export const NotSpamNorTrashedTicketsFilter = [
-    {
-        member: TicketMember.IsTrashed,
-        operator: ReportingFilterOperator.Equals,
-        values: ['0'],
-    },
-    {
-        member: TicketMember.IsSpam,
-        operator: ReportingFilterOperator.Equals,
-        values: ['0'],
-    },
-]
 
 export const customerSatisfactionQueryFactory = (
     statsFilters: StatsFilters,
@@ -139,16 +128,10 @@ export const messagesPerTicketTrendQueryFactory = (
     filters: StatsFilters,
     timezone: string
 ) => ({
-    measures: [TicketMessagesMeasure.MessagesAverage],
-    dimensions: [],
-    timezone,
+    ...messagesSentQueryFactory(filters, timezone),
     segments: [
         TicketSegment.ClosedTickets,
         TicketMessagesSegment.ConversationStarted,
-    ],
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
 })
 
@@ -224,6 +207,7 @@ export const openTicketsTrendQueryFactory = (
         ),
     ],
 })
+
 export const useOpenTicketsTrend = (filters: StatsFilters, timezone: string) =>
     useMetricTrend(
         openTicketsTrendQueryFactory(filters, timezone),
@@ -299,7 +283,7 @@ export const ticketsCreatedQueryFactory = (
         dimensions: [],
         segments: agents?.length
             ? [TicketMessagesSegment.TicketCreatedByAgent]
-            : [], //TODO
+            : [],
         timezone,
         filters: [
             ...commonFilters,
@@ -352,6 +336,7 @@ export const ticketsRepliedQueryFactory = (
             operator: ReportingFilterOperator.NotEquals,
             values: [TicketMessageSourceType.InternalNote],
         },
+        ...PublicHelpdeskAndApiMessagesFilter,
         ...statsFiltersToReportingFilters(
             HelpdeskMessagesStatsFiltersMembers,
             filters
@@ -394,6 +379,7 @@ export const messagesSentQueryFactory = (
             operator: ReportingFilterOperator.InDateRange,
             values: getFilterDateRange(filters),
         },
+        ...PublicHelpdeskAndApiMessagesFilter,
         ...statsFiltersToReportingFilters(
             HelpdeskMessagesStatsFiltersMembers,
             filters

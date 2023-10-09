@@ -30,6 +30,7 @@ import {
     ReportingGranularity,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {NotSpamNorTrashedTicketsFilter} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 import {
@@ -109,16 +110,7 @@ describe('time series', () => {
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
-                    {
-                        member: TicketMember.IsTrashed,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
-                    {
-                        member: TicketMember.IsSpam,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
+                    ...NotSpamNorTrashedTicketsFilter,
                 ],
                 segments: [],
                 timeDimensions: [
@@ -159,16 +151,7 @@ describe('time series', () => {
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
-                    {
-                        member: TicketMember.IsTrashed,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
-                    {
-                        member: TicketMember.IsSpam,
-                        operator: ReportingFilterOperator.Equals,
-                        values: ['0'],
-                    },
+                    ...NotSpamNorTrashedTicketsFilter,
                     {
                         member: TicketMessagesMember.FirstHelpdeskMessageUserId,
                         operator: ReportingFilterOperator.Equals,
@@ -238,16 +221,7 @@ describe('time series', () => {
                             operator: ReportingFilterOperator.BeforeDate,
                             values: [periodEnd],
                         },
-                        {
-                            member: TicketMember.IsSpam,
-                            operator: ReportingFilterOperator.Equals,
-                            values: ['0'],
-                        },
-                        {
-                            member: TicketMember.IsTrashed,
-                            operator: ReportingFilterOperator.Equals,
-                            values: ['0'],
-                        },
+                        ...NotSpamNorTrashedTicketsFilter,
                         {
                             member: TicketMember.PeriodStart,
                             operator: ReportingFilterOperator.AfterDate,
@@ -360,16 +334,7 @@ describe('time series', () => {
                     timezone,
                     segments: [],
                     filters: [
-                        {
-                            member: TicketMember.IsTrashed,
-                            operator: ReportingFilterOperator.Equals,
-                            values: ['0'],
-                        },
-                        {
-                            member: TicketMember.IsSpam,
-                            operator: ReportingFilterOperator.Equals,
-                            values: ['0'],
-                        },
+                        ...NotSpamNorTrashedTicketsFilter,
                         {
                             member: TicketMember.PeriodStart,
                             operator: ReportingFilterOperator.AfterDate,

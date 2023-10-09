@@ -33,6 +33,7 @@ import {
     AutomationAddonStatsFiltersMembers,
     getFilterDateRange,
     HelpdeskMessagesStatsFiltersMembers,
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -48,18 +49,7 @@ export const ticketsCreatedQueryFactory = (
     granularity: ReportingGranularity
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => {
     const {agents, ...statFiltersWithoutAgents} = statsFilters
-    const commonFilters: ReportingFilter[] = [
-        {
-            member: TicketMember.IsTrashed,
-            operator: ReportingFilterOperator.Equals,
-            values: ['0'],
-        },
-        {
-            member: TicketMember.IsSpam,
-            operator: ReportingFilterOperator.Equals,
-            values: ['0'],
-        },
-    ]
+    const commonFilters: ReportingFilter[] = [...NotSpamNorTrashedTicketsFilter]
     if (agents?.length) {
         commonFilters.push({
             member: TicketMessagesMember.FirstHelpdeskMessageUserId,
@@ -131,16 +121,7 @@ export function useTicketsClosedTimeSeries(
                 TicketStatsFiltersMembers,
                 filters
             ),
-            {
-                member: TicketMember.IsTrashed,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketMember.IsSpam,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
+            ...NotSpamNorTrashedTicketsFilter,
         ],
     })
 }
@@ -166,16 +147,7 @@ export function useTicketsRepliedTimeSeries(
                 HelpdeskMessagesStatsFiltersMembers,
                 filters
             ),
-            {
-                member: TicketMember.IsSpam,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketMember.IsTrashed,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
+            ...NotSpamNorTrashedTicketsFilter,
             {
                 member: TicketMember.PeriodStart,
                 operator: ReportingFilterOperator.AfterDate,

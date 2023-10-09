@@ -33,7 +33,6 @@ import {
     useResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
-import {NotSpamNorTrashedTicketsFilter} from 'hooks/reporting/metricTrends'
 import {
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
@@ -46,7 +45,11 @@ import {
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import {
+    formatReportingQueryDate,
+    NotSpamNorTrashedTicketsFilter,
+    PublicHelpdeskAndApiMessagesFilter,
+} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
@@ -238,6 +241,7 @@ describe('metricsPerDimension', () => {
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },
+                    ...PublicHelpdeskAndApiMessagesFilter,
                     {
                         member: HelpdeskMessageMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -305,6 +309,7 @@ describe('metricsPerDimension', () => {
                         operator: ReportingFilterOperator.NotEquals,
                         values: [TicketMessageSourceType.InternalNote],
                     },
+                    ...PublicHelpdeskAndApiMessagesFilter,
                     {
                         member: HelpdeskMessageMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -509,6 +514,7 @@ describe('metricsPerDimension', () => {
                             formatReportingQueryDate(periodEnd),
                         ],
                     },
+                    ...PublicHelpdeskAndApiMessagesFilter,
                     {
                         member: HelpdeskMessageMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -570,6 +576,7 @@ describe('metricsPerDimension', () => {
                             formatReportingQueryDate(periodEnd),
                         ],
                     },
+                    ...PublicHelpdeskAndApiMessagesFilter,
                     {
                         member: HelpdeskMessageMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,

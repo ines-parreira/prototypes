@@ -23,6 +23,8 @@ export enum HelpdeskMessageMember {
     PeriodEnd = 'HelpdeskMessage.periodEnd',
     Channel = 'HelpdeskMessage.channel',
     SenderId = 'HelpdeskMessage.senderId',
+    IsMessagePublic = 'HelpdeskMessage.isMessagePublic',
+    MessageVia = 'HelpdeskMessage.messageVia',
 }
 
 type HelpdeskMessageTimeDimensions =

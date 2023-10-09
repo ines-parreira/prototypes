@@ -4,7 +4,6 @@ import {
     customerSatisfactionQueryFactory,
     firstResponseTimeQueryFactory,
     messagesSentQueryFactory,
-    NotSpamNorTrashedTicketsFilter,
     resolutionTimeQueryFactory,
     ticketsRepliedQueryFactory,
 } from 'hooks/reporting/metricTrends'
@@ -39,6 +38,7 @@ import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     formatReportingQueryDate,
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
