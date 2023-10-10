@@ -2,7 +2,7 @@ import {dummyAppDetail} from 'fixtures/apps'
 import {PricingPlan} from 'models/integration/types/app'
 import {mapAppToDetail} from '../appToDetail'
 
-describe(`InfoCard`, () => {
+describe(`mapAppToDetail`, () => {
     it('should map data correctly', () => {
         expect(mapAppToDetail(dummyAppDetail)).toMatchInlineSnapshot(`
             {

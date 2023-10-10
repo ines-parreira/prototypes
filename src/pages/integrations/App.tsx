@@ -30,6 +30,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ConnectLink from './components/ConnectLink'
 import {mapAppToDetail} from './mappers/appToDetail'
+import {mapDefaults} from './mappers/mapDefaults'
 
 export enum Tab {
     Details = 'details',
@@ -75,7 +76,7 @@ export default function AppDetail() {
         return <Loader minHeight="300px" />
     }
 
-    const detailProps = mapAppToDetail(appItem)
+    const detailProps = mapAppToDetail(mapDefaults(appItem))
 
     if (appItem.hasFreeTrial) {
         let trialLabel = 'Free trial'

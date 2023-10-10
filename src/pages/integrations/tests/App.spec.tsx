@@ -13,6 +13,8 @@ import client from 'models/api/resources'
 import {dummyAppData} from 'fixtures/apps'
 import {TrialPeriod} from 'models/integration/types/app'
 
+import {DEFAULT_VALUES} from '../mappers/mapDefaults'
+
 const mockStore = configureMockStore([thunk])
 const store = mockStore({currentAccount: fromJS({domain: '20-1 rpz'})})
 const appId = '1234'
@@ -186,5 +188,22 @@ describe(`App`, () => {
         )
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(screen.getByText('14 DAYS FREE TRIAL'))
+    })
+    it('should display defaults if config is unapproved and missing fields', async () => {
+        mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+            ...dummyAppData,
+            is_unapproved: true,
+            name: null,
+        })
+        renderWithRouter(
+            <Provider store={store}>
+                <App />
+            </Provider>,
+            {
+                path: '/integrations/app/:appId',
+                route: `/integrations/app/${appId}`,
+            }
+        )
+        await screen.findByText(new RegExp(DEFAULT_VALUES.title))
     })
 })
