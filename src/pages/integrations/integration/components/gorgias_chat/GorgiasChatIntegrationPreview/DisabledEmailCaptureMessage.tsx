@@ -41,6 +41,7 @@ const DisabledEmailCaptureMessage = ({
                             attachments: [],
                         },
                     ]}
+                    language={language}
                 />
             )}
         </>

@@ -24,6 +24,7 @@ const OptionalEmailCapture: React.FC<Props> = ({chatTitle, language}) => {
         <BotMessages
             chatTitle={chatTitle}
             messages={[translatedTexts.emailCaptureOnlineTriggerText]}
+            language={language}
         >
             <EmailCaptureMessage language={language} />
         </BotMessages>

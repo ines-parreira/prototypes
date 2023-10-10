@@ -385,7 +385,7 @@ export const getLanguagesFromChatConfig = (
 ): string[] => {
     return meta.languages
         ? meta.languages.map((x) => x.language)
-        : [meta.language ?? Language.EnglishUs]
+        : [meta.language ?? GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
 }
 
 export const getPrimaryLanguageFromChatConfig = (
@@ -393,7 +393,7 @@ export const getPrimaryLanguageFromChatConfig = (
 ): string => {
     return (
         meta.languages?.find((language) => language.primary)?.language ??
-        (meta.language || Language.EnglishUs)
+        (meta.language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT)
     )
 }
 

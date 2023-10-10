@@ -9,17 +9,21 @@ type Props = {
     conversationColor: string
     messages: ReactNode[]
     hideConversationTimestamp?: boolean
+    language?: string
 }
 
 const CustomerInitialMessages = ({
     conversationColor,
     messages,
     hideConversationTimestamp,
+    language,
 }: Props) => {
     const contrastColor = getTextColorBasedOnBackground(conversationColor)
     return (
         <div className="d-flex flex-column">
-            {!hideConversationTimestamp && <ConversationTimestamp />}
+            {!hideConversationTimestamp && (
+                <ConversationTimestamp language={language} />
+            )}
 
             {messages.map((message, index) => (
                 <div

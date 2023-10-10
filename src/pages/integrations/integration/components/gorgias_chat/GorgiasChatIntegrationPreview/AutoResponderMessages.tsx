@@ -1,6 +1,11 @@
 import React from 'react'
 import {Map} from 'immutable'
 
+import {
+    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
+} from 'config/integrations/gorgias_chat'
+
 import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
 import AgentMessages from './AgentMessages'
@@ -27,35 +32,44 @@ const AutoResponderMessages: React.FC<Props> = ({
     language,
     autoResponderReply,
     isEmailCaptureEnabled,
-}) => (
-    <>
-        <CustomerInitialMessages
-            conversationColor={conversationColor}
-            messages={['Hi, could you give me an update on my order status?']}
-        />
-        <AutoResponder
-            mainColor={mainColor}
-            chatTitle={chatTitle}
-            language={language}
-            autoResponderReply={autoResponderReply}
-            isEmailCaptureEnabled={isEmailCaptureEnabled}
-        />
-        {currentUser && (
-            <AgentMessages
-                currentUser={currentUser}
-                messages={[
-                    {
-                        content:
-                            "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
-                        isHtml: false,
-                        attachments: [],
-                    },
-                ]}
-                chatTitle={chatTitle}
-                avatar={avatar}
+}) => {
+    const widgetTranslatedTexts =
+        GORGIAS_CHAT_WIDGET_TEXTS[
+            language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
+        ]
+
+    return (
+        <>
+            <CustomerInitialMessages
+                conversationColor={conversationColor}
+                messages={[widgetTranslatedTexts.previewCustomerInitialMessage]}
+                language={language}
             />
-        )}
-    </>
-)
+            <AutoResponder
+                mainColor={mainColor}
+                chatTitle={chatTitle}
+                language={language}
+                autoResponderReply={autoResponderReply}
+                isEmailCaptureEnabled={isEmailCaptureEnabled}
+            />
+            {currentUser && (
+                <AgentMessages
+                    currentUser={currentUser}
+                    messages={[
+                        {
+                            content:
+                                widgetTranslatedTexts.previewAgentInitialMessage,
+                            isHtml: false,
+                            attachments: [],
+                        },
+                    ]}
+                    chatTitle={chatTitle}
+                    avatar={avatar}
+                    language={language}
+                />
+            )}
+        </>
+    )
+}
 
 export default AutoResponderMessages

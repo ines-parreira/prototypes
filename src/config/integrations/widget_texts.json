@@ -1,5 +1,9 @@
 {
     "en-US": {
+        "automated": "Automated",
+        "previewAgentInitialMessage": "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
+        "previewCustomerInitialMessage": "Hi, could you give me an update on my order status?",
+        "productQuestionShort": "Product Question",
         "replyTimeMoments": "We'll reply in a few moments",
         "emailCaptureTriggerTextBase": "Leave us your email and we'll get back to you.",
         "emailCaptureTriggerTypicalReplyHours": "We typically reply in a few hours.",
@@ -59,11 +63,15 @@
         "chatWithUs": "Chat with us"
     },
     "fr-FR": {
+        "automated": "Automatisé",
+        "previewAgentInitialMessage": "Bonjour, merci pour votre patience! Bien sûr, laisse-moi vérifier. Quel est votre numéro de commande?",
+        "previewCustomerInitialMessage": "Bonjour, pouvez-vous me donner une mise à jour de l'état de ma commande?",
+        "productQuestionShort": "Question produit",
         "replyTimeMoments": "Nous allons vous répondre dans quelques instants.",
         "emailCaptureTriggerTextBase": "Laissez-nous votre adresse e-mail et nous vous recontacterons.",
         "emailCaptureTriggerTypicalReplyHours": "Nous répondons généralement en quelques heures.",
         "emailCaptureTriggerTypicalReplyMinutes": "Nous répondons généralement en quelques minutes.",
-        "contactFormAskSubject": "En quoi pouvons-nous vous aider ?",
+        "contactFormAskSubject": "En quoi pouvons-nous vous aider?",
         "contactFormIntro": "Laissez-nous un message et nous vous répondrons par e-mail quand nous serons en ligne.",
         "introductionText": "Comment pouvons-nous vous aider ?",
         "offlineIntroductionText": "De retour demain !",
@@ -117,6 +125,10 @@
         "chatWithUs": "Discutez avec nous"
     },
     "fr": {
+        "automated": "Automatisé",
+        "previewAgentInitialMessage": "Bonjour, merci pour votre patience ! Bien sûr, je vais vérifier. Quel est votre numéro de commande?",
+        "previewCustomerInitialMessage": "Bonjour, pourriez-vous m'informer de l'état de ma commande?",
+        "productQuestionShort": "Question produit",
         "replyTimeMoments": "Nous allons vous répondre dans quelques instants.",
         "emailCaptureTriggerTextBase": "Laissez-nous votre adresse e-mail et nous vous recontacterons.",
         "emailCaptureTriggerTypicalReplyHours": "Nous répondons généralement en quelques heures.",
@@ -175,6 +187,10 @@
         "chatWithUs": "Discutez avec nous"
     },
     "fr-CA": {
+        "automated": "Automatisé",
+        "previewAgentInitialMessage": "Bonjour, merci pour votre patience! Bien sûr, laissez-moi vérifier. Quel est votre numéro de commande?",
+        "previewCustomerInitialMessage": "Bonjour, pouvez-vous me donner une mise à jour de l'état de ma commande?",
+        "productQuestionShort": "Question sur le produit",
         "replyTimeMoments": "Nous vous répondrons dans quelques instants",
         "emailCaptureTriggerTextBase": "Laissez-nous votre e-mail et nous vous répondrons.",
         "emailCaptureTriggerTypicalReplyHours": "Nous répondons généralement en quelques heures.",
@@ -233,6 +249,10 @@
         "chatWithUs": "Discutez avec nous"
     },
     "es": {
+        "automated": "Automatizado",
+        "previewAgentInitialMessage": "Hola, gracias por tu paciencia. Por supuesto, déjame comprobarlo. ¿Cuál es tu número de pedido?",
+        "previewCustomerInitialMessage": "Hola, ¿me podríais informar sobre el estado de mi pedido?",
+        "productQuestionShort": "Pregunta de un producto",
         "replyTimeMoments": "Te responderemos en unos momentos",
         "emailCaptureTriggerTextBase": "Déjanos tu correo electrónico y nos pondremos en contacto contigo.",
         "emailCaptureTriggerTypicalReplyHours": "Normalmente respondemos en unas horas.",
@@ -291,6 +311,10 @@
         "chatWithUs": "Chatea con nosotros"
     },
     "da": {
+        "automated": "Automatiseret",
+        "previewAgentInitialMessage": "Hejsa, tak for tålmodigheden! Selvfølgelig, lad mig tjekke det. Hvad er dit ordrenummer?",
+        "previewCustomerInitialMessage": "Hej, kan du give mig en opdatering på min ordrestatus?",
+        "productQuestionShort": "Spørgsmål til produkt",
         "replyTimeMoments": "Vi svarer inden for nogle få øjeblikke",
         "emailCaptureTriggerTextBase": "Skriv en e-mail til os, så vender vi tilbage til dig.",
         "emailCaptureTriggerTypicalReplyHours": "Vi svarer typisk inden for få timer.",
@@ -349,6 +373,10 @@
         "chatWithUs": "Chat med os"
     },
     "sv": {
+        "automated": "Automatiserat",
+        "previewAgentInitialMessage": "Hej, tack för ditt tålamod! Visst, jag ska kolla. Vad är ditt ordernummer?",
+        "previewCustomerInitialMessage": "Hej, skulle du kunna ge mig en uppdatering om statusen på min order?",
+        "productQuestionShort": "Produktfråga",
         "replyTimeMoments": "Vi svarar om ett ögonblick",
         "emailCaptureTriggerTextBase": "Lämna din e-postadress så hör vi av oss till dig.",
         "emailCaptureTriggerTypicalReplyHours": "Vi svarar i regel inom några timmar.",
@@ -407,6 +435,10 @@
         "chatWithUs": "Chatta med oss"
     },
     "nl": {
+        "automated": "Geautomatiseerd",
+        "previewAgentInitialMessage": "Hoi, bedankt voor je geduld! Natuurlijk, ik ga het controleren. Wat is je bestelnummer?",
+        "previewCustomerInitialMessage": "Hoi, kun je me een update geven over de status van mijn bestelling?",
+        "productQuestionShort": "Productvraag",
         "replyTimeMoments": "We zullen binnen enkele ogenblikken antwoorden",
         "emailCaptureTriggerTextBase": "Laat je e-mailadres achter en we nemen contact met je op.",
         "emailCaptureTriggerTypicalReplyHours": "We antwoorden doorgaans binnen een paar uur.",
@@ -465,6 +497,10 @@
         "chatWithUs": "Chat met ons"
     },
     "it": {
+        "automated": "Automatizzato",
+        "previewAgentInitialMessage": "Ciao, grazie per la pazienza! Certo, fammi controllare. Qual è il numero del tuo ordine?",
+        "previewCustomerInitialMessage": "Ciao, potresti darmi un aggiornamento sullo stato del mio ordine?",
+        "productQuestionShort": "Domanda su prodotto",
         "replyTimeMoments": "Risponderemo tra pochi secondi",
         "emailCaptureTriggerTextBase": "Lasciaci la tua email e ti ricontatteremo.",
         "emailCaptureTriggerTypicalReplyHours": "Generalmente rispondiamo in poche ore.",
@@ -523,6 +559,10 @@
         "chatWithUs": "Chatta con noi"
     },
     "de": {
+        "automated": "Automatisiert",
+        "previewAgentInitialMessage": "Hallo, vielen Dank für deine Geduld! Ja, natürlich, ich werde mal nachschauen. Wie lautet deine Bestellnummer?",
+        "previewCustomerInitialMessage": "Hallo, könntest du mir ein Update über meinen Bestellstatus geben?",
+        "productQuestionShort": "Frage zum Produkt",
         "replyTimeMoments": "Wir antworten in wenigen Augenblicken",
         "emailCaptureTriggerTextBase": "Hinterlassen Sie uns Ihre E-Mail und wir melden uns bei Ihnen.",
         "emailCaptureTriggerTypicalReplyHours": "Wir antworten in der Regel innerhalb weniger Stunden.",
@@ -581,6 +621,10 @@
         "chatWithUs": "Chatten Sie mit uns"
     },
     "no": {
+        "automated": "Automatisert",
+        "previewAgentInitialMessage": "Heisann, takk for tålmodigheten! Javisst, la meg sjekke. Hva er bestillingsnummeret ditt?",
+        "previewCustomerInitialMessage": "Hei, kan du gi meg en oppdatering på bestillingsstatusen min?",
+        "productQuestionShort": "Produktspørsmål",
         "replyTimeMoments": "Vi svarer deg om et øyeblikk",
         "emailCaptureTriggerTextBase": "Legg igjen e-posten din, så kommer vi tilbake til deg.",
         "emailCaptureTriggerTypicalReplyHours": "Vi svarer typisk i løpet av noen få timer.",
@@ -639,6 +683,10 @@
         "chatWithUs": "Chatt med oss"
     },
     "cz": {
+        "automated": "Automatizováno",
+        "previewAgentInitialMessage": "Zdravím, díky za trpělivost! Jasné, podívám se. Jaké máš číslo objednávky?",
+        "previewCustomerInitialMessage": "Ahoj, můžete mi říct něco nového ohledně stavu mojí objednávky?",
+        "productQuestionShort": "Otázka k produktu",
         "replyTimeMoments": "Za malou chvíli vám odpovíme",
         "emailCaptureTriggerTextBase": "Zanechte nám email a my se vám ozveme.",
         "emailCaptureTriggerTypicalReplyHours": "Obvykle odpovídáme do pár hodin.",
@@ -697,6 +745,10 @@
         "chatWithUs": "Chatujte s námi"
     },
     "en-GB": {
+        "automated": "Automated",
+        "previewAgentInitialMessage": "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
+        "previewCustomerInitialMessage": "Hi, could you give me an update on my order status?",
+        "productQuestionShort": "Product Question",
         "replyTimeMoments": "We'll reply in a few moments",
         "emailCaptureTriggerTextBase": "Leave us your email and we'll get back to you.",
         "emailCaptureTriggerTypicalReplyHours": "We typically reply in a few hours.",
@@ -755,6 +807,10 @@
         "chatWithUs": "Chat with us"
     },
     "fi": {
+        "automated": "Automaattinen",
+        "previewAgentInitialMessage": "Hei, kiitos kärsivällisyydestäsi! Totta kai, tarkistetaan tilanne. Mikä tilausnumerosi on?",
+        "previewCustomerInitialMessage": "Hei, voisitko tarkistaa tilaukseni tilan?",
+        "productQuestionShort": "Tuotekysymys",
         "replyTimeMoments": "Vastaamme pienen hetken päästä",
         "emailCaptureTriggerTextBase": "Ilmoita meille sähköpostiosoitteesi, niin palaamme asiaan.",
         "emailCaptureTriggerTypicalReplyHours": "Vastaamme yleensä muutaman tunnin sisällä.",
@@ -813,6 +869,10 @@
         "chatWithUs": "Keskustele kanssamme"
     },
     "ja": {
+        "automated": "自動送信",
+        "previewAgentInitialMessage": "こんにちは。お待たせして申し訳ございません！もちろんご確認いたします。ご注文番号をお伝えいただけますでしょうか。",
+        "previewCustomerInitialMessage": "こんにちは。私の注文の状況について,最新情報をいただけますか。",
+        "productQuestionShort": "製品に関する質問",
         "replyTimeMoments": "間もなく返信いたします",
         "emailCaptureTriggerTextBase": "お客様の電子メールを残していただければ,ご連絡いたします。",
         "emailCaptureTriggerTypicalReplyHours": "通常,数時間以内に返信します。",
@@ -871,6 +931,10 @@
         "chatWithUs": "チャットで問い合わせる"
     },
     "pt-BR": {
+        "automated": "Automatizado",
+        "previewAgentInitialMessage": "Olá, obrigado pela paciência! Claro, deixe-me verificar. Qual é o número de seu pedido?",
+        "previewCustomerInitialMessage": "Olá, poderia me atualizar sobre o status do meu pedido?",
+        "productQuestionShort": "Pergunta Sobre o Produto",
         "replyTimeMoments": "Responderemos em alguns instantes",
         "emailCaptureTriggerTextBase": "Deixe-nos seu e-mail, e entraremos em contato com você.",
         "emailCaptureTriggerTypicalReplyHours": "Normalmente respondemos em algumas horas.",
