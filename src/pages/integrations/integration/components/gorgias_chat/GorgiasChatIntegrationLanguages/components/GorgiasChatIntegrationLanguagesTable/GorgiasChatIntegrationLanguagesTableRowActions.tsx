@@ -4,6 +4,8 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 import {gorgiasColors} from 'gorgias-design-system/styles'
 
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from 'pages/common/components/Tooltip'
 import GorgiasChatIntegrationLanguageDeleteModal from './GorgiasChatIntegrationLanguageDeleteModal'
 import type {LanguageItemRow} from './types'
@@ -32,7 +34,9 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
 
     return (
         <>
-            <Link to={language.link}>Customize</Link>
+            <Link to={language.link}>
+                <Button fillStyle="ghost">Customize</Button>
+            </Link>
 
             {language.showActions && (
                 <>
@@ -48,10 +52,13 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                         toggle={() =>
                             setIsDropdownOpen((isCurrentOpen) => !isCurrentOpen)
                         }
-                        className="ml-4"
+                        className="ml-3"
                     >
                         <DropdownToggle disabled={language.primary} tag="span">
-                            <i
+                            <IconButton
+                                isDisabled={language.primary}
+                                fillStyle="ghost"
+                                intent="secondary"
                                 data-testid="more-actions-button"
                                 className="material-icons"
                                 id={`more-actions-${language.language}-help`}
@@ -63,7 +70,7 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                                 }}
                             >
                                 more_vert
-                            </i>
+                            </IconButton>
                             <Tooltip
                                 autohide={false}
                                 delay={100}

@@ -57,12 +57,37 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
 
         const integrationId: number = integration.get('id')
 
-        return languages.map((language) => ({
-            ...language,
-            label: getLanguageLabel(language),
-            link: `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/languages/${language.language}`,
-            showActions: languages.length > 1,
-        }))
+        return languages
+            .map((language) => ({
+                ...language,
+                label: getLanguageLabel(language),
+                link: `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/languages/${language.language}`,
+                showActions: languages.length > 1,
+            }))
+            .sort((a, b) => {
+                // sort by label first
+                if (a.label < b.label) {
+                    return -1
+                }
+
+                if (b.label < a.label) {
+                    return 1
+                }
+
+                return 0
+            })
+            .sort((a, b) => {
+                // sort by primary language second
+                if (a.primary) {
+                    return -1
+                }
+
+                if (b.primary) {
+                    return 1
+                }
+
+                return 0
+            })
     }, [loading, integration, languages])
 
     const dispatch = useAppDispatch()
