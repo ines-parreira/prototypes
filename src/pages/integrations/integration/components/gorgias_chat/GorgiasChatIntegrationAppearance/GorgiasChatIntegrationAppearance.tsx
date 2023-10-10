@@ -311,12 +311,33 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     textsMultiLanguage[
                         integrationDefaultLanguage as LanguageChat
                     ]
+                const chatTitleFromToneOfVoice: string | undefined =
+                    textsPerLanguage?.texts?.chatTitle
+                const launcherLabelFromToneOfVoice: string | undefined =
+                    textsPerLanguage?.texts?.chatWithUs
                 const introductionTextFromToneOfVoice: string | undefined =
                     textsPerLanguage?.texts?.introductionText
                 const offlineIntroductionTextsFromToneOfVoice:
                     | string
                     | undefined =
                     textsPerLanguage?.texts?.offlineIntroductionText
+
+                if (chatTitleFromToneOfVoice) {
+                    setState((prevState) => ({
+                        ...prevState,
+                        name: chatTitleFromToneOfVoice,
+                    }))
+                }
+
+                if (launcherLabelFromToneOfVoice) {
+                    setState((prevState) => ({
+                        ...prevState,
+                        launcher: {
+                            ...prevState.launcher,
+                            label: launcherLabelFromToneOfVoice,
+                        },
+                    }))
+                }
 
                 if (introductionTextFromToneOfVoice) {
                     setState((prevState) => ({
@@ -545,6 +566,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
             textsIncludingSyncedState = produce(texts, (textsDraft) => {
                 const path = `${integrationDefaultLanguage as string}.texts`
+                set(textsDraft, `${path}.chatWithUs`, state.launcher.label)
+                set(textsDraft, `${path}.chatTitle`, state.name)
                 set(
                     textsDraft,
                     `${path}.introductionText`,

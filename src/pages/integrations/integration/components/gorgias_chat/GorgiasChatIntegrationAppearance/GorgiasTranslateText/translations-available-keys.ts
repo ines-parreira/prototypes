@@ -7,7 +7,18 @@ export type OptionFormat = {
 }
 
 export default {
+    // TODO. Drop me with the feature flag `ChatMultiLanguages`.
+    generalLegacySoloLanguage: {
+        'sspTexts.sendUsAMessage': {maxLength: 30},
+        'texts.leaveAMessage': {maxLength: 30},
+        'sspTexts.needHelp': {maxLength: 30},
+        'texts.backLabelBackAt': {
+            maxLength: 35,
+        },
+    },
     general: {
+        'texts.chatTitle': {maxLength: 100},
+        'texts.chatWithUs': {maxLength: 30},
         'sspTexts.sendUsAMessage': {maxLength: 30},
         'texts.leaveAMessage': {maxLength: 30},
         'sspTexts.needHelp': {maxLength: 30},

@@ -16,6 +16,10 @@ export type GorgiasChatIntegration = IntegrationBase & {
             name_type: GorgiasChatAvatarNameType
         }
         main_font_family?: string
+        launcher?: {
+            type: GorgiasChatLauncherType
+            label?: string
+        }
     }
 }
 

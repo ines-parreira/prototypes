@@ -62,6 +62,9 @@ import GorgiasTranslateTextBackLink from './GorgiasTranslateTextBackLink'
 import formProps from './translations-available-keys'
 
 const generalKeys = Object.keys(formProps.general)
+const generalLegacySoloLanguage = Object.keys(
+    formProps.generalLegacySoloLanguage
+)
 const introKeys = Object.keys(formProps.intro)
 const contactFormKeys = Object.keys(formProps.contactForm)
 const contactFormComfirmationEmailKeys = Object.keys(
@@ -259,7 +262,21 @@ function GorgiasTranslateText({
             void IntegrationsActions.getTranslations(
                 language.get('value')
             ).then((data: Translations) => {
-                setTranslations(data)
+                if (IsLegacyMonoLanguageMode) {
+                    setTranslations(data)
+                } else {
+                    setTranslations({
+                        ...data,
+                        // Customize the chat title and launcher label key value.
+                        ...{
+                            texts: {
+                                ...data.texts,
+                                chatTitle: `${integrationChat.name} (chat title)`,
+                                chatWithUs: `${data.texts.chatWithUs} (launcher label)`,
+                            },
+                        },
+                    })
+                }
                 setTranslationsLoadingState(LoadingState.LOADED)
             })
         }
@@ -330,17 +347,23 @@ function GorgiasTranslateText({
         language,
         initialTexts,
         integration,
+        integrationChat,
     ])
 
     /**
-     * Migrate the existing decoration intro message texts to the Tone of Voice (of the default Language).
+     * Migrate the legacy texts we have in decoration to the Tone of Voice,
      * when Tone of Voice don't have the texts yet (decoration texts are always present by default).
+     * We're also migrating the chat integration name if needed, that is not exactly legacy but still localized.
      */
-    const migrateDecorationTextsIfNeeded = useCallback(() => {
+    const migrateNonLocalizedTextsIfNeeded = useCallback(() => {
         const introductionTextFromToneOfVoice: string | undefined =
             textsOfSelectedLanguage.texts?.introductionText
         const offlineIntroductionTextFromToneOfVoice: string | undefined =
             textsOfSelectedLanguage.texts?.offlineIntroductionText
+        const chatTitleFromToneOfVoice: string | undefined =
+            textsOfSelectedLanguage.texts?.chatTitle
+        const chatWithUsFromToneOfVoice: string | undefined =
+            textsOfSelectedLanguage.texts?.chatWithUs
 
         let newTextsOfSelectedLanguage = textsOfSelectedLanguage
         if (
@@ -374,6 +397,30 @@ function GorgiasTranslateText({
                 }
             )
         }
+        if (!chatTitleFromToneOfVoice && integrationChat.name) {
+            newTextsOfSelectedLanguage = produce(
+                newTextsOfSelectedLanguage,
+                (textsDraft) => {
+                    set(textsDraft, `texts.chatTitle`, integrationChat.name)
+                }
+            )
+        }
+        if (
+            !chatWithUsFromToneOfVoice &&
+            integrationChat.decoration.launcher?.label
+        ) {
+            newTextsOfSelectedLanguage = produce(
+                newTextsOfSelectedLanguage,
+                (textsDraft) => {
+                    set(
+                        textsDraft,
+                        `texts.chatWithUs`,
+                        integrationChat.decoration.launcher?.label
+                    )
+                }
+            )
+        }
+
         setTextsOfSelectedLanguage(newTextsOfSelectedLanguage)
     }, [integrationChat, textsOfSelectedLanguage])
 
@@ -383,14 +430,14 @@ function GorgiasTranslateText({
             !IsLegacyMonoLanguageMode &&
             integrationDefaultLanguage === language?.get('value')
         ) {
-            migrateDecorationTextsIfNeeded()
+            migrateNonLocalizedTextsIfNeeded()
         }
     }, [
         IsLegacyMonoLanguageMode,
         dependenciesLoaded,
         integrationDefaultLanguage,
         language,
-        migrateDecorationTextsIfNeeded,
+        migrateNonLocalizedTextsIfNeeded,
     ])
 
     const handleLanguageChange = (
@@ -750,7 +797,11 @@ function GorgiasTranslateText({
                 >
                     <GorgiasTranslateInputGroup
                         title="General"
-                        keys={generalKeys}
+                        keys={
+                            !IsLegacyMonoLanguageMode
+                                ? generalKeys
+                                : generalLegacySoloLanguage
+                        }
                         filtersForKeys={{}}
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
