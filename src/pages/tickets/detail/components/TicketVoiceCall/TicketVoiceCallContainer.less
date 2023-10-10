@@ -23,11 +23,45 @@
         }
     }
 
+    .callDetails {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+        flex: 1;
+    }
+
     .row {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: @layout-spacing-xs;
+    }
+
+    .errorStatus {
+        color: var(--feedback-error);
+    }
+
+    .statusWrapper {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+
+        .missedCallIcon {
+            font-size: 16px;
+        }
+    }
+
+    .date {
+        font-size: 12px;
+        line-height: 16px;
+        text-align: right;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+
+        span {
+            vertical-align: middle;
+        }
     }
 }

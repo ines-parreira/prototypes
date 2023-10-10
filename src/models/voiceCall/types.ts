@@ -1,5 +1,22 @@
 export type VoiceCallDirection = 'inbound' | 'outbound'
 
+export enum VoiceCallStatus {
+    Answered = 'answered',
+    Connected = 'connected',
+    InProgress = 'in-progress',
+    Initiated = 'initiated',
+    Queued = 'queued',
+    Ringing = 'ringing',
+    Ending = 'ending',
+
+    // Final statuses:
+    Busy = 'busy',
+    Canceled = 'canceled',
+    Completed = 'completed',
+    Failed = 'failed',
+    NoAnswer = 'no-answer',
+}
+
 export type VoiceCall = {
     id: number
     integration_id: number
@@ -7,7 +24,7 @@ export type VoiceCall = {
     phone_number_id: number
     external_id: string
     provider: string
-    status: string
+    status: VoiceCallStatus
     direction: VoiceCallDirection
     phone_number_source: string
     country_source: string

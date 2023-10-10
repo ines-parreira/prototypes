@@ -4,6 +4,7 @@ import {OutboundVoiceCall} from 'models/voiceCall/types'
 
 import TicketVoiceCallContainer from './TicketVoiceCallContainer'
 import {useAgentDetails} from './hooks'
+import TicketVoiceCallOutboundStatus from './TicketVoiceCallOutboundStatus'
 
 type Props = {
     voiceCall: OutboundVoiceCall
@@ -15,12 +16,14 @@ export default function TicketVoiceCallOutbound({voiceCall}: Props) {
     return (
         <TicketVoiceCallContainer
             user={agent}
+            dateTime={voiceCall.started_datetime}
             initiatorLabel={
                 <VoiceCallAgentLabel
                     agentId={voiceCall.initiated_by_agent_id}
                     phoneNumber={voiceCall.phone_number_source}
                 />
             }
+            callStatus={<TicketVoiceCallOutboundStatus voiceCall={voiceCall} />}
         />
     )
 }

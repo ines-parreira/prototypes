@@ -1,0 +1,64 @@
+import React from 'react'
+import {render} from '@testing-library/react'
+import {
+    VoiceCall,
+    OutboundVoiceCall,
+    VoiceCallStatus,
+} from 'models/voiceCall/types'
+import TicketVoiceCallOutbound from '../TicketVoiceCallOutbound'
+
+jest.mock(
+    'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
+    () =>
+        ({agentId}: {agentId: number}) =>
+            <div>VoiceCallAgentLabel {agentId}</div>
+)
+
+jest.mock('pages/common/utils/labels', () => ({
+    DatetimeLabel: () => <div>DatetimeLabel</div>,
+}))
+
+jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({
+    useAgentDetails: (agentId: number) => ({
+        agent: {
+            id: agentId,
+            first_name: 'John',
+            last_name: 'Doe',
+        },
+    }),
+}))
+
+jest.mock(
+    'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallOutboundStatus',
+    () =>
+        ({voiceCall}: {voiceCall: VoiceCall}) =>
+            <div>TicketVoiceCallOutboundStatus {voiceCall.status}</div>
+)
+
+describe('TicketVoiceCallOutbound', () => {
+    const voiceCall = {
+        id: 1,
+        phone_number_source: '+1234567890',
+        created_datetime: '2022-01-01T00:00:00.000Z',
+        status: VoiceCallStatus.InProgress,
+        initiated_by_agent_id: 123,
+    } as OutboundVoiceCall
+
+    const renderComponent = () => {
+        return render(<TicketVoiceCallOutbound voiceCall={voiceCall} />)
+    }
+
+    it('renders the agent label', () => {
+        const {getByText} = renderComponent()
+        const agentLabel = getByText('VoiceCallAgentLabel 123')
+        expect(agentLabel).toBeInTheDocument()
+    })
+
+    it('renders the call status', () => {
+        const {getByText} = renderComponent()
+        const callStatus = getByText(
+            `TicketVoiceCallOutboundStatus ${voiceCall.status}`
+        )
+        expect(callStatus).toBeInTheDocument()
+    })
+})

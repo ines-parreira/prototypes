@@ -1,4 +1,4 @@
-import {VoiceCall} from 'models/voiceCall/types'
+import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
 
 export const voiceCall: VoiceCall = {
     id: 123,
@@ -7,7 +7,7 @@ export const voiceCall: VoiceCall = {
     phone_number_id: 456,
     external_id: 'CA777a8b2bfef8cdf709896080fe94cd10',
     provider: 'twilio',
-    status: 'completed',
+    status: VoiceCallStatus.Completed,
     direction: 'inbound',
     phone_number_source: '+14791234567',
     country_source: 'US',
