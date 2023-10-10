@@ -5,6 +5,7 @@ import {
     OutboundVoiceCall,
     VoiceCallStatus,
 } from 'models/voiceCall/types'
+import * as utils from 'models/voiceCall/utils'
 import TicketVoiceCallOutbound from '../TicketVoiceCallOutbound'
 
 jest.mock(
@@ -35,6 +36,8 @@ jest.mock(
             <div>TicketVoiceCallOutboundStatus {voiceCall.status}</div>
 )
 
+const isFinalVoiceCallSpy = jest.spyOn(utils, 'isFinalVoiceCallStatus')
+
 describe('TicketVoiceCallOutbound', () => {
     const voiceCall = {
         id: 1,
@@ -60,5 +63,19 @@ describe('TicketVoiceCallOutbound', () => {
             `TicketVoiceCallOutboundStatus ${voiceCall.status}`
         )
         expect(callStatus).toBeInTheDocument()
+    })
+
+    it('displays correct header when call is still in progress', () => {
+        isFinalVoiceCallSpy.mockReturnValue(false)
+        const {getByText} = renderComponent()
+        const header = getByText('is making a call')
+        expect(header).toBeInTheDocument()
+    })
+
+    it('displays correct header when call is finished', () => {
+        isFinalVoiceCallSpy.mockReturnValue(true)
+        const {getByText} = renderComponent()
+        const header = getByText('made a call')
+        expect(header).toBeInTheDocument()
     })
 })

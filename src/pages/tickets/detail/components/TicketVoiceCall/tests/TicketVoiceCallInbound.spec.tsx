@@ -1,6 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
+import * as utils from 'models/voiceCall/utils'
 import TicketVoiceCallInbound from '../TicketVoiceCallInbound'
 
 jest.mock(
@@ -33,6 +34,8 @@ jest.mock(
     })
 )
 
+const isFinalVoiceCallSpy = jest.spyOn(utils, 'isFinalVoiceCallStatus')
+
 describe('TicketVoiceCallInbound', () => {
     const voiceCall = {
         id: 1,
@@ -58,5 +61,19 @@ describe('TicketVoiceCallInbound', () => {
             `TicketVoiceCallInboundStatus ${voiceCall.status}`
         )
         expect(callStatus).toBeInTheDocument()
+    })
+
+    it('displays correct header when call is still in progress', () => {
+        isFinalVoiceCallSpy.mockReturnValue(false)
+        const {getByText} = renderComponent()
+        const header = getByText('is calling')
+        expect(header).toBeInTheDocument()
+    })
+
+    it('displays correct header when call is finished', () => {
+        isFinalVoiceCallSpy.mockReturnValue(true)
+        const {getByText} = renderComponent()
+        const header = getByText('called')
+        expect(header).toBeInTheDocument()
     })
 })

@@ -8,14 +8,14 @@ import {DatetimeLabel} from 'pages/common/utils/labels'
 import css from './TicketVoiceCallContainer.less'
 
 type Props = {
-    initiatorLabel: JSX.Element
+    header: JSX.Element
     user?: User | Customer
     callStatus: JSX.Element | string | null
     dateTime: string
 }
 
 export default function TicketVoiceCallContainer({
-    initiatorLabel,
+    header,
     user,
     callStatus,
     dateTime,
@@ -25,7 +25,17 @@ export default function TicketVoiceCallContainer({
             <Avatar name={user?.name} size={36} />
             <div className={css.callDetails}>
                 <div className={css.row}>
-                    <div>{initiatorLabel}</div>
+                    <div className={css.header}>
+                        {header}
+                        <i
+                            className={classNames(
+                                'material-icons',
+                                css.phoneIcon
+                            )}
+                        >
+                            phone
+                        </i>
+                    </div>
                     <DatetimeLabel
                         dateTime={dateTime}
                         className={classNames('text-faded', css.date)}
