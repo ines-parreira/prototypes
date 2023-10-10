@@ -31,9 +31,6 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
 }
 
 export default function StatsNavbarView() {
-    const hasAnalyticsTicketInsights: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsTicketInsights]
-
     const [
         isAutomationSubscriptionModalOpen,
         setIsAutomationSubscriptionModal,
@@ -206,21 +203,12 @@ export default function StatsNavbarView() {
                             cssNavbar.isNested
                         )}
                     >
-                        {hasAnalyticsTicketInsights ? (
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/ticket-insights"
-                            >
-                                Ticket Fields
-                            </NavbarLink>
-                        ) : (
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/ticket-fields"
-                            >
-                                Ticket Fields
-                            </NavbarLink>
-                        )}
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/ticket-fields"
+                        >
+                            Ticket Fields
+                        </NavbarLink>
                     </div>
                     <div
                         className={classNames(

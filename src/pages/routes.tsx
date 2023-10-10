@@ -489,21 +489,17 @@ export function StatsRoutes() {
                         navbar={StatsNavbarContainer}
                     />
                 </Route>
-                {hasAnalyticsTicketInsights ? (
-                    <Route exact path={`${path}/ticket-insights`}>
-                        <App
-                            content={SupportPerformanceTicketInsights}
-                            navbar={StatsNavbarContainer}
-                        />
-                    </Route>
-                ) : (
-                    <Route exact path={`${path}/ticket-fields`}>
-                        <App
-                            content={TicketFieldsStatsPagePlaceholder}
-                            navbar={StatsNavbarContainer}
-                        />
-                    </Route>
-                )}
+
+                <Route exact path={`${path}/ticket-fields`}>
+                    <App
+                        content={
+                            hasAnalyticsTicketInsights
+                                ? SupportPerformanceTicketInsights
+                                : TicketFieldsStatsPagePlaceholder
+                        }
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
                 <Route exact path={`${path}/tags`}>
                     <App
                         content={SupportPerformanceTags}
