@@ -44,7 +44,7 @@ import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
-import {envVars, isProduction} from './utils/environment'
+import {isProduction} from './utils/environment'
 import {linkify} from './utils/editor'
 import client from './models/api/resources'
 import {GorgiasApiResponseDataError} from './models/api/types'
@@ -1068,7 +1068,7 @@ export const getIconFromUrl = (url: string): string => {
 }
 
 export function assetsUrl(filepath: string): string {
-    const assetsUrl = envVars.GORGIAS_ASSETS_URL ?? ''
+    const assetsUrl = process.env.GORGIAS_ASSETS_URL ?? ''
     if (!isUrl(assetsUrl)) {
         return ['/assets', filepath].join('/').replace(/\/{2,}/g, '/')
     }

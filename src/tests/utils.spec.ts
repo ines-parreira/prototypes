@@ -3,20 +3,16 @@ import {fromJS, Map, List} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import randomstring from 'randomstring'
 
-import * as utils from 'utils'
-import * as envUtils from 'utils/environment'
-import schemasJSON from 'fixtures/openapi.json'
+import * as utils from '../utils'
+import schemasJSON from '../fixtures/openapi.json'
 import {
     ADMIN_ROLE,
     AGENT_ROLE,
     BASIC_AGENT_ROLE,
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
-} from 'config/user'
-import client from 'models/api/resources'
-
-jest.mock('utils/environment')
-const envVarsMock = envUtils.envVars as envUtils.EnvVars
+} from '../config/user'
+import client from '../models/api/resources'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -796,39 +792,41 @@ describe('global utils', () => {
     })
 
     describe('assetsUrl()', () => {
-        beforeEach(() => {
-            envVarsMock.GORGIAS_ASSETS_URL = 'https://gorgias-assets/web-app'
-        })
-
         it('should build asset URLs from a given path', () => {
+            process.env.GORGIAS_ASSETS_URL = 'https://gorgias-assets/web-app'
+
             expect(utils.assetsUrl('/some-image.jpg')).toBe(
                 'https://gorgias-assets/web-app/assets/some-image.jpg'
             )
         })
 
-        it('returns a relative path if GORGIAS_ASSETS_URL env var is undefined', () => {
-            envVarsMock.GORGIAS_ASSETS_URL = undefined
+        it('returns a relative path if process.env.GORGIAS_ASSETS_URL is undefined', () => {
+            process.env.GORGIAS_ASSETS_URL = undefined
 
             expect(utils.assetsUrl('/some-image.jpg')).toBe(
                 '/assets/some-image.jpg'
             )
         })
 
-        it('returns a relative path if GORGIAS_ASSETS_URL env var is not a valid URL', () => {
-            envVarsMock.GORGIAS_ASSETS_URL = '//'
+        it('returns a relative path if process.env.GORGIAS_ASSETS_URL is not a valid URL', () => {
+            process.env.GORGIAS_ASSETS_URL = '//'
 
             expect(utils.assetsUrl('/some-image.jpg')).toBe(
                 '/assets/some-image.jpg'
             )
         })
 
-        it('properly joins paths when all parts contain leading and trailing slashes', () => {
+        describe('properly joins paths when all parts contain leading and trailing slashes', () => {
+            process.env.GORGIAS_ASSETS_URL = 'https://gorgias-assets/web-app/'
+
             expect(utils.assetsUrl('/some-image.jpg')).toBe(
                 'https://gorgias-assets/web-app/assets/some-image.jpg'
             )
         })
 
-        it('properly joins paths when the parts have no leading or trailing slashes', () => {
+        describe('properly joins paths when the parts have no leading or trailing slashes', () => {
+            process.env.GORGIAS_ASSETS_URL = 'https://gorgias-assets/web-app'
+
             expect(utils.assetsUrl('some-image.jpg')).toBe(
                 'https://gorgias-assets/web-app/assets/some-image.jpg'
             )

@@ -15,7 +15,6 @@ import {useEffectOnce} from 'react-use'
 import {appQueryClient} from 'api/queryClient'
 import {RootState} from 'state/types'
 import {getLDClient, LDUser} from 'utils/launchDarkly'
-import {envVars, NodeEnv} from 'utils/environment'
 
 import history from './history'
 import Routes from './routes'
@@ -24,7 +23,7 @@ type Props = {
     store: Store<RootState>
 }
 
-if (envVars.NODE_ENV !== NodeEnv.Production) {
+if (process.env.NODE_ENV !== 'production') {
     installDevTools(Immutable)
 }
 

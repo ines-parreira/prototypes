@@ -1,5 +1,3 @@
-import {isValueOfStringEnum} from 'utils/types'
-
 export enum GorgiasUIEnv {
     Production = 'production',
     Staging = 'staging',
@@ -35,30 +33,3 @@ export function getHelpCenterAuthApiBaseUrl(): string {
 
     return ''
 }
-
-export enum NodeEnv {
-    Development = 'development',
-    Test = 'test',
-    Production = 'production',
-}
-
-export interface EnvVars {
-    GORGIAS_ASSETS_URL?: string
-    NODE_ENV?: NodeEnv
-    TZ?: string
-}
-
-export const getEnvVars = ({
-    GORGIAS_ASSETS_URL,
-    NODE_ENV,
-    TZ,
-}: NodeJS.ProcessEnv): EnvVars => ({
-    GORGIAS_ASSETS_URL,
-    TZ,
-    NODE_ENV:
-        NODE_ENV && isValueOfStringEnum(NodeEnv, NODE_ENV)
-            ? NODE_ENV
-            : undefined,
-})
-
-export const envVars = Object.freeze(getEnvVars(process.env))

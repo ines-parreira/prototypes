@@ -1,10 +1,9 @@
-import {NotificationStatus} from 'state/notifications/types'
-import {IntegrationType} from 'models/integration/types'
-import {NodeEnv, envVars} from 'utils/environment'
+import {NotificationStatus} from '../../state/notifications/types'
+import {IntegrationType} from '../../models/integration/types'
 
 import {IncidentImpact} from './types'
 
-const isProduction = envVars.NODE_ENV === NodeEnv.Production
+const isProduction = process.env.NODE_ENV === 'production'
 
 export const PAGE_ID = isProduction ? '2lqy3hys4460' : '35qcq6ntxgz6'
 

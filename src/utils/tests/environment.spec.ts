@@ -4,11 +4,9 @@ import {
     isProduction,
     isStaging,
     isDevelopment,
-    getEnvVars,
-    NodeEnv,
 } from '../environment'
 
-describe('environment utils', () => {
+describe('environment util', () => {
     describe('getEnvironment()', () => {
         it('returns GorgiasUIEnv.Development when no env is set', () => {
             expect(getEnvironment()).toEqual(GorgiasUIEnv.Development)
@@ -71,26 +69,6 @@ describe('environment utils', () => {
             window.STAGING = true
             window.PRODUCTION = true
             expect(isDevelopment()).toBeFalsy()
-        })
-    })
-
-    describe('getEnvVars()', () => {
-        it.each([
-            ...Object.values(NodeEnv).map((env) => ['NODE_ENV', env]),
-            ['GORGIAS_ASSETS_URL', 'https://example.com'],
-            ['TZ', 'UTC'],
-        ])(
-            'should return %s property with "%s" value from process.env',
-            (key, value) => {
-                expect(getEnvVars({[key]: value})).toHaveProperty(key, value)
-            }
-        )
-
-        it('should return NODE_ENV property set to undefined if process.env.NODE_ENV does not match the allowed values', () => {
-            expect(getEnvVars({NODE_ENV: 'foo'})).toHaveProperty(
-                'NODE_ENV',
-                undefined
-            )
         })
     })
 })
