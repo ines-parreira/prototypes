@@ -67,6 +67,11 @@ export type GorgiasChatIntegrationMeta = {
     installation?: GorgiasChatMetaInstallation
 }
 
+export enum GorgiasChatInstallationMethod {
+    Asset = 'asset',
+    ScriptTag = 'script_tag',
+}
+
 enum GorgiasChatEmailCaptureType {
     Optional = 'optional',
     RequiredOutsideBusinessHours = 'required-outside-business-hours',

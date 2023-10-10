@@ -56,6 +56,7 @@ import IconButton from './common/components/button/IconButton'
 import Button from './common/components/button/Button'
 import Spotlight from './common/components/Spotlight/Spotlight'
 import EmailMigrationBanner from './common/components/EmailMigrationBanner/EmailMigrationBanner'
+import ScriptTagMigrationBanner from './common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
 
 type Props = {
     infobarOnMobile?: boolean
@@ -225,6 +226,7 @@ const App = ({
                                 notifications={bannerNotifications}
                             />
                             <EmailMigrationBanner />
+                            <ScriptTagMigrationBanner />
 
                             <div id="app-root" className={css.app}>
                                 <Spotlight>{Navbar && <Navbar />}</Spotlight>

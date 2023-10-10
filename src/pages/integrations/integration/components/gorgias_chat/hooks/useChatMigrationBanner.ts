@@ -4,13 +4,12 @@ import {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType, latestSnippetVersion} from 'models/integration/types'
+import {
+    GorgiasChatInstallationMethod,
+    IntegrationType,
+    latestSnippetVersion,
+} from 'models/integration/types'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-
-const enum ChatInstallationMethod {
-    Asset = 'asset',
-    ScriptTag = 'script_tag',
-}
 
 const useChatMigrationBanner = (
     integration: Map<any, any>
@@ -50,7 +49,7 @@ const useChatMigrationBanner = (
         undefined
     const oneClickInstallationMethod: string =
         integration.getIn(['meta', 'one_click_installation_method']) ??
-        ChatInstallationMethod.Asset
+        GorgiasChatInstallationMethod.Asset
     const fiveDays = 1000 * 60 * 60 * 24 * 5
 
     const {minimumSnippetVersion} = useAppSelector(getChatInstallationStatus)
@@ -116,13 +115,15 @@ const useChatMigrationBanner = (
             isConnectedToShopify &&
             activeOrRecentOneClickUsage &&
             (!hasShopifyScriptTagScope ||
-                oneClickInstallationMethod !== ChatInstallationMethod.ScriptTag)
+                oneClickInstallationMethod !==
+                    GorgiasChatInstallationMethod.ScriptTag)
 
         showSnippetV3Banner =
             minimumSnippetVersion !== latestSnippetVersion &&
             isChatSnippetV3BannerEnabled &&
             // We do not show the banner for script_tag migrated integrations.
-            oneClickInstallationMethod !== ChatInstallationMethod.ScriptTag &&
+            oneClickInstallationMethod !==
+                GorgiasChatInstallationMethod.ScriptTag &&
             // Do not show 2 banners at the same time.
             !showScriptTagBanner
 
