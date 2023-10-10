@@ -46,9 +46,6 @@ import {
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS,
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    getPrimaryLanguageFromChatConfig,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
@@ -459,16 +456,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             ['decoration', 'conversation_color'],
             ''
         )
-
-        const language = getPrimaryLanguageFromChatConfig(
-            (integration.get('meta', Map()) as Map<any, any>).toJS()
-        )
-
-        const widgetTranslatedTexts =
-            GORGIAS_CHAT_WIDGET_TEXTS[
-                language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
-            ]
-
+        const language = integration.getIn(['meta', 'language'])
         const position = {
             alignment: integration.getIn(
                 ['decoration', 'position', 'alignment'],
@@ -636,16 +624,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 <ChatIntegrationPreviewContent>
                     <ChatIntegrationPreviewProvider value={{avatar}}>
                         {preview !== PREVIEW_CONTROL_TICKET_VOLUME && (
-                            <ConversationTimestamp language={language} />
+                            <ConversationTimestamp />
                         )}
                         {showCustomerInitialMessages && (
                             <CustomerInitialMessages
                                 conversationColor={conversationColor}
                                 messages={[
-                                    widgetTranslatedTexts.previewCustomerInitialMessage,
+                                    'Hi, could you give me an update on my order status?',
                                 ]}
                                 hideConversationTimestamp
-                                language={language}
                             />
                         )}
                         {previewChildren}

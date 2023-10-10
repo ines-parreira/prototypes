@@ -368,13 +368,10 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                 }
               }
             >
-              <ConversationTimestamp
-                language="en-US"
-              />
+              <ConversationTimestamp />
               <CustomerInitialMessages
                 conversationColor="#08d123"
                 hideConversationTimestamp={true}
-                language="en-US"
                 messages={
                   [
                     "Hi, could you give me an update on my order status?",
@@ -900,13 +897,10 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 }
               }
             >
-              <ConversationTimestamp
-                language="en-US"
-              />
+              <ConversationTimestamp />
               <CustomerInitialMessages
                 conversationColor="#08d123"
                 hideConversationTimestamp={true}
-                language="en-US"
                 messages={
                   [
                     "Hi, could you give me an update on my order status?",

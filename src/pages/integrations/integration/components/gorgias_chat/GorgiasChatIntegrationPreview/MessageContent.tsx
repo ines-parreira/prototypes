@@ -21,7 +21,6 @@ type Props = {
     enableAgentMessagesAnimations?: boolean
     chatTitle?: string
     avatar?: GorgiasChatAvatarSettings
-    language?: string
 }
 
 export default class MessageContent extends Component<Props> {
@@ -38,7 +37,6 @@ export default class MessageContent extends Component<Props> {
             children,
             chatTitle,
             avatar,
-            language,
         } = this.props
 
         if (!currentUser) {
@@ -51,7 +49,6 @@ export default class MessageContent extends Component<Props> {
                     conversationColor={conversationColor}
                     messages={customerInitialMessages}
                     hideConversationTimestamp={hideConversationTimestamp}
-                    language={language}
                 />
 
                 {agentMessages.length > 0 && (
@@ -63,7 +60,6 @@ export default class MessageContent extends Component<Props> {
                         }
                         chatTitle={chatTitle}
                         avatar={avatar}
-                        language={language}
                     />
                 )}
 

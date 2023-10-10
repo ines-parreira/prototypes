@@ -109,8 +109,6 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
         )
 
-    const widgetTranslatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
-
     return (
         <div className={css.wrapper}>
             <div
@@ -138,9 +136,11 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                 mainColor={mainColor}
                 mainFontFamily={mainFontFamily}
                 isOnline={isOnline}
-                introductionText={widgetTranslatedTexts?.introductionText}
+                introductionText={
+                    GORGIAS_CHAT_WIDGET_TEXTS[language]?.introductionText
+                }
                 offlineIntroductionText={
-                    widgetTranslatedTexts?.offlineIntroductionText
+                    GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
                 }
                 showBackground={false}
                 isOpen={isOpen}
@@ -153,22 +153,21 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                         avatar={avatar}
                         conversationColor={conversationColor}
                         customerInitialMessages={[
-                            widgetTranslatedTexts?.previewCustomerInitialMessage,
+                            'Hi, could you give me an update on my order status?',
                         ]}
                         agentMessages={[
                             {
                                 content:
-                                    widgetTranslatedTexts?.previewAgentInitialMessage,
+                                    "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
                                 isHtml: false,
                                 attachments: [],
                             },
                         ]}
                         currentUser={currentUser}
-                        language={language}
                     />
                 ) : (
                     <ChatIntegrationPreviewContent>
-                        <ConversationTimestamp language={language} />
+                        <ConversationTimestamp />
                         <OfflineMessages
                             mainColor={mainColor}
                             chatTitle={name}

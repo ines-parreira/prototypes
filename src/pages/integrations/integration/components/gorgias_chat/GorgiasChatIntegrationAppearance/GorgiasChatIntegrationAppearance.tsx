@@ -743,7 +743,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             />
                         ) : (
                             <>
-                                <ConversationTimestamp language={language} />
+                                <ConversationTimestamp />
                                 <OfflineMessages
                                     mainColor={mainColor}
                                     chatTitle={name}

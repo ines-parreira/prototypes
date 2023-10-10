@@ -4,11 +4,6 @@ import classnames from 'classnames'
 
 import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
-import {
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS,
-} from 'config/integrations/gorgias_chat'
-
 import ArticleAttachment from 'gorgias-design-system/Attachments/ArticleAttachment'
 import {AgentDisplayName} from './AgentDisplayName'
 import ChatAvatar from './ChatAvatar'
@@ -73,7 +68,6 @@ type Props = {
     enableAgentMessagesAnimations?: boolean
     chatTitle?: string
     avatar?: GorgiasChatAvatarSettings
-    language?: string
 }
 
 const AgentMessages: React.FC<Props> = ({
@@ -82,65 +76,53 @@ const AgentMessages: React.FC<Props> = ({
     enableAgentMessagesAnimations,
     chatTitle,
     avatar,
-    language,
-}) => {
-    const widgetTranslatedTexts =
-        GORGIAS_CHAT_WIDGET_TEXTS[
-            language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
-        ]
-
-    return (
-        <div className={css.appMakerMessageWrapper}>
-            <div className={css.agent}>
-                <div
-                    className={classnames(css.avatar, {
-                        [css.isAnimated]: enableAgentMessagesAnimations,
-                    })}
-                >
-                    <ChatAvatar
-                        avatar={avatar}
-                        agentName={currentUser.get('name')}
-                        agentAvatarUrl={currentUser.getIn([
-                            'meta',
-                            'profile_picture_url',
-                        ])}
-                        chatTitle={chatTitle}
-                    />
-                </div>
-                <AgentDisplayName
+}) => (
+    <div className={css.appMakerMessageWrapper}>
+        <div className={css.agent}>
+            <div
+                className={classnames(css.avatar, {
+                    [css.isAnimated]: enableAgentMessagesAnimations,
+                })}
+            >
+                <ChatAvatar
+                    avatar={avatar}
+                    agentName={currentUser.get('name')}
+                    agentAvatarUrl={currentUser.getIn([
+                        'meta',
+                        'profile_picture_url',
+                    ])}
                     chatTitle={chatTitle}
-                    className={classnames(css.user, {
-                        [css.isAnimated]: enableAgentMessagesAnimations,
-                    })}
-                    name={currentUser.get('name') as string}
-                    type={avatar?.nameType}
                 />
             </div>
-            <div className={css.messages}>
-                {messages.map((message, index) => (
-                    <div
-                        className={classnames(
-                            css.bubble,
-                            css.firstMessageOfAppMaker,
-                            {
-                                [css.isAnimated]: enableAgentMessagesAnimations,
-                            }
-                        )}
-                        key={
-                            enableAgentMessagesAnimations
-                                ? index
-                                : message.content
-                        }
-                    >
-                        {renderAgentMessage(message)}
-                    </div>
-                ))}
-                <div className={css.automatedTimestamp}>
-                    {widgetTranslatedTexts.automated}
-                </div>
-            </div>
+            <AgentDisplayName
+                chatTitle={chatTitle}
+                className={classnames(css.user, {
+                    [css.isAnimated]: enableAgentMessagesAnimations,
+                })}
+                name={currentUser.get('name') as string}
+                type={avatar?.nameType}
+            />
         </div>
-    )
-}
+        <div className={css.messages}>
+            {messages.map((message, index) => (
+                <div
+                    className={classnames(
+                        css.bubble,
+                        css.firstMessageOfAppMaker,
+                        {
+                            [css.isAnimated]: enableAgentMessagesAnimations,
+                        }
+                    )}
+                    key={
+                        enableAgentMessagesAnimations ? index : message.content
+                    }
+                >
+                    {renderAgentMessage(message)}
+                </div>
+            ))}
+            <div className={css.automatedTimestamp}>Automated</div>
+        </div>
+    </div>
+)
 
 export default AgentMessages

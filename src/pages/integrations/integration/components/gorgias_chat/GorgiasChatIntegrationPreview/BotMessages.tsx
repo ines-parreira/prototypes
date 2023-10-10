@@ -3,11 +3,6 @@ import classnames from 'classnames'
 
 import Avatar from 'gorgias-design-system/Avatar/Avatar'
 
-import {
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS,
-} from 'config/integrations/gorgias_chat'
-
 import {useChatIntegrationPreviewContext} from './ChatIntegrationPreviewContext'
 import ChatTitle from './ChatTitle'
 
@@ -17,7 +12,6 @@ type Props = {
     className?: string
     chatTitle: Maybe<string>
     messages?: string[]
-    language?: string
 }
 
 const BotMessages: React.FC<Props> = ({
@@ -25,15 +19,9 @@ const BotMessages: React.FC<Props> = ({
     chatTitle,
     children,
     messages,
-    language,
 }) => {
     const chatIntegrationPreviewContext = useChatIntegrationPreviewContext()
     const companyLogoUrl = chatIntegrationPreviewContext?.avatar?.companyLogoUrl
-
-    const widgetTranslatedTexts =
-        GORGIAS_CHAT_WIDGET_TEXTS[
-            language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
-        ]
 
     return (
         <div
@@ -63,9 +51,7 @@ const BotMessages: React.FC<Props> = ({
 
                 {children}
 
-                <div className={previewCss.automatedTimestamp}>
-                    {widgetTranslatedTexts.automated}
-                </div>
+                <div className={previewCss.automatedTimestamp}>Automated</div>
             </div>
         </div>
     )
