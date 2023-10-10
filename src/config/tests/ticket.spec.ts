@@ -6,6 +6,9 @@ import {Map} from 'immutable'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {EventType} from 'models/event/types'
+import {channels as mockChannels} from 'fixtures/channels'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -13,6 +16,12 @@ import {
 } from '../../business/types/ticket'
 import {TicketEvent, TicketMessage} from '../../models/ticket/types'
 import * as ticketConfig from '../ticket'
+
+jest.mock('api/queryClient', () => ({
+    appQueryClient: mockQueryClient({
+        cachedData: [[mockChannelsQueryKeys.list(), mockChannels]],
+    }),
+}))
 
 describe('Config: ticket', () => {
     describe('DEFAULT_CHANNEL', () => {
@@ -128,8 +137,11 @@ describe('Config: ticket', () => {
 
     describe('isAnswerableType', () => {
         it('is correct', () => {
-            const validTypes = ticketConfig.USABLE_SOURCE_TYPES
-            const invalidTypes: any[] = ['test', 123, undefined, null, {}, []]
+            const validTypes = [
+                ...ticketConfig.USABLE_SOURCE_TYPES,
+                'tiktok-shop',
+            ]
+            const invalidTypes = ['test', 123, undefined, null, {}, []]
 
             validTypes.forEach((type) => {
                 expect(ticketConfig.isAnswerableType(type)).toEqual(true)

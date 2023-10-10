@@ -2,6 +2,9 @@ import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {isTicketMessageSourceType} from 'models/ticket/predicates'
+import {ChannelLike, toChannel} from 'services/channels'
+
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -252,8 +255,17 @@ export function orderedMessages(
 /**
  * Return true if passed source type can be used to answer (can be used as a source type in a new message)
  */
-export function isAnswerableType(sourceType: TicketMessageSourceType): boolean {
-    return USABLE_SOURCE_TYPES.includes(sourceType)
+export function isAnswerableType(channelLike: ChannelLike): boolean {
+    if (isTicketMessageSourceType(channelLike)) {
+        return USABLE_SOURCE_TYPES.includes(channelLike)
+    }
+
+    const channel = toChannel(channelLike)
+    if (channel) {
+        return true
+    }
+
+    return false
 }
 
 /**

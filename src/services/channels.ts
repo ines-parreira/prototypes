@@ -1,3 +1,4 @@
+import {isObject} from 'lodash'
 import {appQueryClient} from 'api/queryClient'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {channelsQueryKeys, useListChannels} from 'models/channel/queries'
@@ -47,19 +48,27 @@ export function getChannelById(id: string): Channel | undefined {
 }
 
 export function toChannel(channel: ChannelLike): Channel | undefined {
-    if (!channel) {
-        return
+    if (isChannel(channel)) {
+        return channel
     }
 
     if (typeof channel === 'string') {
         return getChannelBySlug(channel)
     }
-
-    return channel
 }
 
 export function toChannels(input: ChannelLike[]): Channel[] {
-    return input.map(toChannel).filter(Boolean) as Channel[]
+    return input.map(toChannel).filter(isChannel)
+}
+
+export function isChannel(input: unknown): input is Channel {
+    const maybeChannel = input as Channel
+    return (
+        isObject(maybeChannel) &&
+        typeof maybeChannel.id === 'string' &&
+        typeof maybeChannel.slug === 'string' &&
+        typeof maybeChannel.name === 'string'
+    )
 }
 
 export function isLegacyChannel(

@@ -5,6 +5,7 @@ import {
     getChannelById,
     getChannelBySlug,
     getChannels,
+    isChannel,
     isLegacyChannel,
     isNewChannel,
     toChannel,
@@ -55,6 +56,32 @@ describe('services', () => {
 
             it('should return undefined for invalid inputs', () => {
                 expect(getChannelBySlug('invalid')).toBeUndefined()
+            })
+        })
+
+        describe('isChannel()', () => {
+            it('should return true for valid channels', () => {
+                expect(isChannel(getChannelBySlug('email'))).toBe(true)
+                expect(isChannel(getChannelBySlug('tiktok-shop'))).toBe(true)
+                expect(
+                    isChannel({
+                        id: '123',
+                        slug: 'some-channel',
+                        name: 'Some Channel',
+                    })
+                ).toBe(true)
+            })
+
+            it('should return false for partial/invalid channels', () => {
+                expect(isChannel('email')).toBe(false)
+                expect(isChannel('tiktok-shop')).toBe(false)
+                expect(isChannel(TicketMessageSourceType.Email)).toBe(false)
+                expect(isChannel(TicketChannel.Email)).toBe(false)
+                expect(isChannel(null)).toBe(false)
+                expect(isChannel(undefined)).toBe(false)
+                expect(isChannel({id: 123, slug: 'x'})).toBe(false)
+                expect(isChannel({slug: 'x'})).toBe(false)
+                expect(isChannel('123')).toBe(false)
             })
         })
 
