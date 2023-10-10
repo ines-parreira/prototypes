@@ -36,6 +36,7 @@ type Props = {
     isOpen: boolean
     onClose: () => void
     onSubscribe: () => void
+    topModalComponent?: React.ReactNode
     fade?: boolean
 }
 
@@ -52,6 +53,7 @@ const SubscriptionModal = ({
     isOpen,
     onClose,
     onSubscribe,
+    topModalComponent,
     fade = true,
 }: Props) => {
     const [showContactSupportModal, setShowContactSupportModal] =
@@ -131,6 +133,7 @@ const SubscriptionModal = ({
             >
                 <ModalHeader toggle={onClose}>{headerDescription}</ModalHeader>
                 <ModalBody className={css.modalBody} data-candu-id={canduId}>
+                    {topModalComponent}
                     <PlanSubscriptionDescription
                         productType={productType}
                         isStarterPlan={isStarterPlan}

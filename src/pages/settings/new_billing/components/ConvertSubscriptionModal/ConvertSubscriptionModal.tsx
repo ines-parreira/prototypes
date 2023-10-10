@@ -9,7 +9,9 @@ import {
     getCurrentHelpdeskProduct,
 } from 'state/billing/selectors'
 import {ConvertPrice, ProductType} from 'models/billing/types'
+import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
 import {getDefaultConvertPriceIndex} from '../../utils/getDefaultConvertPriceIndex'
+import css from './ConvertSubscriptionModal.less'
 
 type Props = {
     canduId: string
@@ -46,6 +48,29 @@ const ConvertSubscriptionModal = ({
 
     const currentPath = location?.pathname
 
+    const bookDemoInfobar = useMemo(() => {
+        // TODO: we should allow to display it once we have the link
+        const shouldDisplay = false
+        const onClick = () => {
+            window.open('http://google.com', '_blank', 'noopener')
+        }
+
+        return (
+            shouldDisplay && (
+                <div className={css.demoContainer}>
+                    <CanduActionInfobar
+                        canduId={'convert-book-demo-infobar'}
+                        btnLabel={'Book a demo'}
+                        text={
+                            'See how features like Convert can be personalized for your account'
+                        }
+                        onClick={onClick}
+                    />
+                </div>
+            )
+        )
+    }, [])
+
     return (
         <SubscriptionModal
             productType={ProductType.Convert}
@@ -59,6 +84,7 @@ const ConvertSubscriptionModal = ({
             isOpen={isOpen}
             onClose={onClose}
             onSubscribe={onSubscribe}
+            topModalComponent={bookDemoInfobar}
         />
     )
 }
