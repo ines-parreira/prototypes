@@ -15,7 +15,10 @@ import {
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesSegment} from 'models/reporting/cubes/TicketMessagesCube'
+import {
+    TicketMessagesMeasure,
+    TicketMessagesSegment,
+} from 'models/reporting/cubes/TicketMessagesCube'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -29,7 +32,7 @@ import {
     automatedInteractionsQueryFactory,
     automationRateQueryFactory,
     firstResponseTimeWithAutomationQueryFactory,
-    messagesPerTicketTrendQueryFactory,
+    messagesPerTicketQueryFactory,
     messagesSentQueryFactory,
     openTicketsTrendQueryFactory,
     overallTimeSavedWithAutomationQueryFactory,
@@ -94,53 +97,6 @@ describe('metric trends', () => {
         },
     }
     const timezone = 'someTimeZone'
-
-    describe('messagesPerTicketQueryFactory', () => {
-        it('should build a query', () => {
-            const query = messagesPerTicketTrendQueryFactory(
-                statsFilters,
-                timezone
-            )
-
-            expect(query).toEqual({
-                measures: [HelpdeskMessageMeasure.MessageCount],
-                dimensions: [],
-                filters: [
-                    {
-                        member: TicketMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                    {
-                        member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [periodEnd],
-                    },
-                    {
-                        member: HelpdeskMessageMember.SentDatetime,
-                        operator: ReportingFilterOperator.InDateRange,
-                        values: [periodStart, periodEnd],
-                    },
-                    ...PublicHelpdeskAndApiMessagesFilter,
-                    {
-                        member: HelpdeskMessageMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                    {
-                        member: HelpdeskMessageMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [periodEnd],
-                    },
-                ],
-                timezone,
-                segments: [
-                    TicketSegment.ClosedTickets,
-                    TicketMessagesSegment.ConversationStarted,
-                ],
-            })
-        })
-    })
 
     describe('openTicketsTrendQueryFactory', () => {
         it('should build a query', () => {
@@ -301,17 +257,21 @@ describe('metric trends', () => {
         })
     })
 
-    describe('messagesPerTicketTrendQueryFactory', () => {
+    describe('messagesPerTicketQueryFactory', () => {
         it('should create a query', () => {
-            const query = messagesPerTicketTrendQueryFactory(
-                statsFilters,
-                timezone
-            )
+            const query = messagesPerTicketQueryFactory(statsFilters, timezone)
 
             expect(query).toEqual({
-                measures: [HelpdeskMessageMeasure.MessageCount],
+                measures: [TicketMessagesMeasure.MessagesAverage],
                 dimensions: [],
                 filters: [
+                    {
+                        member: HelpdeskMessageMember.SentDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    ...PublicHelpdeskAndApiMessagesFilter,
+                    ...NotSpamNorTrashedTicketsFilter,
                     {
                         member: TicketMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -319,22 +279,6 @@ describe('metric trends', () => {
                     },
                     {
                         member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [periodEnd],
-                    },
-                    {
-                        member: HelpdeskMessageMember.SentDatetime,
-                        operator: ReportingFilterOperator.InDateRange,
-                        values: [periodStart, periodEnd],
-                    },
-                    ...PublicHelpdeskAndApiMessagesFilter,
-                    {
-                        member: HelpdeskMessageMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                    {
-                        member: HelpdeskMessageMember.PeriodEnd,
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
@@ -352,8 +296,8 @@ describe('metric trends', () => {
         it('should call useMetricTrend with two queries', () => {
             renderHook(() => useMessagesPerTicketTrend(statsFilters, timezone))
             expect(useMetricTrendMock).toHaveBeenCalledWith(
-                messagesPerTicketTrendQueryFactory(statsFilters, timezone),
-                messagesPerTicketTrendQueryFactory(
+                messagesPerTicketQueryFactory(statsFilters, timezone),
+                messagesPerTicketQueryFactory(
                     {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),

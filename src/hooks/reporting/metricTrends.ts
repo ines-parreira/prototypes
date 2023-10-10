@@ -124,11 +124,23 @@ export const useFirstResponseTimeTrend = (
         )
     )
 
-export const messagesPerTicketTrendQueryFactory = (
+export const messagesPerTicketQueryFactory = (
     filters: StatsFilters,
     timezone: string
 ) => ({
-    ...messagesSentQueryFactory(filters, timezone),
+    measures: [TicketMessagesMeasure.MessagesAverage],
+    dimensions: [],
+    timezone,
+    filters: [
+        {
+            member: HelpdeskMessageMember.SentDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: getFilterDateRange(filters),
+        },
+        ...PublicHelpdeskAndApiMessagesFilter,
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+    ],
     segments: [
         TicketSegment.ClosedTickets,
         TicketMessagesSegment.ConversationStarted,
@@ -140,8 +152,8 @@ export const useMessagesPerTicketTrend = (
     timezone: string
 ) =>
     useMetricTrend(
-        messagesPerTicketTrendQueryFactory(filters, timezone),
-        messagesPerTicketTrendQueryFactory(
+        messagesPerTicketQueryFactory(filters, timezone),
+        messagesPerTicketQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
