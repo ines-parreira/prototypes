@@ -1,21 +1,21 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
-import css from 'pages/stats/heatmap.less'
+import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import useAppSelector from 'hooks/useAppSelector'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
-import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import css from 'pages/stats/heatmap.less'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
 import {
     getCleanStatsFiltersWithTimezone,
+    getHeatmapMode,
     isSortingMetricLoading,
-    selectHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
 
 export const PercentageOfClosedTicketsCellContent = ({
@@ -36,7 +36,7 @@ export const PercentageOfClosedTicketsCellContent = ({
         String(agentId)
     )
     const isLoading = isFetching || isMetricLoading
-    const isHeatmapMode = useAppSelector(selectHeatmapMode)
+    const isHeatmapMode = useAppSelector(getHeatmapMode)
 
     return (
         <BodyCell

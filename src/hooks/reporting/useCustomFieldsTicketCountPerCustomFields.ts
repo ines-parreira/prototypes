@@ -10,16 +10,13 @@ import {
     BREAKDOWN_FIELD,
     selectTimeSeriesWithBreakdown,
     TicketCustomFieldsTicketCountTimeSeriesData,
+    TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
     VALUE_FIELD,
 } from 'hooks/reporting/withBreakdown'
 import useAppSelector from 'hooks/useAppSelector'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
-import {
-    getCustomFieldsOrder,
-    getValueMode,
-    ValueMode,
-} from 'state/ui/stats/ticketInsightsSlice'
+import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {getFilterDateRange} from 'utils/reporting'
 import {notUndefined} from 'utils/types'
 
@@ -35,27 +32,14 @@ const breakdownTimeSeries = (
     return selectTimeSeriesWithBreakdown(timeSeriesObjects, order)
 }
 
-const displayAs =
-    (valueMode: ValueMode) =>
-    (
-        data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[]
-    ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
-        if (valueMode === ValueMode.TotalCount) {
-            return data
-        }
-
-        return replaceValuesWithPercentages(data)
-    }
-
 export const useCustomFieldsTicketCountPerCustomFields = (
     selectedCustomFieldId: number
 ): {
-    data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[]
+    data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile>[]
     dateTimes: string[]
     isLoading: boolean
     order: OrderDirection
 } => {
-    const valueMode = useAppSelector(getValueMode)
     const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -75,11 +59,11 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     const data = useMemo(
         () =>
             timeSeriesData !== undefined
-                ? displayAs(valueMode)(
+                ? enrichWithPercentagesAndDeciles(
                       breakdownTimeSeries(timeSeriesData, order)
                   )
                 : [],
-        [timeSeriesData, order, valueMode]
+        [timeSeriesData, order]
     )
 
     return {
@@ -90,11 +74,11 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     }
 }
 
-export function replaceValuesWithPercentages(
+export function enrichWithPercentagesAndDeciles(
     data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[]
-): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] {
+): WithChildren<TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile>[] {
     const currentLevelSum = data.reduce(
-        (acc, currentValue) => acc + (currentValue?.[VALUE_FIELD] || 0),
+        (acc, currentValue) => acc + (currentValue[VALUE_FIELD] || 0),
         0
     )
     const columnsSum = _zip(...data.map((item) => item.timeSeries))
@@ -107,14 +91,19 @@ export function replaceValuesWithPercentages(
 
     return data.map((item) => ({
         ...item,
-        [VALUE_FIELD]: ((item?.[VALUE_FIELD] || 0) / currentLevelSum) * 100,
+        percentage: ((item[VALUE_FIELD] || 0) / currentLevelSum) * 100,
+        decile: calculateDecile(item[VALUE_FIELD], currentLevelSum),
         timeSeries: item.timeSeries.map((item, index) => ({
             ...item,
-            value:
+            percentage:
                 sums[index].value !== 0
                     ? (item.value / sums[index].value) * 100
                     : 0,
+            decile: calculateDecile(item.value, sums[index].value),
         })),
-        children: replaceValuesWithPercentages(item.children),
+        children: enrichWithPercentagesAndDeciles(item.children),
     }))
 }
+
+const calculateDecile = (value: number | undefined, sum: number) =>
+    sum !== 0 ? Math.min(Math.round(((value || 0) / sum) * 10), 9) : 0

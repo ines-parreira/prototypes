@@ -25,6 +25,11 @@ export type TimeSeriesDataItem = {
     label?: string
 }
 
+export type TimeSeriesDataItemWithPercentageAndDecile = TimeSeriesDataItem & {
+    percentage: number
+    decile: number
+}
+
 const select =
     <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
     (res: DataResponse['data']['data']) => {

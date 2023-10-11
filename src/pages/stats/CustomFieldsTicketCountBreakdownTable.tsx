@@ -5,7 +5,7 @@ import useMeasure from 'react-use/lib/useMeasure'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {
     BREAKDOWN_FIELD,
-    TicketCustomFieldsTicketCountTimeSeriesData,
+    TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
     VALUE_FIELD,
 } from 'hooks/reporting/withBreakdown'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -22,10 +22,12 @@ import {TableBodyRowExpandable} from 'pages/common/components/table/TableBodyRow
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/BreakdownTable.less'
+import heatmapCss from 'pages/stats/heatmap.less'
 import {formatMetricValue, getFormat} from 'pages/stats/common/utils'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {
+    getHeatmapMode,
     getValueMode,
     toggleOrder,
     ValueMode,
@@ -49,10 +51,12 @@ export const formatDates =
         return moment(dateTime).format(format)
     }
 
-const formatAccordingToValueMode = (valueMode: ValueMode) => (value: number) =>
-    valueMode === ValueMode.Percentage
-        ? formatMetricValue(value, 'percent')
-        : formatMetricValue(value, 'integer')
+const formatAccordingToValueMode =
+    (valueMode: ValueMode) =>
+    ({value, percentage}: {value: number; percentage: number}) =>
+        valueMode === ValueMode.TotalCount
+            ? formatMetricValue(value, 'integer')
+            : formatMetricValue(percentage, 'percent')
 
 export const CustomFieldsTicketCountBreakdownTable = ({
     selectedCustomFieldId,
@@ -166,20 +170,24 @@ export const CustomFieldsTicketCountBreakdownTable = ({
     )
 }
 
-type DataRowProps = TicketCustomFieldsTicketCountTimeSeriesData & {
-    level?: number
-    isLoading?: boolean
-    isTableScrolled?: boolean
-}
+type DataRowProps =
+    TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile & {
+        level?: number
+        isLoading?: boolean
+        isTableScrolled?: boolean
+    }
 
 const CustomFieldsTicketCountDataRowContent = ({
     isTableScrolled = false,
     timeSeries,
     [BREAKDOWN_FIELD]: label,
     [VALUE_FIELD]: value,
+    percentage,
+    decile,
     level = 0,
 }: DataRowProps) => {
     const valueMode = useAppSelector(getValueMode)
+    const isHeatmapMode = useAppSelector(getHeatmapMode)
 
     return (
         <>
@@ -198,19 +206,30 @@ const CustomFieldsTicketCountDataRowContent = ({
             <BodyCell
                 isHighlighted={true}
                 className={css.BodyCell}
-                innerClassName={classNames(css.BodyCellContent)}
+                innerClassName={classNames(
+                    css.BodyCellContent,
+                    [heatmapCss.heatmap],
+                    isHeatmapMode && heatmapCss[`p${String(decile)}`]
+                )}
                 justifyContent={'right'}
             >
-                {formatAccordingToValueMode(valueMode)(value ?? 0)}
+                {formatAccordingToValueMode(valueMode)({
+                    value: value || 0,
+                    percentage,
+                })}
             </BodyCell>
             {timeSeries.map((data) => (
                 <BodyCell
                     key={data.dateTime}
-                    innerClassName={classNames(css.BodyCellContent)}
+                    innerClassName={classNames(
+                        css.BodyCellContent,
+                        [heatmapCss.heatmap],
+                        isHeatmapMode && heatmapCss[`p${String(data.decile)}`]
+                    )}
                     justifyContent={'right'}
                     className={css.BodyCell}
                 >
-                    {formatAccordingToValueMode(valueMode)(data?.value)}
+                    {formatAccordingToValueMode(valueMode)(data)}
                 </BodyCell>
             ))}
         </>

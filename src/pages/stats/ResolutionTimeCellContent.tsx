@@ -1,17 +1,17 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
+import {useResolutionTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import useAppSelector from 'hooks/useAppSelector'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/heatmap.less'
 import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
-import {useResolutionTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import useAppSelector from 'hooks/useAppSelector'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
     getCleanStatsFiltersWithTimezone,
+    getHeatmapMode,
     isSortingMetricLoading,
-    selectHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
@@ -34,7 +34,7 @@ export const ResolutionTimeCellContent = ({
     )
     const metricValue = data?.value
     const isLoading = isFetching || isMetricLoading
-    const isHeatmapMode = useAppSelector(selectHeatmapMode)
+    const isHeatmapMode = useAppSelector(getHeatmapMode)
 
     return (
         <BodyCell

@@ -15,12 +15,14 @@ export type TicketInsightsState = {
     }
     order: OrderDirection
     valueMode: ValueMode
+    heatmapMode: boolean
 }
 
 export const initialState: TicketInsightsState = {
     selectedCustomField: {id: null, label: '', isLoading: true},
     order: OrderDirection.Asc,
     valueMode: ValueMode.TotalCount,
+    heatmapMode: false,
 }
 
 export const ticketInsightsSlice = createSlice({
@@ -46,11 +48,18 @@ export const ticketInsightsSlice = createSlice({
                     ? OrderDirection.Desc
                     : OrderDirection.Asc
         },
+        toggleHeatmapMode(state) {
+            state.heatmapMode = !state.heatmapMode
+        },
     },
 })
 
-export const {setSelectedCustomField, toggleOrder, toggleValueMode} =
-    ticketInsightsSlice.actions
+export const {
+    setSelectedCustomField,
+    toggleOrder,
+    toggleValueMode,
+    toggleHeatmapMode,
+} = ticketInsightsSlice.actions
 
 export const getSelectedCustomField = (state: RootState) =>
     state.ui[ticketInsightsSlice.name].selectedCustomField
@@ -60,3 +69,6 @@ export const getValueMode = (state: RootState) =>
 
 export const getCustomFieldsOrder = (state: RootState) =>
     state.ui[ticketInsightsSlice.name].order
+
+export const getHeatmapMode = (state: RootState) =>
+    state.ui[ticketInsightsSlice.name].heatmapMode

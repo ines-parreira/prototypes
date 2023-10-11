@@ -1,5 +1,5 @@
 import React from 'react'
-import {HeatmapSwitch} from 'pages/stats/HeatmapSwitch'
+import {AgentPerformanceHeatmapSwitch} from 'pages/stats/AgentPerformanceHeatmapSwitch'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import ChartCard from 'pages/stats/ChartCard'
@@ -34,7 +34,7 @@ export default function SupportPerformanceAgents() {
                     <DashboardGridCell size={12}>
                         <ChartCard
                             title={AGENT_PERFORMANCE_SECTION_TITLE}
-                            titleExtra={<HeatmapSwitch />}
+                            titleExtra={<AgentPerformanceHeatmapSwitch />}
                             noPadding
                         >
                             <AgentsTable />

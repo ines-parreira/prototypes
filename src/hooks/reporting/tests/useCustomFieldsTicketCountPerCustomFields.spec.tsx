@@ -3,9 +3,10 @@ import {renderHook} from '@testing-library/react-hooks/dom'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
-    replaceValuesWithPercentages,
+    enrichWithPercentagesAndDeciles,
     useCustomFieldsTicketCountPerCustomFields,
 } from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
@@ -39,7 +40,8 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
     const customField = 'abc::xyz'
     const startDate = '2021-05-01T00:00:00+02:00'
     const endDate = '2021-05-04T23:59:59+02:00'
-    const dateTime = '2021-05-02T00:00:00+02:00'
+    const day2 = '2021-05-02T00:00:00+02:00'
+    const day3 = '2021-05-03T00:00:00+02:00'
     const data: Record<string, TimeSeriesDataItem[][]> = {
         [customField]: [
             [
@@ -48,11 +50,11 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                     value: 456,
                 },
                 {
-                    dateTime: dateTime,
+                    dateTime: day2,
                     value: 123,
                 },
                 {
-                    dateTime: '2021-05-03T00:00:00+02:00',
+                    dateTime: day3,
                     value: 0,
                 },
                 {
@@ -101,28 +103,40 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
         expect(result.current).toEqual({
             data: [
                 {
-                    'TicketCustomFields.ticketCount': 668,
-                    'TicketCustomFields.valueString': 'abc',
+                    [VALUE_FIELD]: 668,
+                    [BREAKDOWN_FIELD]: 'abc',
+                    decile: 9,
+                    percentage: 100,
                     children: [
                         {
-                            'TicketCustomFields.ticketCount': 668,
-                            'TicketCustomFields.valueString': 'xyz',
+                            [VALUE_FIELD]: 668,
+                            [BREAKDOWN_FIELD]: 'xyz',
                             children: [],
+                            decile: 9,
+                            percentage: 100,
                             timeSeries: [
                                 {
-                                    dateTime: '2021-05-01T00:00:00+02:00',
+                                    dateTime: startDate,
+                                    decile: 9,
+                                    percentage: 100,
                                     value: 456,
                                 },
                                 {
-                                    dateTime: '2021-05-02T00:00:00+02:00',
+                                    dateTime: day2,
+                                    decile: 9,
+                                    percentage: 100,
                                     value: 123,
                                 },
                                 {
-                                    dateTime: '2021-05-03T00:00:00+02:00',
+                                    dateTime: day3,
+                                    decile: 0,
+                                    percentage: 0,
                                     value: 0,
                                 },
                                 {
-                                    dateTime: '2021-05-04T23:59:59+02:00',
+                                    dateTime: endDate,
+                                    decile: 9,
+                                    percentage: 100,
                                     value: 89,
                                 },
                             ],
@@ -130,19 +144,27 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                     ],
                     timeSeries: [
                         {
-                            dateTime: '2021-05-01T00:00:00+02:00',
+                            dateTime: startDate,
+                            decile: 9,
+                            percentage: 100,
                             value: 456,
                         },
                         {
-                            dateTime: '2021-05-02T00:00:00+02:00',
+                            dateTime: day2,
+                            decile: 9,
+                            percentage: 100,
                             value: 123,
                         },
                         {
-                            dateTime: '2021-05-03T00:00:00+02:00',
+                            dateTime: day3,
+                            decile: 0,
+                            percentage: 0,
                             value: 0,
                         },
                         {
-                            dateTime: '2021-05-04T23:59:59+02:00',
+                            dateTime: endDate,
+                            decile: 9,
+                            percentage: 100,
                             value: 89,
                         },
                     ],
@@ -159,200 +181,271 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
         })
     })
 
-    describe('replaceValuesWithPercentages', () => {
+    it('should return empty array when no data received', () => {
+        useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
+            data: undefined,
+            isLoading,
+        } as unknown as UseQueryResult<Record<string, TimeSeriesDataItem[][]>>)
+
+        const {result} = renderHook(
+            () =>
+                useCustomFieldsTicketCountPerCustomFields(
+                    selectedCustomFieldId
+                ),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore({} as any)}>{children}</Provider>
+                ),
+            }
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    describe('enrichWithPercentagesAndDeciles', () => {
         getValueModeMock.mockReturnValue(ValueMode.Percentage)
+        const tag1DailyValues = [400, 123, 0, 75]
+        const tag2DailyValues = [100, 0, 10, 25]
         const input = [
             {
-                'TicketCustomFields.ticketCount': 668,
-                'TicketCustomFields.valueString': 'abc',
+                [VALUE_FIELD]: tag1DailyValues.reduce((sum, v) => sum + v),
+                [BREAKDOWN_FIELD]: 'abc',
                 children: [
                     {
-                        'TicketCustomFields.ticketCount': 668,
-                        'TicketCustomFields.valueString': 'xyz',
+                        [VALUE_FIELD]: tag1DailyValues.reduce(
+                            (sum, v) => sum + v
+                        ),
+                        [BREAKDOWN_FIELD]: 'xyz',
                         children: [],
                         timeSeries: [
                             {
-                                dateTime: '2021-05-01T00:00:00+02:00',
-                                value: 456,
+                                dateTime: startDate,
+                                value: tag1DailyValues[0],
                             },
                             {
-                                dateTime: '2021-05-02T00:00:00+02:00',
-                                value: 123,
+                                dateTime: day2,
+                                value: tag1DailyValues[1],
                             },
                             {
-                                dateTime: '2021-05-03T00:00:00+02:00',
-                                value: 0,
+                                dateTime: day3,
+                                value: tag1DailyValues[2],
                             },
                             {
-                                dateTime: '2021-05-04T23:59:59+02:00',
-                                value: 89,
+                                dateTime: endDate,
+                                value: tag1DailyValues[3],
                             },
                         ],
                     },
                 ],
                 timeSeries: [
                     {
-                        dateTime: '2021-05-01T00:00:00+02:00',
-                        value: 456,
+                        dateTime: startDate,
+                        value: tag1DailyValues[0],
                     },
                     {
-                        dateTime: '2021-05-02T00:00:00+02:00',
-                        value: 123,
+                        dateTime: day2,
+                        value: tag1DailyValues[1],
                     },
                     {
-                        dateTime: '2021-05-03T00:00:00+02:00',
-                        value: 0,
+                        dateTime: day3,
+                        value: tag1DailyValues[2],
                     },
                     {
-                        dateTime: '2021-05-04T23:59:59+02:00',
-                        value: 89,
+                        dateTime: endDate,
+                        value: tag1DailyValues[3],
                     },
                 ],
             },
             {
-                'TicketCustomFields.ticketCount': 668,
-                'TicketCustomFields.valueString': 'asd',
+                [VALUE_FIELD]: tag2DailyValues.reduce((sum, v) => sum + v),
+                [BREAKDOWN_FIELD]: 'asd',
                 children: [
                     {
-                        'TicketCustomFields.ticketCount': 668,
-                        'TicketCustomFields.valueString': 'qwe',
+                        [VALUE_FIELD]: tag2DailyValues.reduce(
+                            (sum, v) => sum + v
+                        ),
+                        [BREAKDOWN_FIELD]: 'qwe',
                         children: [],
                         timeSeries: [
                             {
-                                dateTime: '2021-05-01T00:00:00+02:00',
-                                value: 456,
+                                dateTime: startDate,
+                                value: tag1DailyValues[0],
                             },
                             {
-                                dateTime: '2021-05-02T00:00:00+02:00',
-                                value: 123,
+                                dateTime: day2,
+                                value: tag1DailyValues[1],
                             },
                             {
-                                dateTime: '2021-05-03T00:00:00+02:00',
-                                value: 0,
+                                dateTime: day3,
+                                value: tag1DailyValues[2],
                             },
                             {
-                                dateTime: '2021-05-04T23:59:59+02:00',
-                                value: 89,
+                                dateTime: endDate,
+                                value: tag1DailyValues[3],
                             },
                         ],
                     },
                 ],
                 timeSeries: [
                     {
-                        dateTime: '2021-05-01T00:00:00+02:00',
-                        value: 456,
+                        dateTime: startDate,
+                        value: tag2DailyValues[0],
                     },
                     {
-                        dateTime: '2021-05-02T00:00:00+02:00',
-                        value: 123,
+                        dateTime: day2,
+                        value: tag2DailyValues[1],
                     },
                     {
-                        dateTime: '2021-05-03T00:00:00+02:00',
-                        value: 0,
+                        dateTime: day3,
+                        value: tag2DailyValues[2],
                     },
                     {
-                        dateTime: '2021-05-04T23:59:59+02:00',
-                        value: 89,
+                        dateTime: endDate,
+                        value: tag2DailyValues[3],
                     },
                 ],
             },
         ]
 
         it('should replace values with percentages', () => {
-            const result = replaceValuesWithPercentages(input)
+            const result = enrichWithPercentagesAndDeciles(input)
 
             expect(result).toEqual([
                 {
-                    'TicketCustomFields.ticketCount': 50,
-                    'TicketCustomFields.valueString': 'abc',
+                    [VALUE_FIELD]: tag1DailyValues.reduce((sum, v) => sum + v),
+                    [BREAKDOWN_FIELD]: 'abc',
                     children: [
                         {
-                            'TicketCustomFields.ticketCount': 100,
-                            'TicketCustomFields.valueString': 'xyz',
+                            [VALUE_FIELD]: tag1DailyValues.reduce(
+                                (sum, v) => sum + v
+                            ),
+                            [BREAKDOWN_FIELD]: 'xyz',
                             children: [],
+                            decile: 9,
+                            percentage: 100,
                             timeSeries: [
                                 {
-                                    dateTime: '2021-05-01T00:00:00+02:00',
-                                    value: 100,
+                                    dateTime: startDate,
+                                    decile: 9,
+                                    percentage: 100,
+                                    value: tag1DailyValues[0],
                                 },
                                 {
-                                    dateTime: '2021-05-02T00:00:00+02:00',
-                                    value: 100,
+                                    dateTime: day2,
+                                    decile: 9,
+                                    percentage: 100,
+                                    value: tag1DailyValues[1],
                                 },
                                 {
-                                    dateTime: '2021-05-03T00:00:00+02:00',
-                                    value: 0,
+                                    dateTime: day3,
+                                    decile: 0,
+                                    percentage: 0,
+                                    value: tag1DailyValues[2],
                                 },
                                 {
-                                    dateTime: '2021-05-04T23:59:59+02:00',
-                                    value: 100,
+                                    dateTime: endDate,
+                                    decile: 9,
+                                    percentage: 100,
+                                    value: tag1DailyValues[3],
                                 },
                             ],
                         },
                     ],
+                    decile: 8,
+                    percentage: 81.58253751705321,
                     timeSeries: [
                         {
-                            dateTime: '2021-05-01T00:00:00+02:00',
-                            value: 50,
+                            dateTime: startDate,
+                            decile: 8,
+                            percentage: 80,
+                            value: tag1DailyValues[0],
                         },
                         {
-                            dateTime: '2021-05-02T00:00:00+02:00',
-                            value: 50,
+                            dateTime: day2,
+                            decile: 9,
+                            percentage: 100,
+                            value: tag1DailyValues[1],
                         },
                         {
-                            dateTime: '2021-05-03T00:00:00+02:00',
-                            value: 0,
+                            dateTime: day3,
+                            decile: 0,
+                            percentage: 0,
+                            value: tag1DailyValues[2],
                         },
                         {
-                            dateTime: '2021-05-04T23:59:59+02:00',
-                            value: 50,
+                            dateTime: endDate,
+                            decile: 8,
+                            percentage: 75,
+                            value: tag1DailyValues[3],
                         },
                     ],
                 },
                 {
-                    'TicketCustomFields.ticketCount': 50,
-                    'TicketCustomFields.valueString': 'asd',
+                    [VALUE_FIELD]: tag2DailyValues.reduce((sum, v) => sum + v),
+                    [BREAKDOWN_FIELD]: 'asd',
                     children: [
                         {
-                            'TicketCustomFields.ticketCount': 100,
-                            'TicketCustomFields.valueString': 'qwe',
+                            [VALUE_FIELD]: tag2DailyValues.reduce(
+                                (sum, v) => sum + v
+                            ),
+                            [BREAKDOWN_FIELD]: 'qwe',
                             children: [],
+                            decile: 9,
+                            percentage: 100,
                             timeSeries: [
                                 {
-                                    dateTime: '2021-05-01T00:00:00+02:00',
-                                    value: 100,
+                                    dateTime: startDate,
+                                    decile: 9,
+                                    percentage: 100,
+                                    value: tag1DailyValues[0],
                                 },
                                 {
-                                    dateTime: '2021-05-02T00:00:00+02:00',
-                                    value: 100,
+                                    dateTime: day2,
+                                    decile: 9,
+                                    percentage: 100,
+                                    value: tag1DailyValues[1],
                                 },
                                 {
-                                    dateTime: '2021-05-03T00:00:00+02:00',
-                                    value: 0,
+                                    dateTime: day3,
+                                    decile: 0,
+                                    percentage: 0,
+                                    value: tag1DailyValues[2],
                                 },
                                 {
-                                    dateTime: '2021-05-04T23:59:59+02:00',
-                                    value: 100,
+                                    dateTime: endDate,
+                                    decile: 9,
+                                    percentage: 100,
+                                    value: tag1DailyValues[3],
                                 },
                             ],
                         },
                     ],
+                    decile: 2,
+                    percentage: 18.417462482946796,
                     timeSeries: [
                         {
-                            dateTime: '2021-05-01T00:00:00+02:00',
-                            value: 50,
+                            dateTime: startDate,
+                            decile: 2,
+                            percentage: 20,
+                            value: tag2DailyValues[0],
                         },
                         {
-                            dateTime: '2021-05-02T00:00:00+02:00',
-                            value: 50,
+                            dateTime: day2,
+                            decile: 0,
+                            percentage: 0,
+                            value: tag2DailyValues[1],
                         },
                         {
-                            dateTime: '2021-05-03T00:00:00+02:00',
-                            value: 0,
+                            dateTime: day3,
+                            decile: 9,
+                            percentage: 100,
+                            value: tag2DailyValues[2],
                         },
                         {
-                            dateTime: '2021-05-04T23:59:59+02:00',
-                            value: 50,
+                            dateTime: endDate,
+                            decile: 3,
+                            percentage: 25,
+                            value: tag2DailyValues[3],
                         },
                     ],
                 },

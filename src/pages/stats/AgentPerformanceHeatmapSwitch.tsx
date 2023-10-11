@@ -3,12 +3,12 @@ import {useDispatch} from 'react-redux'
 import useAppSelector from 'hooks/useAppSelector'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import {
-    selectHeatmapMode,
+    getHeatmapMode,
     toggleHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
 
-export const HeatmapSwitch = () => {
-    const heatmapMode = useAppSelector(selectHeatmapMode)
+export const AgentPerformanceHeatmapSwitch = () => {
+    const heatmapMode = useAppSelector(getHeatmapMode)
     const dispatch = useDispatch()
     const toggleHandler = () => dispatch(toggleHeatmapMode())
 

@@ -1,7 +1,10 @@
 import _groupBy from 'lodash/groupBy'
 import _orderBy from 'lodash/orderBy'
 import _zip from 'lodash/zip'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {
+    TimeSeriesDataItem,
+    TimeSeriesDataItemWithPercentageAndDecile,
+} from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
 import {
     TicketCustomFieldsMeasure,
@@ -42,6 +45,15 @@ export type TicketCustomFieldsTicketCountTimeSeriesData = {
     [VALUE_FIELD]?: number
     timeSeries: TimeSeriesDataItem[]
 }
+
+export type TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile =
+    {
+        [BREAKDOWN_FIELD]: string
+        [VALUE_FIELD]?: number
+        timeSeries: TimeSeriesDataItemWithPercentageAndDecile[]
+        percentage: number
+        decile: number
+    }
 
 type WithChildren<T> = T & {children: WithChildren<T>[]}
 

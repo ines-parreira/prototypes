@@ -1,7 +1,9 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import _intersectionBy from 'lodash/intersectionBy'
 import {User} from 'config/types/user'
+import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
+import {isMetricForAgent} from 'pages/stats/common/utils'
 import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import {getAgentsJS} from 'state/agents/selectors'
 import {getTimezone} from 'state/currentUser/selectors'
@@ -11,8 +13,6 @@ import {RootState} from 'state/types'
 import {getCleanStatsFilters} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
-import {isMetricForAgent} from 'pages/stats/common/utils'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {periodToReportingGranularity} from 'utils/reporting'
 
 type AgentPerformanceSorting = {
@@ -99,7 +99,7 @@ export const isSortingMetricLoading = (state: RootState) =>
 export const getAgentsPagination = (state: RootState) =>
     state.ui[agentPerformanceSlice.name].pagination
 
-export const selectHeatmapMode = (state: RootState) =>
+export const getHeatmapMode = (state: RootState) =>
     state.ui[agentPerformanceSlice.name].heatmapMode
 
 export const getFilteredAgents = createSelector(

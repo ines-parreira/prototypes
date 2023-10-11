@@ -84,13 +84,18 @@
 
     .small,
     .BodyCellContent {
-        padding: 8px 16px;
+        padding: @layout-spacing-xs @layout-spacing-s;
     }
 
     .BodyCell,
     .BodyCellContent {
         min-width: 120px;
         width: 120px;
+    }
+
+    .switches {
+        display: flex;
+        gap: @layout-spacing-xs;
     }
 
     .NoDataAvailable {

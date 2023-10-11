@@ -1,22 +1,22 @@
-import React, {PropsWithRef} from 'react'
 import classNames from 'classnames'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
+import React, {PropsWithRef} from 'react'
 import {useTicketsRepliedMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import BodyCell, {
+    Props as BodyCellProps,
+} from 'pages/common/components/table/cells/BodyCell'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import css from 'pages/stats/heatmap.less'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/TableConfig'
 import {
     getCleanStatsFiltersWithTimezone,
+    getHeatmapMode,
     isSortingMetricLoading,
-    selectHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
-import BodyCell, {
-    Props as BodyCellProps,
-} from 'pages/common/components/table/cells/BodyCell'
-import css from 'pages/stats/heatmap.less'
 
 export const TicketsRepliedCellContent = ({
     agentId,
@@ -37,7 +37,7 @@ export const TicketsRepliedCellContent = ({
     )
     const metricValue = data?.value
     const isLoading = isFetching || isMetricLoading
-    const isHeatmapMode = useAppSelector(selectHeatmapMode)
+    const isHeatmapMode = useAppSelector(getHeatmapMode)
 
     return (
         <BodyCell

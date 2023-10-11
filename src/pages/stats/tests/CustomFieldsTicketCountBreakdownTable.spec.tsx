@@ -62,23 +62,33 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         {
             'TicketCustomFields.ticketCount': 668,
             'TicketCustomFields.valueString': 'abc',
+            decile: 9,
+            percentage: 100,
             children: [
                 {
                     'TicketCustomFields.ticketCount': 668,
                     'TicketCustomFields.valueString': 'xyz',
+                    decile: 9,
+                    percentage: 100,
                     children: [],
                     timeSeries: [
                         {
                             dateTime: '2021-05-01T00:00:00+02:00',
                             value: 456,
+                            decile: 9,
+                            percentage: 100,
                         },
                         {
                             dateTime: '2021-05-02T00:00:00+02:00',
                             value: 123,
+                            decile: 9,
+                            percentage: 100,
                         },
                         {
                             dateTime: '2021-05-04T23:59:59+02:00',
                             value: 89,
+                            decile: 9,
+                            percentage: 100,
                         },
                     ],
                 },
@@ -87,14 +97,20 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 {
                     dateTime: '2021-05-01T00:00:00+02:00',
                     value: 456,
+                    decile: 9,
+                    percentage: 100,
                 },
                 {
                     dateTime: '2021-05-02T00:00:00+02:00',
                     value: 123,
+                    decile: 9,
+                    percentage: 100,
                 },
                 {
                     dateTime: '2021-05-04T23:59:59+02:00',
                     value: 89,
+                    decile: 9,
+                    percentage: 100,
                 },
             ],
         },
