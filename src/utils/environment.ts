@@ -1,3 +1,5 @@
+import {isValueOfStringEnum} from 'utils/types'
+
 export enum GorgiasUIEnv {
     Production = 'production',
     Staging = 'staging',
@@ -33,3 +35,39 @@ export function getHelpCenterAuthApiBaseUrl(): string {
 
     return ''
 }
+
+export enum NodeEnv {
+    Development = 'development',
+    Test = 'test',
+    Production = 'production',
+}
+
+export interface EnvVars {
+    GORGIAS_ASSETS_URL?: string
+    NODE_ENV?: NodeEnv
+    TZ?: string
+}
+
+export const getEnvVars = ({
+    GORGIAS_ASSETS_URL,
+    NODE_ENV,
+    TZ,
+}: NodeJS.ProcessEnv): EnvVars => ({
+    GORGIAS_ASSETS_URL,
+    TZ,
+    NODE_ENV:
+        NODE_ENV && isValueOfStringEnum(NodeEnv, NODE_ENV)
+            ? NODE_ENV
+            : undefined,
+})
+
+export const envVars = Object.freeze(
+    // We need to use a whole `process.env.VAR` path in order for
+    // DefinePlugin to match and replace vars.
+    // More info: https://linear.app/gorgias/issue/PLTOF-291/facade-for-processenv#comment-4bbc6958
+    getEnvVars({
+        NODE_ENV: process.env.NODE_ENV,
+        TZ: process.env.TZ,
+        GORGIAS_ASSETS_URL: process.env.GORGIAS_ASSETS_URL,
+    })
+)
