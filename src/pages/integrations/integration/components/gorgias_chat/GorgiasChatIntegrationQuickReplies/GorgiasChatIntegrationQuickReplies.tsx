@@ -4,6 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
 import classnames from 'classnames'
+import {getLDClient} from 'utils/launchDarkly'
 import {RootState} from 'state/types'
 
 import Button from 'pages/common/components/button/Button'
@@ -19,9 +20,10 @@ import {
 } from 'config/integrations/gorgias_chat'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import {IntegrationType} from 'models/integration/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
 
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
@@ -39,6 +41,7 @@ type State = {
     quickRepliesEnabled: boolean
     isUpdating: boolean
     isInitialized: boolean
+    chatMultiLanguageFeatureFlag: boolean
 }
 
 export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
@@ -50,6 +53,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
         quickRepliesEnabled: false,
         isUpdating: false,
         isInitialized: false,
+        chatMultiLanguageFeatureFlag: false,
     }
 
     _initState = () => {
@@ -65,10 +69,14 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
             quickReplies = QUICK_REPLIES_DEFAULTS
         }
 
+        const chatMultiLanguageFeatureFlag =
+            !!getLDClient().allFlags()[FeatureFlagKey.ChatMultiLanguages]
+
         this.setState({
             quickRepliesEnabled: quickRepliesState.get('enabled') || false,
             quickReplies,
             isInitialized: true,
+            chatMultiLanguageFeatureFlag,
         })
     }
 
@@ -212,8 +220,22 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         <div className="mb-4">
                             <h4>Quick replies</h4>
                             <p className={css.mb16}>
-                                When a customer opens the chat, select the quick
-                                replies the customer can click on.<br></br>
+                                {this.state.chatMultiLanguageFeatureFlag ? (
+                                    <>
+                                        When a customer opens the chat, select
+                                        the quick replies the customer can click
+                                        on. Note that Quick Replies will only be
+                                        available in the widget default
+                                        language.
+                                    </>
+                                ) : (
+                                    <>
+                                        When a customer opens the chat, select
+                                        the quick replies the customer can click
+                                        on.
+                                    </>
+                                )}
+                                <br></br>
                                 <a
                                     href="https://docs.gorgias.com/en-US/quick-replies-81794"
                                     rel="noopener noreferrer"

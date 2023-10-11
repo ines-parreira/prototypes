@@ -7,6 +7,8 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import GorgiasChatIntegrationQuickReplies, {
     GorgiasChatIntegrationQuickRepliesComponent,
@@ -23,6 +25,15 @@ jest.mock(
 
 jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+})
+
+jest.mock('utils/launchDarkly')
+
+const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
+    ReturnType<typeof getLDClient>['allFlags']
+>
+allFlagsMock.mockReturnValue({
+    [FeatureFlagKey.ChatMultiLanguages]: true,
 })
 
 describe('<GorgiasChatIntegrationQuickReplies/>', () => {

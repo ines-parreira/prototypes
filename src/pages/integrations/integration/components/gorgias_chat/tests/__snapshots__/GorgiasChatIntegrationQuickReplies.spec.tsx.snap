@@ -243,7 +243,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                             <p
                               className="mb16"
                             >
-                              When a customer opens the chat, select the quick replies the customer can click on.
+                              When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
                               <br />
                               <a
                                 href="https://docs.gorgias.com/en-US/quick-replies-81794"
@@ -1344,7 +1344,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                             <p
                               className="mb16"
                             >
-                              When a customer opens the chat, select the quick replies the customer can click on.
+                              When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
                               <br />
                               <a
                                 href="https://docs.gorgias.com/en-US/quick-replies-81794"
