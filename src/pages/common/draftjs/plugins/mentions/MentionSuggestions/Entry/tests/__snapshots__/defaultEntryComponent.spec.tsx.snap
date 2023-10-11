@@ -2,11 +2,34 @@
 
 exports[`DefaultEntryComponent should render 1`] = `
 <div>
-  <AgentLabel
-    className="my-class-name"
-    name="Marie Curie"
-    profilePictureUrl="https://gorgias.io/profilepicture.png"
-    shouldDisplayAvatar={true}
-  />
+  <div
+    class="AgentLabel my-class-name"
+  >
+    <div
+      class="component hasImage square avatar"
+      style="width: 26px; height: 26px;"
+    >
+      <div
+        class="initials"
+        style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+      >
+        <span
+          style="line-height: 28px;"
+        >
+          MC
+        </span>
+      </div>
+      <img
+        alt="avatar"
+        class="gravatar"
+        src="https://gorgias.io/profilepicture.png"
+      />
+    </div>
+    <span
+      class="name"
+    >
+      Marie Curie
+    </span>
+  </div>
 </div>
 `;

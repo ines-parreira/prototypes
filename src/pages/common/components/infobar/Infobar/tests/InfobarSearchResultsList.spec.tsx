@@ -1,6 +1,6 @@
-import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 
@@ -13,18 +13,20 @@ const commonProps = {
 
 describe('<InfobarSearchResultsList />', () => {
     it('Should render with initial props', () => {
-        const component = shallow(<InfobarSearchResultsList {...commonProps} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <InfobarSearchResultsList {...commonProps} />
+        )
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('Should match snapshot if error', () => {
-        const component = shallow(
+        const {container} = render(
             <InfobarSearchResultsList
                 {...commonProps}
                 errorMessage="This is an error"
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('Should match snapshot when results are available', () => {
@@ -40,12 +42,12 @@ describe('<InfobarSearchResultsList />', () => {
                 email: 'testemail2',
             }),
         ])
-        const component = shallow(
+        const {container} = render(
             <InfobarSearchResultsList
                 {...commonProps}
                 searchResults={searchResultsMock}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

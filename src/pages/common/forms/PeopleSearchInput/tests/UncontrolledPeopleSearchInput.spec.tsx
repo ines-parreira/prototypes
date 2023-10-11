@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import UncontrolledPeopleSearchInput from '../UncontrolledPeopleSearchInput'
@@ -29,7 +29,7 @@ describe('<UncontrolledPeopleSearchInput/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = render(
+            const {container} = render(
                 <UncontrolledPeopleSearchInput
                     teams={teams.get('all')}
                     users={users.get('all')}
@@ -38,7 +38,7 @@ describe('<UncontrolledPeopleSearchInput/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

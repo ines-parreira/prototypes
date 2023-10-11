@@ -1,27 +1,27 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {mount, shallow} from 'enzyme'
 
 import TicketSpam from '../TicketSpam'
 
 describe('TicketSpam', () => {
     describe('props', () => {
         it('should use default props', () => {
-            const component = mount(<TicketSpam />)
+            const {container} = render(<TicketSpam />)
 
-            expect(component.props()).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     describe('html', () => {
         it('should display spam flag', () => {
-            const component = shallow(<TicketSpam spam={true} />)
+            const {container} = render(<TicketSpam spam={true} />)
 
-            expect(component.html()).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
         it('should not display a spam flag', () => {
-            const component = shallow(<TicketSpam />)
+            const {container} = render(<TicketSpam />)
 
-            expect(component.html()).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

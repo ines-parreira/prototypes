@@ -56,14 +56,14 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
         >
           <div
             class="component square avatar"
-            style="width:26px;height:26px"
+            style="width: 26px; height: 26px;"
           >
             <div
               class="initials"
-              style="width:26px;height:26px;font-size:10.833333333333334px"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
             >
               <span
-                style="line-height:28px"
+                style="line-height: 28px;"
               >
                 T1
               </span>
@@ -87,14 +87,14 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
         >
           <div
             class="component square avatar"
-            style="width:26px;height:26px"
+            style="width: 26px; height: 26px;"
           >
             <div
               class="initials"
-              style="width:26px;height:26px;font-size:10.833333333333334px"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
             >
               <span
-                style="line-height:28px"
+                style="line-height: 28px;"
               >
                 T2
               </span>
@@ -132,14 +132,14 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
         >
           <div
             class="component square avatar"
-            style="width:26px;height:26px"
+            style="width: 26px; height: 26px;"
           >
             <div
               class="initials"
-              style="width:26px;height:26px;font-size:10.833333333333334px"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
             >
               <span
-                style="line-height:28px"
+                style="line-height: 28px;"
               >
                 U1
               </span>
@@ -163,14 +163,14 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
         >
           <div
             class="component square avatar"
-            style="width:26px;height:26px"
+            style="width: 26px; height: 26px;"
           >
             <div
               class="initials"
-              style="width:26px;height:26px;font-size:10.833333333333334px"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
             >
               <span
-                style="line-height:28px"
+                style="line-height: 28px;"
               >
                 U2
               </span>

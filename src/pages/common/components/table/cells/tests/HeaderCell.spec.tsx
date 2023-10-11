@@ -1,4 +1,4 @@
-import {shallow} from 'enzyme'
+import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
 import HeaderCell from '../HeaderCell'
@@ -7,37 +7,36 @@ describe('<HeaderCell/>', () => {
     const mockOnClick = jest.fn()
 
     it('should render', () => {
-        const component = shallow(<HeaderCell className="foo">Foo</HeaderCell>)
+        const {container} = render(<HeaderCell className="foo">Foo</HeaderCell>)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render in small size', () => {
-        const component = shallow(
+        const {container} = render(
             <HeaderCell className="foo" size="small">
                 Foo
             </HeaderCell>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render in smallest size', () => {
-        const component = shallow(
+        const {container} = render(
             <HeaderCell className="foo" size="smallest">
                 Foo
             </HeaderCell>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should call onClick when clicked', () => {
-        const component = shallow(
-            <HeaderCell onClick={mockOnClick}>Foo</HeaderCell>
-        )
+        render(<HeaderCell onClick={mockOnClick}>Foo</HeaderCell>)
 
-        component.simulate('click')
-        expect(mockOnClick).toHaveBeenNthCalledWith(1)
+        fireEvent.click(screen.getByRole('cell'))
+
+        expect(mockOnClick).toHaveBeenCalled()
     })
 })

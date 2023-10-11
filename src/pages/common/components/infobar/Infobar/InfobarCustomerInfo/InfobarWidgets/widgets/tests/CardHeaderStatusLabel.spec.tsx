@@ -1,16 +1,16 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
 
 describe('<CardHeaderStatusLabel/>', () => {
     describe('render()', () => {
         it('should render children', () => {
-            const component = shallow(
+            const {container} = render(
                 <CardHeaderStatusLabel>123</CardHeaderStatusLabel>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

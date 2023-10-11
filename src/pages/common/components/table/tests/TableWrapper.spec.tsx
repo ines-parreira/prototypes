@@ -1,14 +1,14 @@
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import React from 'react'
 
 import TableWrapper from '../TableWrapper'
 
 describe('<TableWrapper/>', () => {
     it('should render', () => {
-        const component = shallow(
+        const {container} = render(
             <TableWrapper className="foo">Bar</TableWrapper>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

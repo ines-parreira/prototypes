@@ -1,20 +1,24 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import {CardHeaderYotpoRatingThumbs} from '../CardHeaderYotpoRatingThumbs'
 
 describe('<CardHeaderYotpoRatingThumbs/>', () => {
     describe('render()', () => {
         it('should render children and green thumb', () => {
-            const component = shallow(<CardHeaderYotpoRatingThumbs value="3" />)
+            const {container} = render(
+                <CardHeaderYotpoRatingThumbs value="3" />
+            )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render children and red thumb', () => {
-            const component = shallow(<CardHeaderYotpoRatingThumbs value="1" />)
+            const {container} = render(
+                <CardHeaderYotpoRatingThumbs value="1" />
+            )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

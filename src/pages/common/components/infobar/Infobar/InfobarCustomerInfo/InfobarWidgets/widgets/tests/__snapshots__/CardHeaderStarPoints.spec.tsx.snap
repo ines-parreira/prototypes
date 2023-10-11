@@ -2,15 +2,15 @@
 
 exports[`<CardHeaderStarPoints/> render() should render children 1`] = `
 <span
-  className="container"
+  class="container"
 >
   <span
-    className="material-icons stars"
+    class="material-icons stars"
   >
     stars
   </span>
   <span
-    className="children"
+    class="children"
   >
     555
   </span>

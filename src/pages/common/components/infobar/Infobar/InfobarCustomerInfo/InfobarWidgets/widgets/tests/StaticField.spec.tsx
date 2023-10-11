@@ -1,22 +1,22 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import {StaticField} from '../StaticField'
 
 describe('<StaticField/>', () => {
     describe('render()', () => {
         it('should render with label', () => {
-            const component = shallow(
+            const {container} = render(
                 <StaticField label="Label">foo</StaticField>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without label', () => {
-            const component = shallow(<StaticField>foo</StaticField>)
+            const {container} = render(<StaticField>foo</StaticField>)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

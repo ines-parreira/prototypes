@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
 import PeopleSearchResults from '../PeopleSearchResults'
@@ -29,7 +29,7 @@ describe('<PeopleSearchResults/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = render(
+            const {container} = render(
                 <PeopleSearchResults
                     handleTeams
                     handleUsers
@@ -40,11 +40,11 @@ describe('<PeopleSearchResults/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with custom children displayed before teams', () => {
-            const component = render(
+            const {container} = render(
                 <PeopleSearchResults
                     handleTeams
                     handleUsers
@@ -57,11 +57,11 @@ describe('<PeopleSearchResults/>', () => {
                 </PeopleSearchResults>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without teams', () => {
-            const component = render(
+            const {container} = render(
                 <PeopleSearchResults
                     handleTeams={false}
                     handleUsers
@@ -72,11 +72,11 @@ describe('<PeopleSearchResults/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without users', () => {
-            const component = render(
+            const {container} = render(
                 <PeopleSearchResults
                     handleTeams
                     handleUsers={false}
@@ -87,7 +87,7 @@ describe('<PeopleSearchResults/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

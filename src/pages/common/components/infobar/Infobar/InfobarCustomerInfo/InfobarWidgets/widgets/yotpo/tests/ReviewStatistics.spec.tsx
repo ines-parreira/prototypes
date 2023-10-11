@@ -1,4 +1,4 @@
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 
@@ -10,7 +10,7 @@ const AfterContent = ReviewStatistics().AfterContent
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {
         it('should render header total reviews', () => {
-            const component = shallow(
+            const {container} = render(
                 <TitleWrapper
                     source={fromJS({
                         total_reviews: 2,
@@ -18,7 +18,7 @@ describe('<TitleWrapper/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })
@@ -26,7 +26,7 @@ describe('<TitleWrapper/>', () => {
 describe('<AfterContent/>', () => {
     describe('render()', () => {
         it('should render top topics for reviews', () => {
-            const component = shallow(
+            const {container} = render(
                 <AfterContent
                     source={fromJS({
                         top_topics: ['food', 'stuff'],
@@ -34,12 +34,12 @@ describe('<AfterContent/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
         it('should render top topics sections even with no data', () => {
-            const component = shallow(<AfterContent source={fromJS({})} />)
+            const {container} = render(<AfterContent source={fromJS({})} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

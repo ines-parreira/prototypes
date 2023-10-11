@@ -1,14 +1,14 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import ExpandAllButton from '../ExpandAllButton'
 
 describe('<ExpandAllButton/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(<ExpandAllButton />)
+            const {container} = render(<ExpandAllButton />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

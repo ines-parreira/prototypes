@@ -2,7 +2,7 @@
 
 exports[`<PublicBody/> render() should render 1`] = `
 <div
-  className="m-3"
+  class="m-3"
 >
   <p>
     <b>

@@ -1,26 +1,80 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AfterContent/> render() should render top topics for reviews 1`] = `
-<Fragment>
-  <CardContentYotpoReviewTopics>
-    food
-    stuff
-  </CardContentYotpoReviewTopics>
-</Fragment>
+<div
+  class="topTopicsContainer"
+>
+  <span
+    class="container"
+  >
+    <span
+      class="label"
+    >
+      <span
+        class="material-icons favorite"
+      >
+        favorite
+      </span>
+      Top Mentioned Topics
+    </span>
+  </span>
+  <span
+    class="topics"
+  >
+    <div
+      class="badge topic"
+    >
+      food
+    </div>
+    <div
+      class="badge topic"
+    >
+      stuff
+    </div>
+  </span>
+</div>
 `;
 
 exports[`<AfterContent/> render() should render top topics sections even with no data 1`] = `
-<Fragment>
-  <CardContentYotpoReviewTopics>
-    <Component />
-  </CardContentYotpoReviewTopics>
-</Fragment>
+<div
+  class="topTopicsContainer"
+>
+  <span
+    class="container"
+  >
+    <span
+      class="label"
+    >
+      <span
+        class="material-icons favorite"
+      >
+        favorite
+      </span>
+      Top Mentioned Topics
+    </span>
+  </span>
+  <span
+    class="topics"
+  />
+</div>
 `;
 
 exports[`<TitleWrapper/> render() should render header total reviews 1`] = `
-<Fragment>
-  <CardHeaderYotpoReviewStatistics>
+<span
+  class="container"
+>
+  <span
+    class="material-icons star"
+  >
+    chat_bubble
+  </span>
+  <span>
+    Reviews
+  </span>
+  <div
+    class="badge pill"
+  >
     2
-  </CardHeaderYotpoReviewStatistics>
-</Fragment>
+  </div>
+</span>
 `;

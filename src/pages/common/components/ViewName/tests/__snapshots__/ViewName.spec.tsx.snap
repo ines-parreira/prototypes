@@ -1,24 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ViewName/> .render() should display emoji 1`] = `
-<span>
-  <span
-    class="emoji"
-  >
-    X
+<div>
+  <span>
+    <span
+      class="emoji"
+    >
+      X
+    </span>
+    foo bar
   </span>
-  foo bar
-</span>
+</div>
 `;
 
 exports[`<ViewName/> .render() should display view name 1`] = `
-<span>
-  foo bar
-</span>
+<div>
+  <span>
+    foo bar
+  </span>
+</div>
 `;
 
 exports[`<ViewName/> .render() should not display emoji if decoration is not a string 1`] = `
-<span>
-  foo bar
-</span>
+<div>
+  <span>
+    <span
+      class="emoji"
+    >
+      8
+    </span>
+    foo bar
+  </span>
+</div>
 `;

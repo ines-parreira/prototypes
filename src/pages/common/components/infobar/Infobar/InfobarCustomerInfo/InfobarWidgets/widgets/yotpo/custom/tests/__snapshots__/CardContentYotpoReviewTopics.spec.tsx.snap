@@ -2,16 +2,16 @@
 
 exports[`<CardContentYotpoReviewTopics/> render() should render children as a list of pills 1`] = `
 <div
-  className="topTopicsContainer"
+  class="topTopicsContainer"
 >
   <span
-    className="container"
+    class="container"
   >
     <span
-      className="label"
+      class="label"
     >
       <span
-        className="material-icons favorite"
+        class="material-icons favorite"
       >
         favorite
       </span>
@@ -19,38 +19,34 @@ exports[`<CardContentYotpoReviewTopics/> render() should render children as a li
     </span>
   </span>
   <span
-    className="topics"
+    class="topics"
   >
-    <Badge
-      className="topic"
-      key="bread"
-      type="light"
+    <div
+      class="badge topic"
     >
       bread
-    </Badge>
-    <Badge
-      className="topic"
-      key="test"
-      type="light"
+    </div>
+    <div
+      class="badge topic"
     >
       test
-    </Badge>
+    </div>
   </span>
 </div>
 `;
 
 exports[`<CardContentYotpoReviewTopics/> render() should render correctly if children is empty/null 1`] = `
 <div
-  className="topTopicsContainer"
+  class="topTopicsContainer"
 >
   <span
-    className="container"
+    class="container"
   >
     <span
-      className="label"
+      class="label"
     >
       <span
-        className="material-icons favorite"
+        class="material-icons favorite"
       >
         favorite
       </span>
@@ -58,23 +54,23 @@ exports[`<CardContentYotpoReviewTopics/> render() should render correctly if chi
     </span>
   </span>
   <span
-    className="topics"
+    class="topics"
   />
 </div>
 `;
 
 exports[`<CardContentYotpoReviewTopics/> render() should render correctly if children is empty/null 2`] = `
 <div
-  className="topTopicsContainer"
+  class="topTopicsContainer"
 >
   <span
-    className="container"
+    class="container"
   >
     <span
-      className="label"
+      class="label"
     >
       <span
-        className="material-icons favorite"
+        class="material-icons favorite"
       >
         favorite
       </span>
@@ -82,23 +78,23 @@ exports[`<CardContentYotpoReviewTopics/> render() should render correctly if chi
     </span>
   </span>
   <span
-    className="topics"
+    class="topics"
   />
 </div>
 `;
 
 exports[`<CardContentYotpoReviewTopics/> render() should render correctly if children is empty/null 3`] = `
 <div
-  className="topTopicsContainer"
+  class="topTopicsContainer"
 >
   <span
-    className="container"
+    class="container"
   >
     <span
-      className="label"
+      class="label"
     >
       <span
-        className="material-icons favorite"
+        class="material-icons favorite"
       >
         favorite
       </span>
@@ -106,7 +102,7 @@ exports[`<CardContentYotpoReviewTopics/> render() should render correctly if chi
     </span>
   </span>
   <span
-    className="topics"
+    class="topics"
   />
 </div>
 `;

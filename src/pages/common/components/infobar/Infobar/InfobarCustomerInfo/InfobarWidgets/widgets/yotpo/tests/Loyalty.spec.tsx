@@ -1,4 +1,4 @@
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 
@@ -9,7 +9,7 @@ const TitleWrapper = Loyalty().TitleWrapper
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {
         it('should render loyalty point balance', () => {
-            const component = shallow(
+            const {container} = render(
                 <TitleWrapper
                     source={fromJS({
                         point_balance: 1,
@@ -17,14 +17,14 @@ describe('<TitleWrapper/>', () => {
                 ></TitleWrapper>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
         it('should not render loyalty point balance', () => {
-            const component = shallow(
+            const {container} = render(
                 <TitleWrapper source={fromJS({})}></TitleWrapper>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

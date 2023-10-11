@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -17,9 +17,11 @@ describe('FacebookPageRow component', () => {
             created_datetime: '2018-01-01 00:00:00',
         })
 
-        const component = render(<FacebookPageRow integration={integration} />)
+        const {container} = render(
+            <FacebookPageRow integration={integration} />
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render facebook integration', () => {
@@ -39,8 +41,10 @@ describe('FacebookPageRow component', () => {
             },
         })
 
-        const component = render(<FacebookPageRow integration={integration} />)
+        const {container} = render(
+            <FacebookPageRow integration={integration} />
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,9 +1,9 @@
+import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
+import {toJS} from 'utils'
 import {AddLogicalCondition} from '../AddLogicalCondition'
-import {toJS} from '../../../../../../utils'
 
 describe('AddLogicalCondition component', () => {
     const commonProps = {
@@ -24,7 +24,7 @@ describe('AddLogicalCondition component', () => {
             },
         }) as Map<any, any>
 
-        const component = shallow(
+        const {container} = render(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
@@ -39,7 +39,7 @@ describe('AddLogicalCondition component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render an option to add AND because existing operator is already AND ', () => {
@@ -55,7 +55,7 @@ describe('AddLogicalCondition component', () => {
             },
         }) as Map<any, any>
 
-        const component = shallow(
+        const {container} = render(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
@@ -70,7 +70,7 @@ describe('AddLogicalCondition component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render an option to add OR because existing operator is already OR ', () => {
@@ -86,7 +86,7 @@ describe('AddLogicalCondition component', () => {
             },
         }) as Map<any, any>
 
-        const component = shallow(
+        const {container} = render(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
@@ -101,7 +101,7 @@ describe('AddLogicalCondition component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render an option to add ELSE because there is already an ELSE', () => {
@@ -120,7 +120,7 @@ describe('AddLogicalCondition component', () => {
             },
         }) as Map<any, any>
 
-        const component = shallow(
+        const {container} = render(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
@@ -135,6 +135,6 @@ describe('AddLogicalCondition component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -2,21 +2,20 @@
 
 exports[`<CardHeaderYotpoReviewStatistics/> render() should render children and chat bubble icon 1`] = `
 <span
-  className="container"
+  class="container"
 >
   <span
-    className="material-icons star"
+    class="material-icons star"
   >
     chat_bubble
   </span>
   <span>
     Reviews
   </span>
-  <Badge
-    className="pill"
-    type="dark-grey"
+  <div
+    class="badge pill"
   >
     3
-  </Badge>
+  </div>
 </span>
 `;

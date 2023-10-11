@@ -1,5 +1,5 @@
+import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 
 import TicketStatus from '../TicketStatus'
 
@@ -9,14 +9,16 @@ describe('TicketStatus component', () => {
         currentStatus: 'closed',
     }
     it('closed ticket', () => {
-        const component = shallow(<TicketStatus {...minProps} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<TicketStatus {...minProps} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('open ticket', () => {
-        const component = shallow(
+        const {container} = render(
             <TicketStatus {...minProps} currentStatus="open" />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

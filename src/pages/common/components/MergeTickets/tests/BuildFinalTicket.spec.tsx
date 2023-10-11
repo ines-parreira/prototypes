@@ -1,8 +1,8 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 import _noop from 'lodash/noop'
 
+import {render} from '@testing-library/react'
 import BuildFinalTicket from '../BuildFinalTicket'
 
 describe('BuildFinalTicket component', () => {
@@ -20,7 +20,7 @@ describe('BuildFinalTicket component', () => {
     const updateFinalTicket = _noop
 
     it('should not display any fields because they are all identical', () => {
-        const component = shallow(
+        const {container} = render(
             <BuildFinalTicket
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket}
@@ -29,11 +29,11 @@ describe('BuildFinalTicket component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display the subject field because the subjects on the tickets are different', () => {
-        const component = shallow(
+        const {container} = render(
             <BuildFinalTicket
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket.set('subject', 'bar')}
@@ -42,11 +42,11 @@ describe('BuildFinalTicket component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display the customer field because the customers on the tickets are different', () => {
-        const component = shallow(
+        const {container} = render(
             <BuildFinalTicket
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket.set(
@@ -61,11 +61,11 @@ describe('BuildFinalTicket component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display the assignee field because the assignees on the tickets are different', () => {
-        const component = shallow(
+        const {container} = render(
             <BuildFinalTicket
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket.set(
@@ -80,11 +80,11 @@ describe('BuildFinalTicket component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not display the assignee field because one of the assignees is empty', () => {
-        const component = shallow(
+        const {container} = render(
             <BuildFinalTicket
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket.set('assignee_user', fromJS({}))}
@@ -93,11 +93,11 @@ describe('BuildFinalTicket component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display all fields because everything is different', () => {
-        const component = shallow(
+        const {container} = render(
             <BuildFinalTicket
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket
@@ -121,6 +121,6 @@ describe('BuildFinalTicket component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

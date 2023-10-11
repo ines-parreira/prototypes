@@ -2,10 +2,10 @@
 
 exports[`<TableHead/> should render 1`] = `
 <thead
-  className="foo"
+  class="foo"
 >
   <tr
-    className="headerRow"
+    class="headerRow"
   >
     Foo
   </tr>

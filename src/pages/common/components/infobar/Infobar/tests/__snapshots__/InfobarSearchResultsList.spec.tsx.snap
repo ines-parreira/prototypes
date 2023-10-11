@@ -2,7 +2,7 @@
 
 exports[`<InfobarSearchResultsList /> Should match snapshot if error 1`] = `
 <p
-  className="centered error"
+  class="centered error"
 >
   This is an error
 </p>
@@ -10,72 +10,64 @@ exports[`<InfobarSearchResultsList /> Should match snapshot if error 1`] = `
 
 exports[`<InfobarSearchResultsList /> Should match snapshot when results are available 1`] = `
 <div
-  className="m-3"
+  class="m-3"
 >
-  <CardTitle
-    className="cardTitle"
-    tag="div"
+  <div
+    class="cardTitle card-title"
   >
     Customers found:
-  </CardTitle>
+  </div>
   <div
-    className="mt-3"
+    class="mt-3"
   >
-    <Card
-      className="clickable mb-2 current-customer"
-      key="0"
-      onClick={[Function]}
-      tag="div"
+    <div
+      class="clickable mb-2 current-customer card"
     >
-      <CardBody
-        tag="div"
+      <div
+        class="card-body"
       >
         <span
-          className="subtitle d-block mb-1 text-truncate"
+          class="subtitle d-block mb-1 text-truncate"
         >
           test
-          <Badge
-            className="ml-2"
-            type="grey"
+          <div
+            class="badge ml-2"
           >
             Current Customer
-          </Badge>
+          </div>
         </span>
         <div
-          className="detail d-block text-truncate"
+          class="detail d-block text-truncate"
         >
           testemail
         </div>
-      </CardBody>
-    </Card>
-    <Card
-      className="clickable mb-2"
-      key="1"
-      onClick={[Function]}
-      tag="div"
+      </div>
+    </div>
+    <div
+      class="clickable mb-2 card"
     >
-      <CardBody
-        tag="div"
+      <div
+        class="card-body"
       >
         <span
-          className="subtitle d-block mb-1 text-truncate"
+          class="subtitle d-block mb-1 text-truncate"
         >
           test2
         </span>
         <div
-          className="detail d-block text-truncate"
+          class="detail d-block text-truncate"
         >
           testemail2
         </div>
-      </CardBody>
-    </Card>
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<InfobarSearchResultsList /> Should render with initial props 1`] = `
 <p
-  className="centered"
+  class="centered"
 >
   No customer found.
 </p>

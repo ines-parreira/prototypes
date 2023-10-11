@@ -1,16 +1,16 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import {CardHeaderYotpoLoyaltyPoints} from '../CardHeaderYotpoLoyaltyPoints'
 
 describe('<CardHeaderYotpoLoyaltyPoints/>', () => {
     describe('render()', () => {
         it('should render children', () => {
-            const component = shallow(
+            const {container} = render(
                 <CardHeaderYotpoLoyaltyPoints value="12345" />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

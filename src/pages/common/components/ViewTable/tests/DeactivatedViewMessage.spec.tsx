@@ -1,13 +1,14 @@
 import React from 'react'
-import {render} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import DeactivatedViewMessage from '../DeactivatedViewMessage'
 
 describe('<DeactivatedViewMessage/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const component = render(<DeactivatedViewMessage />)
-            expect(component).toMatchSnapshot()
+            const {container} = render(<DeactivatedViewMessage />)
+
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

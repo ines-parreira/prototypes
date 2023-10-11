@@ -1,6 +1,5 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
-import {shallow} from 'enzyme'
 
 import AutoPopulateInput from '../AutoPopulateInput'
 
@@ -13,7 +12,7 @@ describe('<AutoPopulateInput />', () => {
 
     describe('render()', () => {
         it('should render checked', () => {
-            const component = shallow(
+            const {container} = render(
                 <AutoPopulateInput
                     value={null}
                     populateLabel="Use the same as Title"
@@ -22,11 +21,11 @@ describe('<AutoPopulateInput />', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render unchecked', () => {
-            const component = shallow(
+            const {container} = render(
                 <AutoPopulateInput
                     value="Custom title"
                     populateLabel="Use the same as Title"
@@ -35,7 +34,7 @@ describe('<AutoPopulateInput />', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 

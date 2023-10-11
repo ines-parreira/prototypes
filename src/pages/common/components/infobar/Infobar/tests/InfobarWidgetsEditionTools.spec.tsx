@@ -1,5 +1,5 @@
+import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {StoreDispatch} from 'state/types'
@@ -22,15 +22,15 @@ const commonProps: ComponentProps<typeof InfobarWidgetsEditionTools> = {
 
 describe('InfobarWidgetsEditionTools component', () => {
     it('should render widgets edition tools disabled because the widgets are not dirty', () => {
-        const component = shallow(
+        const {container} = render(
             <InfobarWidgetsEditionTools {...commonProps} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render widgets edition tools loading and disabled, because the widgets are being saved', () => {
-        const component = shallow(
+        const {container} = render(
             <InfobarWidgetsEditionTools
                 {...commonProps}
                 widgets={fromJS({
@@ -44,11 +44,11 @@ describe('InfobarWidgetsEditionTools component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render widgets edition tools enabled because the widgets are dirty and not being saved', () => {
-        const component = shallow(
+        const {container} = render(
             <InfobarWidgetsEditionTools
                 {...commonProps}
                 widgets={fromJS({
@@ -62,6 +62,6 @@ describe('InfobarWidgetsEditionTools component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

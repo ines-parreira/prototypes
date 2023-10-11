@@ -51,14 +51,14 @@ describe('StatsNavbarView', () => {
     }
 
     it('should render', () => {
-        const component = render(
+        const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
                     <StatsNavbarView />
                 </DndProvider>
             </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the link to busiest times of days', () => {

@@ -2,12 +2,11 @@
 
 exports[`<ExpandAllButton/> render() should render 1`] = `
 <span
-  className="expandAll"
-  onClick={[Function]}
+  class="expandAll"
   title="Fold all"
 >
   <i
-    className="material-icons"
+    class="material-icons"
   >
     unfold_less
   </i>

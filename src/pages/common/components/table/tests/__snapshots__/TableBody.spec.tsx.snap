@@ -2,7 +2,7 @@
 
 exports[`<TableBody/> should render 1`] = `
 <tbody
-  className="tableBody foo"
+  class="tableBody foo"
 >
   Foo
 </tbody>

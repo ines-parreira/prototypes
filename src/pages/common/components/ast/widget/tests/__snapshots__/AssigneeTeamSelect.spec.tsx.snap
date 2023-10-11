@@ -1,96 +1,253 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown with selected value 1`] = `
-<Select
-  onSearchChange={[Function]}
-  options={
-    [
-      {
-        "label": <React.Fragment>
-          <i
-            className="material-icons"
+<div
+  style="display: inline-block; vertical-align: middle;"
+>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label"
+            style="min-width: 10px; opacity: 1;"
           >
-            group_remove
+            Team 1
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
           </i>
-           
-          Clear assignee
-        </React.Fragment>,
-        "value": null,
-      },
-      {
-        "label": "Team 1",
-        "value": 1,
-      },
-      {
-        "label": "Team 2",
-        "value": 2,
-      },
-      {
-        "label": "Team 3",
-        "value": 3,
-      },
-    ]
-  }
-  sortOptions={false}
-  value={1}
-/>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        
+        <button
+          class="option option--focused dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <i
+              class="material-icons"
+            >
+              group_remove
+            </i>
+             
+            Clear assignee
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Team 2
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Team 3
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown without "Unassign" option 1`] = `
-<Select
-  onSearchChange={[Function]}
-  options={
-    [
-      {
-        "label": "Team 1",
-        "value": 1,
-      },
-      {
-        "label": "Team 2",
-        "value": 2,
-      },
-      {
-        "label": "Team 3",
-        "value": 3,
-      },
-    ]
-  }
-  sortOptions={false}
-  value={1}
-/>
+<div
+  style="display: inline-block; vertical-align: middle;"
+>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label"
+            style="min-width: 10px; opacity: 1;"
+          >
+            Team 1
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        
+        <button
+          class="option option--focused dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Team 2
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Team 3
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown without selected value 1`] = `
-<Select
-  onSearchChange={[Function]}
-  options={
-    [
-      {
-        "label": <React.Fragment>
-          <i
-            className="material-icons"
+<div
+  style="display: inline-block; vertical-align: middle;"
+>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label placeholder"
+            style="min-width: 10px; opacity: 1;"
           >
-            group_remove
+            Select an option
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
           </i>
-           
-          Clear assignee
-        </React.Fragment>,
-        "value": null,
-      },
-      {
-        "label": "Team 1",
-        "value": 1,
-      },
-      {
-        "label": "Team 2",
-        "value": 2,
-      },
-      {
-        "label": "Team 3",
-        "value": 3,
-      },
-    ]
-  }
-  sortOptions={false}
-/>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        
+        <button
+          class="option option--focused dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <i
+              class="material-icons"
+            >
+              group_remove
+            </i>
+             
+            Clear assignee
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Team 1
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Team 2
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            Team 3
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 `;

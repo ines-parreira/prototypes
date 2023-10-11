@@ -2,7 +2,7 @@
 
 exports[`<CardHeaderTitle/> render() should render children 1`] = `
 <span
-  className="container"
+  class="container"
 >
   <p>
     foo

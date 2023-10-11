@@ -1,5 +1,5 @@
+import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import InfobarCustomerActions from '../InfobarCustomerActions'
@@ -29,7 +29,7 @@ jest.mock('../../../../../../utils', () => ({
 
 describe('InfobarCustomerActions component', () => {
     it('should not render "set as customer" button because the agent is not on a ticket', () => {
-        const component = shallow(
+        const {container} = render(
             <InfobarCustomerActions
                 {...commonProps}
                 sources={fromJS({
@@ -40,31 +40,31 @@ describe('InfobarCustomerActions component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render "set as customer" nor "merge" buttons because the customers are the same', () => {
-        const component = shallow(
+        const {container} = render(
             <InfobarCustomerActions
                 {...commonProps}
                 selectedCustomer={commonProps.customer}
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render "merge" button because there is no customer to merge the selected customer with', () => {
-        const component = shallow(
+        const {container} = render(
             <InfobarCustomerActions {...commonProps} customer={fromJS({})} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render "set as customer" and "merge" button', () => {
-        const component = shallow(<InfobarCustomerActions {...commonProps} />)
+        const {container} = render(<InfobarCustomerActions {...commonProps} />)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

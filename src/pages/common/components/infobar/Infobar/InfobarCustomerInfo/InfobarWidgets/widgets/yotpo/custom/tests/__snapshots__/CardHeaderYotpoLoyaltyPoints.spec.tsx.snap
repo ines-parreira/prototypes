@@ -2,21 +2,20 @@
 
 exports[`<CardHeaderYotpoLoyaltyPoints/> render() should render children 1`] = `
 <span
-  className="container"
+  class="container"
 >
   <span
-    className="material-icons star"
+    class="material-icons star"
   >
     stars
   </span>
   <span>
     Loyalty Points
   </span>
-  <Badge
-    className="pill"
-    type="dark-grey"
+  <div
+    class="badge pill"
   >
     12,345
-  </Badge>
+  </div>
 </span>
 `;

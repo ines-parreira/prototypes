@@ -1,5 +1,5 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 
@@ -7,23 +7,23 @@ import ListField from '../ListField'
 
 describe('ListField component', () => {
     it('should render with no items and an "add" button', () => {
-        const component = shallow(
+        const {container} = render(
             <ListField onChange={_noop} items={fromJS([])} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with some items and an "add" button', () => {
-        const component = shallow(
+        const {container} = render(
             <ListField onChange={_noop} items={fromJS(['foo', 'bar'])} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with the max number of items and no "add" button', () => {
-        const component = shallow(
+        const {container} = render(
             <ListField
                 onChange={_noop}
                 items={fromJS(['foo', 'bar'])}
@@ -31,6 +31,6 @@ describe('ListField component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

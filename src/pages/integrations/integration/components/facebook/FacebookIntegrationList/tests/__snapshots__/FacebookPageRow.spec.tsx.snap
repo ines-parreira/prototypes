@@ -13,7 +13,7 @@ exports[`FacebookPageRow component should render facebook integration 1`] = `
       alt="My Page"
       class="rounded"
       src="https://fake.url/picture.jpg"
-      style="height:23px;max-width:23px;overflow:hidden"
+      style="height: 23px; max-width: 23px; overflow: hidden;"
     />
   </td>
   <td

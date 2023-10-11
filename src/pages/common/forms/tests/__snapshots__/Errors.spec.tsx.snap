@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Errors render children 1`] = `
-<FormFeedback
-  tag="div"
+<div
+  class="invalid-feedback"
 >
   text
-</FormFeedback>
+</div>
 `;

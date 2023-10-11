@@ -1,9 +1,9 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 
-import {Locale} from '../../../../../models/helpCenter/types'
-import HelpCenterTable from '../HelpCenterTable'
+import {Locale} from 'models/helpCenter/types'
+import {HelpCenterTable} from '../HelpCenterTable'
 import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
@@ -45,11 +45,9 @@ describe('<HelpCenterTable />', () => {
     it('should duplicate a Help Center', () => {
         const firstHelpCenter = props.list[0]
 
-        const component = render(
-            <HelpCenterTable {...props} list={[firstHelpCenter]} />
-        )
+        render(<HelpCenterTable {...props} list={[firstHelpCenter]} />)
 
-        const duplicateButton = component.getByTitle(/Duplicate Help Center/)
+        const duplicateButton = screen.getByTitle(/Duplicate Help Center/)
 
         fireEvent.click(duplicateButton)
 

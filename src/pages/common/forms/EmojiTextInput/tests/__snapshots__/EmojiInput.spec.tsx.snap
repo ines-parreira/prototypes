@@ -2,25 +2,34 @@
 
 exports[`<EmojiTextInput/> render() should render 1`] = `
 <div
-  className="container"
+  class="container"
 >
-  <InputGroup
-    className="inputGroup"
+  <span
+    class="inputGroup wrapper group horizontal"
   >
-    <EmojiSelect
-      className="emojiPicker"
-      emoji="🍔"
-      onEmojiClear={[Function]}
-      onEmojiSelect={[Function]}
-    />
-    <ForwardRef(TextInput)
-      id="foo"
-      isRequired={true}
-      onChange={[Function]}
-      placeholder="Placeholder..."
-      tabIndex={0}
-      value="Foo"
-    />
-  </InputGroup>
+    <div
+      class="picker emojiPicker"
+    >
+      <span
+        class="icon"
+      >
+        🍔
+      </span>
+    </div>
+    <div
+      class="wrapper right isNested"
+    >
+      <input
+        class="input"
+        id="foo"
+        name="foo"
+        placeholder="Placeholder..."
+        required=""
+        tabindex="0"
+        type="text"
+        value="Foo"
+      />
+    </div>
+  </span>
 </div>
 `;

@@ -1,11 +1,11 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import RestrictedFeature from '../RestrictedFeature'
 
 describe('RestrictedFeature component', () => {
     it('should render image carousel and Lightbox', () => {
-        const component = shallow(
+        const {container} = render(
             <RestrictedFeature
                 imagesURL={['url1', 'url2']}
                 info="text"
@@ -14,11 +14,11 @@ describe('RestrictedFeature component', () => {
                 }
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render alert with a link and an action', () => {
-        const component = shallow(
+        const {container} = render(
             <RestrictedFeature
                 imagesURL={['url1', 'url2']}
                 info="text"
@@ -29,6 +29,6 @@ describe('RestrictedFeature component', () => {
                 }
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

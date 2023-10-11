@@ -6,7 +6,7 @@ exports[`<MoneyAmount/> render() should render 0 as a number 1`] = `
 </span>
 `;
 
-exports[`<MoneyAmount/> render() should render 0 as an horizontal dash symbol 1`] = `"—"`;
+exports[`<MoneyAmount/> render() should render 0 as an horizontal dash symbol 1`] = `—`;
 
 exports[`<MoneyAmount/> render() should render 1`] = `
 <span>

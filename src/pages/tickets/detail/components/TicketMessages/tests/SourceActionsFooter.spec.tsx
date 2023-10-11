@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {render} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import {FacebookReactionType} from 'constants/integrations/facebook'
 import {
@@ -32,7 +32,7 @@ describe('<SourceActionsFooter/>', () => {
                 ...facebookMessageNoMeta,
             }
             facebookMessage.source!.type = source_type
-            const component = render(
+            const {container} = render(
                 <SourceActionsFooter
                     {...minProps}
                     source={facebookMessage.source}
@@ -41,7 +41,7 @@ describe('<SourceActionsFooter/>', () => {
                     messageId={facebookMessage.message_id}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -52,7 +52,7 @@ describe('<SourceActionsFooter/>', () => {
                 ...facebookMessageWithPageReaction,
             }
             facebookMessage.source!.type = source_type
-            const component = render(
+            const {container} = render(
                 <SourceActionsFooter
                     {...minProps}
                     source={facebookMessage.source}
@@ -61,7 +61,7 @@ describe('<SourceActionsFooter/>', () => {
                     messageId={facebookMessage.message_id}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -72,7 +72,7 @@ describe('<SourceActionsFooter/>', () => {
                 ...facebookMessageWithCustomerReaction,
             }
             facebookMessage.source!.type = source_type
-            const component = render(
+            const {container} = render(
                 <SourceActionsFooter
                     {...minProps}
                     source={facebookMessage.source}
@@ -81,7 +81,7 @@ describe('<SourceActionsFooter/>', () => {
                     messageId={facebookMessage.message_id}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -92,7 +92,7 @@ describe('<SourceActionsFooter/>', () => {
                 ...facebookMessageWithPageAndCustomerReactions,
             }
             facebookMessage.source!.type = source_type
-            const component = render(
+            const {container} = render(
                 <SourceActionsFooter
                     {...minProps}
                     source={facebookMessage.source}
@@ -101,7 +101,7 @@ describe('<SourceActionsFooter/>', () => {
                     messageId={facebookMessage.message_id}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -112,7 +112,7 @@ describe('<SourceActionsFooter/>', () => {
                 ...hiddenFacebookMessage,
             }
             facebookMessage.source!.type = source_type
-            const component = render(
+            const {container} = render(
                 <SourceActionsFooter
                     {...minProps}
                     source={facebookMessage.source}
@@ -122,7 +122,7 @@ describe('<SourceActionsFooter/>', () => {
                     isMessageHidden={true}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -133,7 +133,7 @@ describe('<SourceActionsFooter/>', () => {
                 ...hiddenFacebookMessage,
             }
             facebookMessage.source!.type = source_type
-            const component = render(
+            const {container} = render(
                 <SourceActionsFooter
                     {...minProps}
                     source={facebookMessage.source}
@@ -143,7 +143,7 @@ describe('<SourceActionsFooter/>', () => {
                     isMessageDeleted={true}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -158,7 +158,7 @@ describe('<SourceActionsFooter/>', () => {
                 'UnknownReaction' as FacebookReactionType
             facebookMessage.meta!.facebook_reactions!.customer_reaction!.reaction_type =
                 'UnknownReaction' as FacebookReactionType
-            const component = render(
+            const {container} = render(
                 <SourceActionsFooter
                     {...minProps}
                     source={facebookMessage.source}
@@ -167,7 +167,7 @@ describe('<SourceActionsFooter/>', () => {
                     messageId={facebookMessage.message_id}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -178,7 +178,7 @@ describe('<SourceActionsFooter/>', () => {
                 ...duplicatedHiddenFacebookMessage,
             }
             facebookMessage.source!.type = source_type
-            const component = render(
+            const {container} = render(
                 <SourceActionsFooter
                     {...minProps}
                     source={facebookMessage.source}
@@ -188,7 +188,7 @@ describe('<SourceActionsFooter/>', () => {
                     isMessageHidden={true}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -196,7 +196,7 @@ describe('<SourceActionsFooter/>', () => {
         const facebookMessage = {...facebookMessageWithPageAndCustomerReactions}
         facebookMessage.source!.type = FACEBOOK_MENTION_COMMENT_SOURCE
         facebookMessage.source!.extra = {unfetchable: true}
-        const component = render(
+        const {container} = render(
             <SourceActionsFooter
                 {...minProps}
                 source={facebookMessage.source}
@@ -206,6 +206,6 @@ describe('<SourceActionsFooter/>', () => {
                 isMessageHidden={true}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

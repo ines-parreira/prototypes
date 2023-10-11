@@ -1,12 +1,12 @@
-import {shallow} from 'enzyme'
 import React from 'react'
+import {render} from '@testing-library/react'
 
 import TableHead from '../TableHead'
 
 describe('<TableHead/>', () => {
     it('should render', () => {
-        const component = shallow(<TableHead className="foo">Foo</TableHead>)
+        const {container} = render(<TableHead className="foo">Foo</TableHead>)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

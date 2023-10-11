@@ -1,24 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddLogicalCondition component should not render an option to add ELSE because there is already an ELSE 1`] = `
-<UncontrolledButtonDropdown>
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="ControlStructureButton"
-    color="secondary"
+<div
+  class="btn-group"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="ControlStructureButton dropdown-toggle btn btn-secondary"
     type="button"
   >
     bar
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -26,11 +29,11 @@ exports[`AddLogicalCondition component should not render an option to add ELSE b
         AND
       </b>
        condition
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -38,43 +41,46 @@ exports[`AddLogicalCondition component should not render an option to add ELSE b
         OR
       </b>
        condition
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       <i
-        className="material-icons red mr-1"
+        class="material-icons red mr-1"
       >
         delete
       </i>
       Delete node
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`AddLogicalCondition component should render an option to add AND because existing operator is already AND  1`] = `
-<UncontrolledButtonDropdown>
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="ControlStructureButton"
-    color="secondary"
+<div
+  class="btn-group"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="ControlStructureButton dropdown-toggle btn btn-secondary"
     type="button"
   >
     bar
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -82,11 +88,11 @@ exports[`AddLogicalCondition component should render an option to add AND becaus
         AND
       </b>
        condition
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -94,43 +100,46 @@ exports[`AddLogicalCondition component should render an option to add AND becaus
         ELSE
       </b>
        statement
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       <i
-        className="material-icons red mr-1"
+        class="material-icons red mr-1"
       >
         delete
       </i>
       Delete node
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`AddLogicalCondition component should render an option to add OR because existing operator is already OR  1`] = `
-<UncontrolledButtonDropdown>
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="ControlStructureButton"
-    color="secondary"
+<div
+  class="btn-group"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="ControlStructureButton dropdown-toggle btn btn-secondary"
     type="button"
   >
     bar
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -138,11 +147,11 @@ exports[`AddLogicalCondition component should render an option to add OR because
         OR
       </b>
        condition
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -150,43 +159,46 @@ exports[`AddLogicalCondition component should render an option to add OR because
         ELSE
       </b>
        statement
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       <i
-        className="material-icons red mr-1"
+        class="material-icons red mr-1"
       >
         delete
       </i>
       Delete node
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`AddLogicalCondition component should render empty condition 1`] = `
-<UncontrolledButtonDropdown>
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="ControlStructureButton"
-    color="secondary"
+<div
+  class="btn-group"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="ControlStructureButton dropdown-toggle btn btn-secondary"
     type="button"
   >
     bar
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -194,11 +206,11 @@ exports[`AddLogicalCondition component should render empty condition 1`] = `
         AND
       </b>
        condition
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -206,11 +218,11 @@ exports[`AddLogicalCondition component should render empty condition 1`] = `
         OR
       </b>
        condition
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add 
@@ -218,20 +230,20 @@ exports[`AddLogicalCondition component should render empty condition 1`] = `
         ELSE
       </b>
        statement
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       <i
-        className="material-icons red mr-1"
+        class="material-icons red mr-1"
       >
         delete
       </i>
       Delete node
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;

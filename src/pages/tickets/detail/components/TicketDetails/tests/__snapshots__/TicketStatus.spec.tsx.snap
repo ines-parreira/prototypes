@@ -2,49 +2,49 @@
 
 exports[`TicketStatus component closed ticket 1`] = `
 <div
-  className="d-inline-block mr-2"
+  class="d-inline-block mr-2"
 >
   <span
     id="change-status-button"
   >
-    <ForwardRef
-      onClick={[Function]}
+    <button
+      aria-disabled="false"
+      class="wrapper wrapper fill primary medium"
+      type="button"
     >
-      check
-    </ForwardRef>
+      <i
+        class="material-icons icon"
+      >
+        check
+      </i>
+    </button>
   </span>
-  <Tooltip
-    placement="bottom"
-    target="change-status-button"
-  >
-    Reopen (press O)
-  </Tooltip>
 </div>
 `;
 
 exports[`TicketStatus component open ticket 1`] = `
 <div
-  className="d-inline-block mr-2"
+  class="d-inline-block mr-2"
 >
   <span
     id="change-status-button"
   >
-    <ForwardRef
-      intent="secondary"
-      onClick={[Function]}
+    <button
+      aria-disabled="false"
+      class="wrapper fill secondary medium"
+      type="button"
     >
-      <ButtonIconLabel
-        icon="check"
+      <span
+        class="wrapper"
       >
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          check
+        </i>
         Close
-      </ButtonIconLabel>
-    </ForwardRef>
+      </span>
+    </button>
   </span>
-  <Tooltip
-    placement="bottom"
-    target="change-status-button"
-  >
-    Close (press C)
-  </Tooltip>
 </div>
 `;

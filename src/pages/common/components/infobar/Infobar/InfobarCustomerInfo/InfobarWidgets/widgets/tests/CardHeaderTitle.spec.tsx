@@ -1,18 +1,18 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import {CardHeaderTitle} from '../CardHeaderTitle'
 
 describe('<CardHeaderTitle/>', () => {
     describe('render()', () => {
         it('should render children', () => {
-            const component = shallow(
+            const {container} = render(
                 <CardHeaderTitle>
                     <p>foo</p>
                 </CardHeaderTitle>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

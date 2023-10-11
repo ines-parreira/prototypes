@@ -2,13 +2,13 @@
 
 exports[`<CardHeaderYotpoRatingThumbs/> render() should render children and green thumb 1`] = `
 <span
-  className="container "
+  class="container "
 >
   <strong>
     3
   </strong>
   <span
-    className="material-icons greenThumb"
+    class="material-icons greenThumb"
   >
     thumb_up
      
@@ -18,13 +18,13 @@ exports[`<CardHeaderYotpoRatingThumbs/> render() should render children and gree
 
 exports[`<CardHeaderYotpoRatingThumbs/> render() should render children and red thumb 1`] = `
 <span
-  className="container "
+  class="container "
 >
   <strong>
     1
   </strong>
   <span
-    className="material-icons redThumb"
+    class="material-icons redThumb"
   >
     thumb_down
      

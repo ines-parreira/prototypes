@@ -3,25 +3,17 @@
 exports[`<CardHeaderIcon/> render() should render icon 1`] = `
 <img
   alt="Foo"
-  className="container"
+  class="container"
   src="foo.png"
-  style={
-    {
-      "backgroundColor": "rgba(0, 0, 0, 0)",
-    }
-  }
+  style="background-color: rgba(0, 0, 0, 0);"
 />
 `;
 
 exports[`<CardHeaderIcon/> render() should render icon with color as background-image 1`] = `
 <img
   alt="Foo"
-  className="container"
+  class="container"
   src="foo.png"
-  style={
-    {
-      "backgroundColor": "#123",
-    }
-  }
+  style="background-color: rgb(17, 34, 51);"
 />
 `;

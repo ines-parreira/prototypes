@@ -2,293 +2,174 @@
 
 exports[`ListField component should render with no items and an "add" button 1`] = `
 <div>
-  <Button
-    className="d-flex align-items-center"
-    color="secondary"
-    disabled={false}
-    onClick={[Function]}
-    size="sm"
-    tag="button"
+  <button
+    class="d-flex align-items-center btn btn-secondary btn-sm"
+    type="button"
   >
     <i
-      className="material-icons md-2"
+      class="material-icons md-2"
     >
       add
     </i>
-  </Button>
+  </button>
 </div>
 `;
 
 exports[`ListField component should render with some items and an "add" button 1`] = `
 <div>
-  <Row
-    className="row"
-    key="0"
-    tag="div"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <div
+    class="row row"
   >
-    <Col
-      className="flex-grow pr-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="flex-grow pr-0 col"
     >
-      <ForwardRef(TextInput)
-        className="my-0"
-        isRequired={true}
-        maxLength={100}
-        name="item-0"
-        onChange={[Function]}
-        placeholder="Type something (limited to 100 characters)"
-        size={300}
-        value="foo"
-      />
-    </Col>
-    <Col
-      className="d-flex col-sm-auto delete"
-      onClick={[Function]}
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+      <div
+        class="wrapper my-0"
+      >
+        <input
+          class="input"
+          id="input-text-1"
+          maxlength="100"
+          name="item-0"
+          placeholder="Type something (limited to 100 characters)"
+          required=""
+          size="300"
+          type="text"
+          value="foo"
+        />
+      </div>
+    </div>
+    <div
+      class="d-flex col-sm-auto delete col"
     >
       <i
-        className="material-icons md-2 text-danger"
+        class="material-icons md-2 text-danger"
       >
         clear
       </i>
-    </Col>
-  </Row>
-  <Row
-    className="row"
-    key="1"
-    tag="div"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+    </div>
+  </div>
+  <div
+    class="row row"
   >
-    <Col
-      className="flex-grow pr-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="flex-grow pr-0 col"
     >
-      <ForwardRef(TextInput)
-        className="my-0"
-        isRequired={true}
-        maxLength={100}
-        name="item-1"
-        onChange={[Function]}
-        placeholder="Type something (limited to 100 characters)"
-        size={300}
-        value="bar"
-      />
-    </Col>
-    <Col
-      className="d-flex col-sm-auto delete"
-      onClick={[Function]}
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+      <div
+        class="wrapper my-0"
+      >
+        <input
+          class="input"
+          id="input-text-2"
+          maxlength="100"
+          name="item-1"
+          placeholder="Type something (limited to 100 characters)"
+          required=""
+          size="300"
+          type="text"
+          value="bar"
+        />
+      </div>
+    </div>
+    <div
+      class="d-flex col-sm-auto delete col"
     >
       <i
-        className="material-icons md-2 text-danger"
+        class="material-icons md-2 text-danger"
       >
         clear
       </i>
-    </Col>
-  </Row>
-  <Button
-    className="d-flex align-items-center"
-    color="secondary"
-    disabled={false}
-    onClick={[Function]}
-    size="sm"
-    tag="button"
+    </div>
+  </div>
+  <button
+    class="d-flex align-items-center btn btn-secondary btn-sm"
+    type="button"
   >
     <i
-      className="material-icons md-2"
+      class="material-icons md-2"
     >
       add
     </i>
-  </Button>
+  </button>
 </div>
 `;
 
 exports[`ListField component should render with the max number of items and no "add" button 1`] = `
 <div>
-  <Row
-    className="row"
-    key="0"
-    tag="div"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <div
+    class="row row"
   >
-    <Col
-      className="flex-grow pr-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="flex-grow pr-0 col"
     >
-      <ForwardRef(TextInput)
-        className="my-0"
-        isRequired={true}
-        maxLength={100}
-        name="item-0"
-        onChange={[Function]}
-        placeholder="Type something (limited to 100 characters)"
-        size={300}
-        value="foo"
-      />
-    </Col>
-    <Col
-      className="d-flex col-sm-auto delete"
-      onClick={[Function]}
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+      <div
+        class="wrapper my-0"
+      >
+        <input
+          class="input"
+          id="input-text-3"
+          maxlength="100"
+          name="item-0"
+          placeholder="Type something (limited to 100 characters)"
+          required=""
+          size="300"
+          type="text"
+          value="foo"
+        />
+      </div>
+    </div>
+    <div
+      class="d-flex col-sm-auto delete col"
     >
       <i
-        className="material-icons md-2 text-danger"
+        class="material-icons md-2 text-danger"
       >
         clear
       </i>
-    </Col>
-  </Row>
-  <Row
-    className="row"
-    key="1"
-    tag="div"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+    </div>
+  </div>
+  <div
+    class="row row"
   >
-    <Col
-      className="flex-grow pr-0"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="flex-grow pr-0 col"
     >
-      <ForwardRef(TextInput)
-        className="my-0"
-        isRequired={true}
-        maxLength={100}
-        name="item-1"
-        onChange={[Function]}
-        placeholder="Type something (limited to 100 characters)"
-        size={300}
-        value="bar"
-      />
-    </Col>
-    <Col
-      className="d-flex col-sm-auto delete"
-      onClick={[Function]}
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+      <div
+        class="wrapper my-0"
+      >
+        <input
+          class="input"
+          id="input-text-4"
+          maxlength="100"
+          name="item-1"
+          placeholder="Type something (limited to 100 characters)"
+          required=""
+          size="300"
+          type="text"
+          value="bar"
+        />
+      </div>
+    </div>
+    <div
+      class="d-flex col-sm-auto delete col"
     >
       <i
-        className="material-icons md-2 text-danger"
+        class="material-icons md-2 text-danger"
       >
         clear
       </i>
-    </Col>
-  </Row>
-  <Button
-    className="d-flex align-items-center"
-    color="secondary"
-    disabled={true}
-    onClick={[Function]}
-    size="sm"
-    tag="button"
+    </div>
+  </div>
+  <button
+    class="d-flex align-items-center btn btn-secondary btn-sm disabled"
+    disabled=""
+    type="button"
   >
     <i
-      className="material-icons md-2"
+      class="material-icons md-2"
     >
       add
     </i>
-  </Button>
+  </button>
 </div>
 `;

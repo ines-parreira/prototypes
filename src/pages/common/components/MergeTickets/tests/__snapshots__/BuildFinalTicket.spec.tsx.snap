@@ -5,91 +5,123 @@ exports[`BuildFinalTicket component should display all fields because everything
   <p>
     Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
   </p>
-  <BinaryChoiceField
-    label="Subject"
-    onChange={[Function]}
-    options={
-      [
-        {
-          "label": "foo",
-          "value": "foo",
-        },
-        {
-          "label": "bar",
-          "value": "bar",
-        },
-      ]
-    }
-    value="foo"
-  />
-  <BinaryChoiceField
-    label="Customer"
-    onChange={[Function]}
-    options={
-      [
-        {
-          "label": <span>
-            <i
-              className="material-icons mr-2"
+  <div
+    class="binary-choice form-group"
+  >
+    <div
+      class="label"
+    >
+      Subject
+    </div>
+    <div
+      class="options"
+    >
+      <div
+        class="option active"
+      >
+        foo
+      </div>
+      <div
+        class="option"
+      >
+        bar
+      </div>
+    </div>
+  </div>
+  <div
+    class="binary-choice form-group"
+  >
+    <div
+      class="label"
+    >
+      Customer
+    </div>
+    <div
+      class="options"
+    >
+      <div
+        class="option active"
+      >
+        <span>
+          <i
+            class="material-icons mr-2"
+          >
+            person
+          </i>
+          Maria Curie
+        </span>
+      </div>
+      <div
+        class="option"
+      >
+        <span>
+          <i
+            class="material-icons mr-2"
+          >
+            person
+          </i>
+          Pedro Curie
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="binary-choice form-group"
+  >
+    <div
+      class="label"
+    >
+      Assignee
+    </div>
+    <div
+      class="options"
+    >
+      <div
+        class="option active"
+      >
+        <span>
+          <div
+            class="component square d-inline-block mr-2"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
             >
-              person
-            </i>
-            Maria Curie
-          </span>,
-          "value": 22,
-        },
-        {
-          "label": <span>
-            <i
-              className="material-icons mr-2"
+              <span
+                style="line-height: 28px;"
+              >
+                JS
+              </span>
+            </div>
+          </div>
+          John Smith
+        </span>
+      </div>
+      <div
+        class="option"
+      >
+        <span>
+          <div
+            class="component square d-inline-block mr-2"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
             >
-              person
-            </i>
-            Pedro Curie
-          </span>,
-          "value": 33,
-        },
-      ]
-    }
-    value={22}
-  />
-  <BinaryChoiceField
-    label="Assignee"
-    onChange={[Function]}
-    options={
-      [
-        {
-          "label": <span>
-            <Avatar
-              className="d-inline-block mr-2"
-              email=""
-              name="John Smith"
-              shape="square"
-              size={26}
-              style={{}}
-            />
-            John Smith
-          </span>,
-          "value": 1,
-        },
-        {
-          "label": <span>
-            <Avatar
-              className="d-inline-block mr-2"
-              email=""
-              name="Jack Ryan"
-              shape="square"
-              size={26}
-              style={{}}
-            />
-            Jack Ryan
-          </span>,
-          "value": 2,
-        },
-      ]
-    }
-    value={1}
-  />
+              <span
+                style="line-height: 28px;"
+              >
+                JR
+              </span>
+            </div>
+          </div>
+          Jack Ryan
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -98,43 +130,63 @@ exports[`BuildFinalTicket component should display the assignee field because th
   <p>
     Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
   </p>
-  <BinaryChoiceField
-    label="Assignee"
-    onChange={[Function]}
-    options={
-      [
-        {
-          "label": <span>
-            <Avatar
-              className="d-inline-block mr-2"
-              email=""
-              name="John Smith"
-              shape="square"
-              size={26}
-              style={{}}
-            />
-            John Smith
-          </span>,
-          "value": 1,
-        },
-        {
-          "label": <span>
-            <Avatar
-              className="d-inline-block mr-2"
-              email=""
-              name="Jack Ryan"
-              shape="square"
-              size={26}
-              style={{}}
-            />
-            Jack Ryan
-          </span>,
-          "value": 2,
-        },
-      ]
-    }
-    value={1}
-  />
+  <div
+    class="binary-choice form-group"
+  >
+    <div
+      class="label"
+    >
+      Assignee
+    </div>
+    <div
+      class="options"
+    >
+      <div
+        class="option active"
+      >
+        <span>
+          <div
+            class="component square d-inline-block mr-2"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                JS
+              </span>
+            </div>
+          </div>
+          John Smith
+        </span>
+      </div>
+      <div
+        class="option"
+      >
+        <span>
+          <div
+            class="component square d-inline-block mr-2"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                JR
+              </span>
+            </div>
+          </div>
+          Jack Ryan
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -143,37 +195,43 @@ exports[`BuildFinalTicket component should display the customer field because th
   <p>
     Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
   </p>
-  <BinaryChoiceField
-    label="Customer"
-    onChange={[Function]}
-    options={
-      [
-        {
-          "label": <span>
-            <i
-              className="material-icons mr-2"
-            >
-              person
-            </i>
-            Maria Curie
-          </span>,
-          "value": 22,
-        },
-        {
-          "label": <span>
-            <i
-              className="material-icons mr-2"
-            >
-              person
-            </i>
-            Pedro Curie
-          </span>,
-          "value": 33,
-        },
-      ]
-    }
-    value={22}
-  />
+  <div
+    class="binary-choice form-group"
+  >
+    <div
+      class="label"
+    >
+      Customer
+    </div>
+    <div
+      class="options"
+    >
+      <div
+        class="option active"
+      >
+        <span>
+          <i
+            class="material-icons mr-2"
+          >
+            person
+          </i>
+          Maria Curie
+        </span>
+      </div>
+      <div
+        class="option"
+      >
+        <span>
+          <i
+            class="material-icons mr-2"
+          >
+            person
+          </i>
+          Pedro Curie
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -182,23 +240,29 @@ exports[`BuildFinalTicket component should display the subject field because the
   <p>
     Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
   </p>
-  <BinaryChoiceField
-    label="Subject"
-    onChange={[Function]}
-    options={
-      [
-        {
-          "label": "foo",
-          "value": "foo",
-        },
-        {
-          "label": "bar",
-          "value": "bar",
-        },
-      ]
-    }
-    value="foo"
-  />
+  <div
+    class="binary-choice form-group"
+  >
+    <div
+      class="label"
+    >
+      Subject
+    </div>
+    <div
+      class="options"
+    >
+      <div
+        class="option active"
+      >
+        foo
+      </div>
+      <div
+        class="option"
+      >
+        bar
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -208,12 +272,8 @@ exports[`BuildFinalTicket component should not display any fields because they a
     Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
   </p>
   <p
-    className="mt-2 mb=2"
-    style={
-      {
-        "textAlign": "center",
-      }
-    }
+    class="mt-2 mb=2"
+    style="text-align: center;"
   >
     These tickets are similar so all fields will be set automatically. Confirm the merge below and you’re all set!
   </p>
@@ -226,12 +286,8 @@ exports[`BuildFinalTicket component should not display the assignee field becaus
     Select the fields you want to keep on the final ticket. The fields in blue will be kept. All fields not displayed here are either identical on both tickets, or will be computed automatically.
   </p>
   <p
-    className="mt-2 mb=2"
-    style={
-      {
-        "textAlign": "center",
-      }
-    }
+    class="mt-2 mb=2"
+    style="text-align: center;"
   >
     These tickets are similar so all fields will be set automatically. Confirm the merge below and you’re all set!
   </p>

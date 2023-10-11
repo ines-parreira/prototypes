@@ -2,38 +2,74 @@
 
 exports[`<AutoPopulateInput /> render() should render checked 1`] = `
 <div
-  className="container"
+  class="container"
 >
-  <InputField
-    disabled={true}
-    onChange={[MockFunction]}
-    type="text"
-    value="I am a title"
-  />
-  <ForwardRef(CheckBox)
-    isChecked={true}
-    onChange={[Function]}
+  <div
+    class="InputField form-group"
+    color=""
   >
-    Use the same as Title
-  </ForwardRef(CheckBox)>
+    <div
+      class=""
+    >
+      <input
+        class="field form-control"
+        disabled=""
+        id="id-input-1"
+        type="text"
+        value="I am a title"
+      />
+    </div>
+  </div>
+  <div>
+    <label
+      class="label label"
+      for="checkbox-2"
+    >
+      <input
+        checked=""
+        class="input"
+        id="checkbox-2"
+        name="checkbox-2"
+        type="checkbox"
+      />
+      Use the same as Title
+    </label>
+  </div>
 </div>
 `;
 
 exports[`<AutoPopulateInput /> render() should render unchecked 1`] = `
 <div
-  className="container"
+  class="container"
 >
-  <InputField
-    disabled={false}
-    onChange={[MockFunction]}
-    type="text"
-    value="Custom title"
-  />
-  <ForwardRef(CheckBox)
-    isChecked={false}
-    onChange={[Function]}
+  <div
+    class="InputField form-group"
+    color=""
   >
-    Use the same as Title
-  </ForwardRef(CheckBox)>
+    <div
+      class=""
+    >
+      <input
+        class="field form-control"
+        id="id-input-3"
+        type="text"
+        value="Custom title"
+      />
+    </div>
+  </div>
+  <div>
+    <label
+      class="label label"
+      for="checkbox-4"
+    >
+      <input
+        class="input"
+        id="checkbox-4"
+        name="checkbox-4"
+        type="checkbox"
+      />
+      Use the same as Title
+    </label>
+  </div>
 </div>
 `;

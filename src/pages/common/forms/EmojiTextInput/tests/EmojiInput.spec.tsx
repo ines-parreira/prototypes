@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import EmojiTextInput from '../EmojiTextInput'
 
@@ -14,7 +14,7 @@ describe('<EmojiTextInput/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(
+            const {container} = render(
                 <EmojiTextInput
                     id="foo"
                     emoji="🍔"
@@ -26,7 +26,7 @@ describe('<EmojiTextInput/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

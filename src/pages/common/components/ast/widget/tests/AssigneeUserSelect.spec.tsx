@@ -1,5 +1,5 @@
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
 
 import {AssigneeUserSelectContainer} from '../AssigneeUserSelect'
@@ -23,41 +23,41 @@ describe('ast', () => {
                 >
 
                 it('should render a loading message because agents have not been fetched yet', () => {
-                    const component = shallow(
+                    const {container} = render(
                         <AssigneeUserSelectContainer
                             {...commonProps}
                             agents={fromJS([])}
                         />
                     )
-                    expect(component).toMatchSnapshot()
+                    expect(container.firstChild).toMatchSnapshot()
                 })
 
                 it('should render a dropdown without selected value', () => {
-                    const component = shallow(
+                    const {container} = render(
                         <AssigneeUserSelectContainer {...commonProps} />
                     )
-                    expect(component).toMatchSnapshot()
+                    expect(container.firstChild).toMatchSnapshot()
                 })
 
                 it('should render a dropdown with selected value', () => {
-                    const component = shallow(
+                    const {container} = render(
                         <AssigneeUserSelectContainer
                             {...commonProps}
                             value={1}
                         />
                     )
-                    expect(component).toMatchSnapshot()
+                    expect(container.firstChild).toMatchSnapshot()
                 })
 
                 it('should render a dropdown without "Unassign" option', () => {
-                    const component = shallow(
+                    const {container} = render(
                         <AssigneeUserSelectContainer
                             {...commonProps}
                             value={1}
                             allowUnassign={false}
                         />
                     )
-                    expect(component).toMatchSnapshot()
+                    expect(container.firstChild).toMatchSnapshot()
                 })
             })
         })

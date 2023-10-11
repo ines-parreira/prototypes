@@ -1,146 +1,137 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddActionOrIfStatement component should render 1`] = `
-<UncontrolledButtonDropdown
-  className="AddActionOrIfStatement"
-  style={
-    {
-      "paddingLeft": "18px",
-    }
-  }
+<div
+  class="AddActionOrIfStatement btn-group"
+  style="padding-left: 18px;"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="ControlStructureButton"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="ControlStructureButton dropdown-toggle btn btn-secondary"
     type="button"
   >
     THEN
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Action
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       "IF" statement
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`AddActionOrIfStatement component should render a button to delete the block when it is allowed to delete itself 1`] = `
-<UncontrolledButtonDropdown
-  className="AddActionOrIfStatement"
-  style={
-    {
-      "paddingLeft": "18px",
-    }
-  }
+<div
+  class="AddActionOrIfStatement btn-group"
+  style="padding-left: 18px;"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="ControlStructureButton"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="ControlStructureButton dropdown-toggle btn btn-secondary"
     type="button"
   >
     THEN
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Action
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       "IF" statement
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       <i
-        className="material-icons red mr-1"
+        class="material-icons red mr-1"
       >
         delete
       </i>
       Delete node
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`AddActionOrIfStatement component should render with error 1`] = `
-<UncontrolledButtonDropdown
-  className="AddActionOrIfStatement"
-  style={
-    {
-      "paddingLeft": "18px",
-    }
-  }
+<div
+  class="AddActionOrIfStatement btn-group"
+  style="padding-left: 18px;"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="ControlStructureButton"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="ControlStructureButton dropdown-toggle btn btn-secondary"
     type="button"
   >
     THEN
-  </DropdownToggle>
-  <Errors
-    inline={true}
+  </button>
+  <div
+    class="d-inline-block text-danger ml-2"
   >
     THEN
      cannot be empty
-  </Errors>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </div>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Action
-    </DropdownItem>
-    <DropdownItem
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       "IF" statement
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;

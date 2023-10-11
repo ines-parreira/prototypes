@@ -1,9 +1,9 @@
-import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {RuleItemActions} from 'pages/settings/rules/types'
 
 import {AddActionOrIfStatement} from '../AddActionOrIfStatement'
-import {RuleItemActions} from '../../../../../settings/rules/types'
 
 describe('AddActionOrIfStatement component', () => {
     const commonProps = {
@@ -15,24 +15,24 @@ describe('AddActionOrIfStatement component', () => {
     }
 
     it('should render', () => {
-        const component = shallow(<AddActionOrIfStatement {...commonProps} />)
+        const {container} = render(<AddActionOrIfStatement {...commonProps} />)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a button to delete the block when it is allowed to delete itself', () => {
-        const component = shallow(
+        const {container} = render(
             <AddActionOrIfStatement {...commonProps} removable />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with error', () => {
-        const component = shallow(
+        const {container} = render(
             <AddActionOrIfStatement {...commonProps} empty />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })
