@@ -540,15 +540,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         let actionToUse = actions.createGorgiasChatIntegration
 
         if (isUpdate) {
-            // TODO. Drop me once multi-language changes are introduced.
-            // This one is used to fix a bug introduced with https://linear.app/gorgias/issue/AUTCH-1611/bug-fix-wizard-preview-and-language-should-still-be-set-for-the-moment.
-            state.languages = fromJS([
-                {
-                    language: state.language,
-                    primary: true,
-                },
-            ])
-
             form.id = integration.get('id')
             const integrationMeta: Map<any, any> = integration.get('meta')
             form.meta = integrationMeta
@@ -603,13 +594,16 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const setLanguage = (language: string) => {
         const newState: Partial<State> = {language}
 
-        // TODO. Temporary code. Drop me when implementing multi-language.
-        newState.languages = fromJS([
-            {
-                language: language,
-                primary: true,
-            },
-        ])
+        // Sync `languages` with `language` when feature flag is OFF, as a way to soften the code cleaning late (to drop `language`).
+        // Theoretically, `setLanguage()` callback is only reachable with `!chatMultiLanguagesEnabled` but we keep the check for safety.
+        if (!chatMultiLanguagesEnabled) {
+            newState.languages = fromJS([
+                {
+                    language: language,
+                    primary: true,
+                },
+            ])
+        }
 
         const textFieldsToUpdate: [
             'introductionText',
