@@ -46,9 +46,13 @@ export default function HeaderCellProperty({
             onClick={onClick}
         >
             <div
-                className={classnames(css.content, {
-                    [css.wrapContent]: wrapContent,
-                })}
+                className={classnames(
+                    css.content,
+                    justifyContent && css[justifyContent],
+                    {
+                        [css.wrapContent]: wrapContent,
+                    }
+                )}
             >
                 {children}
                 <div

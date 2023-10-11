@@ -105,11 +105,19 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                             isOrderedBy={true}
                             onClick={toggleOrdering}
                         />
-                        <HeaderCellProperty title={TOTAL_COLUMN_LABEL} />
+                        <HeaderCellProperty
+                            title={TOTAL_COLUMN_LABEL}
+                            justifyContent={'right'}
+                            className={classNames(css.BodyCell)}
+                            wrapContent={true}
+                        />
                         {dateTimes.map((dateTime) => (
                             <HeaderCellProperty
                                 key={dateTime}
                                 title={formatDates(granularity)(dateTime)}
+                                justifyContent={'right'}
+                                wrapContent={true}
+                                className={css.BodyCell}
                             />
                         ))}
                     </TableHead>
@@ -184,12 +192,12 @@ const CustomFieldsTicketCountDataRowContent = ({
                 style={{
                     left: `${(level + 1) * EXPAND_COLUMN_WIDTH}px`,
                 }}
-                innerClassName={classNames(css.BodyCellContent)}
             >
                 {label}
             </BodyCell>
             <BodyCell
                 isHighlighted={true}
+                className={css.BodyCell}
                 innerClassName={classNames(css.BodyCellContent)}
                 justifyContent={'right'}
             >
@@ -200,6 +208,7 @@ const CustomFieldsTicketCountDataRowContent = ({
                     key={data.dateTime}
                     innerClassName={classNames(css.BodyCellContent)}
                     justifyContent={'right'}
+                    className={css.BodyCell}
                 >
                     {formatAccordingToValueMode(valueMode)(data?.value)}
                 </BodyCell>
