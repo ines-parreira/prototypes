@@ -354,3 +354,7 @@ Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
     value: jest.fn(),
     writable: true,
 })
+
+global.fetch = jest.fn(() =>
+    Promise.resolve({arrayBuffer: () => ({})} as Response)
+)
