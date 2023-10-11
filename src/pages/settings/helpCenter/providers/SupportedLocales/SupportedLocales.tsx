@@ -40,7 +40,12 @@ export const SupportedLocalesProvider: React.FC<Props> = ({children}) => {
                         ({code}) => !unsupportedCodes.includes(code)
                     )
                 }
-                setLocales(localesResponse)
+
+                const sortedLocales = localesResponse.sort((a, b) =>
+                    a.name.localeCompare(b.name)
+                )
+
+                setLocales(sortedLocales)
             }
         }
 
