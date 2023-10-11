@@ -263,9 +263,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -273,19 +273,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -293,9 +288,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -303,9 +303,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -1181,9 +1181,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -1191,19 +1191,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -1211,9 +1206,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -1221,9 +1221,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -2215,9 +2215,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -2225,19 +2225,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -2245,9 +2240,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -2255,9 +2255,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -3220,9 +3220,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -3230,19 +3230,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -3250,9 +3245,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -3260,9 +3260,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -4233,9 +4233,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -4243,19 +4243,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -4263,9 +4258,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -4273,9 +4273,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -5238,9 +5238,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -5248,19 +5248,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -5268,9 +5263,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -5278,9 +5278,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -6390,9 +6390,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -6400,19 +6400,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -6420,9 +6415,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -6430,9 +6430,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -7308,9 +7308,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -7318,19 +7318,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -7338,9 +7333,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -7348,9 +7348,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -8617,9 +8617,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -8627,19 +8627,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -8647,9 +8642,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -8657,9 +8657,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>
@@ -9535,9 +9535,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         French - FR
                       </option>
                       <option
-                        value="fr-CA"
+                        value="de"
                       >
-                        French - CA
+                        German
                       </option>
                       <option
                         value="es"
@@ -9545,19 +9545,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         Spanish
                       </option>
                       <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
                         value="da"
                       >
                         Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
                       </option>
                       <option
                         value="nl"
@@ -9565,9 +9560,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         Dutch
                       </option>
                       <option
-                        value="de"
+                        value="fr-CA"
                       >
-                        German
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
                       </option>
                       <option
                         value="no"
@@ -9575,9 +9575,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         Norwegian
                       </option>
                       <option
-                        value="cz"
+                        value="sv"
                       >
-                        Czech
+                        Swedish
                       </option>
                     </select>
                   </div>

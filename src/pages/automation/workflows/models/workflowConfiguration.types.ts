@@ -89,21 +89,21 @@ export type WorkflowTransition = {
 }
 
 export const supportedLanguages = [
-    {code: 'en-US', label: 'English (US)'} as const,
-    {code: 'en-GB', label: 'English (GB)'} as const,
-    {code: 'fr-FR', label: 'French (FR)'} as const,
-    {code: 'fr-CA', label: 'French (CA)'} as const,
-    {code: 'es-ES', label: 'Spanish'} as const,
+    {code: 'en-US', label: 'English - US'} as const,
+    {code: 'en-GB', label: 'English - GB'} as const,
+    {code: 'fr-FR', label: 'French - FR'} as const,
     {code: 'de-DE', label: 'German'} as const,
-    {code: 'nl-NL', label: 'Dutch'} as const,
+    {code: 'es-ES', label: 'Spanish'} as const,
     {code: 'cs-CZ', label: 'Czech'} as const,
     {code: 'da-DK', label: 'Danish'} as const,
-    {code: 'no-NO', label: 'Norwegian'} as const,
-    {code: 'it-IT', label: 'Italian'} as const,
-    {code: 'sv-SE', label: 'Swedish'} as const,
+    {code: 'nl-NL', label: 'Dutch'} as const,
     {code: 'fi-FI', label: 'Finnish'} as const,
+    {code: 'fr-CA', label: 'French - CA'} as const,
+    {code: 'it-IT', label: 'Italian'} as const,
     {code: 'ja-JP', label: 'Japanese'} as const,
-    {code: 'pt-BR', label: 'Portuguese (BR)'} as const,
+    {code: 'no-NO', label: 'Norwegian'} as const,
+    {code: 'pt-BR', label: 'Portuguese - BR'} as const,
+    {code: 'sv-SE', label: 'Swedish'} as const,
 ] as const
 export type LanguageCode = typeof supportedLanguages[number]['code']
 

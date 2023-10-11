@@ -45,48 +45,52 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
         {value: Language.EnglishUs, label: 'English - US'},
         {value: Language.EnglishGb, label: 'English - GB'},
         {value: Language.FrenchFr, label: 'French - FR'},
-        {value: Language.FrenchCa, label: 'French - CA'},
-        {value: Language.Spanish, label: 'Spanish'},
-        {value: Language.Danish, label: 'Danish'},
-        {value: Language.Swedish, label: 'Swedish'},
-        {value: Language.Italian, label: 'Italian'},
-        {value: Language.Dutch, label: 'Dutch'},
         {value: Language.German, label: 'German'},
-        {value: Language.Norwegian, label: 'Norwegian'},
+        {value: Language.Spanish, label: 'Spanish'},
         {value: Language.Czech, label: 'Czech'},
+        {value: Language.Danish, label: 'Danish'},
+        {value: Language.Dutch, label: 'Dutch'},
         {value: Language.Finnish, label: 'Finnish'},
-        {value: Language.PortugueseBrazil, label: 'Portuguese - BR'},
+        {value: Language.FrenchCa, label: 'French - CA'},
+        {value: Language.Italian, label: 'Italian'},
         {value: Language.Japanese, label: 'Japanese'},
+        {value: Language.Norwegian, label: 'Norwegian'},
+        {value: Language.PortugueseBrazil, label: 'Portuguese - BR'},
+        {value: Language.Swedish, label: 'Swedish'},
     ])
 
 // TODO: remove this function and use GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS once all languages are supported without feature flag
 export const getGorgiasChatLanguageOptions = (
     enableNewLanguages?: boolean
 ): List<Map<string, string>> => {
-    const baseLanguages = [
+    const languages = [
         {value: Language.EnglishUs, label: 'English - US'},
+        {value: Language.EnglishGb, label: 'English - GB', isNew: true},
         {value: Language.FrenchFr, label: 'French - FR'},
-        {value: Language.FrenchCa, label: 'French - CA'},
-        {value: Language.Spanish, label: 'Spanish'},
-        {value: Language.Danish, label: 'Danish'},
-        {value: Language.Swedish, label: 'Swedish'},
-        {value: Language.Italian, label: 'Italian'},
-        {value: Language.Dutch, label: 'Dutch'},
         {value: Language.German, label: 'German'},
-        {value: Language.Norwegian, label: 'Norwegian'},
+        {value: Language.Spanish, label: 'Spanish'},
         {value: Language.Czech, label: 'Czech'},
-    ]
-    const newLanguages = [
-        {value: Language.EnglishGb, label: 'English - GB'},
-        {value: Language.Finnish, label: 'Finnish'},
-        {value: Language.PortugueseBrazil, label: 'Portuguese - BR'},
-        {value: Language.Japanese, label: 'Japanese'},
+        {value: Language.Danish, label: 'Danish'},
+        {value: Language.Dutch, label: 'Dutch'},
+        {value: Language.Finnish, label: 'Finnish', isNew: true},
+        {value: Language.FrenchCa, label: 'French - CA'},
+        {value: Language.Italian, label: 'Italian'},
+        {value: Language.Japanese, label: 'Japanese', isNew: true},
+        {value: Language.Norwegian, label: 'Norwegian'},
+        {
+            value: Language.PortugueseBrazil,
+            label: 'Portuguese - BR',
+            isNew: true,
+        },
+
+        {value: Language.Swedish, label: 'Swedish'},
     ]
 
-    return fromJS([
-        ...baseLanguages,
-        ...(enableNewLanguages ? newLanguages : []),
-    ]) as List<Map<string, string>>
+    const filteredLanguages = enableNewLanguages
+        ? languages
+        : languages.filter((language) => !language.isNew)
+
+    return fromJS(filteredLanguages) as List<Map<string, string>>
 }
 
 export const GORGIAS_CHAT_WIDGET_TEXTS: {
