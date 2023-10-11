@@ -61,7 +61,7 @@ export default function WhatsAppMessageTemplateSearch() {
                 value={filters.name}
             />
             {(isFocused || isTemplateListVisible) && (
-                <div className={css.filters}>
+                <div className={css.filters} data-testid="dropdown-filters">
                     {isWhatsAppWindowOpen && (
                         <TemplateTypeFilterDropdown
                             value={TemplateTypeFilterOption.Templates}
@@ -81,6 +81,7 @@ export default function WhatsAppMessageTemplateSearch() {
                     onClick={() =>
                         setIsTemplateListVisible(!isTemplateListVisible)
                     }
+                    data-testid="arrow-button"
                 >
                     {isTemplateListVisible
                         ? 'keyboard_arrow_up'

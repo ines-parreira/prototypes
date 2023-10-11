@@ -9,7 +9,10 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getNewMessageChannel} from 'state/newMessage/selectors'
+import {
+    getNewMessageChannel,
+    isNewMessagePublic,
+} from 'state/newMessage/selectors'
 import {TicketChannel} from 'business/types/ticket'
 import {useWhatsAppEditor} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
 
@@ -31,8 +34,12 @@ export default function TemplateTypeFilterDropdown({value}: Props) {
         useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
 
     const channel = useAppSelector(getNewMessageChannel)
+    const isPublicNewMessage = useAppSelector(isNewMessagePublic)
 
-    if (channel !== TicketChannel.WhatsApp || !whatsAppMessageTemplatesEnabled)
+    if (
+        !(channel === TicketChannel.WhatsApp && isPublicNewMessage) ||
+        !whatsAppMessageTemplatesEnabled
+    )
         return null
 
     return (
