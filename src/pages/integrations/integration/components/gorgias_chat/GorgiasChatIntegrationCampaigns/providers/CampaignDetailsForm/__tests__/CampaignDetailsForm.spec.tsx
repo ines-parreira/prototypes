@@ -27,7 +27,6 @@ jest.mock(
     'pages/settings/new_billing/components/ConvertSubscriptionModal',
     () => {
         return jest.fn(() => {
-            // This is a mock implementation of ConvertSubscriptionModal
             return <div data-testid="mock-convert-subscription-modal" />
         })
     }

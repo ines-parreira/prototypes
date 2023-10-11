@@ -17,6 +17,16 @@ import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView from '../StatsNavbarView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock(
+    'pages/settings/new_billing/components/ConvertSubscriptionModal',
+    () => {
+        return jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        })
+    }
+)
+
 function getIntegration(id: number, type: IntegrationType) {
     return {
         id,

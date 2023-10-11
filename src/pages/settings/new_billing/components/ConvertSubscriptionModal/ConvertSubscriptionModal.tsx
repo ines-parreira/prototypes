@@ -16,6 +16,7 @@ import css from './ConvertSubscriptionModal.less'
 type Props = {
     canduId: string
     isOpen: boolean
+    redirectPath?: string
     onClose: () => void
     onSubscribe: () => void
 }
@@ -25,6 +26,7 @@ const ConvertSubscriptionModal = ({
     isOpen,
     onClose,
     onSubscribe,
+    redirectPath,
 }: Props) => {
     const location = useLocation()
 
@@ -46,7 +48,7 @@ const ConvertSubscriptionModal = ({
         return convertPrices?.[convertInitialIndex]
     }, [convertPrices, currentPrice, cheapestPrice, helpdeskProduct])
 
-    const currentPath = location?.pathname
+    const currentPath = redirectPath || location?.pathname
 
     const bookDemoInfobar = useMemo(() => {
         // TODO: we should allow to display it once we have the link

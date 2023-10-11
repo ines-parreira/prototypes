@@ -1,14 +1,12 @@
 import React from 'react'
 
+import {Redirect} from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {AccountFeature} from 'state/currentAccount/types'
 import {getStatsStoreIntegrations} from 'state/stats/selectors'
 
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 
-import RevenueStatsRestrictedFeature from 'pages/stats/RevenueStatsRestrictedFeature'
 import StatsPage from 'pages/stats/StatsPage'
 
 import {CampaignStatsFilters} from '../../providers/CampaignStatsFilters'
@@ -17,33 +15,24 @@ import {RevenueFilters} from '../../containers/RevenueFilters'
 import {RevenueStatsContent} from '../../containers/RevenueStatsContent'
 
 const CampaignsStats = () => {
-    const isConvertSubscriber = useIsConvertSubscriber()
-
     return (
         <CampaignStatsFilters>
             <StatsPage title="Campaigns" filters={<RevenueFilters />}>
-                {isConvertSubscriber ? (
-                    <RevenueStatsContent />
-                ) : (
-                    <div>
-                        You should not be here. Contact your CSM to get access
-                        to this page
-                    </div>
-                )}
+                <RevenueStatsContent />
             </StatsPage>
         </CampaignStatsFilters>
     )
 }
 
-function RevenueOrRestrictedFeaturePage() {
+function CampaignStatsOrPaywallPage() {
+    const isConvertSubscriber = useIsConvertSubscriber()
     const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
-    return storeIntegrations.length ? (
+
+    return storeIntegrations.length && isConvertSubscriber ? (
         <CampaignsStats />
     ) : (
-        <RevenueStatsRestrictedFeature />
+        <Redirect to="/app/stats/revenue/campaigns/subscribe" />
     )
 }
 
-export default withFeaturePaywall(AccountFeature.RevenueStatistics)(
-    RevenueOrRestrictedFeaturePage
-)
+export default CampaignStatsOrPaywallPage

@@ -25,6 +25,8 @@ import {
     hasIntegrationOfTypes,
 } from 'state/integrations/selectors'
 import {Category} from 'models/integration/types/app'
+import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
+import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -40,6 +42,7 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.NewAutomationAddon]
 
     const isConvertSubscriber = useIsConvertSubscriber()
+    const isConvertBillingEnabled = useIsRevenueBillingEnabled()
     const integrationsList = useAppSelector(getIntegrationsList)
     const hasEcommerceIntegerations = useAppSelector(
         hasIntegrationOfTypes(
@@ -306,39 +309,12 @@ export default function StatsNavbarView() {
                     )}
                 </div>
             </NavbarBlock>
-            {isConvertSubscriber && (
+            {(isConvertBillingEnabled || isConvertSubscriber) && (
                 <NavbarBlock icon="attach_money" title="Convert">
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/revenue"
-                        >
-                            Overview
-                        </NavbarLink>
-                    </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/revenue/campaigns"
-                        >
-                            Campaigns
-                            <Badge
-                                type={ColorType.Blue}
-                                className={cssNavbar.badge}
-                            >
-                                BETA
-                            </Badge>
-                        </NavbarLink>
+                    <div className={cssNavbar.menu}>
+                        <ConvertStatsNavbar
+                            commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                        />
                     </div>
                 </NavbarBlock>
             )}
