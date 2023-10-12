@@ -1,8 +1,10 @@
 import React, {ReactNode} from 'react'
 import {Provider as ReduxProvider} from 'react-redux'
+import {Router} from 'react-router-dom'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
+import {createMemoryHistory} from 'history'
 
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 
@@ -97,12 +99,16 @@ jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 jest.mock('rest_api/utils')
 ;(getAccessToken as jest.Mock).mockImplementation(() => 'token')
 
+const history = createMemoryHistory()
+
 const renderWithStore = (element: React.ReactElement) =>
     render(element, {
         wrapper: ({children}: any) => (
-            <ReduxProvider store={mockStore(defaultState)}>
-                {children}
-            </ReduxProvider>
+            <Router history={history}>
+                <ReduxProvider store={mockStore(defaultState)}>
+                    {children}
+                </ReduxProvider>
+            </Router>
         ),
     })
 

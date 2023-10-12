@@ -111,3 +111,7 @@ export type MigrationSessionCreate = Paths.SessionCreate.RequestBody
 export interface HelpCenterMigrationConfig {
     providers: MigrationProviderType[]
 }
+
+export interface AutoOpenSessionLocationState {
+    autoOpenSession: MigrationSession
+}

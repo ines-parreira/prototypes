@@ -1,5 +1,5 @@
-import React, {ChangeEvent, useRef} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import React, {useRef} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import {AxiosError} from 'axios'
 import {fromJS, Map} from 'immutable'
@@ -15,16 +15,20 @@ import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import {uploadFiles} from 'utils'
-import {saveFileAsDownloaded} from 'utils/file'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 
+import {saveFileAsDownloaded} from 'utils/file'
 import {FetchedProvidersState, ImportArticlesModalState} from '../../types'
 
-import {buildCsvColumnMatchingUrl, fileIsTooBig} from './utils'
+import {
+    buildCsvColumnMatchingUrl,
+    fileIsTooBig,
+    generateCSVTemplate,
+} from './utils'
 
 import FileSelectedArea from './components/FileSelectedArea'
 import DropAreas from './components/DropAreas'
@@ -141,10 +145,16 @@ const ImportArticlesModal: React.FC<Props> = ({
         }
     }
 
-    const handleFileChosen = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChosen = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files !== null) {
             onFileSelect(event.target.files[0])
         }
+    }
+
+    const handleDownloadClick = (event: React.MouseEvent) => {
+        event.preventDefault()
+        const templateContent = generateCSVTemplate()
+        saveFileAsDownloaded('template.csv', templateContent, 'text/csv')
     }
 
     const shouldShowModalFooter =
@@ -185,25 +195,9 @@ const ImportArticlesModal: React.FC<Props> = ({
                         )}
 
                         <p className="m-0 mt-2">
-                            <Link
-                                to="#"
-                                onClick={async (e) => {
-                                    e.preventDefault()
-
-                                    const response =
-                                        await client.generateCsvTemplate({
-                                            help_center_id: helpCenter.id,
-                                        })
-
-                                    saveFileAsDownloaded(
-                                        'template.csv',
-                                        response.data,
-                                        'text/csv'
-                                    )
-                                }}
-                            >
+                            <a href="#" onClick={handleDownloadClick}>
                                 Download this CSV template
-                            </Link>{' '}
+                            </a>{' '}
                             to automatically match fields.
                         </p>
                     </div>

@@ -1,6 +1,7 @@
 import {GorgiasFieldsMappingsLocalized} from '../types'
 import {
-    gorgiasFieldsMappingsLocalizedToDto,
+    CSV_MIGRATION_PROVIDER_TYPE,
+    mapCSVLocalValuesToAPIPayload,
     previewField,
     updateGorgiasFieldsMappingsLocalized,
 } from '../utils'
@@ -259,7 +260,7 @@ describe('CsvColumnMatching utils', () => {
         })
     })
 
-    describe('gorgiasFieldsMappingsLocalizedToDto', () => {
+    describe('gorgiasFieldsMappingsLocalizedToProviderPayload', () => {
         it('returns undefined for non-valid mappings', () => {
             const mappings: GorgiasFieldsMappingsLocalized = [
                 {
@@ -275,7 +276,7 @@ describe('CsvColumnMatching utils', () => {
             ]
 
             expect(
-                gorgiasFieldsMappingsLocalizedToDto('http://file.com', mappings)
+                mapCSVLocalValuesToAPIPayload('http://file.com', mappings)
             ).toEqual(undefined)
         })
 
@@ -492,6 +493,7 @@ describe('CsvColumnMatching utils', () => {
                     },
                 },
                 file_url: 'http://file.com',
+                type: CSV_MIGRATION_PROVIDER_TYPE,
             }
 
             const expectedFullDto = {
@@ -570,17 +572,15 @@ describe('CsvColumnMatching utils', () => {
                     },
                 },
                 file_url: 'http://file.com',
+                type: CSV_MIGRATION_PROVIDER_TYPE,
             }
 
             expect(
-                gorgiasFieldsMappingsLocalizedToDto('http://file.com', mappings)
+                mapCSVLocalValuesToAPIPayload('http://file.com', mappings)
             ).toEqual(expectedDto)
 
             expect(
-                gorgiasFieldsMappingsLocalizedToDto(
-                    'http://file.com',
-                    fullMappings
-                )
+                mapCSVLocalValuesToAPIPayload('http://file.com', fullMappings)
             ).toEqual(expectedFullDto)
         })
     })

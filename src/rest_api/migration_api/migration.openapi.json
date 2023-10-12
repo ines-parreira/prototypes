@@ -1,6 +1,74 @@
 {
     "components": {
         "schemas": {
+            "AnalysisColumn": {
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "samples": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Samples",
+                        "type": "array"
+                    }
+                },
+                "required": ["name", "samples"],
+                "title": "AnalysisColumn",
+                "type": "object"
+            },
+            "AnalysisRequestBody": {
+                "properties": {
+                    "file_url": {
+                        "format": "uri",
+                        "maxLength": 65536,
+                        "minLength": 1,
+                        "title": "File Url",
+                        "type": "string"
+                    }
+                },
+                "required": ["file_url"],
+                "title": "AnalysisRequestBody",
+                "type": "object"
+            },
+            "AnalysisResponse": {
+                "properties": {
+                    "result": {
+                        "$ref": "#/components/schemas/AnalysisResult"
+                    }
+                },
+                "required": ["result"],
+                "title": "AnalysisResponse",
+                "type": "object"
+            },
+            "AnalysisResult": {
+                "properties": {
+                    "columns": {
+                        "items": {
+                            "$ref": "#/components/schemas/AnalysisColumn"
+                        },
+                        "title": "Columns",
+                        "type": "array"
+                    },
+                    "error": {
+                        "title": "Error",
+                        "type": "string"
+                    },
+                    "num_rows": {
+                        "title": "Num Rows",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "type": "string"
+                    }
+                },
+                "required": ["status"],
+                "title": "AnalysisResult",
+                "type": "object"
+            },
             "ArticleColumnLocale": {
                 "properties": {
                     "content": {
@@ -16,7 +84,7 @@
                         "$ref": "#/components/schemas/ColumnDescription"
                     }
                 },
-                "required": ["title", "content", "slug", "excerpt"],
+                "required": ["title", "content", "slug"],
                 "title": "ArticleColumnLocale",
                 "type": "object"
             },
@@ -43,7 +111,7 @@
                         "type": "string"
                     }
                 },
-                "required": ["file_url", "article_columns", "category_columns"],
+                "required": ["file_url"],
                 "title": "CSVHelpCenterProvider",
                 "type": "object"
             },
@@ -59,7 +127,7 @@
                         "$ref": "#/components/schemas/ColumnDescription"
                     }
                 },
-                "required": ["name", "slug", "description"],
+                "required": ["name", "slug"],
                 "title": "CategoryColumnLocale",
                 "type": "object"
             },
@@ -84,7 +152,7 @@
                         "type": "string"
                     }
                 },
-                "required": ["kind", "csv_column"],
+                "required": ["kind"],
                 "title": "ColumnSource",
                 "type": "object"
             },
@@ -807,6 +875,49 @@
     },
     "openapi": "3.0.3",
     "paths": {
+        "/api/help_center/csv/analysis": {
+            "post": {
+                "description": "",
+                "operationId": "analysis",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnalysisRequestBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnalysisResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "analysis <POST>",
+                "tags": []
+            }
+        },
         "/api/help_center/providers": {
             "get": {
                 "description": "",

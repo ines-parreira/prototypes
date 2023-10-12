@@ -14,3 +14,20 @@ export const buildCsvColumnMatchingUrl = (
 
     return `${HELP_CENTER_BASE_PATH}/${helpCenterId}/import/csv/column-matching?file_url=${encodedFileUrl}`
 }
+
+const csvTemplateColumns = [
+    'article_title',
+    'article_excerpt',
+    'article_body',
+    'article_slug',
+    'category_title',
+    'category_slug',
+    'category_description',
+]
+
+export const generateCSVTemplate = () => {
+    return [
+        csvTemplateColumns.join(','),
+        ','.repeat(csvTemplateColumns.length),
+    ].join('\n')
+}

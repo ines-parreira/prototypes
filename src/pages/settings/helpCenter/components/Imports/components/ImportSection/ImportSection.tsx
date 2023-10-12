@@ -23,7 +23,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {getAccessToken} from 'rest_api/utils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {CSV_MIGRATION_PROVIDER_TYPE} from '../CsvColumnMatching/utils'
 import {
+    AutoOpenSessionLocationState,
     FetchedMigrationSessionState,
     FetchedProvidersState,
     HelpCenterMigrationConfig,
@@ -47,6 +49,8 @@ import ImportArticlesModal from './components/ImportArticlesModal'
 import ProviderSelectModal from './components/ProviderSelectModal'
 import MigrationCredentialsModal from './components/MigrationCredentialsModal'
 import MigrationStateModal from './components/MigrationStateModal'
+
+import {csvProviderMeta} from './csv-provider-meta'
 
 import css from './ImportSection.less'
 
@@ -247,6 +251,22 @@ export const ImportSection: React.FC<Props> = ({
 
     useEffect(() => {
         if (!migrationClient || !isMigrationAvailable) return
+
+        const locationState = history.location
+            .state as AutoOpenSessionLocationState
+
+        if (locationState?.autoOpenSession) {
+            setCurrentMigrationSession({
+                isFirstTimeLoading: false,
+                data: locationState.autoOpenSession,
+            })
+            setMigrationStateModalOpen(true)
+
+            // Clear the location state after opening modal without rerendering
+            window.history.replaceState(null, '')
+            return
+        }
+
         void (async () => {
             try {
                 const {data: sessions} = await migrationClient.sessionList([
@@ -295,6 +315,7 @@ export const ImportSection: React.FC<Props> = ({
     }, [
         currentHelpCenter.id,
         dispatch,
+        history.location.state,
         isMigrationAvailable,
         migrationClient,
         setCurrentMigrationSession,
@@ -532,6 +553,12 @@ export const ImportSection: React.FC<Props> = ({
         }
         // When the session is in progress or completed feed the provider from the session to the MigrationStateModal
         if (currentMigrationSession.data) {
+            if (
+                currentMigrationSession.data.session.migration.provider.type ===
+                CSV_MIGRATION_PROVIDER_TYPE
+            ) {
+                return csvProviderMeta
+            }
             return currentMigrationSession.data.session.migration.provider.meta
         }
     }, [

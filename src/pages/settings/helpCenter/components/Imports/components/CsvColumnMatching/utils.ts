@@ -1,4 +1,4 @@
-import {Components} from 'rest_api/help_center_api/client.generated'
+import {Components} from 'rest_api/migration_api/client.generated'
 
 import {
     isColumnSourceCsv,
@@ -272,15 +272,17 @@ export const initialMappings = (
     }
 }
 
-export const gorgiasFieldsMappingsLocalizedToDto = (
+export const CSV_MIGRATION_PROVIDER_TYPE = 'CSV'
+
+export const mapCSVLocalValuesToAPIPayload = (
     fileUrl: string,
     mappings: GorgiasFieldsMappingsLocalized
-): Components.Schemas.ProcessCsvRequestDto | undefined => {
+): Components.Schemas.CSVHelpCenterProvider | undefined => {
     if (!mappingsComplete(mappings)) {
         return undefined
     }
 
-    const mappingsDto: Components.Schemas.ProcessCsvRequestDto = {
+    const mappingsDto: Required<Components.Schemas.CSVHelpCenterProvider> = {
         file_url: fileUrl,
         article_columns: {
             locales: {},
@@ -288,6 +290,7 @@ export const gorgiasFieldsMappingsLocalizedToDto = (
         category_columns: {
             locales: {},
         },
+        type: CSV_MIGRATION_PROVIDER_TYPE,
     }
 
     mappings.forEach(({localeCode, mappings}) => {

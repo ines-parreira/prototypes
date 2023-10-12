@@ -9,11 +9,60 @@ import {
 declare namespace Components {
     namespace Schemas {
         /**
+         * AnalysisColumn
+         */
+        export interface AnalysisColumn {
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Samples
+             */
+            samples: string[]
+        }
+        /**
+         * AnalysisRequestBody
+         */
+        export interface AnalysisRequestBody {
+            /**
+             * File Url
+             */
+            file_url: string // uri
+        }
+        /**
+         * AnalysisResponse
+         */
+        export interface AnalysisResponse {
+            result: AnalysisResult
+        }
+        /**
+         * AnalysisResult
+         */
+        export interface AnalysisResult {
+            /**
+             * Columns
+             */
+            columns?: AnalysisColumn[]
+            /**
+             * Error
+             */
+            error?: string
+            /**
+             * Num Rows
+             */
+            num_rows?: number
+            /**
+             * Status
+             */
+            status: string
+        }
+        /**
          * ArticleColumnLocale
          */
         export interface ArticleColumnLocale {
             content: ColumnDescription
-            excerpt: ColumnDescription
+            excerpt?: ColumnDescription
             slug: ColumnDescription
             title: ColumnDescription
         }
@@ -22,8 +71,8 @@ declare namespace Components {
          * Base class for HelpCenter providers
          */
         export interface CSVHelpCenterProvider {
-            article_columns: Columns
-            category_columns: Columns
+            article_columns?: Columns
+            category_columns?: Columns
             /**
              * File Url
              */
@@ -37,7 +86,7 @@ declare namespace Components {
          * CategoryColumnLocale
          */
         export interface CategoryColumnLocale {
-            description: ColumnDescription
+            description?: ColumnDescription
             name: ColumnDescription
             slug: ColumnDescription
         }
@@ -54,7 +103,7 @@ declare namespace Components {
             /**
              * Csv Column
              */
-            csv_column: string
+            csv_column?: string
             /**
              * Kind
              */
@@ -695,6 +744,13 @@ declare namespace Components {
     }
 }
 declare namespace Paths {
+    namespace Analysis {
+        export type RequestBody = Components.Schemas.AnalysisRequestBody
+        namespace Responses {
+            export type $200 = Components.Schemas.AnalysisResponse
+            export type $401 = Components.Schemas.Detail
+        }
+    }
     namespace ProviderStaticList {
         namespace Responses {
             export type $200 = Components.Schemas.HelpCenterProviderList
@@ -806,6 +862,16 @@ declare namespace Paths {
 }
 
 export interface OperationMethods {
+    /**
+     * analysis - analysis <POST>
+     */
+    'analysis'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.Analysis.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.Analysis.Responses.$200 | Paths.Analysis.Responses.$401
+    >
     /**
      * providerStaticList - provider_static_list <GET>
      */
@@ -928,6 +994,18 @@ export interface OperationMethods {
 }
 
 export interface PathsDictionary {
+    ['/api/help_center/csv/analysis']: {
+        /**
+         * analysis - analysis <POST>
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.Analysis.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.Analysis.Responses.$200 | Paths.Analysis.Responses.$401
+        >
+    }
     ['/api/help_center/providers']: {
         /**
          * providerStaticList - provider_static_list <GET>

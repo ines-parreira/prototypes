@@ -3,7 +3,7 @@ import {useHistory, useLocation} from 'react-router-dom'
 import {parse as parseQueryString} from 'qs'
 import {AxiosError} from 'axios'
 
-import {Components} from 'rest_api/help_center_api/client.generated'
+import {getAccessToken} from 'rest_api/utils'
 
 import {CsvColumnPreview} from '../../../../models/helpCenter/types'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
@@ -13,16 +13,16 @@ import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {notify} from '../../../../state/notifications/actions'
-import {
-    Notification,
-    NotificationStatus,
-} from '../../../../state/notifications/types'
+import {NotificationStatus} from '../../../../state/notifications/types'
 import {HELP_CENTER_BASE_PATH} from '../constants'
+import {useMigrationApi} from '../hooks/useMigrationApi'
 
 import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {GorgiasFieldsMappingsLocalized} from './Imports/components/CsvColumnMatching/types'
-import {gorgiasFieldsMappingsLocalizedToDto} from './Imports/components/CsvColumnMatching/utils'
+import {mapCSVLocalValuesToAPIPayload} from './Imports/components/CsvColumnMatching/utils'
+import {responseIsSession} from './Imports/components/ImportSection/utils'
+import {AutoOpenSessionLocationState} from './Imports/components/ImportSection/types'
 
 const urlToArticles = (
     helpCenterId: number,
@@ -35,38 +35,13 @@ const urlToArticles = (
     return `${helpCenterRootPath}${helpCenterId}/articles`
 }
 
-const notifyPartialImport = (
-    reportPartial: Components.Schemas.ProcessCsvResponsePartialDto
-): Notification => {
-    const {
-        num_erroneous_csv_rows,
-        num_imported_csv_rows,
-        erroneous_csv_rows_file_url: reportUrl,
-    } = reportPartial
-
-    const totalRows = num_imported_csv_rows + num_erroneous_csv_rows
-
-    const linkToFile =
-        reportUrl === undefined
-            ? ''
-            : ` <a href="${reportUrl}" target="_blank">Download a file with just the missing articles</a>, correct them and try uploading again to complete your import.`
-
-    return {
-        status: NotificationStatus.Error,
-        message: `\
-${num_imported_csv_rows}/${totalRows} articles successfully imported. \
-There was an error importing ${num_erroneous_csv_rows} articles.${linkToFile}`,
-        noAutoDismiss: true,
-        allowHTML: true,
-    }
-}
-
 export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     const locales = useSupportedLocales()
     const location = useLocation()
     const helpCenter = useCurrentHelpCenter()
     const [fileUrl, setFileUrl] = useState<string | null>(null)
     const {client} = useHelpCenterApi()
+    const migrationClient = useMigrationApi()
     const [csvColumns, setCsvColumns] = useState<CsvColumnPreview[] | null>(
         null
     )
@@ -95,74 +70,66 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     }, [dispatch, location.search])
 
     useEffect(() => {
-        if (client && fileUrl && helpCenter && csvColumns === null) {
-            void client
-                .analyseCsv(
-                    {
-                        help_center_id: helpCenter.id,
-                    },
-                    {file_url: fileUrl}
-                )
-                .then((response) => {
-                    if (response.data.result.status === 'FAILED') {
-                        let error = 'internal error'
+        if (!migrationClient || !fileUrl || !helpCenter) return
+        if (csvColumns) return
 
-                        switch (response.data.result.error) {
-                            case 'MALFORMED_FILE':
-                                error = 'the file is not valid'
-                                break
-                            case 'FILE_OVER_400_ROWS':
-                                error =
-                                    'the file contains more than 400 articles, please split it into several smaller files.'
-                        }
-
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message: `Could not analyse CSV file: ${error}`,
-                                noAutoDismiss: true,
-                            })
-                        )
-
-                        console.error('error analysing CSV file', {
-                            error,
-                            fileUrl,
-                        })
-
-                        history.push(
-                            urlToArticles(helpCenter.id, location.pathname)
-                        )
-                    } else {
-                        setCsvColumns(response.data.result.columns)
-                    }
+        void (async () => {
+            try {
+                const {data} = await migrationClient.analysis(undefined, {
+                    file_url: fileUrl,
                 })
-                .catch((error: AxiosError) => {
-                    if (error.response?.status === 408) {
-                        return dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message:
-                                    'The CSV analysis took too long, your file may be too big. Try to split it into several smaller files.',
-                                noAutoDismiss: true,
-                            })
-                        )
+                if (!('result' in data)) return
+
+                if (data.result.status === 'FAILED' || !data.result.columns) {
+                    let error = 'internal error'
+
+                    switch (data.result.error) {
+                        case 'MALFORMED_FILE':
+                            error = 'the file is not valid'
+                            break
+                        case 'FILE_OVER_400_ROWS':
+                            error =
+                                'the file contains more than 400 articles, please split it into several smaller files.'
                     }
 
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
-                            message: `Could not load CSV file from url ${fileUrl}, please check that the URL is valid`,
+                            message: `Could not analyse CSV file: ${error}`,
                             noAutoDismiss: true,
                         })
                     )
-                    console.error('error downloading CSV file', {
-                        error,
-                        fileUrl,
+
+                    history.push(
+                        urlToArticles(helpCenter.id, location.pathname)
+                    )
+                } else {
+                    setCsvColumns(data.result.columns)
+                }
+            } catch (e) {
+                const error = e as AxiosError
+                if (error.response?.status === 408) {
+                    return dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message:
+                                'The CSV analysis took too long, your file may be too big. Try to split it into several smaller files.',
+                            noAutoDismiss: true,
+                        })
+                    )
+                }
+
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: `Could not load CSV file from url ${fileUrl}, please check that the URL is valid`,
+                        noAutoDismiss: true,
                     })
-                })
-        }
+                )
+            }
+        })()
     }, [
-        client,
+        migrationClient,
         csvColumns,
         dispatch,
         history,
@@ -181,69 +148,42 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
         return <Loader />
     }
 
-    const handleOnImport = (mappings: GorgiasFieldsMappingsLocalized) => {
-        const mappingsDto = gorgiasFieldsMappingsLocalizedToDto(
-            fileUrl,
-            mappings
-        )
+    const handleOnImport = async (mappings: GorgiasFieldsMappingsLocalized) => {
+        const providerPayload = mapCSVLocalValuesToAPIPayload(fileUrl, mappings)
+        if (!migrationClient || !providerPayload) return
 
-        if (mappingsDto !== undefined) {
-            setImportInProgress(true)
+        setImportInProgress(true)
 
-            void client
-                .importCsv(
-                    {
+        try {
+            const {data} = await migrationClient.sessionCreate(undefined, {
+                migration: {
+                    provider: providerPayload,
+                    receiver: {
+                        type: 'Gorgias',
+                        access_token: (await getAccessToken(true)) || '',
                         help_center_id: helpCenter.id,
                     },
-                    mappingsDto
-                )
-                .then((response) => {
-                    setImportInProgress(false)
+                },
+            })
+            if (!responseIsSession(data)) return
 
-                    const {report} = response.data
-                    const baseHelpCenterPath = `${HELP_CENTER_BASE_PATH}/${helpCenter.id}`
-
-                    if (report.status === 'SUCCESS') {
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Success,
-                                message: `Successfully imported ${report.num_imported_csv_rows}/${report.num_imported_csv_rows} articles.`,
-                            })
-                        )
-
-                        return history.push(`${baseHelpCenterPath}/articles`)
-                    } else if (report.status === 'PARTIAL') {
-                        void dispatch(notify(notifyPartialImport(report)))
-
-                        return history.push(`${baseHelpCenterPath}/articles`)
-                    } else if (report.status === 'FAILED') {
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message:
-                                    'There was an error importing your CSV file. Please review it and try again.',
-                            })
-                        )
-
-                        return history.push(`${baseHelpCenterPath}/articles`)
-                    }
+            const locationState: AutoOpenSessionLocationState = {
+                autoOpenSession: data,
+            }
+            history.push(
+                `${HELP_CENTER_BASE_PATH}/${helpCenter.id}/articles`,
+                locationState
+            )
+        } catch (e) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'There was an error importing your CSV file. Please review it and try again.',
                 })
-                .catch((error: AxiosError) => {
-                    setImportInProgress(false)
-
-                    const errorMsg =
-                        error.response?.status === 408
-                            ? 'The import took too long, your file may be too big. Try to split it into several smaller files.'
-                            : 'An internal error occurred while importing the CSV, please try again later.'
-
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: errorMsg,
-                            noAutoDismiss: true,
-                        })
-                    )
-                })
+            )
+        } finally {
+            setImportInProgress(false)
         }
     }
 

@@ -74,7 +74,7 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
               class="m-0 mt-2"
             >
               <a
-                to="#"
+                href="#"
               >
                 Download this CSV template
               </a>
@@ -273,7 +273,7 @@ exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
               class="m-0 mt-2"
             >
               <a
-                to="#"
+                href="#"
               >
                 Download this CSV template
               </a>
@@ -366,7 +366,7 @@ exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
               class="m-0 mt-2"
             >
               <a
-                to="#"
+                href="#"
               >
                 Download this CSV template
               </a>
@@ -497,7 +497,7 @@ exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
               class="m-0 mt-2"
             >
               <a
-                to="#"
+                href="#"
               >
                 Download this CSV template
               </a>
@@ -590,7 +590,7 @@ exports[`<ImportArticlesModal /> snapshots providers fetching error 1`] = `
               class="m-0 mt-2"
             >
               <a
-                to="#"
+                href="#"
               >
                 Download this CSV template
               </a>
