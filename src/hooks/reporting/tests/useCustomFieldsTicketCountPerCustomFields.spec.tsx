@@ -3,9 +3,11 @@ import {renderHook} from '@testing-library/react-hooks/dom'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import _zip from 'lodash/zip'
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
+    calculateDecile,
     enrichWithPercentagesAndDeciles,
     useCustomFieldsTicketCountPerCustomFields,
 } from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
@@ -21,7 +23,7 @@ import {
     ValueMode,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
-
+import {notUndefined} from 'utils/types'
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
@@ -307,7 +309,22 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             },
         ]
 
-        it('should replace values with percentages', () => {
+        const calculatePercentageOfPerColumn = (
+            tagValues: number[],
+            column: number
+        ) => {
+            const baseValue = tagValues[column]
+            const zipped = _zip(tag1DailyValues, tag2DailyValues)
+            const columnSum = zipped
+                .map((day) =>
+                    day.reduce((sum, v) => Number(sum) + Number(v), 0)
+                )
+                .filter(notUndefined)
+
+            return (baseValue / columnSum[column]) * 100
+        }
+
+        it('should calculate percentages and deciles', () => {
             const result = enrichWithPercentagesAndDeciles(input)
 
             expect(result).toEqual([
@@ -321,61 +338,130 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                             ),
                             [BREAKDOWN_FIELD]: 'xyz',
                             children: [],
-                            decile: 9,
-                            percentage: 100,
+                            decile: calculateDecile(
+                                tag1DailyValues.reduce((sum, v) => sum + v),
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
+                            ),
+                            percentage:
+                                (tag1DailyValues.reduce((sum, v) => sum + v) /
+                                    [
+                                        ...tag1DailyValues,
+                                        ...tag2DailyValues,
+                                    ].reduce((sum, v) => sum + v)) *
+                                100,
                             timeSeries: [
                                 {
                                     dateTime: startDate,
-                                    decile: 9,
-                                    percentage: 100,
+                                    decile: calculateDecile(
+                                        tag1DailyValues[0],
+                                        tag1DailyValues[0] + tag2DailyValues[0]
+                                    ),
+                                    percentage: calculatePercentageOfPerColumn(
+                                        tag1DailyValues,
+                                        0
+                                    ),
                                     value: tag1DailyValues[0],
                                 },
                                 {
                                     dateTime: day2,
-                                    decile: 9,
-                                    percentage: 100,
+                                    decile: calculateDecile(
+                                        tag1DailyValues[1],
+                                        tag1DailyValues[1] + tag2DailyValues[1]
+                                    ),
+                                    percentage: calculatePercentageOfPerColumn(
+                                        tag1DailyValues,
+                                        1
+                                    ),
                                     value: tag1DailyValues[1],
                                 },
                                 {
                                     dateTime: day3,
-                                    decile: 0,
-                                    percentage: 0,
+                                    decile: calculateDecile(
+                                        tag1DailyValues[2],
+                                        tag1DailyValues[2] + tag2DailyValues[2]
+                                    ),
+                                    percentage: calculatePercentageOfPerColumn(
+                                        tag1DailyValues,
+                                        2
+                                    ),
                                     value: tag1DailyValues[2],
                                 },
                                 {
                                     dateTime: endDate,
-                                    decile: 9,
-                                    percentage: 100,
+                                    decile: calculateDecile(
+                                        tag1DailyValues[3],
+                                        tag1DailyValues[3] + tag2DailyValues[3]
+                                    ),
+                                    percentage: calculatePercentageOfPerColumn(
+                                        tag1DailyValues,
+                                        3
+                                    ),
                                     value: tag1DailyValues[3],
                                 },
                             ],
                         },
                     ],
-                    decile: 8,
-                    percentage: 81.58253751705321,
+                    decile: calculateDecile(
+                        tag1DailyValues.reduce((sum, v) => sum + v),
+                        [...tag1DailyValues, ...tag2DailyValues].reduce(
+                            (sum, v) => sum + v
+                        )
+                    ),
+                    percentage:
+                        (tag1DailyValues.reduce((sum, v) => sum + v) /
+                            [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                (sum, v) => sum + v
+                            )) *
+                        100,
                     timeSeries: [
                         {
                             dateTime: startDate,
-                            decile: 8,
-                            percentage: 80,
+                            decile: calculateDecile(
+                                tag1DailyValues[0],
+                                tag1DailyValues[0] + tag2DailyValues[0]
+                            ),
+                            percentage: calculatePercentageOfPerColumn(
+                                tag1DailyValues,
+                                0
+                            ),
                             value: tag1DailyValues[0],
                         },
                         {
                             dateTime: day2,
-                            decile: 9,
-                            percentage: 100,
+                            decile: calculateDecile(
+                                tag1DailyValues[1],
+                                tag1DailyValues[1] + tag2DailyValues[1]
+                            ),
+                            percentage: calculatePercentageOfPerColumn(
+                                tag1DailyValues,
+                                1
+                            ),
                             value: tag1DailyValues[1],
                         },
                         {
                             dateTime: day3,
-                            decile: 0,
-                            percentage: 0,
+                            decile: calculateDecile(
+                                tag1DailyValues[2],
+                                tag1DailyValues[2] + tag2DailyValues[2]
+                            ),
+                            percentage: calculatePercentageOfPerColumn(
+                                tag1DailyValues,
+                                2
+                            ),
                             value: tag1DailyValues[2],
                         },
                         {
                             dateTime: endDate,
-                            decile: 8,
-                            percentage: 75,
+                            decile: calculateDecile(
+                                tag1DailyValues[3],
+                                tag1DailyValues[3] + tag2DailyValues[3]
+                            ),
+                            percentage: calculatePercentageOfPerColumn(
+                                tag1DailyValues,
+                                3
+                            ),
                             value: tag1DailyValues[3],
                         },
                     ],
@@ -390,61 +476,130 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                             ),
                             [BREAKDOWN_FIELD]: 'qwe',
                             children: [],
-                            decile: 9,
-                            percentage: 100,
+                            decile: calculateDecile(
+                                tag2DailyValues.reduce((sum, v) => sum + v),
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
+                            ),
+                            percentage:
+                                (tag2DailyValues.reduce((sum, v) => sum + v) /
+                                    [
+                                        ...tag1DailyValues,
+                                        ...tag2DailyValues,
+                                    ].reduce((sum, v) => sum + v)) *
+                                100,
                             timeSeries: [
                                 {
                                     dateTime: startDate,
-                                    decile: 9,
-                                    percentage: 100,
+                                    decile: calculateDecile(
+                                        tag1DailyValues[0],
+                                        tag1DailyValues[0] + tag2DailyValues[0]
+                                    ),
+                                    percentage: calculatePercentageOfPerColumn(
+                                        tag1DailyValues,
+                                        0
+                                    ),
                                     value: tag1DailyValues[0],
                                 },
                                 {
                                     dateTime: day2,
-                                    decile: 9,
-                                    percentage: 100,
+                                    decile: calculateDecile(
+                                        tag1DailyValues[1],
+                                        tag1DailyValues[1] + tag2DailyValues[1]
+                                    ),
+                                    percentage: calculatePercentageOfPerColumn(
+                                        tag1DailyValues,
+                                        1
+                                    ),
                                     value: tag1DailyValues[1],
                                 },
                                 {
                                     dateTime: day3,
-                                    decile: 0,
-                                    percentage: 0,
+                                    decile: calculateDecile(
+                                        tag1DailyValues[2],
+                                        tag1DailyValues[2] + tag2DailyValues[2]
+                                    ),
+                                    percentage: calculatePercentageOfPerColumn(
+                                        tag1DailyValues,
+                                        2
+                                    ),
                                     value: tag1DailyValues[2],
                                 },
                                 {
                                     dateTime: endDate,
-                                    decile: 9,
-                                    percentage: 100,
+                                    decile: calculateDecile(
+                                        tag1DailyValues[3],
+                                        tag1DailyValues[3] + tag2DailyValues[3]
+                                    ),
+                                    percentage: calculatePercentageOfPerColumn(
+                                        tag1DailyValues,
+                                        3
+                                    ),
                                     value: tag1DailyValues[3],
                                 },
                             ],
                         },
                     ],
-                    decile: 2,
-                    percentage: 18.417462482946796,
+                    decile: calculateDecile(
+                        tag2DailyValues.reduce((sum, v) => sum + v),
+                        [...tag1DailyValues, ...tag2DailyValues].reduce(
+                            (sum, v) => sum + v
+                        )
+                    ),
+                    percentage:
+                        (tag2DailyValues.reduce((sum, v) => sum + v) /
+                            [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                (sum, v) => sum + v
+                            )) *
+                        100,
                     timeSeries: [
                         {
                             dateTime: startDate,
-                            decile: 2,
-                            percentage: 20,
+                            decile: calculateDecile(
+                                tag2DailyValues[0],
+                                tag1DailyValues[0] + tag2DailyValues[0]
+                            ),
+                            percentage: calculatePercentageOfPerColumn(
+                                tag2DailyValues,
+                                0
+                            ),
                             value: tag2DailyValues[0],
                         },
                         {
                             dateTime: day2,
-                            decile: 0,
-                            percentage: 0,
+                            decile: calculateDecile(
+                                tag2DailyValues[1],
+                                tag1DailyValues[1] + tag2DailyValues[1]
+                            ),
+                            percentage: calculatePercentageOfPerColumn(
+                                tag2DailyValues,
+                                1
+                            ),
                             value: tag2DailyValues[1],
                         },
                         {
                             dateTime: day3,
-                            decile: 9,
-                            percentage: 100,
+                            decile: calculateDecile(
+                                tag2DailyValues[2],
+                                tag1DailyValues[2] + tag2DailyValues[2]
+                            ),
+                            percentage: calculatePercentageOfPerColumn(
+                                tag2DailyValues,
+                                2
+                            ),
                             value: tag2DailyValues[2],
                         },
                         {
                             dateTime: endDate,
-                            decile: 3,
-                            percentage: 25,
+                            decile: calculateDecile(
+                                tag2DailyValues[3],
+                                tag1DailyValues[3] + tag2DailyValues[3]
+                            ),
+                            percentage: calculatePercentageOfPerColumn(
+                                tag2DailyValues,
+                                3
+                            ),
                             value: tag2DailyValues[3],
                         },
                     ],

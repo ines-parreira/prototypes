@@ -75,24 +75,30 @@ export const useCustomFieldsTicketCountPerCustomFields = (
 }
 
 export function enrichWithPercentagesAndDeciles(
-    data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[]
+    data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[],
+    totalsSum?: number,
+    topLevelTimeSeriesSums?: TimeSeriesDataItem[]
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile>[] {
-    const currentLevelSum = data.reduce(
-        (acc, currentValue) => acc + (currentValue[VALUE_FIELD] || 0),
-        0
-    )
+    const currentLevelTotalSum =
+        totalsSum ||
+        data.reduce(
+            (acc, currentValue) => acc + (currentValue[VALUE_FIELD] || 0),
+            0
+        )
     const columnsSum = _zip(...data.map((item) => item.timeSeries))
-    const sums = columnsSum.map((column) => {
-        return column.filter(notUndefined).reduce((sum, point) => ({
-            ...sum,
-            value: sum.value + point.value,
-        }))
-    })
+    const sums =
+        topLevelTimeSeriesSums ||
+        columnsSum.map((column) => {
+            return column.filter(notUndefined).reduce((sum, point) => ({
+                ...sum,
+                value: sum.value + point.value,
+            }))
+        })
 
     return data.map((item) => ({
         ...item,
-        percentage: ((item[VALUE_FIELD] || 0) / currentLevelSum) * 100,
-        decile: calculateDecile(item[VALUE_FIELD], currentLevelSum),
+        percentage: ((item[VALUE_FIELD] || 0) / currentLevelTotalSum) * 100,
+        decile: calculateDecile(item[VALUE_FIELD], currentLevelTotalSum),
         timeSeries: item.timeSeries.map((item, index) => ({
             ...item,
             percentage:
@@ -101,9 +107,13 @@ export function enrichWithPercentagesAndDeciles(
                     : 0,
             decile: calculateDecile(item.value, sums[index].value),
         })),
-        children: enrichWithPercentagesAndDeciles(item.children),
+        children: enrichWithPercentagesAndDeciles(
+            item.children,
+            currentLevelTotalSum,
+            sums
+        ),
     }))
 }
 
-const calculateDecile = (value: number | undefined, sum: number) =>
+export const calculateDecile = (value: number | undefined, sum: number) =>
     sum !== 0 ? Math.min(Math.round(((value || 0) / sum) * 10), 9) : 0
