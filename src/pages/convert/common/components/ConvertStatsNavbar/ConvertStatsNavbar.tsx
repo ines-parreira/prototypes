@@ -12,6 +12,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {isStarterTierPrice} from 'models/billing/utils'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ConvertNavbarAddOnPaywallNavbarLink from '../ConvertNavbarAddOnPaywallNavbarLink'
 
 export type ConvertNavbarLink = {
@@ -20,6 +21,7 @@ export type ConvertNavbarLink = {
     isPaywalled: boolean
     hasModal: boolean
     requiresSubscriptionToBeSeen: boolean
+    extra?: ReactNode
 }
 
 type Props = {
@@ -52,6 +54,11 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
                 isPaywalled: !isConvertSubscriber,
                 hasModal: !isConvertSubscriber && !isStarterPlan,
                 requiresSubscriptionToBeSeen: false,
+                extra: (
+                    <Badge type={ColorType.Blue} className={cssNavbar.badge}>
+                        NEW
+                    </Badge>
+                ),
             },
         ]
     }, [hasRevenueStatisticsFeature, isConvertSubscriber, isStarterPlan])
@@ -106,6 +113,8 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
                                 >
                                     {convertLink.label}
                                     {convertLink.isPaywalled && <UpgradeIcon />}
+                                    {!convertLink.isPaywalled &&
+                                        convertLink.extra}
                                 </NavbarLink>
                             </div>
                         )
