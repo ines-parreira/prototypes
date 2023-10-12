@@ -1,13 +1,17 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    HelpdeskMessageCubeWithJoins,
+    HelpdeskMessageMeasure,
+} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 
 import {usePostReporting} from 'models/reporting/queries'
 import {ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
+import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 
-import useMetricTrend from '../useMetricTrend'
+import useMetricTrend, {selectMeasure} from '../useMetricTrend'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -100,6 +104,15 @@ describe('useMetricTrend', () => {
     })
 
     it('should call usePostReporting with the query', () => {
+        const messagesAverage = 100
+        const data = {
+            data: {
+                data: [
+                    {[TicketMessagesMeasure.MessagesAverage]: messagesAverage},
+                ],
+            },
+        } as any
+
         const prevPeriodQuery = {
             ...defaultQuery,
             measures: [TicketMessagesMeasure.MessagesAverage],
@@ -115,17 +128,42 @@ describe('useMetricTrend', () => {
 
         renderHook(() => useMetricTrend(defaultQuery, prevPeriodQuery))
 
+        const defaultSelect = usePostReportingMock.mock.calls[0][1]?.select
+        const previousSelect = usePostReportingMock.mock.calls[1][1]?.select
+
         expect(usePostReportingMock).toHaveBeenCalledWith(
             [defaultQuery],
             expect.objectContaining({
-                select: usePostReportingMock.mock.calls[0][1]?.select,
+                select: defaultSelect,
             })
         )
+        expect(defaultSelect?.(data)).toEqual(null)
+
         expect(usePostReportingMock).toHaveBeenCalledWith(
             [prevPeriodQuery],
             expect.objectContaining({
                 select: usePostReportingMock.mock.calls[1][1]?.select,
             })
         )
+        expect(previousSelect?.(data)).toEqual(messagesAverage)
+    })
+
+    describe('selectMeasure', () => {
+        const ticketCount = 100
+        const data = {
+            data: {data: [{[TicketMeasure.TicketCount]: ticketCount}]},
+        } as any
+
+        it('should return the measure value', () => {
+            expect(selectMeasure(TicketMeasure.TicketCount, data)).toEqual(
+                ticketCount
+            )
+        })
+
+        it('should return null for the missing measure', () => {
+            expect(
+                selectMeasure(HelpdeskMessageMeasure.TicketCount, data)
+            ).toEqual(null)
+        })
     })
 })

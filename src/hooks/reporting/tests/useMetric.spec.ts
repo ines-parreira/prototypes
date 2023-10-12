@@ -85,6 +85,7 @@ describe('useMetric', () => {
     })
 
     it('should call usePostReporting with the query', () => {
+        const firstResponseTime = 1000
         usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
             data: 1,
@@ -92,11 +93,25 @@ describe('useMetric', () => {
 
         renderHook(() => useMetric(defaultQuery))
 
+        const select = usePostReportingMock.mock.calls[0][1]?.select
+
         expect(usePostReportingMock).toHaveBeenCalledWith(
             [defaultQuery],
             expect.objectContaining({
-                select: usePostReportingMock.mock.calls[0][1]?.select,
+                select,
             })
         )
+        expect(
+            select?.({
+                data: {
+                    data: [
+                        {
+                            [TicketMessagesMeasure.FirstResponseTime]:
+                                firstResponseTime,
+                        },
+                    ],
+                },
+            } as any)
+        ).toEqual(firstResponseTime)
     })
 })

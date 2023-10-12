@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
-import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
@@ -19,7 +19,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent')
 const usePercentageOfClosedTicketsMetricPerAgentMock = assumeMock(
     usePercentageOfClosedTicketsMetricPerAgent
 )

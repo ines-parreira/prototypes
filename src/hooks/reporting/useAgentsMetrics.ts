@@ -5,10 +5,10 @@ import {
     useCustomerSatisfactionMetricPerAgent,
     useFirstResponseTimeMetricPerAgent,
     useMessagesSentMetricPerAgent,
-    usePercentageOfClosedTicketsMetricPerAgent,
     useResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
+import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCleanStatsFiltersWithTimezone,

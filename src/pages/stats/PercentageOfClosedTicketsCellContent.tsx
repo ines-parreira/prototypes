@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
-import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import useAppSelector from 'hooks/useAppSelector'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
+import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
