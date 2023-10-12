@@ -13,11 +13,11 @@ const REPORT_HINT =
     'Number of tickets labeled with each value within the selected timeframe for the selected Ticket Field. Only values that have been used at least once are shown.'
 
 export const CustomFieldsTicketCountBreakdownReport = () => {
-    const {id, label} = useAppSelector(getSelectedCustomField)
+    const {id} = useAppSelector(getSelectedCustomField)
 
     return (
         <ChartCard
-            title={`${REPORT_TITLE}: ${label}`}
+            title={REPORT_TITLE}
             hint={REPORT_HINT}
             noPadding={true}
             titleExtra={

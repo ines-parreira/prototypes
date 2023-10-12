@@ -2,12 +2,12 @@ import classNames from 'classnames'
 import moment from 'moment/moment'
 import React, {UIEventHandler, useState} from 'react'
 import useMeasure from 'react-use/lib/useMeasure'
-import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {
-    BREAKDOWN_FIELD,
-    TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
-    VALUE_FIELD,
-} from 'hooks/reporting/withBreakdown'
+    CustomFieldsTicketCountDataRowContent,
+    DataRowProps,
+} from 'pages/stats/CustomFieldsTicketCountDataRowContent'
+import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
+import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
@@ -22,21 +22,14 @@ import {TableBodyRowExpandable} from 'pages/common/components/table/TableBodyRow
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/BreakdownTable.less'
-import heatmapCss from 'pages/stats/heatmap.less'
-import {formatMetricValue, getFormat} from 'pages/stats/common/utils'
+import {getFormat} from 'pages/stats/common/utils'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
-import {
-    getHeatmapMode,
-    getValueMode,
-    toggleOrder,
-    ValueMode,
-} from 'state/ui/stats/ticketInsightsSlice'
+import {toggleOrder} from 'state/ui/stats/ticketInsightsSlice'
 
 export const CUSTOM_FIELD_COLUMN_LABEL = 'Value / Category'
 export const TOTAL_COLUMN_LABEL = 'Total'
 export const CUSTOM_FIELDS_PER_PAGE = 10
-const EXPAND_COLUMN_WIDTH = 45
 const CATEGORY_COLUMN_WIDTH = 250
 const DATA_COLUMN_WIDTH = 120
 const TICKET_INSIGHTS_TABLE_DAILY_FORMAT = 'ddd, MMM D'
@@ -50,13 +43,6 @@ export const formatDates =
 
         return moment(dateTime).format(format)
     }
-
-const formatAccordingToValueMode =
-    (valueMode: ValueMode) =>
-    ({value, percentage}: {value: number; percentage: number}) =>
-        valueMode === ValueMode.TotalCount
-            ? formatMetricValue(value, 'integer')
-            : formatMetricValue(percentage, 'percent')
 
 export const CustomFieldsTicketCountBreakdownTable = ({
     selectedCustomFieldId,
@@ -166,72 +152,6 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                     />
                 )}
             </div>
-        </>
-    )
-}
-
-type DataRowProps =
-    TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile & {
-        level?: number
-        isLoading?: boolean
-        isTableScrolled?: boolean
-    }
-
-const CustomFieldsTicketCountDataRowContent = ({
-    isTableScrolled = false,
-    timeSeries,
-    [BREAKDOWN_FIELD]: label,
-    [VALUE_FIELD]: value,
-    percentage,
-    decile,
-    level = 0,
-}: DataRowProps) => {
-    const valueMode = useAppSelector(getValueMode)
-    const isHeatmapMode = useAppSelector(getHeatmapMode)
-
-    return (
-        <>
-            <BodyCell
-                className={classNames(
-                    {[css.withShadow]: isTableScrolled},
-                    css.sticky,
-                    css.categoryColumn
-                )}
-                style={{
-                    left: `${(level + 1) * EXPAND_COLUMN_WIDTH}px`,
-                }}
-            >
-                {label}
-            </BodyCell>
-            <BodyCell
-                isHighlighted={true}
-                className={css.BodyCell}
-                innerClassName={classNames(
-                    css.BodyCellContent,
-                    [heatmapCss.heatmap],
-                    isHeatmapMode && heatmapCss[`p${String(decile)}`]
-                )}
-                justifyContent={'right'}
-            >
-                {formatAccordingToValueMode(valueMode)({
-                    value: value || 0,
-                    percentage,
-                })}
-            </BodyCell>
-            {timeSeries.map((data) => (
-                <BodyCell
-                    key={data.dateTime}
-                    innerClassName={classNames(
-                        css.BodyCellContent,
-                        [heatmapCss.heatmap],
-                        isHeatmapMode && heatmapCss[`p${String(data.decile)}`]
-                    )}
-                    justifyContent={'right'}
-                    className={css.BodyCell}
-                >
-                    {formatAccordingToValueMode(valueMode)(data)}
-                </BodyCell>
-            ))}
         </>
     )
 }

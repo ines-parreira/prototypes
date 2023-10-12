@@ -10,7 +10,7 @@ type Props<T> = {
     tableBodyRowProps?: ComponentProps<typeof TableBodyRow>
     level?: number
     RowContentComponent: FC<T>
-    rowContentProps: WithChildren<T>
+    rowContentProps: WithChildren<T & {onClick?: () => void}>
     innerClassName?: string
 }
 
@@ -22,11 +22,13 @@ export const TableBodyRowExpandable = <T,>({
     innerClassName,
 }: Props<T>) => {
     const [isExpanded, setIsExpanded] = useState(false)
+    const toggleExpand = () => setIsExpanded(!isExpanded)
+
     return (
         <>
             <TableBodyRow {...tableBodyRowProps}>
                 <BodyCell
-                    onClick={() => setIsExpanded(!isExpanded)}
+                    onClick={toggleExpand}
                     width={24}
                     style={{paddingLeft: `${level * 24}px`}}
                     innerClassName={innerClassName}
@@ -42,7 +44,10 @@ export const TableBodyRowExpandable = <T,>({
                         </i>
                     )}
                 </BodyCell>
-                <RowContentComponent {...rowContentProps} />
+                <RowContentComponent
+                    {...rowContentProps}
+                    onClick={toggleExpand}
+                />
             </TableBodyRow>
             {isExpanded &&
                 rowContentProps.children.map((tag, index) => (
@@ -50,7 +55,10 @@ export const TableBodyRowExpandable = <T,>({
                         key={index}
                         level={level + 1}
                         RowContentComponent={RowContentComponent}
-                        rowContentProps={tag}
+                        rowContentProps={{
+                            ...tag,
+                            onClick: toggleExpand,
+                        }}
                     />
                 ))}
         </>
