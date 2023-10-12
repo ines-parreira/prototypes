@@ -28,7 +28,7 @@ const getHasShopifyScriptTagScopes = ({
             !storeIntegration ||
             storeIntegration.type !== IntegrationType.Shopify
         ) {
-            return []
+            return false
         }
 
         return storeIntegration.meta.oauth.scope?.includes(scope)
@@ -85,7 +85,7 @@ const getRequiresScriptTagMigration = ({
     }
 }
 
-const useStoreRequiringScriptTagMigration = () => {
+const useStoresRequiringScriptTagMigration = () => {
     const hasScriptTagFeatureFlagOn: boolean =
         useFlags()[FeatureFlagKey.ShopifyIntegrationScopeScriptTag] ?? false
 
@@ -99,20 +99,16 @@ const useStoreRequiringScriptTagMigration = () => {
         return
     }
 
-    let gorgiasChatIntegration: Map<any, any> | undefined
-    let gorgiasChatRequiresReinstall: boolean | undefined
-    let storeRequiresPermissionUpdates: boolean | undefined
-
-    const shopifyIntegrationRequiringScriptTagMigration =
-        storeIntegrations.find((storeIntegration) => {
+    const shopifyIntegrationsRequiringScriptTagMigration = storeIntegrations
+        .map((storeIntegration) => {
             const isConnectedToShopify =
                 storeIntegration?.type === IntegrationType.Shopify
 
             if (!isConnectedToShopify) {
-                return false
+                return
             }
 
-            gorgiasChatIntegration = gorgiasChatIntegrations.find(
+            const gorgiasChatIntegration = gorgiasChatIntegrations.find(
                 (integration) =>
                     !integration?.get('deactivated_datetime') &&
                     integration?.getIn(['meta', 'shop_integration_id']) ===
@@ -120,30 +116,39 @@ const useStoreRequiringScriptTagMigration = () => {
             )
 
             if (!gorgiasChatIntegration) {
-                return false
+                return
             }
 
-            ;({gorgiasChatRequiresReinstall, storeRequiresPermissionUpdates} =
-                getRequiresScriptTagMigration({
-                    storeIntegration: storeIntegration as ShopifyIntegration,
-                    gorgiasChatIntegration,
-                }))
+            const {
+                gorgiasChatRequiresReinstall,
+                storeRequiresPermissionUpdates,
+            } = getRequiresScriptTagMigration({
+                storeIntegration: storeIntegration as ShopifyIntegration,
+                gorgiasChatIntegration,
+            })
 
-            return (
-                gorgiasChatRequiresReinstall || storeRequiresPermissionUpdates
-            )
-        }) as ShopifyIntegration | undefined
+            if (
+                !gorgiasChatRequiresReinstall &&
+                !storeRequiresPermissionUpdates
+            ) {
+                return
+            }
 
-    if (!shopifyIntegrationRequiringScriptTagMigration) {
-        return
-    }
+            return {
+                storeIntegration,
+                storeRequiresPermissionUpdates,
+                gorgiasChatIntegration,
+                gorgiasChatRequiresReinstall,
+            }
+        })
+        .filter(Boolean) as {
+        storeIntegration: ShopifyIntegration
+        storeRequiresPermissionUpdates: boolean
+        gorgiasChatIntegration: Map<any, any>
+        gorgiasChatRequiresReinstall: boolean
+    }[]
 
-    return {
-        storeIntegration: shopifyIntegrationRequiringScriptTagMigration,
-        storeRequiresPermissionUpdates,
-        gorgiasChatIntegration,
-        gorgiasChatRequiresReinstall,
-    }
+    return shopifyIntegrationsRequiringScriptTagMigration
 }
 
-export default useStoreRequiringScriptTagMigration
+export default useStoresRequiringScriptTagMigration

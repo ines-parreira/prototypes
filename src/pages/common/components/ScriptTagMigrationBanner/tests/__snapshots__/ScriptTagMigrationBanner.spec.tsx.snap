@@ -1,0 +1,335 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ScriptTagMigrationBanner /> should contain both re-install and permission update link for a single store 1`] = `
+<div>
+  <div
+    class="bannerNotification error"
+  >
+    <div
+      class="messageContainer"
+    >
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+      <span
+        class="messageText"
+      >
+        <span>
+          <b>
+            Action required
+          </b>
+          :
+           
+          <a
+            href="#"
+          >
+            Update your Shopify permissions
+          </a>
+           
+          and 
+          <span
+            class=""
+          >
+            re-install
+          </span>
+           
+          your chat using the
+           
+          <a
+            to="/app/settings/channels/gorgias_chat/test-chat-id/installation"
+          >
+            1-click install method
+          </a>
+           
+          to ensure better chat stability by 
+          <b>
+            Scary Deadline
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ScriptTagMigrationBanner /> should contain only permission update link for a single store 1`] = `
+<div>
+  <div
+    class="bannerNotification error"
+  >
+    <div
+      class="messageContainer"
+    >
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+      <span
+        class="messageText"
+      >
+        <span>
+          <b>
+            Action required
+          </b>
+          :
+           
+          <a
+            href="#"
+          >
+            Update your Shopify permissions
+          </a>
+           
+          to ensure better chat stability by 
+          <b>
+            Scary Deadline
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ScriptTagMigrationBanner /> should contain only permission update link for multiple stores 1`] = `
+<div>
+  <div
+    class="bannerNotification error"
+  >
+    <div
+      class="messageContainer"
+    >
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+      <span
+        class="messageText"
+      >
+        <span>
+          <b>
+            Action required
+          </b>
+          :
+           
+          <a
+            to="/app/settings/integrations/shopify/connections"
+          >
+            Update your Shopify permissions
+          </a>
+           
+          to ensure better chat stability by 
+          <b>
+            Scary Deadline
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a single store 1`] = `
+<div>
+  <div
+    class="bannerNotification error"
+  >
+    <div
+      class="messageContainer"
+    >
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+      <span
+        class="messageText"
+      >
+        <span>
+          <b>
+            Action required
+          </b>
+          :
+           
+          <span
+            class="text-capitalize"
+          >
+            re-install
+          </span>
+           
+          your chat using the
+           
+          <a
+            to="/app/settings/channels/gorgias_chat/test-chat-id/installation"
+          >
+            1-click install method
+          </a>
+           
+          to ensure better chat stability by 
+          <b>
+            Scary Deadline
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ScriptTagMigrationBanner /> should contain only re-install link for multiple stores 1`] = `
+<div>
+  <div
+    class="bannerNotification error"
+  >
+    <div
+      class="messageContainer"
+    >
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+      <span
+        class="messageText"
+      >
+        <span>
+          <b>
+            Action required
+          </b>
+          :
+           
+          <span
+            class="text-capitalize"
+          >
+            re-install
+          </span>
+           
+          your chat using the
+           
+          <a
+            to="/app/settings/channels/gorgias_chat"
+          >
+            1-click install method
+          </a>
+           
+          to ensure better chat stability by 
+          <b>
+            Scary Deadline
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ScriptTagMigrationBanner /> should contain re-install link for a single store and permission update link for multiple stores 1`] = `
+<div>
+  <div
+    class="bannerNotification error"
+  >
+    <div
+      class="messageContainer"
+    >
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+      <span
+        class="messageText"
+      >
+        <span>
+          <b>
+            Action required
+          </b>
+          :
+           
+          <a
+            to="/app/settings/integrations/shopify/connections"
+          >
+            Update your Shopify permissions
+          </a>
+           
+          and 
+          <span
+            class=""
+          >
+            re-install
+          </span>
+           
+          your chat using the
+           
+          <a
+            to="/app/settings/channels/gorgias_chat/test-chat-id/installation"
+          >
+            1-click install method
+          </a>
+           
+          to ensure better chat stability by 
+          <b>
+            Scary Deadline
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ScriptTagMigrationBanner /> should contain re-install link for multiple stores and permission update link for a single store 1`] = `
+<div>
+  <div
+    class="bannerNotification error"
+  >
+    <div
+      class="messageContainer"
+    >
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+      <span
+        class="messageText"
+      >
+        <span>
+          <b>
+            Action required
+          </b>
+          :
+           
+          <a
+            href="#"
+          >
+            Update your Shopify permissions
+          </a>
+           
+          and 
+          <span
+            class=""
+          >
+            re-install
+          </span>
+           
+          your chat using the
+           
+          <a
+            to="/app/settings/channels/gorgias_chat"
+          >
+            1-click install method
+          </a>
+           
+          to ensure better chat stability by 
+          <b>
+            Scary Deadline
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
