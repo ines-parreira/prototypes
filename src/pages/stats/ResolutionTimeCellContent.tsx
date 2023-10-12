@@ -44,6 +44,7 @@ export const ResolutionTimeCellContent = ({
                 isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
             )}
             innerClassName={classNames(
+                bodyCellProps?.innerClassName,
                 [css.heatmap],
                 isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
             )}

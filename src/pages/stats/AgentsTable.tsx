@@ -121,7 +121,7 @@ export const AgentsTable = () => {
                                 key={`header-cell-${column}`}
                                 width={getColumnWidth(column)} //TODO: consider introducing common props per cell type (header, average, body)
                                 justifyContent={getColumnAlignment(column)}
-                                className={classNames({
+                                className={classNames(css.BodyCell, {
                                     [css.withShadow]:
                                         index === 0 && isTableScrolled,
                                 })}
@@ -137,12 +137,13 @@ export const AgentsTable = () => {
                                     width={getColumnWidth(column)}
                                     isHighlighted
                                     justifyContent={getColumnAlignment(column)}
-                                    className={classNames({
+                                    className={classNames(css.BodyCell, {
                                         [css.withShadow]:
                                             column === TableColumn.AgentName &&
                                             isTableScrolled,
-                                        [css.highlight]: true, //TODO: looks duplicative to isHighlighted
+                                        [css.highlight]: true,
                                     })}
+                                    innerClassName={css.BodyCellContent}
                                 >
                                     {React.createElement(
                                         getSummaryCell(column)
@@ -160,12 +161,17 @@ export const AgentsTable = () => {
                                                 width: getColumnWidth(column),
                                                 justifyContent:
                                                     getColumnAlignment(column),
-                                                className: classNames({
-                                                    [css.withShadow]:
-                                                        column ===
-                                                            TableColumn.AgentName &&
-                                                        isTableScrolled,
-                                                }),
+                                                className: classNames(
+                                                    css.BodyCell,
+                                                    {
+                                                        [css.withShadow]:
+                                                            column ===
+                                                                TableColumn.AgentName &&
+                                                            isTableScrolled,
+                                                    }
+                                                ),
+                                                innerClassName:
+                                                    css.BodyCellContent,
                                             },
                                         })}
                                     </React.Fragment>
