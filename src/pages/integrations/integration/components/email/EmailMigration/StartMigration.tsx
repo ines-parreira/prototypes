@@ -108,7 +108,9 @@ export default function StartMigration() {
                             set up email forwarding and/or verify the domain
                         </strong>{' '}
                         for the email addresses associated with your account.{' '}
-                        <a href="">Learn more</a>
+                        <a href="https://docs.gorgias.com/en-US/276663-3dc8e1acf96c4145b6a5b4d0d26134b5">
+                            Learn more
+                        </a>
                     </p>
                 </div>
 
