@@ -47,6 +47,7 @@ export const TableBodyRowExpandable = <T,>({
                 <RowContentComponent
                     {...rowContentProps}
                     onClick={toggleExpand}
+                    level={level}
                 />
             </TableBodyRow>
             {isExpanded &&

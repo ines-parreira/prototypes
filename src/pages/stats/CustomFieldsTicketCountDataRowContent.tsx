@@ -44,7 +44,7 @@ export const CustomFieldsTicketCountDataRowContent = ({
     onClick,
 }: DataRowProps) => {
     const valueMode = useAppSelector(getValueMode)
-    const isHeatmapMode = useAppSelector(getHeatmapMode)
+    const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
 
     return (
         <>
