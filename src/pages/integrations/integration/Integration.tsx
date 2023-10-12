@@ -45,8 +45,6 @@ import history from '../../history'
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
 
-import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrationSetup/OutlookIntegrationSetup'
-
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList'
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
@@ -622,10 +620,6 @@ export const IntegrationDetail = ({
         case IntegrationType.Email:
         default:
             if (!!integrationId) {
-                if (integrationId === 'setup') {
-                    return <OutlookIntegrationSetup loading={loading} />
-                }
-
                 if (integrationId === 'migration') {
                     return <EmailMigration />
                 }

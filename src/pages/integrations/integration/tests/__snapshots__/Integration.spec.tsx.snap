@@ -309,7 +309,7 @@ exports[`<IntegrationDetail /> should render the preferences tab of a specific i
 
 exports[`<IntegrationDetail /> should render the setup page for email 1`] = `
 <div>
-  OutlookIntegrationSetup
+  EmailIntegrationCreate
 </div>
 `;
 

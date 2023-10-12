@@ -43,10 +43,6 @@ jest.mock(
     '../components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom',
     () => () => <div>EmailIntegrationCreateCustom</div>
 )
-jest.mock(
-    '../components/email/outlook/OutlookIntegrationSetup/OutlookIntegrationSetup',
-    () => () => <div>OutlookIntegrationSetup</div>
-)
 
 jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
     <div>FacebookIntegrationDetail</div>
@@ -152,7 +148,6 @@ describe('<IntegrationDetail />', () => {
             fetchIntegrations: jest.fn(),
             fetchOnboardingIntegrations: jest.fn(),
             fetchFacebookOnboardingIntegrations: jest.fn(),
-            fetchOutlookOnboardingIntegrations: jest.fn(),
             activateOnboardingIntegrations: jest.fn(),
             onCreateSuccess: jest.fn(),
             triggerCreateSuccess: jest.fn(),

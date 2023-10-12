@@ -126,22 +126,6 @@ export function fetchFacebookOnboardingIntegrations(
     )
 }
 
-/**
- * Fetch Outlook deleted integrations which can be activated by the current agent.
- */
-export function fetchOutlookOnboardingIntegrations(
-    page = 1,
-    forceOverride = true,
-    filter = ''
-) {
-    return fetchOnboardingIntegrations(
-        page,
-        IntegrationType.Outlook,
-        forceOverride,
-        filter
-    )
-}
-
 export function activateOnboardingIntegrations(
     data: Integration[],
     integrationType: IntegrationType

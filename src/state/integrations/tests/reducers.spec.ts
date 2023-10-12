@@ -68,10 +68,7 @@ describe('integrations reducers', () => {
     })
 
     describe('FETCH_ONBOARDING_INTEGRATIONS_SUCCESS', () => {
-        const integrationTypes = [
-            IntegrationType.Facebook,
-            IntegrationType.Outlook,
-        ]
+        const integrationTypes = [IntegrationType.Facebook]
 
         integrationTypes.forEach((integrationType) => {
             it(`should set the data because there is no current page (${integrationType})`, () => {

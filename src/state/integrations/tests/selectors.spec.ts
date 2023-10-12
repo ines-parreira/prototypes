@@ -662,34 +662,30 @@ describe('integrations selectors', () => {
     })
 
     describe('getOnboardingIntegrations()', () => {
-        ;[IntegrationType.Facebook, IntegrationType.Outlook].forEach(
-            (integrationType) => {
-                it(`should return an empty list because there is no integrations in the state (${integrationType})`, () => {
-                    expect(
-                        getOnboardingIntegrations(integrationType)(
-                            {} as RootState
-                        )
-                    ).toEqual(fromJS([]))
-                })
+        ;[IntegrationType.Facebook].forEach((integrationType) => {
+            it(`should return an empty list because there is no integrations in the state (${integrationType})`, () => {
+                expect(
+                    getOnboardingIntegrations(integrationType)({} as RootState)
+                ).toEqual(fromJS([]))
+            })
 
-                it(`should return the list of onboarding pages from the state (${integrationType})`, () => {
-                    const page = {id: 1, name: 'foo'}
-                    const state = {
-                        integrations: fromJS({
-                            extra: {
-                                [integrationType]: {
-                                    onboardingIntegrations: {data: [page]},
-                                },
+            it(`should return the list of onboarding pages from the state (${integrationType})`, () => {
+                const page = {id: 1, name: 'foo'}
+                const state = {
+                    integrations: fromJS({
+                        extra: {
+                            [integrationType]: {
+                                onboardingIntegrations: {data: [page]},
                             },
-                        }),
-                    } as RootState
+                        },
+                    }),
+                } as RootState
 
-                    expect(
-                        getOnboardingIntegrations(integrationType)(state).toJS()
-                    ).toEqual([page])
-                })
-            }
-        )
+                expect(
+                    getOnboardingIntegrations(integrationType)(state).toJS()
+                ).toEqual([page])
+            })
+        })
     })
 
     describe('getOnboardingMeta()', () => {
