@@ -2,6 +2,7 @@ import React, {SyntheticEvent, useCallback} from 'react'
 import {Call} from '@twilio/voice-sdk'
 import {useHistory, useLocation} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import {declineCall} from 'hooks/integrations/phone/api'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
@@ -9,6 +10,7 @@ import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
 import {useConnectionParameters} from '../hooks'
 
+import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import css from './IncomingPhoneCall.less'
 
 type Props = {
@@ -19,6 +21,7 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
     const history = useHistory()
     const location = useLocation()
     const {ticketId} = useConnectionParameters(call)
+    const newRoundRobinEnabled = useFlags()[FeatureFlagKey.NewPhoneRoundRobin]
 
     const openTicket = useCallback(() => {
         const isWhatsAppMigrationPage = location.pathname.startsWith(
@@ -59,9 +62,14 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
                     className={css.decline}
                     onClick={(event: SyntheticEvent<HTMLButtonElement>) => {
                         event.stopPropagation()
-                        call.ignore()
-                        call.emit('cancel')
 
+                        if (newRoundRobinEnabled) {
+                            call.reject()
+                        } else {
+                            call.ignore()
+                        }
+
+                        call.emit('cancel')
                         void declineCall(call)
                     }}
                 >

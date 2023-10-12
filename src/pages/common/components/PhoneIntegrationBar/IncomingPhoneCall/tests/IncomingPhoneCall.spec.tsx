@@ -9,10 +9,12 @@ import MockAdapter from 'axios-mock-adapter'
 import {Router} from 'react-router-dom'
 import {History} from 'history'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
 import IncomingPhoneCall from '../IncomingPhoneCall'
+import {FeatureFlagKey} from '../../../../../../config/featureFlags'
 
 jest.mock('@twilio/voice-sdk')
 
@@ -35,6 +37,9 @@ describe('<IncomingPhoneCall/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
+        mockFlags({
+            [FeatureFlagKey.NewPhoneRoundRobin]: false,
+        })
         history = {
             location: {
                 pathname: '/app',
@@ -93,6 +98,41 @@ describe('<IncomingPhoneCall/>', () => {
 
         process.nextTick(() => {
             expect(mockedServer.history).toMatchSnapshot()
+            done()
+        })
+    })
+
+    it('should decline call new round robin', (done) => {
+        mockFlags({
+            [FeatureFlagKey.NewPhoneRoundRobin]: true,
+        })
+
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        mockedServer.onPost('/integrations/phone/call/declined').reply(201)
+        mockedServer.onPost('/integrations/phone/call/cancelled').reply(201)
+
+        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
+            wrapper,
+        })
+
+        fireEvent.click(getByTestId('decline-call-button'))
+        expect(call.reject).toHaveBeenCalled()
+        expect(call.emit).toHaveBeenCalledWith('cancel')
+        expect(history.push).not.toHaveBeenCalled()
+
+        process.nextTick(() => {
+            const serverHistoryPostRequests = mockedServer.history.post
+            const lastPostRequest =
+                serverHistoryPostRequests[serverHistoryPostRequests.length - 1]
+
+            expect(JSON.parse(lastPostRequest.data)).toEqual({
+                ticket_id: ticketId,
+                call_sid: call.customParameters.get('call_sid'),
+            })
+            expect(lastPostRequest.url).toEqual(
+                '/integrations/phone/call/declined'
+            )
             done()
         })
     })

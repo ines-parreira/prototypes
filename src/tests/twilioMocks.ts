@@ -25,6 +25,7 @@ export const mockIncomingCall = (
     parameters: {From: '+14158880101'},
     accept: jest.fn(),
     ignore: jest.fn(),
+    reject: jest.fn(),
     emit: jest.fn(),
 })
 
