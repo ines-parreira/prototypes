@@ -11,6 +11,9 @@ const baseProps: PageEmbedmentFormProps = {
     modeSelectionTitle: 'Choose where to embed this entity',
     positionSelectionTitle: 'Select the position of the entity',
     shopifyPages: ShopifyPagesListFixture,
+    pageNamePlaceholder: 'Page name',
+    pageSlugPlaceholder: 'Slug',
+    tooltipText: 'Tooltip text',
 }
 
 describe('<PageEmbedmentForm />', () => {

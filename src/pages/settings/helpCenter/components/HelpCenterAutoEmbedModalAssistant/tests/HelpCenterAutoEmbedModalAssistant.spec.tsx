@@ -4,21 +4,21 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import userEvent from '@testing-library/user-event'
 import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {CONTACT_FORM_EMBED_FORM_TEXTS} from 'pages/settings/contactForm/constants'
-import {useCreatePageEmbedment} from 'pages/settings/contactForm/queries'
+import {HELP_CENTER_EMBED_FORM_TEXTS} from 'pages/settings/helpCenter/constants'
+import {useCreatePageEmbedment} from 'pages/settings/helpCenter/queries'
 import {assumeMock} from 'utils/testing'
 import {MODAL_LABELS} from '../constants'
-import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
+import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
-jest.mock('pages/settings/contactForm/queries')
+jest.mock('pages/settings/helpCenter/queries')
 const mockCreatePageEmbedment = jest.fn()
 const useCreatePageEmbedmentMock = assumeMock(useCreatePageEmbedment)
 
-describe('<ContactFormAutoEmbedModalAssistant />', () => {
+describe('<HelpCenterAutoEmbedModalAssistant />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useCreatePageEmbedmentMock.mockImplementation(() => {
@@ -33,21 +33,21 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
         const isOpen = true
         const onClose = jest.fn()
         const pages = ShopifyPagesListFixture
-        const contactFormId = 1
+        const helpCenterId = 1
 
         render(
             <QueryClientProvider client={queryClient}>
-                <ContactFormAutoEmbedModalAssistant
+                <HelpCenterAutoEmbedModalAssistant
                     isOpen={isOpen}
                     onClose={onClose}
                     pages={pages}
-                    contactFormId={contactFormId}
+                    helpCenterId={helpCenterId}
                 />
             </QueryClientProvider>
         )
 
-        screen.getByText(MODAL_LABELS.TITLE)
-        screen.getByText(MODAL_LABELS.EMBED)
+        screen.getByText(MODAL_LABELS.TITLE, {selector: 'div'})
+        screen.getByText(MODAL_LABELS.EMBED, {selector: 'button'})
         screen.getByText(MODAL_LABELS.CANCEL)
 
         // a PageEmbedmentForm label
@@ -58,15 +58,15 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
         const isOpen = true
         const onClose = jest.fn()
         const pages = ShopifyPagesListFixture
-        const contactFormId = 1
+        const helpCenterId = 1
 
         render(
             <QueryClientProvider client={queryClient}>
-                <ContactFormAutoEmbedModalAssistant
+                <HelpCenterAutoEmbedModalAssistant
                     isOpen={isOpen}
                     onClose={onClose}
                     pages={pages}
-                    contactFormId={contactFormId}
+                    helpCenterId={helpCenterId}
                 />
             </QueryClientProvider>
         )
@@ -81,15 +81,15 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
         const isOpen = true
         const onClose = jest.fn()
         const pages = ShopifyPagesListFixture
-        const contactFormId = 1
+        const helpCenterId = 1
 
         render(
             <QueryClientProvider client={queryClient}>
-                <ContactFormAutoEmbedModalAssistant
+                <HelpCenterAutoEmbedModalAssistant
                     isOpen={isOpen}
                     onClose={onClose}
                     pages={pages}
-                    contactFormId={contactFormId}
+                    helpCenterId={helpCenterId}
                 />
             </QueryClientProvider>
         )
@@ -101,10 +101,10 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
         expect(embedButton).toHaveClass('isDisabled')
 
         const pageNameInput = screen.getByPlaceholderText(
-            CONTACT_FORM_EMBED_FORM_TEXTS.PageNamePlaceholder
+            HELP_CENTER_EMBED_FORM_TEXTS.PageNamePlaceholder
         )
         const pageSlugInput = screen.getByPlaceholderText(
-            CONTACT_FORM_EMBED_FORM_TEXTS.PageSlugPlaceholder
+            HELP_CENTER_EMBED_FORM_TEXTS.PageSlugPlaceholder
         )
 
         // Set the page name and slug

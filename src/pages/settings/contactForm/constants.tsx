@@ -1,3 +1,4 @@
+import React from 'react'
 import {Language} from 'constants/languages'
 
 export const CONTACT_FORM_EMBEDMENTS_LIMIT = 50
@@ -19,3 +20,14 @@ export const CONTACT_FORM_FORMS_PATH = `${CONTACT_FORM_BASE_PATH}/forms`
 export const CONTACT_FORM_CREATE_PATH = `${CONTACT_FORM_BASE_PATH}/new`
 export const EMAIL_SELECTION_INPUT_LABEL =
     'Select an email to reply to Contact Form submissions'
+
+export const CONTACT_FORM_EMBED_FORM_TEXTS = {
+    PageNamePlaceholder: 'ie. Contact Form',
+    PageSlugPlaceholder: 'ie. contact-form',
+    TooltipText: (
+        <>
+            You have no existing pages
+            <br /> to embed the Contact Form
+        </>
+    ),
+}

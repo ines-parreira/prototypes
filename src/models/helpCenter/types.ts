@@ -163,3 +163,6 @@ export type UpdateExtraHTMLDto = Components.Schemas.UpdateExtraHTMLDto
 
 export type HelpCenterAutomationSettings =
     Components.Schemas.AutomationSettingsDto
+
+// PAGE EMBEDMENT
+export type HelpCenterPageEmbedment = Components.Schemas.PageEmbedmentDto

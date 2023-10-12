@@ -7,7 +7,7 @@ import {
     ShopifyPagesGeneric500ErrorFixture,
 } from '../fixtures/shopifyPage'
 import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
-import * as contactFormResourceMethods from '../resources'
+import * as helpCenterResourceMethods from '../resources'
 import {mockResourceServerReplies} from './resource-mocks'
 
 describe('getShopifyPages', () => {
@@ -22,9 +22,9 @@ describe('getShopifyPages', () => {
             getShopifyPages: 'success',
         })
 
-        const data = await contactFormResourceMethods.getShopifyPages(
+        const data = await helpCenterResourceMethods.getShopifyPages(
             sdkMocks.client,
-            {contact_form_id: 1}
+            {help_center_id: 1}
         )
         expect(data).toEqual(ShopifyPagesListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -40,8 +40,8 @@ describe('getShopifyPages', () => {
             .reply(500, ShopifyPagesGeneric500ErrorFixture)
 
         await expect(
-            contactFormResourceMethods.getShopifyPages(sdkMocks.client, {
-                contact_form_id: 1,
+            helpCenterResourceMethods.getShopifyPages(sdkMocks.client, {
+                help_center_id: 1,
             })
         ).rejects.toMatchInlineSnapshot(
             `[Error: Request failed with status code 500]`
@@ -62,9 +62,9 @@ describe('getPageEmbedments', () => {
             getPageEmbedments: 'success',
         })
 
-        const data = await contactFormResourceMethods.getPageEmbedments(
+        const data = await helpCenterResourceMethods.getPageEmbedments(
             sdkMocks.client,
-            {contact_form_id: 1}
+            {help_center_id: 1}
         )
         expect(data).toEqual(PageEmbedmentsListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -80,8 +80,8 @@ describe('getPageEmbedments', () => {
             .reply(500, ShopifyPagesGeneric500ErrorFixture)
 
         await expect(
-            contactFormResourceMethods.getPageEmbedments(sdkMocks.client, {
-                contact_form_id: 1,
+            helpCenterResourceMethods.getPageEmbedments(sdkMocks.client, {
+                help_center_id: 1,
             })
         ).rejects.toMatchInlineSnapshot(
             `[Error: Request failed with status code 500]`
@@ -109,9 +109,9 @@ describe('createPageEmbedment', () => {
             .onPost('/api/help-center/contact-forms/1/shopify-page-embedments')
             .reply(201, PageEmbedmentFixture)
 
-        const data = await contactFormResourceMethods.createPageEmbedment(
+        const data = await helpCenterResourceMethods.createPageEmbedment(
             sdkMocks.client,
-            {contact_form_id: 1},
+            {help_center_id: 1},
             payload
         )
         expect(data).toEqual(PageEmbedmentFixture)
@@ -128,9 +128,9 @@ describe('createPageEmbedment', () => {
             .reply(500, ShopifyPagesGeneric500ErrorFixture)
 
         await expect(
-            contactFormResourceMethods.createPageEmbedment(
+            helpCenterResourceMethods.createPageEmbedment(
                 sdkMocks.client,
-                {contact_form_id: 1},
+                {help_center_id: 1},
                 payload
             )
         ).rejects.toMatchInlineSnapshot(

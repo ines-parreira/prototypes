@@ -3,8 +3,8 @@ import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi
 import {Paths} from '../../../rest_api/help_center_api/client.generated'
 import {MutationOverrides} from '../../../types/query'
 
-import {getShopifyPages} from '../contactForm/resources'
 import {
+    getShopifyPages,
     getPageEmbedments,
     createPageEmbedment,
     updatePageEmbedment,
@@ -80,7 +80,7 @@ export const helpCenterPageEmbedmentsKeys = {
 export const useGetShopifyPages = <
     TData = Awaited<ReturnType<typeof getShopifyPages>>
 >(
-    helpCenterId: Paths.ListContactFormShopifyPages.Parameters.ContactFormId,
+    helpCenterId: Paths.ListHelpCenterShopifyPageEmbedments.Parameters.HelpCenterId,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getShopifyPages>>,
         unknown,
@@ -93,7 +93,7 @@ export const useGetShopifyPages = <
         queryKey: helpCenterEmbeddablePageKeys.lists(helpCenterId),
         queryFn: async () =>
             getShopifyPages(client, {
-                contact_form_id: helpCenterId,
+                help_center_id: helpCenterId,
             }),
         enabled: !!client,
         ...overrides,
@@ -116,7 +116,7 @@ export const useGetPageEmbedments = <
         queryKey: helpCenterPageEmbedmentsKeys.lists(helpCenterId),
         queryFn: async () =>
             getPageEmbedments(client, {
-                contact_form_id: helpCenterId,
+                help_center_id: helpCenterId,
             }),
         enabled: !!client,
         ...overrides,

@@ -7,36 +7,34 @@ import {Paths} from '../../../rest_api/help_center_api/client.generated'
 
 export const getShopifyPages = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListContactFormShopifyPages.PathParameters
+    pathParameters: Paths.ListHelpCenterShopifyPages.PathParameters
 ) => {
     if (!client) return null
 
-    const res = await client.listContactFormShopifyPages(pathParameters)
+    const res = await client.listHelpCenterShopifyPages(pathParameters)
 
     return res.data
 }
 
 export const getPageEmbedments = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListContactFormShopifyPageEmbedments.PathParameters
+    pathParameters: Paths.ListHelpCenterShopifyPageEmbedments.PathParameters
 ) => {
     if (!client) return null
 
-    const res = await client.listContactFormShopifyPageEmbedments(
-        pathParameters
-    )
+    const res = await client.listHelpCenterShopifyPageEmbedments(pathParameters)
 
     return res.data
 }
 
 export const createPageEmbedment = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.CreateContactFormShopifyPageEmbedment.PathParameters,
+    pathParameters: Paths.CreateHelpCenterShopifyPageEmbedment.PathParameters,
     body: CreateShopifyPageEmbedmentDto
 ) => {
     if (!client) return null
 
-    const res = await client.createContactFormShopifyPageEmbedment(
+    const res = await client.createHelpCenterShopifyPageEmbedment(
         pathParameters,
         body
     )

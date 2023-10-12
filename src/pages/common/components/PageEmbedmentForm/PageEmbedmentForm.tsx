@@ -17,11 +17,10 @@ import InputField from 'pages/common/forms/input/InputField'
 import imageLayoutTop from 'assets/img/icons/layout-top.svg'
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 
-import {EmbeddablePage} from 'models/contactForm/types'
 import Tooltip from 'pages/common/components/Tooltip'
-import {SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX} from 'pages/settings/contactForm/components/ContactFormAutoEmbedModalAssistant/constants'
-import {slugify} from '../../utils/slugify'
-import {EmbedMode, PageEmbedmentPosition} from './types'
+import {slugify} from 'utils/slugifyForShopify'
+import {SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX} from './constants'
+import {EmbedMode, PageEmbedmentPosition, EmbeddablePage} from './types'
 
 import css from './PageEmbedmentForm.less'
 import {
@@ -34,6 +33,9 @@ export type PageEmbedmentFormProps = {
     positionSelectionTitle: string
     dispatch: PageEmbedmentFormReducerDispatch
     state: PageEmbedmentFormReducerState
+    pageNamePlaceholder: string
+    pageSlugPlaceholder: string
+    tooltipText: string | JSX.Element
 
     // TODO: define a real model for the shopify page
     shopifyPages: EmbeddablePage[]
@@ -55,6 +57,9 @@ export type PageEmbedmentFormProps = {
 const PageEmbedmentForm = ({
     modeSelectionTitle,
     positionSelectionTitle,
+    pageNamePlaceholder,
+    pageSlugPlaceholder,
+    tooltipText,
 
     shopifyPages,
     state,
@@ -111,8 +116,7 @@ const PageEmbedmentForm = ({
                         target="existing-page-emedment-radio-button"
                         placement="top"
                     >
-                        You have no existing pages
-                        <br /> to embed the Contact Form
+                        {tooltipText}
                     </Tooltip>
                 )}
                 <PreviewRadioButton
@@ -142,7 +146,7 @@ const PageEmbedmentForm = ({
                     className={css.inputField}
                     data-testid="page-name-input"
                     label="Page name"
-                    placeholder="ie. Contact Form"
+                    placeholder={pageNamePlaceholder}
                     onChange={(nextValue) => {
                         dispatch({
                             type: 'setPageName',
@@ -169,7 +173,7 @@ const PageEmbedmentForm = ({
                     className={css.inputField}
                     data-testid="page-slug-input"
                     label="Slug"
-                    placeholder="ie. contact-form"
+                    placeholder={pageSlugPlaceholder}
                     onChange={(nextValue) => {
                         const filteredValue = nextValue
                             .toLowerCase()

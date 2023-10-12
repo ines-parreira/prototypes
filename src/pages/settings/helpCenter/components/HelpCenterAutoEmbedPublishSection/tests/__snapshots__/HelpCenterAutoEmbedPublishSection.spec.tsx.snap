@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-shopify store should render correct section 1`] = `
+<section>
+  <div
+    class="card disabled"
+    data-testid="help-center-auto-embed-card"
+    id="help-center-auto-embed-card"
+  >
+    <div>
+      <h3
+        class="title"
+      >
+        Automatically embed on your website
+        <div
+          class="badge badge"
+        >
+          RECOMMENDED
+        </div>
+      </h3>
+      <div>
+        Gorgias will automatically embed the Help Center on a new or existing page on your website. This method is code-free.
+      </div>
+    </div>
+    <button
+      aria-disabled="true"
+      class="wrapper fill primary medium isDisabled"
+      data-testid="help-center-auto-embed-card__embed-button"
+      type="button"
+    >
+      Embed Help Center
+    </button>
+  </div>
+</section>
+`;
+
+exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions needed should render correct section 1`] = `
+<section>
+  <div
+    class="alert warning closable"
+  >
+    <div
+      class="iconContainer"
+    >
+      <img
+        alt="icon"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="content"
+    >
+      <span
+        class="label"
+      >
+        To use the auto-embed feature for your form,
+         
+        <a
+          to="/app/settings/integrations/shopify/3"
+        >
+          update your Shopify app permissions
+        </a>
+        .
+      </span>
+    </div>
+    <div
+      aria-label="Close Icon"
+      class="close"
+    >
+      <img
+        alt="close-icon"
+        class="closeIcon"
+        src="test-file-stub"
+      />
+    </div>
+  </div>
+  <div
+    class="card disabled"
+    data-testid="help-center-auto-embed-card"
+    id="help-center-auto-embed-card"
+  >
+    <div>
+      <h3
+        class="title"
+      >
+        Automatically embed on your website
+        <div
+          class="badge badge"
+        >
+          RECOMMENDED
+        </div>
+      </h3>
+      <div>
+        Gorgias will automatically embed the Help Center on a new or existing page on your website. This method is code-free.
+      </div>
+    </div>
+    <button
+      aria-disabled="true"
+      class="wrapper fill primary medium isDisabled"
+      data-testid="help-center-auto-embed-card__embed-button"
+      type="button"
+    >
+      Embed Help Center
+    </button>
+  </div>
+</section>
+`;
+
+exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions not needed should render correct section 1`] = `
+<section>
+  <div
+    class="card"
+    data-testid="help-center-auto-embed-card"
+    id="help-center-auto-embed-card"
+  >
+    <div>
+      <h3
+        class="title"
+      >
+        Automatically embed on your website
+        <div
+          class="badge badge"
+        >
+          RECOMMENDED
+        </div>
+      </h3>
+      <div>
+        Gorgias will automatically embed the Help Center on a new or existing page on your website. This method is code-free.
+      </div>
+    </div>
+    <button
+      aria-disabled="false"
+      class="wrapper fill primary medium"
+      data-testid="help-center-auto-embed-card__embed-button"
+      type="button"
+    >
+      Embed Help Center
+    </button>
+  </div>
+</section>
+`;
+
+exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions not needed should render correct section when store has embedments already 1`] = `
+<section>
+  <div
+    class="card clickable"
+    data-testid="help-center-auto-embed-card"
+    id="help-center-auto-embed-card"
+  >
+    <i
+      class="material-icons text-success"
+      style="font-size: 24px;"
+    >
+      check_circle
+    </i>
+    <div>
+      <h3
+        class="title"
+      >
+        Automatically embed on your website
+      </h3>
+      <div>
+        Gorgias will automatically embed the Help Center on a new or existing page on your website. This method is code-free.
+      </div>
+    </div>
+    <i
+      class="material-icons"
+    >
+      keyboard_arrow_right
+    </i>
+  </div>
+</section>
+`;

@@ -1425,6 +1425,12 @@ declare namespace Components {
        */
       deleted_datetime?: string | null; // date-time
       id: number;
+      /**
+       * Unique alphanumerical identifier
+       * example:
+       * hcuid123
+       */
+      uid: string;
       name: string;
       subdomain: string;
       deactivated_datetime: string | null; // date-time
@@ -1480,6 +1486,12 @@ declare namespace Components {
        */
       deleted_datetime?: string | null; // date-time
       id: number;
+      /**
+       * Unique alphanumerical identifier
+       * example:
+       * hcuid123
+       */
+      uid: string;
       name: string;
       subdomain: string;
       deactivated_datetime: string | null; // date-time
@@ -1517,6 +1529,12 @@ declare namespace Components {
        * 2
        */
       automation_settings_id: number | null;
+    }
+    export interface HelpCenterPageDto {
+      external_id: string;
+      title: string;
+      url_path: string;
+      body_html: string | null;
     }
     export interface HelpCenterTranslationDto {
       /**
@@ -2992,6 +3010,21 @@ declare namespace Paths {
       export type $200 = Components.Schemas.AutomationSettingsDto;
     }
   }
+  namespace GetHelpCenterByUid {
+    namespace Parameters {
+      export type Fields = string[];
+      export type Uid = string;
+    }
+    export interface PathParameters {
+      uid: Parameters.Uid;
+    }
+    export interface QueryParameters {
+      fields?: Parameters.Fields;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.GetHelpCenterDto;
+    }
+  }
   namespace GetHotswapStatus {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -3241,6 +3274,28 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.CustomDomainsListPageDto;
+    }
+  }
+  namespace ListHelpCenterShopifyPageEmbedments {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.PageEmbedmentDto[];
+    }
+  }
+  namespace ListHelpCenterShopifyPages {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.HelpCenterPageDto[];
     }
   }
   namespace ListHelpCenterTranslations {
@@ -3700,6 +3755,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
+  /**
+   * getHelpCenterByUid - Retrieve a Help Center by uid
+   */
+  'getHelpCenterByUid'(
+    parameters?: Parameters<Paths.GetHelpCenterByUid.PathParameters & Paths.GetHelpCenterByUid.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetHelpCenterByUid.Responses.$200>
   /**
    * deleteAccountHelpCenters - Delete all Help centers of an account
    */
@@ -4370,13 +4433,21 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * listContactFormShopifyPages - List the Contact Form Shopify Pages available for a Contact Form Page Embedment
+   * listContactFormShopifyPages - List the Contact Form Shopify Pages available for a Contact Form Embedment
    */
   'listContactFormShopifyPages'(
     parameters?: Parameters<Paths.ListContactFormShopifyPages.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListContactFormShopifyPages.Responses.$200>
+  /**
+   * listHelpCenterShopifyPageEmbedments - List the Help Center Shopify Page Embedments
+   */
+  'listHelpCenterShopifyPageEmbedments'(
+    parameters?: Parameters<Paths.ListHelpCenterShopifyPageEmbedments.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListHelpCenterShopifyPageEmbedments.Responses.$200>
   /**
    * createHelpCenterShopifyPageEmbedment - Create a Help Center Form Shopify Page Embedment
    * 
@@ -4389,6 +4460,14 @@ export interface OperationMethods {
     data?: Paths.CreateHelpCenterShopifyPageEmbedment.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateHelpCenterShopifyPageEmbedment.Responses.$201>
+  /**
+   * listHelpCenterShopifyPages - List the Help Center Shopify Pages available for a Help Center Embedment
+   */
+  'listHelpCenterShopifyPages'(
+    parameters?: Parameters<Paths.ListHelpCenterShopifyPages.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -4522,6 +4601,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/uid/{uid}']: {
+    /**
+     * getHelpCenterByUid - Retrieve a Help Center by uid
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetHelpCenterByUid.PathParameters & Paths.GetHelpCenterByUid.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetHelpCenterByUid.Responses.$200>
   }
   ['/api/help-center/help-centers/delete-account']: {
     /**
@@ -5288,7 +5377,7 @@ export interface PathsDictionary {
   }
   ['/api/help-center/contact-forms/{contact_form_id}/shopify-pages']: {
     /**
-     * listContactFormShopifyPages - List the Contact Form Shopify Pages available for a Contact Form Page Embedment
+     * listContactFormShopifyPages - List the Contact Form Shopify Pages available for a Contact Form Embedment
      */
     'get'(
       parameters?: Parameters<Paths.ListContactFormShopifyPages.PathParameters> | null,
@@ -5309,6 +5398,24 @@ export interface PathsDictionary {
       data?: Paths.CreateHelpCenterShopifyPageEmbedment.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateHelpCenterShopifyPageEmbedment.Responses.$201>
+    /**
+     * listHelpCenterShopifyPageEmbedments - List the Help Center Shopify Page Embedments
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListHelpCenterShopifyPageEmbedments.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListHelpCenterShopifyPageEmbedments.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/shopify-pages']: {
+    /**
+     * listHelpCenterShopifyPages - List the Help Center Shopify Pages available for a Help Center Embedment
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListHelpCenterShopifyPages.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
   }
 }
 

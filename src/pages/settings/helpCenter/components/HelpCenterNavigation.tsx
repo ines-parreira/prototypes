@@ -31,9 +31,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/customization`} exact>
                 Customization
             </NavLink>
-            <NavLink to={`${baseURL}/publish-track`} exact>
-                Publish & Track
-            </NavLink>
+            <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
         </SecondaryNavbar>
     )
 }

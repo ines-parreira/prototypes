@@ -11,60 +11,60 @@ import {
     PageEmbedmentsGeneric500ErrorFixture,
     PageEmbedmentFixture,
 } from '../fixtures/pageEmbedment'
-import * as contactFormResourceMethods from '../resources'
+import * as helpCenterResourceMethods from '../resources'
 
 export type MockOptions = 'success' | 'error' | 'success-empty'
 export const mockResourceServerReplies = (
     mockedServer: MockAdapter,
     options: {
-        [K in keyof typeof contactFormResourceMethods]?: MockOptions
+        [K in keyof typeof helpCenterResourceMethods]?: MockOptions
     } = {
         getShopifyPages: 'success',
     }
 ) => {
     if (options.getShopifyPages === 'success') {
         mockedServer
-            .onGet('/api/help-center/contact-forms/1/shopify-pages')
+            .onGet('/api/help-center/help-centers/1/shopify-pages')
             .reply(200, ShopifyPagesListFixture)
     }
     if (options.getShopifyPages === 'success-empty') {
         mockedServer
-            .onGet('/api/help-center/contact-forms/1/shopify-pages')
+            .onGet('/api/help-center/help-centers/1/shopify-pages')
             .reply(200, ShopifyPagesEmptyListFixture)
     }
 
     if (options.getShopifyPages === 'error') {
         mockedServer
-            .onGet(`/api/help-center/contact-forms/1/shopify-pages`)
+            .onGet(`/api/help-center/help-centers/1/shopify-pages`)
             .reply(500, ShopifyPagesGeneric500ErrorFixture)
     }
 
     if (options.getPageEmbedments === 'success') {
         mockedServer
-            .onGet('/api/help-center/contact-forms/1/shopify-page-embedments')
+            .onGet('/api/help-center/help-centers/1/shopify-page-embedments')
             .reply(200, PageEmbedmentsListFixture)
     }
     if (options.getPageEmbedments === 'success-empty') {
         mockedServer
-            .onGet('/api/help-center/contact-forms/1/shopify-page-embedments')
+            .onGet('/api/help-center/help-centers/1/shopify-page-embedments')
             .reply(200, PageEmbedmentsEmptyListFixture)
     }
 
     if (options.getPageEmbedments === 'error') {
         mockedServer
-            .onGet(`/api/help-center/contact-forms/1/shopify-page-embedments`)
+            .onGet(`/api/help-center/help-centers/1/shopify-page-embedments`)
             .reply(500, PageEmbedmentsGeneric500ErrorFixture)
     }
 
     if (options.createPageEmbedment === 'success') {
         mockedServer
-            .onPost('/api/help-center/contact-forms/1/shopify-page-embedments')
+            .onPost('/api/help-center/help-centers/1/shopify-page-embedments')
             .reply(201, PageEmbedmentFixture)
     }
 
     if (options.createPageEmbedment === 'error') {
         mockedServer
-            .onPost('/api/help-center/contact-forms/1/shopify-page-embedments')
+            .onPost('/api/help-center/help-centers/1/shopify-page-embedments')
             .reply(500, PageEmbedmentsGeneric500ErrorFixture)
     }
 

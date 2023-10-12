@@ -28,7 +28,7 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
+      "url": "/api/help-center/help-centers/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -66,7 +66,7 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
+      "url": "/api/help-center/help-centers/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -98,7 +98,7 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
+      "url": "/api/help-center/help-centers/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -135,7 +135,7 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
+      "url": "/api/help-center/help-centers/1/shopify-page-embedments",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -172,7 +172,7 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/shopify-pages",
+      "url": "/api/help-center/help-centers/1/shopify-pages",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
@@ -209,7 +209,7 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
       "transformResponse": [
         [Function],
       ],
-      "url": "/api/help-center/contact-forms/1/shopify-pages",
+      "url": "/api/help-center/help-centers/1/shopify-pages",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",

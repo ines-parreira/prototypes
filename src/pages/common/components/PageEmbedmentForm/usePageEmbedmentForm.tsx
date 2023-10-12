@@ -1,10 +1,10 @@
 import {Dispatch, useCallback, useReducer} from 'react'
-import {EmbeddablePage} from 'models/contactForm/types'
 import {
     EmbedMode,
     PageEmbedmentFormValueStateWithError,
     PageEmbedmentPosition,
     SelectedPage,
+    EmbeddablePage,
 } from './types'
 
 export type PageEmbedmentFormReducerState = {

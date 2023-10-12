@@ -5,9 +5,9 @@ export const NEW_PAGE_EMBEDMENT_LABELS = {
 }
 
 export const MODAL_LABELS = {
-    TITLE: 'Embed Contact Form',
+    TITLE: 'Embed Help Center',
     CANCEL: 'Cancel',
-    EMBED: 'Embed Form',
-    FORM_MODE_SELECTION_TITLE: 'Choose where to embed the form',
-    FORM_POSITION_SELECTION_TITLE: 'Select the position of the form',
+    EMBED: 'Embed Help Center',
+    FORM_MODE_SELECTION_TITLE: 'Choose where to embed your Help Center',
+    FORM_POSITION_SELECTION_TITLE: 'Select the position of your Help Center',
 }

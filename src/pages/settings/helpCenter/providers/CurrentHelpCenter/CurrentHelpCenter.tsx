@@ -157,7 +157,10 @@ const CurrentHelpCenter: React.FC = () => {
                     )}
                 />
                 <Route
-                    path={`${path}/publish-track`}
+                    path={[
+                        `${path}/publish-track`,
+                        `${path}/publish-track/embedments`,
+                    ]}
                     exact
                     render={() => (
                         <HelpCenterPreferencesSettings helpCenter={helpCenter}>

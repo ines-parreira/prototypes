@@ -18,3 +18,10 @@ export type PageEmbedmentFormValueStateWithError<T = string> = {
     error: string
     isTouched?: true
 }
+
+export type EmbeddablePage = {
+    external_id: string
+    title: string
+    url_path: string
+    body_html: string | null
+}

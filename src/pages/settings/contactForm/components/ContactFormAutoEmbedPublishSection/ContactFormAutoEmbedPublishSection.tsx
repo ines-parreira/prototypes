@@ -1,45 +1,18 @@
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ContactForm, PageEmbedment} from 'models/contactForm/types'
+import {ContactForm, ContactFormPageEmbedment} from 'models/contactForm/types'
 import {FeatureFlagKey} from 'config/featureFlags'
-import useAppSelector from 'hooks/useAppSelector'
-import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
+import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import ContactFormAutoEmbedWarningBanner, {
     ContactFormAutoEmbedWarningBannerProps,
 } from '../ContactFormAutoEmbedWarningBanner'
 import ContactFormAutoEmbedCard from '../ContactFormAutoEmbedCard'
 import {ContactFormAutoEmbedReadinessStatus} from './types'
 
-/**
- * Search for a Shopify integration by shop name
- * and return the integration id if found and if it needs to be updated
- */
-const useShopifyIntegrationAndScope = (
-    shopName: string
-): {
-    integrationId: number | null
-    needScopeUpdate: boolean
-} => {
-    const shopifyIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName)
-    )
-
-    const needScopeUpdate = !shopifyIntegration.isEmpty()
-        ? Boolean(
-              shopifyIntegration.getIn(['meta', 'need_scope_update'], false)
-          )
-        : false
-
-    return {
-        integrationId: shopifyIntegration.getIn(['id'], null),
-        needScopeUpdate,
-    }
-}
-
 export type ContactFormAutoEmbedPublishSectionProps = {
     contactFormShopName: ContactForm['shop_name']
     contactFormId: ContactForm['id']
-    pageEmbedments: PageEmbedment[]
+    pageEmbedments: ContactFormPageEmbedment[]
     isDisabled?: boolean
 }
 

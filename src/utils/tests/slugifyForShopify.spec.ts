@@ -1,4 +1,4 @@
-import {slugify} from './slugify'
+import {slugify} from '../slugifyForShopify'
 
 describe('slugify', () => {
     it('should replace spaces with hyphens', () => {

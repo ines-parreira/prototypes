@@ -133,13 +133,13 @@ describe('useGetPageEmbedments', () => {
 describe('useCreatePageEmbedment', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const payload = {
-        contact_form_id: 1,
+        help_center_id: 1,
         page_id: 1,
         position: 'TOP',
     } as const
 
     const pathParams = {
-        contact_form_id: 1,
+        help_center_id: 1,
     }
 
     beforeEach(async () => {

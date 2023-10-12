@@ -3,7 +3,8 @@ import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import {useQueryClient} from '@tanstack/react-query'
 import {useHistory, Link} from 'react-router-dom'
-import {PageEmbedment, EmbeddablePage} from 'models/contactForm/types'
+import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
+import {ContactFormPageEmbedment} from 'models/contactForm/types'
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -14,7 +15,7 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {PageEmbedmentPosition} from 'pages/settings/contactForm/components/PageEmbedmentForm'
+import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
 import settingsCss from 'pages/settings/settings.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import {
@@ -43,7 +44,7 @@ import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/u
 import css from './ManageEmbedments.less'
 
 type ManageEmbedmentsProps = {
-    embedments: PageEmbedment[]
+    embedments: ContactFormPageEmbedment[]
 }
 
 const PositionOptions = Object.values(PageEmbedmentPosition).map(
@@ -54,7 +55,7 @@ const PositionOptions = Object.values(PageEmbedmentPosition).map(
 )
 
 const resetDraftPositions = (
-    embedments: PageEmbedment[]
+    embedments: ContactFormPageEmbedment[]
 ): Record<number, PageEmbedmentPosition> =>
     embedments.reduce(
         (acc, e) => ({
@@ -276,123 +277,132 @@ const ManageEmbedments = ({
                         <HeaderCell />
                     </TableHead>
                     <TableBody>
-                        {embedments.map((embedment: PageEmbedment) => {
-                            const previewLink = contactForm?.shop_name
-                                ? `https://${
-                                      contactForm.shop_name
-                                  }.myshopify.com/${
-                                      embedment.page_path_url.startsWith('/')
-                                          ? embedment.page_path_url.slice(1)
-                                          : embedment.page_path_url
-                                  }`
-                                : ''
+                        {embedments.map(
+                            (embedment: ContactFormPageEmbedment) => {
+                                const previewLink = contactForm?.shop_name
+                                    ? `https://${
+                                          contactForm.shop_name
+                                      }.myshopify.com/${
+                                          embedment.page_path_url.startsWith(
+                                              '/'
+                                          )
+                                              ? embedment.page_path_url.slice(1)
+                                              : embedment.page_path_url
+                                      }`
+                                    : ''
 
-                            return (
-                                <TableBodyRow key={embedment.id}>
-                                    <BodyCell
-                                        style={{
-                                            cursor: 'default',
-                                            whiteSpace: 'nowrap',
-                                            maxWidth: '100%',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                        }}
-                                    >
-                                        <b>{embedment.page_title}</b>
-                                    </BodyCell>
-
-                                    <BodyCell>
-                                        <SelectField
-                                            fixedWidth
-                                            style={{width: '200px'}}
-                                            onChange={(value) =>
-                                                onPositionChange(
-                                                    embedment.id,
-                                                    value as PageEmbedmentPosition
-                                                )
-                                            }
-                                            value={draftPositions[embedment.id]}
-                                            options={PositionOptions}
-                                            aria-label="language selector"
-                                        />
-                                    </BodyCell>
-
-                                    <BodyCell>
-                                        <a
-                                            data-testid={`preview-button-${embedment.id}`}
-                                            href={previewLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                return (
+                                    <TableBodyRow key={embedment.id}>
+                                        <BodyCell
+                                            style={{
+                                                cursor: 'default',
+                                                whiteSpace: 'nowrap',
+                                                maxWidth: '100%',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                            }}
                                         >
-                                            <IconButton
-                                                fillStyle="ghost"
-                                                intent="secondary"
-                                                title="Preview"
+                                            <b>{embedment.page_title}</b>
+                                        </BodyCell>
+
+                                        <BodyCell>
+                                            <SelectField
+                                                fixedWidth
+                                                style={{width: '200px'}}
+                                                onChange={(value) =>
+                                                    onPositionChange(
+                                                        embedment.id,
+                                                        value as PageEmbedmentPosition
+                                                    )
+                                                }
+                                                value={
+                                                    draftPositions[embedment.id]
+                                                }
+                                                options={PositionOptions}
+                                                aria-label="language selector"
+                                            />
+                                        </BodyCell>
+
+                                        <BodyCell>
+                                            <a
+                                                data-testid={`preview-button-${embedment.id}`}
+                                                href={previewLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                             >
-                                                open_in_new
-                                            </IconButton>
-                                        </a>
-                                        <ConfirmationPopover
-                                            buttonProps={{
-                                                intent: 'destructive',
-                                                size: 'small',
-                                            }}
-                                            cancelButtonProps={{
-                                                intent: 'secondary',
-                                                size: 'small',
-                                            }}
-                                            content={
-                                                <>
-                                                    Removing the contact form
-                                                    from this page cannot be
-                                                    undone. You can re-embed the
-                                                    form again later.
-                                                </>
-                                            }
-                                            onConfirm={onDelete(embedment.id)}
-                                            placement="bottom"
-                                            title={
-                                                <b>
-                                                    Remove embedded Contact
-                                                    Form?
-                                                </b>
-                                            }
-                                            confirmLabel={'Remove Form'}
-                                            showCancelButton
-                                        >
-                                            {({
-                                                uid,
-                                                onDisplayConfirmation,
-                                                elementRef,
-                                            }) => (
                                                 <IconButton
-                                                    className={
-                                                        contactFormCss.mlXs
-                                                    }
                                                     fillStyle="ghost"
-                                                    intent="destructive"
-                                                    data-testid={`delete-button-${embedment.id}`}
-                                                    title={'Remove'}
-                                                    name="Remove"
-                                                    id={uid}
-                                                    isLoading={
-                                                        embedment.id ===
-                                                            embedmentIdToDelete &&
-                                                        deletePageEmbedmentMutation.isLoading
-                                                    }
-                                                    onClick={
-                                                        onDisplayConfirmation
-                                                    }
-                                                    ref={elementRef}
+                                                    intent="secondary"
+                                                    title="Preview"
                                                 >
-                                                    delete
+                                                    open_in_new
                                                 </IconButton>
-                                            )}
-                                        </ConfirmationPopover>
-                                    </BodyCell>
-                                </TableBodyRow>
-                            )
-                        })}
+                                            </a>
+                                            <ConfirmationPopover
+                                                buttonProps={{
+                                                    intent: 'destructive',
+                                                    size: 'small',
+                                                }}
+                                                cancelButtonProps={{
+                                                    intent: 'secondary',
+                                                    size: 'small',
+                                                }}
+                                                content={
+                                                    <>
+                                                        Removing the contact
+                                                        form from this page
+                                                        cannot be undone. You
+                                                        can re-embed the form
+                                                        again later.
+                                                    </>
+                                                }
+                                                onConfirm={onDelete(
+                                                    embedment.id
+                                                )}
+                                                placement="bottom"
+                                                title={
+                                                    <b>
+                                                        Remove embedded Contact
+                                                        Form?
+                                                    </b>
+                                                }
+                                                confirmLabel={'Remove Form'}
+                                                showCancelButton
+                                            >
+                                                {({
+                                                    uid,
+                                                    onDisplayConfirmation,
+                                                    elementRef,
+                                                }) => (
+                                                    <IconButton
+                                                        className={
+                                                            contactFormCss.mlXs
+                                                        }
+                                                        fillStyle="ghost"
+                                                        intent="destructive"
+                                                        data-testid={`delete-button-${embedment.id}`}
+                                                        title={'Remove'}
+                                                        name="Remove"
+                                                        id={uid}
+                                                        isLoading={
+                                                            embedment.id ===
+                                                                embedmentIdToDelete &&
+                                                            deletePageEmbedmentMutation.isLoading
+                                                        }
+                                                        onClick={
+                                                            onDisplayConfirmation
+                                                        }
+                                                        ref={elementRef}
+                                                    >
+                                                        delete
+                                                    </IconButton>
+                                                )}
+                                            </ConfirmationPopover>
+                                        </BodyCell>
+                                    </TableBodyRow>
+                                )
+                            }
+                        )}
                     </TableBody>
                 </TableWrapper>
             </section>

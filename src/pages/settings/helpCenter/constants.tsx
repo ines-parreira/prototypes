@@ -204,3 +204,14 @@ export const MANUALLY_EMBED_STEPS = {
         </InstallationStep>,
     ],
 }
+
+export const HELP_CENTER_EMBED_FORM_TEXTS = {
+    PageNamePlaceholder: 'ie. Help Center',
+    PageSlugPlaceholder: 'ie. help-center',
+    TooltipText: (
+        <>
+            You have no existing pages
+            <br /> to embed the Help Center
+        </>
+    ),
+}

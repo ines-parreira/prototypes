@@ -412,6 +412,40 @@
                 "tags": ["help-centers"]
             }
         },
+        "/api/help-center/help-centers/uid/{uid}": {
+            "get": {
+                "operationId": "getHelpCenterByUid",
+                "summary": "Retrieve a Help Center by uid",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "fields",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
+                        "schema": {"type": "array", "items": {"type": "string"}}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetHelpCenterDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"]
+            }
+        },
         "/api/help-center/help-centers/delete-account": {
             "post": {
                 "operationId": "deleteAccountHelpCenters",
@@ -3372,7 +3406,7 @@
         "/api/help-center/contact-forms/{contact_form_id}/shopify-pages": {
             "get": {
                 "operationId": "listContactFormShopifyPages",
-                "summary": "List the Contact Form Shopify Pages available for a Contact Form Page Embedment",
+                "summary": "List the Contact Form Shopify Pages available for a Contact Form Embedment",
                 "parameters": [
                     {
                         "name": "contact_form_id",
@@ -3435,6 +3469,64 @@
                     }
                 },
                 "tags": ["help-center-shopify-page-embedments"]
+            },
+            "get": {
+                "operationId": "listHelpCenterShopifyPageEmbedments",
+                "summary": "List the Help Center Shopify Page Embedments",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PageEmbedmentDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-shopify-page-embedments"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/shopify-pages": {
+            "get": {
+                "operationId": "listHelpCenterShopifyPages",
+                "summary": "List the Help Center Shopify Pages available for a Help Center Embedment",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/HelpCenterPageDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-shopify-pages"]
             }
         }
     },
@@ -3933,6 +4025,11 @@
                         "description": "Deletion date"
                     },
                     "id": {"type": "number"},
+                    "uid": {
+                        "type": "string",
+                        "description": "Unique alphanumerical identifier",
+                        "example": "hcuid123"
+                    },
                     "name": {"type": "string"},
                     "subdomain": {"type": "string"},
                     "deactivated_datetime": {
@@ -4042,6 +4139,7 @@
                     "created_datetime",
                     "updated_datetime",
                     "id",
+                    "uid",
                     "name",
                     "subdomain",
                     "deactivated_datetime",
@@ -4358,6 +4456,11 @@
                         "description": "Deletion date"
                     },
                     "id": {"type": "number"},
+                    "uid": {
+                        "type": "string",
+                        "description": "Unique alphanumerical identifier",
+                        "example": "hcuid123"
+                    },
                     "name": {"type": "string"},
                     "subdomain": {"type": "string"},
                     "deactivated_datetime": {
@@ -4479,6 +4582,7 @@
                     "created_datetime",
                     "updated_datetime",
                     "id",
+                    "uid",
                     "name",
                     "subdomain",
                     "deactivated_datetime",
@@ -7255,6 +7359,16 @@
                 "required": ["position"]
             },
             "ContactFormPageDto": {
+                "type": "object",
+                "properties": {
+                    "external_id": {"type": "string"},
+                    "title": {"type": "string"},
+                    "url_path": {"type": "string"},
+                    "body_html": {"type": "string", "nullable": true}
+                },
+                "required": ["external_id", "title", "url_path", "body_html"]
+            },
+            "HelpCenterPageDto": {
                 "type": "object",
                 "properties": {
                     "external_id": {"type": "string"},

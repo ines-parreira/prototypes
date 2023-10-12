@@ -12,11 +12,6 @@ import {CreateShopifyPageEmbedmentDto} from 'models/contactForm/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import {
-    CONTACT_FORM_EMBED_FORM_TEXTS,
-    CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
-} from 'pages/settings/contactForm/constants'
 import PageEmbedmentForm, {
     EmbedMode,
     EmbeddablePage,
@@ -24,34 +19,39 @@ import PageEmbedmentForm, {
     SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
 } from 'pages/common/components/PageEmbedmentForm'
 import {
-    contactFormPageEmbedmentsKeys,
+    HELP_CENTER_BASE_PATH,
+    HELP_CENTER_EMBED_FORM_TEXTS,
+} from '../../constants'
+
+import {
+    helpCenterPageEmbedmentsKeys,
     useCreatePageEmbedment,
 } from '../../queries'
 import {MODAL_LABELS} from './constants'
 
-import css from './ContactFormAutoEmbedModalAssistant.less'
+import css from './HelpCenterAutoEmbedModalAssistant.less'
 
-type ContactFormAutoEmbedModalAssistantProps = {
+type HelpCenterAutoEmbedModalAssistantProps = {
     isOpen: boolean
     onClose: () => void
     pages: EmbeddablePage[]
-    contactFormId: number
+    helpCenterId: number
 }
 
 /**
- * This is a modal that guides the merchant through the process of embedding the contact form  on their Website pages.
+ * This is a modal that guides the merchant through the process of embedding the help center  on their Website pages.
  */
-const ContactFormAutoEmbedModalAssistant = (
+const HelpCenterAutoEmbedModalAssistant = (
     {
         onClose,
         isOpen,
         pages,
-        contactFormId,
-    }: ContactFormAutoEmbedModalAssistantProps = {
+        helpCenterId,
+    }: HelpCenterAutoEmbedModalAssistantProps = {
         isOpen: false,
         onClose: _noop,
         pages: [],
-        contactFormId: 0,
+        helpCenterId: 0,
     }
 ) => {
     const {
@@ -78,20 +78,17 @@ const ContactFormAutoEmbedModalAssistant = (
 
             void appDispatch(
                 notify({
-                    message: 'Form embedded to page.',
+                    message: 'Help Center embedded to page.',
                     status: NotificationStatus.Success,
                 })
             )
 
             await queryClient.invalidateQueries(
-                contactFormPageEmbedmentsKeys.all(contactFormId)
+                helpCenterPageEmbedmentsKeys.all(helpCenterId)
             )
 
             history.push(
-                insertContactFormIdParam(
-                    CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
-                    contactFormId
-                )
+                `${HELP_CENTER_BASE_PATH}/${helpCenterId}/publish-track/embedments`
             )
             handleOnClose()
         },
@@ -144,7 +141,7 @@ const ContactFormAutoEmbedModalAssistant = (
 
         createPageEmbedmentMutation.mutate([
             undefined,
-            {contact_form_id: contactFormId},
+            {help_center_id: helpCenterId},
             payload,
         ])
     }
@@ -162,12 +159,12 @@ const ContactFormAutoEmbedModalAssistant = (
                     MODAL_LABELS.FORM_POSITION_SELECTION_TITLE
                 }
                 pageNamePlaceholder={
-                    CONTACT_FORM_EMBED_FORM_TEXTS.PageNamePlaceholder
+                    HELP_CENTER_EMBED_FORM_TEXTS.PageNamePlaceholder
                 }
                 pageSlugPlaceholder={
-                    CONTACT_FORM_EMBED_FORM_TEXTS.PageSlugPlaceholder
+                    HELP_CENTER_EMBED_FORM_TEXTS.PageSlugPlaceholder
                 }
-                tooltipText={CONTACT_FORM_EMBED_FORM_TEXTS.TooltipText}
+                tooltipText={HELP_CENTER_EMBED_FORM_TEXTS.TooltipText}
                 dispatch={pageEmbedmentFormDispatch}
                 state={pageEmbedmentForm}
                 shopifyPages={pages}
@@ -195,4 +192,4 @@ const ContactFormAutoEmbedModalAssistant = (
     )
 }
 
-export default ContactFormAutoEmbedModalAssistant
+export default HelpCenterAutoEmbedModalAssistant

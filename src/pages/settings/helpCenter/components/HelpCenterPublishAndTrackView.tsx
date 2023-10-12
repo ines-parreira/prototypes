@@ -32,6 +32,7 @@ import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import {useGetPageEmbedments} from 'pages/settings/helpCenter/queries'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
@@ -56,6 +57,7 @@ import css from './HelpCenterPublishAndTrackView.less'
 import GoogleAnalyticsSection from './GoogleAnalyticSection'
 import {UpdateToggle} from './UpdateToggle'
 import {ConnectToShopSection} from './ConnectToShopSection'
+import HelpCenterAutoEmbedPublishSection from './HelpCenterAutoEmbedPublishSection'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -76,6 +78,9 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>(
         ManuallyEmbedOptions.SHOPIFY
     )
+    const getPageEmbedments = useGetPageEmbedments(helpCenterId, {
+        enabled: Boolean(helpCenter.shop_name),
+    })
 
     const {getHelpCenterCustomDomain} = useHelpCenterActions()
     const {
@@ -297,6 +302,15 @@ export const HelpCenterInstallationView: React.FC = () => {
                                 website.
                             </Alert>
                         )}
+                        <HelpCenterAutoEmbedPublishSection
+                            helpCenterId={helpCenterId}
+                            helpCenterShopName={helpCenter.shop_name}
+                            pageEmbedments={getPageEmbedments.data ?? []}
+                            isDisabled={
+                                getPageEmbedments.isLoading &&
+                                !getPageEmbedments.isFetched
+                            }
+                        />
                         <Accordion>
                             <AccordionItem>
                                 <AccordionHeader>
