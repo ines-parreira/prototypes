@@ -98,10 +98,20 @@ describe('services', () => {
                 expect(
                     isLegacyChannel(TicketMessageSourceType.WhatsAppMessage)
                 ).toBe(true)
+                expect(isLegacyChannel(getChannelBySlug('whatsapp')!)).toBe(
+                    true
+                )
             })
 
             it('should return false for new channels', () => {
                 expect(isLegacyChannel('tiktok-shop')).toBe(false)
+                expect(isLegacyChannel(getChannelBySlug('tiktok-shop')!)).toBe(
+                    false
+                )
+            })
+
+            it('should return false for invalid channels', () => {
+                expect(isLegacyChannel('not-a-valid-channel')).toBe(false)
             })
         })
 
@@ -116,12 +126,20 @@ describe('services', () => {
                 expect(
                     isNewChannel(TicketMessageSourceType.WhatsAppMessage)
                 ).toBe(false)
+                expect(isNewChannel(getChannelBySlug('whatsapp')!)).toBe(false)
             })
 
             it('should return true for new channels', () => {
                 expect(isNewChannel('tiktok-shop')).toBe(true)
-                expect(isNewChannel('google-business-manager')).toBe(true)
+                expect(isNewChannel('google-business-messenger')).toBe(true)
                 expect(isNewChannel(toChannel('tiktok-shop')!)).toBe(true)
+                expect(isNewChannel(getChannelBySlug('tiktok-shop')!)).toBe(
+                    true
+                )
+            })
+
+            it('should return false for invalid channels', () => {
+                expect(isNewChannel('not-a-valid-channel')).toBe(false)
             })
         })
 
@@ -149,6 +167,13 @@ describe('services', () => {
             it('should return the channel if given a channel', () => {
                 const channel = getChannelBySlug('email')
                 expect(toChannel(channel!)).toBe(channel)
+            })
+
+            it('should try to convert a source type > ticket channel > channel', () => {
+                const channel = getChannelBySlug('facebook-recommendations')
+                expect(
+                    toChannel(TicketMessageSourceType.FacebookReviewComment)
+                ).toBe(channel)
             })
 
             it('should return undefined for invalid input', () => {

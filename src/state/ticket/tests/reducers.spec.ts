@@ -1046,6 +1046,36 @@ describe('ticket reducers', () => {
                 ).toJS()
             ).toEqual(customFieldsInitialState[1])
         })
+
+        it('should deep merge ticket.reply_option', () => {
+            const initialReplyOptions = {
+                email: {answerable: true},
+                'internal-note': {answerable: true},
+            }
+            const newReplyOptions = {'tiktok-shop': {answerable: true}}
+
+            const action = {
+                type: types.MERGE_TICKET,
+
+                ticket: ticket.mergeDeep({
+                    reply_options: newReplyOptions,
+                }),
+            }
+
+            const nextState = reducer(
+                initialState.mergeDeep(ticket).mergeDeep({
+                    reply_options: initialReplyOptions,
+                }),
+                action
+            )
+
+            expect(
+                (nextState.get('reply_options') as Map<unknown, unknown>).toJS()
+            ).toEqual({
+                ...initialReplyOptions,
+                ...newReplyOptions,
+            })
+        })
     })
 
     describe('handle MERGE_CUSTOMER', () => {

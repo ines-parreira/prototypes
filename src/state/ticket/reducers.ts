@@ -466,9 +466,21 @@ export default function reducer(
             const mergedCustomFields =
                 oldCustomFields?.mergeDeep(newCustomFields)
 
+            // Make sure that reply_options
+            // are not reset by error when receiving new messages or merging ticket
+            const oldReplyOptions = state.get('reply_options') as Map<any, any>
+            const newReplyOptions = ticket?.get('reply_options') as Map<
+                any,
+                any
+            >
+            const mergedReplyOptions =
+                oldReplyOptions?.mergeDeep(newReplyOptions)
+
             // merge received ticket with current ticket
             let newState = state.merge(ticket as Map<any, any>)
-            newState = newState.set('custom_fields', mergedCustomFields)
+            newState = newState
+                .set('custom_fields', mergedCustomFields)
+                .set('reply_options', mergedReplyOptions)
 
             // Keep the old ticket.customer.{dataKey}
             // if the new ticket.customer doesn't have a {dataKey}.

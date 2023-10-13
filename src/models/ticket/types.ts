@@ -16,7 +16,7 @@ import {Team} from 'models/team/types'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {Event} from 'models/event/types'
-import {Integration} from 'models/integration/types'
+import {Integration, IntegrationType} from 'models/integration/types'
 
 export type TicketSearchOptions = ApiPaginationParams &
     OrderParams<TicketSearchSortableProperties> & {
@@ -232,6 +232,8 @@ export type Source = {
 export type SourceAddress = {
     address: string
     name: string
+    id?: number
+    type?: IntegrationType
 }
 
 export type Meta = {

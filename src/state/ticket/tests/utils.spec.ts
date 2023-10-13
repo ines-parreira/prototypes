@@ -46,6 +46,8 @@ import {
     normalizeAddress,
     humanizeChannel,
     buildFirstTicketMessage,
+    getValuePropFromSourceType,
+    humanizeAddress,
 } from '../utils'
 
 import {
@@ -1805,6 +1807,31 @@ describe('ticket utils', () => {
         })
     })
 
+    describe('humanizeAddress', () => {
+        it('should friendly format phone numbers', () => {
+            expect(
+                humanizeAddress('+12133734253', TicketMessageSourceType.Phone)
+            ).toEqual('+1 213 373 4253')
+
+            expect(
+                humanizeAddress(
+                    '+12133734253',
+                    TicketMessageSourceType.WhatsAppMessage
+                )
+            ).toEqual('+1 213 373 4253')
+        })
+
+        it('does not format phone numbers if the source is not provided', () => {
+            expect(humanizeAddress('+12133734253')).toEqual('+12133734253')
+        })
+
+        it('should run to lowercase on all other input', () => {
+            expect(humanizeAddress('aNeMailAdDreSS@pRoVIder.io')).toEqual(
+                'anemailaddress@provider.io'
+            )
+        })
+    })
+
     describe('humanizeChannel', () => {
         it('should return the preserved channel name for known channels', () => {
             for (const channel in TICKET_CHANNEL_NAMES) {
@@ -1900,6 +1927,33 @@ describe('ticket utils', () => {
                     current_page: gorgiasContactFormMeta.host_url,
                 },
             })
+        })
+    })
+
+    describe('getValuePropFromSourceType()', () => {
+        it('returns "address" for TicketMessageSourceTypes', () => {
+            expect(
+                getValuePropFromSourceType(TicketMessageSourceType.Email)
+            ).toEqual('address')
+            expect(
+                getValuePropFromSourceType(TicketMessageSourceType.Phone)
+            ).toEqual('address')
+        })
+
+        it('returns null for TicketMessageSourceTypes.Api', () => {
+            expect(
+                getValuePropFromSourceType(TicketMessageSourceType.Api)
+            ).toEqual(null)
+        })
+
+        it('returns address for all channel like inputs', () => {
+            expect(getValuePropFromSourceType('tiktok-shop')).toEqual('address')
+            expect(
+                getValuePropFromSourceType('google-business-messages')
+            ).toEqual('address')
+            expect(getValuePropFromSourceType('some-other-channel')).toEqual(
+                'address'
+            )
         })
     })
 })

@@ -41,6 +41,7 @@ export type NewMessage = {
     public?: boolean
     macros: {id: number}[]
     meta?: Record<string, unknown>
+    integration_id?: number
 }
 
 export type ReplyAreaState = {

@@ -9,6 +9,7 @@ import _last from 'lodash/last'
 import _set from 'lodash/set'
 import _get from 'lodash/get'
 import parsePhoneNumber from 'libphonenumber-js'
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 
 import {
     TicketVia,
@@ -39,6 +40,7 @@ import {
 } from 'utils'
 import {unescapeQuoteEntities} from 'utils/html'
 
+import {ChannelLike} from 'services/channels'
 import {EventType} from 'models/event/types'
 import {humanize} from 'business/format'
 import {
@@ -253,10 +255,12 @@ export function isSupportAddress(
 /**
  * Return value prop from sender/receiver that is used to identify a person depending on the source type
  */
-export function getValuePropFromSourceType(
-    sourceType: TicketMessageSourceType
-) {
-    return SOURCE_VALUE_PROP[sourceType]
+export function getValuePropFromSourceType(sourceType: ChannelLike) {
+    if (isTicketMessageSourceType(sourceType)) {
+        return SOURCE_VALUE_PROP[sourceType]
+    }
+
+    return 'address'
 }
 
 export function cleanReceivers(
@@ -1162,6 +1166,21 @@ export function normalizeAddress(
             return parsedNumber.format('E.164')
         }
     }
+    return address.toLowerCase()
+}
+
+export function humanizeAddress(
+    address: string,
+    channel?: Maybe<ChannelLike>
+): string {
+    if (
+        channel &&
+        isTicketMessageSourceType(channel) &&
+        isPhoneBasedSource(channel)
+    ) {
+        return formatPhoneNumberInternational(address)
+    }
+
     return address.toLowerCase()
 }
 

@@ -1,6 +1,7 @@
 import memoizeOne from 'memoize-one'
 import moment from 'moment'
 import _get from 'lodash/get'
+import {isObject} from 'lodash'
 
 import {
     TicketChannel,
@@ -9,6 +10,7 @@ import {
 
 import type {
     GorgiasContactFormTicketMeta,
+    SourceAddress,
     TicketEvent,
     TicketMessage,
 } from './types'
@@ -148,5 +150,14 @@ export const shouldMessagesBeGrouped = (
         msg1.from_agent === msg2.from_agent &&
         groupingChannels.includes(msg1.channel) &&
         msg2Created.isBefore(msg1Created.add(groupingDuration))
+    )
+}
+
+export function isSourceAddress(input: unknown): input is SourceAddress {
+    const sourceAddress = input as SourceAddress
+    return (
+        isObject(sourceAddress) &&
+        typeof sourceAddress?.name === 'string' &&
+        typeof sourceAddress?.address === 'string'
     )
 }

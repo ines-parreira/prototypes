@@ -5,9 +5,11 @@ import _isArray from 'lodash/isArray'
 import {INTEGRATION_TYPE_CONFIG, isChannel} from 'config'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {
+    AppIntegration,
     Integration,
     IntegrationFromType,
     IntegrationType,
+    isAppIntegration,
     isPhoneIntegration,
     isSmsIntegration,
     isWhatsAppIntegration,
@@ -20,6 +22,10 @@ import {getCurrentUserState} from 'state/currentUser/selectors'
 import {getNewPhoneNumbers as getNewPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
 import {nestedReplace} from 'state/ticket/utils'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
+import {ChannelLike, isLegacyChannel, toChannel} from 'services/channels'
+import {SourceAddress} from 'models/ticket/types'
+import {getApplicationsByChannel} from 'services/applications'
+import {isSourceAddress} from 'models/ticket/predicates'
 
 import {IntegrationListItem, IntegrationsState} from './types'
 
@@ -362,7 +368,7 @@ export const getPhoneChannelsForSmsSource = makeGetPhoneChannels(
     IntegrationType.Sms
 )
 
-// return email and gmail integrations formatted as channel
+// return whatsapp integrations formatted as channel
 export const getWhatsAppChannels = createSelector(
     getWhatsAppIntegrations,
     (integrations) => {
@@ -407,6 +413,40 @@ export const getChannelsForSourceType =
             default:
                 return getActiveEmailChannels(state)
         }
+    }
+
+export const getSendersForChannel =
+    (channelLike: ChannelLike) =>
+    (state: RootState): SourceAddress[] => {
+        if (isLegacyChannel(channelLike)) {
+            const channel = toChannel(channelLike)
+            const sendersForSource = getChannelsForSourceType(
+                channel?.slug as TicketMessageSourceType
+            )(state).toJS()
+            return _isArray(sendersForSource)
+                ? sendersForSource.filter(isSourceAddress)
+                : []
+        }
+
+        const applications = getApplicationsByChannel(channelLike)
+        const integrations = getIntegrationsByType<AppIntegration>(
+            IntegrationType.App
+        )(state)
+
+        return applications
+            .map((application) =>
+                integrations.find(
+                    (integration: AppIntegration) =>
+                        integration.application_id === application.id
+                )
+            )
+            .filter(isAppIntegration)
+            .map(({id, type, name, meta: {address}}) => ({
+                id,
+                type,
+                address,
+                name,
+            }))
     }
 
 export const getChannelByTypeAndAddress = (
@@ -624,3 +664,13 @@ export const getStoreIntegrations = getIntegrationsByTypes([
     IntegrationType.BigCommerce,
     IntegrationType.Magento2,
 ])
+
+export const getIntegrationByAddress = (address: string) =>
+    createSelector(getIntegrations, (integrations) => {
+        return integrations.find(
+            (integration) =>
+                integration?.meta &&
+                'address' in integration.meta &&
+                integration.meta.address === address
+        )
+    })

@@ -3,14 +3,23 @@ import {useCallback} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {prepare} from 'state/newMessage/actions'
+import {prepare, setSender} from 'state/newMessage/actions'
 import {getTicket} from 'state/ticket/selectors'
-import {getIntegrations} from 'state/integrations/selectors'
-import {getNewMessageType} from 'state/newMessage/selectors'
+import {
+    getIntegrations,
+    getSendersForChannel,
+} from 'state/integrations/selectors'
+import {
+    getNewMessageSourceProperty,
+    getNewMessageType,
+} from 'state/newMessage/selectors'
 
 import {Application, getApplications} from 'services/applications'
-import {Ticket} from 'models/ticket/types'
-import {isTicketMessageSourceType} from 'models/ticket/predicates'
+import {SourceAddress, Ticket} from 'models/ticket/types'
+import {
+    isSourceAddress,
+    isTicketMessageSourceType,
+} from 'models/ticket/predicates'
 import {Integration, IntegrationType} from 'models/integration/types'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
@@ -132,6 +141,32 @@ function getReplyChannelsForTicket(
 
             return acc
         }, [])
+}
+
+export function useSendersForSelectedChannel(): {
+    senders: SourceAddress[]
+    selectedSender: Maybe<SourceAddress>
+    selectedChannel: Maybe<Channel | TicketMessageSourceType>
+    selectSender: (sender: SourceAddress) => void
+} {
+    const dispatch = useAppDispatch()
+    const {selectedChannel} = useOutboundChannels()
+    const senders = useAppSelector((state) =>
+        selectedChannel ? getSendersForChannel(selectedChannel)(state) : []
+    )
+    const from = useAppSelector(getNewMessageSourceProperty('from')).toJS()
+    const selectedSender = isSourceAddress(from) ? from : undefined
+
+    const selectSender = (sender: SourceAddress) => {
+        dispatch(setSender(sender.address))
+    }
+
+    return {
+        senders,
+        selectedSender,
+        selectedChannel,
+        selectSender,
+    }
 }
 
 function getLegacyReplySourcesForTicket(

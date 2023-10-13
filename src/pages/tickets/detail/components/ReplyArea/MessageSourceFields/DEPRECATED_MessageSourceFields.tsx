@@ -23,7 +23,7 @@ import {
 import {getChannelsForSourceType} from 'state/integrations/selectors'
 
 import MultiSelectAsyncField from './components/MultiSelectAsyncField/MultiSelectAsyncField'
-import SenderSelectField from './components/SenderSelectField/SenderSelectField'
+import DEPRECATED_SenderSelectField from './components/SenderSelectField/DEPRECATED_SenderSelectField'
 import ReceiversSelectField from './components/ReceiversSelectField'
 
 import css from './MessageSourceFields.less'
@@ -185,7 +185,7 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
                         {from && (
                             <div key="from" className={css.sourceField}>
                                 <span className={css.label}>From: </span>
-                                <SenderSelectField
+                                <DEPRECATED_SenderSelectField
                                     channels={accountChannels}
                                     value={from.address}
                                     onChange={({

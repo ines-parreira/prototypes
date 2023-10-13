@@ -1,24 +1,18 @@
-import React, {ChangeEventHandler} from 'react'
+import React from 'react'
 import classnames from 'classnames'
-import {List} from 'immutable'
+import {SourceAddress} from 'models/ticket/types'
+import {useSendersForSelectedChannel} from 'hooks/useOutboundChannels'
 
-import {isPhoneBasedSource} from 'pages/tickets/common/utils'
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
+import {humanizeAddress} from 'state/ticket/utils'
 import css from './SenderSelectField.less'
 
 type Props = {
     tabIndex?: number
-    channels: List<any>
-    onChange: ChangeEventHandler<HTMLSelectElement>
-    value: string
 }
 
-const SenderSelectField = ({tabIndex, channels, onChange, value}: Props) => {
-    const getAddressLabel = (channel: Map<any, any>): string =>
-        isPhoneBasedSource(channel.get('type') as TicketMessageSourceType)
-            ? formatPhoneNumberInternational(channel.get('address') as string)
-            : (channel.get('address') as string)
+const SenderSelectField = ({tabIndex}: Props) => {
+    const {selectedSender, selectedChannel, senders, selectSender} =
+        useSendersForSelectedChannel()
 
     return (
         <div className={css.field}>
@@ -27,13 +21,25 @@ const SenderSelectField = ({tabIndex, channels, onChange, value}: Props) => {
             </i>
             <select
                 className={css.select}
-                value={value}
-                onChange={onChange}
+                value={selectedSender?.address}
+                onChange={(event) => {
+                    const sender = senders.find(
+                        (sender) => sender.address === event.target.value
+                    )
+                    if (sender) {
+                        selectSender(sender)
+                    }
+                }}
                 tabIndex={tabIndex}
             >
-                {channels.map((channel: Map<any, any>, index) => (
-                    <option key={index} value={channel.get('address')}>
-                        {channel.get('name')} ({getAddressLabel(channel)})
+                {senders.map((sender: SourceAddress) => (
+                    <option key={sender.address} value={sender.address}>
+                        {sender.name}{' '}
+                        {sender.address &&
+                            `(${humanizeAddress(
+                                sender.address,
+                                selectedChannel
+                            )})`}
                     </option>
                 ))}
             </select>

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import classnames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import _uniq from 'lodash/uniq'
@@ -11,7 +11,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {SourceAddress} from 'models/ticket/types'
 import {RootState} from 'state/types'
-import {setReceivers, setSender} from 'state/newMessage/actions'
+import {setReceivers} from 'state/newMessage/actions'
 import {
     getNewMessageType,
     makeGetNewMessageSourceProperty,
@@ -21,7 +21,7 @@ import {
     areNewMessageContactPropertiesFulfilled as getAreNewMessageContactPropertiesFulfilled,
     isNewMessagePublic,
 } from 'state/newMessage/selectors'
-import {getChannelsForSourceType} from 'state/integrations/selectors'
+
 import {getTicket} from 'state/ticket/selectors'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 
@@ -73,8 +73,6 @@ export default function MessageSourceFields() {
     const optionalContactProperties = useAppSelector(
         getOptionalContactProperties(sourceType)
     )
-
-    const accountChannels = useAppSelector(getChannelsForSourceType(sourceType))
 
     const [displayedFields, setDisplayedFields] = useState<string[]>([]) // optional fields that are displayed
 
@@ -229,15 +227,7 @@ export default function MessageSourceFields() {
                     {from && (
                         <div key="from" className={css.sourceField}>
                             <span className={css.label}>From: </span>
-                            <SenderSelectField
-                                channels={accountChannels}
-                                value={from.address}
-                                onChange={({
-                                    target,
-                                }: ChangeEvent<HTMLSelectElement>) => {
-                                    dispatch(setSender(target.value))
-                                }}
-                            />
+                            <SenderSelectField />
                         </div>
                     )}
                     {

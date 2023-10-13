@@ -1,5 +1,6 @@
 import {isObject} from 'lodash'
 import {appQueryClient} from 'api/queryClient'
+
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {channelsQueryKeys, useListChannels} from 'models/channel/queries'
 import {listChannels} from 'models/channel/resources'
@@ -8,6 +9,8 @@ import {
     isTicketChannel,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {getChannelFromSourceType} from 'state/ticket/utils'
 
 export type {
     Channel,
@@ -53,6 +56,9 @@ export function toChannel(channel: ChannelLike): Channel | undefined {
     }
 
     if (typeof channel === 'string') {
+        if (isTicketMessageSourceType(channel)) {
+            return getChannelBySlug(getChannelFromSourceType(channel, []))
+        }
         return getChannelBySlug(channel)
     }
 }
@@ -73,12 +79,24 @@ export function isChannel(input: unknown): input is Channel {
 
 export function isLegacyChannel(
     channel: ChannelLike
-): channel is LegacyChannel {
+): channel is TicketMessageSourceType | TicketChannel | LegacyChannel {
+    if (isChannel(channel)) {
+        return (
+            isTicketMessageSourceType(channel.slug) ||
+            isTicketChannel(channel.slug)
+        )
+    }
+
     return isTicketMessageSourceType(channel) || isTicketChannel(channel)
 }
 
-export function isNewChannel(channel: ChannelLike): channel is Channel {
-    return !isLegacyChannel(channel)
+export function isNewChannel(channel: ChannelLike): boolean {
+    if (isChannel(channel)) {
+        return !isLegacyChannel(channel)
+    }
+
+    const matchingChannel = getChannelBySlug(channel)
+    return matchingChannel ? !isLegacyChannel(matchingChannel) : false
 }
 
 function mockPaginatedChannelsList(

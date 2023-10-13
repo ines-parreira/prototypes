@@ -76,6 +76,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {mapNormalizedToArray} from 'models/ticket/mappers'
+import {isNewChannel} from 'services/channels'
 import {
     MessageContext,
     selectionAfter,
@@ -355,9 +356,12 @@ export const setSender =
         const state = getState()
         const {integrations, ticket} = state
         const sourceType = selectors.getNewMessageType(state)
-        const {getChannelsForSourceType} = integrationSelectors
+        const {getSendersForChannel} = integrationSelectors
 
-        const channels = getChannelsForSourceType(sourceType)(state)
+        const channels = fromJS(
+            getSendersForChannel(sourceType)(state)
+        ) as List<any>
+
         let _sender: Map<any, any> = fromJS({})
         if (sender) {
             _sender =
@@ -412,7 +416,10 @@ export const setSender =
                 address: _sender.get('address', ''),
             })
 
-            if (sourceType === TicketMessageSourceType.Phone) {
+            if (
+                sourceType === TicketMessageSourceType.Phone ||
+                isNewChannel(sourceType)
+            ) {
                 _sender = _sender.set('id', id)
             }
 
@@ -1073,7 +1080,8 @@ export function prepareTicketMessage({
         replyAreaState: ReplyAreaState
     }> =>
         new Promise((resolve, reject) => {
-            const {ticket, currentUser, newMessage} = getState()
+            const state = getState()
+            const {ticket, currentUser, newMessage} = state
             // temporary message id
             let messageId = getMomentNow()
             let messageToSend: NewMessage
@@ -1105,6 +1113,20 @@ export function prepareTicketMessage({
 
                 messageToSend = dataToSend.newMessage
                 replyAreaState = dataToSend.replyAreaState
+            }
+
+            if (isNewChannel(messageToSend?.source?.type)) {
+                messageToSend = _omit(messageToSend, 'source.type')
+                if (messageToSend?.source?.from?.address) {
+                    const integration =
+                        integrationSelectors.getIntegrationByAddress(
+                            messageToSend.source.from.address
+                        )(state)
+
+                    if (integration) {
+                        messageToSend.integration_id = integration.id
+                    }
+                }
             }
 
             // Execute front-end validations for each action of the message
@@ -1164,8 +1186,6 @@ export function prepareTicketMessage({
                     closeTicketAction
                 )
             }
-
-            const state = getState()
 
             const topRankMacroState =
                 ticketSelectors.getTopRankMacroState(state)

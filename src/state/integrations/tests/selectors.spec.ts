@@ -1,6 +1,12 @@
 import {fromJS, List} from 'immutable'
 import {size} from 'lodash'
 
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {channels as mockChannels} from 'fixtures/channels'
+import {applications as mockApplications} from 'fixtures/applications'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
+
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {integrationsState} from 'fixtures/integrations'
 import {
@@ -42,7 +48,18 @@ import {
     getIsChatIntegrationStatusLoading,
     getIsChatIntegrationStatusError,
     getIntegrationByIdAndType,
+    getIntegrationByAddress,
+    getSendersForChannel,
 } from '../selectors'
+
+jest.mock('api/queryClient', () => ({
+    appQueryClient: mockQueryClient({
+        cachedData: [
+            [mockChannelsQueryKeys.list(), mockChannels],
+            [mockApplicationsQueryKeys.list(), mockApplications],
+        ],
+    }),
+}))
 
 const state = {
     integrations: fromJS(integrationsState),
@@ -899,6 +916,59 @@ describe('integrations selectors', () => {
                     type: IntegrationType.Http,
                 })
             )
+        })
+    })
+
+    describe('getSendersForChannel()', () => {
+        it('should return the same list as getChannelsForSourceType() for legacy channels', () => {
+            expect(getSendersForChannel('email')(state)).toEqual(
+                getChannelsForSourceType(TicketMessageSourceType.Email)(
+                    state
+                ).toJS()
+            )
+        })
+
+        it('should return a list of SourceAddress objects for new channels', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 123,
+                            type: 'app',
+                            application_id: '64785607477d0a11fc731bfa',
+                            name: 'The Shop',
+                            meta: {
+                                address: 'theshop',
+                            },
+                        },
+                    ],
+                }),
+            } as RootState
+            expect(getSendersForChannel('tiktok-shop')(state)).toEqual([
+                {
+                    id: 123,
+                    address: 'theshop',
+                    name: 'The Shop',
+                    type: 'app',
+                },
+            ])
+        })
+    })
+
+    describe('getIntegrationByAddress()', () => {
+        it('should return a matching integration by address', () => {
+            const integrationByAddress = getIntegrationByAddress(
+                'billing@acme.gorgias.io'
+            )(state)
+            expect(integrationByAddress).toBeDefined()
+            expect(integrationByAddress!.id).toEqual(5)
+            expect(integrationByAddress!.type).toEqual('gmail')
+        })
+
+        it('should return undefined if nothing matches', () => {
+            const integrationByAddress =
+                getIntegrationByAddress('invalid-address')(state)
+            expect(integrationByAddress).toBeUndefined()
         })
     })
 })

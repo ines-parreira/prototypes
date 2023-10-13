@@ -12,12 +12,20 @@ import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries
 import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {SourceAddress} from 'models/ticket/types'
 
 import {ChannelIdentifier, getChannelBySlug} from 'services/channels'
-import {getApplications, Application} from 'services/applications'
+import {
+    getApplications,
+    Application,
+    getApplicationsByChannel,
+} from 'services/applications'
 import {Integration} from 'models/integration/types'
 
-import useOutboundChannels, {privateFunctions} from '../useOutboundChannels'
+import useOutboundChannels, {
+    privateFunctions,
+    useSendersForSelectedChannel,
+} from '../useOutboundChannels'
 
 const {getReplyChannelsForTicket, getLegacyReplySourcesForTicket} =
     privateFunctions
@@ -33,6 +41,7 @@ jest.mock('api/queryClient', () => ({
 
 jest.mock('services/applications', () => ({
     getApplications: jest.fn(),
+    getApplicationsByChannel: jest.fn(),
 }))
 
 jest.mock('state/newMessage/actions', () => ({
@@ -40,10 +49,18 @@ jest.mock('state/newMessage/actions', () => ({
         type: 'MOCKED_PREPARE_NEW_MESSAGE',
         payload: channel,
     })),
+    setSender: jest.fn().mockImplementation((sender: SourceAddress) => ({
+        type: 'MOCKED_SET_SENDER',
+        payload: sender,
+    })),
 }))
 
 const mockedGetApplications = getApplications as jest.Mock<Application[]>
+const mockedGetApplicationsByChannel = getApplicationsByChannel as jest.Mock<
+    Application[]
+>
 mockedGetApplications.mockReturnValue(mockApplications)
+mockedGetApplicationsByChannel.mockReturnValue(mockApplications)
 
 describe('useOutboundChannels', () => {
     const renderHookWithStore = (store: Store) =>
@@ -412,6 +429,146 @@ describe('getLegacyReplySourcesForTicket()', () => {
             const sources = getLegacyReplySourcesForTicket(ticket, integrations)
 
             expect(sources).toEqual(expectedSources)
+        })
+    })
+})
+
+describe('useSendersForSelectedChannel()', () => {
+    const renderHookWithStore = (store: Store) =>
+        renderHook(() => useSendersForSelectedChannel(), {
+            wrapper: ({children}) => (
+                <Provider store={store}>{children}</Provider>
+            ),
+        })
+
+    describe('should return a list of senders (integrations) to use as source', () => {
+        it('should return an empty list of senders if no channel is selected', () => {
+            jest.mock('hooks/useOutboundChannels', () => ({
+                useOutboundChannels: () => ({
+                    selectedChannel: null,
+                }),
+            }))
+            const store = configureMockStore()({
+                integrations: fromJS({
+                    integrations: [{type: 'email'}],
+                }),
+            })
+            const {result} = renderHookWithStore(store)
+            expect(result.current?.senders).toEqual([])
+        })
+
+        it('should return a list of available senders when a channel is selected', () => {
+            const store = configureMockStore()({
+                newMessage: fromJS({
+                    newMessage: {
+                        source: {
+                            type: 'tiktok-shop',
+                        },
+                    },
+                }),
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 123,
+                            type: 'app',
+                            application_id: '64785607477d0a11fc731bfa',
+                            name: 'The Shop',
+                            meta: {
+                                address: 'theshop',
+                            },
+                        },
+                    ],
+                }),
+            })
+            const {result} = renderHookWithStore(store)
+            expect(result.current?.senders).toEqual([
+                {
+                    id: 123,
+                    address: 'theshop',
+                    name: 'The Shop',
+                    type: 'app',
+                },
+            ])
+        })
+
+        describe('should allow managing the currently selected sender', () => {
+            it('should have a default selected channel', () => {
+                const store = configureMockStore()({
+                    newMessage: fromJS({
+                        newMessage: {
+                            source: {
+                                type: 'tiktok-shop',
+                                from: {
+                                    address: 'sendershop',
+                                    name: 'Sender Shop',
+                                },
+                            },
+                        },
+                    }),
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 123,
+                                type: 'app',
+                                application_id: '64785607477d0a11fc731bfa',
+                                name: 'The Shop',
+                                meta: {
+                                    address: 'theshop',
+                                },
+                            },
+                        ],
+                    }),
+                })
+                const {result} = renderHookWithStore(store)
+                expect(result.current?.selectedSender).toEqual({
+                    address: 'sendershop',
+                    name: 'Sender Shop',
+                })
+            })
+
+            it('should allow changing the selected channel (via dispatch of newMessage.setSender) to another sender', () => {
+                const store = configureMockStore()({
+                    newMessage: fromJS({
+                        newMessage: {
+                            source: {
+                                type: 'tiktok-shop',
+                                from: {
+                                    address: 'sendershop',
+                                    name: 'Sender Shop',
+                                },
+                            },
+                        },
+                    }),
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 123,
+                                type: 'app',
+                                application_id: '64785607477d0a11fc731bfa',
+                                name: 'The Shop',
+                                meta: {
+                                    address: 'theshop',
+                                },
+                            },
+                        ],
+                    }),
+                })
+                const {result} = renderHookWithStore(store)
+                expect(result.current?.selectedSender).toEqual({
+                    address: 'sendershop',
+                    name: 'Sender Shop',
+                })
+                result?.current.selectSender({
+                    address: 'anothershop',
+                    name: 'Another Shop',
+                })
+                expect(store.getActions()).toEqual([
+                    {
+                        type: 'MOCKED_SET_SENDER',
+                        payload: 'anothershop',
+                    },
+                ])
+            })
         })
     })
 })

@@ -5,6 +5,11 @@ import {fromJS, Map} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
+import {omit} from 'lodash'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {channels as mockChannels} from 'fixtures/channels'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import {
     TicketChannel,
     TicketVia,
@@ -77,6 +82,12 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
 const mockedUploadFiles = jest.spyOn(utils, 'uploadFiles')
+
+jest.mock('api/queryClient', () => ({
+    appQueryClient: mockQueryClient({
+        cachedData: [[mockChannelsQueryKeys.list(), mockChannels]],
+    }),
+}))
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
@@ -1577,6 +1588,86 @@ describe('actions', () => {
                         )
                         .toJS(),
                 ])
+            })
+
+            describe('should build the correct payload when using new channels as source', () => {
+                it('should remove source.type', async () => {
+                    const source = {
+                        type: 'tiktok-shop',
+                        from: {
+                            address: 'theshop',
+                            name: 'The Shop',
+                        },
+                        to: [
+                            {
+                                address: 'messagereceiver',
+                                name: 'John Doe',
+                            },
+                        ],
+                    }
+
+                    const store = mockStore({
+                        ...defaultState,
+                        newMessage: initialState.set(
+                            'newMessage',
+                            fromJS({
+                                channel: 'tiktok-shop',
+                                source,
+                            })
+                        ),
+                    })
+
+                    const {messageToSend} = await store.dispatch(
+                        actions.prepareTicketMessage()
+                    )
+
+                    expect(messageToSend.source.type).toBeUndefined()
+                    expect(messageToSend.source).toEqual(omit(source, 'type'))
+                })
+
+                it('should append the appropriate integration_id', async () => {
+                    const source = {
+                        type: 'tiktok-shop',
+                        from: {
+                            address: 'theshop',
+                            name: 'The Shop',
+                        },
+                        to: [
+                            {
+                                address: 'messagereceiver',
+                                name: 'John Doe',
+                            },
+                        ],
+                    }
+
+                    const store = mockStore({
+                        ...defaultState,
+                        newMessage: initialState.set(
+                            'newMessage',
+                            fromJS({
+                                channel: 'tiktok-shop',
+                                source,
+                            })
+                        ),
+                        integrations: fromJS({
+                            integrations: [
+                                {
+                                    type: 'app',
+                                    id: 123,
+                                    meta: {
+                                        address: 'theshop',
+                                    },
+                                },
+                            ],
+                        }),
+                    })
+
+                    const {messageToSend} = await store.dispatch(
+                        actions.prepareTicketMessage()
+                    )
+
+                    expect(messageToSend.integration_id).toEqual(123)
+                })
             })
         })
 
