@@ -75,7 +75,7 @@ export const TicketDistributionTable = () => {
                             <TableBodyRow key={index}>
                                 <DistributionCategoryCell
                                     key={item.category}
-                                    progress={item.valueInPercentage}
+                                    progress={item.gaugePercentage}
                                     width={300}
                                     category={item.category}
                                 />

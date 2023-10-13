@@ -82,6 +82,15 @@ export const useTicketsDistribution = (topAmount = 10) => {
                                     .TicketCustomFieldsTicketCount
                             ]
                         )) /
+                    ticketsCountTotal,
+                gaugePercentage:
+                    (100 *
+                        Number(
+                            item[
+                                TicketCustomFieldsMeasure
+                                    .TicketCustomFieldsTicketCount
+                            ]
+                        )) /
                     maxTicketCount,
             })),
             ticketsCountTotal,

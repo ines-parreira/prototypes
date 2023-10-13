@@ -23,12 +23,22 @@ const mockStore = configureMockStore([thunk])
 jest.mock('hooks/reporting/metricsPerDimension')
 const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
 
-const transformData = (data: ReportingMetricItem<Cubes>, maxValue: number) => ({
+const transformData = (
+    data: ReportingMetricItem<Cubes>,
+    totalValue: number,
+    maxValue: number
+) => ({
     category: data[TicketCustomFieldsDimension.TicketCustomFieldsValueString],
     value: Number(
         data[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]
     ),
     valueInPercentage:
+        (100 *
+            Number(
+                data[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]
+            )) /
+        totalValue,
+    gaugePercentage:
         (100 *
             Number(
                 data[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]
@@ -48,6 +58,7 @@ describe('useTicketsDistribution', () => {
     } as unknown as RootState
 
     const maxTicketCount = 16
+    const ticketsCountTotal = 20
     const allData = [
         {
             [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
@@ -78,13 +89,16 @@ describe('useTicketsDistribution', () => {
             isFetching: false,
             outsideTopTotal: 0,
             outsideTopTotalPercentage: 0,
-            ticketsCountTotal: 20,
-            topData: allData.map((item) => transformData(item, maxTicketCount)),
+            ticketsCountTotal,
+            topData: allData.map((item) =>
+                transformData(item, ticketsCountTotal, maxTicketCount)
+            ),
         })
     })
 
     it('should return calculate outside data', () => {
         const maxTicketCount = 145
+        const ticketsCountTotal = 190
         const allData = new Array(20).fill(null).map((_, index) => ({
             [TicketCustomFieldsDimension.TicketCustomFieldsValueString]: `Level ${index}`,
             [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: `${index}`,
@@ -102,12 +116,14 @@ describe('useTicketsDistribution', () => {
 
         expect(result.current).toEqual({
             isFetching: false,
-            outsideTopTotal: 145,
+            outsideTopTotal: maxTicketCount,
             outsideTopTotalPercentage: 100,
-            ticketsCountTotal: 190,
+            ticketsCountTotal: ticketsCountTotal,
             topData: allData
                 .slice(0, 10)
-                .map((item) => transformData(item, maxTicketCount)),
+                .map((item) =>
+                    transformData(item, ticketsCountTotal, maxTicketCount)
+                ),
         })
     })
 })

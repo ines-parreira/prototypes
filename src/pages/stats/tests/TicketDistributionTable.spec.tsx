@@ -29,6 +29,7 @@ const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
 describe('<TicketDistributionTable>', () => {
     const maxTicketCount = 16
+    const ticketsCountTotal = 20
     const data = [
         {
             [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
@@ -60,11 +61,20 @@ describe('<TicketDistributionTable>', () => {
                                 .TicketCustomFieldsTicketCount
                         ]
                     )) /
+                ticketsCountTotal,
+            gaugePercentage:
+                (100 *
+                    Number(
+                        item[
+                            TicketCustomFieldsMeasure
+                                .TicketCustomFieldsTicketCount
+                        ]
+                    )) /
                 maxTicketCount,
         })),
         outsideTopTotal: 0,
         outsideTopTotalPercentage: 0,
-        ticketsCountTotal: 20,
+        ticketsCountTotal,
         isFetching: false,
     }
 
