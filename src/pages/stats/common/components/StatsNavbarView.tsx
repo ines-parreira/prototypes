@@ -292,7 +292,7 @@ export default function StatsNavbarView() {
                         <>
                             {automationAddon.map((aao) => (
                                 <AutomationNavbarAddOnPaywallNavbarLink
-                                    to={aao.to}
+                                    to={'/app/stats/' + aao.to}
                                     key={aao.to}
                                     exact
                                     onSubscribeToAutomationAddOnClick={() => {
@@ -322,7 +322,7 @@ export default function StatsNavbarView() {
                                 >
                                     <NavbarLink
                                         {...COMMON_NAV_LINK_PROPS}
-                                        to={aao.to}
+                                        to={'/app/stats/' + aao.to}
                                     >
                                         {aao.label}
                                     </NavbarLink>
