@@ -50,8 +50,8 @@ function List({integrations, loading, redirectUri}: Props) {
                                     </i>
                                 </Link>
                                 {isDisabled && (
-                                    <Link
-                                        to={isSubmitting ? '#' : reconnectUrl}
+                                    <a
+                                        href={isSubmitting ? '#' : reconnectUrl}
                                         className={css.actionLink}
                                     >
                                         <Button
@@ -60,7 +60,7 @@ function List({integrations, loading, redirectUri}: Props) {
                                         >
                                             Reconnect
                                         </Button>
-                                    </Link>
+                                    </a>
                                 )}
                             </li>
                         )
