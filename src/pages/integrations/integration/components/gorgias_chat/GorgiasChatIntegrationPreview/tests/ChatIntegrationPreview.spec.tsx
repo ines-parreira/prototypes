@@ -32,6 +32,11 @@ const currentUser = fromJS({name: 'Charles'})
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp.tsx',
+    () => () => <div>ConversationTimestampMock</div>
+)
+
 const defaultState = {
     currentAccount: fromJS({
         settings: [

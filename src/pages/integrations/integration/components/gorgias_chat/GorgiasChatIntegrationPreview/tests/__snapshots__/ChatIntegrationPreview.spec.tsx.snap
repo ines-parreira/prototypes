@@ -406,10 +406,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -611,10 +609,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -1391,10 +1387,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -1654,10 +1648,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -1906,10 +1898,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -2158,10 +2148,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -2442,10 +2430,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -2658,10 +2644,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -2874,10 +2858,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -3090,10 +3072,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
@@ -3193,10 +3173,8 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
           <div
             class="d-flex flex-column"
           >
-            <div
-              class="conversationTimestamp"
-            >
-              October 12
+            <div>
+              ConversationTimestampMock
             </div>
           </div>
           <div
