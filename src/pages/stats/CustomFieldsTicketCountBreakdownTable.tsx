@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import moment from 'moment/moment'
-import React, {UIEventHandler, useState} from 'react'
+import React, {UIEventHandler, useEffect, useMemo, useState} from 'react'
 import useMeasure from 'react-use/lib/useMeasure'
 import {
     CustomFieldsTicketCountDataRowContent,
@@ -29,7 +29,7 @@ import {toggleOrder} from 'state/ui/stats/ticketInsightsSlice'
 
 export const CUSTOM_FIELD_COLUMN_LABEL = 'Value / Category'
 export const TOTAL_COLUMN_LABEL = 'Total'
-export const CUSTOM_FIELDS_PER_PAGE = 10
+export const CUSTOM_FIELDS_PER_PAGE = 15
 const CATEGORY_COLUMN_WIDTH = 250
 const DATA_COLUMN_WIDTH = 120
 const TICKET_INSIGHTS_TABLE_DAILY_FORMAT = 'ddd, MMM D'
@@ -70,6 +70,17 @@ export const CustomFieldsTicketCountBreakdownTable = ({
         isLoading,
         order,
     } = useCustomFieldsTicketCountPerCustomFields(selectedCustomFieldId)
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [customFieldDataRows.length])
+
+    const currentPageOfCustomFieldDataRows = useMemo(() => {
+        return customFieldDataRows.slice(
+            (currentPage - 1) * CUSTOM_FIELDS_PER_PAGE,
+            currentPage * CUSTOM_FIELDS_PER_PAGE
+        )
+    }, [currentPage, customFieldDataRows])
 
     return customFieldDataRows.length === 0 && !isLoading ? (
         <NoDataAvailable className={css.NoDataAvailable} />
@@ -123,7 +134,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                       />
                                   )
                               )
-                            : customFieldDataRows.map((row) => (
+                            : currentPageOfCustomFieldDataRows.map((row) => (
                                   <TableBodyRowExpandable<DataRowProps>
                                       key={row[BREAKDOWN_FIELD]}
                                       innerClassName={css.small}

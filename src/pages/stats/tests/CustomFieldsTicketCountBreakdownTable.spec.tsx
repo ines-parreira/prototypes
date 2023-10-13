@@ -5,7 +5,6 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {NumberedPagination} from 'pages/common/components/Paginations'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {OrderDirection} from 'models/api/types'
@@ -36,8 +35,6 @@ jest.mock('state/ui/stats/agentPerformanceSlice')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone
 )
-jest.mock('pages/common/components/Paginations')
-const NumberedPaginationMock = assumeMock(NumberedPagination)
 jest.mock('pages/stats/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 const componentMock = () => <div />
@@ -135,7 +132,6 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             isLoading: false,
         })
         NoDataAvailableMock.mockImplementation(componentMock)
-        NumberedPaginationMock.mockImplementation(componentMock)
     })
 
     it('should render the title', () => {
@@ -244,22 +240,102 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         expect(document.querySelector('.skeleton')).toBeInTheDocument()
     })
 
-    it(`should render pagination when more then ${CUSTOM_FIELDS_PER_PAGE} top level Custom Fields available`, () => {
-        useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
-            data: Array(CUSTOM_FIELDS_PER_PAGE + 1).fill(exampleData[0]),
-            dateTimes,
-            order: OrderDirection.Asc,
-            isLoading: true,
+    describe('Pagination', () => {
+        it(`should render pagination when more then ${CUSTOM_FIELDS_PER_PAGE} top level Custom Fields available`, () => {
+            useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+                data: Array(CUSTOM_FIELDS_PER_PAGE + 5).fill(exampleData[0]),
+                dateTimes,
+                order: OrderDirection.Asc,
+                isLoading: false,
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <CustomFieldsTicketCountBreakdownTable
+                        selectedCustomFieldId={customFieldId}
+                    />
+                </Provider>
+            )
+
+            expect(screen.getAllByRole('rowgroup')[1].children.length).toEqual(
+                CUSTOM_FIELDS_PER_PAGE
+            )
         })
 
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <CustomFieldsTicketCountBreakdownTable
-                    selectedCustomFieldId={customFieldId}
-                />
-            </Provider>
-        )
+        it('should allow switching pages', async () => {
+            const SECOND_PAGE_ITEMS_COUNT = 5
+            useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+                data: Array(
+                    CUSTOM_FIELDS_PER_PAGE + SECOND_PAGE_ITEMS_COUNT
+                ).fill(exampleData[0]),
+                dateTimes,
+                order: OrderDirection.Asc,
+                isLoading: false,
+            })
 
-        expect(NumberedPaginationMock).toHaveBeenCalled()
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <CustomFieldsTicketCountBreakdownTable
+                        selectedCustomFieldId={customFieldId}
+                    />
+                </Provider>
+            )
+            act(() => {
+                const pageButton = screen.getByText('2')
+                userEvent.click(pageButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByRole('rowgroup')[1].children.length
+                ).toEqual(SECOND_PAGE_ITEMS_COUNT)
+            })
+        })
+
+        it('should reset to page 1 when number of data rows changes', async () => {
+            const SECOND_PAGE_ITEMS_COUNT = 5
+            useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+                data: Array(
+                    CUSTOM_FIELDS_PER_PAGE + SECOND_PAGE_ITEMS_COUNT
+                ).fill(exampleData[0]),
+                dateTimes,
+                order: OrderDirection.Asc,
+                isLoading: false,
+            })
+
+            const {rerender} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <CustomFieldsTicketCountBreakdownTable
+                        selectedCustomFieldId={customFieldId}
+                    />
+                </Provider>
+            )
+            act(() => {
+                const pageButton = screen.getByText('2')
+                userEvent.click(pageButton)
+            })
+
+            expect(
+                screen.getByRole('listitem', {name: 'page-2'})
+            ).toBeInTheDocument()
+
+            useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+                data: Array(CUSTOM_FIELDS_PER_PAGE - 1).fill(exampleData[0]),
+                dateTimes,
+                order: OrderDirection.Asc,
+                isLoading: false,
+            })
+            rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <CustomFieldsTicketCountBreakdownTable
+                        selectedCustomFieldId={customFieldId}
+                    />
+                </Provider>
+            )
+
+            await waitFor(() => {
+                expect(screen.queryByRole('listitem')).not.toBeInTheDocument()
+            })
+        })
     })
 })
