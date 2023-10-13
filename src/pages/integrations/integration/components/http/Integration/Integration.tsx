@@ -393,13 +393,16 @@ export class Integration extends Component<Props, State> {
                                 </FormGroup>
                                 <DEPRECATED_InputField
                                     type="url"
-                                    error={validateWebhookURL(url)}
+                                    error={validateWebhookURL(url, true)}
                                     name="http.url"
                                     label="URL"
                                     title="Example: https://company.com/api"
                                     placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
                                     required
-                                    pattern={validateWebhookURLToPattern(url)}
+                                    pattern={validateWebhookURLToPattern(
+                                        url,
+                                        true
+                                    )}
                                     help={
                                         <div>
                                             You can use{' '}

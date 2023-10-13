@@ -565,6 +565,24 @@ describe('global utils', () => {
             expect(utils.validateWebhookURL(url)).not.toBe(null)
         })
 
+        it.each([443, 80, 81, 89, 8080, 8081, 8089])(
+            'should allow web port',
+            (port) => {
+                const url = `https://foobar.com:${port}`
+                expect(utils.validateWebhookURL(url, true)).toBe(null)
+            }
+        )
+
+        it.each([22, 123, 442, 79, 90, 801, 180, 8099, 18080, 1e6])(
+            'should not allow port (even though web ports are allowed)',
+            (port) => {
+                const url = `https://foobar.com:${port}`
+                expect(utils.validateWebhookURL(url, true)).toBe(
+                    'Port not allowed'
+                )
+            }
+        )
+
         it('should require a TLD', () => {
             const url = 'https://rmq0'
             expect(utils.validateWebhookURL(url)).not.toBe(null)

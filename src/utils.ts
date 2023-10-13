@@ -891,10 +891,13 @@ export function daysToHours(days = 0): number {
 }
 
 /**
- * Function that wraps functionality for cheking webhook url and return a valid or invalid pattern
+ * Function that wraps functionality for checking webhook url and return a valid or invalid pattern
  */
-export const validateWebhookURLToPattern = (val: string) => {
-    if (validateWebhookURL(val)) {
+export const validateWebhookURLToPattern = (
+    val: string,
+    allowWebPorts = false
+) => {
+    if (validateWebhookURL(val, allowWebPorts)) {
         // Will look for "a" after the end of the string -> impossible
         return '$a'
     }
@@ -904,7 +907,10 @@ export const validateWebhookURLToPattern = (val: string) => {
 /**
  * Function that wraps functionality for checking webhook urls
  */
-export const validateWebhookURL = (val: string): Maybe<string> => {
+export const validateWebhookURL = (
+    val: string,
+    allowWebPorts = false
+): Maybe<string> => {
     const rules = [
         {
             test: /^(?!https:).*:/,
@@ -919,15 +925,29 @@ export const validateWebhookURL = (val: string): Maybe<string> => {
             test: /^((?!(\..)|(\[.*?\])).)*$/,
             message: 'Invalid url',
         },
-        {
-            /**
-             * Looking for ":" plus a decimal, except if inside [] which is the IPv6 address notation
-             * match: https://something.com:3000, https://[fe00:4860:4860::8888]:3000
-             * no match: https://something.else.com, https://[fe00:4860:4860::8888]
-             *  */
-            test: /(:\d)(?![^\[]*\])/,
-            message: 'No port specifications allowed',
-        },
+        allowWebPorts
+            ? {
+                  test: (url: string) => {
+                      try {
+                          const parsedUrl = new URL(url)
+                          return parsedUrl.port
+                              ? !/^(443|8\d|808\d)$/.test(parsedUrl.port)
+                              : false
+                      } catch (error) {
+                          return true
+                      }
+                  },
+                  message: 'Port not allowed',
+              }
+            : {
+                  /**
+                   * Looking for ":" plus a decimal, except if inside [] which is the IPv6 address notation
+                   * match: https://something.com:3000, https://[fe00:4860:4860::8888]:3000
+                   * no match: https://something.else.com, https://[fe00:4860:4860::8888]
+                   *  */
+                  test: /(:\d)(?![^\[]*\])/,
+                  message: 'No port specifications allowed',
+              },
         {
             test: /(\.internal(\/.*)?|\.local(\/.*)?)$/,
             message: 'Invalid top level domain',
@@ -942,7 +962,9 @@ export const validateWebhookURL = (val: string): Maybe<string> => {
 
     if (val) {
         const url = val.toLowerCase().split('?')[0] // query could create false positive in regexp
-        error = rules.find((rule) => rule.test.test(url))?.message
+        error = rules.find((rule) =>
+            rule.test instanceof Function ? rule.test(url) : rule.test.test(url)
+        )?.message
     }
 
     return error || null
