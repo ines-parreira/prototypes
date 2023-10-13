@@ -109,4 +109,19 @@ describe('StatsNavbarView', () => {
 
         expect(screen.getByText('Campaigns')).toBeInTheDocument()
     })
+
+    it('should render the link to the Help Center Stats when having access to the feature', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.HelpCenterAnalytics]: true,
+        }))
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        expect(screen.getByText('Help Center')).toBeInTheDocument()
+    })
 })

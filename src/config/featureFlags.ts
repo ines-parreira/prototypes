@@ -1,3 +1,4 @@
+// Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
     AnalyticsChannelFilter = 'analytics-channel-filter',
     AnalyticsPerformanceTips = 'analytics-performance-tips',
@@ -30,8 +31,9 @@ export enum FeatureFlagKey {
     FlowsStepsOrderSelection = 'flows-steps-order-selection',
     HelpCenterAutoEmbed = 'help-center-auto-embed',
     HelpCenterMigrationConfig = 'migration-config',
-    ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
+    HelpCenterAnalytics = 'help-center-analytics',
     HelpCenterSubjectLines = 'help-center-subject-lines',
+    ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',

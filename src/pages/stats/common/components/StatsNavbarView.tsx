@@ -40,6 +40,8 @@ export default function StatsNavbarView() {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const isNewAutomationAddonEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewAutomationAddon]
+    const isHelpCenterAnalyticsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.HelpCenterAnalytics]
 
     const isConvertSubscriber = useIsConvertSubscriber()
     const isConvertBillingEnabled = useIsRevenueBillingEnabled()
@@ -193,6 +195,27 @@ export default function StatsNavbarView() {
                                 to="/app/stats/revenue"
                             >
                                 Revenue
+                            </NavbarLink>
+                        </div>
+                    )}
+                    {isHelpCenterAnalyticsEnabled && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/help-center"
+                            >
+                                Help Center
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    NEW
+                                </Badge>
                             </NavbarLink>
                         </div>
                     )}

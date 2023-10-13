@@ -157,6 +157,7 @@ import {
     AUTOMATION_ADD_ON_PATH,
 } from './stats/self-service/constants'
 import CampaignStatsPaywallView from './stats/revenue/pages/CampaignsStats/CampaignStatsPaywallView'
+import {HelpCenterStats} from './stats/pages/HelpCenterStats'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -577,6 +578,12 @@ export function StatsRoutes() {
                 >
                     <App
                         content={SelfServiceStatsPage}
+                        navbar={StatsNavbarContainer}
+                    />
+                </Route>
+                <Route exact path={`${path}/help-center`}>
+                    <App
+                        content={HelpCenterStats}
                         navbar={StatsNavbarContainer}
                     />
                 </Route>
