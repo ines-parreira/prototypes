@@ -1,6 +1,6 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import {BASIC_AGENT_ROLE} from 'config/user'
 import {user} from 'fixtures/users'
@@ -31,40 +31,40 @@ const minProps = {
 describe('<ViewSharingButton/>', () => {
     describe('render()', () => {
         it('should render as public', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     view={fromJS({visibility: ViewVisibility.Public})}
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render as shared', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     view={fromJS({visibility: ViewVisibility.Shared})}
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render as private', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     view={fromJS({visibility: ViewVisibility.Private})}
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render as disabled because this is a system view', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     view={fromJS({
@@ -74,12 +74,12 @@ describe('<ViewSharingButton/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render as disabled because user is not allowed', () => {
             const role = fromJS({name: BASIC_AGENT_ROLE})
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingButtonContainer
                     {...minProps}
                     currentUser={(fromJS(user) as Map<any, any>).set(
@@ -90,7 +90,7 @@ describe('<ViewSharingButton/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

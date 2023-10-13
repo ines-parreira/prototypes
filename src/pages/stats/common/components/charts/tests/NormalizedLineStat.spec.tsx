@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import NormalizedLineStat from '../NormalizedLineStat'
@@ -52,26 +52,28 @@ const barStatNoData = {
 describe('NormalizedLineStat', () => {
     it('should render a line chart with total and disabled labels', () => {
         const config = statsConfig.get(SELF_SERVICE_VOLUME_PER_FLOW)
-        const component = shallow(
+        const {container} = render(
             <NormalizedLineStat
                 config={config}
                 data={fromJS(barStatData.data)}
                 legend={fromJS(barStatData.legend)}
             />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a line chart with "no data" message', () => {
         const config = statsConfig.find(
             (config, key) => key === SELF_SERVICE_VOLUME_PER_FLOW
         )
-        const component = shallow(
+        const {container} = render(
             <NormalizedLineStat
                 config={config}
                 data={fromJS(barStatNoData.data)}
             />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import RichDropdown from '../RichDropdown'
 
@@ -31,7 +31,7 @@ describe('<RichDropdown/>', () => {
     it.each([[options], [nestedOptions]])(
         'should render a rich dropdown',
         (currentOptions) => {
-            const component = shallow(
+            const {container} = render(
                 <RichDropdown
                     onClick={jest.fn()}
                     options={currentOptions}
@@ -39,7 +39,7 @@ describe('<RichDropdown/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 })

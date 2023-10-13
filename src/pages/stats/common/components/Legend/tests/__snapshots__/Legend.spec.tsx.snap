@@ -2,66 +2,45 @@
 
 exports[`Legend should render a legend 1`] = `
 <div
-  className="legends"
+  class="legends"
 >
   <span
-    className="label mr-4 mb-2"
-    key="line 1"
+    class="label mr-4 mb-2"
   >
     <span
-      className="circle mr-2"
-      style={
-        {
-          "background": "#000",
-        }
-      }
+      class="circle mr-2"
+      style="background: rgb(0, 0, 0);"
     />
     line 1
   </span>
   <span
-    className="label mr-4 mb-2"
-    key="line 2"
+    class="label mr-4 mb-2"
   >
     <span
-      className="circle mr-2"
-      style={
-        {
-          "background": "#fff",
-        }
-      }
+      class="circle mr-2"
+      style="background: rgb(255, 255, 255);"
     />
     line 2
   </span>
   <span
-    className="label mr-4 mb-2"
-    key="square line 1"
+    class="label mr-4 mb-2"
   >
     <span
-      className="square mr-2"
-      style={
-        {
-          "background": "repeating-linear-gradient (60deg, red 80%, red 90%, white 0px, white 100%)",
-        }
-      }
+      class="square mr-2"
     />
     square line 1
   </span>
   <span
-    className="label mr-4 mb-2"
-    key="Rectangle name"
+    class="label mr-4 mb-2"
   >
     <span
-      className="mr-2"
+      class="mr-2"
     >
       Label ahead of the legend
     </span>
     <span
-      className="rectangle mr-2"
-      style={
-        {
-          "background": "red",
-        }
-      }
+      class="rectangle mr-2"
+      style="background: red;"
     />
     Rectangle name
   </span>

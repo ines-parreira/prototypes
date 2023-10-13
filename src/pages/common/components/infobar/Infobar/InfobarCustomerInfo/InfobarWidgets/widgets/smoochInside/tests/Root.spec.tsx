@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {TitleWrapper} from '../Root'
@@ -7,17 +7,17 @@ import {TitleWrapper} from '../Root'
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {
         it('should render without link', () => {
-            const component = shallow(
+            const {container} = render(
                 <TitleWrapper source={fromJS({})} template={fromJS({})}>
                     <span>Chat</span>
                 </TitleWrapper>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with a link', () => {
-            const component = shallow(
+            const {container} = render(
                 <TitleWrapper
                     source={fromJS({baz: 'BAZ'})}
                     template={fromJS({
@@ -28,7 +28,7 @@ describe('<TitleWrapper/>', () => {
                 </TitleWrapper>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

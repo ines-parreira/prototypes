@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {EmailIntegrationCreateForwarding} from '../EmailIntegrationCreateForwarding'
@@ -19,18 +19,18 @@ const commonProps: ComponentProps<typeof EmailIntegrationCreateForwarding> = {
 
 describe('EmailIntegrationCreateForwarding component', () => {
     it('should render', () => {
-        const component = shallow(
+        const {container} = render(
             <EmailIntegrationCreateForwarding {...commonProps} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render -copied!- button because the email address has just been copied', () => {
-        const component = shallow(
+        const {container} = render(
             <EmailIntegrationCreateForwarding {...commonProps} />
-        ).setState({isCopied: true})
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

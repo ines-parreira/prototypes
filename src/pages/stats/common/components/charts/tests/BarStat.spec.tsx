@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {stats as statsConfig, SUPPORT_VOLUME} from 'config/stats'
@@ -42,15 +42,19 @@ const minPropsNoData: ComponentProps<typeof BarStat> = {
 describe('BarStat', () => {
     it('should render a bar chart', () => {
         const config = statsConfig.find((config, key) => key === SUPPORT_VOLUME)
-        const component = shallow(<BarStat {...minProps} config={config} />)
-        expect(component).toMatchSnapshot()
+
+        const {container} = render(<BarStat {...minProps} config={config} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a bar chart with "no data" message', () => {
         const config = statsConfig.find((config, key) => key === SUPPORT_VOLUME)
-        const component = shallow(
+
+        const {container} = render(
             <BarStat {...minPropsNoData} config={config} />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

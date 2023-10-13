@@ -3,101 +3,211 @@
 exports[`DistributionKeyMetricStat should render a distribution chart 1`] = `
 <div>
   <div
-    className="mb-1 row"
-    key="5"
+    class="mb-1 row"
   >
     <div
-      className="col-md-6 ta-left"
+      class="col-md-6 ta-left"
     >
-      <DistributionVariantStat
-        currentValue={5}
-        maxValue={5}
-        minValue={1}
-        variant="star"
-      />
+      <span
+        class="distribution"
+      >
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+      </span>
     </div>
     <div
-      className="value col-md-3 ta-right"
+      class="value col-md-3 ta-right"
     >
       5
     </div>
   </div>
   <div
-    className="mb-1 row"
-    key="4"
+    class="mb-1 row"
   >
     <div
-      className="col-md-6 ta-left"
+      class="col-md-6 ta-left"
     >
-      <DistributionVariantStat
-        currentValue={4}
-        maxValue={5}
-        minValue={1}
-        variant="star"
-      />
+      <span
+        class="distribution"
+      >
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+      </span>
     </div>
     <div
-      className="value col-md-3 ta-right"
+      class="value col-md-3 ta-right"
     >
       4
     </div>
   </div>
   <div
-    className="mb-1 row"
-    key="3"
+    class="mb-1 row"
   >
     <div
-      className="col-md-6 ta-left"
+      class="col-md-6 ta-left"
     >
-      <DistributionVariantStat
-        currentValue={3}
-        maxValue={5}
-        minValue={1}
-        variant="star"
-      />
+      <span
+        class="distribution"
+      >
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+      </span>
     </div>
     <div
-      className="value col-md-3 ta-right"
+      class="value col-md-3 ta-right"
     >
       3
     </div>
   </div>
   <div
-    className="mb-1 row"
-    key="2"
+    class="mb-1 row"
   >
     <div
-      className="col-md-6 ta-left"
+      class="col-md-6 ta-left"
     >
-      <DistributionVariantStat
-        currentValue={2}
-        maxValue={5}
-        minValue={1}
-        variant="star"
-      />
+      <span
+        class="distribution"
+      >
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+      </span>
     </div>
     <div
-      className="value col-md-3 ta-right"
+      class="value col-md-3 ta-right"
     >
       2
     </div>
   </div>
   <div
-    className="mb-1 row"
-    key="1"
+    class="mb-1 row"
   >
     <div
-      className="col-md-6 ta-left"
+      class="col-md-6 ta-left"
     >
-      <DistributionVariantStat
-        currentValue={1}
-        maxValue={5}
-        minValue={1}
-        variant="star"
-      />
+      <span
+        class="distribution"
+      >
+        <img
+          alt="filled star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+        <img
+          alt="empty star"
+          class="star"
+          src="test-file-stub"
+        />
+      </span>
     </div>
     <div
-      className="value col-md-3 ta-right"
+      class="value col-md-3 ta-right"
     >
       1
     </div>

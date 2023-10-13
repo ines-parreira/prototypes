@@ -1,62 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = `
-<CustomerInitialMessages
-  conversationColor="red"
-  messages={
-    [
-      "Hey hey",
-      "Hello",
-      "How are you doing?",
-    ]
-  }
+<div
+  class="d-flex flex-column"
 >
   <div
-    className="d-flex flex-column"
+    class="conversationTimestamp"
   >
-    <ConversationTimestamp>
-      <div
-        className="conversationTimestamp"
-      >
-        January 26
-      </div>
-    </ConversationTimestamp>
-    <div
-      className="bubble primary firstMessageOfAppUser"
-      key="0"
-      style={
-        {
-          "backgroundColor": "red",
-          "color": "#FFFFFF",
-        }
-      }
-    >
-      Hey hey
-    </div>
-    <div
-      className="bubble primary"
-      key="1"
-      style={
-        {
-          "backgroundColor": "red",
-          "color": "#FFFFFF",
-        }
-      }
-    >
-      Hello
-    </div>
-    <div
-      className="bubble primary lastMessage"
-      key="2"
-      style={
-        {
-          "backgroundColor": "red",
-          "color": "#FFFFFF",
-        }
-      }
-    >
-      How are you doing?
-    </div>
+    January 26
   </div>
-</CustomerInitialMessages>
+  <div
+    class="bubble primary firstMessageOfAppUser"
+    style="background-color: red; color: rgb(255, 255, 255);"
+  >
+    Hey hey
+  </div>
+  <div
+    class="bubble primary"
+    style="background-color: red; color: rgb(255, 255, 255);"
+  >
+    Hello
+  </div>
+  <div
+    class="bubble primary lastMessage"
+    style="background-color: red; color: rgb(255, 255, 255);"
+  >
+    How are you doing?
+  </div>
+</div>
 `;

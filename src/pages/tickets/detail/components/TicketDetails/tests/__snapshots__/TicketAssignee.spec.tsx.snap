@@ -1,1536 +1,1666 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TicketAssignee/> render() should display teams only 1`] = `
-<Dropdown
-  a11y={false}
-  active={false}
-  addonType={false}
-  className="classname"
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="classname dropdown"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="toggle btn-transparent"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle btn-transparent dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
       Unassigned
     </span>
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    modifiers={
-      {
-        "preventOverflow": {
-          "boundariesElement": "viewport",
-        },
-      }
-    }
-    right={true}
-    style={
-      {
-        "width": "260px",
-        "zIndex": 1051,
-      }
-    }
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
   >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
       ASSIGN TO:
-    </DropdownItem>
-    <DropdownItem
-      className="dropdown-item-input"
-      header={true}
-      tag="button"
-      toggle={true}
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
     />
     <div>
-      <PeopleSearchResults
-        handleTeams={true}
-        handleUsers={false}
-        onTeamClick={[Function]}
-        onUserClick={[Function]}
-        teams={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "Team 1",
-              "decoration": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "Team 2",
-              "decoration": Immutable.Map {},
-            },
-          ]
-        }
-        users={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "User 1",
-              "email": "email1@foo.com",
-              "meta": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "User 2",
-              "email": "email2@foo.com",
-              "meta": Immutable.Map {},
-            },
-          ]
-        }
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
       />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Teams
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 2
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
-  </DropdownMenu>
-</Dropdown>
+  </div>
+</div>
 `;
 
 exports[`<TicketAssignee/> render() should display the email of the agent assigned as its name because it has no name 1`] = `
-<Dropdown
-  a11y={false}
-  active={false}
-  addonType={false}
-  className="classname"
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="classname dropdown"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="toggle btn-transparent"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle btn-transparent dropdown-toggle btn btn-secondary"
     type="button"
   >
-    <AgentLabel
-      maxWidth="100"
-      name="steve@acme.gorgias.io"
-      shouldDisplayAvatar={true}
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    modifiers={
-      {
-        "preventOverflow": {
-          "boundariesElement": "viewport",
-        },
-      }
-    }
-    right={true}
-    style={
-      {
-        "width": "260px",
-        "zIndex": 1051,
-      }
-    }
-    tag="div"
+    <div
+      class="AgentLabel"
+    >
+      <div
+        class="component square avatar"
+        style="width: 26px; height: 26px;"
+      >
+        <div
+          class="initials"
+          style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+        >
+          <span
+            style="line-height: 28px;"
+          >
+            s
+          </span>
+        </div>
+      </div>
+      <span
+        class="name"
+        style="max-width: 100px;"
+      >
+        steve@acme.gorgias.io
+      </span>
+    </div>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
   >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
       ASSIGN TO:
-    </DropdownItem>
-    <DropdownItem
-      className="dropdown-item-input"
-      header={true}
-      tag="button"
-      toggle={true}
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
     />
     <div>
-      <PeopleSearchResults
-        handleTeams={true}
-        handleUsers={true}
-        onTeamClick={[Function]}
-        onUserClick={[Function]}
-        teams={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "Team 1",
-              "decoration": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "Team 2",
-              "decoration": Immutable.Map {},
-            },
-          ]
-        }
-        users={
-          Immutable.List [
-            Immutable.Map {
-              "id": 2,
-              "name": "User 2",
-              "email": "email2@foo.com",
-              "meta": Immutable.Map {},
-            },
-          ]
-        }
+      <button
+        class="assigneeItem dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <DropdownItem
-          className="assigneeItem"
-          tag="button"
-          toggle={true}
+        <div
+          class="AgentLabel assigneeLabel"
         >
-          <AgentLabel
-            className="assigneeLabel"
-            name="steve@acme.gorgias.io"
-            shouldDisplayAvatar={true}
-          />
-          <i
-            className="material-icons md-2"
-            onClick={[Function]}
+          <div
+            class="component square avatar"
+            style="width: 26px; height: 26px;"
           >
-            close
-          </i>
-        </DropdownItem>
-        <DropdownItem
-          className="item"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                s
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            steve@acme.gorgias.io
+          </span>
+        </div>
+        <i
+          class="material-icons md-2"
+        >
+          close
+        </i>
+      </button>
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Teams
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Assign yourself
-        </DropdownItem>
-      </PeopleSearchResults>
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 2
+            </span>
+          </div>
+        </button>
+      </div>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 2
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
-  </DropdownMenu>
-</Dropdown>
+  </div>
+</div>
 `;
 
 exports[`<TicketAssignee/> render() should display the info of the agent assigned 1`] = `
-<Dropdown
-  a11y={false}
-  active={false}
-  addonType={false}
-  className="classname"
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="classname dropdown"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="toggle btn-transparent"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle btn-transparent dropdown-toggle btn btn-secondary"
     type="button"
   >
-    <AgentLabel
-      maxWidth="100"
-      name="Steve Frizeli"
-      profilePictureUrl="profilePictureUrl"
-      shouldDisplayAvatar={true}
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    modifiers={
-      {
-        "preventOverflow": {
-          "boundariesElement": "viewport",
-        },
-      }
-    }
-    right={true}
-    style={
-      {
-        "width": "260px",
-        "zIndex": 1051,
-      }
-    }
-    tag="div"
+    <div
+      class="AgentLabel"
+    >
+      <div
+        class="component hasImage square avatar"
+        style="width: 26px; height: 26px;"
+      >
+        <div
+          class="initials"
+          style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+        >
+          <span
+            style="line-height: 28px;"
+          >
+            SF
+          </span>
+        </div>
+        <img
+          alt="avatar"
+          class="gravatar"
+          src="profilePictureUrl"
+        />
+      </div>
+      <span
+        class="name"
+        style="max-width: 100px;"
+      >
+        Steve Frizeli
+      </span>
+    </div>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
   >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
       ASSIGN TO:
-    </DropdownItem>
-    <DropdownItem
-      className="dropdown-item-input"
-      header={true}
-      tag="button"
-      toggle={true}
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
     />
     <div>
-      <PeopleSearchResults
-        handleTeams={true}
-        handleUsers={true}
-        onTeamClick={[Function]}
-        onUserClick={[Function]}
-        teams={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "Team 1",
-              "decoration": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "Team 2",
-              "decoration": Immutable.Map {},
-            },
-          ]
-        }
-        users={
-          Immutable.List [
-            Immutable.Map {
-              "id": 2,
-              "name": "User 2",
-              "email": "email2@foo.com",
-              "meta": Immutable.Map {},
-            },
-          ]
-        }
+      <button
+        class="assigneeItem dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <DropdownItem
-          className="assigneeItem"
-          tag="button"
-          toggle={true}
+        <div
+          class="AgentLabel assigneeLabel"
         >
-          <AgentLabel
-            className="assigneeLabel"
-            name="Steve Frizeli"
-            shouldDisplayAvatar={true}
-          />
-          <i
-            className="material-icons md-2"
-            onClick={[Function]}
+          <div
+            class="component square avatar"
+            style="width: 26px; height: 26px;"
           >
-            close
-          </i>
-        </DropdownItem>
-        <DropdownItem
-          className="item"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                SF
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            Steve Frizeli
+          </span>
+        </div>
+        <i
+          class="material-icons md-2"
+        >
+          close
+        </i>
+      </button>
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Teams
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Assign yourself
-        </DropdownItem>
-      </PeopleSearchResults>
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 2
+            </span>
+          </div>
+        </button>
+      </div>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 2
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
-  </DropdownMenu>
-</Dropdown>
+  </div>
+</div>
 `;
 
 exports[`<TicketAssignee/> render() should display the info of the agent assigned even if a team is assigned too 1`] = `
-<Dropdown
-  a11y={false}
-  active={false}
-  addonType={false}
-  className="classname"
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="classname dropdown"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="toggle btn-transparent"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle btn-transparent dropdown-toggle btn btn-secondary"
     type="button"
   >
-    <AgentLabel
-      maxWidth="100"
-      name="steve@acme.gorgias.io"
-      shouldDisplayAvatar={true}
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    modifiers={
-      {
-        "preventOverflow": {
-          "boundariesElement": "viewport",
-        },
-      }
-    }
-    right={true}
-    style={
-      {
-        "width": "260px",
-        "zIndex": 1051,
-      }
-    }
-    tag="div"
+    <div
+      class="AgentLabel"
+    >
+      <div
+        class="component square avatar"
+        style="width: 26px; height: 26px;"
+      >
+        <div
+          class="initials"
+          style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+        >
+          <span
+            style="line-height: 28px;"
+          >
+            s
+          </span>
+        </div>
+      </div>
+      <span
+        class="name"
+        style="max-width: 100px;"
+      >
+        steve@acme.gorgias.io
+      </span>
+    </div>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
   >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
       ASSIGN TO:
-    </DropdownItem>
-    <DropdownItem
-      className="dropdown-item-input"
-      header={true}
-      tag="button"
-      toggle={true}
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
     />
     <div>
-      <PeopleSearchResults
-        handleTeams={true}
-        handleUsers={true}
-        onTeamClick={[Function]}
-        onUserClick={[Function]}
-        teams={
-          Immutable.List [
-            Immutable.Map {
-              "id": 2,
-              "name": "Team 2",
-              "decoration": Immutable.Map {},
-            },
-          ]
-        }
-        users={
-          Immutable.List [
-            Immutable.Map {
-              "id": 2,
-              "name": "User 2",
-              "email": "email2@foo.com",
-              "meta": Immutable.Map {},
-            },
-          ]
-        }
+      <button
+        class="assigneeItem dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <DropdownItem
-          className="assigneeItem"
-          tag="button"
-          toggle={true}
+        <div
+          class="TeamLabel assigneeLabel"
         >
-          <TeamLabel
-            className="assigneeLabel"
-            name="Team 1"
-            shouldDisplayAvatar={true}
-            shouldDisplayTeamIcon={true}
-          />
-          <i
-            className="material-icons md-2"
-            onClick={[Function]}
+          <div
+            class="component square avatar"
+            style="width: 26px; height: 26px;"
           >
-            close
-          </i>
-        </DropdownItem>
-        <DropdownItem
-          className="assigneeItem"
-          tag="button"
-          toggle={true}
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                T1
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            Team 1
+            <span
+              class="nameIcon material-icons md-2"
+            >
+              people
+            </span>
+          </span>
+        </div>
+        <i
+          class="material-icons md-2"
         >
-          <AgentLabel
-            className="assigneeLabel"
-            name="steve@acme.gorgias.io"
-            shouldDisplayAvatar={true}
-          />
-          <i
-            className="material-icons md-2"
-            onClick={[Function]}
+          close
+        </i>
+      </button>
+      <button
+        class="assigneeItem dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="AgentLabel assigneeLabel"
+        >
+          <div
+            class="component square avatar"
+            style="width: 26px; height: 26px;"
           >
-            close
-          </i>
-        </DropdownItem>
-        <DropdownItem
-          className="item"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                s
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            steve@acme.gorgias.io
+          </span>
+        </div>
+        <i
+          class="material-icons md-2"
+        >
+          close
+        </i>
+      </button>
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Teams
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Assign yourself
-        </DropdownItem>
-      </PeopleSearchResults>
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 2
+            </span>
+          </div>
+        </button>
+      </div>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 2
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
-  </DropdownMenu>
-</Dropdown>
+  </div>
+</div>
 `;
 
 exports[`<TicketAssignee/> render() should display the name of the team assigned because there is no user assigned 1`] = `
-<Dropdown
-  a11y={false}
-  active={false}
-  addonType={false}
-  className="classname"
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="classname dropdown"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="toggle btn-transparent"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle btn-transparent dropdown-toggle btn btn-secondary"
     type="button"
   >
-    <TeamLabel
-      className=""
-      maxWidth={100}
-      name="Team 1"
-      shouldDisplayAvatar={true}
-      shouldDisplayTeamIcon={false}
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    modifiers={
-      {
-        "preventOverflow": {
-          "boundariesElement": "viewport",
-        },
-      }
-    }
-    right={true}
-    style={
-      {
-        "width": "260px",
-        "zIndex": 1051,
-      }
-    }
-    tag="div"
+    <div
+      class="TeamLabel"
+    >
+      <div
+        class="component square avatar"
+        style="width: 26px; height: 26px;"
+      >
+        <div
+          class="initials"
+          style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+        >
+          <span
+            style="line-height: 28px;"
+          >
+            T1
+          </span>
+        </div>
+      </div>
+      <span
+        class="name"
+        style="max-width: 100px;"
+      >
+        Team 1
+      </span>
+    </div>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
   >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
       ASSIGN TO:
-    </DropdownItem>
-    <DropdownItem
-      className="dropdown-item-input"
-      header={true}
-      tag="button"
-      toggle={true}
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
     />
     <div>
-      <PeopleSearchResults
-        handleTeams={true}
-        handleUsers={true}
-        onTeamClick={[Function]}
-        onUserClick={[Function]}
-        teams={
-          Immutable.List [
-            Immutable.Map {
-              "id": 2,
-              "name": "Team 2",
-              "decoration": Immutable.Map {},
-            },
-          ]
-        }
-        users={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "User 1",
-              "email": "email1@foo.com",
-              "meta": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "User 2",
-              "email": "email2@foo.com",
-              "meta": Immutable.Map {},
-            },
-          ]
-        }
+      <button
+        class="assigneeItem dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <DropdownItem
-          className="assigneeItem"
-          tag="button"
-          toggle={true}
+        <div
+          class="TeamLabel assigneeLabel"
         >
-          <TeamLabel
-            className="assigneeLabel"
-            name="Team 1"
-            shouldDisplayAvatar={true}
-            shouldDisplayTeamIcon={true}
-          />
-          <i
-            className="material-icons md-2"
-            onClick={[Function]}
+          <div
+            class="component square avatar"
+            style="width: 26px; height: 26px;"
           >
-            close
-          </i>
-        </DropdownItem>
-        <DropdownItem
-          className="item"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                T1
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            Team 1
+            <span
+              class="nameIcon material-icons md-2"
+            >
+              people
+            </span>
+          </span>
+        </div>
+        <i
+          class="material-icons md-2"
+        >
+          close
+        </i>
+      </button>
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Teams
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Assign yourself
-        </DropdownItem>
-      </PeopleSearchResults>
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 2
+            </span>
+          </div>
+        </button>
+      </div>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 2
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
-  </DropdownMenu>
-</Dropdown>
+  </div>
+</div>
 `;
 
 exports[`<TicketAssignee/> render() should display users only 1`] = `
-<Dropdown
-  a11y={false}
-  active={false}
-  addonType={false}
-  className="classname"
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="classname dropdown"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="toggle btn-transparent"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle btn-transparent dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
       Unassigned
     </span>
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    modifiers={
-      {
-        "preventOverflow": {
-          "boundariesElement": "viewport",
-        },
-      }
-    }
-    right={true}
-    style={
-      {
-        "width": "260px",
-        "zIndex": 1051,
-      }
-    }
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
   >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
       ASSIGN TO:
-    </DropdownItem>
-    <DropdownItem
-      className="dropdown-item-input"
-      header={true}
-      tag="button"
-      toggle={true}
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
     />
     <div>
-      <PeopleSearchResults
-        handleTeams={false}
-        handleUsers={true}
-        onTeamClick={[Function]}
-        onUserClick={[Function]}
-        teams={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "Team 1",
-              "decoration": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "Team 2",
-              "decoration": Immutable.Map {},
-            },
-          ]
-        }
-        users={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "User 1",
-              "email": "email1@foo.com",
-              "meta": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "User 2",
-              "email": "email2@foo.com",
-              "meta": Immutable.Map {},
-            },
-          ]
-        }
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <DropdownItem
-          className="item"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Assign yourself
-        </DropdownItem>
-      </PeopleSearchResults>
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 2
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
-  </DropdownMenu>
-</Dropdown>
+  </div>
+</div>
 `;
 
 exports[`<TicketAssignee/> render() should not display any agent info because there is no assignee 1`] = `
-<Dropdown
-  a11y={false}
-  active={false}
-  addonType={false}
-  className="classname"
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="classname dropdown"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="toggle btn-transparent"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle btn-transparent dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
       Unassigned
     </span>
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    modifiers={
-      {
-        "preventOverflow": {
-          "boundariesElement": "viewport",
-        },
-      }
-    }
-    right={true}
-    style={
-      {
-        "width": "260px",
-        "zIndex": 1051,
-      }
-    }
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
   >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
       ASSIGN TO:
-    </DropdownItem>
-    <DropdownItem
-      className="dropdown-item-input"
-      header={true}
-      tag="button"
-      toggle={true}
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
     />
     <div>
-      <PeopleSearchResults
-        handleTeams={true}
-        handleUsers={true}
-        onTeamClick={[Function]}
-        onUserClick={[Function]}
-        teams={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "Team 1",
-              "decoration": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "Team 2",
-              "decoration": Immutable.Map {},
-            },
-          ]
-        }
-        users={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "User 1",
-              "email": "email1@foo.com",
-              "meta": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "User 2",
-              "email": "email2@foo.com",
-              "meta": Immutable.Map {},
-            },
-          ]
-        }
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <DropdownItem
-          className="item"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Teams
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Assign yourself
-        </DropdownItem>
-      </PeopleSearchResults>
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 2
+            </span>
+          </div>
+        </button>
+      </div>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 2
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
-  </DropdownMenu>
-</Dropdown>
+  </div>
+</div>
 `;
 
 exports[`<TicketAssignee/> render() should not display teams because object is empty 1`] = `
-<Dropdown
-  a11y={false}
-  active={false}
-  addonType={false}
-  className="classname"
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="classname dropdown"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="toggle btn-transparent"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle btn-transparent dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
       Unassigned
     </span>
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    modifiers={
-      {
-        "preventOverflow": {
-          "boundariesElement": "viewport",
-        },
-      }
-    }
-    right={true}
-    style={
-      {
-        "width": "260px",
-        "zIndex": 1051,
-      }
-    }
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
   >
-    <DropdownItem
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
       ASSIGN TO:
-    </DropdownItem>
-    <DropdownItem
-      className="dropdown-item-input"
-      header={true}
-      tag="button"
-      toggle={true}
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
     />
     <div>
-      <PeopleSearchResults
-        handleTeams={false}
-        handleUsers={true}
-        onTeamClick={[Function]}
-        onUserClick={[Function]}
-        teams={Immutable.List []}
-        users={
-          Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "name": "User 1",
-              "email": "email1@foo.com",
-              "meta": Immutable.Map {},
-            },
-            Immutable.Map {
-              "id": 2,
-              "name": "User 2",
-              "email": "email2@foo.com",
-              "meta": Immutable.Map {},
-            },
-          ]
-        }
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <DropdownItem
-          className="item"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Assign yourself
-        </DropdownItem>
-      </PeopleSearchResults>
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 2
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
-  </DropdownMenu>
-</Dropdown>
+  </div>
+</div>
 `;
 
 exports[`<TicketAssignee/> should read data from the redux store correctly 1`] = `
-<Provider
-  store={
-    {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
+<div
+  class="classname dropdown"
 >
-  <Connect(TicketAssigneeContainer)
-    className="classname"
-    currentAssigneeTeam={null}
-    currentAssigneeUser={null}
-    menuDirection="right"
-    setTeam={[MockFunction]}
-    setUser={[MockFunction]}
-    transparent={false}
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="toggle dropdown-toggle btn btn-secondary"
+    type="button"
   >
-    <TicketAssigneeContainer
-      className="classname"
-      currentAssigneeTeam={null}
-      currentAssigneeUser={null}
-      currentUser={
-        Immutable.Map {
-          "id": 1,
-          "email": "steve@acme.gorgias.io",
-        }
-      }
-      direction="down"
-      dispatch={[Function]}
-      handleTeams={true}
-      handleUsers={true}
-      menuDirection="right"
-      setTeam={[MockFunction]}
-      setUser={[MockFunction]}
-      teams={
-        Immutable.Seq [
-          Immutable.Map {
-            "id": 1,
-            "name": "Team 1",
-            "decoration": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "Team 2",
-            "decoration": Immutable.Map {},
-          },
-        ]
-      }
-      transparent={false}
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 1,
-            "name": "User 1",
-            "email": "email1@foo.com",
-            "meta": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
+    <span>
+      Unassigned
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 260px; z-index: 1051;"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
     >
-      <Dropdown
-        a11y={false}
-        active={false}
-        addonType={false}
-        className="classname"
-        direction="down"
-        inNavbar={false}
-        isOpen={false}
-        nav={false}
-        setActiveFromChild={false}
-        toggle={[Function]}
+      ASSIGN TO:
+    </h6>
+    <h6
+      class="dropdown-item-input dropdown-header"
+      tabindex="-1"
+    />
+    <div>
+      <button
+        class="item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <Manager>
+        Assign yourself
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Teams
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
           <div
-            className="classname dropdown"
-            onKeyDown={[Function]}
+            class="TeamLabel"
           >
-            <DropdownToggle
-              aria-haspopup={true}
-              caret={true}
-              className="toggle"
-              color="secondary"
-              type="button"
-            >
-              <Reference>
-                <InnerReference
-                  setReferenceNode={[Function]}
-                >
-                  <Button
-                    aria-expanded={false}
-                    aria-haspopup={true}
-                    className="toggle dropdown-toggle"
-                    color="secondary"
-                    innerRef={[Function]}
-                    onClick={[Function]}
-                    tag="button"
-                    type="button"
-                  >
-                    <button
-                      aria-expanded={false}
-                      aria-haspopup={true}
-                      aria-label={null}
-                      className="toggle dropdown-toggle btn btn-secondary"
-                      onClick={[Function]}
-                      type="button"
-                    >
-                      <span>
-                        Unassigned
-                      </span>
-                    </button>
-                  </Button>
-                </InnerReference>
-              </Reference>
-            </DropdownToggle>
-            <DropdownMenu
-              flip={true}
-              modifiers={
-                {
-                  "preventOverflow": {
-                    "boundariesElement": "viewport",
-                  },
-                }
-              }
-              right={true}
-              style={
-                {
-                  "width": "260px",
-                  "zIndex": 1051,
-                }
-              }
-              tag="div"
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
             >
               <div
-                aria-hidden={true}
-                className="dropdown-menu dropdown-menu-right"
-                role="menu"
-                style={
-                  {
-                    "width": "260px",
-                    "zIndex": 1051,
-                  }
-                }
-                tabIndex="-1"
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
               >
-                <DropdownItem
-                  header={true}
-                  tag="button"
-                  toggle={true}
+                <span
+                  style="line-height: 28px;"
                 >
-                  <h6
-                    className="dropdown-header"
-                    onClick={[Function]}
-                    tabIndex="-1"
-                  >
-                    ASSIGN TO:
-                  </h6>
-                </DropdownItem>
-                <DropdownItem
-                  className="dropdown-item-input"
-                  header={true}
-                  tag="button"
-                  toggle={true}
-                >
-                  <h6
-                    className="dropdown-item-input dropdown-header"
-                    onClick={[Function]}
-                    tabIndex="-1"
-                  />
-                </DropdownItem>
-                <div>
-                  <PeopleSearchResults
-                    handleTeams={true}
-                    handleUsers={true}
-                    onTeamClick={[Function]}
-                    onUserClick={[Function]}
-                    teams={
-                      Immutable.Seq [
-                        Immutable.Map {
-                          "id": 1,
-                          "name": "Team 1",
-                          "decoration": Immutable.Map {},
-                        },
-                        Immutable.Map {
-                          "id": 2,
-                          "name": "Team 2",
-                          "decoration": Immutable.Map {},
-                        },
-                      ]
-                    }
-                    users={
-                      Immutable.List [
-                        Immutable.Map {
-                          "id": 1,
-                          "name": "User 1",
-                          "email": "email1@foo.com",
-                          "meta": Immutable.Map {},
-                        },
-                        Immutable.Map {
-                          "id": 2,
-                          "name": "User 2",
-                          "email": "email2@foo.com",
-                          "meta": Immutable.Map {},
-                        },
-                      ]
-                    }
-                  >
-                    <DropdownItem
-                      className="item"
-                      onClick={[Function]}
-                      tag="button"
-                      toggle={true}
-                      type="button"
-                    >
-                      <button
-                        className="item dropdown-item"
-                        onClick={[Function]}
-                        role="menuitem"
-                        tabIndex="0"
-                        type="button"
-                      >
-                        Assign yourself
-                      </button>
-                    </DropdownItem>
-                    <DropdownItem
-                      divider={true}
-                      tag="button"
-                      toggle={true}
-                    >
-                      <div
-                        className="dropdown-divider"
-                        onClick={[Function]}
-                        tabIndex="-1"
-                      />
-                    </DropdownItem>
-                    <TeamResults
-                      onClick={[Function]}
-                      teams={
-                        Immutable.Seq [
-                          Immutable.Map {
-                            "id": 1,
-                            "name": "Team 1",
-                            "decoration": Immutable.Map {},
-                          },
-                          Immutable.Map {
-                            "id": 2,
-                            "name": "Team 2",
-                            "decoration": Immutable.Map {},
-                          },
-                        ]
-                      }
-                    >
-                      <DropdownItem
-                        className="text-uppercase"
-                        header={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <h6
-                          className="text-uppercase dropdown-header"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        >
-                          Teams
-                        </h6>
-                      </DropdownItem>
-                      <div
-                        className="items"
-                      >
-                        <DropdownItem
-                          className="item"
-                          key="1"
-                          onClick={[Function]}
-                          tag="button"
-                          toggle={true}
-                          type="button"
-                        >
-                          <button
-                            className="item dropdown-item"
-                            onClick={[Function]}
-                            role="menuitem"
-                            tabIndex="0"
-                            type="button"
-                          >
-                            <TeamLabel
-                              className=""
-                              name="Team 1"
-                              shouldDisplayAvatar={true}
-                              shouldDisplayTeamIcon={false}
-                            >
-                              <div
-                                className="TeamLabel"
-                              >
-                                <Avatar
-                                  className="avatar"
-                                  email=""
-                                  name="Team 1"
-                                  shape="square"
-                                  size={26}
-                                  style={{}}
-                                >
-                                  <div
-                                    className="component square avatar"
-                                    style={
-                                      {
-                                        "height": "26px",
-                                        "width": "26px",
-                                      }
-                                    }
-                                  >
-                                    <div
-                                      className="initials"
-                                      style={
-                                        {
-                                          "fontSize": "10.833333333333334px",
-                                          "height": "26px",
-                                          "width": "26px",
-                                        }
-                                      }
-                                    >
-                                      <span
-                                        style={
-                                          {
-                                            "lineHeight": "28px",
-                                          }
-                                        }
-                                      >
-                                        T1
-                                      </span>
-                                    </div>
-                                  </div>
-                                </Avatar>
-                                <span
-                                  className="name"
-                                  style={{}}
-                                >
-                                  Team 1
-                                </span>
-                              </div>
-                            </TeamLabel>
-                          </button>
-                        </DropdownItem>
-                        <DropdownItem
-                          className="item"
-                          key="2"
-                          onClick={[Function]}
-                          tag="button"
-                          toggle={true}
-                          type="button"
-                        >
-                          <button
-                            className="item dropdown-item"
-                            onClick={[Function]}
-                            role="menuitem"
-                            tabIndex="0"
-                            type="button"
-                          >
-                            <TeamLabel
-                              className=""
-                              name="Team 2"
-                              shouldDisplayAvatar={true}
-                              shouldDisplayTeamIcon={false}
-                            >
-                              <div
-                                className="TeamLabel"
-                              >
-                                <Avatar
-                                  className="avatar"
-                                  email=""
-                                  name="Team 2"
-                                  shape="square"
-                                  size={26}
-                                  style={{}}
-                                >
-                                  <div
-                                    className="component square avatar"
-                                    style={
-                                      {
-                                        "height": "26px",
-                                        "width": "26px",
-                                      }
-                                    }
-                                  >
-                                    <div
-                                      className="initials"
-                                      style={
-                                        {
-                                          "fontSize": "10.833333333333334px",
-                                          "height": "26px",
-                                          "width": "26px",
-                                        }
-                                      }
-                                    >
-                                      <span
-                                        style={
-                                          {
-                                            "lineHeight": "28px",
-                                          }
-                                        }
-                                      >
-                                        T2
-                                      </span>
-                                    </div>
-                                  </div>
-                                </Avatar>
-                                <span
-                                  className="name"
-                                  style={{}}
-                                >
-                                  Team 2
-                                </span>
-                              </div>
-                            </TeamLabel>
-                          </button>
-                        </DropdownItem>
-                      </div>
-                    </TeamResults>
-                    <DropdownItem
-                      divider={true}
-                      tag="button"
-                      toggle={true}
-                    >
-                      <div
-                        className="dropdown-divider"
-                        onClick={[Function]}
-                        tabIndex="-1"
-                      />
-                    </DropdownItem>
-                    <UserResults
-                      onClick={[Function]}
-                      users={
-                        Immutable.List [
-                          Immutable.Map {
-                            "id": 1,
-                            "name": "User 1",
-                            "email": "email1@foo.com",
-                            "meta": Immutable.Map {},
-                          },
-                          Immutable.Map {
-                            "id": 2,
-                            "name": "User 2",
-                            "email": "email2@foo.com",
-                            "meta": Immutable.Map {},
-                          },
-                        ]
-                      }
-                    >
-                      <DropdownItem
-                        className="text-uppercase"
-                        header={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <h6
-                          className="text-uppercase dropdown-header"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        >
-                          Users
-                        </h6>
-                      </DropdownItem>
-                      <div
-                        className="items"
-                      >
-                        <DropdownItem
-                          className="item"
-                          key="1"
-                          onClick={[Function]}
-                          tag="button"
-                          toggle={true}
-                          type="button"
-                        >
-                          <button
-                            className="item dropdown-item"
-                            onClick={[Function]}
-                            role="menuitem"
-                            tabIndex="0"
-                            type="button"
-                          >
-                            <AgentLabel
-                              name="User 1"
-                              shouldDisplayAvatar={true}
-                            >
-                              <div
-                                className="AgentLabel"
-                              >
-                                <Avatar
-                                  className="avatar"
-                                  email=""
-                                  name="User 1"
-                                  shape="square"
-                                  size={26}
-                                  style={{}}
-                                  url=""
-                                >
-                                  <div
-                                    className="component square avatar"
-                                    style={
-                                      {
-                                        "height": "26px",
-                                        "width": "26px",
-                                      }
-                                    }
-                                  >
-                                    <div
-                                      className="initials"
-                                      style={
-                                        {
-                                          "fontSize": "10.833333333333334px",
-                                          "height": "26px",
-                                          "width": "26px",
-                                        }
-                                      }
-                                    >
-                                      <span
-                                        style={
-                                          {
-                                            "lineHeight": "28px",
-                                          }
-                                        }
-                                      >
-                                        U1
-                                      </span>
-                                    </div>
-                                  </div>
-                                </Avatar>
-                                <span
-                                  className="name"
-                                  style={{}}
-                                >
-                                  User 1
-                                </span>
-                              </div>
-                            </AgentLabel>
-                          </button>
-                        </DropdownItem>
-                        <DropdownItem
-                          className="item"
-                          key="2"
-                          onClick={[Function]}
-                          tag="button"
-                          toggle={true}
-                          type="button"
-                        >
-                          <button
-                            className="item dropdown-item"
-                            onClick={[Function]}
-                            role="menuitem"
-                            tabIndex="0"
-                            type="button"
-                          >
-                            <AgentLabel
-                              name="User 2"
-                              shouldDisplayAvatar={true}
-                            >
-                              <div
-                                className="AgentLabel"
-                              >
-                                <Avatar
-                                  className="avatar"
-                                  email=""
-                                  name="User 2"
-                                  shape="square"
-                                  size={26}
-                                  style={{}}
-                                  url=""
-                                >
-                                  <div
-                                    className="component square avatar"
-                                    style={
-                                      {
-                                        "height": "26px",
-                                        "width": "26px",
-                                      }
-                                    }
-                                  >
-                                    <div
-                                      className="initials"
-                                      style={
-                                        {
-                                          "fontSize": "10.833333333333334px",
-                                          "height": "26px",
-                                          "width": "26px",
-                                        }
-                                      }
-                                    >
-                                      <span
-                                        style={
-                                          {
-                                            "lineHeight": "28px",
-                                          }
-                                        }
-                                      >
-                                        U2
-                                      </span>
-                                    </div>
-                                  </div>
-                                </Avatar>
-                                <span
-                                  className="name"
-                                  style={{}}
-                                >
-                                  User 2
-                                </span>
-                              </div>
-                            </AgentLabel>
-                          </button>
-                        </DropdownItem>
-                      </div>
-                    </UserResults>
-                  </PeopleSearchResults>
-                </div>
+                  T1
+                </span>
               </div>
-            </DropdownMenu>
+            </div>
+            <span
+              class="name"
+            >
+              Team 1
+            </span>
           </div>
-        </Manager>
-      </Dropdown>
-    </TicketAssigneeContainer>
-  </Connect(TicketAssigneeContainer)>
-</Provider>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 2
+            </span>
+          </div>
+        </button>
+      </div>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 1
+            </span>
+          </div>
+        </button>
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U2
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 2
+            </span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 `;

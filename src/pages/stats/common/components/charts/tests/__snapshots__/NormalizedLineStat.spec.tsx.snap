@@ -2,305 +2,106 @@
 
 exports[`NormalizedLineStat should render a line chart with "no data" message 1`] = `
 <div
-  className="text-muted"
+  class="text-muted"
 >
   There is no data for this period.
 </div>
 `;
 
 exports[`NormalizedLineStat should render a line chart with total and disabled labels 1`] = `
-<Row
-  tag="div"
-  widths={
-    [
-      "xs",
-      "sm",
-      "md",
-      "lg",
-      "xl",
-    ]
-  }
+<div
+  class="row"
 >
-  <Col
-    lg={9}
-    md={8}
-    sm={12}
-    tag="div"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <div
+    class="col-sm-12 col-md-8 col-lg-9"
   >
     <div>
-      <ForwardRef
-        data={
-          {
-            "datasets": [
-              {
-                "backgroundColor": "#1D786B",
-                "borderColor": "#1D786B",
-                "borderWidth": 1,
-                "data": [
-                  23,
-                  4,
-                  445,
-                  56,
-                ],
-                "disabledLink": "/app/automation",
-                "fill": false,
-                "label": "Quick response flow",
-                "name": "quick_responses",
-                "pointHoverBackgroundColor": "#1D786B",
-                "pointHoverBorderColor": "#1D786B",
-                "pointHoverRadius": 6,
-                "pointRadius": 4,
-              },
-              {
-                "backgroundColor": "#001874",
-                "borderColor": "#001874",
-                "borderWidth": 1,
-                "data": [
-                  65,
-                  45,
-                  87,
-                  9,
-                ],
-                "disabledLink": "/app/automation",
-                "fill": false,
-                "label": "Article recommendation",
-                "name": "article_recommendation",
-                "pointHoverBackgroundColor": "#001874",
-                "pointHoverBorderColor": "#001874",
-                "pointHoverRadius": 6,
-                "pointRadius": 4,
-              },
-              {
-                "backgroundColor": "#4A8DF9",
-                "borderColor": "#4A8DF9",
-                "borderWidth": 1,
-                "data": [
-                  65,
-                  45,
-                  87,
-                  9,
-                ],
-                "disabledLink": "/app/automation",
-                "fill": false,
-                "label": "Track order",
-                "name": "track",
-                "pointHoverBackgroundColor": "#4A8DF9",
-                "pointHoverBorderColor": "#4A8DF9",
-                "pointHoverRadius": 6,
-                "pointRadius": 4,
-              },
-              {
-                "backgroundColor": "#74B510",
-                "borderColor": "#74B510",
-                "borderWidth": 1,
-                "data": [
-                  65,
-                  45,
-                  87,
-                  9,
-                ],
-                "disabledLink": "/app/automation",
-                "fill": false,
-                "label": "Report order issue",
-                "name": "report_issues",
-                "pointHoverBackgroundColor": "#74B510",
-                "pointHoverBorderColor": "#74B510",
-                "pointHoverRadius": 6,
-                "pointRadius": 4,
-              },
-            ],
-            "labels": [
-              123434533,
-              123435636,
-              123456568,
-              123876542,
-            ],
-          }
-        }
-        height={360}
-        options={
-          {
-            "plugins": {
-              "tooltip": {
-                "intersect": true,
-                "position": "nearest",
-              },
-            },
-            "scales": {
-              "x": {
-                "grid": {
-                  "borderColor": "#d2d7de",
-                  "borderDash": [
-                    2,
-                  ],
-                  "color": "#dfe3f1",
-                  "display": true,
-                  "drawBorder": true,
-                  "tickBorderDash": [
-                    2,
-                  ],
-                  "z": -1,
-                },
-                "offset": true,
-                "ticks": {
-                  "callback": [Function],
-                  "color": "#b2bddd",
-                },
-              },
-              "y": {
-                "grid": {
-                  "borderDash": [
-                    2,
-                  ],
-                  "color": "#dfe3f1",
-                  "drawBorder": true,
-                  "drawTicks": false,
-                  "tickBorderDash": [
-                    2,
-                  ],
-                  "z": -1,
-                },
-                "min": 0,
-                "ticks": {
-                  "color": "#b2bddd",
-                  "padding": 10,
-                },
-                "title": {
-                  "color": "#b2bddd",
-                  "display": true,
-                  "text": "Interactions",
-                },
-              },
-            },
-          }
-        }
+      <canvas
+        height="360"
+        role="img"
+        width="300"
       />
     </div>
-  </Col>
-  <Col
-    lg={3}
-    md={4}
-    sm={12}
-    tag="div"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  </div>
+  <div
+    class="col-sm-12 col-md-4 col-lg-3"
   >
     <div
-      className="bar-total-wrapper"
+      class="bar-total-wrapper"
     >
       <div
-        className="bar-total-data-wrapper"
-        key="Quick response flow"
+        class="bar-total-data-wrapper"
       >
         <div
-          className="label mr-4 mb-2"
-          key="Quick response flow"
+          class="label mr-4 mb-2"
         >
           <span
-            className="circle mr-2"
-            style={
-              {
-                "backgroundColor": "#1D786B",
-              }
-            }
+            class="circle mr-2"
+            style="background-color: rgb(29, 120, 107);"
           />
           Quick response flow
         </div>
         <div
-          className="data"
+          class="data"
         >
           528
         </div>
       </div>
       <div
-        className="bar-total-data-wrapper"
-        key="Article recommendation"
+        class="bar-total-data-wrapper"
       >
         <div
-          className="label mr-4 mb-2"
-          key="Article recommendation"
+          class="label mr-4 mb-2"
         >
           <span
-            className="circle mr-2"
-            style={
-              {
-                "backgroundColor": "#001874",
-              }
-            }
+            class="circle mr-2"
+            style="background-color: rgb(0, 24, 116);"
           />
           Article recommendation
         </div>
         <div
-          className="data"
+          class="data"
         >
           206
         </div>
       </div>
       <div
-        className="bar-total-data-wrapper"
-        key="Track order"
+        class="bar-total-data-wrapper"
       >
         <div
-          className="label mr-4 mb-2"
-          key="Track order"
+          class="label mr-4 mb-2"
         >
           <span
-            className="circle mr-2"
-            style={
-              {
-                "backgroundColor": "#4A8DF9",
-              }
-            }
+            class="circle mr-2"
+            style="background-color: rgb(74, 141, 249);"
           />
           Track order
         </div>
         <div
-          className="data"
+          class="data"
         >
           206
         </div>
       </div>
       <div
-        className="bar-total-data-wrapper"
-        key="Report order issue"
+        class="bar-total-data-wrapper"
       >
         <div
-          className="label mr-4 mb-2"
-          key="Report order issue"
+          class="label mr-4 mb-2"
         >
           <span
-            className="circle mr-2"
-            style={
-              {
-                "backgroundColor": "#74B510",
-              }
-            }
+            class="circle mr-2"
+            style="background-color: rgb(116, 181, 16);"
           />
           Report order issue
         </div>
         <div
-          className="data"
+          class="data"
         >
           206
         </div>
       </div>
     </div>
-  </Col>
-</Row>
+  </div>
+</div>
 `;

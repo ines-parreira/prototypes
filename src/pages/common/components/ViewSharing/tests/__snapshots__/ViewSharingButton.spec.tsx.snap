@@ -1,126 +1,116 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ViewSharingButton/> render() should render as disabled because this is a system view 1`] = `
-<Fragment>
-  <ForwardRef
-    id="view-sharing-button"
-    intent="secondary"
-    isDisabled={true}
-    onClick={[Function]}
+<button
+  aria-disabled="true"
+  class="wrapper fill secondary medium isDisabled"
+  id="view-sharing-button"
+  type="button"
+>
+  <span
+    class="wrapper label"
   >
-    <ButtonIconLabel
-      className="label"
-      icon="person_add"
+    <i
+      class="material-icons icon isLeft medium"
     >
-      Sharing: 
-      <b>
-        Public
-      </b>
-    </ButtonIconLabel>
-  </ForwardRef>
-  <ViewSharingButtonTooltip
-    isAllowed={true}
-    isSystem={true}
-  />
-</Fragment>
+      person_add
+    </i>
+    Sharing: 
+    <b>
+      Public
+    </b>
+  </span>
+</button>
 `;
 
 exports[`<ViewSharingButton/> render() should render as disabled because user is not allowed 1`] = `
-<Fragment>
-  <ForwardRef
-    id="view-sharing-button"
-    intent="secondary"
-    isDisabled={true}
-    onClick={[Function]}
+<button
+  aria-disabled="true"
+  class="wrapper fill secondary medium isDisabled"
+  id="view-sharing-button"
+  type="button"
+>
+  <span
+    class="wrapper label"
   >
-    <ButtonIconLabel
-      className="label"
-      icon="person_add"
+    <i
+      class="material-icons icon isLeft medium"
     >
-      Sharing: 
-      <b>
-        Public
-      </b>
-    </ButtonIconLabel>
-  </ForwardRef>
-  <ViewSharingButtonTooltip
-    isAllowed={false}
-    isSystem={false}
-  />
-</Fragment>
+      person_add
+    </i>
+    Sharing: 
+    <b>
+      Public
+    </b>
+  </span>
+</button>
 `;
 
 exports[`<ViewSharingButton/> render() should render as private 1`] = `
-<Fragment>
-  <ForwardRef
-    id="view-sharing-button"
-    intent="secondary"
-    isDisabled={false}
-    onClick={[Function]}
+<button
+  aria-disabled="false"
+  class="wrapper fill secondary medium"
+  id="view-sharing-button"
+  type="button"
+>
+  <span
+    class="wrapper label"
   >
-    <ButtonIconLabel
-      className="label"
-      icon="person_add"
+    <i
+      class="material-icons icon isLeft medium"
     >
-      Sharing: 
-      <b>
-        Private
-      </b>
-    </ButtonIconLabel>
-  </ForwardRef>
-  <ViewSharingButtonTooltip
-    isAllowed={true}
-    isSystem={false}
-  />
-</Fragment>
+      person_add
+    </i>
+    Sharing: 
+    <b>
+      Private
+    </b>
+  </span>
+</button>
 `;
 
 exports[`<ViewSharingButton/> render() should render as public 1`] = `
-<Fragment>
-  <ForwardRef
-    id="view-sharing-button"
-    intent="secondary"
-    isDisabled={false}
-    onClick={[Function]}
+<button
+  aria-disabled="false"
+  class="wrapper fill secondary medium"
+  id="view-sharing-button"
+  type="button"
+>
+  <span
+    class="wrapper label"
   >
-    <ButtonIconLabel
-      className="label"
-      icon="person_add"
+    <i
+      class="material-icons icon isLeft medium"
     >
-      Sharing: 
-      <b>
-        Public
-      </b>
-    </ButtonIconLabel>
-  </ForwardRef>
-  <ViewSharingButtonTooltip
-    isAllowed={true}
-    isSystem={false}
-  />
-</Fragment>
+      person_add
+    </i>
+    Sharing: 
+    <b>
+      Public
+    </b>
+  </span>
+</button>
 `;
 
 exports[`<ViewSharingButton/> render() should render as shared 1`] = `
-<Fragment>
-  <ForwardRef
-    id="view-sharing-button"
-    intent="secondary"
-    isDisabled={false}
-    onClick={[Function]}
+<button
+  aria-disabled="false"
+  class="wrapper fill secondary medium"
+  id="view-sharing-button"
+  type="button"
+>
+  <span
+    class="wrapper label"
   >
-    <ButtonIconLabel
-      className="label"
-      icon="person_add"
+    <i
+      class="material-icons icon isLeft medium"
     >
-      Sharing: 
-      <b>
-        Shared
-      </b>
-    </ButtonIconLabel>
-  </ForwardRef>
-  <ViewSharingButtonTooltip
-    isAllowed={true}
-    isSystem={false}
-  />
-</Fragment>
+      person_add
+    </i>
+    Sharing: 
+    <b>
+      Shared
+    </b>
+  </span>
+</button>
 `;

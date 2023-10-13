@@ -1,4 +1,4 @@
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
@@ -10,7 +10,7 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-} from 'config/integrations/index'
+} from 'config/integrations'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -80,7 +80,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
         }
 
         it('should display the avatar team picture in the header because the URL is set and the option is enabled', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <MessageContent {...messageContentMinProps} />
@@ -88,11 +88,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should not display button if hideButton provided', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} hideButton>
                         <MessageContent {...messageContentMinProps} />
@@ -100,11 +100,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the online status because chat is online', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <MessageContent {...messageContentMinProps} />
@@ -112,11 +112,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the offline status because chat is offline', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} isOnline={false}>
                         <MessageContent {...messageContentMinProps} />
@@ -124,11 +124,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display optional email capture', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <OptionalEmailCapture
@@ -140,11 +140,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display required email capture', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} renderFooter={false}>
                         <RequiredEmailCapture
@@ -155,11 +155,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the sliders when editing the position', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <MessageContent {...messageContentMinProps} />
@@ -167,11 +167,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display auto responder', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} renderFooter={false}>
                         <AutoResponder
@@ -186,11 +186,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display display the offsets when editing axis x', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview
                         {...minProps}
@@ -206,11 +206,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display display the offsets when editing axis y', () => {
-            const component = shallow(
+            const {container} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview
                         {...minProps}
@@ -222,7 +222,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                 </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it.each([
@@ -233,7 +233,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
         ])(
             'should display typical response time for %s',
             (autoResponderReply) => {
-                const component = shallow(
+                const {container} = render(
                     <Provider store={mockStore(defaultState)}>
                         <ChatIntegrationPreview
                             {...minProps}
@@ -247,7 +247,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                     </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
     })

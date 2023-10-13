@@ -1,323 +1,317 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<RefundOrderForm/> render() should render 1`] = `
-<Fragment>
-  <Memo(OrderTable)
-    currencyCode="USD"
-    fulfillmentStatus={null}
-    hasMultipleGateways={false}
-    keepLineItemQuantityAsDefault={true}
-    lineItems={
-      Immutable.List [
-        Immutable.Map {
-          "applied_discount": null,
-          "taxable": true,
-          "price": "1.00",
-          "quantity": 1,
-          "product_id": 8345093387,
-          "price_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-          },
-          "product_exists": true,
-          "properties": Immutable.List [],
-          "variant_id": 31128766316567,
-          "title": "Acidulous candy",
-          "sku": "0987654321-1",
-          "variant_title": "Red / A",
-          "total_discount_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-          },
-          "requires_shipping": true,
-        },
-      ]
-    }
-    onLineItemChange={[MockFunction]}
-    refund={
-      Immutable.Map {
-        "shipping": Immutable.Map {
-          "amount": "0.00",
-          "tax": "0.00",
-          "maximum_refundable": "2.00",
-        },
-        "refund_line_items": Immutable.List [
-          Immutable.Map {
-            "subtotal": "1.00",
-            "location_id": 123,
-            "price": "1.00",
-            "discounted_price": "1.00",
-            "quantity": 1,
-            "discounted_total_price": "1.00",
-            "total_tax": "0.20",
-            "total_cart_discount_amount": "0.00",
-            "restock_type": "no_restock",
-            "line_item_id": 4193100136471,
-          },
-        ],
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "order_id": 1894175539223,
-            "kind": "suggested_refund",
-            "gateway": "manual",
-            "parent_id": 2521452118039,
-            "amount": "1.20",
-            "currency": "USD",
-            "maximum_refundable": "1.20",
-          },
-        ],
-        "currency": "USD",
-      }
-    }
-    shopName="storegorgias3"
-  />
-  <OrderFooter
-    actionName="shopifyCancelOrder"
-    currencyCode="USD"
-    editable={true}
-    hasMultipleGateways={false}
-    hasShippingLine={false}
-    loading={false}
-    notify={false}
-    onNotifyChange={[MockFunction]}
-    onPayloadChange={[MockFunction]}
-    onReasonChange={[MockFunction]}
-    payload={
-      Immutable.Map {
-        "currency": "USD",
-        "restock": true,
-        "notify": true,
-        "refund_line_items": Immutable.List [
-          Immutable.Map {
-            "line_item_id": 4193100136471,
-            "restock_type": "cancel",
-            "fulfillment_status": null,
-            "quantity": 1,
-          },
-        ],
-        "shipping": Immutable.Map {
-          "amount": "0.00",
-        },
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "gateway": "bogus",
-            "amount": "1.00",
-            "maximum_refundable": "1.20",
-          },
-        ],
-      }
-    }
-    reason=""
-    refund={
-      Immutable.Map {
-        "shipping": Immutable.Map {
-          "amount": "0.00",
-          "tax": "0.00",
-          "maximum_refundable": "2.00",
-        },
-        "refund_line_items": Immutable.List [
-          Immutable.Map {
-            "subtotal": "1.00",
-            "location_id": 123,
-            "price": "1.00",
-            "discounted_price": "1.00",
-            "quantity": 1,
-            "discounted_total_price": "1.00",
-            "total_tax": "0.20",
-            "total_cart_discount_amount": "0.00",
-            "restock_type": "no_restock",
-            "line_item_id": 4193100136471,
-          },
-        ],
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "order_id": 1894175539223,
-            "kind": "suggested_refund",
-            "gateway": "manual",
-            "parent_id": 2521452118039,
-            "amount": "1.20",
-            "currency": "USD",
-            "maximum_refundable": "1.20",
-          },
-        ],
-        "currency": "USD",
-      }
-    }
-    setPayload={[MockFunction]}
-  />
-</Fragment>
+<table
+  class="table mb-4 table table-hover"
+>
+  <thead>
+    <tr>
+      <th>
+        Product
+      </th>
+      <th>
+        Item price
+      </th>
+      <th>
+        <div
+          class="qty"
+        >
+          Qty
+          <span
+            aria-label="Quantity warning"
+            class="material-icons orange ml-1"
+            id="qty-warning-icon"
+          >
+            warning
+          </span>
+        </div>
+      </th>
+      <th
+        class="itemTotal"
+      >
+        Item total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        class="container"
+      >
+        <div
+          class="legend"
+        >
+          <div>
+            <a
+              class="title"
+              href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acidulous candy
+            </a>
+          </div>
+          <div
+            class="subtitle"
+          >
+            Red / A
+          </div>
+          <div
+            class="subtitle"
+          >
+            SKU: 
+            0987654321-1
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <div
+            class="d-inline-block text-center"
+          >
+            <small
+              class="d-block text-muted"
+            >
+              <del>
+                <span>
+                  $1.00
+                </span>
+              </del>
+            </small>
+            <span>
+              $0.00
+            </span>
+          </div>
+          <span
+            class="times"
+          >
+            x
+          </span>
+        </div>
+      </td>
+      <td
+        class="quantityCol"
+      >
+        <div
+          class="input-group"
+        >
+          <span
+            class="quantityContainer"
+          >
+            <input
+              class="quantityInput form-control"
+              pattern="\\d+"
+              type="text"
+              value="1"
+            />
+            <span
+              class="quantityMax"
+            >
+              / 
+              1
+            </span>
+          </span>
+          <div
+            class="quantityButtonsContainer input-group-append"
+          >
+            <button
+              aria-disabled="true"
+              class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
+              tabindex="0"
+              type="button"
+            >
+              ▲
+            </button>
+            <button
+              aria-disabled="false"
+              class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
+              tabindex="0"
+              type="button"
+            >
+              ▼
+            </button>
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <strong
+            class="mt-auto mb-auto ml-auto"
+          >
+            <span>
+              $0.00
+            </span>
+          </strong>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] = `
-<Fragment>
-  <Memo(OrderTable)
-    currencyCode="USD"
-    fulfillmentStatus={null}
-    hasMultipleGateways={false}
-    keepLineItemQuantityAsDefault={true}
-    lineItems={
-      Immutable.List [
-        Immutable.Map {
-          "applied_discount": null,
-          "taxable": true,
-          "price": "1.00",
-          "quantity": 1,
-          "product_id": 8345093387,
-          "price_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-          },
-          "product_exists": true,
-          "properties": Immutable.List [],
-          "variant_id": 31128766316567,
-          "title": "Acidulous candy",
-          "sku": "0987654321-1",
-          "variant_title": "Red / A",
-          "total_discount_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-          },
-          "requires_shipping": true,
-        },
-      ]
-    }
-    onLineItemChange={[MockFunction]}
-    refund={
-      Immutable.Map {
-        "shipping": Immutable.Map {
-          "amount": "0.00",
-          "tax": "0.00",
-          "maximum_refundable": "2.00",
-        },
-        "refund_line_items": Immutable.List [
-          Immutable.Map {
-            "subtotal": "1.00",
-            "location_id": 123,
-            "price": "1.00",
-            "discounted_price": "1.00",
-            "quantity": 1,
-            "discounted_total_price": "1.00",
-            "total_tax": "0.20",
-            "total_cart_discount_amount": "0.00",
-            "restock_type": "no_restock",
-            "line_item_id": 4193100136471,
-          },
-        ],
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "order_id": 1894175539223,
-            "kind": "suggested_refund",
-            "gateway": "manual",
-            "parent_id": 2521452118039,
-            "amount": "1.20",
-            "currency": "USD",
-            "maximum_refundable": "1.20",
-          },
-        ],
-        "currency": "USD",
-      }
-    }
-    shopName="storegorgias3"
-  />
-  <OrderFooter
-    actionName="shopifyCancelOrder"
-    currencyCode="USD"
-    editable={true}
-    hasMultipleGateways={false}
-    hasShippingLine={true}
-    loading={false}
-    notify={false}
-    onNotifyChange={[MockFunction]}
-    onPayloadChange={[MockFunction]}
-    onReasonChange={[MockFunction]}
-    payload={
-      Immutable.Map {
-        "currency": "USD",
-        "restock": true,
-        "notify": true,
-        "refund_line_items": Immutable.List [
-          Immutable.Map {
-            "line_item_id": 4193100136471,
-            "restock_type": "cancel",
-            "fulfillment_status": null,
-            "quantity": 1,
-          },
-        ],
-        "shipping": Immutable.Map {
-          "amount": "0.00",
-        },
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "gateway": "bogus",
-            "amount": "1.00",
-            "maximum_refundable": "1.20",
-          },
-        ],
-      }
-    }
-    reason=""
-    refund={
-      Immutable.Map {
-        "shipping": Immutable.Map {
-          "amount": "0.00",
-          "tax": "0.00",
-          "maximum_refundable": "2.00",
-        },
-        "refund_line_items": Immutable.List [
-          Immutable.Map {
-            "subtotal": "1.00",
-            "location_id": 123,
-            "price": "1.00",
-            "discounted_price": "1.00",
-            "quantity": 1,
-            "discounted_total_price": "1.00",
-            "total_tax": "0.20",
-            "total_cart_discount_amount": "0.00",
-            "restock_type": "no_restock",
-            "line_item_id": 4193100136471,
-          },
-        ],
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "order_id": 1894175539223,
-            "kind": "suggested_refund",
-            "gateway": "manual",
-            "parent_id": 2521452118039,
-            "amount": "1.20",
-            "currency": "USD",
-            "maximum_refundable": "1.20",
-          },
-        ],
-        "currency": "USD",
-      }
-    }
-    setPayload={[MockFunction]}
-  />
-</Fragment>
+<table
+  class="table mb-4 table table-hover"
+>
+  <thead>
+    <tr>
+      <th>
+        Product
+      </th>
+      <th>
+        Item price
+      </th>
+      <th>
+        <div
+          class="qty"
+        >
+          Qty
+          <span
+            aria-label="Quantity warning"
+            class="material-icons orange ml-1"
+            id="qty-warning-icon"
+          >
+            warning
+          </span>
+        </div>
+      </th>
+      <th
+        class="itemTotal"
+      >
+        Item total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        class="container"
+      >
+        <div
+          class="legend"
+        >
+          <div>
+            <a
+              class="title"
+              href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acidulous candy
+            </a>
+          </div>
+          <div
+            class="subtitle"
+          >
+            Red / A
+          </div>
+          <div
+            class="subtitle"
+          >
+            SKU: 
+            0987654321-1
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <div
+            class="d-inline-block text-center"
+          >
+            <small
+              class="d-block text-muted"
+            >
+              <del>
+                <span>
+                  $1.00
+                </span>
+              </del>
+            </small>
+            <span>
+              $0.00
+            </span>
+          </div>
+          <span
+            class="times"
+          >
+            x
+          </span>
+        </div>
+      </td>
+      <td
+        class="quantityCol"
+      >
+        <div
+          class="input-group"
+        >
+          <span
+            class="quantityContainer"
+          >
+            <input
+              class="quantityInput form-control"
+              pattern="\\d+"
+              type="text"
+              value="1"
+            />
+            <span
+              class="quantityMax"
+            >
+              / 
+              1
+            </span>
+          </span>
+          <div
+            class="quantityButtonsContainer input-group-append"
+          >
+            <button
+              aria-disabled="true"
+              class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
+              tabindex="0"
+              type="button"
+            >
+              ▲
+            </button>
+            <button
+              aria-disabled="false"
+              class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
+              tabindex="0"
+              type="button"
+            >
+              ▼
+            </button>
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <strong
+            class="mt-auto mb-auto ml-auto"
+          >
+            <span>
+              $0.00
+            </span>
+          </strong>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
@@ -496,13 +490,13 @@ exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
             >
               <label
                 class="label label"
-                for="checkbox-1"
+                for="checkbox-3"
               >
                 <input
                   checked=""
                   class="input"
-                  id="checkbox-1"
-                  name="checkbox-1"
+                  id="checkbox-3"
+                  name="checkbox-3"
                   type="checkbox"
                 />
                 Restock items

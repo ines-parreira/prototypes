@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import Legend from '../Legend'
 
@@ -30,6 +30,8 @@ describe('Legend', () => {
     }
 
     it('should render a legend', () => {
-        expect(shallow(<Legend {...minProps} />)).toMatchSnapshot()
+        const {container} = render(<Legend {...minProps} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from 'enzyme'
+import {render} from '@testing-library/react'
 import {ContentState} from 'draft-js'
 
 import Mention from '../index'
@@ -14,13 +14,14 @@ describe('Mention', () => {
             {mention}
         )
         const entityKey = entityContentState.getLastCreatedEntityKey()
-        const result = render(
+        const {container} = render(
             <Mention
                 contentState={contentState}
                 entityKey={entityKey}
                 theme={{}}
             />
         )
-        expect(result.length).toEqual(1)
+
+        expect(container.children.length).toEqual(1)
     })
 })

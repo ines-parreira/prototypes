@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import SharedBody from '../SharedBody'
@@ -22,7 +22,7 @@ describe('<SharedBody/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(
+            const {container} = render(
                 <SharedBody
                     availableTeams={fromJS([getTeam(1)])}
                     availableUsers={fromJS([getUser(1)])}
@@ -35,7 +35,7 @@ describe('<SharedBody/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

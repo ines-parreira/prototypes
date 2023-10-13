@@ -1,6 +1,6 @@
 import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import * as viewsConfig from '../../../../../../config/views'
@@ -27,15 +27,16 @@ describe('<ViewSelection/>', () => {
 
     describe('render()', () => {
         it('should render the component when only elements on the active view are selected', () => {
-            const component = shallow(<ViewSelectionContainer {...minProps} />)
-            expect(component).toMatchSnapshot()
+            const {container} = render(<ViewSelectionContainer {...minProps} />)
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render the component for an entire view selection', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSelectionContainer {...minProps} viewSelected={true} />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

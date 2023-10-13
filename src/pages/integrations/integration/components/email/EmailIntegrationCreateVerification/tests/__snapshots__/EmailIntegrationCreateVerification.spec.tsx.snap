@@ -2,47 +2,48 @@
 
 exports[`<EmailIntegrationCreateVerification/> render() should render instructions for the activated forwarding email 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/channels/email"
           >
             Email
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         >
           my integration
            
           <span
-            className="text-faded"
+            class="text-faded"
           >
             myintegration@gorgias.io
           </span>
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <h1>
       <i
-        className="material-icons"
+        class="material-icons"
       />
       Verification in progress...
     </h1>
@@ -51,247 +52,279 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
         if you've received the verification email but your integration still reads "Verification in progress...", you can manually input the verification code listed in the verification email.
         <br />
         <br />
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        <form
+          class=""
         >
-          <InputField
-            label="Input verification code manually"
-            name="code"
-            onChange={[Function]}
-            placeholder="f69a26"
-            type="text"
-          />
-          <ForwardRef
-            className=""
+          <div
+            class="InputField form-group"
+            color=""
+          >
+            <label
+              class="control-label"
+              for="id-code"
+            >
+              Input verification code manually
+            </label>
+            <div
+              class=""
+            >
+              <input
+                class="field form-control"
+                id="id-code"
+                placeholder="f69a26"
+                type="text"
+              />
+            </div>
+          </div>
+          <button
+            aria-disabled="false"
+            class="wrapper fill primary medium"
             color="primary"
-            isDisabled={false}
             type="submit"
           >
             Verify your integration
-          </ForwardRef>
-        </Form>
+          </button>
+        </form>
         <br />
       </div>
       <p>
         If you haven't set up the forwarding yet, you'll find the instructions
          
-        <Link
+        <a
           to="/app/settings/channels/email/1/forwarding"
         >
           there
-        </Link>
+        </a>
         .
         <br />
         If you have setup forwarding after having received the verification email, click on the button below to re-send it.
       </p>
-      <ForwardRef
-        className=""
-        intent="primary"
-        isDisabled={false}
-        onClick={[Function]}
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
+        type="button"
       >
         <i
-          className="material-icons mr-2"
+          class="material-icons mr-2"
         >
           mail
         </i>
          Re-send verification email
-      </ForwardRef>
-      <ConfirmButton
-        className="float-right"
-        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-        intent="destructive"
-        isDisabled={false}
-        onConfirm={[Function]}
+      </button>
+      <button
+        aria-disabled="false"
+        class="wrapper float-right fill destructive medium"
+        id="confirm-2"
+        type="button"
       >
-        <ButtonIconLabel
-          icon="delete"
+        <span
+          class="wrapper"
         >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            delete
+          </i>
           Delete email address
-        </ButtonIconLabel>
-      </ConfirmButton>
+        </span>
+      </button>
     </div>
-  </Container>
+  </div>
 </div>
 `;
 
 exports[`<EmailIntegrationCreateVerification/> render() should render instructions for the base email integration 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/channels/email"
           >
             Email
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         >
           my integration
            
           <span
-            className="text-faded"
+            class="text-faded"
           >
             myintegration@emails.gorgias.com
           </span>
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <h1>
       <i
-        className="material-icons"
+        class="material-icons"
       />
       Verification in progress...
     </h1>
     <div>
-      <Alert
-        className="mb16"
-        type="warning"
+      <div
+        class="alert warning mb16"
       >
-        In order to verify your base email integration, you need to verify your own email address. Please check your inbox, you should have received a verification email from us. If you did not, you can re-send this email by
-         
-        <Button
-          className="p-0"
-          color="link"
-          onClick={[MockFunction]}
-          style={
-            {
-              "verticalAlign": "initial",
-            }
-          }
-          tag="button"
+        <div
+          class="content"
         >
-          clicking here
-        </Button>
-        .
-      </Alert>
+          <span
+            class="label"
+          >
+            In order to verify your base email integration, you need to verify your own email address. Please check your inbox, you should have received a verification email from us. If you did not, you can re-send this email by
+             
+            <button
+              class="p-0 btn btn-link"
+              style="vertical-align: initial;"
+              type="button"
+            >
+              clicking here
+            </button>
+            .
+          </span>
+        </div>
+      </div>
     </div>
-  </Container>
+  </div>
 </div>
 `;
 
 exports[`<EmailIntegrationCreateVerification/> render() should render the regular instructions 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/channels/email"
           >
             Email
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         >
           my integration
            
           <span
-            className="text-faded"
+            class="text-faded"
           >
             myintegration@gorgias.io
           </span>
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <h1>
       <i
-        className="material-icons"
+        class="material-icons"
       />
       Verification in progress...
     </h1>
     <div>
-      <Alert
-        className="mb16"
-        icon={
+      <div
+        class="alert info mb16"
+      >
+        <div
+          class="iconContainer"
+        >
           <i
-            className="material-icons md-spin"
+            class="material-icons md-spin"
           >
             autorenew
           </i>
-        }
-      >
-        We're waiting to receive your verification email on
-         
-        <strong>
-          hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us
-        </strong>
-        .
-      </Alert>
+        </div>
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            We're waiting to receive your verification email on
+             
+            <strong>
+              hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us
+            </strong>
+            .
+          </span>
+        </div>
+      </div>
       <p>
         If you haven't set up the forwarding yet, you'll find the instructions
          
-        <Link
+        <a
           to="/app/settings/channels/email/1/forwarding"
         >
           there
-        </Link>
+        </a>
         .
         <br />
         If you have setup forwarding after having received the verification email, click on the button below to re-send it.
       </p>
-      <ForwardRef
-        className=""
-        intent="primary"
-        isDisabled={false}
-        onClick={[Function]}
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
+        type="button"
       >
         <i
-          className="material-icons mr-2"
+          class="material-icons mr-2"
         >
           mail
         </i>
          Re-send verification email
-      </ForwardRef>
-      <ConfirmButton
-        className="float-right"
-        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-        intent="destructive"
-        isDisabled={false}
-        onConfirm={[Function]}
+      </button>
+      <button
+        aria-disabled="false"
+        class="wrapper float-right fill destructive medium"
+        id="confirm-1"
+        type="button"
       >
-        <ButtonIconLabel
-          icon="delete"
+        <span
+          class="wrapper"
         >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            delete
+          </i>
           Delete email address
-        </ButtonIconLabel>
-      </ConfirmButton>
+        </span>
+      </button>
     </div>
-  </Container>
+  </div>
 </div>
 `;

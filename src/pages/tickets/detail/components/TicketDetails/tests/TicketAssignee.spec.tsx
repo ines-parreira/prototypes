@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {shallow, mount} from 'enzyme'
+import {render} from '@testing-library/react'
 import {Map, fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -43,12 +43,14 @@ const minProps: Omit<
 describe('<TicketAssignee/>', () => {
     describe('render()', () => {
         it('should not display any agent info because there is no assignee', () => {
-            const component = shallow(<TicketAssigneeContainer {...minProps} />)
-            expect(component).toMatchSnapshot()
+            const {container} = render(
+                <TicketAssigneeContainer {...minProps} />
+            )
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the info of the agent assigned', () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAssigneeContainer
                     {...minProps}
                     currentAssigneeUser={fromJS({id: 1, name: 'Steve Frizeli'})}
@@ -56,11 +58,11 @@ describe('<TicketAssignee/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the email of the agent assigned as its name because it has no name', () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAssigneeContainer
                     {...minProps}
                     users={fromJS([
@@ -74,11 +76,11 @@ describe('<TicketAssignee/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the info of the agent assigned even if a team is assigned too', () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAssigneeContainer
                     {...minProps}
                     currentAssigneeUser={fromJS({
@@ -89,42 +91,42 @@ describe('<TicketAssignee/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the name of the team assigned because there is no user assigned', () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAssigneeContainer
                     {...minProps}
                     currentAssigneeTeam={fromJS({id: 1, name: 'Team 1'})}
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display users only', () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAssigneeContainer {...minProps} handleTeams={false} />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display teams only', () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAssigneeContainer {...minProps} handleUsers={false} />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should not display teams because object is empty', () => {
-            const component = shallow(
+            const {container} = render(
                 <TicketAssigneeContainer {...minProps} teams={fromJS([])} />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
@@ -146,11 +148,11 @@ describe('<TicketAssignee/>', () => {
             transparent: false,
         }
 
-        const component = mount(
+        const {container} = render(
             <Provider store={store}>
                 <TicketAssignee {...defaultProps} />
             </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

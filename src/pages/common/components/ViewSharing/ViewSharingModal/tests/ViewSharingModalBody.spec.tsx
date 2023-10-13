@@ -1,6 +1,6 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import {ViewVisibility} from 'models/view/types'
 import {ViewSharingModalBodyContainer} from '../ViewSharingModalBody'
@@ -21,7 +21,7 @@ describe('<ViewSharingModalBody/>', () => {
 
     describe('render()', () => {
         it('should render as a spinner', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Public}
@@ -33,11 +33,11 @@ describe('<ViewSharingModalBody/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render an error', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Public}
@@ -49,11 +49,11 @@ describe('<ViewSharingModalBody/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render public body', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Public}
@@ -64,11 +64,11 @@ describe('<ViewSharingModalBody/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render shared body', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Shared}
@@ -79,11 +79,11 @@ describe('<ViewSharingModalBody/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render private body', () => {
-            const component = shallow(
+            const {container} = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Private}
@@ -94,7 +94,7 @@ describe('<ViewSharingModalBody/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

@@ -1,4 +1,4 @@
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import * as React from 'react'
 
 import {ContentState} from 'draft-js'
@@ -39,14 +39,15 @@ describe('discountCodeLink decorator', () => {
 
         it('should render component with onEdit prop if active', () => {
             const link = discountCodeLink()
-            const component = shallow(
+            const {container} = render(
                 <link.component
                     {...minProps}
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                 />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

@@ -1,951 +1,3316 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display auto responder 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
-    renderFooter={false}
+  <div
+    class="buttonWrapper bottom-right"
   >
-    <AutoResponder
-      autoResponderReply="reply-shortly"
-      chatTitle="My little chat integration"
-      language="en-US"
-      mainColor="#123456"
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    class=""
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="appMakerMessageWrapper"
+        >
+          <div
+            class="agent"
+          >
+            <div
+              class="avatar"
+            >
+              <div
+                class="avatar-container css-1j6zot1"
+              >
+                <div
+                  class="avatar css-1gjl7fn"
+                  size="32"
+                >
+                  <svg
+                    aria-label="bot-icon"
+                    fill="none"
+                    height="22"
+                    role="img"
+                    viewBox="0 0 22 22"
+                    width="22"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9.21657 0.458334C9.02672 0.458334 8.87282 0.612236 8.87282 0.802084C8.87282 0.991932 9.02672 1.14583 9.21657 1.14583H13.1946C13.3844 1.14583 13.5383 0.991932 13.5383 0.802084C13.5383 0.612236 13.3844 0.458334 13.1946 0.458334H9.21657Z"
+                      fill="white"
+                    />
+                    <path
+                      clip-rule="evenodd"
+                      d="M5.28205 3.64072C3.57316 3.64072 1.93382 4.57211 1.54009 6.33288C1.13715 8.13486 0.916656 10.3022 0.916656 11.5426C0.916656 17.2249 5.52307 21.8314 11.2054 21.8314C16.8877 21.8314 21.4941 17.2249 21.4941 11.5426C21.4941 10.3022 21.2736 8.13486 20.8707 6.33287C20.4769 4.57211 18.8376 3.64072 17.1287 3.64072H5.28205ZM2.21102 6.4829C2.51475 5.12461 3.79485 4.32822 5.28205 4.32822H17.1287C18.6159 4.32822 19.896 5.12461 20.1997 6.4829C20.5925 8.23922 20.8066 10.3562 20.8066 11.5426C20.8066 16.8452 16.508 21.1439 11.2054 21.1439C5.90277 21.1439 1.60416 16.8452 1.60416 11.5426C1.60416 10.3562 1.81829 8.23922 2.21102 6.4829Z"
+                      fill="white"
+                      fill-rule="evenodd"
+                    />
+                    <path
+                      d="M6.03532 11.1451C5.15653 11.1451 4.44412 10.4327 4.44412 9.5539C4.44412 8.67511 5.15652 7.9627 6.03532 7.9627H16.3781C17.2569 7.9627 17.9693 8.67511 17.9693 9.5539C17.9693 10.4327 17.2569 11.1451 16.3781 11.1451H6.03532Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M7.85409 15.6615C7.7122 15.5354 7.49492 15.5482 7.36879 15.6901C7.24267 15.832 7.25545 16.0492 7.39734 16.1754C7.88308 16.6071 8.53301 16.946 9.13703 17.1996C10.4592 17.7548 11.9526 17.7548 13.2748 17.1996C13.8788 16.946 14.5287 16.6071 15.0145 16.1754C15.1564 16.0492 15.1691 15.832 15.043 15.6901C14.9169 15.5482 14.6996 15.5354 14.5577 15.6615C14.1548 16.0196 13.5853 16.3236 13.0086 16.5657C11.8567 17.0494 10.5551 17.0494 9.4032 16.5657C8.82647 16.3236 8.25696 16.0196 7.85409 15.6615Z"
+                      fill="white"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div
+              class="title"
+            >
+              My little chat integration Bot
+            </div>
+          </div>
+          <div
+            class="messages"
+          >
+            <div
+              class="bubble firstMessageOfAppMaker"
+            >
+              Leave us your email and we'll get back to you. We typically reply in a few hours.
+            </div>
+            <div
+              class="optionalEmailCapture"
+            >
+              <div
+                class="css-63ugbz"
+              >
+                <div
+                  class="css-r0ijy4"
+                >
+                  <label
+                    aria-label="Get notified by email"
+                    class="css-zs6vvb"
+                    for="email-capture-intput"
+                  >
+                    Get notified by email
+                  </label>
+                  <div
+                    class="css-t0lbh8"
+                  >
+                    <input
+                      aria-invalid="false"
+                      class="css-1jkukg3"
+                      id="email-capture-intput"
+                      label="Get notified by email"
+                      name="email-capture-intput"
+                      placeholder="your@email.com"
+                      readonly=""
+                      type="email"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="css-18kbys8"
+                >
+                  <button
+                    class="css-197xmfa"
+                    fill="filled"
+                    type="button"
+                  >
+                    <div
+                      class="css-ouhew3"
+                      fill="filled"
+                    >
+                      <svg
+                        fill="none"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9.29 15.88L13.17 12L9.29 8.12C8.9 7.73 8.9 7.1 9.29 6.71C9.68 6.32 10.31 6.32 10.7 6.71L15.29 11.3C15.68 11.69 15.68 12.32 15.29 12.71L10.7 17.3C10.31 17.69 9.68 17.69 9.29 17.3C8.91 16.91 8.9 16.27 9.29 15.88Z"
+                          fill="#fff"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="automatedTimestamp"
+            >
+              Automated
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display display the offsets when editing axis x 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    editedPositionAxis="axis-x"
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 1000,
-        "offsetY": 0,
-      }
-    }
-    renderFooter={false}
+  <div
+    class="buttonWrapper bottom-right editing"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+      <div
+        class="axisX"
+      >
+        <div
+          class="offsetLine"
+        >
+          <img
+            alt="Offset Line"
+            src="/assets/img/icons/offset-line.svg"
+          />
+        </div>
+        <div
+          class="offsetContent"
+        >
+          1000px
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="isPlaceholder"
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display display the offsets when editing axis y 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    editedPositionAxis="axis-y"
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
-    renderFooter={false}
+  <div
+    class="buttonWrapper bottom-right editing"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+      <div
+        class="axisCenter"
+      >
+        <div
+          class="axisY"
+        >
+          <div
+            class="offsetLine"
+          >
+            <img
+              alt="Offset Line"
+              src="/assets/img/icons/offset-line.svg"
+            />
+          </div>
+          <div
+            class="offsetContent"
+          >
+            0px
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="isPlaceholder"
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display optional email capture 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
+  <div
+    class="buttonWrapper bottom-right"
   >
-    <OptionalEmailCapture
-      chatTitle="My little chat integration"
-      language="en-US"
-      mainColor="#123456"
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    class=""
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="appMakerMessageWrapper"
+        >
+          <div
+            class="agent"
+          >
+            <div
+              class="avatar"
+            >
+              <div
+                class="avatar-container css-1j6zot1"
+              >
+                <div
+                  class="avatar css-1gjl7fn"
+                  size="32"
+                >
+                  <svg
+                    aria-label="bot-icon"
+                    fill="none"
+                    height="22"
+                    role="img"
+                    viewBox="0 0 22 22"
+                    width="22"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9.21657 0.458334C9.02672 0.458334 8.87282 0.612236 8.87282 0.802084C8.87282 0.991932 9.02672 1.14583 9.21657 1.14583H13.1946C13.3844 1.14583 13.5383 0.991932 13.5383 0.802084C13.5383 0.612236 13.3844 0.458334 13.1946 0.458334H9.21657Z"
+                      fill="white"
+                    />
+                    <path
+                      clip-rule="evenodd"
+                      d="M5.28205 3.64072C3.57316 3.64072 1.93382 4.57211 1.54009 6.33288C1.13715 8.13486 0.916656 10.3022 0.916656 11.5426C0.916656 17.2249 5.52307 21.8314 11.2054 21.8314C16.8877 21.8314 21.4941 17.2249 21.4941 11.5426C21.4941 10.3022 21.2736 8.13486 20.8707 6.33287C20.4769 4.57211 18.8376 3.64072 17.1287 3.64072H5.28205ZM2.21102 6.4829C2.51475 5.12461 3.79485 4.32822 5.28205 4.32822H17.1287C18.6159 4.32822 19.896 5.12461 20.1997 6.4829C20.5925 8.23922 20.8066 10.3562 20.8066 11.5426C20.8066 16.8452 16.508 21.1439 11.2054 21.1439C5.90277 21.1439 1.60416 16.8452 1.60416 11.5426C1.60416 10.3562 1.81829 8.23922 2.21102 6.4829Z"
+                      fill="white"
+                      fill-rule="evenodd"
+                    />
+                    <path
+                      d="M6.03532 11.1451C5.15653 11.1451 4.44412 10.4327 4.44412 9.5539C4.44412 8.67511 5.15652 7.9627 6.03532 7.9627H16.3781C17.2569 7.9627 17.9693 8.67511 17.9693 9.5539C17.9693 10.4327 17.2569 11.1451 16.3781 11.1451H6.03532Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M7.85409 15.6615C7.7122 15.5354 7.49492 15.5482 7.36879 15.6901C7.24267 15.832 7.25545 16.0492 7.39734 16.1754C7.88308 16.6071 8.53301 16.946 9.13703 17.1996C10.4592 17.7548 11.9526 17.7548 13.2748 17.1996C13.8788 16.946 14.5287 16.6071 15.0145 16.1754C15.1564 16.0492 15.1691 15.832 15.043 15.6901C14.9169 15.5482 14.6996 15.5354 14.5577 15.6615C14.1548 16.0196 13.5853 16.3236 13.0086 16.5657C11.8567 17.0494 10.5551 17.0494 9.4032 16.5657C8.82647 16.3236 8.25696 16.0196 7.85409 15.6615Z"
+                      fill="white"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div
+              class="title"
+            >
+              My little chat integration Bot
+            </div>
+          </div>
+          <div
+            class="messages"
+          >
+            <div
+              class="bubble firstMessageOfAppMaker"
+            >
+              Leave us your email and we will reply soon.
+            </div>
+            <div
+              class="optionalEmailCapture"
+            >
+              <div
+                class="css-63ugbz"
+              >
+                <div
+                  class="css-r0ijy4"
+                >
+                  <label
+                    aria-label="Get notified by email"
+                    class="css-zs6vvb"
+                    for="email-capture-intput"
+                  >
+                    Get notified by email
+                  </label>
+                  <div
+                    class="css-t0lbh8"
+                  >
+                    <input
+                      aria-invalid="false"
+                      class="css-1jkukg3"
+                      id="email-capture-intput"
+                      label="Get notified by email"
+                      name="email-capture-intput"
+                      placeholder="your@email.com"
+                      readonly=""
+                      type="email"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="css-18kbys8"
+                >
+                  <button
+                    class="css-197xmfa"
+                    fill="filled"
+                    type="button"
+                  >
+                    <div
+                      class="css-ouhew3"
+                      fill="filled"
+                    >
+                      <svg
+                        fill="none"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9.29 15.88L13.17 12L9.29 8.12C8.9 7.73 8.9 7.1 9.29 6.71C9.68 6.32 10.31 6.32 10.7 6.71L15.29 11.3C15.68 11.69 15.68 12.32 15.29 12.71L10.7 17.3C10.31 17.69 9.68 17.69 9.29 17.3C8.91 16.91 8.9 16.27 9.29 15.88Z"
+                          fill="#fff"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="automatedTimestamp"
+            >
+              Automated
+            </div>
+          </div>
+        </div>
+        <div
+          class="css-ctovm3"
+        >
+          <button
+            aria-label="Add attachment"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="withFill"
+                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                />
+              </svg>
+            </div>
+          </button>
+          <div
+            class="css-s53yqv"
+          >
+            <textarea
+              aria-invalid="false"
+              aria-label="Gorgias message input"
+              class="css-qhufd7"
+              id="chat-message-input"
+              name="chat-message-input"
+              placeholder="Type a message..."
+              readonly=""
+              style="height: 0px;"
+            />
+          </div>
+          <button
+            aria-label="Send message"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    class="withFill"
+                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                  />
+                </g>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display required email capture 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
-    renderFooter={false}
+  <div
+    class="buttonWrapper bottom-right"
   >
-    <RequiredEmailCapture
-      language="en-US"
-      name="My little chat integration"
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    class=""
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="requiredEmailCaptureContent"
+        >
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-1gjl7fn"
+                    size="32"
+                  >
+                    <svg
+                      aria-label="bot-icon"
+                      fill="none"
+                      height="22"
+                      role="img"
+                      viewBox="0 0 22 22"
+                      width="22"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9.21657 0.458334C9.02672 0.458334 8.87282 0.612236 8.87282 0.802084C8.87282 0.991932 9.02672 1.14583 9.21657 1.14583H13.1946C13.3844 1.14583 13.5383 0.991932 13.5383 0.802084C13.5383 0.612236 13.3844 0.458334 13.1946 0.458334H9.21657Z"
+                        fill="white"
+                      />
+                      <path
+                        clip-rule="evenodd"
+                        d="M5.28205 3.64072C3.57316 3.64072 1.93382 4.57211 1.54009 6.33288C1.13715 8.13486 0.916656 10.3022 0.916656 11.5426C0.916656 17.2249 5.52307 21.8314 11.2054 21.8314C16.8877 21.8314 21.4941 17.2249 21.4941 11.5426C21.4941 10.3022 21.2736 8.13486 20.8707 6.33287C20.4769 4.57211 18.8376 3.64072 17.1287 3.64072H5.28205ZM2.21102 6.4829C2.51475 5.12461 3.79485 4.32822 5.28205 4.32822H17.1287C18.6159 4.32822 19.896 5.12461 20.1997 6.4829C20.5925 8.23922 20.8066 10.3562 20.8066 11.5426C20.8066 16.8452 16.508 21.1439 11.2054 21.1439C5.90277 21.1439 1.60416 16.8452 1.60416 11.5426C1.60416 10.3562 1.81829 8.23922 2.21102 6.4829Z"
+                        fill="white"
+                        fill-rule="evenodd"
+                      />
+                      <path
+                        d="M6.03532 11.1451C5.15653 11.1451 4.44412 10.4327 4.44412 9.5539C4.44412 8.67511 5.15652 7.9627 6.03532 7.9627H16.3781C17.2569 7.9627 17.9693 8.67511 17.9693 9.5539C17.9693 10.4327 17.2569 11.1451 16.3781 11.1451H6.03532Z"
+                        fill="white"
+                      />
+                      <path
+                        d="M7.85409 15.6615C7.7122 15.5354 7.49492 15.5482 7.36879 15.6901C7.24267 15.832 7.25545 16.0492 7.39734 16.1754C7.88308 16.6071 8.53301 16.946 9.13703 17.1996C10.4592 17.7548 11.9526 17.7548 13.2748 17.1996C13.8788 16.946 14.5287 16.6071 15.0145 16.1754C15.1564 16.0492 15.1691 15.832 15.043 15.6901C14.9169 15.5482 14.6996 15.5354 14.5577 15.6615C14.1548 16.0196 13.5853 16.3236 13.0086 16.5657C11.8567 17.0494 10.5551 17.0494 9.4032 16.5657C8.82647 16.3236 8.25696 16.0196 7.85409 15.6615Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="title"
+              >
+                My little chat integration Bot
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                Hi, hope you're doing well! Leave us your email so we can get back to you.
+              </div>
+              <div
+                class="optionalEmailCapture"
+              >
+                <div
+                  class="css-63ugbz"
+                >
+                  <div
+                    class="css-r0ijy4"
+                  >
+                    <label
+                      aria-label="Email"
+                      class="css-zs6vvb"
+                      for="email-capture-intput"
+                    >
+                      Email
+                      <span
+                        class="required"
+                      >
+                        *
+                      </span>
+                    </label>
+                    <div
+                      class="css-t0lbh8"
+                    >
+                      <input
+                        aria-invalid="false"
+                        class="css-1jkukg3"
+                        id="email-capture-intput"
+                        label="Email"
+                        name="email-capture-intput"
+                        placeholder="your@email.com"
+                        readonly=""
+                        required=""
+                        type="email"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="css-18kbys8"
+                  >
+                    <button
+                      class="css-197xmfa"
+                      fill="filled"
+                      type="button"
+                    >
+                      <div
+                        class="css-ouhew3"
+                        fill="filled"
+                      >
+                        <svg
+                          fill="none"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9.29 15.88L13.17 12L9.29 8.12C8.9 7.73 8.9 7.1 9.29 6.71C9.68 6.32 10.31 6.32 10.7 6.71L15.29 11.3C15.68 11.69 15.68 12.32 15.29 12.71L10.7 17.3C10.31 17.69 9.68 17.69 9.29 17.3C8.91 16.91 8.9 16.27 9.29 15.88Z"
+                            fill="#fff"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
+  <div
+    class="buttonWrapper bottom-right"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    class=""
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="css-ctovm3"
+        >
+          <button
+            aria-label="Add attachment"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="withFill"
+                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                />
+              </svg>
+            </div>
+          </button>
+          <div
+            class="css-s53yqv"
+          >
+            <textarea
+              aria-invalid="false"
+              aria-label="Gorgias message input"
+              class="css-qhufd7"
+              id="chat-message-input"
+              name="chat-message-input"
+              placeholder="Type a message..."
+              readonly=""
+              style="height: 0px;"
+            />
+          </div>
+          <button
+            aria-label="Send message"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    class="withFill"
+                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                  />
+                </g>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    introductionText="intro"
-    isOnline={false}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
+  <div
+    class="buttonWrapper bottom-right"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-4g298t"
+        color="#EBEBEB"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#161616"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#161616"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-ewr0lq"
+          color="#161616"
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    class=""
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(235, 235, 235);"
+    >
+      <div
+        class="css-1nuwqqr"
+        color="#EBEBEB"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-111qjby"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+            <div
+              class="css-1is8k7g"
+            >
+              <i
+                class="material-icons"
+                style="color: rgb(22, 22, 22);"
+              >
+                schedule
+              </i>
+              Back online at 10:00 AM
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="css-ctovm3"
+        >
+          <button
+            aria-label="Add attachment"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="withFill"
+                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                />
+              </svg>
+            </div>
+          </button>
+          <div
+            class="css-s53yqv"
+          >
+            <textarea
+              aria-invalid="false"
+              aria-label="Gorgias message input"
+              class="css-qhufd7"
+              id="chat-message-input"
+              name="chat-message-input"
+              placeholder="Type a message..."
+              readonly=""
+              style="height: 0px;"
+            />
+          </div>
+          <button
+            aria-label="Send message"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    class="withFill"
+                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                  />
+                </g>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the online status because chat is online 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
+  <div
+    class="buttonWrapper bottom-right"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    class=""
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="css-ctovm3"
+        >
+          <button
+            aria-label="Add attachment"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="withFill"
+                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                />
+              </svg>
+            </div>
+          </button>
+          <div
+            class="css-s53yqv"
+          >
+            <textarea
+              aria-invalid="false"
+              aria-label="Gorgias message input"
+              class="css-qhufd7"
+              id="chat-message-input"
+              name="chat-message-input"
+              placeholder="Type a message..."
+              readonly=""
+              style="height: 0px;"
+            />
+          </div>
+          <button
+            aria-label="Send message"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    class="withFill"
+                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                  />
+                </g>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the sliders when editing the position 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
+  <div
+    class="buttonWrapper bottom-right"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    class=""
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="css-ctovm3"
+        >
+          <button
+            aria-label="Add attachment"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="withFill"
+                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                />
+              </svg>
+            </div>
+          </button>
+          <div
+            class="css-s53yqv"
+          >
+            <textarea
+              aria-invalid="false"
+              aria-label="Gorgias message input"
+              class="css-qhufd7"
+              id="chat-message-input"
+              name="chat-message-input"
+              placeholder="Type a message..."
+              readonly=""
+              style="height: 0px;"
+            />
+          </div>
+          <button
+            aria-label="Send message"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    class="withFill"
+                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                  />
+                </g>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-day 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    autoResponderEnabled={true}
-    autoResponderReply="reply-in-day"
-    editedPositionAxis="axis-y"
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
-    renderFooter={false}
+  <div
+    class="buttonWrapper bottom-right editing"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+      <div
+        class="axisCenter"
+      >
+        <div
+          class="axisY"
+        >
+          <div
+            class="offsetLine"
+          >
+            <img
+              alt="Offset Line"
+              src="/assets/img/icons/offset-line.svg"
+            />
+          </div>
+          <div
+            class="offsetContent"
+          >
+            0px
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="isPlaceholder"
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+            <div
+              class="css-1is8k7g"
+            >
+              <i
+                class="material-icons"
+                style="color: rgb(255, 255, 255);"
+              >
+                schedule
+              </i>
+              Typically replies within a day
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-hours 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    autoResponderEnabled={true}
-    autoResponderReply="reply-in-hours"
-    editedPositionAxis="axis-y"
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
-    renderFooter={false}
+  <div
+    class="buttonWrapper bottom-right editing"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+      <div
+        class="axisCenter"
+      >
+        <div
+          class="axisY"
+        >
+          <div
+            class="offsetLine"
+          >
+            <img
+              alt="Offset Line"
+              src="/assets/img/icons/offset-line.svg"
+            />
+          </div>
+          <div
+            class="offsetContent"
+          >
+            0px
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="isPlaceholder"
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+            <div
+              class="css-1is8k7g"
+            >
+              <i
+                class="material-icons"
+                style="color: rgb(255, 255, 255);"
+              >
+                schedule
+              </i>
+              Typically replies in a few hours
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-minutes 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    autoResponderEnabled={true}
-    autoResponderReply="reply-in-minutes"
-    editedPositionAxis="axis-y"
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
-    renderFooter={false}
+  <div
+    class="buttonWrapper bottom-right editing"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+      <div
+        class="axisCenter"
+      >
+        <div
+          class="axisY"
+        >
+          <div
+            class="offsetLine"
+          >
+            <img
+              alt="Offset Line"
+              src="/assets/img/icons/offset-line.svg"
+            />
+          </div>
+          <div
+            class="offsetContent"
+          >
+            0px
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="isPlaceholder"
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+            <div
+              class="css-1is8k7g"
+            >
+              <i
+                class="material-icons"
+                style="color: rgb(255, 255, 255);"
+              >
+                schedule
+              </i>
+              Typically replies in a few minutes
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-shortly 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    autoResponderEnabled={true}
-    autoResponderReply="reply-shortly"
-    editedPositionAxis="axis-y"
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
-    renderFooter={false}
+  <div
+    class="buttonWrapper bottom-right editing"
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="axisLauncherWrapper"
+    >
+      <button
+        class="css-kv5pal"
+        color="#123456"
+      >
+        <div
+          class="css-m4oh12"
+        >
+          <svg
+            aria-label="Bubble icon button"
+            fill="none"
+            height="28"
+            role="img"
+            viewBox="0 0 100 100"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <filter
+              id="33c9df204aeec9aa096f1fd360bd4160"
+            >
+              <fegaussianblur
+                in="SourceAlpha"
+                stdDeviation="0,4"
+              />
+              <feoffset
+                dx="0"
+                dy="4"
+                result="offsetblur"
+              />
+              <fecomponenttransfer>
+                <fefunca
+                  slope="0.4"
+                  type="linear"
+                />
+              </fecomponenttransfer>
+              <fecomposite
+                in2="offsetblur"
+                operator="in"
+              />
+              <femerge>
+                <femergenode />
+                <femergenode
+                  in="SourceGraphic"
+                />
+              </femerge>
+            </filter>
+            <path
+              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+              fill="#fff"
+              filter="#33c9df204aeec9aa096f1fd360bd4160"
+            />
+          </svg>
+        </div>
+        <div
+          class="css-199spez"
+        >
+          <svg
+            fill="none"
+            height="28"
+            viewBox="0 0 28 28"
+            width="28"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+        <span
+          class="css-1oft1bb"
+          color="#fff"
+        />
+      </button>
+      <div
+        class="axisCenter"
+      >
+        <div
+          class="axisY"
+        >
+          <div
+            class="offsetLine"
+          >
+            <img
+              alt="Offset Line"
+              src="/assets/img/icons/offset-line.svg"
+            />
+          </div>
+          <div
+            class="offsetContent"
+          >
+            0px
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="isPlaceholder"
+  >
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+            <div
+              class="css-1is8k7g"
+            >
+              <i
+                class="material-icons"
+                style="color: rgb(255, 255, 255);"
+              >
+                schedule
+              </i>
+              Typically replies in a few minutes
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should not display button if hideButton provided 1`] = `
-<ContextProvider
-  value={
-    {
-      "store": {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
+<div
+  class="wrapper preview previewWithBackground"
+  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
 >
-  <ChatIntegrationPreview
-    hideButton={true}
-    introductionText="intro"
-    isOnline={true}
-    language="en-US"
-    mainColor="#123456"
-    mainFontFamily="Inter"
-    name="My little chat integration"
-    position={
-      {
-        "alignment": "bottom-right",
-        "offsetX": 0,
-        "offsetY": 0,
-      }
-    }
+  <div
+    class=""
   >
-    <MessageContent
-      agentMessages={
-        [
-          {
-            "attachments": [],
-            "content": "test",
-            "isHtml": false,
-          },
-        ]
-      }
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
-      customerInitialMessages={[]}
-    />
-  </ChatIntegrationPreview>
-</ContextProvider>
+    <div
+      class="dialog"
+      style="background-color: rgb(18, 52, 86);"
+    >
+      <div
+        class="css-cad7de"
+        color="#123456"
+      />
+      <div
+        class="noise"
+      />
+      <div
+        aria-label="Live chat window header"
+        class="css-1v07zf4"
+        role="region"
+        style="z-index: 2;"
+        title="My little chat integration"
+      >
+        <div
+          class="css-1ti7tcr"
+        >
+          <div
+            class="css-1jtrw5v"
+          >
+            <div
+              class="css-qiet1b"
+            >
+              My little chat integration
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="conversationContentWrapper"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="d-flex flex-column"
+          >
+            <div
+              class="conversationTimestamp"
+            >
+              October 12
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="agent"
+            >
+              <div
+                class="avatar"
+              >
+                <div
+                  class="avatar-container css-1j6zot1"
+                >
+                  <div
+                    class="avatar css-hbesmq"
+                    size="32"
+                  >
+                    C
+                  </div>
+                </div>
+              </div>
+              <div
+                class="user"
+              >
+                Charles
+              </div>
+            </div>
+            <div
+              class="messages"
+            >
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                test
+              </div>
+              <div
+                class="automatedTimestamp"
+              >
+                Automated
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="css-ctovm3"
+        >
+          <button
+            aria-label="Add attachment"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="withFill"
+                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                />
+              </svg>
+            </div>
+          </button>
+          <div
+            class="css-s53yqv"
+          >
+            <textarea
+              aria-invalid="false"
+              aria-label="Gorgias message input"
+              class="css-qhufd7"
+              id="chat-message-input"
+              name="chat-message-input"
+              placeholder="Type a message..."
+              readonly=""
+              style="height: 0px;"
+            />
+          </div>
+          <button
+            aria-label="Send message"
+            class="css-1dsoodl"
+            fill="ghost"
+            type="button"
+          >
+            <div
+              class="css-ouhew3"
+              fill="ghost"
+            >
+              <svg
+                fill="none"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    class="withFill"
+                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                  />
+                </g>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;

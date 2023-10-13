@@ -1,12 +1,12 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import DistributionKeyMetricStat from '../KeyMetricStat/DistributionKeyMetricStat'
 
 describe('DistributionKeyMetricStat', () => {
     it('should render a distribution chart', () => {
-        const component = shallow(
+        const {container} = render(
             <DistributionKeyMetricStat
                 config={fromJS({
                     maxValue: 5,
@@ -22,6 +22,7 @@ describe('DistributionKeyMetricStat', () => {
                 })}
             />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

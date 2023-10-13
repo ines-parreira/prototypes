@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import DistributionVariantStat, {
     DistributionStatVariant,
@@ -7,7 +7,7 @@ import DistributionVariantStat, {
 
 describe('DistributionVariantStat', () => {
     it('should render a distribution chart', () => {
-        const component = shallow(
+        const {container} = render(
             <DistributionVariantStat
                 minValue={1}
                 maxValue={5}
@@ -15,6 +15,7 @@ describe('DistributionVariantStat', () => {
                 currentValue={2}
             />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

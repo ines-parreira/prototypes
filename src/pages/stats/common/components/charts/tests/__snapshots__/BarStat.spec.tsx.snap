@@ -3,110 +3,36 @@
 exports[`BarStat should render a bar chart 1`] = `
 <div>
   <div
-    className="mb-4"
+    class="mb-4"
   >
-    <Legend
-      labels={
-        [
-          {
-            "background": "#8892f2",
-            "name": "Ticket created",
-          },
-          {
-            "background": "#a5e5ab",
-            "name": "Ticket closed",
-          },
-        ]
-      }
-    />
+    <div
+      class="legends"
+    >
+      <span
+        class="label mr-4 mb-2"
+      >
+        <span
+          class="circle mr-2"
+          style="background: rgb(136, 146, 242);"
+        />
+        Ticket created
+      </span>
+      <span
+        class="label mr-4 mb-2"
+      >
+        <span
+          class="circle mr-2"
+          style="background: rgb(165, 229, 171);"
+        />
+        Ticket closed
+      </span>
+    </div>
   </div>
   <div>
-    <ForwardRef
-      data={
-        {
-          "datasets": [
-            {
-              "backgroundColor": "#8892f2",
-              "data": [
-                23,
-                4,
-                445,
-                56,
-              ],
-              "label": "Ticket created",
-            },
-            {
-              "backgroundColor": "#a5e5ab",
-              "data": [
-                65,
-                45,
-                87,
-                9,
-              ],
-              "label": "Ticket closed",
-            },
-          ],
-          "labels": [
-            123434533,
-            123435636,
-            123456568,
-            123876542,
-          ],
-        }
-      }
-      height={360}
-      options={
-        {
-          "scales": {
-            "x": {
-              "grid": {
-                "borderColor": "#d2d7de",
-                "borderDash": [
-                  2,
-                  4,
-                ],
-                "color": "#dfe3f1",
-                "display": false,
-                "drawBorder": true,
-                "z": -1,
-              },
-              "stacked": false,
-              "ticks": {
-                "callback": [Function],
-                "color": "#b2bddd",
-              },
-              "title": {
-                "color": "#b2bddd",
-                "display": true,
-                "text": "created",
-              },
-            },
-            "y": {
-              "grid": {
-                "borderDash": [
-                  2,
-                  4,
-                ],
-                "color": "#dfe3f1",
-                "drawBorder": false,
-                "drawTicks": false,
-                "z": -1,
-              },
-              "min": 0,
-              "suggestedMax": 1,
-              "ticks": {
-                "callback": [Function],
-                "color": "#b2bddd",
-              },
-              "title": {
-                "color": "#b2bddd",
-                "display": true,
-                "text": "closed",
-              },
-            },
-          },
-        }
-      }
+    <canvas
+      height="360"
+      role="img"
+      width="300"
     />
   </div>
 </div>
@@ -114,7 +40,7 @@ exports[`BarStat should render a bar chart 1`] = `
 
 exports[`BarStat should render a bar chart with "no data" message 1`] = `
 <div
-  className="text-muted"
+  class="text-muted"
 >
   There is no data for this period.
 </div>

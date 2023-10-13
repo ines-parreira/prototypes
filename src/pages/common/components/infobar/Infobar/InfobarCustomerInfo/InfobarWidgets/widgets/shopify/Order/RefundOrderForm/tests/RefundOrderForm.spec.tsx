@@ -1,5 +1,4 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {render} from '@testing-library/react'
@@ -33,7 +32,7 @@ describe('<RefundOrderForm/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(
+            const {container} = render(
                 <RefundOrderForm
                     shopName="storegorgias3"
                     actionName={ShopifyActionType.CancelOrder}
@@ -52,7 +51,7 @@ describe('<RefundOrderForm/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with zero quantity', () => {
@@ -84,7 +83,7 @@ describe('<RefundOrderForm/>', () => {
                 shopifyMultiCurrencyOrderFixture()
             )
 
-            const component = shallow(
+            const {container} = render(
                 <RefundOrderForm
                     shopName="storegorgias3"
                     actionName={ShopifyActionType.CancelOrder}
@@ -103,7 +102,7 @@ describe('<RefundOrderForm/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

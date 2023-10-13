@@ -58,7 +58,10 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
       <p
         class="text-muted text-center"
       >
-        Improve email deliverability, keep your data on your Google account, import the last 2 years of emails (optional)
+        Improve email deliverability, keep your data on your Google account, import the last
+         
+        2
+         years of emails (optional)
       </p>
       <div
         class="divider"

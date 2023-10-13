@@ -2,50 +2,51 @@
 
 exports[`EmailIntegrationCreateForwarding component should render -copied!- button because the email address has just been copied 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/channels/email"
           >
             Email
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         >
           my integration
            
           <span
-            className="text-faded"
+            class="text-faded"
           >
             myintegration@gorgias.io
           </span>
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <h1>
       Let's setup email forwarding
     </h1>
     <div>
       <div
-        className="mb-4"
+        class="mb-4"
       >
         <p>
           Forward emails from 
@@ -54,48 +55,49 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           </b>
            to the address below.
         </p>
-        <InputGroup
-          tag="div"
+        <div
+          class="input-group"
         >
-          <Input
+          <input
+            class="form-control"
             id="forwarding-email"
-            readOnly={true}
+            readonly=""
             type="text"
             value="forwardingaddress@emails.gorgias.com"
           />
-          <InputGroupAddon
-            addonType="append"
-            tag="div"
+          <div
+            class="input-group-append"
           >
-            <ForwardRef
+            <button
+              aria-disabled="false"
+              class="wrapper fill primary medium"
               data-clipboard-target="#forwarding-email"
               id="copy-forwarding-email"
-              intent="primary"
+              type="button"
             >
               <i
-                className="material-icons mr-2"
+                class="material-icons mr-2"
               >
                 file_copy
               </i>
-              Copied!
-            </ForwardRef>
-          </InputGroupAddon>
-        </InputGroup>
+              Copy
+            </button>
+          </div>
+        </div>
       </div>
       <div
-        className="mb-4"
+        class="mb-4"
       >
         <p>
           Below are some handful tutorial to setup email forwarding depending on your email provider:
         </p>
         <div
-          className="d-flex flex-wrap"
+          class="d-flex flex-wrap"
         >
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="0"
-            onClick={[Function]}
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Google Groups logo"
@@ -104,12 +106,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Google Groups
             </div>
-          </ForwardRef>
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="1"
-            onClick={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Outlook logo"
@@ -118,12 +119,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Outlook
             </div>
-          </ForwardRef>
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="2"
-            onClick={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Office 365 logo"
@@ -132,12 +132,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Office 365
             </div>
-          </ForwardRef>
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="3"
-            onClick={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Microsoft Exchange logo"
@@ -146,12 +145,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Microsoft Exchange
             </div>
-          </ForwardRef>
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="4"
-            onClick={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Zoho Mail logo"
@@ -160,78 +158,78 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Zoho Mail
             </div>
-          </ForwardRef>
+          </button>
         </div>
         <p>
           Using GMail or G Suite?
            
-          <Link
+          <a
             to="/app/settings/channels/email/new"
           >
             Connect your account in one click.
-          </Link>
+          </a>
         </p>
       </div>
-      <ForwardRef
-        className=""
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
         color="primary"
-        isDisabled={false}
-        onClick={[Function]}
         type="submit"
       >
         Verify email forwarding
-      </ForwardRef>
+      </button>
     </div>
-  </Container>
+  </div>
 </div>
 `;
 
 exports[`EmailIntegrationCreateForwarding component should render 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/channels/email"
           >
             Email
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         >
           my integration
            
           <span
-            className="text-faded"
+            class="text-faded"
           >
             myintegration@gorgias.io
           </span>
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <h1>
       Let's setup email forwarding
     </h1>
     <div>
       <div
-        className="mb-4"
+        class="mb-4"
       >
         <p>
           Forward emails from 
@@ -240,48 +238,49 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           </b>
            to the address below.
         </p>
-        <InputGroup
-          tag="div"
+        <div
+          class="input-group"
         >
-          <Input
+          <input
+            class="form-control"
             id="forwarding-email"
-            readOnly={true}
+            readonly=""
             type="text"
             value="forwardingaddress@emails.gorgias.com"
           />
-          <InputGroupAddon
-            addonType="append"
-            tag="div"
+          <div
+            class="input-group-append"
           >
-            <ForwardRef
+            <button
+              aria-disabled="false"
+              class="wrapper fill primary medium"
               data-clipboard-target="#forwarding-email"
               id="copy-forwarding-email"
-              intent="primary"
+              type="button"
             >
               <i
-                className="material-icons mr-2"
+                class="material-icons mr-2"
               >
                 file_copy
               </i>
               Copy
-            </ForwardRef>
-          </InputGroupAddon>
-        </InputGroup>
+            </button>
+          </div>
+        </div>
       </div>
       <div
-        className="mb-4"
+        class="mb-4"
       >
         <p>
           Below are some handful tutorial to setup email forwarding depending on your email provider:
         </p>
         <div
-          className="d-flex flex-wrap"
+          class="d-flex flex-wrap"
         >
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="0"
-            onClick={[Function]}
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Google Groups logo"
@@ -290,12 +289,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Google Groups
             </div>
-          </ForwardRef>
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="1"
-            onClick={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Outlook logo"
@@ -304,12 +302,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Outlook
             </div>
-          </ForwardRef>
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="2"
-            onClick={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Office 365 logo"
@@ -318,12 +315,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Office 365
             </div>
-          </ForwardRef>
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="3"
-            onClick={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Microsoft Exchange logo"
@@ -332,12 +328,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Microsoft Exchange
             </div>
-          </ForwardRef>
-          <ForwardRef
-            className="forwardingCard"
-            intent="secondary"
-            key="4"
-            onClick={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper forwardingCard fill secondary medium"
+            type="button"
           >
             <img
               alt="Zoho Mail logo"
@@ -346,28 +341,27 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Zoho Mail
             </div>
-          </ForwardRef>
+          </button>
         </div>
         <p>
           Using GMail or G Suite?
            
-          <Link
+          <a
             to="/app/settings/channels/email/new"
           >
             Connect your account in one click.
-          </Link>
+          </a>
         </p>
       </div>
-      <ForwardRef
-        className=""
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
         color="primary"
-        isDisabled={false}
-        onClick={[Function]}
         type="submit"
       >
         Verify email forwarding
-      </ForwardRef>
+      </button>
     </div>
-  </Container>
+  </div>
 </div>
 `;

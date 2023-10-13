@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import * as helpers from 'pages/integrations/integration/components/email/helpers'
@@ -29,11 +29,11 @@ describe('<EmailIntegrationCreateVerification/>', () => {
         it('should render the regular instructions', () => {
             isBaseEmailAddressSpy.mockImplementation(() => false)
 
-            const component = shallow(
+            const {container} = render(
                 <EmailIntegrationCreateVerification {...commonProps} />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render instructions for the base email integration', () => {
@@ -47,27 +47,27 @@ describe('<EmailIntegrationCreateVerification/>', () => {
 
             isBaseEmailAddressSpy.mockImplementation(() => true)
 
-            const component = shallow(
+            const {container} = render(
                 <EmailIntegrationCreateVerification
                     {...commonProps}
                     integration={integration}
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render instructions for the activated forwarding email', () => {
             isBaseEmailAddressSpy.mockImplementation(() => false)
 
-            const component = shallow(
+            const {container} = render(
                 <EmailIntegrationCreateVerification
                     {...commonProps}
                     emailForwardingActivated
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

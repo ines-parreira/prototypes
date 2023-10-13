@@ -2,97 +2,141 @@
 
 exports[`<RichDropdown/> should render a rich dropdown 1`] = `
 <div
-  className=""
+  class=""
 >
-  <UncontrolledButtonDropdown>
-    <DropdownToggle
-      aria-haspopup={true}
-      caret={true}
-      color="secondary"
+  <div
+    class="btn-group"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="dropdown-toggle btn btn-secondary"
+      type="button"
     >
       foo
-    </DropdownToggle>
-    <DropdownMenu
-      className="dropdown"
-      flip={true}
-      tag="div"
+    </button>
+    <div
+      aria-hidden="true"
+      class="dropdown dropdown-menu"
+      role="menu"
+      tabindex="-1"
     >
-      <RichDropdownOptions
-        onClick={[MockFunction]}
-        options={
-          [
-            {
-              "key": "foo",
-              "label": "Foo",
-            },
-            {
-              "description": "foobar",
-              "key": "bar",
-              "label": "Bar",
-            },
-          ]
-        }
-      />
-    </DropdownMenu>
-  </UncontrolledButtonDropdown>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Foo
+        <br />
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Bar
+        <br />
+        <span
+          class="description"
+        >
+          foobar
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<RichDropdown/> should render a rich dropdown 2`] = `
 <div
-  className=""
+  class=""
 >
-  <UncontrolledButtonDropdown>
-    <DropdownToggle
-      aria-haspopup={true}
-      caret={true}
-      color="secondary"
+  <div
+    class="btn-group"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="dropdown-toggle btn btn-secondary"
+      type="button"
     >
       foo
-    </DropdownToggle>
-    <DropdownMenu
-      className="dropdown"
-      flip={true}
-      tag="div"
+    </button>
+    <div
+      aria-hidden="true"
+      class="dropdown dropdown-menu"
+      role="menu"
+      tabindex="-1"
     >
-      <RichDropdownOptionGroups
-        onClick={[MockFunction]}
-        options={
-          [
-            {
-              "key": "foo",
-              "label": "FOO",
-              "options": [
-                {
-                  "key": "foo",
-                  "label": "Foo",
-                },
-                {
-                  "description": "foobar",
-                  "key": "bar",
-                  "label": "Bar",
-                },
-              ],
-            },
-            {
-              "key": "bar",
-              "label": "BAR",
-              "options": [
-                {
-                  "key": "foo",
-                  "label": "Foo",
-                },
-                {
-                  "description": "foobar",
-                  "key": "bar",
-                  "label": "Bar",
-                },
-              ],
-            },
-          ]
-        }
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
       />
-    </DropdownMenu>
-  </UncontrolledButtonDropdown>
+      <h6
+        class="dropdown-header"
+        tabindex="-1"
+      >
+        FOO
+      </h6>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Foo
+        <br />
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Bar
+        <br />
+        <span
+          class="description"
+        >
+          foobar
+        </span>
+      </button>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="dropdown-header"
+        tabindex="-1"
+      >
+        BAR
+      </h6>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Foo
+        <br />
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        Bar
+        <br />
+        <span
+          class="description"
+        >
+          foobar
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 `;

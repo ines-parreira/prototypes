@@ -2,8 +2,7 @@
 
 exports[`<TableBodyRow/> should call onClick when clicked 1`] = `
 <tr
-  className="row isClickable"
-  onClick={[MockFunction]}
+  class="row isClickable"
 >
   Foo
 </tr>
@@ -11,7 +10,7 @@ exports[`<TableBodyRow/> should call onClick when clicked 1`] = `
 
 exports[`<TableBodyRow/> should render 1`] = `
 <tr
-  className="row foo"
+  class="row foo"
 >
   Foo
 </tr>

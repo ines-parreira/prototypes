@@ -1,140 +1,141 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SharedBody/> render() should render 1`] = `
-<Fragment>
+<div
+  class="mt-4 mr-3 mb-2 ml-3"
+>
+  <p>
+    <b>
+      Sharing restricted to specific people or teams.
+    </b>
+  </p>
   <div
-    className="mt-4 mr-3 mb-2 ml-3"
+    class="mb-4 dropdown"
   >
-    <p>
-      <b>
-        Sharing restricted to specific people or teams.
-      </b>
-    </p>
-    <UncontrolledPeopleSearchInput
-      className="mb-4"
-      onTeamClick={[MockFunction]}
-      onUserClick={[MockFunction]}
-      teams={
-        Immutable.List [
-          Immutable.Map {
-            "id": 1,
-            "name": "Team 1",
-          },
-        ]
-      }
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 1,
-            "name": "User 1",
-          },
-        ]
-      }
-    />
-    <h6
-      className="selectedHeader"
+    <div
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
+      data-toggle="dropdown"
     >
-      Teams
-    </h6>
+      <div
+        class="input-icon input-icon-right"
+      >
+        <i
+          class="icon material-icons md-2 icon"
+        >
+          search
+        </i>
+        <input
+          class="mb-4 form-control"
+          placeholder="Search users or teams..."
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="dropdown dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Teams
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="TeamLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  T1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              Team 1
+            </span>
+          </div>
+        </button>
+      </div>
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+      <h6
+        class="text-uppercase dropdown-header"
+        tabindex="-1"
+      >
+        Users
+      </h6>
+      <div
+        class="items"
+      >
+        <button
+          class="item dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component square avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  U1
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+            >
+              User 1
+            </span>
+          </div>
+        </button>
+      </div>
+    </div>
   </div>
-  <ListGroup
-    horizontal={false}
-    tag="ul"
+  <h6
+    class="selectedHeader"
   >
-    <ListGroupItem
-      className="listGroupItem"
-      key="2"
-      tag="li"
-    >
-      <ForwardRef
-        className="float-right"
-        fillStyle="ghost"
-        intent="destructive"
-        onClick={[Function]}
-        size="small"
-      >
-        close
-      </ForwardRef>
-      <TeamLabel
-        className=""
-        name="Team 2"
-        shouldDisplayAvatar={true}
-        shouldDisplayTeamIcon={false}
-      />
-    </ListGroupItem>
-    <ListGroupItem
-      className="listGroupItem"
-      key="3"
-      tag="li"
-    >
-      <ForwardRef
-        className="float-right"
-        fillStyle="ghost"
-        intent="destructive"
-        onClick={[Function]}
-        size="small"
-      >
-        close
-      </ForwardRef>
-      <TeamLabel
-        className=""
-        name="Team 3"
-        shouldDisplayAvatar={true}
-        shouldDisplayTeamIcon={false}
-      />
-    </ListGroupItem>
-  </ListGroup>
-  <div
-    className="mt-4 mr-3 mb-2 ml-3"
-  >
-    <h6
-      className="selectedHeader"
-    >
-      Users
-    </h6>
-  </div>
-  <ListGroup
-    horizontal={false}
-    tag="ul"
-  >
-    <ListGroupItem
-      className="listGroupItem userListGroupItem"
-      key="2"
-      tag="li"
-    >
-      <ForwardRef
-        className="float-right"
-        fillStyle="ghost"
-        intent="destructive"
-        onClick={[Function]}
-        size="small"
-      >
-        close
-      </ForwardRef>
-      <AgentLabel
-        name="User 2"
-        shouldDisplayAvatar={true}
-      />
-    </ListGroupItem>
-    <ListGroupItem
-      className="listGroupItem userListGroupItem"
-      key="3"
-      tag="li"
-    >
-      <ForwardRef
-        className="float-right"
-        fillStyle="ghost"
-        intent="destructive"
-        onClick={[Function]}
-        size="small"
-      >
-        close
-      </ForwardRef>
-      <AgentLabel
-        name="User 3"
-        shouldDisplayAvatar={true}
-      />
-    </ListGroupItem>
-  </ListGroup>
-</Fragment>
+    Teams
+  </h6>
+</div>
 `;

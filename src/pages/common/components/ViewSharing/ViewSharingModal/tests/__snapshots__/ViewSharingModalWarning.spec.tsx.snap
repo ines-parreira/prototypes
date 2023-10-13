@@ -1,257 +1,197 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ViewSharingModalWarning/> render() should not render anything because selected items are the same than initial items 1`] = `""`;
+exports[`<ViewSharingModalWarning/> render() should not render anything because selected items are the same than initial items 1`] = `null`;
 
-exports[`<ViewSharingModalWarning/> render() should not render anything because view is public 1`] = `""`;
+exports[`<ViewSharingModalWarning/> render() should not render anything because view is public 1`] = `null`;
 
 exports[`<ViewSharingModalWarning/> render() should render one missing team 1`] = `
 <div
-  className="m-3"
+  class="m-3"
 >
-  <Alert
-    type="warning"
+  <div
+    class="alert warning"
   >
-    <span
-      className="totalItems"
-      id="missing-teams-tooltip"
-    >
-      1
-       team
-    </span>
-    <UncontrolledTooltip
-      placement="top"
-      target="missing-teams-tooltip"
+    <div
+      class="content"
     >
       <span
-        className="d-block"
-        key="1"
+        class="label"
       >
-        Team 1
+        <span
+          class="totalItems"
+          id="missing-teams-tooltip"
+        >
+          1
+           team
+          
+        </span>
+         
+        will no longer be able to access this view.
       </span>
-    </UncontrolledTooltip>
-     
-    will no longer be able to access this view.
-  </Alert>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<ViewSharingModalWarning/> render() should render one missing user 1`] = `
 <div
-  className="m-3"
+  class="m-3"
 >
-  <Alert
-    type="warning"
+  <div
+    class="alert warning"
   >
-    <span
-      className="totalItems"
-      id="missing-users-tooltip"
-    >
-      1
-       user
-    </span>
-    <UncontrolledTooltip
-      placement="top"
-      target="missing-users-tooltip"
+    <div
+      class="content"
     >
       <span
-        className="d-block"
-        key="1"
+        class="label"
       >
-        User 1
+        <span
+          class="totalItems"
+          id="missing-users-tooltip"
+        >
+          1
+           user
+          
+        </span>
+         
+        will no longer be able to access this view.
       </span>
-    </UncontrolledTooltip>
-     
-    will no longer be able to access this view.
-  </Alert>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<ViewSharingModalWarning/> render() should render one missing user and one missing team 1`] = `
 <div
-  className="m-3"
+  class="m-3"
 >
-  <Alert
-    type="warning"
+  <div
+    class="alert warning"
   >
-    <span
-      className="totalItems"
-      id="missing-teams-tooltip"
-    >
-      1
-       team
-    </span>
-    <UncontrolledTooltip
-      placement="top"
-      target="missing-teams-tooltip"
+    <div
+      class="content"
     >
       <span
-        className="d-block"
-        key="1"
+        class="label"
       >
-        Team 1
+        <span
+          class="totalItems"
+          id="missing-teams-tooltip"
+        >
+          1
+           team
+          
+        </span>
+         and 
+        <span
+          class="totalItems"
+          id="missing-users-tooltip"
+        >
+          1
+           user
+          
+        </span>
+         
+        will no longer be able to access this view.
       </span>
-    </UncontrolledTooltip>
-     and 
-    <span
-      className="totalItems"
-      id="missing-users-tooltip"
-    >
-      1
-       user
-    </span>
-    <UncontrolledTooltip
-      placement="top"
-      target="missing-users-tooltip"
-    >
-      <span
-        className="d-block"
-        key="1"
-      >
-        User 1
-      </span>
-    </UncontrolledTooltip>
-     
-    will no longer be able to access this view.
-  </Alert>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<ViewSharingModalWarning/> render() should render two missing teams 1`] = `
 <div
-  className="m-3"
+  class="m-3"
 >
-  <Alert
-    type="warning"
+  <div
+    class="alert warning"
   >
-    <span
-      className="totalItems"
-      id="missing-teams-tooltip"
-    >
-      2
-       team
-      s
-    </span>
-    <UncontrolledTooltip
-      placement="top"
-      target="missing-teams-tooltip"
+    <div
+      class="content"
     >
       <span
-        className="d-block"
-        key="1"
+        class="label"
       >
-        Team 1
+        <span
+          class="totalItems"
+          id="missing-teams-tooltip"
+        >
+          2
+           team
+          s
+        </span>
+         
+        will no longer be able to access this view.
       </span>
-      <span
-        className="d-block"
-        key="2"
-      >
-        Team 2
-      </span>
-    </UncontrolledTooltip>
-     
-    will no longer be able to access this view.
-  </Alert>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<ViewSharingModalWarning/> render() should render two missing users 1`] = `
 <div
-  className="m-3"
+  class="m-3"
 >
-  <Alert
-    type="warning"
+  <div
+    class="alert warning"
   >
-    <span
-      className="totalItems"
-      id="missing-users-tooltip"
-    >
-      2
-       user
-      s
-    </span>
-    <UncontrolledTooltip
-      placement="top"
-      target="missing-users-tooltip"
+    <div
+      class="content"
     >
       <span
-        className="d-block"
-        key="1"
+        class="label"
       >
-        User 1
+        <span
+          class="totalItems"
+          id="missing-users-tooltip"
+        >
+          2
+           user
+          s
+        </span>
+         
+        will no longer be able to access this view.
       </span>
-      <span
-        className="d-block"
-        key="2"
-      >
-        User 2
-      </span>
-    </UncontrolledTooltip>
-     
-    will no longer be able to access this view.
-  </Alert>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<ViewSharingModalWarning/> render() should render two missing users and two missing teams 1`] = `
 <div
-  className="m-3"
+  class="m-3"
 >
-  <Alert
-    type="warning"
+  <div
+    class="alert warning"
   >
-    <span
-      className="totalItems"
-      id="missing-teams-tooltip"
-    >
-      2
-       team
-      s
-    </span>
-    <UncontrolledTooltip
-      placement="top"
-      target="missing-teams-tooltip"
+    <div
+      class="content"
     >
       <span
-        className="d-block"
-        key="1"
+        class="label"
       >
-        Team 1
+        <span
+          class="totalItems"
+          id="missing-teams-tooltip"
+        >
+          2
+           team
+          s
+        </span>
+         and 
+        <span
+          class="totalItems"
+          id="missing-users-tooltip"
+        >
+          2
+           user
+          s
+        </span>
+         
+        will no longer be able to access this view.
       </span>
-      <span
-        className="d-block"
-        key="2"
-      >
-        Team 2
-      </span>
-    </UncontrolledTooltip>
-     and 
-    <span
-      className="totalItems"
-      id="missing-users-tooltip"
-    >
-      2
-       user
-      s
-    </span>
-    <UncontrolledTooltip
-      placement="top"
-      target="missing-users-tooltip"
-    >
-      <span
-        className="d-block"
-        key="1"
-      >
-        User 1
-      </span>
-      <span
-        className="d-block"
-        key="2"
-      >
-        User 2
-      </span>
-    </UncontrolledTooltip>
-     
-    will no longer be able to access this view.
-  </Alert>
+    </div>
+  </div>
 </div>
 `;

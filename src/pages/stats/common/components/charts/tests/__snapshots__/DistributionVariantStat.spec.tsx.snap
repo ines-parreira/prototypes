@@ -2,36 +2,31 @@
 
 exports[`DistributionVariantStat should render a distribution chart 1`] = `
 <span
-  className="distribution"
+  class="distribution"
 >
   <img
     alt="filled star"
-    className="star"
-    key="5"
+    class="star"
     src="test-file-stub"
   />
   <img
     alt="filled star"
-    className="star"
-    key="4"
+    class="star"
     src="test-file-stub"
   />
   <img
     alt="empty star"
-    className="star"
-    key="3"
+    class="star"
     src="test-file-stub"
   />
   <img
     alt="empty star"
-    className="star"
-    key="2"
+    class="star"
     src="test-file-stub"
   />
   <img
     alt="empty star"
-    className="star"
-    key="1"
+    class="star"
     src="test-file-stub"
   />
 </span>
