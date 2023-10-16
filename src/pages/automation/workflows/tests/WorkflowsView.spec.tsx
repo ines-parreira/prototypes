@@ -2,14 +2,17 @@ import React from 'react'
 import {screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouterAndDnD} from 'utils/testing'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
-import WorkflowsView from '../WorkflowsView'
-import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
+import {IntegrationType} from 'models/integration/constants'
+import {billingState} from 'fixtures/billing'
 import useWorkflowApi from '../hooks/useWorkflowApi'
+import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
+import WorkflowsView from '../WorkflowsView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -35,7 +38,26 @@ function updateUseWorkflowApiMock(
         ...overrides,
     } as ReturnType<typeof useWorkflowApi>)
 }
-
+function getIntegration(id: number, type: IntegrationType) {
+    return {
+        id,
+        type,
+        name: `My Phone Integration ${id}`,
+        meta: {
+            emoji: '',
+            phone_number_id: id,
+        },
+    }
+}
+const defaultState = {
+    integrations: fromJS({
+        integrations: [
+            getIntegration(1, IntegrationType.Shopify),
+            getIntegration(2, IntegrationType.Magento2),
+        ],
+    }),
+    billing: fromJS(billingState),
+} as RootState
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
         updateUseWorkflowApiMock({})
@@ -95,7 +117,7 @@ describe('<WorkflowsView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <WorkflowsView
                     shopName=""
                     shopType=""

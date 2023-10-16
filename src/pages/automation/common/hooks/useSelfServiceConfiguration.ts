@@ -1,25 +1,22 @@
 import {useCallback, useEffect, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
-import {produce, Draft} from 'immer'
-
+import {Draft} from 'immer'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {
     fetchSelfServiceConfiguration,
     updateSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/resources'
-import {
-    selfServiceConfigurationFetched,
-    selfServiceConfigurationUpdated,
-} from 'state/entities/selfServiceConfigurations/actions'
+import {selfServiceConfigurationFetched} from 'state/entities/selfServiceConfigurations/actions'
 import {notify} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {reportError} from 'utils/errors'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
+import {useSelfServiceConfigurationUpdate} from './useSelfServiceConfigurationUpdate'
 
 const useSelfServiceConfiguration = (
     shopType: string,
@@ -69,41 +66,32 @@ const useSelfServiceConfiguration = (
                 history.push('/app/automation/macros')
             }
         }, [])
-    const [{loading: isUpdatePending}, handleSelfServiceConfigurationUpdate] =
-        useAsyncFn(
-            async (
-                patchSelfServiceConfiguration: (
-                    draft: Draft<SelfServiceConfiguration>
-                ) => void,
-                messages: {success?: string; error?: string} = {}
-            ) => {
-                if (!storeIntegrationId) {
-                    return
-                }
 
-                try {
-                    const selfServiceConfiguration =
-                        await fetchSelfServiceConfiguration(storeIntegrationId)
-                    const res = await updateSelfServiceConfiguration(
-                        produce(
-                            selfServiceConfiguration,
-                            patchSelfServiceConfiguration
-                        )
-                    )
-                    void dispatch(selfServiceConfigurationUpdated(res))
-                    handleNotify({
-                        message: messages.success ?? 'Successfully updated',
-                        status: NotificationStatus.Success,
-                    })
-                } catch (error) {
-                    handleNotify({
-                        message: messages.error ?? 'Failed to update',
-                        status: NotificationStatus.Error,
-                    })
-                }
-            },
-            [storeIntegrationId]
-        )
+    const {
+        isUpdatePending,
+        handleSelfServiceConfigurationUpdate: handleConfigurationUpdate,
+    } = useSelfServiceConfigurationUpdate({
+        handleNotify,
+    })
+    const handleSelfServiceConfigurationUpdate = useCallback(
+        async (
+            patchSelfServiceConfiguration: (
+                draft: Draft<SelfServiceConfiguration>
+            ) => void,
+            messages: {success?: string; error?: string} = {}
+        ) => {
+            if (!storeIntegrationId) {
+                return
+            }
+
+            await handleConfigurationUpdate(
+                patchSelfServiceConfiguration,
+                messages,
+                storeIntegrationId
+            )
+        },
+        [handleConfigurationUpdate, storeIntegrationId]
+    )
 
     const selfServiceConfiguration = useMemo(() => {
         return selfServiceConfigurations.find(

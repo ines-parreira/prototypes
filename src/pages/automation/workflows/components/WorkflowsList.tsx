@@ -1,108 +1,66 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
-import IconButton from 'pages/common/components/button/IconButton'
 
-import {
-    LanguageCode,
-    supportedLanguages,
-} from '../models/workflowConfiguration.types'
-import DeleteWorkflowAction from './DeleteWorkflowAction'
+import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
+import {compare} from 'utils'
+import {LanguageCode} from '../models/workflowConfiguration.types'
 
 import css from './WorkflowsList.less'
+import WorkflowsRow from './WorkflowsRow'
+export type Workflow = {
+    workflow_id: string
+    name: string
+    available_languages: LanguageCode[]
+}
 
 type Props = {
-    storeWorkflows: Array<{
-        workflow_id: string
-        name: string
-        available_languages: LanguageCode[]
-    }>
+    shopType: string
+    shopName: string
+    storeWorkflows: Workflow[]
+    notifyMerchant: (message: string, kind: 'success' | 'error') => void
     onDelete: (workflowId: string) => Promise<void>
-    onDuplicate: (workflowId: string) => Promise<{id: string}>
+    onDuplicate: (
+        workflowId: string,
+        storeIntegrationId: number
+    ) => Promise<{id: string}>
     goToEditWorkflowPage: (workflowId: string) => void
     isUpdatePending: boolean
 }
 
-function getLanguageList(
-    availableLanguages: LanguageCode[]
-): {code: LanguageCode; name: string}[] {
-    return availableLanguages.map((code) => ({
-        code,
-        name:
-            supportedLanguages.find((lang) => lang.code === code)?.label ||
-            code,
-    }))
-}
-
 const WorkflowsList = ({
+    shopType,
+    shopName,
     storeWorkflows: entrypoints,
     onDelete,
     onDuplicate,
     goToEditWorkflowPage,
     isUpdatePending,
+    notifyMerchant,
 }: Props) => {
+    const storeIntegrations = useStoreIntegrations()
+    const sortedStoreIntegrations = useMemo(
+        () => [...storeIntegrations].sort((a, b) => compare(a.name, b.name)),
+        [storeIntegrations]
+    )
+
     return (
         <TableWrapper className={css.container}>
             <TableBody>
                 {entrypoints.map((entrypoint) => (
-                    <TableBodyRow key={entrypoint.workflow_id}>
-                        <BodyCell
-                            className={css.name}
-                            onClick={() => {
-                                goToEditWorkflowPage(entrypoint.workflow_id)
-                            }}
-                        >
-                            {entrypoint.name}
-                        </BodyCell>
-                        <BodyCell
-                            size="smallest"
-                            onClick={() => {
-                                goToEditWorkflowPage(entrypoint.workflow_id)
-                            }}
-                        >
-                            <LanguageList
-                                id={`workflow-${entrypoint.workflow_id}-language-list`}
-                                defaultLanguage={
-                                    getLanguageList(
-                                        entrypoint.available_languages
-                                    )[0] as any
-                                }
-                                languageList={
-                                    getLanguageList(
-                                        entrypoint.available_languages
-                                    ).reverse() as any
-                                }
-                            />
-                        </BodyCell>
-                        <BodyCell size="smallest">
-                            <IconButton
-                                className="mr-1"
-                                fillStyle="ghost"
-                                intent="secondary"
-                                isDisabled={isUpdatePending}
-                                onClick={async (e) => {
-                                    e.stopPropagation()
-                                    const duplicated = await onDuplicate(
-                                        entrypoint.workflow_id
-                                    )
-                                    goToEditWorkflowPage(duplicated.id)
-                                }}
-                                title="Duplicate flow"
-                            >
-                                file_copy
-                            </IconButton>
-                            <DeleteWorkflowAction
-                                onDelete={() => {
-                                    void onDelete(entrypoint.workflow_id)
-                                }}
-                                isUpdatePending={isUpdatePending}
-                            />
-                        </BodyCell>
-                    </TableBodyRow>
+                    <WorkflowsRow
+                        shopType={shopType}
+                        shopName={shopName}
+                        key={entrypoint.workflow_id}
+                        entrypoint={entrypoint}
+                        goToEditWorkflowPage={goToEditWorkflowPage}
+                        onDuplicate={onDuplicate}
+                        onDelete={onDelete}
+                        isUpdatePending={isUpdatePending}
+                        sortedStoreIntegrations={sortedStoreIntegrations}
+                        notifyMerchant={notifyMerchant}
+                    />
                 ))}
             </TableBody>
         </TableWrapper>

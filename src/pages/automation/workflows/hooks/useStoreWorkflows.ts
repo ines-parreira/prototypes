@@ -14,6 +14,7 @@ export type UseWorkflowsEntrypointsReturnType = {
         name: string
         available_languages: LanguageCode[]
     }>
+    storeIntegrationId?: number
     isFetchPending: boolean
     isUpdatePending: boolean
     removeWorkflowFromStore: (workflowId: string) => Promise<void>
@@ -28,6 +29,7 @@ export default function useStoreWorkflows(
 ): UseWorkflowsEntrypointsReturnType {
     const {
         selfServiceConfiguration,
+        storeIntegration,
         isFetchPending: isSelfServiceFetchPending,
         isUpdatePending: isSelfServiceUpdatePending,
         handleSelfServiceConfigurationUpdate,
@@ -103,7 +105,7 @@ export default function useStoreWorkflows(
             )
             await loadWorkflowsConfigurations()
             await handleSelfServiceConfigurationUpdate((draft) => {
-                draft.workflows_entrypoints?.push({
+                draft.workflows_entrypoints?.unshift({
                     workflow_id: duplicatedWorkflow.id,
                 })
             })
@@ -157,6 +159,7 @@ export default function useStoreWorkflows(
             isSelfServiceUpdatePending ||
             isWorkflowApiUpdatePending ||
             isUpdatePending,
+        storeIntegrationId: storeIntegration?.id,
         removeWorkflowFromStore,
         duplicateWorkflow,
         appendWorkflowInStore,

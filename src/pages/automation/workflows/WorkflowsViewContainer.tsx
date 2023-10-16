@@ -33,6 +33,8 @@ export default function WorkflowsViewContainer() {
             void dispatch(
                 notify({
                     message,
+                    allowHTML: true,
+                    showDismissButton: true,
                     status:
                         kind === 'success'
                             ? NotificationStatus.Success
