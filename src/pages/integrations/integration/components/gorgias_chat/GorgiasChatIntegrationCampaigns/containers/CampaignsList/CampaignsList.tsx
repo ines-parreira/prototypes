@@ -8,6 +8,7 @@ import Segmented from 'pages/common/components/Segmented'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
+import SetupConvertBanner from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/SetupConvertBanner/SetupConvertBanner'
 import {QuickFilters} from '../QuickFilters'
 
 import {QUICK_FILTERS} from '../../constants/filters'
@@ -181,6 +182,8 @@ export const CampaignsList = ({
                         />
                     </div>
                 )}
+
+                <SetupConvertBanner classes={'mt-4'} />
 
                 {!isConvertSubscriber && isRevenueBillingEnabled && (
                     <CampaignInfobarPaywall />

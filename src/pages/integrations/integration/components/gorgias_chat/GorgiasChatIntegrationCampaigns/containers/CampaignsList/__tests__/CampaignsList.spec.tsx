@@ -1,5 +1,5 @@
 import React from 'react'
-import {screen, render} from '@testing-library/react'
+import {screen, render, waitFor} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
@@ -12,6 +12,8 @@ import useSearch from 'hooks/useSearch'
 
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
+import * as hasConvertBundleInstalledUtil from 'pages/settings/revenue/utils/hasConvertBundleInstalled'
+import {user} from 'fixtures/users'
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
 import {createTrigger} from '../../../utils/createTrigger'
@@ -64,6 +66,7 @@ describe('<CampaignsList />', () => {
 
     beforeEach(() => {
         store = mockStore({
+            currentUser: fromJS(user),
             entities: entitiesInitialState,
         })
         ;(useSearch as jest.Mock).mockImplementation(() => {
@@ -287,6 +290,39 @@ describe('<CampaignsList />', () => {
 
             expect(() => getByText('Super campaign')).toThrow()
             getByText('Not so good campaign')
+        })
+    })
+
+    describe('Campaign infobar', () => {
+        const buttonText = 'Continue Setup'
+        const messageText = 'You have activated the Convert product'
+
+        it('should render setup infobar', async () => {
+            const hasConvertSpy = jest
+                .spyOn(
+                    hasConvertBundleInstalledUtil,
+                    'hasConvertBundleInstalled'
+                )
+                .mockImplementation(() => Promise.resolve(false))
+
+            const {queryByText} = render(
+                <Provider store={store}>
+                    <CampaignsList
+                        currentUser={currentUser}
+                        integration={integration}
+                        campaigns={campaignsList}
+                        onDeleteCampaign={jest.fn()}
+                        onDuplicateCampaign={jest.fn()}
+                        onUpdateCampaign={jest.fn()}
+                    />
+                </Provider>
+            )
+
+            await waitFor(() => {
+                expect(hasConvertSpy).toHaveBeenCalled()
+            })
+            expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
+            expect(queryByText(buttonText)).toBeInTheDocument()
         })
     })
 })

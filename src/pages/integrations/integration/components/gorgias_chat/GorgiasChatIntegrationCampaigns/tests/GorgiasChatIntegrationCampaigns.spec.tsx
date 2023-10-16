@@ -32,6 +32,13 @@ jest.mock(
     }
 )
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/SetupConvertBanner/SetupConvertBanner',
+    () => {
+        return jest.fn(() => null)
+    }
+)
+
 describe('<GorgiasChatIntegrationCampaigns/>', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 

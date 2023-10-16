@@ -99,7 +99,7 @@ export const CampaignAudienceStep = ({
             id={CampaignStepsKeys.Audience}
             title="Choose your audience"
         >
-            <SetupConvertBanner />
+            <SetupConvertBanner classes={'mb-4'} />
             <div className="mb-4">
                 {shouldShowContactCsm && (
                     <Alert icon type={AlertType.Warning}>

@@ -1,12 +1,17 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+import classNames from 'classnames'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {isAdmin} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {hasConvertBundleInstalled} from 'pages/settings/revenue/utils/hasConvertBundleInstalled'
 
-export const SetupConvertBanner = (): JSX.Element => {
+type Props = {
+    classes?: string
+}
+
+export const SetupConvertBanner = ({classes}: Props): JSX.Element => {
     const isConvertSubscriber = useIsConvertSubscriber()
     const currentUser = useAppSelector((state) => state.currentUser)
 
@@ -35,7 +40,7 @@ export const SetupConvertBanner = (): JSX.Element => {
     if (!isVisible) return <></>
 
     return (
-        <div className="mb-4">
+        <div className={classNames(classes)}>
             <Alert
                 customActions={
                     isButtonVisible ? (
