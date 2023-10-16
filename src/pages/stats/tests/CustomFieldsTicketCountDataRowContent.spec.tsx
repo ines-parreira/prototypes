@@ -1,17 +1,24 @@
 import {render, screen} from '@testing-library/react'
+import {forEach} from 'lodash'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {CustomFieldsTicketCountDataRowContent} from 'pages/stats/CustomFieldsTicketCountDataRowContent'
-import {getValueMode, ValueMode} from 'state/ui/stats/ticketInsightsSlice'
+import {
+    getHeatmapMode,
+    getValueMode,
+    ValueMode,
+} from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock, mockStore} from 'utils/testing'
 
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getValueModeMock = assumeMock(getValueMode)
+const getHeatmapModeMock = assumeMock(getHeatmapMode)
 
 describe('<CustomFieldsTicketCountDataRowContent />', () => {
     beforeEach(() => {
         getValueModeMock.mockReturnValue(ValueMode.TotalCount)
+        getHeatmapModeMock.mockReturnValue(false)
     })
 
     it('should format total count values with thousands separator', () => {
@@ -119,5 +126,62 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         )
 
         expect(screen.getByText('0')).toBeInTheDocument()
+    })
+
+    it('should render heatmap on level 0 data cells with a decile', () => {
+        const decile = 2
+        const props = {
+            [BREAKDOWN_FIELD]: 'someTag',
+            [VALUE_FIELD]: undefined,
+            timeSeries: [
+                {dateTime: '2023-08-09', value: 123, percentage: 15, decile: 2},
+            ],
+            percentage: 15,
+            decile,
+            level: 0,
+        }
+        getValueModeMock.mockReturnValue(ValueMode.Percentage)
+        getHeatmapModeMock.mockReturnValue(true)
+
+        render(
+            <Provider store={mockStore({} as any)}>
+                <CustomFieldsTicketCountDataRowContent {...props} />
+            </Provider>
+        )
+
+        forEach(screen.getAllByRole('cell'), (cell, index) => {
+            if (index > 0) {
+                expect(cell).toHaveClass('heatmap')
+                expect(cell).toHaveClass(`p${decile}`)
+            }
+        })
+    })
+
+    it('should not render heatmap on levels other then 0', () => {
+        const decile = 2
+        const props = {
+            [BREAKDOWN_FIELD]: 'someTag',
+            [VALUE_FIELD]: undefined,
+            timeSeries: [
+                {dateTime: '2023-08-09', value: 123, percentage: 15, decile: 2},
+            ],
+            percentage: 15,
+            decile,
+            level: 2,
+        }
+        getValueModeMock.mockReturnValue(ValueMode.Percentage)
+        getHeatmapModeMock.mockReturnValue(true)
+
+        render(
+            <Provider store={mockStore({} as any)}>
+                <CustomFieldsTicketCountDataRowContent {...props} />
+            </Provider>
+        )
+
+        forEach(screen.getAllByRole('cell'), (cell, index) => {
+            if (index > 0) {
+                expect(cell).not.toHaveClass('heatmap')
+            }
+        })
     })
 })

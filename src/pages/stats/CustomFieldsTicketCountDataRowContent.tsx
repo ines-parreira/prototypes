@@ -75,7 +75,7 @@ export const CustomFieldsTicketCountDataRowContent = ({
                 isHighlighted={true}
                 className={classNames(
                     css.BodyCell,
-                    [heatmapCss.heatmap],
+                    isHeatmapMode && [heatmapCss.heatmap],
                     isHeatmapMode && heatmapCss[`p${String(decile)}`]
                 )}
                 innerClassName={classNames(css.BodyCellContent)}
@@ -91,7 +91,7 @@ export const CustomFieldsTicketCountDataRowContent = ({
                     key={data.dateTime}
                     className={classNames(
                         css.BodyCell,
-                        [heatmapCss.heatmap],
+                        isHeatmapMode && [heatmapCss.heatmap],
                         isHeatmapMode && heatmapCss[`p${String(data.decile)}`]
                     )}
                     innerClassName={classNames(css.BodyCellContent)}
