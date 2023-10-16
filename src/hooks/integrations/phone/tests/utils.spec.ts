@@ -34,9 +34,12 @@ import {
 
 import * as utils from 'hooks/integrations/phone/utils'
 import * as api from 'hooks/integrations/phone/api'
+import * as LDUtils from 'utils/launchDarkly'
 
 jest.mock('utils/errors')
 jest.mock('@twilio/voice-sdk')
+
+const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
 
 const dispatch = jest.fn()
 const device = {
@@ -312,6 +315,66 @@ describe('handleDeviceEvents', () => {
             expect(dispatch).toHaveBeenCalledWith(setIsRinging(true))
             expect(dispatch).toHaveBeenCalledWith(setCall(call))
             expect(handleCallEvents).toHaveBeenCalledWith(call, dispatch)
+        })
+
+        it('should handle Device.EventName.Incoming event when the device is busy and NewPhoneRoundRobin FF is disabled', () => {
+            const call = {
+                direction: Call.CallDirection.Incoming,
+                parameters: {
+                    From: '123',
+                },
+                customParameters: fromJS({
+                    call_sid: '123',
+                }),
+                on: jest.fn(),
+                reject: jest.fn(),
+                ignore: jest.fn(),
+                emit: jest.fn(),
+            } as unknown as Call
+
+            getLDClientSpy.mockReturnValueOnce({
+                variation: () => false,
+            } as any)
+            ;(device as EventEmitter & {isBusy: boolean}).isBusy = true
+            jest.spyOn(api, 'declineCall')
+            device.emit(Device.EventName.Incoming, call)
+
+            expect(call.ignore).toHaveBeenCalled()
+            expect(call.emit).toHaveBeenCalledWith('cancel')
+            expect(api.declineCall).toHaveBeenCalledWith(call)
+            expect(reportError).toHaveBeenCalledTimes(1)
+
+            expect(call.reject).not.toHaveBeenCalled()
+            expect(dispatch).not.toHaveBeenCalledWith(setIsRinging(true))
+            expect(dispatch).not.toHaveBeenCalledWith(setCall(call))
+            expect(handleCallEvents).not.toHaveBeenCalledWith(call, dispatch)
+        })
+
+        it('should handle Device.EventName.Incoming event when the device is busy and NewPhoneRoundRobin FF is enabled', () => {
+            const call = {
+                direction: Call.CallDirection.Incoming,
+                parameters: {
+                    From: '123',
+                },
+                customParameters: fromJS({
+                    call_sid: '123',
+                }),
+                on: jest.fn(),
+                reject: jest.fn(),
+                ignore: jest.fn(),
+            } as unknown as Call
+
+            getLDClientSpy.mockReturnValueOnce({
+                variation: () => true,
+            } as any)
+            ;(device as EventEmitter & {isBusy: boolean}).isBusy = true
+            device.emit(Device.EventName.Incoming, call)
+
+            expect(call.reject).toHaveBeenCalled()
+            expect(reportError).toHaveBeenCalledTimes(1)
+
+            expect(call.ignore).not.toHaveBeenCalled()
+            expect(dispatch).not.toHaveBeenCalledWith(setIsRinging(true))
         })
     })
 })

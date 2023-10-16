@@ -31,10 +31,13 @@ import {notify} from 'state/notifications/actions'
 import {
     acceptCall,
     cancelCall,
+    declineCall,
     disconnectCall,
     getToken,
 } from 'hooks/integrations/phone/api'
 
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 import * as utils from './utils'
 
 export async function refreshToken(device: Device) {
@@ -98,6 +101,7 @@ export const createDevice = (token: string): Device => {
         codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
         tokenRefreshMs: 30 * 1000,
         logLevel: 'debug',
+        allowIncomingWhileBusy: true,
     })
 }
 
@@ -148,6 +152,26 @@ export function handleDeviceEvents(device: Device, dispatch: StoreDispatch) {
     })
 
     device.on(Device.EventName.Incoming, (call: Call) => {
+        if (device.isBusy) {
+            reportError(new Error('Incoming call for agent already in a call'))
+
+            const launchDarklyClient = getLDClient()
+            const isNewPhoneRoundRobinEnabled = launchDarklyClient.variation(
+                FeatureFlagKey.NewPhoneRoundRobin
+            )
+
+            if (isNewPhoneRoundRobinEnabled) {
+                call.reject()
+                return
+            }
+
+            call.ignore()
+            call.emit('cancel')
+
+            void declineCall(call)
+            return
+        }
+
         utils.sendTwilioSocketEvent({
             type: TwilioSocketEventType.CallIncoming,
             data: gatherCallContext(call),

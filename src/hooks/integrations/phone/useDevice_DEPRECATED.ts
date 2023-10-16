@@ -18,7 +18,10 @@ import {
     sendTwilioSocketEvent,
     gatherCallContext,
 } from 'hooks/integrations/phone/utils'
-import {getToken} from 'hooks/integrations/phone/api'
+import {declineCall, getToken} from 'hooks/integrations/phone/api'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {reportError} from 'utils/errors'
 
 export function useDevice_DEPRECATED(useNewErrorHandling: boolean | undefined) {
     const dispatch = useAppDispatch()
@@ -186,6 +189,7 @@ function useInstantiateDevice() {
                 codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
                 tokenRefreshMs: 30 * 1000,
                 logLevel: 'debug',
+                allowIncomingWhileBusy: true,
             })
 
             void device.register()
@@ -238,6 +242,29 @@ function useInstantiateDevice() {
             })
 
             device.on(Device.EventName.Incoming, (call: Call) => {
+                if (device.isBusy) {
+                    reportError(
+                        new Error('Incoming call for agent already in a call')
+                    )
+
+                    const launchDarklyClient = getLDClient()
+                    const isNewPhoneRoundRobinEnabled =
+                        launchDarklyClient.variation(
+                            FeatureFlagKey.NewPhoneRoundRobin
+                        )
+
+                    if (isNewPhoneRoundRobinEnabled) {
+                        call.reject()
+                        return
+                    }
+
+                    call.ignore()
+                    call.emit('cancel')
+
+                    void declineCall(call)
+                    return
+                }
+
                 dispatch(setIsRinging(true))
                 dispatch(setCall(call))
 
