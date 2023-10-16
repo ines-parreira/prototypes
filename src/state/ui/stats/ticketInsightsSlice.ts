@@ -7,20 +7,28 @@ export enum ValueMode {
     Percentage = 'percentage',
 }
 
+export type TicketInsightsOrder = {
+    direction: OrderDirection
+    column: 'total' | 'label' | number
+}
+
 export type TicketInsightsState = {
     selectedCustomField: {
         id: number | null
         label: string
         isLoading: boolean
     }
-    order: OrderDirection
+    order: TicketInsightsOrder
     valueMode: ValueMode
     heatmapMode: boolean
 }
 
 export const initialState: TicketInsightsState = {
     selectedCustomField: {id: null, label: '', isLoading: true},
-    order: OrderDirection.Asc,
+    order: {
+        direction: OrderDirection.Asc,
+        column: 'label',
+    },
     valueMode: ValueMode.TotalCount,
     heatmapMode: false,
 }
@@ -42,11 +50,21 @@ export const ticketInsightsSlice = createSlice({
                     ? ValueMode.TotalCount
                     : ValueMode.Percentage
         },
-        toggleOrder(state) {
-            state.order =
-                state.order === OrderDirection.Asc
-                    ? OrderDirection.Desc
-                    : OrderDirection.Asc
+        setOrder(
+            state,
+            action: PayloadAction<{column: TicketInsightsOrder['column']}>
+        ) {
+            state.order = {
+                column: action.payload.column,
+                direction:
+                    action.payload.column === state.order.column
+                        ? state.order.direction === OrderDirection.Asc
+                            ? OrderDirection.Desc
+                            : OrderDirection.Asc
+                        : action.payload.column === 'label'
+                        ? OrderDirection.Asc
+                        : OrderDirection.Desc,
+            }
         },
         toggleHeatmapMode(state) {
             state.heatmapMode = !state.heatmapMode
@@ -56,7 +74,7 @@ export const ticketInsightsSlice = createSlice({
 
 export const {
     setSelectedCustomField,
-    toggleOrder,
+    setOrder,
     toggleValueMode,
     toggleHeatmapMode,
 } = ticketInsightsSlice.actions

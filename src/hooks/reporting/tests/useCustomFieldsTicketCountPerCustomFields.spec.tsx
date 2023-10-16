@@ -72,7 +72,10 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             end_datetime: endDate,
         },
     }
-    const defaultOrder = OrderDirection.Desc
+    const defaultOrder = {
+        direction: OrderDirection.Desc,
+        column: 'label' as const,
+    }
     const isLoading = false
 
     beforeEach(() => {

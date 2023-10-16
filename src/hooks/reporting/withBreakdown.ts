@@ -5,12 +5,12 @@ import {
     TimeSeriesDataItem,
     TimeSeriesDataItemWithPercentageAndDecile,
 } from 'hooks/reporting/useTimeSeries'
-import {OrderDirection} from 'models/api/types'
 import {
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {UsePostReportingQueryData} from 'models/reporting/queries'
+import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {notUndefined} from 'utils/types'
 
 export const TAG_SEPARATOR = '::'
@@ -86,9 +86,21 @@ export const selectWithBreakdown = (
     return compact(hierarchy, mergeValues)
 }
 
+const orderIteratee = (column: TicketInsightsOrder['column']) => {
+    switch (column) {
+        case 'total':
+            return [VALUE_FIELD]
+        case 'label':
+            return [BREAKDOWN_FIELD]
+        default:
+            return (i: TicketCustomFieldsTicketCountTimeSeriesData) =>
+                i.timeSeries[column]?.value
+    }
+}
+
 export const selectTimeSeriesWithBreakdown = (
     data: TicketCustomFieldsTicketCountTimeSeriesData[],
-    order: OrderDirection
+    order: TicketInsightsOrder
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
     const hierarchy = data.map((element) => {
         const tags = String(element[BREAKDOWN_FIELD]).split(TAG_SEPARATOR)
@@ -119,8 +131,8 @@ export const selectTimeSeriesWithBreakdown = (
 
     return _orderBy(
         compact(hierarchy, mergeTimeSeries(order)),
-        [BREAKDOWN_FIELD],
-        order
+        orderIteratee(order.column),
+        order.direction
     )
 }
 
@@ -149,7 +161,7 @@ const mergeValues = (
     }))
 
 const mergeTimeSeries =
-    (order: OrderDirection) =>
+    (order: TicketInsightsOrder) =>
     (
         data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[]
     ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData> =>
@@ -186,8 +198,8 @@ const mergeTimeSeries =
                         [...acc.children, ...currVal.children],
                         mergeTimeSeries(order)
                     ),
-                    [BREAKDOWN_FIELD],
-                    order
+                    orderIteratee(order.column),
+                    order.direction
                 ),
             }
         })

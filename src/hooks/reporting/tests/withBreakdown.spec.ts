@@ -10,6 +10,7 @@ import {
 } from 'hooks/reporting/withBreakdown'
 import {OrderDirection} from 'models/api/types'
 import {UsePostReportingQueryData} from 'models/reporting/queries'
+import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 
 describe('withBreakdown', () => {
     const tagL1_1 = 'asd'
@@ -211,7 +212,10 @@ describe('withBreakdown', () => {
                     },
                 ],
             }))
-        const defaultOrder = OrderDirection.Asc
+        const defaultOrder: TicketInsightsOrder = {
+            direction: OrderDirection.Asc,
+            column: 'label',
+        }
 
         it('should return hierarchy with timeSeries and subtotals', () => {
             const results = selectTimeSeriesWithBreakdown(
@@ -368,5 +372,55 @@ describe('withBreakdown', () => {
                 },
             ])
         })
+
+        it.each([
+            {
+                order: {
+                    column: 'label' as const,
+                    direction: OrderDirection.Desc,
+                },
+                tagsOrder: [tagL2_1, tagL2_2].sort().reverse(),
+            },
+            {
+                order: {
+                    column: 'total' as const,
+                    direction: OrderDirection.Desc,
+                },
+                tagsOrder: [tagL2_1, tagL2_2],
+            },
+            {
+                order: {
+                    column: 'total' as const,
+                    direction: OrderDirection.Asc,
+                },
+                tagsOrder: [tagL2_2, tagL2_1],
+            },
+            {
+                order: {column: 1, direction: OrderDirection.Asc},
+                tagsOrder: [tagL2_2, tagL2_1],
+            },
+            {
+                order: {column: 1, direction: OrderDirection.Desc},
+                tagsOrder: [tagL2_1, tagL2_2],
+            },
+        ])(
+            'should order results according to the ordering column and direction %order.column',
+            ({
+                order,
+                tagsOrder,
+            }: {
+                order: TicketInsightsOrder
+                tagsOrder: string[]
+            }) => {
+                const results = selectTimeSeriesWithBreakdown(
+                    timeSeriesData,
+                    order
+                )
+
+                expect(
+                    results[0].children.map((r) => r[BREAKDOWN_FIELD])
+                ).toEqual(tagsOrder)
+            }
+        )
     })
 })

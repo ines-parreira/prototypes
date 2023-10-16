@@ -25,7 +25,7 @@ import css from 'pages/stats/BreakdownTable.less'
 import {getFormat} from 'pages/stats/common/utils'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
-import {toggleOrder} from 'state/ui/stats/ticketInsightsSlice'
+import {setOrder, TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 
 export const CUSTOM_FIELD_COLUMN_LABEL = 'Value / Category'
 export const TOTAL_COLUMN_LABEL = 'Total'
@@ -61,7 +61,8 @@ export const CustomFieldsTicketCountBreakdownTable = ({
     }
 
     const dispatch = useAppDispatch()
-    const toggleOrdering = () => dispatch(toggleOrder())
+    const setOrdering = (column: TicketInsightsOrder['column']) =>
+        dispatch(setOrder({column}))
 
     const {granularity} = useAppSelector(getCleanStatsFiltersWithTimezone)
     const {
@@ -99,26 +100,40 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                 css.categoryHeader
                             )}
                             direction={
-                                order === OrderDirection.Asc
+                                order.direction === OrderDirection.Asc
                                     ? OrderDirection.Desc
                                     : OrderDirection.Asc
                             }
-                            isOrderedBy={true}
-                            onClick={toggleOrdering}
+                            isOrderedBy={order.column === 'label'}
+                            onClick={() => setOrdering('label')}
                         />
                         <HeaderCellProperty
                             title={TOTAL_COLUMN_LABEL}
                             justifyContent={'right'}
                             className={classNames(css.BodyCell)}
                             wrapContent={true}
+                            direction={
+                                order.direction === OrderDirection.Asc
+                                    ? OrderDirection.Desc
+                                    : OrderDirection.Asc
+                            }
+                            isOrderedBy={order.column === 'total'}
+                            onClick={() => setOrdering('total')}
                         />
-                        {dateTimes.map((dateTime) => (
+                        {dateTimes.map((dateTime, index) => (
                             <HeaderCellProperty
                                 key={dateTime}
                                 title={formatDates(granularity)(dateTime)}
                                 justifyContent={'right'}
                                 wrapContent={true}
-                                className={css.BodyCell}
+                                className={classNames(css.dateTimeHeader)}
+                                direction={
+                                    order.direction === OrderDirection.Asc
+                                        ? OrderDirection.Desc
+                                        : OrderDirection.Asc
+                                }
+                                isOrderedBy={order.column === index}
+                                onClick={() => setOrdering(index)}
                             />
                         ))}
                     </TableHead>

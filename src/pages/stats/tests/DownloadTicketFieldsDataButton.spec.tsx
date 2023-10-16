@@ -65,7 +65,10 @@ describe('DownloadTicketFieldsDataButton', () => {
 
     const store = mockStore(defaultState)
 
-    const defaultOrder = OrderDirection.Desc
+    const defaultOrder = {
+        direction: OrderDirection.Desc,
+        column: 'label' as const,
+    }
     const dateTimes = ['2021-02-03T00:00:00.000Z']
     const data: Record<string, TimeSeriesDataItem[][]> = {
         'Level1::Level2': [

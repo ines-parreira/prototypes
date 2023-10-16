@@ -1,6 +1,5 @@
 import {useMemo} from 'react'
 import _zip from 'lodash/zip'
-import {OrderDirection} from 'models/api/types'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
@@ -16,13 +15,16 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
-import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
+import {
+    getCustomFieldsOrder,
+    TicketInsightsOrder,
+} from 'state/ui/stats/ticketInsightsSlice'
 import {getFilterDateRange} from 'utils/reporting'
 import {notUndefined} from 'utils/types'
 
 const breakdownTimeSeries = (
     timeSeriesData: Record<string, TimeSeriesDataItem[][]>,
-    order: OrderDirection
+    order: TicketInsightsOrder
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
     const timeSeriesObjects = Object.keys(timeSeriesData).map((key) => ({
         [BREAKDOWN_FIELD]: key,
@@ -38,7 +40,7 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile>[]
     dateTimes: string[]
     isLoading: boolean
-    order: OrderDirection
+    order: TicketInsightsOrder
 } => {
     const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
         getCleanStatsFiltersWithTimezone

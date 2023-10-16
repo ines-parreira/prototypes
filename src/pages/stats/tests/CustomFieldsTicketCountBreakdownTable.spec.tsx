@@ -5,8 +5,9 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
+import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
+import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -14,15 +15,18 @@ import {
     CUSTOM_FIELD_COLUMN_LABEL,
     CUSTOM_FIELDS_PER_PAGE,
     CustomFieldsTicketCountBreakdownTable,
+    formatDates,
     TOTAL_COLUMN_LABEL,
 } from 'pages/stats/CustomFieldsTicketCountBreakdownTable'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {RootState, StoreDispatch} from 'state/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {
     initialState,
+    setOrder,
     ticketInsightsSlice,
-    toggleOrder,
 } from 'state/ui/stats/ticketInsightsSlice'
+import {getFilterDateRange} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -44,7 +48,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
     const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
-            end_datetime: '2021-06-04T23:59:59+02:00',
+            end_datetime: '2021-05-30T23:59:59+02:00',
         },
     }
     const defaultState = {
@@ -136,7 +140,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: exampleData,
             dateTimes,
-            order: OrderDirection.Asc,
+            order: {column: 'label', direction: OrderDirection.Asc},
             isLoading: false,
         })
         NoDataAvailableMock.mockImplementation(componentMock)
@@ -159,7 +163,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: [],
             dateTimes: [],
-            order: OrderDirection.Asc,
+            order: {column: 'label', direction: OrderDirection.Asc},
             isLoading: false,
         })
 
@@ -189,7 +193,80 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             userEvent.click(categoryLabel)
         })
 
-        expect(store.getActions()).toContainEqual(toggleOrder())
+        expect(store.getActions()).toContainEqual(setOrder({column: 'label'}))
+    })
+
+    it('should trigger ordering action when category label clicked', () => {
+        const store = mockStore(defaultState)
+        useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+            data: exampleData,
+            dateTimes,
+            order: {column: 0, direction: OrderDirection.Desc},
+            isLoading: false,
+        })
+
+        render(
+            <Provider store={store}>
+                <CustomFieldsTicketCountBreakdownTable
+                    selectedCustomFieldId={customFieldId}
+                />
+            </Provider>
+        )
+        act(() => {
+            const categoryLabel = screen.getByText(TOTAL_COLUMN_LABEL)
+            userEvent.click(categoryLabel)
+        })
+
+        expect(store.getActions()).toContainEqual(setOrder({column: 'total'}))
+    })
+
+    it('should trigger ordering action when data label clicked', () => {
+        const dataPoint = {
+            [BREAKDOWN_FIELD]: 'abc',
+            [VALUE_FIELD]: 2,
+            timeSeries: [
+                {
+                    dateTime: '2021-05-29T23:59:59+02:00',
+                    value: 2,
+                    label: '2021-05-29T23:59:59+02:00',
+                    percentage: 100,
+                    decile: 9,
+                    totalsDecile: 8,
+                },
+            ],
+            percentage: 100,
+            decile: 9,
+            totalsDecile: 8,
+            children: [],
+        }
+
+        const granularity = ReportingGranularity.Day
+        useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
+            data: [dataPoint],
+            dateTimes: getPeriodDateTimes(
+                getFilterDateRange(defaultStatsFilters),
+                granularity
+            ),
+            order: {column: 'label', direction: OrderDirection.Asc},
+            isLoading: false,
+        })
+        const store = mockStore(defaultState)
+
+        render(
+            <Provider store={store}>
+                <CustomFieldsTicketCountBreakdownTable
+                    selectedCustomFieldId={customFieldId}
+                />
+            </Provider>
+        )
+        act(() => {
+            const categoryLabel = screen.getByText(
+                formatDates(granularity)(dataPoint.timeSeries[0].label)
+            )
+            userEvent.click(categoryLabel)
+        })
+
+        expect(store.getActions()).toContainEqual(setOrder({column: 0}))
     })
 
     it('should handle table scrolling', async () => {
@@ -233,7 +310,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: [],
             dateTimes,
-            order: OrderDirection.Asc,
+            order: {column: 'label', direction: OrderDirection.Asc},
             isLoading: true,
         })
 
@@ -253,7 +330,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
                 data: Array(CUSTOM_FIELDS_PER_PAGE + 5).fill(exampleData[0]),
                 dateTimes,
-                order: OrderDirection.Asc,
+                order: {column: 'label', direction: OrderDirection.Asc},
                 isLoading: false,
             })
 
@@ -277,7 +354,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                     CUSTOM_FIELDS_PER_PAGE + SECOND_PAGE_ITEMS_COUNT
                 ).fill(exampleData[0]),
                 dateTimes,
-                order: OrderDirection.Asc,
+                order: {column: 'label', direction: OrderDirection.Asc},
                 isLoading: false,
             })
 
@@ -307,7 +384,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                     CUSTOM_FIELDS_PER_PAGE + SECOND_PAGE_ITEMS_COUNT
                 ).fill(exampleData[0]),
                 dateTimes,
-                order: OrderDirection.Asc,
+                order: {column: 'label', direction: OrderDirection.Asc},
                 isLoading: false,
             })
 
@@ -330,7 +407,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
                 data: Array(CUSTOM_FIELDS_PER_PAGE - 1).fill(exampleData[0]),
                 dateTimes,
-                order: OrderDirection.Asc,
+                order: {column: 'label', direction: OrderDirection.Asc},
                 isLoading: false,
             })
             rerender(

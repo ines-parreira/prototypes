@@ -48,7 +48,7 @@ export const DownloadTicketFieldsDataButton = ({
                     timeSeriesData,
                     dateTimes.map((item) => formatDates(granularity)(item)),
                     cleanStatsFilters.period,
-                    order
+                    order.direction
                 )
             }}
             title={DOWNLOAD_BUTTON_TITLE}
