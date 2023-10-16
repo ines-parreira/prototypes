@@ -56,7 +56,6 @@ describe('<SettingsNavbar />', () => {
     it('should render the link to the Click Tracking when having access to the beta', () => {
         mockFlags({
             [FeatureFlagKey.RevenueBetaTesters]: true,
-            [FeatureFlagKey.RevenueClickTracking]: true,
         })
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>

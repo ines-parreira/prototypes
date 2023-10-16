@@ -7,7 +7,6 @@ import thunk from 'redux-thunk'
 import LD from 'launchdarkly-react-client-sdk'
 import {MemoryRouter, Route} from 'react-router-dom'
 import {RootState, StoreDispatch} from 'state/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import ClickTrackingPaywallView from 'pages/settings/revenue/components/ClickTrackingPaywallView'
 import {getStateWithPrice} from 'utils/paywallTesting'
@@ -68,10 +67,6 @@ describe('<ClickTrackingSettingsView />', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
-
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.RevenueClickTracking]: true,
-        }))
 
         const {queryByTestId} = render(<ClickTrackingSettingsView />, {
             wrapper: ReduxProvider,

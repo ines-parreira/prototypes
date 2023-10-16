@@ -2,20 +2,17 @@ import React from 'react'
 
 import {Container} from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Redirect} from 'react-router-dom'
 import css from 'pages/settings/settings.less'
 
 import PageHeader from 'pages/common/components/PageHeader'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {ClickTrackingCustomDomain} from '../ClickTrackingCustomDomain'
 
 const ClickTrackingSettingsView = () => {
     // Only show this page if the click tracking feature flag is on
     const isConvertSubscriber = useIsConvertSubscriber()
-    const clickTrackingEnabled = useFlags()[FeatureFlagKey.RevenueClickTracking]
-    if (!isConvertSubscriber || !clickTrackingEnabled) {
+    if (!isConvertSubscriber) {
         return null
     }
 

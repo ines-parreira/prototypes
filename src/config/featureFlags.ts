@@ -42,7 +42,6 @@ export enum FeatureFlagKey {
     NewPhoneRoundRobin = 'phone-new-round-robin',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
-    RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     RevenueCampaignImprovements = 'revenue-campaign-improvements',
