@@ -4,8 +4,8 @@ import {Provider} from 'react-redux'
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
 import {starterHelpdeskPrice} from 'fixtures/productPrices'
+import ConvertPaywallView from 'pages/convert/common/components/ConvertPaywallView/ConvertPaywallView'
 import {getStateWithPrice} from 'utils/paywallTesting'
-import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
 jest.mock(
     'pages/settings/new_billing/components/ConvertSubscriptionModal',
@@ -16,13 +16,32 @@ jest.mock(
     }
 )
 
-describe('CampaignStatsPaywallView', () => {
-    const renderWithStore = (state: Partial<RootState>, props = {}) =>
+describe('ConvertPaywallView', () => {
+    const defaultProps = {
+        pageHeader: 'Paywall page header',
+        header: 'Paywall header',
+        description: 'Paywall description',
+        previewImage: '/some/path/to/image.png',
+        modalCanduId: 'paywall-modal-candu-id',
+        onSubscribedRedirectPath: '/some/path/to/redirect',
+    }
+
+    const renderWithStore = (state: Partial<RootState>) =>
         render(
             <Provider store={mockStore(state as any)}>
-                <CampaignStatsPaywallView {...props} />
+                <ConvertPaywallView {...defaultProps} />
             </Provider>
         )
+
+    it('renders correctly', () => {
+        const mockedState = getStateWithPrice()
+
+        const {getByText} = renderWithStore(mockedState)
+
+        expect(getByText('Paywall page header')).toBeInTheDocument()
+        expect(getByText('Paywall header')).toBeInTheDocument()
+        expect(getByText('Paywall description')).toBeInTheDocument()
+    })
 
     it('has custom CTA and modal when not Starter plan', () => {
         const mockedState = getStateWithPrice()

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useGetConvertLinks is not Convert subscriber should render upgrade icon and popover with modal for higher plan 1`] = `
+<React.Fragment>
+  <PaywallPopover
+    featureName="Convert"
+    iconRef={
+      {
+        "current": null,
+      }
+    }
+    isOpened={false}
+    onButtonClick={[Function]}
+    setIsOpened={[Function]}
+  />
+  <mockConstructor
+    canduId="campaign-list-convert-modal-body"
+    isOpen={false}
+    onClose={[Function]}
+    onSubscribe={[Function]}
+  />
+</React.Fragment>
+`;

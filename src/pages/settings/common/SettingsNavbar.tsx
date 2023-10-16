@@ -19,17 +19,20 @@ import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Navbar from 'pages/common/components/Navbar'
 
+import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
+import useGetConvertLinks from 'pages/settings/revenue/hooks/useGetConvertLinks'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
-import {useIsConvertSubscriber} from '../../common/hooks/useIsConvertSubscriber'
 
-type CategoryLink = {
+export type CategoryLink = {
     className?: string
     requiredRole?: UserRole
     requiredFeatureFlags?: FeatureFlagKey[]
     text: string
     to: string
     extra?: ReactNode
+    outerExtra?: ReactNode
     isHidden?: boolean
 }
 
@@ -205,15 +208,6 @@ const CATEGORIES: Category[] = [
     },
 ]
 
-const CONVERT_LINKS: CategoryLink[] = [
-    {
-        requiredRole: ADMIN_ROLE,
-        to: 'revenue/click-tracking',
-        requiredFeatureFlags: [FeatureFlagKey.RevenueClickTracking],
-        text: 'Click Tracking',
-    },
-]
-
 const SettingsNavbar = () => {
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
@@ -222,7 +216,9 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
+    const isConvertBillingEnabled = useIsRevenueBillingEnabled()
     const isConvertSubscriber = useIsConvertSubscriber()
+    const convertLinks = useGetConvertLinks()
 
     const categoriesInUse = React.useMemo<Category[]>(() => {
         return flatMap(CATEGORIES, (category) => {
@@ -235,18 +231,26 @@ const SettingsNavbar = () => {
                         ),
                     },
                 ]
-            } else if (isConvertSubscriber && category.name === 'Convert') {
+            } else if (
+                (isConvertSubscriber || isConvertBillingEnabled) &&
+                category.name === 'Convert'
+            ) {
                 return [
                     {
                         ...category,
-                        links: CONVERT_LINKS,
+                        links: convertLinks,
                     },
                 ]
             }
 
             return [category]
         })
-    }, [isConvertSubscriber, isDecoupleContactFormEnabled])
+    }, [
+        convertLinks,
+        isConvertSubscriber,
+        isConvertBillingEnabled,
+        isDecoupleContactFormEnabled,
+    ])
 
     return (
         <Navbar activeContent="settings">
@@ -260,6 +264,7 @@ const SettingsNavbar = () => {
                             requiredRole,
                             requiredFeatureFlags,
                             extra,
+                            outerExtra,
                         }) => {
                             let computedText = text
                             if (
@@ -329,6 +334,7 @@ const SettingsNavbar = () => {
                                         {computedText}
                                         {extra}
                                     </Link>
+                                    {outerExtra}
                                 </div>
                             )
                         }

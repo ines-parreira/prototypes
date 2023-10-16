@@ -1,16 +1,14 @@
 import React, {ReactNode, useRef, useState} from 'react'
-import {Popover, PopoverBody} from 'reactstrap'
 
 import classNames from 'classnames'
 import cssNavbar from 'assets/css/navbar.less'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 
 import css from 'pages/convert/common/components/ConvertNavbarAddOnPaywallNavbarLink/ConvertNavbarAddOnPaywallNavbarLink.less'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
+import PaywallPopover from 'pages/settings/new_billing/components/PaywallPopover'
 
 type Props = {
     children: ReactNode
@@ -53,32 +51,13 @@ const ConvertNavbarAddOnPaywallNavbarLink = ({
                     />
                 </NavbarLink>
             </div>
-            {iconRef.current && (
-                <Popover
-                    placement="top"
-                    isOpen={isPopoverOpen}
-                    toggle={() => {
-                        setIsPopoverOpen(!isPopoverOpen)
-                    }}
-                    target={iconRef.current}
-                    trigger="focus hover"
-                    boundariesElement="window"
-                >
-                    <PopoverBody className="d-flex p-3 flex-column align-items-center">
-                        Subscribe to the {addonName} <br /> to unlock this
-                        feature
-                        <Button
-                            size="small"
-                            className="mt-3"
-                            onClick={handleSubscribeToAddOnClick}
-                        >
-                            <ButtonIconLabel icon="auto_awesome">
-                                Get This Feature
-                            </ButtonIconLabel>
-                        </Button>
-                    </PopoverBody>
-                </Popover>
-            )}
+            <PaywallPopover
+                featureName={addonName}
+                iconRef={iconRef}
+                onButtonClick={handleSubscribeToAddOnClick}
+                isOpened={isPopoverOpen}
+                setIsOpened={setIsPopoverOpen}
+            />
         </>
     )
 }

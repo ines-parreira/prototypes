@@ -2,7 +2,6 @@ import React, {useCallback, useMemo, useState} from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
-import css from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal.less'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {useUpdateSubscription} from 'pages/settings/new_billing/hooks/useUpdateSubscription'
@@ -22,6 +21,7 @@ import {
 } from 'state/billing/selectors'
 import {isStarterTierPrice} from 'models/billing/utils'
 import {AutomationPrice, ConvertPrice, ProductType} from 'models/billing/types'
+import css from './SubscriptionModal.less'
 
 type Props = {
     productType: ProductType
@@ -126,6 +126,7 @@ const SubscriptionModal = ({
         <>
             <Modal
                 isOpen={isOpen}
+                size="xl"
                 toggle={onClose}
                 className={classnames(css.modal, css.wide)}
                 fade={fade}

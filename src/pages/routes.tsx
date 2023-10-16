@@ -20,6 +20,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import ClickTrackingPaywallView from 'pages/settings/revenue/components/ClickTrackingPaywallView/ClickTrackingPaywallView'
 import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
@@ -129,7 +130,6 @@ import {
     BundleInstallView,
     BundleDetailView,
 } from './settings/revenue/components/BundlesView'
-import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
 import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from './automation/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
 import TrackOrderFlowViewContainer from './automation/orderManagement/trackOrder/TrackOrderFlowViewContainer'
@@ -158,6 +158,7 @@ import {
 } from './stats/self-service/constants'
 import CampaignStatsPaywallView from './stats/revenue/pages/CampaignsStats/CampaignStatsPaywallView'
 import {HelpCenterStats} from './stats/pages/HelpCenterStats'
+import ClickTrackingSettingsView from './settings/revenue/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1289,6 +1290,16 @@ export function RevenueSettingsRoutes() {
                     <App
                         content={memoizedWithUserRoleRequired(
                             ClickTrackingSettingsView as any,
+                            ADMIN_ROLE,
+                            PageSection.Users
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                </Route>
+                <Route path={`${path}/click-tracking/subscribe`} exact>
+                    <App
+                        content={memoizedWithUserRoleRequired(
+                            ClickTrackingPaywallView as any,
                             ADMIN_ROLE,
                             PageSection.Users
                         )}

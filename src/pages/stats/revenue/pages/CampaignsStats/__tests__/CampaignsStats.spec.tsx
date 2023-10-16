@@ -1,22 +1,12 @@
-import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import _cloneDeep from 'lodash/cloneDeep'
 import {render} from '@testing-library/react'
 import {MemoryRouter, Route} from 'react-router-dom'
 import {RootState} from 'state/types'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
 import {mockStore} from 'utils/testing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {integrationsStateWithShopify} from 'fixtures/integrations'
-import {HelpdeskPrice} from 'models/billing/types'
-import {
-    basicMonthlyHelpdeskPrice,
-    HELPDESK_PRODUCT_ID,
-    products,
-    starterHelpdeskPrice,
-} from 'fixtures/productPrices'
+import {starterHelpdeskPrice} from 'fixtures/productPrices'
+import {getStateWithPrice} from 'utils/paywallTesting'
 import ConvertCampaignsStats from '../CampaignsStats'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
@@ -33,27 +23,6 @@ jest.mock('../../../containers/RevenueFilters', () => ({
 }))
 
 describe('CampaignsStats', () => {
-    const getState = (price: HelpdeskPrice = basicMonthlyHelpdeskPrice) => {
-        const productsWithStarter = _cloneDeep(products)
-        productsWithStarter[0].prices.push(price)
-
-        return {
-            integrations: fromJS(integrationsStateWithShopify),
-            billing: fromJS({...billingState, products: productsWithStarter}),
-            stats: fromJS({
-                filters: {},
-            }),
-            currentAccount: fromJS({
-                current_subscription: {
-                    ...account.current_subscription,
-                    products: {
-                        [HELPDESK_PRODUCT_ID]: price.price_id,
-                    },
-                },
-            }),
-        }
-    }
-
     const renderWithStore = (state: Partial<RootState>, props = {}) =>
         render(
             <MemoryRouter>
@@ -74,7 +43,7 @@ describe('CampaignsStats', () => {
     })
 
     describe('when on Starter plan', () => {
-        const mockedState = getState(starterHelpdeskPrice)
+        const mockedState = getStateWithPrice(starterHelpdeskPrice)
 
         it('should render the default paywall', () => {
             jest.spyOn(
@@ -90,7 +59,7 @@ describe('CampaignsStats', () => {
     })
 
     describe('when not on Starter plan', () => {
-        const mockedState = getState()
+        const mockedState = getStateWithPrice()
 
         it('should render the paywall with modal for Convert non-subscriber', () => {
             jest.spyOn(
