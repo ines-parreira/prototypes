@@ -1,32 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DropdownField /> should display display results when searching 1`] = `
+exports[`<MultiLevelSelect /> should display display results when searching 1`] = `
 <body>
   <div>
-    <label
-      class="labelWrapper"
-    >
-      <span
-        class="label"
-      >
-        dropdown
-        :
-      </span>
-      <sup
-        class="asterisk"
-      >
-        *
-      </sup>
-    </label>
     <span
       class=""
-      id="ticket-whateva-custom-field-value-input-1"
+      id="test-input-id"
       style="width: 82px;"
     >
       <input
         autocomplete="off"
         class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-input-1-input"
+        id="test-input-id-input"
         name="dropdown"
         placeholder="+Add"
         style="width: 82px;"
@@ -40,7 +25,7 @@ exports[`<DropdownField /> should display display results when searching 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-19"
+    id="floating-ui-11"
   >
     <div
       class="overlay"
@@ -205,72 +190,21 @@ exports[`<DropdownField /> should display display results when searching 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <div
-      class="tooltip fade"
-    >
-      <div
-        class="tooltip show bs-tooltip-auto"
-        style="position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
-        x-placement="left"
-      >
-        <div
-          class="tooltip-inner"
-          role="tooltip"
-        >
-          s1 &gt; ss2 &gt; c2
-        </div>
-        <span
-          class="arrow"
-        />
-      </div>
-    </div>
-  </div>
 </body>
 `;
 
-exports[`<DropdownField /> should display prediction icon in field and in list 1`] = `
-[
-  <i
-    class="material-icons predictionIcon"
-  >
-    auto_awesome
-  </i>,
-  <i
-    class="material-icons mr-2 predictionIcon"
-  >
-    auto_awesome
-  </i>,
-]
-`;
-
-exports[`<DropdownField /> should render the dropdown component correctly 1`] = `
+exports[`<MultiLevelSelect /> should render the dropdown component correctly 1`] = `
 <body>
   <div>
-    <label
-      class="labelWrapper"
-    >
-      <span
-        class="label"
-      >
-        dropdown
-        :
-      </span>
-      <sup
-        class="asterisk"
-      >
-        *
-      </sup>
-    </label>
     <span
       class=""
-      id="ticket-whateva-custom-field-value-input-1"
+      id="test-input-id"
       style="width: 82px;"
     >
       <input
         autocomplete="off"
         class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-input-1-input"
+        id="test-input-id-input"
         name="dropdown"
         placeholder="+Add"
         style="width: 82px;"
@@ -281,7 +215,6 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
         style="visibility: hidden; position: absolute;"
       />
     </span>
-    )
   </div>
   <div
     data-floating-ui-portal=""
@@ -457,26 +390,6 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
             Clear Selection
           </button>
         </div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <div
-      class="tooltip fade"
-    >
-      <div
-        class="tooltip show bs-tooltip-auto"
-        style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
-      >
-        <div
-          class="tooltip-inner"
-          role="tooltip"
-        >
-          s1 &gt; ss2 &gt; c2
-        </div>
-        <span
-          class="arrow"
-        />
       </div>
     </div>
   </div>

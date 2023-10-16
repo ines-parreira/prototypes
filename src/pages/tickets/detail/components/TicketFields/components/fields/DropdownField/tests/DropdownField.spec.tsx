@@ -46,7 +46,6 @@ describe('<DropdownField />', () => {
         fieldState,
         choices,
         isRequired: true,
-        onChange: jest.fn(),
     }
     const prediction = {
         confidence: 87,

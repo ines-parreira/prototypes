@@ -64,7 +64,7 @@ describe('<TicketField />', () => {
                     </Provider>
                 </QueryClientProvider>
             )
-            expect(container.firstChild).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
             expect(onChange).not.toHaveBeenCalled()
         }
     )
