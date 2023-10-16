@@ -276,7 +276,7 @@ const App = ({
 
                                         <Wrapper {...wrapperProps}>
                                             <ErrorBoundary>
-                                                {content}
+                                                {content || null}
                                             </ErrorBoundary>
                                         </Wrapper>
                                     </div>
