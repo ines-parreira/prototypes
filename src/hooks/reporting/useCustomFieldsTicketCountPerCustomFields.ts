@@ -99,6 +99,10 @@ export function enrichWithPercentagesAndDeciles(
         ...item,
         percentage: ((item[VALUE_FIELD] || 0) / currentLevelTotalSum) * 100,
         decile: calculateDecile(item[VALUE_FIELD], currentLevelTotalSum),
+        totalsDecile: calculateDecile(
+            item[VALUE_FIELD],
+            totalsSum || currentLevelTotalSum
+        ),
         timeSeries: item.timeSeries.map((item, index) => ({
             ...item,
             percentage:
@@ -106,6 +110,10 @@ export function enrichWithPercentagesAndDeciles(
                     ? (item.value / sums[index].value) * 100
                     : 0,
             decile: calculateDecile(item.value, sums[index].value),
+            totalsDecile: calculateDecile(
+                item.value,
+                totalsSum || currentLevelTotalSum
+            ),
         })),
         children: enrichWithPercentagesAndDeciles(
             item.children,

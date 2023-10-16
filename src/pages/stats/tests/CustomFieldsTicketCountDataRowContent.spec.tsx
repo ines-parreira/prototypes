@@ -29,10 +29,17 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: 3456,
             timeSeries: [
-                {dateTime: '2023-08-09', value, percentage: 15, decile: 2},
+                {
+                    dateTime: '2023-08-09',
+                    value,
+                    percentage: 15,
+                    decile: 2,
+                    totalsDecile: 3,
+                },
             ],
             percentage: 15,
             decile: 2,
+            totalsDecile: 3,
         }
 
         render(
@@ -60,10 +67,12 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
                     value: 15,
                     percentage: percent,
                     decile: 2,
+                    totalsDecile: 3,
                 },
             ],
             percentage: totalPercent,
             decile: 2,
+            totalsDecile: 3,
         }
 
         render(
@@ -91,10 +100,12 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
                     value: 5,
                     percentage: lessThenHalfValue,
                     decile: 2,
+                    totalsDecile: 3,
                 },
             ],
             percentage: percent,
             decile: 2,
+            totalsDecile: 3,
         }
 
         render(
@@ -127,10 +138,12 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
                         value: 123,
                         percentage: 15,
                         decile: 2,
+                        totalsDecile: 3,
                     },
                 ],
                 percentage: value || 0,
                 decile: 2,
+                totalsDecile: 3,
             }
 
             render(
@@ -151,10 +164,17 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: undefined,
             timeSeries: [
-                {dateTime: '2023-08-09', value: 123, percentage: 15, decile: 2},
+                {
+                    dateTime: '2023-08-09',
+                    value: 123,
+                    percentage: 15,
+                    decile: 2,
+                    totalsDecile: 3,
+                },
             ],
             percentage: 15,
             decile,
+            totalsDecile: 3,
             level: 0,
         }
         getValueModeMock.mockReturnValue(ValueMode.Percentage)
@@ -180,10 +200,17 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: undefined,
             timeSeries: [
-                {dateTime: '2023-08-09', value: 123, percentage: 15, decile: 2},
+                {
+                    dateTime: '2023-08-09',
+                    value: 123,
+                    percentage: 15,
+                    decile: 2,
+                    totalsDecile: 3,
+                },
             ],
             percentage: 15,
             decile,
+            totalsDecile: 3,
             level: 2,
         }
         getValueModeMock.mockReturnValue(ValueMode.Percentage)

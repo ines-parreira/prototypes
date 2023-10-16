@@ -53,6 +53,7 @@ export type TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile =
         timeSeries: TimeSeriesDataItemWithPercentageAndDecile[]
         percentage: number
         decile: number
+        totalsDecile: number
     }
 
 type WithChildren<T> = T & {children: WithChildren<T>[]}

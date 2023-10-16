@@ -28,6 +28,7 @@ export type TimeSeriesDataItem = {
 export type TimeSeriesDataItemWithPercentageAndDecile = TimeSeriesDataItem & {
     percentage: number
     decile: number
+    totalsDecile: number
 }
 
 const select =

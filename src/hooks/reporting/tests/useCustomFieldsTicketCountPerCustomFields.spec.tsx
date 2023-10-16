@@ -109,35 +109,41 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                     [BREAKDOWN_FIELD]: 'abc',
                     decile: 9,
                     percentage: 100,
+                    totalsDecile: 9,
                     children: [
                         {
                             [VALUE_FIELD]: 668,
                             [BREAKDOWN_FIELD]: 'xyz',
                             children: [],
                             decile: 9,
+                            totalsDecile: 9,
                             percentage: 100,
                             timeSeries: [
                                 {
                                     dateTime: startDate,
                                     decile: 9,
+                                    totalsDecile: 7,
                                     percentage: 100,
                                     value: 456,
                                 },
                                 {
                                     dateTime: day2,
                                     decile: 9,
+                                    totalsDecile: 2,
                                     percentage: 100,
                                     value: 123,
                                 },
                                 {
                                     dateTime: day3,
                                     decile: 0,
+                                    totalsDecile: 0,
                                     percentage: 0,
                                     value: 0,
                                 },
                                 {
                                     dateTime: endDate,
                                     decile: 9,
+                                    totalsDecile: 1,
                                     percentage: 100,
                                     value: 89,
                                 },
@@ -148,24 +154,28 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                         {
                             dateTime: startDate,
                             decile: 9,
+                            totalsDecile: 7,
                             percentage: 100,
                             value: 456,
                         },
                         {
                             dateTime: day2,
                             decile: 9,
+                            totalsDecile: 2,
                             percentage: 100,
                             value: 123,
                         },
                         {
                             dateTime: day3,
                             decile: 0,
+                            totalsDecile: 0,
                             percentage: 0,
                             value: 0,
                         },
                         {
                             dateTime: endDate,
                             decile: 9,
+                            totalsDecile: 1,
                             percentage: 100,
                             value: 89,
                         },
@@ -344,6 +354,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                     (sum, v) => sum + v
                                 )
                             ),
+                            totalsDecile: calculateDecile(
+                                tag1DailyValues.reduce((sum, v) => sum + v),
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
+                            ),
                             percentage:
                                 (tag1DailyValues.reduce((sum, v) => sum + v) /
                                     [
@@ -358,6 +374,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                         tag1DailyValues[0],
                                         tag1DailyValues[0] + tag2DailyValues[0]
                                     ),
+                                    totalsDecile: calculateDecile(
+                                        tag1DailyValues[0],
+                                        [
+                                            ...tag1DailyValues,
+                                            ...tag2DailyValues,
+                                        ].reduce((sum, v) => sum + v)
+                                    ),
                                     percentage: calculatePercentageOfPerColumn(
                                         tag1DailyValues,
                                         0
@@ -369,6 +392,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                     decile: calculateDecile(
                                         tag1DailyValues[1],
                                         tag1DailyValues[1] + tag2DailyValues[1]
+                                    ),
+                                    totalsDecile: calculateDecile(
+                                        tag1DailyValues[1],
+                                        [
+                                            ...tag1DailyValues,
+                                            ...tag2DailyValues,
+                                        ].reduce((sum, v) => sum + v)
                                     ),
                                     percentage: calculatePercentageOfPerColumn(
                                         tag1DailyValues,
@@ -382,6 +412,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                         tag1DailyValues[2],
                                         tag1DailyValues[2] + tag2DailyValues[2]
                                     ),
+                                    totalsDecile: calculateDecile(
+                                        tag1DailyValues[2],
+                                        [
+                                            ...tag1DailyValues,
+                                            ...tag2DailyValues,
+                                        ].reduce((sum, v) => sum + v)
+                                    ),
                                     percentage: calculatePercentageOfPerColumn(
                                         tag1DailyValues,
                                         2
@@ -394,6 +431,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                         tag1DailyValues[3],
                                         tag1DailyValues[3] + tag2DailyValues[3]
                                     ),
+                                    totalsDecile: calculateDecile(
+                                        tag1DailyValues[3],
+                                        [
+                                            ...tag1DailyValues,
+                                            ...tag2DailyValues,
+                                        ].reduce((sum, v) => sum + v)
+                                    ),
                                     percentage: calculatePercentageOfPerColumn(
                                         tag1DailyValues,
                                         3
@@ -404,6 +448,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                         },
                     ],
                     decile: calculateDecile(
+                        tag1DailyValues.reduce((sum, v) => sum + v),
+                        [...tag1DailyValues, ...tag2DailyValues].reduce(
+                            (sum, v) => sum + v
+                        )
+                    ),
+                    totalsDecile: calculateDecile(
                         tag1DailyValues.reduce((sum, v) => sum + v),
                         [...tag1DailyValues, ...tag2DailyValues].reduce(
                             (sum, v) => sum + v
@@ -422,6 +472,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                 tag1DailyValues[0],
                                 tag1DailyValues[0] + tag2DailyValues[0]
                             ),
+                            totalsDecile: calculateDecile(
+                                tag1DailyValues[0],
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
+                            ),
                             percentage: calculatePercentageOfPerColumn(
                                 tag1DailyValues,
                                 0
@@ -433,6 +489,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                             decile: calculateDecile(
                                 tag1DailyValues[1],
                                 tag1DailyValues[1] + tag2DailyValues[1]
+                            ),
+                            totalsDecile: calculateDecile(
+                                tag1DailyValues[1],
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
                             ),
                             percentage: calculatePercentageOfPerColumn(
                                 tag1DailyValues,
@@ -446,6 +508,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                 tag1DailyValues[2],
                                 tag1DailyValues[2] + tag2DailyValues[2]
                             ),
+                            totalsDecile: calculateDecile(
+                                tag1DailyValues[2],
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
+                            ),
                             percentage: calculatePercentageOfPerColumn(
                                 tag1DailyValues,
                                 2
@@ -457,6 +525,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                             decile: calculateDecile(
                                 tag1DailyValues[3],
                                 tag1DailyValues[3] + tag2DailyValues[3]
+                            ),
+                            totalsDecile: calculateDecile(
+                                tag1DailyValues[3],
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
                             ),
                             percentage: calculatePercentageOfPerColumn(
                                 tag1DailyValues,
@@ -482,6 +556,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                     (sum, v) => sum + v
                                 )
                             ),
+                            totalsDecile: calculateDecile(
+                                tag2DailyValues.reduce((sum, v) => sum + v),
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
+                            ),
                             percentage:
                                 (tag2DailyValues.reduce((sum, v) => sum + v) /
                                     [
@@ -496,6 +576,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                         tag1DailyValues[0],
                                         tag1DailyValues[0] + tag2DailyValues[0]
                                     ),
+                                    totalsDecile: calculateDecile(
+                                        tag1DailyValues[0],
+                                        [
+                                            ...tag1DailyValues,
+                                            ...tag2DailyValues,
+                                        ].reduce((sum, v) => sum + v)
+                                    ),
                                     percentage: calculatePercentageOfPerColumn(
                                         tag1DailyValues,
                                         0
@@ -507,6 +594,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                     decile: calculateDecile(
                                         tag1DailyValues[1],
                                         tag1DailyValues[1] + tag2DailyValues[1]
+                                    ),
+                                    totalsDecile: calculateDecile(
+                                        tag1DailyValues[1],
+                                        [
+                                            ...tag1DailyValues,
+                                            ...tag2DailyValues,
+                                        ].reduce((sum, v) => sum + v)
                                     ),
                                     percentage: calculatePercentageOfPerColumn(
                                         tag1DailyValues,
@@ -520,6 +614,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                         tag1DailyValues[2],
                                         tag1DailyValues[2] + tag2DailyValues[2]
                                     ),
+                                    totalsDecile: calculateDecile(
+                                        tag1DailyValues[2],
+                                        [
+                                            ...tag1DailyValues,
+                                            ...tag2DailyValues,
+                                        ].reduce((sum, v) => sum + v)
+                                    ),
                                     percentage: calculatePercentageOfPerColumn(
                                         tag1DailyValues,
                                         2
@@ -532,6 +633,13 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                         tag1DailyValues[3],
                                         tag1DailyValues[3] + tag2DailyValues[3]
                                     ),
+                                    totalsDecile: calculateDecile(
+                                        tag1DailyValues[3],
+                                        [
+                                            ...tag1DailyValues,
+                                            ...tag2DailyValues,
+                                        ].reduce((sum, v) => sum + v)
+                                    ),
                                     percentage: calculatePercentageOfPerColumn(
                                         tag1DailyValues,
                                         3
@@ -542,6 +650,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                         },
                     ],
                     decile: calculateDecile(
+                        tag2DailyValues.reduce((sum, v) => sum + v),
+                        [...tag1DailyValues, ...tag2DailyValues].reduce(
+                            (sum, v) => sum + v
+                        )
+                    ),
+                    totalsDecile: calculateDecile(
                         tag2DailyValues.reduce((sum, v) => sum + v),
                         [...tag1DailyValues, ...tag2DailyValues].reduce(
                             (sum, v) => sum + v
@@ -560,6 +674,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                 tag2DailyValues[0],
                                 tag1DailyValues[0] + tag2DailyValues[0]
                             ),
+                            totalsDecile: calculateDecile(
+                                tag2DailyValues[0],
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
+                            ),
                             percentage: calculatePercentageOfPerColumn(
                                 tag2DailyValues,
                                 0
@@ -571,6 +691,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                             decile: calculateDecile(
                                 tag2DailyValues[1],
                                 tag1DailyValues[1] + tag2DailyValues[1]
+                            ),
+                            totalsDecile: calculateDecile(
+                                tag2DailyValues[1],
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
                             ),
                             percentage: calculatePercentageOfPerColumn(
                                 tag2DailyValues,
@@ -584,6 +710,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                                 tag2DailyValues[2],
                                 tag1DailyValues[2] + tag2DailyValues[2]
                             ),
+                            totalsDecile: calculateDecile(
+                                tag2DailyValues[2],
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
+                            ),
                             percentage: calculatePercentageOfPerColumn(
                                 tag2DailyValues,
                                 2
@@ -595,6 +727,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
                             decile: calculateDecile(
                                 tag2DailyValues[3],
                                 tag1DailyValues[3] + tag2DailyValues[3]
+                            ),
+                            totalsDecile: calculateDecile(
+                                tag2DailyValues[3],
+                                [...tag1DailyValues, ...tag2DailyValues].reduce(
+                                    (sum, v) => sum + v
+                                )
                             ),
                             percentage: calculatePercentageOfPerColumn(
                                 tag2DailyValues,

@@ -53,6 +53,7 @@ export const CustomFieldsTicketCountDataRowContent = ({
     [VALUE_FIELD]: value = 0,
     percentage,
     decile,
+    totalsDecile,
     level = 0,
     onClick,
     children,
@@ -87,7 +88,14 @@ export const CustomFieldsTicketCountDataRowContent = ({
                 className={classNames(
                     css.BodyCell,
                     isHeatmapMode && [heatmapCss.heatmap],
-                    isHeatmapMode && heatmapCss[`p${String(decile)}`]
+                    isHeatmapMode &&
+                        heatmapCss[
+                            `p${
+                                valueMode === ValueMode.TotalCount
+                                    ? String(totalsDecile)
+                                    : String(decile)
+                            }`
+                        ]
                 )}
                 innerClassName={classNames(css.BodyCellContent)}
                 justifyContent={'right'}
@@ -103,7 +111,14 @@ export const CustomFieldsTicketCountDataRowContent = ({
                     className={classNames(
                         css.BodyCell,
                         isHeatmapMode && [heatmapCss.heatmap],
-                        isHeatmapMode && heatmapCss[`p${String(data.decile)}`]
+                        isHeatmapMode &&
+                            heatmapCss[
+                                `p${
+                                    valueMode === ValueMode.TotalCount
+                                        ? String(data.totalsDecile)
+                                        : String(data.decile)
+                                }`
+                            ]
                     )}
                     innerClassName={classNames(
                         css.BodyCellContent,
