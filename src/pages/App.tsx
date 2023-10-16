@@ -209,125 +209,115 @@ const App = ({
     const hasOpenedPanel = !!openedPanel
 
     return (
-        <ErrorBoundary>
-            <AppUIContext.Provider
-                value={{
-                    appRef,
-                    theme,
-                }}
-            >
-                <AppUIContext.Consumer>
-                    {({theme}) => (
-                        <div
-                            ref={appRef}
-                            className={classnames(css.page, theme)}
-                        >
-                            <BannerNotifications
-                                notifications={bannerNotifications}
-                            />
-                            <EmailMigrationBanner />
-                            <ScriptTagMigrationBanner />
+        <AppUIContext.Provider
+            value={{
+                appRef,
+                theme,
+            }}
+        >
+            <AppUIContext.Consumer>
+                {({theme}) => (
+                    <div ref={appRef} className={classnames(css.page, theme)}>
+                        <BannerNotifications
+                            notifications={bannerNotifications}
+                        />
+                        <EmailMigrationBanner />
+                        <ScriptTagMigrationBanner />
 
-                            <div id="app-root" className={css.app}>
-                                <Spotlight>{Navbar && <Navbar />}</Spotlight>
+                        <div id="app-root" className={css.app}>
+                            <Spotlight>{Navbar && <Navbar />}</Spotlight>
 
+                            <div
+                                className={classnames(
+                                    'd-flex flex-grow-1 flex-column',
+                                    css.container
+                                )}
+                            >
                                 <div
-                                    className={classnames(
-                                        'd-flex flex-grow-1 flex-column',
-                                        css.container
-                                    )}
+                                    className="d-flex flex-grow-1"
+                                    style={{
+                                        overflow: 'hidden',
+                                    }}
                                 >
                                     <div
-                                        className="d-flex flex-grow-1"
-                                        style={{
-                                            overflow: 'hidden',
-                                        }}
+                                        className={classnames(
+                                            'app-content',
+                                            css.content
+                                        )}
                                     >
-                                        <div
-                                            className={classnames(
-                                                'app-content',
-                                                css.content
-                                            )}
-                                        >
-                                            <div className="mobile-nav">
-                                                <IconButton
-                                                    className="mr-3"
+                                        <div className="mobile-nav">
+                                            <IconButton
+                                                className="mr-3"
+                                                fillStyle="ghost"
+                                                intent="secondary"
+                                                onClick={() =>
+                                                    dispatch(
+                                                        openPanel('navbar')
+                                                    )
+                                                }
+                                            >
+                                                menu
+                                            </IconButton>
+                                            {infobarOnMobile && (
+                                                <Button
+                                                    className="ml-3"
                                                     fillStyle="ghost"
                                                     intent="secondary"
                                                     onClick={() =>
                                                         dispatch(
-                                                            openPanel('navbar')
+                                                            openPanel('infobar')
                                                         )
                                                     }
                                                 >
-                                                    menu
-                                                </IconButton>
-                                                {infobarOnMobile && (
-                                                    <Button
-                                                        className="ml-3"
-                                                        fillStyle="ghost"
-                                                        intent="secondary"
-                                                        onClick={() =>
-                                                            dispatch(
-                                                                openPanel(
-                                                                    'infobar'
-                                                                )
-                                                            )
-                                                        }
-                                                    >
-                                                        More info
-                                                    </Button>
-                                                )}
-                                            </div>
-
-                                            <Wrapper {...wrapperProps}>
-                                                <ErrorBoundary>
-                                                    {content}
-                                                </ErrorBoundary>
-                                            </Wrapper>
+                                                    More info
+                                                </Button>
+                                            )}
                                         </div>
 
-                                        {!!Infobar && (
-                                            <Infobar
-                                                isEditingWidgets={
-                                                    !!isEditingWidgets
-                                                }
-                                            />
-                                        )}
+                                        <Wrapper {...wrapperProps}>
+                                            <ErrorBoundary>
+                                                {content}
+                                            </ErrorBoundary>
+                                        </Wrapper>
                                     </div>
-                                    {hasPhoneIntegration && (
-                                        <PhoneIntegrationBar />
+
+                                    {!!Infobar && (
+                                        <Infobar
+                                            isEditingWidgets={
+                                                !!isEditingWidgets
+                                            }
+                                        />
                                     )}
                                 </div>
-
-                                <div
-                                    className={classnames(css.backdrop, {
-                                        [css.hidden]: !hasOpenedPanel,
-                                    })}
-                                    onClick={() => dispatch(closePanels())}
-                                />
+                                {hasPhoneIntegration && <PhoneIntegrationBar />}
                             </div>
 
-                            <KeyboardHelp />
-                            {ReactDOM.createPortal(
-                                <NotificationsSystem
-                                    theme={notificationsTheme}
-                                    notifications={alertNotifications}
-                                    dismissNotification={(id) =>
-                                        dispatch(dismissNotification(id))
-                                    }
-                                    components={{
-                                        NotificationIcon:
-                                            GorgiasNotificationIcon,
-                                    }}
-                                />,
-                                document.body
-                            )}
+                            <div
+                                className={classnames(css.backdrop, {
+                                    [css.hidden]: !hasOpenedPanel,
+                                })}
+                                onClick={() => dispatch(closePanels())}
+                            />
                         </div>
-                    )}
-                </AppUIContext.Consumer>
-            </AppUIContext.Provider>
-        </ErrorBoundary>
+
+                        <KeyboardHelp />
+                        {ReactDOM.createPortal(
+                            <NotificationsSystem
+                                theme={notificationsTheme}
+                                notifications={alertNotifications}
+                                dismissNotification={(id) =>
+                                    dispatch(dismissNotification(id))
+                                }
+                                components={{
+                                    NotificationIcon: GorgiasNotificationIcon,
+                                }}
+                            />,
+                            document.body
+                        )}
+                    </div>
+                )}
+            </AppUIContext.Consumer>
+        </AppUIContext.Provider>
     )
 }
 
