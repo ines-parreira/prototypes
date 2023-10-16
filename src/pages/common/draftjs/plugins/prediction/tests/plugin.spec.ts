@@ -52,7 +52,7 @@ describe('prediction plugin', () => {
     const createEmptyStatePredictionPlugin = (context = defaultContext) => {
         const predictionPlugin = createPredictionPlugin({
             context,
-            debounce: true,
+            debounce: 200,
         })
         const state = EditorState.createEmpty()
         const pluginMethods = DraftTestUtils.mockPluginMethods(state)

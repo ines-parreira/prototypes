@@ -58,7 +58,7 @@ export enum FeatureFlagKey {
     NewVoiceCallUI = 'new-voice-call-ui',
     NavbarImprovements = 'navbar-improvements',
     DateAndTimeFormattingUserSetting = 'date-and-time-formatting-user-setting',
-    PhrasePredictionThrottling = 'phrase-prediction-throttling',
+    PhrasePredictionDebounce = 'phrase-prediction-debounce',
     EnableNewLanguages = 'enable-new-languages',
     TaapNewReplyMessageChannelSelector = 'taap-new-reply-message-channel-selector',
 }

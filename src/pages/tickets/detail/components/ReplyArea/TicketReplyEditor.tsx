@@ -409,9 +409,9 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
         const predictionProps = {
             predictionContext: this.props.predictionContext,
-            predictionDebounce: this._isLDFlagActivated(
-                FeatureFlagKey.PhrasePredictionThrottling
-            ),
+            predictionDebounce:
+                this.props.flags?.[FeatureFlagKey.PhrasePredictionDebounce] ||
+                0,
         }
 
         if (newMessageType === TicketMessageSourceType.TwitterTweet) {

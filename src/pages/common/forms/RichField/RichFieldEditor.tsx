@@ -86,7 +86,7 @@ export type Props = {
     readOnly?: boolean
     spellCheck?: boolean
     predictionContext?: Map<any, any>
-    predictionDebounce?: boolean
+    predictionDebounce?: number
     ticket?: any
     isFocused: boolean
     isRequired: boolean

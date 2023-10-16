@@ -184,13 +184,17 @@ const completePrediction = (
 
 const predictionPlugin = (config: {
     context: Map<any, any>
-    debounce?: boolean
+    debounce?: number
 }): Plugin => {
     let lastQuery: string | null = null
-    const debouncedRequestPrediction = debounce(requestPrediction, 250, {
-        leading: true,
-        trailing: true,
-    })
+    const debouncedRequestPrediction = debounce(
+        requestPrediction,
+        typeof config.debounce === 'number' ? config.debounce : 200,
+        {
+            leading: true,
+            trailing: true,
+        }
+    )
 
     return {
         // $TsFixMe remove casting once decorators is migrated
