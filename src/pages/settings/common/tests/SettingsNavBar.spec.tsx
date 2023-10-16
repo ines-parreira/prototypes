@@ -5,21 +5,18 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {FeatureFlagKey} from '../../../../config/featureFlags'
-import {account} from '../../../../fixtures/account'
-import {billingState} from '../../../../fixtures/billing'
-import {user} from '../../../../fixtures/users'
-import {RootState} from '../../../../state/types'
-import {getLDClient} from '../../../../utils/launchDarkly'
-import {renderWithRouter} from '../../../../utils/testing'
-import {CONTACT_FORM_PAGE_TITLE} from '../../contactForm/constants'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {user} from 'fixtures/users'
+import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
+import {RootState} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+
 import SettingsNavbar from '../SettingsNavbar'
 
 const mockStore = configureMockStore([thunk])
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({[FeatureFlagKey.SpotlightGlobalSearch]: false})
 
 describe('<SettingsNavbar />', () => {
     const defaultState: Partial<RootState> = {

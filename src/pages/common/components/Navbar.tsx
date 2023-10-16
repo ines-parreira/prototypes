@@ -20,7 +20,6 @@ import {
 } from 'reactstrap'
 import * as Sentry from '@sentry/react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
@@ -42,7 +41,6 @@ import {RootState} from 'state/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
-import {getLDClient} from 'utils/launchDarkly'
 
 import Avatar from './Avatar/Avatar'
 import DropdownBody from './dropdown/DropdownBody'
@@ -333,9 +331,6 @@ export class Navbar extends Component<Props, State> {
             currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
         )
 
-        const isSpotlightEnabled =
-            getLDClient().allFlags()[FeatureFlagKey.SpotlightGlobalSearch]
-
         return (
             <div
                 className={classnames(css.sidebar, {
@@ -403,7 +398,7 @@ export class Navbar extends Component<Props, State> {
 
                         <div data-candu-id="navbar-home-spacer" />
 
-                        {isSpotlightEnabled && <SpotlightButton />}
+                        <SpotlightButton />
                     </div>
 
                     <div

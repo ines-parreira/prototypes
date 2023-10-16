@@ -5,7 +5,6 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import closeIcon from 'assets/img/icons/close.svg'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import EditableTitle from 'pages/common/components/EditableTitle'
 import Search from 'pages/common/components/Search'
@@ -13,7 +12,6 @@ import Tooltip from 'pages/common/components/Tooltip'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import history from 'pages/history'
-import shortcutManager from 'services/shortcutManager'
 import {
     deleteView,
     fetchViewItems,
@@ -24,7 +22,6 @@ import {
 } from 'state/views/actions'
 import {getActiveView, getLastViewId} from 'state/views/selectors'
 import {RootState} from 'state/types'
-import {getLDClient} from 'utils/launchDarkly'
 import {slugify} from 'utils'
 
 import css from './Header.less'
@@ -47,19 +44,6 @@ export class HeaderContainer extends React.Component<Props, State> {
 
     state = {
         askDeleteConfirmation: false,
-    }
-
-    componentDidMount() {
-        shortcutManager.bind('Search', {
-            LEAVE_SEARCH: {
-                action: () => {
-                    const {isSearch} = this.props
-                    if (isSearch) {
-                        history.push(this._goBackUrl())
-                    }
-                },
-            },
-        })
     }
 
     _goBackUrl = () => {
@@ -116,14 +100,6 @@ export class HeaderContainer extends React.Component<Props, State> {
         }
     }
 
-    handleFocus = () => {
-        const {config, activeView, isSearch} = this.props
-
-        if (!isSearch && !(activeView.get('search') as string)) {
-            history.push(`/app/${config.get('routeList') as string}/search?q=`)
-        }
-    }
-
     cancelEdit = () => {
         const {isUpdate, resetView, fetchViewItems} = this.props
 
@@ -141,9 +117,6 @@ export class HeaderContainer extends React.Component<Props, State> {
 
         const isEditMode = activeView.get('editMode')
         const emoji = activeView.getIn(['decoration', 'emoji'])
-
-        const isSpotlightEnabled =
-            getLDClient().allFlags()[FeatureFlagKey.SpotlightGlobalSearch]
 
         return (
             <div className={css.component}>
@@ -264,24 +237,14 @@ export class HeaderContainer extends React.Component<Props, State> {
                                 'flex-grow': isSearch,
                             })}
                         >
-                            {(!isSpotlightEnabled ||
-                                (isSpotlightEnabled && isSearch)) && (
+                            {isSearch && (
                                 <Search
                                     autoFocus={isSearch}
-                                    bindKey
                                     onKeyDown={this.handleKeyDown}
                                     placeholder={`Search ${
                                         config.get('plural') as string
                                     }...`}
-                                    location={
-                                        isSpotlightEnabled
-                                            ? activeView.get('search', '')
-                                            : `${
-                                                  activeView.get(
-                                                      'id'
-                                                  ) as unknown as string
-                                              }${isSearch ? '(s)' : ''}`
-                                    }
+                                    location={activeView.get('search', '')}
                                     forcedQuery={activeView.get('search') || ''}
                                     className={classnames(
                                         css.headerSearch,
@@ -291,11 +254,6 @@ export class HeaderContainer extends React.Component<Props, State> {
                                             'flex-grow': isSearch,
                                         }
                                     )}
-                                    onFocus={
-                                        !isSpotlightEnabled
-                                            ? this.handleFocus
-                                            : undefined
-                                    }
                                 />
                             )}
 

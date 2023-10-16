@@ -318,7 +318,6 @@ export const Infobar = ({
                     <Search
                         tabIndex={10}
                         placeholder="Search for customers by email, order number, etc."
-                        bindKey
                         onKeyDown={handleKeyDown}
                         style={{maxWidth: 'none'}}
                         ref={searchRef}

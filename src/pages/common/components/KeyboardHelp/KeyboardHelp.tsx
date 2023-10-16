@@ -9,8 +9,6 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 
 import shortcutManager from 'services/shortcutManager/index'
 import keymap from 'config/shortcuts'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './KeyboardHelp.less'
 
@@ -51,9 +49,6 @@ export default class KeyboardHelp extends Component<
     }
 
     render() {
-        const isSpotlightEnabled =
-            getLDClient().allFlags()[FeatureFlagKey.SpotlightGlobalSearch]
-
         return (
             <Modal
                 isOpen={this.state.isOpen}
@@ -67,14 +62,6 @@ export default class KeyboardHelp extends Component<
                     {Object.keys(keymap).map((componentName, i) => {
                         const component = keymap[componentName]
                         const actions = component.actions
-
-                        if (
-                            (!isSpotlightEnabled &&
-                                componentName === 'SpotlightModal') ||
-                            (isSpotlightEnabled && componentName === 'Search')
-                        ) {
-                            return null
-                        }
 
                         return (
                             <div

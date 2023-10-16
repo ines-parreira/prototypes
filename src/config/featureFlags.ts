@@ -47,7 +47,6 @@ export enum FeatureFlagKey {
     RevenueCampaignImprovements = 'revenue-campaign-improvements',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     SplitTicketView = 'split-ticket-view',
-    SpotlightGlobalSearch = 'spotlight-global-search',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',

@@ -261,7 +261,6 @@ export class MembersListContainer extends Component<Props, State> {
                 >
                     <div className="d-flex">
                         <Search
-                            bindKey
                             forcedQuery={search}
                             onChange={this.onSearch}
                             placeholder="Search team members..."

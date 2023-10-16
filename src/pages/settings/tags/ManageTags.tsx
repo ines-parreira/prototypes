@@ -199,7 +199,6 @@ const ManageTags = () => {
                 <div className="manage-tags-bulk-actions">
                     <div className="d-flex">
                         <Search
-                            bindKey
                             forcedQuery={search}
                             onChange={setSearch}
                             placeholder="Search tags by name..."

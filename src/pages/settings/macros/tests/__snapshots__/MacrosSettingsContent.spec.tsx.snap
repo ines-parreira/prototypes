@@ -11,7 +11,6 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
       className="d-flex"
     >
       <Component
-        bindKey={true}
         className="mr-2"
         forcedQuery=""
         onChange={[Function]}

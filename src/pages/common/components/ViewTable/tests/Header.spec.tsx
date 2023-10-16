@@ -4,9 +4,7 @@ import {fireEvent, render} from '@testing-library/react'
 import {screen} from '@testing-library/dom'
 
 import {getConfigByName} from 'config/views'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {view as viewsFixture} from 'fixtures/views'
-import history from 'pages/history'
 import {fetchViewItems} from 'state/views/actions'
 import {getLDClient} from 'utils/launchDarkly'
 
@@ -53,7 +51,7 @@ describe('ViewTable::Header', () => {
         allFlagsMock.mockReturnValue({})
     })
 
-    it('empty view', () => {
+    it('should display an empty view', () => {
         const {container} = render(
             <HeaderContainer
                 {...minProps}
@@ -64,23 +62,8 @@ describe('ViewTable::Header', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should not render unfocused search input when spotlight is enabled', () => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.SpotlightGlobalSearch]: true,
-        })
-
-        const {container} = render(
-            <HeaderContainer
-                {...minProps}
-                activeView={fromJS({})}
-                isUpdate={false}
-            />
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('search view', () => {
-        const {container} = render(
+    it('should display view on search mode', () => {
+        const {getByPlaceholderText} = render(
             <HeaderContainer
                 {...minProps}
                 isSearch
@@ -90,32 +73,31 @@ describe('ViewTable::Header', () => {
                 })}
             />
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(getByPlaceholderText(/Search tickets/)).toBeInTheDocument()
     })
 
-    it('should render search with search term location when spotlight is enabled', () => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.SpotlightGlobalSearch]: true,
-        })
+    it('should display input filled with the search term', () => {
+        const searchTerm = 'lost order'
 
-        const {container} = render(
+        const {getByDisplayValue} = render(
             <HeaderContainer
                 {...minProps}
                 isSearch
                 activeView={fromJS({
                     ...viewsFixture,
-                    search: 'term1',
+                    search: searchTerm,
                 })}
             />
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByDisplayValue(searchTerm)).toBeInTheDocument()
     })
 
-    it('should render when view is in edit mode', () => {
-        const {container} = render(
+    it('should display view on edit mode', () => {
+        const {getByDisplayValue} = render(
             <HeaderContainer {...minProps} activeView={editModeActiveView} />
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByDisplayValue(viewsFixture.name)).toHaveClass('edit-mode')
     })
 
     it('should reset view and fetch tickets when clicking on the close flow icon in edit mode', () => {
@@ -136,75 +118,37 @@ describe('ViewTable::Header', () => {
         expect(minProps.updateView).not.toHaveBeenCalled()
     })
 
-    describe('default view', () => {
-        it('displays', () => {
-            const {container} = render(<HeaderContainer {...minProps} />)
-            expect(container.firstChild).toMatchSnapshot()
-        })
+    it('display the view name', () => {
+        const {getByText} = render(<HeaderContainer {...minProps} />)
+        expect(getByText(viewsFixture.name)).toBeInTheDocument()
+    })
 
-        it('should update search of the active view and not fetch view items on search input submit', () => {
-            render(<HeaderContainer {...minProps} isSearch />)
-            const searchTerm = 'term1'
-            const searchInput = screen.getByPlaceholderText(/Search/i)
-            fireEvent.change(searchInput, {target: {value: searchTerm}})
-            fireEvent.keyDown(searchInput, {key: 'Enter'})
+    it('should update search of the active view and not fetch view items on search input submit', () => {
+        render(<HeaderContainer {...minProps} isSearch />)
+        const searchTerm = 'term1'
+        const searchInput = screen.getByPlaceholderText(/Search/i)
+        fireEvent.change(searchInput, {target: {value: searchTerm}})
+        fireEvent.keyDown(searchInput, {key: 'Enter'})
 
-            expect(minProps.updateView).toHaveBeenLastCalledWith(
-                (fromJS(viewsFixture) as Map<any, any>).set(
-                    'search',
-                    searchTerm
-                ),
-                false
-            )
-            expect(fetchViewItems).not.toHaveBeenCalled()
-        })
+        expect(minProps.updateView).toHaveBeenLastCalledWith(
+            (fromJS(viewsFixture) as Map<any, any>).set('search', searchTerm),
+            false
+        )
+        expect(fetchViewItems).not.toHaveBeenCalled()
+    })
 
-        it('go in search mode when focusing the search input', () => {
-            render(<HeaderContainer {...minProps} />)
-            screen.getByPlaceholderText(/Search/i).focus()
-            expect(history.push).toHaveBeenNthCalledWith(
-                1,
-                '/app/tickets/search?q='
-            )
-        })
+    it('update view name', () => {
+        render(
+            <HeaderContainer {...minProps} activeView={editModeActiveView} />
+        )
+        const viewNameInput = screen.getByDisplayValue(
+            (minProps.activeView as Map<any, any>).get('name')
+        )
+        fireEvent.change(viewNameInput, {target: {value: 'new name'}})
+        fireEvent.keyUp(viewNameInput, {key: 'Enter'})
+        fireEvent.blur(viewNameInput)
 
-        it('should not go to the search mode focusing the search input when already in search mode', () => {
-            render(<HeaderContainer {...minProps} isSearch />)
-
-            const searchInput = screen.getByPlaceholderText(/Search/i)
-            fireEvent.click(searchInput)
-            expect(history.push).not.toHaveBeenCalled()
-        })
-
-        it('get search query from active view', () => {
-            const {container} = render(
-                <HeaderContainer
-                    {...minProps}
-                    activeView={fromJS({
-                        ...viewsFixture,
-                        search: 'term1',
-                    })}
-                />
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('update view name', () => {
-            render(
-                <HeaderContainer
-                    {...minProps}
-                    activeView={editModeActiveView}
-                />
-            )
-            const viewNameInput = screen.getByDisplayValue(
-                (minProps.activeView as Map<any, any>).get('name')
-            )
-            fireEvent.change(viewNameInput, {target: {value: 'new name'}})
-            fireEvent.keyUp(viewNameInput, {key: 'Enter'})
-            fireEvent.blur(viewNameInput)
-
-            expect(minProps.updateView).toHaveBeenCalled()
-        })
+        expect(minProps.updateView).toHaveBeenCalled()
     })
 
     describe('emoji picker', () => {
@@ -212,23 +156,24 @@ describe('ViewTable::Header', () => {
 
         describe('.render()', () => {
             it('should render emoji if decoration.emoji is a string', () => {
+                const emoji = 'foo'
                 const activeView = editModeActiveView.merge({
-                    decoration: {emoji: 'foo'},
+                    decoration: {emoji},
                 })
-                const {container} = render(
+                const {getByText} = render(
                     <HeaderContainer {...minProps} activeView={activeView} />
                 )
-                expect(container.firstChild).toMatchSnapshot()
+                expect(getByText(emoji)).toBeInTheDocument()
             })
 
             it('should not render emoji if decoration is not an object', () => {
                 const activeView = editModeActiveView.merge({
                     decoration: 'foo',
                 })
-                const {container} = render(
+                const {getByText} = render(
                     <HeaderContainer {...minProps} activeView={activeView} />
                 )
-                expect(container.firstChild).toMatchSnapshot()
+                expect(getByText('insert_emoticon')).toBeInTheDocument()
             })
 
             it('should not render emoji if decoration.emoji is not a string', () => {
@@ -237,10 +182,10 @@ describe('ViewTable::Header', () => {
                         emoji: {},
                     },
                 })
-                const {container} = render(
+                const {getByText} = render(
                     <HeaderContainer {...minProps} activeView={activeView} />
                 )
-                expect(container.firstChild).toMatchSnapshot()
+                expect(getByText('insert_emoticon')).toBeInTheDocument()
             })
         })
 
@@ -259,7 +204,13 @@ describe('ViewTable::Header', () => {
                     baseElement.getElementsByClassName('emoji-mart-emoji')[0]
                 fireEvent.click(emojiSelection)
 
-                expect(minProps.updateView.mock.calls[0]).toMatchSnapshot()
+                const updateView = minProps.updateView.mock.calls[0] as Map<
+                    any,
+                    any
+                >[]
+                expect(updateView[0].getIn(['decoration', 'emoji'])).toEqual(
+                    emojiSelection.textContent
+                )
             })
 
             it('should not override existing decoration object properties', () => {
@@ -275,7 +226,13 @@ describe('ViewTable::Header', () => {
                     baseElement.getElementsByClassName('emoji-mart-emoji')[0]
                 fireEvent.click(emojiSelection)
 
-                expect(minProps.updateView.mock.calls[0]).toMatchSnapshot()
+                const updateView = minProps.updateView.mock.calls[0] as Map<
+                    any,
+                    any
+                >[]
+                expect(updateView[0].getIn(['decoration', 'foo'])).toEqual(
+                    decoration.foo
+                )
             })
         })
 

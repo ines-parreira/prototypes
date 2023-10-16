@@ -111,6 +111,23 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         <div
           data-candu-id="navbar-home-spacer"
         />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-8"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
       </div>
       <div
         class="navbar-content"
@@ -522,6 +539,23 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         <div
           data-candu-id="navbar-home-spacer"
         />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-7"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
       </div>
       <div
         class="navbar-content"
@@ -869,6 +903,23 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         <div
           data-candu-id="navbar-home-spacer"
         />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-6"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
       </div>
       <div
         class="navbar-content"
@@ -1163,6 +1214,23 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         <div
           data-candu-id="navbar-home-spacer"
         />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-5"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
       </div>
       <div
         class="navbar-content"
@@ -1574,6 +1642,23 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         <div
           data-candu-id="navbar-home-spacer"
         />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-4"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
       </div>
       <div
         class="navbar-content"
@@ -1921,6 +2006,23 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         <div
           data-candu-id="navbar-home-spacer"
         />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-3"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
       </div>
       <div
         class="navbar-content"
@@ -2215,6 +2317,23 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         <div
           data-candu-id="navbar-home-spacer"
         />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-2"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
       </div>
       <div
         class="navbar-content"
@@ -2407,6 +2526,23 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         <div
           data-candu-id="navbar-home-spacer"
         />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-1"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
       </div>
       <div
         class="navbar-content"

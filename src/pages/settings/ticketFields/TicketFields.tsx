@@ -96,7 +96,6 @@ export default function TicketFields() {
                                 <Search
                                     id="custom-fields-search"
                                     name="custom-fields-search"
-                                    bindKey
                                     forcedQuery={search}
                                     onChange={setSearch}
                                     placeholder="Search ticket fields..."

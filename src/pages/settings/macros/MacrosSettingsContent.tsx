@@ -109,7 +109,6 @@ export function MacrosSettingsContentContainer({
             <PageHeader title="Manage macros">
                 <div className="d-flex">
                     <Search
-                        bindKey
                         className="mr-2"
                         forcedQuery={options.search || ''}
                         onChange={(search: string) =>

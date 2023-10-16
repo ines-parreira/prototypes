@@ -8,7 +8,6 @@ import {DEFAULT_PREFERENCES} from 'config'
 import {user} from 'fixtures/users'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     advancedMonthlyHelpdeskPrice,
@@ -158,7 +157,7 @@ describe('<Navbar />', () => {
             />
         )
 
-        const {getByText} = within(getAllByRole('button')[1])
+        const {getByText} = within(getAllByRole('button')[2])
 
         expect(getByText(user.email)).toBeTruthy()
     })
@@ -196,14 +195,5 @@ describe('<Navbar />', () => {
         userEvent.click(getByText(user.name))
 
         expect(getByText(/your profile/i)).toBeTruthy()
-    })
-
-    it('should render the spotlight search if enabled', () => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.SpotlightGlobalSearch]: true,
-        })
-
-        const {container} = render(<Navbar {...minProps} />)
-        expect(container.firstChild).toMatchSnapshot()
     })
 })

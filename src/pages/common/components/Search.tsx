@@ -11,7 +11,6 @@ import _isUndefined from 'lodash/isUndefined'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 
 import css from './Search.less'
 
@@ -26,7 +25,6 @@ type Props = {
     className?: string
     textInputClassName?: string
     placeholder: string
-    bindKey?: boolean
     searchDebounceTime: number
     // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
     location?: string
@@ -63,22 +61,6 @@ export default class Search extends Component<Props> {
         }
     }
 
-    componentDidMount() {
-        if (this.props.bindKey) {
-            shortcutManager.bind('Search', {
-                FOCUS_SEARCH: {
-                    action: (e) => {
-                        e.preventDefault()
-                        const ref =
-                            this.props.externalInputRef?.current ||
-                            this.searchInputRef
-                        ref?.focus()
-                    },
-                },
-            })
-        }
-    }
-
     componentWillReceiveProps(nextProps: Props) {
         const shouldSetValue =
             !this.isInitialized ||
@@ -102,12 +84,6 @@ export default class Search extends Component<Props> {
 
         if (!this.props.shouldResetInput && nextProps.shouldResetInput) {
             this.setState({search: ''})
-        }
-    }
-
-    componentWillUnmount() {
-        if (this.props.bindKey) {
-            shortcutManager.unbind('Search')
         }
     }
 
@@ -149,7 +125,6 @@ export default class Search extends Component<Props> {
             onChange, // eslint-disable-line
             forcedQuery, // eslint-disable-line
             shouldResetInput, // eslint-disable-line
-            bindKey, // eslint-disable-line
             searchDebounceTime, // eslint-disable-line
             location, // eslint-disable-line
             type,
