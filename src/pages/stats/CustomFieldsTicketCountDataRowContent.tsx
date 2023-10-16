@@ -16,7 +16,8 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {formatMetricValue} from 'pages/stats/common/utils'
 
-const EXPAND_COLUMN_WIDTH = 45
+const EXPAND_COLUMN_WIDTH = 24
+const DEFAULT_MARGIN = 8
 
 export type DataRowProps =
     TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile & {
@@ -24,6 +25,7 @@ export type DataRowProps =
         isLoading?: boolean
         isTableScrolled?: boolean
         onClick?: () => void
+        children?: TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile[]
     }
 
 const formatAccordingToValueMode =
@@ -42,9 +44,11 @@ export const CustomFieldsTicketCountDataRowContent = ({
     decile,
     level = 0,
     onClick,
+    children,
 }: DataRowProps) => {
     const valueMode = useAppSelector(getValueMode)
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
+    const hasChildren = Array.isArray(children) && children.length > 0
 
     return (
         <>
@@ -54,10 +58,16 @@ export const CustomFieldsTicketCountDataRowContent = ({
                     css.sticky,
                     css.categoryColumn
                 )}
-                style={{
-                    left: `${(level + 1) * EXPAND_COLUMN_WIDTH}px`,
+                style={{left: `${EXPAND_COLUMN_WIDTH}px`}}
+                innerStyle={{
+                    ...(!hasChildren && {paddingLeft: 0}),
+                    marginLeft: `${
+                        level * EXPAND_COLUMN_WIDTH +
+                        (!hasChildren ? DEFAULT_MARGIN : DEFAULT_MARGIN * 2)
+                    }px`,
                 }}
                 onClick={onClick}
+                innerClassName={css.small}
             >
                 {label}
             </BodyCell>

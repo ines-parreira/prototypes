@@ -8,6 +8,7 @@ type Props = HTMLProps<HTMLTableDataCellElement> & {
     className?: string
     justifyContent?: 'left' | 'right' | 'center'
     width?: number | string
+    style?: React.CSSProperties
 }
 
 const BodyCellContent = ({
@@ -15,6 +16,7 @@ const BodyCellContent = ({
     width,
     className,
     justifyContent,
+    style = {},
 }: Props) => {
     return (
         <div
@@ -23,7 +25,7 @@ const BodyCellContent = ({
                 justifyContent && css[justifyContent],
                 className
             )}
-            style={{width}}
+            style={{width, ...style}}
         >
             {children}
         </div>

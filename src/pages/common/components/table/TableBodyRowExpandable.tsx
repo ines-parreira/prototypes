@@ -14,6 +14,8 @@ type Props<T> = {
     innerClassName?: string
 }
 
+const COLUMN_WIDTH = 24
+
 export const TableBodyRowExpandable = <T,>({
     level = 0,
     tableBodyRowProps,
@@ -29,9 +31,10 @@ export const TableBodyRowExpandable = <T,>({
             <TableBodyRow {...tableBodyRowProps}>
                 <BodyCell
                     onClick={toggleExpand}
-                    width={24}
-                    style={{paddingLeft: `${level * 24}px`}}
-                    innerClassName={innerClassName}
+                    width={COLUMN_WIDTH}
+                    style={{border: 0}}
+                    innerStyle={{left: `${level * COLUMN_WIDTH}px`}}
+                    innerClassName={classnames(css.expandCell, innerClassName)}
                 >
                     {rowContentProps.children.length > 0 && (
                         <i

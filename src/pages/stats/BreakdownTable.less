@@ -63,6 +63,10 @@
                     background-color: var(--neutral-grey-0);
                 }
 
+                &:first-child {
+                    z-index: 3;
+                }
+
                 &.highlight {
                     &:first-child {
                         background-color: var(--neutral-grey-1);
@@ -81,6 +85,8 @@
     .categoryColumn {
         cursor: pointer;
         min-width: 250px;
+        font-weight: @body-medium-font-weight;
+        border: 0;
     }
 
     .small,

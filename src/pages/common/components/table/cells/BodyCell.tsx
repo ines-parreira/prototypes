@@ -9,6 +9,7 @@ export type Props = Omit<HTMLProps<HTMLTableDataCellElement>, 'size'> & {
     className?: string
     isHighlighted?: boolean
     innerClassName?: string
+    innerStyle?: React.CSSProperties
     justifyContent?: 'left' | 'right' | 'center'
     size?: 'normal' | 'small' | 'smallest'
     width?: number | string
@@ -22,6 +23,7 @@ const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
             className,
             isHighlighted = false,
             innerClassName,
+            innerStyle,
             justifyContent,
             onClick,
             size = 'normal',
@@ -44,6 +46,7 @@ const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
                     className={innerClassName}
                     width={width}
                     justifyContent={justifyContent}
+                    style={innerStyle}
                 >
                     {children}
                 </BodyCellContent>
