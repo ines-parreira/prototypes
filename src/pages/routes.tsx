@@ -157,7 +157,7 @@ import {
     AUTOMATION_ADD_ON_PATH,
 } from './stats/self-service/constants'
 import CampaignStatsPaywallView from './stats/revenue/pages/CampaignsStats/CampaignStatsPaywallView'
-import {HelpCenterStats} from './stats/pages/HelpCenterStats'
+import HelpCenterStats from './stats/help-center/pages/HelpCenterStats'
 import ClickTrackingSettingsView from './settings/revenue/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)

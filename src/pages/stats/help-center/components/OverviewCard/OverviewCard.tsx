@@ -9,8 +9,8 @@ import BigNumberMetric from '../../../BigNumberMetric'
 import css from './OverviewCard.less'
 
 export type OverviewCardProps = {
-    trendValue?: number
-    prevTrendValue?: number
+    trendValue?: number | null
+    prevTrendValue?: number | null
     showTip: boolean
     isLoading: boolean
     hintTitle: string

@@ -11,6 +11,7 @@ import {
     ReportingQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {HelpCenterTrackingEventMember} from '../models/reporting/cubes/HelpCenterTrackingEventCube'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
@@ -33,6 +34,11 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     integrations: TicketMessagesMember.Integration,
     agents: TicketMember.AssigneeUserId,
     tags: TicketMember.Tags,
+}
+
+export const HelpCenterStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: HelpCenterTrackingEventMember.PeriodStart,
+    periodEnd: HelpCenterTrackingEventMember.PeriodEnd,
 }
 
 export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {

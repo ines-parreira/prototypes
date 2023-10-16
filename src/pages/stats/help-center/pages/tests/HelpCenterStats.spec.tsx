@@ -4,13 +4,18 @@ import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {HelpCenterStats} from '../HelpCenterStats'
-import {RootState} from '../../../../state/types'
-import {account} from '../../../../fixtures/account'
+import userEvent from '@testing-library/user-event'
+import HelpCenterStats from '../HelpCenterStats'
+import {RootState} from '../../../../../state/types'
+import {account} from '../../../../../fixtures/account'
 
 const defaultState = {
     currentAccount: fromJS(account),
 } as RootState
+
+jest.mock('../../hooks/useHelpCenterTrend', () => ({
+    useHelpCenterTrend: () => ({data: 0, isFetching: false}),
+}))
 
 const mockStore = configureMockStore([thunk])
 
@@ -23,6 +28,13 @@ const renderComponent = () => {
 }
 
 describe('<HelpCenterStats />', () => {
+    beforeEach(() => {
+        const mockedDate = new Date(1999, 10, 1)
+
+        jest.useFakeTimers()
+        jest.setSystemTime(mockedDate)
+    })
+
     it('should render page with title and sections', () => {
         renderComponent()
 
@@ -33,5 +45,17 @@ describe('<HelpCenterStats />', () => {
         expect(
             screen.getByText('Analytics are using UTC timezone')
         ).toBeInTheDocument()
+    })
+
+    it('should hide tips', () => {
+        renderComponent()
+
+        expect(screen.getByTestId('article-tip')).toBeInTheDocument()
+        expect(screen.getByTestId('searches-tip')).toBeInTheDocument()
+
+        userEvent.click(screen.getByText('Hide tips'))
+
+        expect(screen.queryByTestId('article-tip')).not.toBeInTheDocument()
+        expect(screen.queryByTestId('searches-tip')).not.toBeInTheDocument()
     })
 })
