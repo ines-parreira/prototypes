@@ -4,10 +4,15 @@ import css from './ChatIntegrationPreview.less'
 
 type Props = {
     children?: ReactNode
+    style?: React.CSSProperties
 }
 
-const ChatIntegrationPreviewContent = ({children}: Props) => {
-    return <div className={css.content}>{children}</div>
+const ChatIntegrationPreviewContent = ({children, style}: Props) => {
+    return (
+        <div className={css.content} style={style}>
+            {children}
+        </div>
+    )
 }
 
 export default ChatIntegrationPreviewContent

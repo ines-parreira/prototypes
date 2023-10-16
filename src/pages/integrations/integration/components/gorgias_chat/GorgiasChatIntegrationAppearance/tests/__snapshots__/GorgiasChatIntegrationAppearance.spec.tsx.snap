@@ -778,6 +778,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         color="#115cb5"
                       />
                       <div
+                        class="css-1vo7hu9"
+                      />
+                      <div
                         class="noise"
                       />
                       <div
@@ -1812,6 +1815,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         color="#115cb5"
                       />
                       <div
+                        class="css-1vo7hu9"
+                      />
+                      <div
                         class="noise"
                       />
                       <div
@@ -2815,6 +2821,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <div
                         class="css-m0vqjf"
                         color="#115cb5"
+                      />
+                      <div
+                        class="css-1vo7hu9"
                       />
                       <div
                         class="noise"
@@ -3830,6 +3839,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         color="#115cb5"
                       />
                       <div
+                        class="css-1vo7hu9"
+                      />
+                      <div
                         class="noise"
                       />
                       <div
@@ -4833,6 +4845,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       <div
                         class="css-m0vqjf"
                         color="#115cb5"
+                      />
+                      <div
+                        class="css-1vo7hu9"
                       />
                       <div
                         class="noise"
@@ -5852,6 +5867,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       <div
                         class="css-m0vqjf"
                         color="#115cb5"
+                      />
+                      <div
+                        class="css-1vo7hu9"
                       />
                       <div
                         class="noise"
@@ -6903,6 +6921,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       <div
                         class="css-m0vqjf"
                         color="#115cb5"
+                      />
+                      <div
+                        class="css-1vo7hu9"
                       />
                       <div
                         class="noise"
@@ -8027,6 +8048,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         color="#115cb5"
                       />
                       <div
+                        class="css-1vo7hu9"
+                      />
+                      <div
                         class="noise"
                       />
                       <div
@@ -9132,6 +9156,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         color="#115cb5"
                       />
                       <div
+                        class="css-1vo7hu9"
+                      />
+                      <div
                         class="noise"
                       />
                       <div
@@ -10135,6 +10162,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <div
                         class="css-m0vqjf"
                         color="#115cb5"
+                      />
+                      <div
+                        class="css-1vo7hu9"
                       />
                       <div
                         class="noise"

@@ -52,6 +52,7 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
+    GorgiasChatBackgroundColorStyle,
     GorgiasChatIntegration,
     GorgiasChatLauncherType,
     GorgiasChatPosition,
@@ -96,6 +97,8 @@ import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageVie
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import {defaultChatFontFamily} from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
+import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
+import useSelfServiceConfiguration from '../hooks/useSelfServiceConfiguration'
 import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
 import ImageField from './components/ImageField'
 import UploadLogoCaption from './components/UploadLogoCaption'
@@ -126,6 +129,7 @@ export const defaultContent = {
         nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
     },
     mainFontFamily: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    backgroundColorStyle: GorgiasChatBackgroundColorStyle.Gradient,
 }
 
 const avatarTypeOptions = [
@@ -161,6 +165,20 @@ const avatarNameTypeOptions = [
     },
 ]
 
+const backgroundColorStyleOptions = [
+    {
+        value: GorgiasChatBackgroundColorStyle.Gradient,
+        label: 'Gradient',
+    },
+    {
+        value: GorgiasChatBackgroundColorStyle.Solid,
+        label: 'Solid',
+    },
+]
+
+const PREVIEW_HOME_PAGE = 'home-page'
+const PREVIEW_CONVERSATION = 'conversation'
+
 type Props = {
     integration: Map<any, any>
     isUpdate: boolean
@@ -193,6 +211,7 @@ type State = {
     }
     avatar: GorgiasChatAvatarSettings
     mainFontFamily: string
+    backgroundColorStyle: GorgiasChatBackgroundColorStyle
 }
 
 type SubmitForm = {
@@ -234,6 +253,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const chatBackgroundColorStyleEnabled =
+        useFlags()[FeatureFlagKey.ChatBackgroundColorStyle]
     const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
     const viewTranslateEdit =
         useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
@@ -440,6 +461,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         'decoration',
                         'main_font_family',
                     ]),
+                    backgroundColorStyle: integration.getIn(
+                        ['decoration', 'background_color_style'],
+                        GorgiasChatBackgroundColorStyle.Gradient
+                    ),
                 },
                 defaultContent
             )
@@ -491,6 +516,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     name_type: state.avatar.nameType,
                 },
                 main_font_family: state.mainFontFamily,
+                background_color_style: state.backgroundColorStyle,
             },
             meta: {
                 language: state.language,
@@ -646,6 +672,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         isOnline,
         position,
         editedPositionAxis,
+        backgroundColorStyle,
     } = state
 
     const isTeamPictureAvatarSelected =
@@ -673,9 +700,12 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const launcherCustomizationRef = useRef<HTMLDivElement>(null)
     const [isChatOpenInPreview, setIsChatOpenInPreview] = useState(true)
+    const [preview, setPreview] = useState(PREVIEW_CONVERSATION)
     useOnClickOutside(launcherCustomizationRef, () => {
         setIsChatOpenInPreview(true)
     })
+    const {selfServiceConfiguration, selfServiceConfigurationEnabled} =
+        useSelfServiceConfiguration(integration)
 
     const chatPreview = (
         <div className={css.container}>
@@ -714,15 +744,40 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 autoResponderReply={autoResponderReply}
                 launcher={state.launcher}
                 isOpen={isChatOpenInPreview}
-                renderFooter={isOnline}
+                renderFooter={isOnline && preview === PREVIEW_CONVERSATION}
+                renderPoweredBy={
+                    preview === PREVIEW_HOME_PAGE &&
+                    selfServiceConfigurationEnabled
+                }
+                isWidgetConversation={preview === PREVIEW_CONVERSATION}
+                backgroundColorStyle={backgroundColorStyle}
             >
-                <ChatIntegrationPreviewContent>
+                <ChatIntegrationPreviewContent
+                    style={
+                        preview === PREVIEW_HOME_PAGE ? {padding: '0 20px'} : {}
+                    }
+                >
                     <ChatIntegrationPreviewProvider
                         value={{
                             avatar,
                         }}
                     >
-                        {isOnline ? (
+                        {preview === PREVIEW_HOME_PAGE ? (
+                            <ChatHomePreview
+                                avatar={avatar}
+                                title={name}
+                                renderConversation
+                                selfServiceConfiguration={
+                                    selfServiceConfiguration
+                                }
+                                language={language}
+                                variant={
+                                    selfServiceConfigurationEnabled
+                                        ? 'collapsed'
+                                        : 'expanded'
+                                }
+                            />
+                        ) : isOnline ? (
                             <AutoResponderMessages
                                 mainColor={mainColor}
                                 currentUser={currentUser}
@@ -1038,6 +1093,29 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             </div>
                         </div>
 
+                        {chatBackgroundColorStyleEnabled && (
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Background style</h2>
+
+                                <RadioFieldSet
+                                    className={classNames(
+                                        'mb-3',
+                                        css.radioFieldSet
+                                    )}
+                                    options={backgroundColorStyleOptions}
+                                    selectedValue={backgroundColorStyle}
+                                    onChange={(value) => {
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            backgroundColorStyle:
+                                                value as GorgiasChatBackgroundColorStyle,
+                                        }))
+                                        setPreview(PREVIEW_HOME_PAGE)
+                                    }}
+                                />
+                            </div>
+                        )}
+
                         {shouldShowFontCustomization && (
                             <div className={css.formSection}>
                                 <h2 className={css.title}>Font</h2>
@@ -1100,7 +1178,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                 name="avatar-name-type-field"
                                                 options={avatarNameTypeOptions}
                                                 selectedValue={avatar.nameType}
-                                                onChange={(value) =>
+                                                onChange={(value) => {
                                                     setState((prevState) => ({
                                                         ...prevState,
                                                         avatar: {
@@ -1109,7 +1187,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                                 value as GorgiasChatAvatarNameType,
                                                         },
                                                     }))
-                                                }
+                                                    setPreview(
+                                                        PREVIEW_CONVERSATION
+                                                    )
+                                                }}
                                             />
                                             <RadioFieldSet
                                                 className={css.radioFieldSet}
@@ -1117,7 +1198,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                 name="avatar-image-type-field"
                                                 options={avatarImageTypeOptions}
                                                 selectedValue={avatar.imageType}
-                                                onChange={(value) =>
+                                                onChange={(value) => {
                                                     setState((prevState) => ({
                                                         ...prevState,
                                                         avatar: {
@@ -1126,7 +1207,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                                 value as GorgiasChatAvatarImageType,
                                                         },
                                                     }))
-                                                }
+                                                    setPreview(
+                                                        PREVIEW_CONVERSATION
+                                                    )
+                                                }}
                                             />
                                         </div>
                                     </div>

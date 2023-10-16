@@ -20,6 +20,7 @@ export type GorgiasChatIntegration = IntegrationBase & {
             type: GorgiasChatLauncherType
             label?: string
         }
+        background_color_style?: GorgiasChatBackgroundColorStyle
     }
 }
 
@@ -150,6 +151,11 @@ export type GorgiasChatAvatarSettings = {
     imageType: GorgiasChatAvatarImageType
     nameType: GorgiasChatAvatarNameType
     companyLogoUrl?: string
+}
+
+export enum GorgiasChatBackgroundColorStyle {
+    Gradient = 'gradient',
+    Solid = 'solid',
 }
 
 export enum GorgiasChatCreationWizardStatus {

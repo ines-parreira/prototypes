@@ -18,6 +18,7 @@ import {
     GorgiasChatAvatarSettings,
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
+    GorgiasChatBackgroundColorStyle,
 } from 'models/integration/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
@@ -620,6 +621,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 autoResponderReply={autoResponderReply}
                 renderPoweredBy={preview === PREVIEW_CONTROL_TICKET_VOLUME}
                 isWidgetConversation={preview !== PREVIEW_CONTROL_TICKET_VOLUME}
+                backgroundColorStyle={integration.getIn(
+                    ['decoration', 'background_color_style'],
+                    GorgiasChatBackgroundColorStyle.Gradient
+                )}
             >
                 <ChatIntegrationPreviewContent>
                     <ChatIntegrationPreviewProvider value={{avatar}}>

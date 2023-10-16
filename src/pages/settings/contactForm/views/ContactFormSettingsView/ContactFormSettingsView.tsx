@@ -144,7 +144,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                                     )
                                 }}
                             >
-                                <ButtonIconLabel icon="auto_awesome">
+                                <ButtonIconLabel icon="bolt">
                                     Edit automation settings
                                 </ButtonIconLabel>
                             </Button>

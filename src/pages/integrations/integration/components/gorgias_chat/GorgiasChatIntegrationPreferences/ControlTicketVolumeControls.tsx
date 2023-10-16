@@ -63,7 +63,7 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
                     className={classnames(css.controlTicketVolumeTag, 'ml-2')}
                 >
                     <span className={classnames('material-icons', 'mr-1')}>
-                        auto_awesome
+                        bolt
                     </span>
                     {'Automation Add-on'}
                 </TagLabel>

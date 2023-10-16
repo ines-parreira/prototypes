@@ -76,7 +76,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
                 )
             }}
         >
-            <ButtonIconLabel icon="auto_awesome">
+            <ButtonIconLabel icon="bolt">
                 Edit automation settings
             </ButtonIconLabel>
         </Button>

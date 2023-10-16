@@ -341,6 +341,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         <ChatIntegrationPreview
           autoResponderEnabled={false}
           autoResponderReply="reply-dynamic"
+          backgroundColorStyle="gradient"
           isOnline={true}
           isWidgetConversation={true}
           language="en-US"
@@ -870,6 +871,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         <ChatIntegrationPreview
           autoResponderEnabled={false}
           autoResponderReply="reply-dynamic"
+          backgroundColorStyle="gradient"
           isOnline={true}
           isWidgetConversation={true}
           language="en-US"

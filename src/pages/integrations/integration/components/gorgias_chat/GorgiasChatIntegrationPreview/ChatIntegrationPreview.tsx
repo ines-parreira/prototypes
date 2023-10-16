@@ -17,6 +17,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import noise from 'assets/img/integrations/noise.svg'
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
@@ -30,6 +31,7 @@ import {
     LanguageItem,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
+    GorgiasChatBackgroundColorStyle,
     GorgiasChatLauncherType,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
@@ -75,6 +77,7 @@ type Props = {
     isOpen?: boolean
     showBackground?: boolean
     isWidgetConversation?: boolean
+    backgroundColorStyle?: GorgiasChatBackgroundColorStyle
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -106,6 +109,7 @@ const ChatIntegrationPreview = (props: Props) => {
         isOpen = true,
         showBackground = true,
         isWidgetConversation = true,
+        backgroundColorStyle = GorgiasChatBackgroundColorStyle.Gradient,
     } = props
 
     const shoudShowFontCustomization =
@@ -228,6 +232,15 @@ const ChatIntegrationPreview = (props: Props) => {
             `linear-gradient(${color} 34%, hsla(0, 0%, 100%, 0.4))`};
     `
 
+    const NoiseEffect = styled.div`
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0.1;
+        background-image: url(${noise});
+    `
+
     const theme: ChatTheme = {
         mainColor,
     }
@@ -253,9 +266,13 @@ const ChatIntegrationPreview = (props: Props) => {
                         backgroundColor: isOnline ? mainColor : offlineColor,
                     }}
                 >
-                    <Gradient
-                        color={isOnline ? mainColor : offlineColor}
-                    ></Gradient>
+                    {backgroundColorStyle ===
+                        GorgiasChatBackgroundColorStyle.Gradient && (
+                        <Gradient
+                            color={isOnline ? mainColor : offlineColor}
+                        ></Gradient>
+                    )}
+                    <NoiseEffect></NoiseEffect>
                     <div className={css.noise}></div>
                     {isWidgetConversation && (
                         <ConversationHeader

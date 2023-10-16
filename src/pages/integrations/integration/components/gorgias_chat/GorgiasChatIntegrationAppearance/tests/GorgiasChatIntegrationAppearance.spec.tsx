@@ -427,6 +427,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "launcher": Immutable.Map {
                         "type": "icon",
                       },
+                      "background_color_style": "gradient",
                       "conversation_color": "#115cb5",
                       "position": Immutable.Map {
                         "alignment": "bottom-right",
@@ -582,6 +583,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "launcher": Immutable.Map {
                         "type": "icon",
                       },
+                      "background_color_style": "gradient",
                       "conversation_color": "#115cb5",
                       "position": Immutable.Map {
                         "alignment": "bottom-right",

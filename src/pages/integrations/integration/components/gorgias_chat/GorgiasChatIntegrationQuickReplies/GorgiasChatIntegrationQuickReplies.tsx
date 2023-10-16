@@ -22,6 +22,7 @@ import GorgiasChatIntegrationHeader from 'pages/integrations/integration/compone
 import {IntegrationType} from 'models/integration/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import {GorgiasChatBackgroundColorStyle} from 'models/integration/types'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
@@ -171,6 +172,10 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                 position={position}
                 autoResponderEnabled={autoResponderEnabled}
                 autoResponderReply={autoResponderReply}
+                backgroundColorStyle={integration.getIn(
+                    ['decoration', 'background_color_style'],
+                    GorgiasChatBackgroundColorStyle.Gradient
+                )}
             >
                 <ChatIntegrationPreviewContent>
                     <div className={chatCss.content} />

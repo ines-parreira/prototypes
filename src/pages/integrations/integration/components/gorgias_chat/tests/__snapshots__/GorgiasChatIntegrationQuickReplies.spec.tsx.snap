@@ -158,6 +158,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview
+              backgroundColorStyle="gradient"
               introductionText="this is an intro"
               isOnline={true}
               mainColor="#123456"
@@ -580,6 +581,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                           className="preview"
                         >
                           <ChatIntegrationPreview
+                            backgroundColorStyle="gradient"
                             introductionText="this is an intro"
                             isOnline={true}
                             mainColor="#123456"
@@ -759,6 +761,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                         <div
                                           className="css-cad7de"
                                           color="#123456"
+                                        />
+                                      </Styled(div)>
+                                      <Styled(div)>
+                                        <div
+                                          className="css-1vo7hu9"
                                         />
                                       </Styled(div)>
                                       <div
@@ -1259,6 +1266,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview
+              backgroundColorStyle="gradient"
               introductionText="this is an intro"
               isOnline={true}
               mainColor="#123456"
@@ -1681,6 +1689,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                           className="preview"
                         >
                           <ChatIntegrationPreview
+                            backgroundColorStyle="gradient"
                             introductionText="this is an intro"
                             isOnline={true}
                             mainColor="#123456"
@@ -1860,6 +1869,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                         <div
                                           className="css-cad7de"
                                           color="#123456"
+                                        />
+                                      </Styled(div)>
+                                      <Styled(div)>
+                                        <div
+                                          className="css-1vo7hu9"
                                         />
                                       </Styled(div)>
                                       <div
