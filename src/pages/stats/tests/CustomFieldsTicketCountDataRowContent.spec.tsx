@@ -2,6 +2,7 @@ import {render, screen} from '@testing-library/react'
 import {forEach} from 'lodash'
 import React from 'react'
 import {Provider} from 'react-redux'
+import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {CustomFieldsTicketCountDataRowContent} from 'pages/stats/CustomFieldsTicketCountDataRowContent'
 import {
@@ -108,25 +109,41 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         expect(screen.getByText(formattedPercent)).toBeInTheDocument()
     })
 
-    it('should render 0 when value missing', () => {
-        const props = {
-            [BREAKDOWN_FIELD]: 'someTag',
-            [VALUE_FIELD]: undefined,
-            timeSeries: [
-                {dateTime: '2023-08-09', value: 123, percentage: 15, decile: 2},
-            ],
-            percentage: 15,
-            decile: 2,
+    it.each([
+        {value: undefined, mode: ValueMode.TotalCount},
+        {value: undefined, mode: ValueMode.Percentage},
+        {value: 0, mode: ValueMode.TotalCount},
+        {value: 0, mode: ValueMode.Percentage},
+    ])(
+        `should render ${NOT_AVAILABLE_PLACEHOLDER} when value is %`,
+        ({value, mode}) => {
+            getValueModeMock.mockReturnValue(mode)
+            const props = {
+                [BREAKDOWN_FIELD]: 'someTag',
+                [VALUE_FIELD]: value,
+                timeSeries: [
+                    {
+                        dateTime: '2023-08-09',
+                        value: 123,
+                        percentage: 15,
+                        decile: 2,
+                    },
+                ],
+                percentage: value || 0,
+                decile: 2,
+            }
+
+            render(
+                <Provider store={mockStore({} as any)}>
+                    <CustomFieldsTicketCountDataRowContent {...props} />
+                </Provider>
+            )
+
+            expect(
+                screen.getByText(NOT_AVAILABLE_PLACEHOLDER)
+            ).toBeInTheDocument()
         }
-
-        render(
-            <Provider store={mockStore({} as any)}>
-                <CustomFieldsTicketCountDataRowContent {...props} />
-            </Provider>
-        )
-
-        expect(screen.getByText('0')).toBeInTheDocument()
-    })
+    )
 
     it('should render heatmap on level 0 data cells with a decile', () => {
         const decile = 2

@@ -14,7 +14,10 @@ import {
     getValueMode,
     ValueMode,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 
 const EXPAND_COLUMN_WIDTH = 24
 const DEFAULT_MARGIN = 8
@@ -32,8 +35,16 @@ const formatAccordingToValueMode =
     (valueMode: ValueMode) =>
     ({value, percentage}: {value: number; percentage: number}) =>
         valueMode === ValueMode.Percentage
-            ? formatMetricValue(percentage, 'percent-refined')
-            : formatMetricValue(value, 'integer')
+            ? formatMetricValue(
+                  percentage !== 0 ? percentage : null,
+                  'percent-refined',
+                  NOT_AVAILABLE_PLACEHOLDER
+              )
+            : formatMetricValue(
+                  value !== 0 ? value : null,
+                  'integer',
+                  NOT_AVAILABLE_PLACEHOLDER
+              )
 
 export const CustomFieldsTicketCountDataRowContent = ({
     isTableScrolled = false,
@@ -94,7 +105,10 @@ export const CustomFieldsTicketCountDataRowContent = ({
                         isHeatmapMode && [heatmapCss.heatmap],
                         isHeatmapMode && heatmapCss[`p${String(data.decile)}`]
                     )}
-                    innerClassName={classNames(css.BodyCellContent)}
+                    innerClassName={classNames(
+                        css.BodyCellContent,
+                        data.value === 0 && css.emptyValue
+                    )}
                     justifyContent={'right'}
                 >
                     {formatAccordingToValueMode(valueMode)(data)}
