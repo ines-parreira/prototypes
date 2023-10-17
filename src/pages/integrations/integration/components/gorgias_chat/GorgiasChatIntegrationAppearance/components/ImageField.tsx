@@ -11,19 +11,26 @@ import {getCurrentIntegration} from 'state/integrations/selectors'
 
 import css from './ImageField.less'
 
+export enum ImageFieldVariant {
+    Avatar = 'avatar',
+    Header = 'header',
+}
+
 type UploadLinkProps = {
     isUploading: boolean
     onClick: () => void
     hasValue: boolean
     showSeparator: boolean
+    variant?: ImageFieldVariant
 }
 
-const UploadLink: React.FC<UploadLinkProps> = ({
+const UploadLink = ({
     isUploading,
     onClick,
     hasValue,
     showSeparator,
-}) => (
+    variant,
+}: UploadLinkProps) => (
     <>
         <a
             href="#"
@@ -44,9 +51,68 @@ const UploadLink: React.FC<UploadLinkProps> = ({
         </a>
         <span className={css.imageInfo}>
             {showSeparator && <span className="ml-1"> – </span>}
-            <span>Recommended size 100 x 100 px. Max 500 KB.</span>
+            {variant === ImageFieldVariant.Avatar && (
+                <span>Recommended size 100 x 100 px. Max 500 KB.</span>
+            )}
+            {variant === ImageFieldVariant.Header && (
+                <span>
+                    Works best with horizontal logos with transparent
+                    background. Max 500 KB.
+                </span>
+            )}
         </span>
     </>
+)
+
+type PreviewVariantProps = {
+    children?: React.ReactNode
+    close?: React.ReactNode
+    isDisabled?: boolean
+    onSelect: () => void
+}
+
+const PreviewAvatarLogo = ({
+    children,
+    close,
+    isDisabled,
+    onSelect,
+}: PreviewVariantProps) => (
+    <div className={classnames(css.previewAvatarLogoContent, 'mb-3')}>
+        <div
+            className={classnames(css.imagePreview, css.imagePreviewAvatar, {
+                [css.imagePreviewDisabled]: isDisabled,
+            })}
+            onClick={onSelect}
+        >
+            {children}
+        </div>
+        {close}
+    </div>
+)
+
+const PreviewHeaderLogo = ({
+    children,
+    close,
+    isDisabled,
+    onSelect,
+}: PreviewVariantProps) => (
+    <div className={classnames(css.previewHeaderLogoContainer, 'mb-3')}>
+        <div className={css.previewHeaderLogoContent}>
+            <div
+                className={classnames(
+                    css.imagePreview,
+                    css.imagePreviewHeader,
+                    {
+                        [css.imagePreviewDisabled]: isDisabled,
+                    }
+                )}
+                onClick={onSelect}
+            >
+                {children}
+            </div>
+            {close}
+        </div>
+    </div>
 )
 
 type PreviewProps = {
@@ -54,53 +120,81 @@ type PreviewProps = {
     isDiscardable?: boolean
     onDiscard: () => void
     onSelect: () => void
-    url?: string
+    url?: string | null
+    variant?: ImageFieldVariant
 }
 
-const Preview: React.FC<PreviewProps> = ({
+const Preview = ({
     isDisabled,
     isDiscardable,
     onDiscard,
     onSelect,
     url,
-}) => (
-    <div className={css.imagePreviewWrapper}>
-        <div
-            className={classnames(
-                css.imagePreview,
-                {[css.imagePreviewDisabled]: isDisabled},
-                'mb-3'
+    variant,
+}: PreviewProps) => {
+    const isAvatarLogo = variant === ImageFieldVariant.Avatar
+
+    const children = (
+        <>
+            {url ? (
+                <img src={url} alt="Uploaded" />
+            ) : (
+                <i className="material-icons">image</i>
             )}
-            onClick={onSelect}
+        </>
+    )
+
+    const close = isDiscardable && url && (
+        <div
+            className={isAvatarLogo ? css.closeAvatar : css.closeHeader}
+            onClick={onDiscard}
         >
-            {url && <img src={url} alt="Uploaded" />}
-            <i className="material-icons">image</i>
+            <i className="material-icons">close</i>
         </div>
-        {isDiscardable && url && (
-            <div className={css.close} onClick={onDiscard}>
-                <i className="material-icons">close</i>
-            </div>
-        )}
-    </div>
-)
+    )
+
+    if (isAvatarLogo) {
+        return (
+            <PreviewAvatarLogo
+                close={close}
+                isDisabled={isDisabled}
+                onSelect={onSelect}
+            >
+                {children}
+            </PreviewAvatarLogo>
+        )
+    }
+
+    return (
+        <PreviewHeaderLogo
+            close={close}
+            isDisabled={isDisabled}
+            onSelect={onSelect}
+        >
+            {children}
+        </PreviewHeaderLogo>
+    )
+}
 
 type ImageFieldProps = {
-    url?: string
     onChange: (url?: string) => void
     isRequired?: boolean
     isDiscardable?: boolean
     shouldSeparateImageInfo?: boolean
     maxSize: number
+    url?: string | null
+    variant?: ImageFieldVariant
 }
 
-const ImageField: React.FC<ImageFieldProps> = ({
+const ImageField = ({
     url,
     onChange,
     isRequired,
     isDiscardable,
     shouldSeparateImageInfo = true,
     maxSize,
-}) => {
+    variant = ImageFieldVariant.Avatar,
+}: ImageFieldProps) => {
     const fileField = useRef<FileFieldContainer>(null)
     const [isUploading, setIsUploading] = useState(false)
     const integration = useAppSelector(getCurrentIntegration)
@@ -119,12 +213,14 @@ const ImageField: React.FC<ImageFieldProps> = ({
                 onDiscard={onDiscard}
                 onSelect={onSelect}
                 url={url}
+                variant={variant}
             />
             <UploadLink
                 isUploading={isUploading}
                 onClick={onSelect}
                 hasValue={!!url}
                 showSeparator={shouldSeparateImageInfo}
+                variant={variant}
             />
             <div className="d-none">
                 <FileField

@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
 
-import ImageField from '../ImageField'
+import ImageField, {ImageFieldVariant} from '../ImageField'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -22,10 +22,17 @@ const onChangeMock = jest.fn()
 const defaultState = {} as RootState
 
 describe('<ImageField />', () => {
-    it('uploads an image', async () => {
+    it.each([
+        ['an avatar image', ImageFieldVariant.Avatar],
+        ['a header image', ImageFieldVariant.Header],
+    ])('renders %s', async (_, variant) => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <ImageField onChange={onChangeMock} maxSize={500 * 1000} />
+                <ImageField
+                    onChange={onChangeMock}
+                    maxSize={500 * 1000}
+                    variant={variant}
+                />
             </Provider>
         )
 

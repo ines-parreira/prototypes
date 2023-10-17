@@ -1415,58 +1415,212 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="formSection"
               >
                 <h2
-                  class="title"
+                  class="title mb-4"
                 >
-                  Chat header
+                  Company logo
                 </h2>
-                <fieldset
-                  class="mb-3"
-                  name="type-field"
+                <p
+                  class="mb-4"
                 >
-                  <legend
-                    class="legend"
-                  >
-                    Image
-                  </legend>
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
+                <div
+                  class="previewAvatarLogoContent mb-3"
+                >
                   <div
-                    class="option"
+                    class="imagePreview imagePreviewAvatar"
                   >
-                    <label
-                      class="label label"
-                      for="team-members"
+                    <i
+                      class="material-icons"
                     >
-                      <input
-                        checked=""
-                        class="input"
-                        id="team-members"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use team members' avatars
-                    </label>
+                      image
+                    </i>
                   </div>
-                  <div
-                    class="option"
+                </div>
+                <a
+                  class="mb-3"
+                  href="#"
+                >
+                  <b>
+                    Upload
+                     image
+                  </b>
+                </a>
+                <span
+                  class="imageInfo"
+                >
+                  <span
+                    class="ml-1"
                   >
-                    <label
-                      class="label label"
-                      for="team-picture"
+                     – 
+                  </span>
+                  <span>
+                    Recommended size 100 x 100 px. Max 500 KB.
+                  </span>
+                </span>
+                <div
+                  class="d-none"
+                >
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+                <h2
+                  class="title mt-5"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
                     >
-                      <input
-                        class="input"
-                        id="team-picture"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use a single image for the whole team
-                    </label>
+                      Name
+                    </legend>
                     <div
-                      class="caption caption"
+                      class="option"
                     >
-                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      <label
+                        class="label label"
+                        for="agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
                     </div>
-                  </div>
-                </fieldset>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label isDisabled label"
+                        for="company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
               </div>
               <div
                 class="formSection"
@@ -2452,58 +2606,212 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="formSection"
               >
                 <h2
-                  class="title"
+                  class="title mb-4"
                 >
-                  Chat header
+                  Company logo
                 </h2>
-                <fieldset
-                  class="mb-3"
-                  name="type-field"
+                <p
+                  class="mb-4"
                 >
-                  <legend
-                    class="legend"
-                  >
-                    Image
-                  </legend>
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
+                <div
+                  class="previewAvatarLogoContent mb-3"
+                >
                   <div
-                    class="option"
+                    class="imagePreview imagePreviewAvatar"
                   >
-                    <label
-                      class="label label"
-                      for="team-members"
+                    <i
+                      class="material-icons"
                     >
-                      <input
-                        checked=""
-                        class="input"
-                        id="team-members"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use team members' avatars
-                    </label>
+                      image
+                    </i>
                   </div>
-                  <div
-                    class="option"
+                </div>
+                <a
+                  class="mb-3"
+                  href="#"
+                >
+                  <b>
+                    Upload
+                     image
+                  </b>
+                </a>
+                <span
+                  class="imageInfo"
+                >
+                  <span
+                    class="ml-1"
                   >
-                    <label
-                      class="label label"
-                      for="team-picture"
+                     – 
+                  </span>
+                  <span>
+                    Recommended size 100 x 100 px. Max 500 KB.
+                  </span>
+                </span>
+                <div
+                  class="d-none"
+                >
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+                <h2
+                  class="title mt-5"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
                     >
-                      <input
-                        class="input"
-                        id="team-picture"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use a single image for the whole team
-                    </label>
+                      Name
+                    </legend>
                     <div
-                      class="caption caption"
+                      class="option"
                     >
-                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      <label
+                        class="label label"
+                        for="agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
                     </div>
-                  </div>
-                </fieldset>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label isDisabled label"
+                        for="company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
               </div>
               <div
                 class="formSection"
@@ -3460,65 +3768,211 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 class="formSection"
               >
                 <h2
-                  class="title"
+                  class="title mb-4"
                 >
-                  Chat header
+                  Company logo
                 </h2>
-                <fieldset
-                  class="mb-3"
-                  name="type-field"
+                <p
+                  class="mb-4"
                 >
-                  <legend
-                    class="legend"
-                  >
-                    Image
-                  </legend>
-                  <div
-                    class="option"
-                  >
-                    <label
-                      class="label label"
-                      for="team-members"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        id="team-members"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use team members' avatars
-                    </label>
-                  </div>
-                  <div
-                    class="option"
-                  >
-                    <label
-                      class="label label"
-                      for="team-picture"
-                    >
-                      <input
-                        class="input"
-                        id="team-picture"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use a single image for the whole team
-                    </label>
-                    <div
-                      class="caption caption"
-                    >
-                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                    </div>
-                  </div>
-                </fieldset>
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
                 <div
-                  class="d-flex flex-direction-row mb-2"
+                  class="previewAvatarLogoContent mb-3"
+                >
+                  <div
+                    class="imagePreview imagePreviewAvatar"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      image
+                    </i>
+                  </div>
+                </div>
+                <a
+                  class="mb-3"
+                  href="#"
+                >
+                  <b>
+                    Upload
+                     image
+                  </b>
+                </a>
+                <span
+                  class="imageInfo"
+                >
+                  <span
+                    class="ml-1"
+                  >
+                     – 
+                  </span>
+                  <span>
+                    Recommended size 100 x 100 px. Max 500 KB.
+                  </span>
+                </span>
+                <div
+                  class="d-none"
                 >
                   <div>
                     FileField component is required ? 
-                    true
+                    false
                   </div>
+                </div>
+                <h2
+                  class="title mt-5"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Name
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label isDisabled label"
+                        for="company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
                 </div>
               </div>
               <div
@@ -4476,58 +4930,212 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 class="formSection"
               >
                 <h2
-                  class="title"
+                  class="title mb-4"
                 >
-                  Chat header
+                  Company logo
                 </h2>
-                <fieldset
-                  class="mb-3"
-                  name="type-field"
+                <p
+                  class="mb-4"
                 >
-                  <legend
-                    class="legend"
-                  >
-                    Image
-                  </legend>
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
+                <div
+                  class="previewAvatarLogoContent mb-3"
+                >
                   <div
-                    class="option"
+                    class="imagePreview imagePreviewAvatar"
                   >
-                    <label
-                      class="label label"
-                      for="team-members"
+                    <i
+                      class="material-icons"
                     >
-                      <input
-                        checked=""
-                        class="input"
-                        id="team-members"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use team members' avatars
-                    </label>
+                      image
+                    </i>
                   </div>
-                  <div
-                    class="option"
+                </div>
+                <a
+                  class="mb-3"
+                  href="#"
+                >
+                  <b>
+                    Upload
+                     image
+                  </b>
+                </a>
+                <span
+                  class="imageInfo"
+                >
+                  <span
+                    class="ml-1"
                   >
-                    <label
-                      class="label label"
-                      for="team-picture"
+                     – 
+                  </span>
+                  <span>
+                    Recommended size 100 x 100 px. Max 500 KB.
+                  </span>
+                </span>
+                <div
+                  class="d-none"
+                >
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+                <h2
+                  class="title mt-5"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
                     >
-                      <input
-                        class="input"
-                        id="team-picture"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use a single image for the whole team
-                    </label>
+                      Name
+                    </legend>
                     <div
-                      class="caption caption"
+                      class="option"
                     >
-                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      <label
+                        class="label label"
+                        for="agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
                     </div>
-                  </div>
-                </fieldset>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label isDisabled label"
+                        for="company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
               </div>
               <div
                 class="formSection"
@@ -5484,71 +6092,211 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 class="formSection"
               >
                 <h2
-                  class="title"
+                  class="title mb-4"
                 >
-                  Chat header
+                  Company logo
                 </h2>
-                <fieldset
-                  class="mb-3"
-                  name="type-field"
+                <p
+                  class="mb-4"
                 >
-                  <legend
-                    class="legend"
-                  >
-                    Image
-                  </legend>
-                  <div
-                    class="option"
-                  >
-                    <label
-                      class="label label"
-                      for="team-members"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        id="team-members"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use team members' avatars
-                    </label>
-                  </div>
-                  <div
-                    class="option"
-                  >
-                    <label
-                      class="label label"
-                      for="team-picture"
-                    >
-                      <input
-                        class="input"
-                        id="team-picture"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use a single image for the whole team
-                    </label>
-                    <div
-                      class="caption caption"
-                    >
-                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                    </div>
-                  </div>
-                </fieldset>
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
                 <div
-                  class="d-flex flex-direction-row mb-2"
+                  class="previewAvatarLogoContent mb-3"
                 >
-                  <img
-                    alt="Team avatar"
-                    class="mr-3"
-                    src="https://gorgias.io/teampicture.png"
-                    style="max-width: 100px;"
-                  />
+                  <div
+                    class="imagePreview imagePreviewAvatar"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      image
+                    </i>
+                  </div>
+                </div>
+                <a
+                  class="mb-3"
+                  href="#"
+                >
+                  <b>
+                    Upload
+                     image
+                  </b>
+                </a>
+                <span
+                  class="imageInfo"
+                >
+                  <span
+                    class="ml-1"
+                  >
+                     – 
+                  </span>
+                  <span>
+                    Recommended size 100 x 100 px. Max 500 KB.
+                  </span>
+                </span>
+                <div
+                  class="d-none"
+                >
                   <div>
                     FileField component is required ? 
                     false
                   </div>
+                </div>
+                <h2
+                  class="title mt-5"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Name
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label isDisabled label"
+                        for="company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
                 </div>
               </div>
               <div
@@ -7523,7 +8271,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                 class="formSection"
               >
                 <h2
-                  class="title mb-1"
+                  class="title mb-4"
                 >
                   Company logo
                 </h2>
@@ -7533,10 +8281,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                   Customize your team's or robot avatars by uploading your company's logo.
                 </p>
                 <div
-                  class="imagePreviewWrapper"
+                  class="previewAvatarLogoContent mb-3"
                 >
                   <div
-                    class="imagePreview mb-3"
+                    class="imagePreview imagePreviewAvatar"
                   >
                     <i
                       class="material-icons"
@@ -8248,6 +8996,1182 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                                 class="user"
                               >
                                 John
+                              </div>
+                            </div>
+                            <div
+                              class="messages"
+                            >
+                              <div
+                                class="bubble firstMessageOfAppMaker"
+                              >
+                                Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="css-ctovm3"
+                        >
+                          <button
+                            aria-label="Add attachment"
+                            class="css-1h6fee"
+                            fill="ghost"
+                            type="button"
+                          >
+                            <div
+                              class="css-ouhew3"
+                              fill="ghost"
+                            >
+                              <svg
+                                fill="none"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  class="withFill"
+                                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                                />
+                              </svg>
+                            </div>
+                          </button>
+                          <div
+                            class="css-s53yqv"
+                          >
+                            <textarea
+                              aria-invalid="false"
+                              aria-label="Gorgias message input"
+                              class="css-qhufd7"
+                              id="chat-message-input"
+                              name="chat-message-input"
+                              placeholder="Type a message..."
+                              readonly=""
+                              style="height: 0px;"
+                            />
+                          </div>
+                          <button
+                            aria-label="Send message"
+                            class="css-1h6fee"
+                            fill="ghost"
+                            type="button"
+                          >
+                            <div
+                              class="css-ouhew3"
+                              fill="ghost"
+                            >
+                              <svg
+                                fill="none"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <g>
+                                  <path
+                                    class="withFill"
+                                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                                  />
+                                </g>
+                              </svg>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for header logo and avatar logo 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/channels/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            Acme Chat
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <div
+          data-testid="GorgiasChatIntegrationConnectedChannel"
+        />
+      </div>
+    </div>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="formSection"
+              >
+                <div
+                  class="InputField formGroup required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="Acme Chat"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class="select dropdown-toggle"
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English - US
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French - FR
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <div
+                  class="introMessageHeader"
+                >
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    During business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Colors
+                </h2>
+                <div
+                  class="colorPickersWrapper"
+                >
+                  <div
+                    class="InputField colorPicker form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <button
+                          aria-disabled="false"
+                          class="wrapper button fill secondary medium"
+                          id="color-picker-42"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(17, 92, 181);"
+                          />
+                        </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#115cb5"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField colorPicker form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <button
+                          aria-disabled="false"
+                          class="wrapper button fill secondary medium"
+                          id="color-picker-42"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(17, 92, 181);"
+                          />
+                        </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#115cb5"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title mb-4"
+                >
+                  Company logo
+                </h2>
+                <div
+                  class="logoInputsWrapper"
+                >
+                  <section>
+                    <h3
+                      class="subtitle"
+                    >
+                      Header logo
+                    </h3>
+                    <p
+                      class="mb-4"
+                    >
+                      Used in the header instead of chat title.
+                    </p>
+                    <div
+                      class="previewHeaderLogoContainer mb-3"
+                    >
+                      <div
+                        class="previewHeaderLogoContent"
+                      >
+                        <div
+                          class="imagePreview imagePreviewHeader"
+                        >
+                          <img
+                            alt="Uploaded"
+                            src="https://gorgias.io/header_picture.png"
+                          />
+                        </div>
+                        <div
+                          class="closeHeader"
+                        >
+                          <i
+                            class="material-icons"
+                          >
+                            close
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      class="mb-3"
+                      href="#"
+                    >
+                      <b>
+                        Replace
+                         image
+                      </b>
+                    </a>
+                    <span
+                      class="imageInfo"
+                    >
+                      <span
+                        class="ml-1"
+                      >
+                         – 
+                      </span>
+                      <span>
+                        Works best with horizontal logos with transparent background. Max 500 KB.
+                      </span>
+                    </span>
+                    <div
+                      class="d-none"
+                    >
+                      <div>
+                        FileField component is required ? 
+                        false
+                      </div>
+                    </div>
+                  </section>
+                  <section>
+                    <h3
+                      class="subtitle"
+                    >
+                      Avatar logo
+                    </h3>
+                    <p
+                      class="mb-4"
+                    >
+                      Used as your team's or bot avatar.
+                    </p>
+                    <div
+                      class="previewAvatarLogoContent mb-3"
+                    >
+                      <div
+                        class="imagePreview imagePreviewAvatar"
+                      >
+                        <img
+                          alt="Uploaded"
+                          src="https://gorgias.io/avatar_picture.png"
+                        />
+                      </div>
+                      <div
+                        class="closeAvatar"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          close
+                        </i>
+                      </div>
+                    </div>
+                    <a
+                      class="mb-3"
+                      href="#"
+                    >
+                      <b>
+                        Replace
+                         image
+                      </b>
+                    </a>
+                    <span
+                      class="imageInfo"
+                    >
+                      <span
+                        class="ml-1"
+                      >
+                         – 
+                      </span>
+                      <span>
+                        Recommended size 100 x 100 px. Max 500 KB.
+                      </span>
+                    </span>
+                    <div
+                      class="d-none"
+                    >
+                      <div>
+                        FileField component is required ? 
+                        false
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <h2
+                  class="title mt-5"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Name
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="company-logo"
+                      >
+                        <input
+                          class="input"
+                          id="company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Launcher
+                </h2>
+                <div
+                  class="launcherSettingsGrid"
+                >
+                  <div
+                    class="InputField formGroup form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Widget position on page
+                    </label>
+                    <div
+                      class="select dropdown-toggle"
+                    >
+                      <select
+                        class="field form-control"
+                        id="id-input-42"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="positionInputsWrapper"
+                  >
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move left / right
+                        <span
+                          id="move-widget-left-right"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move up / down
+                        <span
+                          id="move-widget-up-down"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper fill primary medium"
+                  type="submit"
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="stickyParent"
+          >
+            <div
+              class="preview"
+            >
+              <div
+                class="container"
+              >
+                <div
+                  class="wrapper medium toggleButtonWrapper"
+                  role="radiogroup"
+                >
+                  <div
+                    aria-checked="true"
+                    class="option medium active withLabel"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    During Business Hours
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="option medium withLabel"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    Outside Business Hours
+                  </div>
+                </div>
+                <div
+                  class="wrapper preview previewWithBackground"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
+                >
+                  <div
+                    class="buttonWrapper bottom-right"
+                  >
+                    <div
+                      class="axisLauncherWrapper"
+                    >
+                      <button
+                        class="css-g7p1km"
+                        color="#115cb5"
+                      >
+                        <div
+                          class="css-m4oh12"
+                        >
+                          <svg
+                            aria-label="Bubble icon button"
+                            fill="none"
+                            height="28"
+                            role="img"
+                            viewBox="0 0 100 100"
+                            width="28"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <filter
+                              id="33c9df204aeec9aa096f1fd360bd4160"
+                            >
+                              <fegaussianblur
+                                in="SourceAlpha"
+                                stdDeviation="0,4"
+                              />
+                              <feoffset
+                                dx="0"
+                                dy="4"
+                                result="offsetblur"
+                              />
+                              <fecomponenttransfer>
+                                <fefunca
+                                  slope="0.4"
+                                  type="linear"
+                                />
+                              </fecomponenttransfer>
+                              <fecomposite
+                                in2="offsetblur"
+                                operator="in"
+                              />
+                              <femerge>
+                                <femergenode />
+                                <femergenode
+                                  in="SourceGraphic"
+                                />
+                              </femerge>
+                            </filter>
+                            <path
+                              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+                              fill="#fff"
+                              filter="#33c9df204aeec9aa096f1fd360bd4160"
+                            />
+                          </svg>
+                        </div>
+                        <div
+                          class="css-199spez"
+                        >
+                          <svg
+                            fill="none"
+                            height="28"
+                            viewBox="0 0 28 28"
+                            width="28"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+                              fill="#fff"
+                            />
+                          </svg>
+                        </div>
+                        <span
+                          class="css-1oft1bb"
+                          color="#fff"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="dialog"
+                      style="background-color: rgb(17, 92, 181);"
+                    >
+                      <div
+                        class="css-m0vqjf"
+                        color="#115cb5"
+                      />
+                      <div
+                        class="css-1vo7hu9"
+                      />
+                      <div
+                        class="noise"
+                      />
+                      <div
+                        aria-label="Live chat window header"
+                        class="css-1v07zf4"
+                        role="region"
+                        style="z-index: 2;"
+                        title="Acme Chat"
+                      >
+                        <div
+                          class="css-1ti7tcr"
+                        >
+                          <div
+                            class="css-1jtrw5v"
+                          >
+                            <div
+                              class="css-qiet1b"
+                            >
+                              Acme Chat
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="conversationContentWrapper"
+                      >
+                        <div
+                          class="content"
+                        >
+                          <div
+                            class="d-flex flex-column"
+                          >
+                            <div
+                              class="conversationTimestamp"
+                            >
+                              June 24
+                            </div>
+                            <div
+                              class="bubble primary firstMessageOfAppUser lastMessage"
+                              style="background-color: rgb(17, 92, 181); color: rgb(255, 255, 255);"
+                            >
+                              Hi, could you give me an update on my order status?
+                            </div>
+                          </div>
+                          <div
+                            class="appMakerMessageWrapper"
+                          >
+                            <div
+                              class="agent"
+                            >
+                              <div
+                                class="avatar"
+                              >
+                                <div
+                                  class="avatar-container css-1j6zot1"
+                                >
+                                  <div
+                                    class="avatar css-adln4x"
+                                    size="32"
+                                    src="https://gorgias.io/avatar_picture.png"
+                                  >
+                                    AC
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="title"
+                              >
+                                Acme Chat Bot
+                              </div>
+                            </div>
+                            <div
+                              class="messages"
+                            >
+                              <div
+                                class="bubble firstMessageOfAppMaker"
+                              >
+                                Thanks for reaching out! Leave us your email and an agent will get back to you in about 5 minutes.
+                              </div>
+                              <div
+                                class="optionalEmailCapture"
+                              >
+                                <div
+                                  class="css-63ugbz"
+                                >
+                                  <div
+                                    class="css-r0ijy4"
+                                  >
+                                    <label
+                                      aria-label="Get notified by email"
+                                      class="css-zs6vvb"
+                                      for="email-capture-intput"
+                                    >
+                                      Get notified by email
+                                    </label>
+                                    <div
+                                      class="css-t0lbh8"
+                                    >
+                                      <input
+                                        aria-invalid="false"
+                                        class="css-1jkukg3"
+                                        id="email-capture-intput"
+                                        label="Get notified by email"
+                                        name="email-capture-intput"
+                                        placeholder="your@email.com"
+                                        readonly=""
+                                        type="email"
+                                        value=""
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    class="css-18kbys8"
+                                  >
+                                    <button
+                                      class="css-1cslba3"
+                                      fill="filled"
+                                      type="button"
+                                    >
+                                      <div
+                                        class="css-ouhew3"
+                                        fill="filled"
+                                      >
+                                        <svg
+                                          fill="none"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          width="24"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M9.29 15.88L13.17 12L9.29 8.12C8.9 7.73 8.9 7.1 9.29 6.71C9.68 6.32 10.31 6.32 10.7 6.71L15.29 11.3C15.68 11.69 15.68 12.32 15.29 12.71L10.7 17.3C10.31 17.69 9.68 17.69 9.29 17.3C8.91 16.91 8.9 16.27 9.29 15.88Z"
+                                            fill="#fff"
+                                          />
+                                        </svg>
+                                      </div>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="appMakerMessageWrapper"
+                          >
+                            <div
+                              class="agent"
+                            >
+                              <div
+                                class="avatar"
+                              >
+                                <div
+                                  class="avatar-container css-1j6zot1"
+                                >
+                                  <div
+                                    class="avatar css-hbesmq"
+                                    size="32"
+                                  >
+                                    JD
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="user"
+                              >
+                                John Doe
                               </div>
                             </div>
                             <div
@@ -9793,58 +11717,212 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 class="formSection"
               >
                 <h2
-                  class="title"
+                  class="title mb-4"
                 >
-                  Chat header
+                  Company logo
                 </h2>
-                <fieldset
-                  class="mb-3"
-                  name="type-field"
+                <p
+                  class="mb-4"
                 >
-                  <legend
-                    class="legend"
-                  >
-                    Image
-                  </legend>
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
+                <div
+                  class="previewAvatarLogoContent mb-3"
+                >
                   <div
-                    class="option"
+                    class="imagePreview imagePreviewAvatar"
                   >
-                    <label
-                      class="label label"
-                      for="team-members"
+                    <i
+                      class="material-icons"
                     >
-                      <input
-                        checked=""
-                        class="input"
-                        id="team-members"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use team members' avatars
-                    </label>
+                      image
+                    </i>
                   </div>
-                  <div
-                    class="option"
+                </div>
+                <a
+                  class="mb-3"
+                  href="#"
+                >
+                  <b>
+                    Upload
+                     image
+                  </b>
+                </a>
+                <span
+                  class="imageInfo"
+                >
+                  <span
+                    class="ml-1"
                   >
-                    <label
-                      class="label label"
-                      for="team-picture"
+                     – 
+                  </span>
+                  <span>
+                    Recommended size 100 x 100 px. Max 500 KB.
+                  </span>
+                </span>
+                <div
+                  class="d-none"
+                >
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+                <h2
+                  class="title mt-5"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
                     >
-                      <input
-                        class="input"
-                        id="team-picture"
-                        name="type-field"
-                        type="radio"
-                      />
-                      Use a single image for the whole team
-                    </label>
+                      Name
+                    </legend>
                     <div
-                      class="caption caption"
+                      class="option"
                     >
-                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      <label
+                        class="label label"
+                        for="agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
                     </div>
-                  </div>
-                </fieldset>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label isDisabled label"
+                        for="company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
               </div>
               <div
                 class="formSection"

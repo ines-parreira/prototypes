@@ -3,9 +3,21 @@
         color: var(--neutral-grey-5);
     }
 
-    .imagePreviewWrapper {
+    .previewHeaderLogoContainer {
+        width: 320px;
+        height: 80px;
+    }
+
+    .previewAvatarLogoContent {
         display: flex;
         align-items: flex-start;
+    }
+
+    .previewHeaderLogoContent {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 100%;
     }
 
     .imagePreview {
@@ -17,13 +29,11 @@
         justify-content: center;
         align-items: center;
 
-        width: 80px;
         height: 80px;
 
         background-color: var(--neutral-grey-2);
 
         border: 2px dashed var(--neutral-grey-3);
-        border-radius: 50%;
 
         font-size: 22px;
         color: var(--neutral-grey-3);
@@ -33,14 +43,36 @@
             width: 100%;
         }
 
+        &.imagePreviewAvatar {
+            border-radius: 50%;
+            width: 80px;
+        }
+
+        &.imagePreviewHeader {
+            border-radius: 4px;
+            width: 100%;
+        }
+
         &.imagePreviewDisabled {
             cursor: initial;
             pointer-events: none;
         }
     }
 
-    .close {
+    .closeAvatar {
         cursor: pointer;
         font-size: 18px;
+    }
+
+    .closeHeader {
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 18px;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 18px;
+        height: 18px;
+        z-index: 1;
     }
 }

@@ -705,5 +705,49 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
             expect(container).toMatchSnapshot()
         })
+
+        it('should render inputs for header logo and avatar logo', () => {
+            mockFlags({
+                [FeatureFlagKey.ChatHeaderPictureStyle]: true,
+            })
+
+            const {container} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearanceComponent
+                            {...minProps}
+                            loading={fromJS({updateIntegration: false})}
+                            integration={fromJS({
+                                id: 1,
+                                name: 'Acme Chat',
+                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                decoration: {
+                                    avatar: {
+                                        image_type:
+                                            GorgiasChatAvatarImageType.COMPANY_LOGO,
+                                        name_type:
+                                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                                        company_logo_url:
+                                            'https://gorgias.io/avatar_picture.png',
+                                    },
+                                    header_picture_url:
+                                        'https://gorgias.io/header_picture.png',
+                                },
+                                meta: {
+                                    language:
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                },
+                            })}
+                            currentUser={fromJS({
+                                name: 'John Doe',
+                            })}
+                            isUpdate={true}
+                        />
+                    </Provider>
+                </Router>
+            )
+
+            expect(container).toMatchSnapshot()
+        })
     })
 })

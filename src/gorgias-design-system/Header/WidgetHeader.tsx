@@ -4,6 +4,10 @@ import {gorgiasColors} from 'gorgias-design-system/styles'
 
 export interface WidgetHeaderProps {
     /**
+     * The URL of the image to be displayed in the home page.
+     */
+    headerPictureUrl?: string | null
+    /**
      * The title of the chat.
      */
     title: string
@@ -97,13 +101,29 @@ const StyledMessage = styled.div<{
     z-index: 2;
 `
 
+const StyledWidgetHeaderImageWrapper = styled.div`
+    height: 28px;
+    max-width: calc(100% - 100px);
+`
+
+const StyledWidgetHeaderImage = styled.img`
+    max-height: 100%;
+`
+
 /**
  *  Can display chat title, introduction messages and reply time set by merchants, as well as high-level actions.
  */
 const WidgetHeader: React.FC<
     HTMLAttributes<HTMLDivElement> & WidgetHeaderProps
 > = ({...props}) => {
-    const {isExpandable, message, title, trailIcons, variant = 'light'} = props
+    const {
+        headerPictureUrl,
+        isExpandable,
+        message,
+        title,
+        trailIcons,
+        variant = 'light',
+    } = props
     return (
         <>
             <StyledWidgetHeaderWrapper variant={variant} {...props}>
@@ -113,7 +133,16 @@ const WidgetHeader: React.FC<
                     </SlideWrapper>
                 )}
                 <StyledWidgetHeader isExpandable={isExpandable}>
-                    {title && <StyledTitle>{title}</StyledTitle>}
+                    {headerPictureUrl ? (
+                        <StyledWidgetHeaderImageWrapper>
+                            <StyledWidgetHeaderImage
+                                src={headerPictureUrl}
+                                alt=""
+                            />
+                        </StyledWidgetHeaderImageWrapper>
+                    ) : (
+                        title && <StyledTitle>{title}</StyledTitle>
+                    )}
                     {trailIcons && (
                         <StyledTrailIcons>{trailIcons}</StyledTrailIcons>
                     )}

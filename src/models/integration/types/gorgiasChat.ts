@@ -21,6 +21,7 @@ export type GorgiasChatIntegration = IntegrationBase & {
             label?: string
         }
         background_color_style?: GorgiasChatBackgroundColorStyle
+        header_picture_url?: string | null
     }
 }
 

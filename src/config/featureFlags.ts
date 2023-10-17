@@ -14,6 +14,7 @@ export enum FeatureFlagKey {
     ChatEnableTranslationEdit = 'enable-translations-edit',
     ChatFlipOrderOfQuickResponsesAndFlows = 'flip-order-of-quick-responses-and-flows',
     ChatFontCustomization = 'chat-font-customization',
+    ChatHeaderPictureStyle = 'chat-header-picture-style',
     ChatLauncherCustomization = 'chat-launcher-customization',
     ChatMultiLanguages = 'chat-multi-languages',
     ChatRenameContactForm = 'chat-rename-contact-form',

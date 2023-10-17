@@ -78,6 +78,7 @@ type Props = {
     showBackground?: boolean
     isWidgetConversation?: boolean
     backgroundColorStyle?: GorgiasChatBackgroundColorStyle
+    headerPictureUrl?: string | null
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -110,6 +111,7 @@ const ChatIntegrationPreview = (props: Props) => {
         showBackground = true,
         isWidgetConversation = true,
         backgroundColorStyle = GorgiasChatBackgroundColorStyle.Gradient,
+        headerPictureUrl,
     } = props
 
     const shoudShowFontCustomization =
@@ -290,6 +292,7 @@ const ChatIntegrationPreview = (props: Props) => {
                         <WidgetHeader
                             role="region"
                             aria-label="Live chat window header"
+                            headerPictureUrl={headerPictureUrl}
                             variant={variant as ConversationHeaderVariant}
                             title={name}
                             message={
