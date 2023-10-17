@@ -14,11 +14,13 @@ import css from './AutomationNavbarAddOnPaywallNavbarLink.less'
 type Props = {
     children: ReactNode
     onSubscribeToAutomationAddOnClick: () => void
+    isNested?: boolean
 } & NavbarLinkProps
 
 const AutomationNavbarAddOnPaywallNavbarLink = ({
     children,
     onSubscribeToAutomationAddOnClick,
+    isNested,
     ...props
 }: Props) => {
     const iconRef = useRef<HTMLElement>(null)
@@ -31,7 +33,11 @@ const AutomationNavbarAddOnPaywallNavbarLink = ({
 
     return (
         <>
-            <div className={cssNavbar['link-wrapper']}>
+            <div
+                className={classnames(cssNavbar['link-wrapper'], {
+                    [cssNavbar.isNested]: isNested,
+                })}
+            >
                 <NavbarLink className={css.item} {...props}>
                     <div className={css.name}>{children}</div>
                     <i

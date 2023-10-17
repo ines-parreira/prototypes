@@ -8,23 +8,13 @@ export type NavbarLinkProps = Pick<
     NavLinkProps,
     'to' | 'exact' | 'children' | 'title'
 > & {
-    isNested?: boolean
     className?: string
 }
 
-const NavbarLink = ({
-    isNested,
-    className,
-    exact = false,
-    ...props
-}: NavbarLinkProps) => {
+const NavbarLink = ({className, exact = false, ...props}: NavbarLinkProps) => {
     return (
         <NavLink
-            className={classnames(
-                css.link,
-                {[css.isNested]: isNested},
-                className
-            )}
+            className={classnames(css.link, className)}
             activeClassName="active"
             isActive={(match) => {
                 if (!match) {

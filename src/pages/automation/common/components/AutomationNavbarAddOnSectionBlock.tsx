@@ -62,7 +62,6 @@ const AutomationNavbarAddOnSectionBlock = ({
                     >
                         <NavbarLink
                             to={`/app/automation/${shopType}/${shopName}/flows`}
-                            isNested
                         >
                             <span className={cssNavbar['item-name']}>
                                 Flow builder
@@ -77,7 +76,6 @@ const AutomationNavbarAddOnSectionBlock = ({
                     >
                         <NavbarLink
                             to={`/app/automation/${shopType}/${shopName}/quick-responses`}
-                            isNested
                         >
                             <span className={cssNavbar['item-name']}>
                                 Quick response flows
@@ -120,7 +118,6 @@ const AutomationNavbarAddOnSectionBlock = ({
                 >
                     <NavbarLink
                         to={`/app/automation/shopify/${shopName}/order-management`}
-                        isNested
                     >
                         <span className={cssNavbar['item-name']}>
                             Order management flows
@@ -137,7 +134,6 @@ const AutomationNavbarAddOnSectionBlock = ({
                 >
                     <NavbarLink
                         to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
-                        isNested
                     >
                         <span className={cssNavbar['item-name']}>
                             Article recommendation
@@ -165,7 +161,6 @@ const AutomationNavbarAddOnSectionBlock = ({
             >
                 <NavbarLink
                     to={`/app/automation/${shopType}/${shopName}/connected-channels`}
-                    isNested
                 >
                     <span className={cssNavbar['item-name']}>
                         Connected channels

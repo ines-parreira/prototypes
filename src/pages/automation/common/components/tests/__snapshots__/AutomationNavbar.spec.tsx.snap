@@ -220,7 +220,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/flows"
               >
@@ -235,7 +235,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/quick-responses"
               >
@@ -250,7 +250,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/order-management"
               >
@@ -265,7 +265,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/article-recommendation"
               >
@@ -280,7 +280,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/connected-channels"
               >
@@ -326,7 +326,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/bigcommerce/xb107iaz1n/flows"
               >
@@ -341,7 +341,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
               >
@@ -356,7 +356,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
               >
@@ -371,7 +371,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
               >
@@ -645,10 +645,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </div>
             </div>
             <div
-              class="link-wrapper"
+              class="link-wrapper isNested"
             >
               <a
-                class="link isNested item"
+                class="link item"
                 data-active-class-name="active"
                 href="/app/automation/flows"
               >
@@ -669,10 +669,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </a>
             </div>
             <div
-              class="link-wrapper"
+              class="link-wrapper isNested"
             >
               <a
-                class="link isNested item"
+                class="link item"
                 data-active-class-name="active"
                 href="/app/automation/quick-responses"
               >
@@ -696,7 +696,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/order-management"
               >
@@ -708,10 +708,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </a>
             </div>
             <div
-              class="link-wrapper"
+              class="link-wrapper isNested"
             >
               <a
-                class="link isNested item"
+                class="link item"
                 data-active-class-name="active"
                 href="/app/automation/article-recommendation"
               >
@@ -735,7 +735,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/connected-channels"
               >
@@ -1323,7 +1323,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/flows"
               >
@@ -1338,7 +1338,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/quick-responses"
               >
@@ -1353,7 +1353,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/order-management"
               >
@@ -1368,7 +1368,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/article-recommendation"
               >
@@ -1383,7 +1383,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/connected-channels"
               >
@@ -1429,7 +1429,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/bigcommerce/xb107iaz1n/flows"
               >
@@ -1444,7 +1444,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
               >
@@ -1459,7 +1459,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
               >
@@ -1474,7 +1474,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
               >
@@ -1748,10 +1748,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </div>
             </div>
             <div
-              class="link-wrapper"
+              class="link-wrapper isNested"
             >
               <a
-                class="link isNested item"
+                class="link item"
                 data-active-class-name="active"
                 href="/app/automation/flows"
               >
@@ -1772,10 +1772,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </a>
             </div>
             <div
-              class="link-wrapper"
+              class="link-wrapper isNested"
             >
               <a
-                class="link isNested item"
+                class="link item"
                 data-active-class-name="active"
                 href="/app/automation/quick-responses"
               >
@@ -1799,7 +1799,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/order-management"
               >
@@ -1811,10 +1811,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </a>
             </div>
             <div
-              class="link-wrapper"
+              class="link-wrapper isNested"
             >
               <a
-                class="link isNested item"
+                class="link item"
                 data-active-class-name="active"
                 href="/app/automation/article-recommendation"
               >
@@ -1838,7 +1838,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper isNested"
             >
               <a
-                class="link isNested"
+                class="link"
                 data-active-class-name="active"
                 href="/app/automation/shopify/gorgiastest/connected-channels"
               >
