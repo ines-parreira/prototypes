@@ -7,12 +7,16 @@ import KeyboardHelp from 'pages/common/components/KeyboardHelp/KeyboardHelp'
 import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
 import {useTheme} from 'theme'
 
+import useAppShortcuts from '../hooks/useAppShortcuts'
+
 type Props = {
     children: ReactNode
 }
 
 export default function App({children}: Props) {
     const theme = useTheme()
+
+    useAppShortcuts()
 
     return (
         <AppNode className={theme}>

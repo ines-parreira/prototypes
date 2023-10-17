@@ -13,14 +13,12 @@ import {Program} from 'estree'
 
 import 'assets/css/main.less'
 import {useEffectOnce} from 'react-use'
-import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import pollingManager from 'services/pollingManager'
-import shortcutManager from 'services/shortcutManager'
 import userActivityManager from 'services/userActivityManager'
 import statusPageManager from 'services/statusPageManager/statusPageManager'
 import {closePanels, openPanel} from 'state/layout/actions'
 import {getCurrentOpenedPanel} from 'state/layout/selectors'
-import {fetchVisibleViewsCounts, goToActiveView} from 'state/views/actions'
+import {fetchVisibleViewsCounts} from 'state/views/actions'
 import {identifyUser} from 'store/middlewares/segmentTracker'
 import {handleUsageBanner} from 'state/notifications/actions'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
@@ -104,23 +102,12 @@ const App = ({
 
         // ask for the newest view counts
         dispatch(fetchVisibleViewsCounts())
-        shortcutManager.bind('App', {
-            GO_VIEW: {
-                action: (e) => {
-                    e.preventDefault()
-                    dispatch(goToActiveView())
-                },
-            },
-            UNDO_MESSAGE: {
-                action: () => pendingMessageManager.undoMessage(),
-            },
-        })
+
         identifyUser(currentUser.toJS())
 
         dispatch(handle2FAEnforced())
 
         return () => {
-            shortcutManager.unbind('App')
             pollingManager.stop()
             statusPageManager.stopPolling()
         }
