@@ -74,7 +74,7 @@ export const PRODUCT_INFO = {
         tooltip:
             'Campaign clicks represent the cumulative count of instances when a visitor clicks on campaigns.',
         tooltipLink: 'https://docs.gorgias.com/en-US/subscription-plans-81852',
-        bannerLink: '/app/settings/revenue/bundles',
+        bannerLink: '/app/settings/convert/installations',
     },
 }
 

@@ -530,12 +530,15 @@ export function StatsRoutes() {
                     />
                 </Route>
                 <Route exact path={`${path}/revenue/campaigns`}>
+                    <Redirect to={`${path}/convert/campaigns`} />
+                </Route>
+                <Route exact path={`${path}/convert/campaigns`}>
                     <App
                         content={RevenueCampaignsStats}
                         navbar={StatsNavbarContainer}
                     />
                 </Route>
-                <Route path={`${path}/revenue/campaigns/subscribe`} exact>
+                <Route path={`${path}/convert/campaigns/subscribe`} exact>
                     <App
                         content={CampaignStatsPaywallView}
                         navbar={StatsNavbarContainer}
@@ -674,7 +677,7 @@ export function SettingsRoutes() {
             <Route path={`${path}/users`}>
                 <UsersSettingsRoutes />
             </Route>
-            <Route path={`${path}/revenue`}>
+            <Route path={`${path}/convert`}>
                 <RevenueSettingsRoutes />
             </Route>
             {/* TODO(@Irinel) remove this when new billing is fully released */}
@@ -1296,7 +1299,7 @@ export function RevenueSettingsRoutes() {
                         navbar={SettingsNavbar}
                     />
                 </Route>
-                <Route path={`${path}/bundles`} exact>
+                <Route path={`${path}/installations`} exact>
                     <App
                         content={memoizedWithUserRoleRequired(
                             BundlesView as any,
@@ -1306,7 +1309,7 @@ export function RevenueSettingsRoutes() {
                         navbar={SettingsNavbar}
                     />
                 </Route>
-                <Route path={`${path}/bundles/new`} exact>
+                <Route path={`${path}/installations/new`} exact>
                     <App
                         content={memoizedWithUserRoleRequired(
                             BundleInstallView as any,
@@ -1316,7 +1319,7 @@ export function RevenueSettingsRoutes() {
                         navbar={SettingsNavbar}
                     />
                 </Route>
-                <Route path={`${path}/bundles/:bundleId`} exact>
+                <Route path={`${path}/installations/:bundleId`} exact>
                     <App
                         content={memoizedWithUserRoleRequired(
                             BundleDetailView as any,

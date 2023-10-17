@@ -44,14 +44,19 @@ describe('useGetConvertLinks', () => {
         it('should render regular link', () => {
             const {result} = renderHookWithState()
 
-            expect(result.current.length).toBe(1)
+            expect(result.current.length).toBe(2)
 
             const clickTrackingLink = result.current[0]
             expect(clickTrackingLink.requiredRole).toBe(ADMIN_ROLE)
-            expect(clickTrackingLink.to).toBe('revenue/click-tracking')
+            expect(clickTrackingLink.to).toBe('convert/click-tracking')
             expect(clickTrackingLink.text).toBe('Click Tracking')
             expect(clickTrackingLink.extra).toBeFalsy()
             expect(clickTrackingLink.outerExtra).toBeFalsy()
+
+            const installationLink = result.current[1]
+            expect(installationLink.requiredRole).toBe(ADMIN_ROLE)
+            expect(installationLink.to).toBe('convert/installations')
+            expect(installationLink.text).toBe('Installations')
         })
     })
 

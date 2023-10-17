@@ -185,8 +185,8 @@ export const BundleDetailView = () => {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to={`/app/settings/revenue/bundles`}>
-                                Bundle management
+                            <Link to={`/app/settings/convert/installations`}>
+                                Convert installations
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>

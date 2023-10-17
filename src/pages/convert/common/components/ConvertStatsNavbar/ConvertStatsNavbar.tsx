@@ -50,7 +50,7 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
             },
             {
                 label: 'Campaigns',
-                to: '/app/stats/revenue/campaigns',
+                to: '/app/stats/convert/campaigns',
                 isPaywalled: !isConvertSubscriber,
                 hasModal: !isConvertSubscriber && !isStarterPlan,
                 requiresSubscriptionToBeSeen: false,

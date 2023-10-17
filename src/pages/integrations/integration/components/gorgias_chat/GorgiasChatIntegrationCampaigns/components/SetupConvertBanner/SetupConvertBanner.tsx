@@ -47,7 +47,7 @@ export const SetupConvertBanner = ({classes}: Props): JSX.Element => {
                         <div>
                             <Link
                                 className="mr-3"
-                                to={`/app/settings/revenue/bundles`}
+                                to={`/app/settings/convert/installations`}
                             >
                                 Continue Setup
                             </Link>

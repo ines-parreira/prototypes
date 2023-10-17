@@ -31,7 +31,7 @@ function CampaignStatsOrPaywallPage() {
     return storeIntegrations.length && isConvertSubscriber ? (
         <CampaignsStats />
     ) : (
-        <Redirect to="/app/stats/revenue/campaigns/subscribe" />
+        <Redirect to="/app/stats/convert/campaigns/subscribe" />
     )
 }
 

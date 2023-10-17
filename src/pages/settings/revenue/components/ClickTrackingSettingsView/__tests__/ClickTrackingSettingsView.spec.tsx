@@ -50,7 +50,7 @@ describe('<ClickTrackingSettingsView />', () => {
         const {getByText, queryByTestId} = render(
             <MemoryRouter>
                 <ReduxProvider>
-                    <Route path="/app/settings/revenue/click-tracking">
+                    <Route path="/app/settings/convert/click-tracking">
                         <ClickTrackingPaywallView />
                     </Route>
                     <ClickTrackingSettingsView />

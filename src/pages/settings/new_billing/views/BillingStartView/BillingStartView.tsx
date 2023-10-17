@@ -281,7 +281,10 @@ const BillingStartView = () => {
                 style: NotificationStyle.Banner,
                 status: NotificationStatus.Success,
                 actionHTML: (
-                    <a href="/app/settings/revenue/bundles" rel="noreferrer">
+                    <a
+                        href="/app/settings/convert/installations"
+                        rel="noreferrer"
+                    >
                         Set Up Convert
                     </a>
                 ),

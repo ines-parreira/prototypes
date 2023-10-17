@@ -109,7 +109,7 @@ export const BundleInstallView = () => {
                 })
             )
 
-            history.push(`/app/settings/revenue/bundles/${data.id}`)
+            history.push(`/app/settings/convert/installations/${data.id}`)
         } catch (e) {
             void dispatch(
                 notify(
@@ -138,8 +138,8 @@ export const BundleInstallView = () => {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to={`/app/settings/revenue/bundles`}>
-                                Bundle management
+                            <Link to={`/app/settings/convert/installations`}>
+                                Convert installations
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>Install</BreadcrumbItem>

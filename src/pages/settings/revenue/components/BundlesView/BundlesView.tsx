@@ -67,10 +67,10 @@ export const BundlesView = () => {
     }, [client, dispatch])
 
     const goToBundleInstall = () =>
-        history.push('/app/settings/revenue/bundles/new')
+        history.push('/app/settings/convert/installations/new')
 
     const goToBundle = (id: string) =>
-        history.push(`/app/settings/revenue/bundles/${id}`)
+        history.push(`/app/settings/convert/installations/${id}`)
 
     const stopPropagation = (ev: React.MouseEvent) => {
         ev.stopPropagation()
@@ -98,7 +98,7 @@ export const BundlesView = () => {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem active>
-                            Bundle management
+                            Convert installations
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }
@@ -155,14 +155,14 @@ export const BundlesView = () => {
                                         {bundle.status !==
                                         RevenueBundleStatus.Installed ? (
                                             <Link
-                                                to={`/app/settings/revenue/bundles/${bundle.id}`}
+                                                to={`/app/settings/convert/installations/${bundle.id}`}
                                                 onClick={stopPropagation}
                                             >
                                                 Continue Setup
                                             </Link>
                                         ) : (
                                             <ForwardIcon
-                                                href={`/app/settings/revenue/bundles/${bundle.id}`}
+                                                href={`/app/settings/convert/installations/${bundle.id}`}
                                                 onClick={stopPropagation}
                                             />
                                         )}

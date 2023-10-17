@@ -72,16 +72,26 @@ const useGetConvertLinks = (): CategoryLink[] => {
     }, [isDirectlyUpgradable, popoverComponent, subscriptionModalComponent])
 
     return useMemo(() => {
-        return [
+        const links: CategoryLink[] = [
             {
                 requiredRole: ADMIN_ROLE,
-                to: 'revenue/click-tracking',
+                to: 'convert/click-tracking',
                 text: 'Click Tracking',
                 extra: iconComponent,
                 outerExtra: outerExtra,
             },
         ]
-    }, [iconComponent, outerExtra])
+
+        if (isConvertSubscriber) {
+            links.push({
+                requiredRole: ADMIN_ROLE,
+                to: 'convert/installations',
+                text: 'Installations',
+            })
+        }
+
+        return links
+    }, [isConvertSubscriber, iconComponent, outerExtra])
 }
 
 export default useGetConvertLinks

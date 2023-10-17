@@ -18,7 +18,7 @@ const CampaignStatsPaywallView = () => {
                 '/img/paywalls/screens/convert_campaigns_statistics.png'
             )}
             modalCanduId={'campaign-stats-paywall-modal'}
-            onSubscribedRedirectPath={'/app/stats/revenue/campaigns'}
+            onSubscribedRedirectPath={'/app/stats/convert/campaigns'}
         />
     )
 }

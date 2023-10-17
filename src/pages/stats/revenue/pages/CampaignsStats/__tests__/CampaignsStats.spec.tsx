@@ -27,7 +27,7 @@ describe('CampaignsStats', () => {
         render(
             <MemoryRouter>
                 <Provider store={mockStore(state as any)}>
-                    <Route path="/app/stats/revenue/campaigns">
+                    <Route path="/app/stats/convert/campaigns">
                         <CampaignStatsPaywallView />
                     </Route>
                     <ConvertCampaignsStats {...props} />

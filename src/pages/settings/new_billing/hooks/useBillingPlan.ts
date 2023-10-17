@@ -474,7 +474,7 @@ export const useBillingPlans = ({
                     newProduct: selectedPlans[ProductType.Convert].plan,
                     periodEnd,
                     onClick: () => {
-                        history.push('/app/settings/revenue/bundles')
+                        history.push('/app/settings/convert/installations')
                     },
                     interval,
                     isFreeTrial,

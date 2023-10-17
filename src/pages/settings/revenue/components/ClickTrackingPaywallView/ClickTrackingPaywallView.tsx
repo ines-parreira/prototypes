@@ -18,7 +18,7 @@ const ClickTrackingPaywallView = () => {
                 '/img/paywalls/screens/convert_campaigns_statistics.png'
             )}
             modalCanduId={'click-tracking-paywall-modal'}
-            onSubscribedRedirectPath={'/app/settings/revenue/click-tracking'}
+            onSubscribedRedirectPath={'/app/settings/convert/click-tracking'}
         />
     )
 }

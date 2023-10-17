@@ -45,7 +45,7 @@ function ClickTrackingSettingsOrPaywallPage() {
     return isConvertSubscriber ? (
         <ClickTrackingSettingsView />
     ) : (
-        <Redirect to="/app/settings/revenue/click-tracking/subscribe" />
+        <Redirect to="/app/settings/convert/click-tracking/subscribe" />
     )
 }
 
