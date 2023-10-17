@@ -115,11 +115,12 @@ const SidebarSettings = () => {
                                 css.infoText
                             )}
                         >
-                            Choose which Views you want visible in the Ticket
-                            Navigation panel.
+                            Choose which System Views you want visible in the
+                            ticket sidebar. The System Views are visible to all
+                            users in your account.
                             <br />
-                            This impacts all users in your account. Note that
-                            your shared and private views will not be impacted.
+                            Note that your shared and private views will not be
+                            impacted.
                         </div>
                     </div>
                     <div className={settingsCss.mb32}>
