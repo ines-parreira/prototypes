@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`actions bulkUpdate() should call the job API with the view JSON in it's params because the view is dirty 1`] = `
+exports[`actions createJob() should call the job API with the view JSON in it's params because the view is dirty 1`] = `
 {
   "delete": [],
   "get": [],
@@ -10,7 +10,7 @@ exports[`actions bulkUpdate() should call the job API with the view JSON in it's
   "patch": [],
   "post": [
     {
-      "data": "{"type":"jobTypeValue","scheduled_datetime":"2018-10-01T00:00:15.000Z","params":{"view":{"filters":{},"type":"ticket-list"},"exampleVar":"exampleValue"}}",
+      "data": "{"type":"jobTypeValue","scheduled_datetime":"2018-10-01T00:00:15.000Z","params":{"view":{"foo":"bar","type":"ticket-list","filters":{}},"exampleVar":"exampleValue"}}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -37,7 +37,7 @@ exports[`actions bulkUpdate() should call the job API with the view JSON in it's
 }
 `;
 
-exports[`actions bulkUpdate() should call the job API with the view id in it's params because the view is not dirty 1`] = `
+exports[`actions createJob() should call the job API with the view id in it's params because the view is not dirty 1`] = `
 {
   "delete": [],
   "get": [],

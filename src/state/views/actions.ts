@@ -603,12 +603,14 @@ export function createJob(
                     {},
                     {
                         view: view
+                            .remove('id')
+                            .remove('allItemsSelected')
                             .remove('dirty')
                             .remove('editMode')
-                            .remove('uri')
-                            .remove('allItemsSelected')
+                            .remove('shared_with_teams')
+                            .remove('shared_with_users')
                             .remove('slug')
-                            .remove('id')
+                            .remove('uri')
                             .toJS(),
                     },
                     jobPartialParams

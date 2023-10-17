@@ -889,7 +889,7 @@ describe('actions', () => {
         })
     })
 
-    describe('bulkUpdate()', () => {
+    describe('createJob()', () => {
         const viewId = 1
 
         it("should call the job API with the view id in it's params because the view is not dirty", () => {
@@ -899,6 +899,7 @@ describe('actions', () => {
                 id: viewId,
                 type: ViewType.TicketList,
                 dirty: false,
+                foo: 'bar',
             })
             const jobType = 'jobTypeValue'
             const jobPartialParams = {exampleVar: 'exampleValue'}
@@ -926,7 +927,11 @@ describe('actions', () => {
                 editMode: true,
                 allItemsSelected: true,
                 slug: 'random view slug',
+                uri: null,
                 filters: {},
+                shared_with_users: [],
+                shared_with_teams: [],
+                foo: 'bar',
             })
             const jobType = 'jobTypeValue'
             const jobPartialParams = {exampleVar: 'exampleValue'}
