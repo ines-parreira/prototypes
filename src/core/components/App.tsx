@@ -9,6 +9,7 @@ import {useTheme} from 'theme'
 
 import useAppShortcuts from '../hooks/useAppShortcuts'
 import useStatusPageManager from '../hooks/useStatusPageManager'
+import useUsageBanner from '../hooks/useUsageBanner'
 
 type Props = {
     children: ReactNode
@@ -19,6 +20,7 @@ export default function App({children}: Props) {
 
     useAppShortcuts()
     useStatusPageManager()
+    useUsageBanner()
 
     return (
         <AppNode className={theme}>

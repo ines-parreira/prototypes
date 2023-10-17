@@ -19,7 +19,6 @@ import {closePanels, openPanel} from 'state/layout/actions'
 import {getCurrentOpenedPanel} from 'state/layout/selectors'
 import {fetchVisibleViewsCounts} from 'state/views/actions'
 import {identifyUser} from 'store/middlewares/segmentTracker'
-import {handleUsageBanner} from 'state/notifications/actions'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
 import {
     getActiveView,
@@ -69,7 +68,6 @@ const App = ({
     const isCurrentUserActive = currentUser.get('is_active')
     const isPreviousCurrentUserActive = useRef()
 
-    const currentAccount = useAppSelector((state) => state.currentAccount)
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
     const hasPhoneIntegration = useAppSelector(
         hasIntegrationOfTypes(IntegrationType.Phone)
@@ -80,20 +78,6 @@ const App = ({
     )
 
     useEffectOnce(() => {
-        const newAccountStatus = currentAccount.getIn(['status', 'status'])
-        const notification: Map<any, any> | undefined = currentAccount.getIn([
-            'status',
-            'notification',
-        ])
-
-        dispatch(
-            handleUsageBanner({
-                newAccountStatus,
-                notification: notification ? notification.toJS() : null,
-                currentAccountStatus: newAccountStatus,
-            })
-        )
-
         userActivityManager.watch()
 
         // ask for the newest view counts
