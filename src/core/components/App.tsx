@@ -8,6 +8,7 @@ import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigration
 import {useTheme} from 'theme'
 
 import useAppShortcuts from '../hooks/useAppShortcuts'
+import useStatusPageManager from '../hooks/useStatusPageManager'
 
 type Props = {
     children: ReactNode
@@ -17,6 +18,7 @@ export default function App({children}: Props) {
     const theme = useTheme()
 
     useAppShortcuts()
+    useStatusPageManager()
 
     return (
         <AppNode className={theme}>

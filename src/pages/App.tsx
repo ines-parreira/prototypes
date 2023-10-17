@@ -15,7 +15,6 @@ import 'assets/css/main.less'
 import {useEffectOnce} from 'react-use'
 import pollingManager from 'services/pollingManager'
 import userActivityManager from 'services/userActivityManager'
-import statusPageManager from 'services/statusPageManager/statusPageManager'
 import {closePanels, openPanel} from 'state/layout/actions'
 import {getCurrentOpenedPanel} from 'state/layout/selectors'
 import {fetchVisibleViewsCounts} from 'state/views/actions'
@@ -96,7 +95,6 @@ const App = ({
         )
 
         userActivityManager.watch()
-        statusPageManager.startPolling()
 
         // ask for the newest view counts
         dispatch(fetchVisibleViewsCounts())
@@ -107,7 +105,6 @@ const App = ({
 
         return () => {
             pollingManager.stop()
-            statusPageManager.stopPolling()
         }
     })
 
