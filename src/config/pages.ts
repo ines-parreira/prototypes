@@ -1,5 +1,4 @@
 export enum PageSection {
-    Billing = 'billing',
     NewBilling = 'new-billing', // TODO(@Irinel) remove this when new billing is fully released
     Integrations = 'integrations',
     Channels = 'channels',

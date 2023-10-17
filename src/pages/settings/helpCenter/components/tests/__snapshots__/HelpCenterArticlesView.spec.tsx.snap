@@ -40,26 +40,22 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             <div
               class="d-flex align-items-center upgradeLink"
             >
-              <a
-                to="[object Object]"
+              <button
+                aria-disabled="false"
+                class="wrapper ghost primary medium"
+                type="button"
               >
-                <button
-                  aria-disabled="false"
-                  class="wrapper ghost primary medium"
-                  type="button"
+                <span
+                  class="wrapper"
                 >
-                  <span
-                    class="wrapper"
+                  <i
+                    class="material-icons icon isLeft medium"
                   >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      auto_awesome
-                    </i>
-                    Upgrade
-                  </span>
-                </button>
-              </a>
+                    auto_awesome
+                  </i>
+                  Get Automation Add-on Features
+                </span>
+              </button>
             </div>
           </div>
           <button

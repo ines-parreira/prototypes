@@ -1,12 +1,10 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import {useAsyncFn} from 'react-use'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {BillingBanner, TicketPurpose} from 'state/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -77,9 +75,6 @@ const BillingStartView = () => {
     const isPaymentShopify = payment === 'shopify'
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
-
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
 
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
@@ -307,10 +302,6 @@ const BillingStartView = () => {
         // trigger useEffect only when convertProduct is changed
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [convertProduct])
-
-    if (!hasAccessToNewBilling) {
-        return null
-    }
 
     return (
         <div className="full-width">

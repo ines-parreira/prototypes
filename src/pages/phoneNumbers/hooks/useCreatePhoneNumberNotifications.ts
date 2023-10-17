@@ -1,22 +1,15 @@
 import {AxiosError} from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {errorToChildren} from 'utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {CustomNotifications} from '../constants'
 
 export default function useCreatePhoneNumberNotifications() {
     const dispatch = useAppDispatch()
 
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
-
     const showCreatePhoneNumberErrorNotification = ({error}: {error: any}) => {
-        const upgradePlanPath = hasAccessToNewBilling
-            ? '/app/settings/billing'
-            : '/app/settings/billing/plans'
+        const upgradePlanPath = '/app/settings/billing'
 
         const {response} = error as AxiosError<{
             error: {msg: string; data: {use_custom: string | null}}

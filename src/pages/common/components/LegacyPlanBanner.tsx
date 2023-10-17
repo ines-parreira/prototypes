@@ -1,7 +1,5 @@
 import React from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {openChat} from '../../../utils'
 
 import css from './LegacyPlanBanner.less'
@@ -13,22 +11,13 @@ type Props = {
 }
 
 export function LegacyPlanBanner({isCustomPrice = false}: Props) {
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
-
     return (
         <LinkAlert
             type={AlertType.Error}
             actionLabel={
                 !isCustomPrice ? 'See all new plans.' : 'Reach out to support'
             }
-            actionHref={
-                !isCustomPrice
-                    ? hasAccessToNewBilling
-                        ? '/app/settings/billing'
-                        : '/app/settings/billing/plans'
-                    : undefined
-            }
+            actionHref={!isCustomPrice ? '/app/settings/billing' : undefined}
             onAction={isCustomPrice ? openChat : undefined}
             icon
             className={css.legacyExpirationAlert}

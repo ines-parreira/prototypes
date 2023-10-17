@@ -40,6 +40,6 @@ export const Default = Template.bind({})
 Default.args = defaultProps
 
 export const ForSpecificPage = Template.bind({})
-ForSpecificPage.args = {...defaultProps, page: PageSection.Billing}
+ForSpecificPage.args = {...defaultProps, page: PageSection.NewBilling}
 
 export default storyConfig

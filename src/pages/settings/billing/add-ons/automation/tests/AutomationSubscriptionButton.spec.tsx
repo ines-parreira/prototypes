@@ -16,7 +16,6 @@ import {
     products,
     starterHelpdeskPrice,
 } from 'fixtures/productPrices'
-import {PlanName} from 'utils/paywalls'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
 import AutomationSubscriptionButton from '../AutomationSubscriptionButton'
@@ -60,9 +59,6 @@ describe('AutomationSubscriptionButton', () => {
         const productsWithStarterPrice = _cloneDeep(products)
         products[0].prices.push(starterHelpdeskPrice)
 
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.NewBillingInterface]: false,
-        })
         render(
             <Provider
                 store={mockStore({
@@ -83,15 +79,11 @@ describe('AutomationSubscriptionButton', () => {
                 <AutomationSubscriptionButton label="Foo" />
             </Provider>
         )
-        expect(mockUpgradeButton).toHaveBeenCalledWith(
-            expect.objectContaining({
-                label: 'Upgrade',
-                state: {
-                    isAutomationAddOnChecked: true,
-                    openedPriceModal: PlanName.Basic,
-                },
-                onClick: undefined,
-            })
-        )
+        expect(mockUpgradeButton).toHaveBeenCalledWith({
+            label: minProps.label,
+            onClick: undefined,
+            position: 'left',
+            state: undefined,
+        })
     })
 })

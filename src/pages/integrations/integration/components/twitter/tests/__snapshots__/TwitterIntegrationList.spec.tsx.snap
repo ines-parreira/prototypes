@@ -182,7 +182,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
             integrations. To add more, you must
             <a
               class="ml-1 mr-1"
-              to="/app/settings/billing/plans"
+              to="/app/settings/billing"
             >
               upgrade
             </a>
@@ -309,7 +309,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
             integrations. To add more, you must
             <a
               class="ml-1 mr-1"
-              to="/app/settings/billing/plans"
+              to="/app/settings/billing"
             >
               upgrade
             </a>

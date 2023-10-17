@@ -66,11 +66,7 @@ import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
 import OnboardingSidePanel from './tickets/list/OnboardingSidePanel'
 import withUserRoleRequired from './common/utils/withUserRoleRequired'
-import BillingContainer from './settings/billing/BillingContainer'
 import NewBilling from './settings/new_billing/views/BillingStartView'
-import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
-import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm'
-import BillingPlansContainer from './settings/billing/plans/BillingPlans'
 import ManageTagsContainer from './settings/tags/ManageTags'
 import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
 import ImportDataContainer from './settings/importData/ImportDataContainer'
@@ -605,8 +601,6 @@ export function SettingsRoutes() {
             ),
         } as PaywallConfig,
     }
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
 
     const isNavbarImprovementsEnabled: boolean =
         useFlags()[FeatureFlagKey.NavbarImprovements] || false
@@ -685,11 +679,7 @@ export function SettingsRoutes() {
             </Route>
             {/* TODO(@Irinel) remove this when new billing is fully released */}
             <Route path={`${path}/billing`}>
-                {hasAccessToNewBilling ? (
-                    <NewBillingSettingsRoutes />
-                ) : (
-                    <BillingSettingsRoutes />
-                )}
+                <NewBillingSettingsRoutes />
             </Route>
             <Route path={`${path}/manage-tags`} exact>
                 <App
@@ -1338,64 +1328,6 @@ export function RevenueSettingsRoutes() {
                 </Route>
             </Switch>
         </RevenueAddonApiClientProvider>
-    )
-}
-
-export function BillingSettingsRoutes() {
-    const {path} = useRouteMatch()
-    return (
-        <Switch>
-            <Route path={`${path}/`} exact>
-                <App
-                    content={memoizedWithUserRoleRequired(
-                        BillingContainer,
-                        ADMIN_ROLE,
-                        PageSection.Billing
-                    )}
-                    navbar={SettingsNavbar}
-                />
-            </Route>
-            <Route path={`${path}/add-payment-method`} exact>
-                <App
-                    content={memoizedWithUserRoleRequired(
-                        CreditCardContainer,
-                        ADMIN_ROLE,
-                        PageSection.Billing
-                    )}
-                    navbar={SettingsNavbar}
-                />
-            </Route>
-            <Route path={`${path}/change-credit-card`} exact>
-                <App
-                    content={memoizedWithUserRoleRequired(
-                        CreditCardContainer,
-                        ADMIN_ROLE,
-                        PageSection.Billing
-                    )}
-                    navbar={SettingsNavbar}
-                />
-            </Route>
-            <Route path={`${path}/update-billing-details`} exact>
-                <App
-                    content={memoizedWithUserRoleRequired(
-                        BillingDetailsFormContainer,
-                        ADMIN_ROLE,
-                        PageSection.Billing
-                    )}
-                    navbar={SettingsNavbar}
-                />
-            </Route>
-            <Route path={`${path}/plans`} exact>
-                <App
-                    content={memoizedWithUserRoleRequired(
-                        BillingPlansContainer,
-                        ADMIN_ROLE,
-                        PageSection.Billing
-                    )}
-                    navbar={SettingsNavbar}
-                />
-            </Route>
-        </Switch>
     )
 }
 

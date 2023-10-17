@@ -3,7 +3,6 @@ import {Link, useParams, NavLink} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {List as ImmutableList, Map} from 'immutable'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {PlanName} from 'utils/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
@@ -17,7 +16,6 @@ import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import Button from 'pages/common/components/button/Button'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Integration from './Integration'
 import Create from './Create'
 import List from './List'
@@ -34,12 +32,7 @@ type Props = {
 }
 
 function Magento2({integration, integrations, loading, redirectUri}: Props) {
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
-
-    const upgradePlanPathname = hasAccessToNewBilling
-        ? '/app/settings/billing'
-        : '/app/settings/billing/plans'
+    const upgradePlanPathname = '/app/settings/billing'
 
     const getHasFeature = useAppSelector(makeHasFeature)
     const {integrationId} = useParams<{integrationId: string}>()

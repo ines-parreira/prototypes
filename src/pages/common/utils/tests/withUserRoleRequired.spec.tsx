@@ -66,7 +66,7 @@ describe('withUserRoleRequired', () => {
         const WrappedComponent = withUserRoleRequired(
             AnyComponent,
             UserRole.Admin,
-            PageSection.Billing
+            PageSection.NewBilling
         )
 
         const {container} = render(

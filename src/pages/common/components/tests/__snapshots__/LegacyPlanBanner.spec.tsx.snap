@@ -27,7 +27,7 @@ exports[`<LegacyPlanBanner /> should render the legacy plan banner 1`] = `
       >
         <a
           class="actionLink"
-          to="/app/settings/billing/plans"
+          to="/app/settings/billing"
         >
           See all new plans.
         </a>

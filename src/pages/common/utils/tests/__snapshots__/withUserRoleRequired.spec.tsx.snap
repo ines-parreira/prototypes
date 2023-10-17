@@ -8,7 +8,7 @@ exports[`withUserRoleRequired should not return the wrapped component if the use
   </span>
   <span>
     Page: 
-    billing
+    new-billing
   </span>
 </div>
 `;

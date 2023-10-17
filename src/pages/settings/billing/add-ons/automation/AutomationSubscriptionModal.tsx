@@ -2,7 +2,6 @@ import React, {ElementType, useMemo, useRef, useState} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {useHistory} from 'react-router-dom'
 import {hasRole} from 'utils'
@@ -24,7 +23,6 @@ import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {isStarterTierPrice} from 'models/billing/utils'
 import {
     BILLING_BASE_PATH,
@@ -39,7 +37,6 @@ import {
 } from 'state/currentAccount/selectors'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import AutomationPlanSubscriptionDescription from './AutomationPlanSubscriptionDescription'
-import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'
 
 type Props = {
@@ -142,20 +139,12 @@ const AutomationSubscriptionModal = ({
         : 'Subscribe to Automation'
 
     const onConfirm = () => {
-        if (hasAccessToNewBilling) {
-            selectedPrice?.price_id &&
-                handleSubscriptionUpdate([
-                    ...currentPriceIds,
-                    selectedPrice.price_id,
-                ]).then(() => onSubscribe && onSubscribe())
-            history.push(BILLING_BASE_PATH)
-        } else {
-            helpdeskPrice?.addons &&
-                handleSubscriptionUpdate([
-                    helpdeskPrice.price_id,
-                    helpdeskPrice.addons[0],
-                ]).then(() => onSubscribe && onSubscribe())
-        }
+        selectedPrice?.price_id &&
+            handleSubscriptionUpdate([
+                ...currentPriceIds,
+                selectedPrice.price_id,
+            ]).then(() => onSubscribe && onSubscribe())
+        history.push(BILLING_BASE_PATH)
     }
 
     const handleUnsubscribeClick = () => {
@@ -163,9 +152,6 @@ const AutomationSubscriptionModal = ({
     }
 
     const isStarterPlan = isStarterTierPrice(helpdeskPrice)
-
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
 
     const automationPrices = useAppSelector(
         getAutomationProduct
@@ -206,7 +192,7 @@ const AutomationSubscriptionModal = ({
                 isOpen={isOpen}
                 toggle={onClose}
                 className={classnames(css.modal, {
-                    [css.wide]: hasAccessToNewBilling,
+                    [css.wide]: true,
                 })}
                 fade={fade}
                 centered
@@ -220,20 +206,16 @@ const AutomationSubscriptionModal = ({
                             : 'manage-automation-addon-modal-body'
                     }
                 >
-                    {!hasAccessToNewBilling ? (
-                        <AutomationSubscriptionDescription />
-                    ) : (
-                        <AutomationPlanSubscriptionDescription
-                            isStarterPlan={isStarterPlan}
-                            isTrialing={isTrialingSubscription}
-                            isEnterprisePlan={isEnterprisePlan}
-                            automationPrices={automationPrices}
-                            interval={interval}
-                            selectedPrice={selectedPrice}
-                            setSelectedPrice={setSelectedPrice}
-                            setIsSubscriptionEnabled={setIsSubscriptionEnabled}
-                        />
-                    )}
+                    <AutomationPlanSubscriptionDescription
+                        isStarterPlan={isStarterPlan}
+                        isTrialing={isTrialingSubscription}
+                        isEnterprisePlan={isEnterprisePlan}
+                        automationPrices={automationPrices}
+                        interval={interval}
+                        selectedPrice={selectedPrice}
+                        setSelectedPrice={setSelectedPrice}
+                        setIsSubscriptionEnabled={setIsSubscriptionEnabled}
+                    />
                     {!!image && (
                         <img
                             alt="automation features"
@@ -267,19 +249,11 @@ const AutomationSubscriptionModal = ({
                         onClose={onClose}
                         onConfirm={onConfirmEnterprise}
                     />
-                ) : hasAccessToNewBilling ? (
-                    <Footer
-                        confirmLabel={confirmLabel}
-                        isUpdating={isSubscriptionUpdating}
-                        isDisabled={!isSubscriptionEnabled}
-                        onClose={onClose}
-                        onConfirm={onConfirm}
-                    />
                 ) : (
                     <Footer
                         confirmLabel={confirmLabel}
                         isUpdating={isSubscriptionUpdating}
-                        isDisabled={false}
+                        isDisabled={!isSubscriptionEnabled}
                         onClose={onClose}
                         onConfirm={onConfirm}
                     />

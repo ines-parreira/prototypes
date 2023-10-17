@@ -19,7 +19,7 @@ describe('<RestrictedPage/>', () => {
         const {container} = render(
             <RestrictedPage
                 requiredRole={UserRole.Admin}
-                page={PageSection.Billing}
+                page={PageSection.NewBilling}
             />
         )
         expect(container.firstChild).toMatchSnapshot()

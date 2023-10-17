@@ -2,14 +2,11 @@ import React, {ComponentProps, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'
 import {logEvent, SegmentEventToSend} from 'store/middlewares/segmentTracker'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 import css from './UpgradeButton.less'
 
 type Props = {
@@ -42,12 +39,7 @@ const UpgradeButton = ({
         [hasIcon, label, position]
     )
 
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
-
-    const pathname = hasAccessToNewBilling
-        ? '/app/settings/billing'
-        : '/app/settings/billing/plans'
+    const pathname = '/app/settings/billing'
 
     return (
         <div className={className}>
