@@ -29,8 +29,6 @@ import {
 import {IntegrationType} from 'models/integration/types'
 import {getViewFilters} from 'state/views/utils'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {handle2FAEnforced} from 'state/currentUser/actions'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -116,15 +114,7 @@ const App = ({
     useLayoutEffect(() => {
         if (isPreviousCurrentUserActive.current && !isCurrentUserActive) {
             if (activeView.get('filters_ast')) {
-                const shouldContinuePollingChatViews =
-                    !!getLDClient().allFlags()[
-                        FeatureFlagKey.ContinuousChatViewsPolling
-                    ]
-
-                if (
-                    shouldContinuePollingChatViews &&
-                    shouldFetchActiveViewTickets
-                ) {
+                if (shouldFetchActiveViewTickets) {
                     const filtersAST = (
                         activeView.get('filters_ast') as Map<any, any>
                     ).toJS() as Program
