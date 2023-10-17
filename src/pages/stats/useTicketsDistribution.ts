@@ -8,6 +8,7 @@ import {
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import {OrderDirection} from 'models/api/types'
 
 export const useTicketsDistribution = (topAmount = 10) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
@@ -18,7 +19,8 @@ export const useTicketsDistribution = (topAmount = 10) => {
     const {data, isFetching} = useCustomFieldsTicketCount(
         cleanStatsFilters,
         userTimezone,
-        String(selectedCustomField.id)
+        String(selectedCustomField.id),
+        OrderDirection.Desc
     )
 
     const topData = useMemo(

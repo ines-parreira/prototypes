@@ -8,10 +8,15 @@ import {assumeMock} from 'utils/testing'
 import {ReportingGranularity} from 'models/reporting/types'
 import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerDimension'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/reducers'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {
+    TicketCustomFieldsMeasure,
+    TicketCustomFieldsDimension,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
 
 const mockStore = configureMockStore([thunk])
 
@@ -19,6 +24,8 @@ jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
     useCustomFieldsTicketCountTimeSeries
 )
+jest.mock('hooks/reporting/metricsPerDimension')
+const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
 
 describe('useTicketsFieldTrend', () => {
     const defaultState = {
@@ -43,6 +50,23 @@ describe('useTicketsFieldTrend', () => {
         },
         isFetching: false,
     } as any)
+
+    useCustomFieldsTicketCountMock.mockReturnValue({
+        data: {
+            allData: [
+                {
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                        'Category::Subcategory',
+                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
+                        '45',
+                },
+            ],
+            value: 45,
+            decile: null,
+        },
+        isError: false,
+        isFetching: false,
+    })
 
     it('should return tickets trend', () => {
         const {result} = renderHook(() => useTicketsFieldTrend(), {
