@@ -39,7 +39,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import css from './App.less'
 import FullPage from './common/components/FullPage'
-import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp'
 import {ErrorBoundary} from './ErrorBoundary'
 import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar'
 import IconButton from './common/components/button/IconButton'
@@ -185,70 +184,64 @@ const App = ({
     const hasOpenedPanel = !!openedPanel
 
     return (
-        <>
-            <div id="app-root" className={css.app}>
-                <Spotlight>{Navbar && <Navbar />}</Spotlight>
+        <div id="app-root" className={css.app}>
+            <Spotlight>{Navbar && <Navbar />}</Spotlight>
 
+            <div
+                className={classnames(
+                    'd-flex flex-grow-1 flex-column',
+                    css.container
+                )}
+            >
                 <div
-                    className={classnames(
-                        'd-flex flex-grow-1 flex-column',
-                        css.container
-                    )}
+                    className="d-flex flex-grow-1"
+                    style={{
+                        overflow: 'hidden',
+                    }}
                 >
-                    <div
-                        className="d-flex flex-grow-1"
-                        style={{
-                            overflow: 'hidden',
-                        }}
-                    >
-                        <div className={classnames('app-content', css.content)}>
-                            <div className="mobile-nav">
-                                <IconButton
-                                    className="mr-3"
+                    <div className={classnames('app-content', css.content)}>
+                        <div className="mobile-nav">
+                            <IconButton
+                                className="mr-3"
+                                fillStyle="ghost"
+                                intent="secondary"
+                                onClick={() => dispatch(openPanel('navbar'))}
+                            >
+                                menu
+                            </IconButton>
+                            {infobarOnMobile && (
+                                <Button
+                                    className="ml-3"
                                     fillStyle="ghost"
                                     intent="secondary"
                                     onClick={() =>
-                                        dispatch(openPanel('navbar'))
+                                        dispatch(openPanel('infobar'))
                                     }
                                 >
-                                    menu
-                                </IconButton>
-                                {infobarOnMobile && (
-                                    <Button
-                                        className="ml-3"
-                                        fillStyle="ghost"
-                                        intent="secondary"
-                                        onClick={() =>
-                                            dispatch(openPanel('infobar'))
-                                        }
-                                    >
-                                        More info
-                                    </Button>
-                                )}
-                            </div>
-
-                            <Wrapper {...wrapperProps}>
-                                <ErrorBoundary>{content || null}</ErrorBoundary>
-                            </Wrapper>
+                                    More info
+                                </Button>
+                            )}
                         </div>
 
-                        {!!Infobar && (
-                            <Infobar isEditingWidgets={!!isEditingWidgets} />
-                        )}
+                        <Wrapper {...wrapperProps}>
+                            <ErrorBoundary>{content || null}</ErrorBoundary>
+                        </Wrapper>
                     </div>
-                    {hasPhoneIntegration && <PhoneIntegrationBar />}
-                </div>
 
-                <div
-                    className={classnames(css.backdrop, {
-                        [css.hidden]: !hasOpenedPanel,
-                    })}
-                    onClick={() => dispatch(closePanels())}
-                />
+                    {!!Infobar && (
+                        <Infobar isEditingWidgets={!!isEditingWidgets} />
+                    )}
+                </div>
+                {hasPhoneIntegration && <PhoneIntegrationBar />}
             </div>
 
-            <KeyboardHelp />
-        </>
+            <div
+                className={classnames(css.backdrop, {
+                    [css.hidden]: !hasOpenedPanel,
+                })}
+                onClick={() => dispatch(closePanels())}
+            />
+        </div>
     )
 }
 
