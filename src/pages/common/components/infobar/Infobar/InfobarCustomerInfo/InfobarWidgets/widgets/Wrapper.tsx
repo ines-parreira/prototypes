@@ -60,7 +60,8 @@ export default function Wrapper({widget, template, source}: Props) {
     const templatePath = template.get('templatePath', '') as string
 
     const widgetType = widget.get('type') as WidgetType
-    const integration = useIntegration(absolutePath, widgetType)
+    const integrationId: number = widget.get('integration_id') as number
+    const integration = useIntegration(absolutePath, widgetType, integrationId)
 
     const widgetName = getWidgetTitle({
         source: source?.toJS(),
@@ -215,8 +216,19 @@ export default function Wrapper({widget, template, source}: Props) {
     )
 }
 
-function useIntegration(absolutePath: string[], widgetType: WidgetType) {
-    const integrationId = parseInt(_last(absolutePath) || '')
+export function useIntegration(
+    absolutePath: string[],
+    widgetType: WidgetType,
+    integration_id: number
+) {
+    const lastAbsolutePath = _last(absolutePath) || ''
+    let integrationId = null
+    // Check for uuid, and if it is not in the path, then the leaf is the integration id
+    if (!lastAbsolutePath.includes('-')) {
+        integrationId = parseInt(lastAbsolutePath)
+    } else {
+        integrationId = integration_id
+    }
 
     const integration = useAppSelector(
         integrationsSelectors.getIntegrationById(integrationId)

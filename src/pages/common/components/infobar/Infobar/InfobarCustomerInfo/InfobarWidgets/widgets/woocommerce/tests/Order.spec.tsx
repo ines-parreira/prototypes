@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
 import {EcommerceStore} from 'models/customerEcommerceData/types'
-import Shopper from '../Shopper'
+import Order from '../Order'
 
 const ecomStore: EcommerceStore = {
     deleted_datetime: null,
@@ -30,14 +30,23 @@ jest.mock('../useStore', () => {
     }
 })
 
-describe('Shopper card', () => {
+describe('Order card', () => {
     describe('<TitleWrapper/>', () => {
-        it('should render it children, plus woocommerce logo and title', () => {
-            const {TitleWrapper} = Shopper()
+        it('should render the order', () => {
+            const {TitleWrapper} = Order()
             const {container} = render(
                 <TitleWrapper source={fromJS({external_id: '1234'})}>
-                    Shopper
+                    Order
                 </TitleWrapper>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render the order without the external id', () => {
+            const {TitleWrapper} = Order()
+            const {container} = render(
+                <TitleWrapper source={fromJS({})}>Order</TitleWrapper>
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -45,10 +54,10 @@ describe('Shopper card', () => {
 
         it('should not render because the store is missing', () => {
             mockEcomStore = undefined
-            const {TitleWrapper} = Shopper()
+            const {TitleWrapper} = Order()
             const {container} = render(
                 <TitleWrapper source={fromJS({external_id: '1234'})}>
-                    Shopper
+                    Order
                 </TitleWrapper>
             )
 

@@ -24,7 +24,7 @@ export enum IntegrationType {
     Alloy = 'alloy',
     App = 'app',
     WhatsApp = 'whatsapp',
-    Ecommerce = 'ecommerce',
+    Ecommerce = 'ecom',
 }
 
 export enum VoiceMessageType {

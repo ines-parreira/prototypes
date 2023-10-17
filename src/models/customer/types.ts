@@ -44,7 +44,9 @@ export type Customer = CustomerDraft & {
     customer: Maybe<CustomerInformation>
     data: CustomerInformation | null
     external_data?: CustomerExternalData
-    ecommerce_data?: CustomerEcommerceData
+    ecommerce_data?: {
+        [key: string]: CustomerEcommerceData
+    }
     email: string | null
     external_id: Maybe<string>
     firstname: string

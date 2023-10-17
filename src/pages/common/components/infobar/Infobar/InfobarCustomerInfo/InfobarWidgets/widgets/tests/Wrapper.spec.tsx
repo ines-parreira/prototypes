@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
+import {renderHook} from '@testing-library/react-hooks'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {IntegrationType} from 'models/integration/types'
 import * as actions from 'state/widgets/actions'
@@ -13,7 +14,7 @@ import {
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import Wrapper from '../Wrapper'
+import Wrapper, {useIntegration} from '../Wrapper'
 
 jest.spyOn(actions, 'removeEditedWidget')
 
@@ -46,7 +47,7 @@ const store = mockStore({
 const shopifyWidget = {
     id: 4,
     type: IntegrationType.Shopify,
-    integration_id: 1,
+    integration_id: 2,
     template: {
         type: 'wrapper',
         widgets: [],
@@ -59,7 +60,7 @@ const shopifySource = fromJS({foo: 'foo value'})
 const httpWidget = {
     id: 5,
     type: IntegrationType.Http,
-    integration_id: 2,
+    integration_id: 1,
     template: {
         type: 'wrapper',
         widgets: [],
@@ -232,5 +233,49 @@ describe('InfobarWidgets component', () => {
         )
 
         expect(container).toMatchSnapshot()
+    })
+})
+
+// @ts-ignore
+const wrapper = ({children}) => <Provider store={store}>{children}</Provider>
+
+describe('useIntegration hook', () => {
+    it('should return the integration extracted from the absolute path', () => {
+        const absolutePath = ['a', 'b', 'c', '2']
+        const widgetType = IntegrationType.Shopify
+        const integrationId = 0
+        const {result} = renderHook(
+            () => useIntegration(absolutePath, widgetType, integrationId),
+            {wrapper}
+        )
+        expect(result.current).toEqual(
+            fromJS({
+                id: 2,
+                type: 'shopify',
+                name: 'my little shopify integration',
+            })
+        )
+    })
+
+    it('should return the integration extracted from the integration id', () => {
+        const absolutePath = [
+            'a',
+            'b',
+            'c',
+            'd9c28d74-683b-11ee-8c99-0242ac120002',
+        ]
+        const widgetType = IntegrationType.Shopify
+        const integrationId = 2
+        const {result} = renderHook(
+            () => useIntegration(absolutePath, widgetType, integrationId),
+            {wrapper}
+        )
+        expect(result.current).toEqual(
+            fromJS({
+                id: 2,
+                type: 'shopify',
+                name: 'my little shopify integration',
+            })
+        )
     })
 })
