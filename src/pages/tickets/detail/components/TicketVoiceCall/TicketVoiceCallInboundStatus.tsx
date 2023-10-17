@@ -11,7 +11,7 @@ type Props = {
 
 export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
     const answeredByAgentId = (
-        <div className={css.statusWrapper}>
+        <div className={classNames(css.statusWrapper, css.inbound)}>
             <div>Answered by</div>
             {voiceCall.last_answered_by_agent_id && (
                 <VoiceCallAgentLabel
@@ -38,7 +38,7 @@ export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
                     <div
                         className={classNames(
                             css.errorStatus,
-                            css.statusWrapper
+                            css.missedCallStatus
                         )}
                     >
                         <i

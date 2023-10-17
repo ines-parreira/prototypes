@@ -5,13 +5,16 @@ import {User} from 'config/types/user'
 import {Customer} from 'models/customer/types'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 
+import {VoiceCall} from 'models/voiceCall/types'
 import css from './TicketVoiceCallContainer.less'
+import TicketVoiceCallDuration from './TicketVoiceCallDuration'
 
 type Props = {
     header: JSX.Element
     user?: User | Customer
     callStatus: JSX.Element | string | null
     dateTime: string
+    voiceCall: VoiceCall
 }
 
 export default function TicketVoiceCallContainer({
@@ -19,6 +22,7 @@ export default function TicketVoiceCallContainer({
     user,
     callStatus,
     dateTime,
+    voiceCall,
 }: Props) {
     return (
         <div className={css.container}>
@@ -42,7 +46,10 @@ export default function TicketVoiceCallContainer({
                         breakDate
                     />
                 </div>
-                <div>{callStatus}</div>
+                <div className={css.row}>
+                    <div>{callStatus}</div>
+                    <TicketVoiceCallDuration voiceCall={voiceCall} />
+                </div>
             </div>
         </div>
     )

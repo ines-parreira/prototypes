@@ -13,7 +13,7 @@ export const voiceCall: VoiceCall = {
     country_source: 'US',
     phone_number_destination: '+17201234567',
     country_destination: 'US',
-    duration: '60',
+    duration: 60,
     started_datetime: '2023-08-31T00:00:00.000000+00:00',
     created_datetime: '2023-08-31T00:00:00.000000+00:00',
     updated_datetime: '2023-08-31T00:00:00.000000+00:00',

@@ -44,6 +44,17 @@
 
     .statusWrapper {
         display: flex;
+        gap: @layout-spacing-xxs;
+        align-items: baseline;
+        flex-wrap: wrap;
+
+        &.inbound {
+            align-items: center;
+        }
+    }
+
+    .missedCallStatus {
+        display: flex;
         align-items: center;
         gap: @layout-spacing-xs;
 
@@ -69,6 +80,7 @@
         display: flex;
         align-items: center;
         gap: @layout-spacing-xs;
+        flex-wrap: wrap;
 
         .phoneIcon {
             color: var(--neutral-grey-4);

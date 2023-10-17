@@ -30,7 +30,7 @@ export type VoiceCall = {
     country_source: string
     phone_number_destination: string
     country_destination: string
-    duration: string
+    duration: number
     started_datetime: string
     created_datetime: string
     updated_datetime: string

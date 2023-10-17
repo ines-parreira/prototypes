@@ -30,6 +30,7 @@ export default function TicketVoiceCallInbound({voiceCall}: Props) {
                 </>
             }
             callStatus={<TicketVoiceCallInboundStatus voiceCall={voiceCall} />}
+            voiceCall={voiceCall}
         />
     )
 }

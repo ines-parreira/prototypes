@@ -35,7 +35,10 @@ jest.mock(
         ({voiceCall}: {voiceCall: VoiceCall}) =>
             <div>TicketVoiceCallOutboundStatus {voiceCall.status}</div>
 )
-
+jest.mock(
+    'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallDuration',
+    () => () => <div>TicketVoiceCallDuration</div>
+)
 const isFinalVoiceCallSpy = jest.spyOn(utils, 'isFinalVoiceCallStatus')
 
 describe('TicketVoiceCallOutbound', () => {
@@ -63,6 +66,12 @@ describe('TicketVoiceCallOutbound', () => {
             `TicketVoiceCallOutboundStatus ${voiceCall.status}`
         )
         expect(callStatus).toBeInTheDocument()
+    })
+
+    it('renders the call duration', () => {
+        const {getByText} = renderComponent()
+        const callDuration = getByText('TicketVoiceCallDuration')
+        expect(callDuration).toBeInTheDocument()
     })
 
     it('displays correct header when call is still in progress', () => {
