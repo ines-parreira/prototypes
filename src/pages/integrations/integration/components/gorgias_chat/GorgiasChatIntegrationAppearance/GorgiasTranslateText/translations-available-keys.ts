@@ -1,3 +1,5 @@
+import {GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH} from 'config/integrations/gorgias_chat'
+
 export type FilterProps = {
     emailCaptureEnforcement?: string
 }
@@ -27,8 +29,12 @@ export default {
         },
     },
     intro: {
-        'texts.introductionText': {maxLength: 35},
-        'texts.offlineIntroductionText': {maxLength: 35},
+        'texts.introductionText': {
+            maxLength: GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
+        },
+        'texts.offlineIntroductionText': {
+            maxLength: GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
+        },
     },
     contactForm: {
         'texts.contactFormIntro': {maxLength: 110},
