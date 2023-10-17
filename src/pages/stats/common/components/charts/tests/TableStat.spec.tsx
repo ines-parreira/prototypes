@@ -1,15 +1,21 @@
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import {act, render, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import {Integration} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {initialState} from 'state/tags/reducers'
 import {TableStat} from '../TableStat/TableStat'
 import {
     stats as statsConfig,
     StatValueType,
     TICKETS_PER_TAG,
 } from '../../../../../../config/stats'
+
+const mockStore = configureMockStore()
 
 const tableStatData = fromJS({
     data: {
@@ -240,38 +246,43 @@ const selfServiceConfigurationsData = [
 ]
 
 describe('TableStat', () => {
+    const defaultState = {entities: {tags: initialState}}
     it('should render a table chart', () => {
         const config = statsConfig.find(
             (config, key) => key === TICKETS_PER_TAG
         )
-        const component = shallow(
-            <TableStat
-                {...(tableStatData.toObject() as ComponentProps<
-                    typeof TableStat
-                >)}
-                context={{tagColors: null}}
-                config={config}
-                integrations={integrationsData}
-                selfServiceConfigurations={selfServiceConfigurationsData}
-            />
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TableStat
+                    {...(tableStatData.toObject() as ComponentProps<
+                        typeof TableStat
+                    >)}
+                    context={{tagColors: null}}
+                    config={config}
+                    integrations={integrationsData}
+                    selfServiceConfigurations={selfServiceConfigurationsData}
+                />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a table chart with "no data" message', () => {
         const config = statsConfig.find(
             (config, key) => key === TICKETS_PER_TAG
         )
-        const component = shallow(
-            <TableStat
-                {...(tableStatNoData.toObject() as ComponentProps<
-                    typeof TableStat
-                >)}
-                context={{tagColors: null}}
-                config={config}
-            />
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TableStat
+                    {...(tableStatNoData.toObject() as ComponentProps<
+                        typeof TableStat
+                    >)}
+                    context={{tagColors: null}}
+                    config={config}
+                />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a table with the expand button and one line visible', () => {
@@ -281,25 +292,27 @@ describe('TableStat', () => {
                 .toJS(),
             tableOptions: {showLines: 1},
         }
-        const component = shallow(
-            <TableStat
-                {...(tableStatData
-                    .setIn(
-                        ['data', 'lines'],
-                        fromJS([
-                            tableStatData.getIn(['data', 'lines', 0]),
-                            tableStatData.getIn(['data', 'lines', 0]),
-                        ])
-                    )
-                    .toObject() as ComponentProps<typeof TableStat>)}
-                context={{tagColors: null}}
-                config={fromJS(config)}
-                integrations={integrationsData}
-                selfServiceConfigurations={selfServiceConfigurationsData}
-            />
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TableStat
+                    {...(tableStatData
+                        .setIn(
+                            ['data', 'lines'],
+                            fromJS([
+                                tableStatData.getIn(['data', 'lines', 0]),
+                                tableStatData.getIn(['data', 'lines', 0]),
+                            ])
+                        )
+                        .toObject() as ComponentProps<typeof TableStat>)}
+                    context={{tagColors: null}}
+                    config={fromJS(config)}
+                    integrations={integrationsData}
+                    selfServiceConfigurations={selfServiceConfigurationsData}
+                />
+            </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should extend the table to show all the elements', () => {
@@ -309,26 +322,30 @@ describe('TableStat', () => {
                 .toJS(),
             tableOptions: {showLines: 1},
         }
-        const component = shallow(
-            <TableStat
-                {...(tableStatData
-                    .setIn(
-                        ['data', 'lines'],
-                        fromJS([
-                            tableStatData.getIn(['data', 'lines', 0]),
-                            tableStatData.getIn(['data', 'lines', 0]),
-                        ])
-                    )
-                    .toObject() as ComponentProps<typeof TableStat>)}
-                context={{tagColors: null}}
-                config={fromJS(config)}
-                integrations={integrationsData}
-                selfServiceConfigurations={selfServiceConfigurationsData}
-            />
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TableStat
+                    {...(tableStatData
+                        .setIn(
+                            ['data', 'lines'],
+                            fromJS([
+                                tableStatData.getIn(['data', 'lines', 0]),
+                                tableStatData.getIn(['data', 'lines', 0]),
+                            ])
+                        )
+                        .toObject() as ComponentProps<typeof TableStat>)}
+                    context={{tagColors: null}}
+                    config={fromJS(config)}
+                    integrations={integrationsData}
+                    selfServiceConfigurations={selfServiceConfigurationsData}
+                />
+            </Provider>
         )
 
-        component.find('button').simulate('click')
+        act(() => {
+            userEvent.click(screen.getByRole('button'))
+        })
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

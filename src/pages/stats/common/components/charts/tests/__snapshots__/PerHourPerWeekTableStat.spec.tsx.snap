@@ -2,7 +2,7 @@
 
 exports[`PerHourPerWeekTableStat Table Should render a message indicating we no data is present 1`] = `
 <div
-  className="text-muted"
+  class="text-muted"
 >
   There is no data for this period.
 </div>
@@ -11,93 +11,90 @@ exports[`PerHourPerWeekTableStat Table Should render a message indicating we no 
 exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`] = `
 <div>
   <div
-    className="mb-4"
+    class="mb-4"
   >
-    <Legend
-      labels={
-        [
-          {
-            "aheadLabel": "Least busy",
-            "background": "linear-gradient(90deg,#F6F9FF 25%, #D2E2FD 25%, #D2E2FD 50%, #9BC0FC 50%, #9BC0FC 75%, #77A9FA 75%, #77A9FA 100%)",
-            "name": "Busiest",
-            "shape": "rectangle",
-          },
-          {
-            "background": "repeating-linear-gradient(135deg, #FFFFFF, #FFFFFF 2px, #F4697D 2px, #F4697D 4px)",
-            "name": "Business Hours",
-            "shape": "square",
-          },
-        ]
-      }
-    />
+    <div
+      class="legends"
+    >
+      <span
+        class="label mr-4 mb-2"
+      >
+        <span
+          class="mr-2"
+        >
+          Least busy
+        </span>
+        <span
+          class="rectangle mr-2"
+        />
+        Busiest
+      </span>
+      <span
+        class="label mr-4 mb-2"
+      >
+        <span
+          class="square mr-2"
+        />
+        Business Hours
+      </span>
+    </div>
   </div>
-  <Table
-    className="hourlyTable"
-    hover={true}
-    responsiveTag="div"
-    tag="table"
+  <table
+    class="hourlyTable table table-hover"
   >
     <thead>
       <tr>
         <th
-          className="string"
-          key="0"
+          class="string"
         >
           <span>
             HOUR
           </span>
         </th>
         <th
-          className="number"
-          key="1"
+          class="number"
         >
           <span>
             MONDAY
           </span>
         </th>
         <th
-          className="number"
-          key="2"
+          class="number"
         >
           <span>
             TUESDAY
           </span>
         </th>
         <th
-          className="number"
-          key="3"
+          class="number"
         >
           <span>
             WEDNESDAY
           </span>
         </th>
         <th
-          className="number"
-          key="4"
+          class="number"
         >
           <span>
             THURSDAY
           </span>
         </th>
         <th
-          className="number"
-          key="5"
+          class="number"
         >
           <span>
             FRIDAY
           </span>
         </th>
         <th
-          className="number"
-          key="6"
+          class="number"
         >
           <span>
             SATURDAY
           </span>
         </th>
         <th
-          className="number"
-          key="7"
+          class="number"
         >
           <span>
             SUNDAY
@@ -106,171 +103,207 @@ exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`
       </tr>
     </thead>
     <tbody>
-      <TableCells
-        businessHoursSettings={Immutable.Map {}}
-        lines={
-          Immutable.List [
-            Immutable.List [
-              Immutable.Map {
-                "type": "string",
-                "value": "00:00",
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 1,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 2,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 3,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 3,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 2,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-            ],
-            Immutable.List [
-              Immutable.Map {
-                "type": "string",
-                "value": "01:00",
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 4,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 4,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 7,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 3,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 3,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 2,
-              },
-            ],
-          ]
-        }
-        userTimezone=""
-      />
+      <tr>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            00:00
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(246, 249, 255);"
+        >
+          <div
+            class="redTransparentStripes"
+          />
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(246, 249, 255);"
+        >
+          <span>
+            1
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(210, 226, 253);"
+        >
+          <span>
+            2
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(210, 226, 253);"
+        >
+          <span>
+            3
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(210, 226, 253);"
+        >
+          <span>
+            3
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(210, 226, 253);"
+        >
+          <span>
+            2
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(246, 249, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            01:00
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(246, 249, 255);"
+        >
+          <div
+            class="redTransparentStripes"
+          />
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(155, 192, 252);"
+        >
+          <span>
+            4
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(155, 192, 252);"
+        >
+          <span>
+            4
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(119, 169, 250);"
+        >
+          <span>
+            7
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(210, 226, 253);"
+        >
+          <span>
+            3
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(210, 226, 253);"
+        >
+          <span>
+            3
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(210, 226, 253);"
+        >
+          <span>
+            2
+          </span>
+        </td>
+      </tr>
     </tbody>
-  </Table>
+  </table>
 </div>
 `;
 
 exports[`PerHourPerWeekTableStat Table Should render the table with no interval in the legend 1`] = `
 <div>
   <div
-    className="mb-4"
+    class="mb-4"
   >
-    <Legend
-      labels={
-        [
-          {
-            "background": "repeating-linear-gradient(135deg, #FFFFFF, #FFFFFF 2px, #F4697D 2px, #F4697D 4px)",
-            "name": "Business Hours",
-            "shape": "square",
-          },
-        ]
-      }
-    />
+    <div
+      class="legends"
+    >
+      <span
+        class="label mr-4 mb-2"
+      >
+        <span
+          class="square mr-2"
+        />
+        Business Hours
+      </span>
+    </div>
   </div>
-  <Table
-    className="hourlyTable"
-    hover={true}
-    responsiveTag="div"
-    tag="table"
+  <table
+    class="hourlyTable table table-hover"
   >
     <thead>
       <tr>
         <th
-          className="string"
-          key="0"
+          class="string"
         >
           <span>
             HOUR
           </span>
         </th>
         <th
-          className="number"
-          key="1"
+          class="number"
         >
           <span>
             MONDAY
           </span>
         </th>
         <th
-          className="number"
-          key="2"
+          class="number"
         >
           <span>
             TUESDAY
           </span>
         </th>
         <th
-          className="number"
-          key="3"
+          class="number"
         >
           <span>
             WEDNESDAY
           </span>
         </th>
         <th
-          className="number"
-          key="4"
+          class="number"
         >
           <span>
             THURSDAY
           </span>
         </th>
         <th
-          className="number"
-          key="5"
+          class="number"
         >
           <span>
             FRIDAY
           </span>
         </th>
         <th
-          className="number"
-          key="6"
+          class="number"
         >
           <span>
             SATURDAY
           </span>
         </th>
         <th
-          className="number"
-          key="7"
+          class="number"
         >
           <span>
             SUNDAY
@@ -279,346 +312,269 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
       </tr>
     </thead>
     <tbody>
-      <TableCells
-        businessHoursSettings={Immutable.Map {}}
-        lines={
-          Immutable.List [
-            Immutable.List [
-              Immutable.Map {
-                "type": "string",
-                "value": "00:00",
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-            ],
-            Immutable.List [
-              Immutable.Map {
-                "type": "string",
-                "value": "01:00",
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-              Immutable.Map {
-                "type": "number",
-                "value": 0,
-              },
-            ],
-          ]
-        }
-        userTimezone=""
-      />
+      <tr>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            00:00
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <div
+            class="redTransparentStripes"
+          />
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            01:00
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <div
+            class="redTransparentStripes"
+          />
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+        <td
+          style="background-color: rgb(255, 255, 255);"
+        >
+          <span>
+            0
+          </span>
+        </td>
+      </tr>
     </tbody>
-  </Table>
+  </table>
 </div>
 `;
 
 exports[`PerHourPerWeekTableStat TableCells Should render with a different timezone between business hours and the current user 1`] = `
-[
-  <tr>
-    <td
-      style="background-color:#FFFFFF"
-    >
-      <span>
-        00:00
-      </span>
-    </td>
-    <td
-      style="background-color:#F6F9FF"
-    >
-      <div
-        class="redTransparentStripes"
-      />
-      <span>
-        0
-      </span>
-    </td>
-    <td
-      style="background-color:#F6F9FF"
-    >
-      <div
-        class="redTransparentStripes"
-      />
-      <span>
-        1
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <div
-        class="redTransparentStripes"
-      />
-      <span>
-        2
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <div
-        class="redTransparentStripes"
-      />
-      <span>
-        3
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <div
-        class="redTransparentStripes"
-      />
-      <span>
-        3
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        2
-      </span>
-    </td>
-    <td
-      style="background-color:#F6F9FF"
-    >
-      <span>
-        0
-      </span>
-    </td>
-  </tr>,
-  <tr>
-    <td
-      style="background-color:#FFFFFF"
-    >
-      <span>
-        01:00
-      </span>
-    </td>
-    <td
-      style="background-color:#F6F9FF"
-    >
-      <span>
-        0
-      </span>
-    </td>
-    <td
-      style="background-color:#9BC0FC"
-    >
-      <span>
-        4
-      </span>
-    </td>
-    <td
-      style="background-color:#9BC0FC"
-    >
-      <span>
-        4
-      </span>
-    </td>
-    <td
-      style="background-color:#77A9FA"
-    >
-      <span>
-        7
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        3
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        3
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        2
-      </span>
-    </td>
-  </tr>,
-]
+<tr>
+  <td
+    style="background-color: rgb(255, 255, 255);"
+  >
+    <span>
+      00:00
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(246, 249, 255);"
+  >
+    <div
+      class="redTransparentStripes"
+    />
+    <span>
+      0
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(246, 249, 255);"
+  >
+    <div
+      class="redTransparentStripes"
+    />
+    <span>
+      1
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(210, 226, 253);"
+  >
+    <div
+      class="redTransparentStripes"
+    />
+    <span>
+      2
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(210, 226, 253);"
+  >
+    <div
+      class="redTransparentStripes"
+    />
+    <span>
+      3
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(210, 226, 253);"
+  >
+    <div
+      class="redTransparentStripes"
+    />
+    <span>
+      3
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(210, 226, 253);"
+  >
+    <span>
+      2
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(246, 249, 255);"
+  >
+    <span>
+      0
+    </span>
+  </td>
+</tr>
 `;
 
 exports[`PerHourPerWeekTableStat TableCells Should render with the same timezone for the business hours and the current user 1`] = `
-[
-  <tr>
-    <td
-      style="background-color:#FFFFFF"
-    >
-      <span>
-        00:00
-      </span>
-    </td>
-    <td
-      style="background-color:#F6F9FF"
-    >
-      <div
-        class="redTransparentStripes"
-      />
-      <span>
-        0
-      </span>
-    </td>
-    <td
-      style="background-color:#F6F9FF"
-    >
-      <span>
-        1
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        2
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        3
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        3
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        2
-      </span>
-    </td>
-    <td
-      style="background-color:#F6F9FF"
-    >
-      <span>
-        0
-      </span>
-    </td>
-  </tr>,
-  <tr>
-    <td
-      style="background-color:#FFFFFF"
-    >
-      <span>
-        01:00
-      </span>
-    </td>
-    <td
-      style="background-color:#F6F9FF"
-    >
-      <div
-        class="redTransparentStripes"
-      />
-      <span>
-        0
-      </span>
-    </td>
-    <td
-      style="background-color:#9BC0FC"
-    >
-      <span>
-        4
-      </span>
-    </td>
-    <td
-      style="background-color:#9BC0FC"
-    >
-      <span>
-        4
-      </span>
-    </td>
-    <td
-      style="background-color:#77A9FA"
-    >
-      <span>
-        7
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        3
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        3
-      </span>
-    </td>
-    <td
-      style="background-color:#D2E2FD"
-    >
-      <span>
-        2
-      </span>
-    </td>
-  </tr>,
-]
+<tr>
+  <td
+    style="background-color: rgb(255, 255, 255);"
+  >
+    <span>
+      00:00
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(246, 249, 255);"
+  >
+    <div
+      class="redTransparentStripes"
+    />
+    <span>
+      0
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(246, 249, 255);"
+  >
+    <span>
+      1
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(210, 226, 253);"
+  >
+    <span>
+      2
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(210, 226, 253);"
+  >
+    <span>
+      3
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(210, 226, 253);"
+  >
+    <span>
+      3
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(210, 226, 253);"
+  >
+    <span>
+      2
+    </span>
+  </td>
+  <td
+    style="background-color: rgb(246, 249, 255);"
+  >
+    <span>
+      0
+    </span>
+  </td>
+</tr>
 `;

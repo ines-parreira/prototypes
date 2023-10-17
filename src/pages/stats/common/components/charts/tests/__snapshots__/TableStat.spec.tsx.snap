@@ -1,1971 +1,2961 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TableStat should extend the table to show all the elements 1`] = `
-<Fragment>
-  <Table
-    className="table"
-    hover={true}
-    responsiveTag="div"
-    tag="table"
-  >
-    <thead>
-      <tr>
-        <th
-          className="user"
-          key="0"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            AGENT
-          </span>
-        </th>
-        <th
-          className="string"
-          key="1"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TAGS
-          </span>
-        </th>
-        <th
-          className="number"
-          key="2"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            NEW TICKETS #
-          </span>
-        </th>
-        <th
-          className="percent"
-          key="3"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            PERCENT
-          </span>
-        </th>
-        <th
-          className="satisfaction-score"
-          key="4"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            AGENT SCORE
-          </span>
-        </th>
-        <th
-          className="satisfaction-score"
-          key="5"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SURVEY SCORE
-          </span>
-        </th>
-        <th
-          className="delta"
-          key="6"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            DELTA
-          </span>
-        </th>
-        <th
-          className="currency"
-          key="7"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SALES
-          </span>
-        </th>
-        <th
-          className="online-time"
-          key="8"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            ONLINE TIME
-          </span>
-        </th>
-        <th
-          className="ticket-details"
-          key="9"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TICKET DETAILS
-          </span>
-        </th>
-        <th
-          className="customer-link"
-          key="10"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            CUSTOMER LINK
-          </span>
-        </th>
-        <th
-          className="customer-link"
-          key="11"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            CUSTOMER LINK - NULL
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="12"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="13"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK - NULL
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="14"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
-          </span>
-        </th>
-        <th
-          className="title-with-link"
-          key="15"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TITLE WITH LINK
-          </span>
-        </th>
-        <th
-          className="quick-response-title"
-          key="16"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TITLE FOR QUICK RESPONSE
-          </span>
-        </th>
-        <th
-          className="quick-response-automation-rate"
-          key="17"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            QUICK RESPONSE AUTOMATION RATE
-          </span>
-        </th>
-        <th
-          className="article-recommendation-automation-rate"
-          key="18"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            ARTICLE RECOMMENDATION AUTOMATION RATE
-          </span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        key="0"
+<table
+  class="table table table-hover"
+>
+  <thead>
+    <tr>
+      <th
+        class="user"
       >
-        <td
-          className="lineCell user link-full-td"
-          key="0"
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <div>
-              <div
-                className="userName"
-              >
-                Foo
-              </div>
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell string link-full-td"
-          key="1"
+          AGENT
+        </span>
+      </th>
+      <th
+        class="string"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            refund
-          </span>
-        </td>
-        <td
-          className="lineCell number link-full-td"
-          key="2"
+          TAGS
+        </span>
+      </th>
+      <th
+        class="number"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            42
-          </span>
-        </td>
-        <td
-          className="lineCell percent link-full-td"
-          key="3"
+          NEW TICKETS #
+        </span>
+      </th>
+      <th
+        class="percent"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            12%
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-score link-full-td"
-          key="4"
+          PERCENT
+        </span>
+      </th>
+      <th
+        class="satisfaction-score"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <DistributionVariantStat
-              currentValue={93}
-              maxValue={5}
-              minValue={1}
-              variant="star"
-            />
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-score link-full-td"
-          key="5"
+          AGENT SCORE
+        </span>
+      </th>
+      <th
+        class="satisfaction-score"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <DistributionVariantStat
-              currentValue={3}
-              maxValue={5}
-              minValue={1}
-              variant="star"
-            />
-          </span>
-        </td>
-        <td
-          className="lineCell delta link-full-td"
-          key="6"
+          SURVEY SCORE
+        </span>
+      </th>
+      <th
+        class="delta"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <span>
-              <span
-                id="difference-0"
-              >
-                <StatDifference
-                  label={-1}
-                  value={-1}
-                />
-              </span>
-              <Tooltip
-                placement="top"
-                target="difference-0"
-              >
-                Compared to: Oct 22, 2018 - Oct 23, 2018
-              </Tooltip>
-            </span>
-          </span>
-        </td>
-        <td
-          className="lineCell currency link-full-td"
-          key="7"
+          DELTA
+        </span>
+      </th>
+      <th
+        class="currency"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            3.5
-          </span>
-        </td>
-        <td
-          className="lineCell online-time link-full-td"
-          key="8"
+          SALES
+        </span>
+      </th>
+      <th
+        class="online-time"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <div>
-              <div
-                className="statusDot isOnline"
-                id="Online-time-tooltip-0"
-              />
-              <Tooltip
-                target="Online-time-tooltip-0"
-              >
-                <b>
-                  Timezone 
-                </b>
-                US/Pacific
-                <br />
-                Session started at
-                 
-                09:55 am
-              </Tooltip>
-              <span>
-                4h 27m
-              </span>
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell ticket-details link-full-td"
-          key="9"
+          ONLINE TIME
+        </span>
+      </th>
+      <th
+        class="ticket-details"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
+          TICKET DETAILS
+        </span>
+      </th>
+      <th
+        class="customer-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          CUSTOMER LINK
+        </span>
+      </th>
+      <th
+        class="customer-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          CUSTOMER LINK - NULL
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK - NULL
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
+        </span>
+      </th>
+      <th
+        class="title-with-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          TITLE WITH LINK
+        </span>
+      </th>
+      <th
+        class="quick-response-title"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          TITLE FOR QUICK RESPONSE
+        </span>
+      </th>
+      <th
+        class="quick-response-automation-rate"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          QUICK RESPONSE AUTOMATION RATE
+        </span>
+      </th>
+      <th
+        class="article-recommendation-automation-rate"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          ARTICLE RECOMMENDATION AUTOMATION RATE
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        class="lineCell user link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
             <div
-              className="fit-cell"
-            >
-              <TicketDetailsStat
-                agentId={1}
-                agentName="Foo"
-                channelsBreakdown={
-                  {
-                    "aircall": 10,
-                    "api": 10,
-                    "chat": 10,
-                    "email": 11,
-                    "facebook": 10,
-                    "facebook-mention": 5,
-                    "facebook-messenger": 5,
-                    "facebook-recommendations": 5,
-                    "instagram-ad-comment": 10,
-                    "instagram-comment": 5,
-                    "instagram-direct-message": 5,
-                    "instagram-mention": 10,
-                    "internal-note": 10,
-                    "phone": 10,
-                    "sms": 10,
-                    "twitter": 10,
-                    "twitter-direct-message": 5,
-                    "yotpo-review": 10,
-                  }
-                }
-                openTickets={51}
-              />
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell customer-link link-full-td"
-          key="10"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              className="fit-cell"
-              to="/app/customer/1"
-            >
-              John Doe
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell customer-link link-full-td"
-          key="11"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              className="fit-cell"
-              to="/app/customer/1"
-            >
-              Go to customer
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="12"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
+              class="userName"
             >
               Foo
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="13"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
-            >
-              Go to ticket
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="14"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
-            >
-              Go to ticket
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell title-with-link link-full-td"
-          key="15"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            Article Title
-             
-            <a
-              className="material-icons-outlined openArticle"
-              href="fake url"
-              rel="noreferrer"
-              target="_blank"
-            >
-              open_in_new
-            </a>
-          </span>
-        </td>
-        <td
-          className="lineCell quick-response-title link-full-td"
-          key="16"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            title
-             
-            <span
-              className="material-icons quickResponseEnabled"
-            >
-              circle
-            </span>
-          </span>
-        </td>
-        <td
-          className="lineCell quick-response-automation-rate link-full-td"
-          key="17"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <div
-              className="flexAlignCenter"
-            >
-              <div
-                className="percentageValue"
-              >
-                30
-                % 
-              </div>
-              <Link
-                to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
-              >
-                Edit quick response
-              </Link>
             </div>
-          </span>
-        </td>
-        <td
-          className="lineCell article-recommendation-automation-rate link-full-td"
-          key="18"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            30
-            %
-             
-          </span>
-        </td>
-      </tr>
-      <tr
-        key="1"
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell string link-full-td"
       >
-        <td
-          className="lineCell user link-full-td"
-          key="0"
+        <span
+          class="cell-wrapper cell-content"
+        >
+          refund
+        </span>
+      </td>
+      <td
+        class="lineCell number link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          42
+        </span>
+      </td>
+      <td
+        class="lineCell percent link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          12%
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-score link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
           <span
-            className="cell-wrapper cell-content"
+            class="distribution"
           >
-            <div>
-              <div
-                className="userName"
-              >
-                Foo
-              </div>
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell string link-full-td"
-          key="1"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            refund
-          </span>
-        </td>
-        <td
-          className="lineCell number link-full-td"
-          key="2"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            42
-          </span>
-        </td>
-        <td
-          className="lineCell percent link-full-td"
-          key="3"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            12%
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-score link-full-td"
-          key="4"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <DistributionVariantStat
-              currentValue={93}
-              maxValue={5}
-              minValue={1}
-              variant="star"
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
             />
           </span>
-        </td>
-        <td
-          className="lineCell satisfaction-score link-full-td"
-          key="5"
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-score link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
           <span
-            className="cell-wrapper cell-content"
+            class="distribution"
           >
-            <DistributionVariantStat
-              currentValue={3}
-              maxValue={5}
-              minValue={1}
-              variant="star"
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="empty star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="empty star"
+              class="star"
+              src="test-file-stub"
             />
           </span>
-        </td>
-        <td
-          className="lineCell delta link-full-td"
-          key="6"
+        </span>
+      </td>
+      <td
+        class="lineCell delta link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <span>
-              <span
-                id="difference-1"
-              >
-                <StatDifference
-                  label={-1}
-                  value={-1}
-                />
+          <span>
+            <span
+              id="difference-0"
+            >
+              <span>
+                <i
+                  class="material-icons mr-1 statsDifference"
+                >
+                  arrow_downward
+                </i>
+                -1
+                %
               </span>
-              <Tooltip
-                placement="top"
-                target="difference-1"
-              >
-                Compared to: Oct 22, 2018 - Oct 23, 2018
-              </Tooltip>
             </span>
           </span>
-        </td>
-        <td
-          className="lineCell currency link-full-td"
-          key="7"
+        </span>
+      </td>
+      <td
+        class="lineCell currency link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            3.5
-          </span>
-        </td>
-        <td
-          className="lineCell online-time link-full-td"
-          key="8"
+          3.5
+        </span>
+      </td>
+      <td
+        class="lineCell online-time link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <div>
-              <div
-                className="statusDot isOnline"
-                id="Online-time-tooltip-1"
-              />
-              <Tooltip
-                target="Online-time-tooltip-1"
-              >
-                <b>
-                  Timezone 
-                </b>
-                US/Pacific
-                <br />
-                Session started at
-                 
-                09:55 am
-              </Tooltip>
-              <span>
-                4h 27m
-              </span>
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell ticket-details link-full-td"
-          key="9"
+          <div>
+            <div
+              class="statusDot isOnline"
+              id="Online-time-tooltip-0"
+            />
+            <span>
+              4h 27m
+            </span>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell ticket-details link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
+          <div
+            class="fit-cell"
           >
             <div
-              className="fit-cell"
+              class="wrapper"
             >
-              <TicketDetailsStat
-                agentId={1}
-                agentName="Foo"
-                channelsBreakdown={
-                  {
-                    "aircall": 10,
-                    "api": 10,
-                    "chat": 10,
-                    "email": 11,
-                    "facebook": 10,
-                    "facebook-mention": 5,
-                    "facebook-messenger": 5,
-                    "facebook-recommendations": 5,
-                    "instagram-ad-comment": 10,
-                    "instagram-comment": 5,
-                    "instagram-direct-message": 5,
-                    "instagram-mention": 10,
-                    "internal-note": 10,
-                    "phone": 10,
-                    "sms": 10,
-                    "twitter": 10,
-                    "twitter-direct-message": 5,
-                    "yotpo-review": 10,
-                  }
-                }
-                openTickets={51}
+              <div
+                class="openTickets"
+              >
+                <a
+                  class="viewLink"
+                  to="[object Object]"
+                >
+                  51
+                </a>
+              </div>
+              <div
+                class="separator"
               />
+              <div
+                class="channelsBreakdown"
+              >
+                <div
+                  class="channel"
+                  title="Internal Note"
+                >
+                  <i
+                    class="icon d-inline-block text-warning material-icons channelIcon"
+                  >
+                    note
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Mention"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Comment"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Yotpo Review"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-yotpo-review channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Aircall"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    phone
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Messenger"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Phone"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    phone
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Mention"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Ad Comment"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Twitter"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-twitter channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Recommendations"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Chat"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    forum
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="SMS"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    sms
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Api"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    code
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Email"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    email
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    11
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Twitter Direct Message"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-twitter-dm channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Direct Message"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+              </div>
             </div>
-          </span>
-        </td>
-        <td
-          className="lineCell customer-link link-full-td"
-          key="10"
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell customer-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
+          <a
+            class="fit-cell"
+            to="/app/customer/1"
           >
-            <Link
-              className="fit-cell"
-              to="/app/customer/1"
+            John Doe
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell customer-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            class="fit-cell"
+            to="/app/customer/1"
+          >
+            Go to customer
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Foo
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell title-with-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          Article Title
+           
+          <a
+            class="material-icons-outlined openArticle"
+            href="fake url"
+            rel="noreferrer"
+            target="_blank"
+          >
+            open_in_new
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell quick-response-title link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          title
+           
+          <span
+            class="material-icons quickResponseEnabled"
+          >
+            circle
+          </span>
+        </span>
+      </td>
+      <td
+        class="lineCell quick-response-automation-rate link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div
+            class="flexAlignCenter"
+          >
+            <div
+              class="percentageValue"
             >
-              John Doe
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell customer-link link-full-td"
-          key="11"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              className="fit-cell"
-              to="/app/customer/1"
+              30
+              % 
+            </div>
+            <a
+              to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
             >
-              Go to customer
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="12"
+              Edit quick response
+            </a>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell article-recommendation-automation-rate link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
+          30
+          %
+           
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td
+        class="lineCell user link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="userName"
             >
               Foo
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="13"
+            </div>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell string link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          refund
+        </span>
+      </td>
+      <td
+        class="lineCell number link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          42
+        </span>
+      </td>
+      <td
+        class="lineCell percent link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          12%
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-score link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
           <span
-            className="cell-wrapper cell-content"
+            class="distribution"
           >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
-            >
-              Go to ticket
-            </Link>
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
           </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="14"
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-score link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
           <span
-            className="cell-wrapper cell-content"
+            class="distribution"
           >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
-            >
-              Go to ticket
-            </Link>
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="empty star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="empty star"
+              class="star"
+              src="test-file-stub"
+            />
           </span>
-        </td>
-        <td
-          className="lineCell title-with-link link-full-td"
-          key="15"
+        </span>
+      </td>
+      <td
+        class="lineCell delta link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            Article Title
-             
-            <a
-              className="material-icons-outlined openArticle"
-              href="fake url"
-              rel="noreferrer"
-              target="_blank"
-            >
-              open_in_new
-            </a>
-          </span>
-        </td>
-        <td
-          className="lineCell quick-response-title link-full-td"
-          key="16"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            title
-             
+          <span>
             <span
-              className="material-icons quickResponseEnabled"
+              id="difference-1"
             >
-              circle
+              <span>
+                <i
+                  class="material-icons mr-1 statsDifference"
+                >
+                  arrow_downward
+                </i>
+                -1
+                %
+              </span>
             </span>
           </span>
-        </td>
-        <td
-          className="lineCell quick-response-automation-rate link-full-td"
-          key="17"
+        </span>
+      </td>
+      <td
+        class="lineCell currency link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
+          3.5
+        </span>
+      </td>
+      <td
+        class="lineCell online-time link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="statusDot isOnline"
+              id="Online-time-tooltip-1"
+            />
+            <span>
+              4h 27m
+            </span>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell ticket-details link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div
+            class="fit-cell"
           >
             <div
-              className="flexAlignCenter"
+              class="wrapper"
             >
               <div
-                className="percentageValue"
+                class="openTickets"
               >
-                30
-                % 
+                <a
+                  class="viewLink"
+                  to="[object Object]"
+                >
+                  51
+                </a>
               </div>
-              <Link
-                to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+              <div
+                class="separator"
+              />
+              <div
+                class="channelsBreakdown"
               >
-                Edit quick response
-              </Link>
+                <div
+                  class="channel"
+                  title="Internal Note"
+                >
+                  <i
+                    class="icon d-inline-block text-warning material-icons channelIcon"
+                  >
+                    note
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Mention"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Comment"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Yotpo Review"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-yotpo-review channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Aircall"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    phone
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Messenger"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Phone"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    phone
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Mention"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Ad Comment"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Twitter"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-twitter channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Recommendations"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Chat"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    forum
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="SMS"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    sms
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Api"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    code
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Email"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    email
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    11
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Twitter Direct Message"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-twitter-dm channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Direct Message"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+              </div>
             </div>
-          </span>
-        </td>
-        <td
-          className="lineCell article-recommendation-automation-rate link-full-td"
-          key="18"
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell customer-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
+          <a
+            class="fit-cell"
+            to="/app/customer/1"
           >
-            30
-            %
-             
+            John Doe
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell customer-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            class="fit-cell"
+            to="/app/customer/1"
+          >
+            Go to customer
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Foo
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell title-with-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          Article Title
+           
+          <a
+            class="material-icons-outlined openArticle"
+            href="fake url"
+            rel="noreferrer"
+            target="_blank"
+          >
+            open_in_new
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell quick-response-title link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          title
+           
+          <span
+            class="material-icons quickResponseEnabled"
+          >
+            circle
           </span>
-        </td>
-      </tr>
-    </tbody>
-  </Table>
-  <button
-    className="showLinesButton"
-    onClick={[Function]}
-  >
-    <div>
-      <img
-        alt="Contract"
-        className="mr-3"
-        src="test-file-stub"
-      />
-      Show less
-    </div>
-  </button>
-</Fragment>
+        </span>
+      </td>
+      <td
+        class="lineCell quick-response-automation-rate link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div
+            class="flexAlignCenter"
+          >
+            <div
+              class="percentageValue"
+            >
+              30
+              % 
+            </div>
+            <a
+              to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+            >
+              Edit quick response
+            </a>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell article-recommendation-automation-rate link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          30
+          %
+           
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`TableStat should render a table chart 1`] = `
-<Fragment>
-  <Table
-    className="table"
-    hover={true}
-    responsiveTag="div"
-    tag="table"
-  >
-    <thead>
-      <tr>
-        <th
-          className="user"
-          key="0"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            AGENT
-          </span>
-        </th>
-        <th
-          className="string"
-          key="1"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TAGS
-          </span>
-        </th>
-        <th
-          className="number"
-          key="2"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            NEW TICKETS #
-          </span>
-        </th>
-        <th
-          className="percent"
-          key="3"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            PERCENT
-          </span>
-        </th>
-        <th
-          className="satisfaction-score"
-          key="4"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            AGENT SCORE
-          </span>
-        </th>
-        <th
-          className="satisfaction-score"
-          key="5"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SURVEY SCORE
-          </span>
-        </th>
-        <th
-          className="delta"
-          key="6"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            DELTA
-          </span>
-        </th>
-        <th
-          className="currency"
-          key="7"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SALES
-          </span>
-        </th>
-        <th
-          className="online-time"
-          key="8"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            ONLINE TIME
-          </span>
-        </th>
-        <th
-          className="ticket-details"
-          key="9"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TICKET DETAILS
-          </span>
-        </th>
-        <th
-          className="customer-link"
-          key="10"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            CUSTOMER LINK
-          </span>
-        </th>
-        <th
-          className="customer-link"
-          key="11"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            CUSTOMER LINK - NULL
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="12"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="13"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK - NULL
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="14"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
-          </span>
-        </th>
-        <th
-          className="title-with-link"
-          key="15"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TITLE WITH LINK
-          </span>
-        </th>
-        <th
-          className="quick-response-title"
-          key="16"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TITLE FOR QUICK RESPONSE
-          </span>
-        </th>
-        <th
-          className="quick-response-automation-rate"
-          key="17"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            QUICK RESPONSE AUTOMATION RATE
-          </span>
-        </th>
-        <th
-          className="article-recommendation-automation-rate"
-          key="18"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            ARTICLE RECOMMENDATION AUTOMATION RATE
-          </span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        key="0"
+<table
+  class="table table table-hover"
+>
+  <thead>
+    <tr>
+      <th
+        class="user"
       >
-        <td
-          className="lineCell user link-full-td"
-          key="0"
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <div>
-              <div
-                className="userName"
-              >
-                Foo
-              </div>
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell string link-full-td"
-          key="1"
+          AGENT
+        </span>
+      </th>
+      <th
+        class="string"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            refund
-          </span>
-        </td>
-        <td
-          className="lineCell number link-full-td"
-          key="2"
+          TAGS
+        </span>
+      </th>
+      <th
+        class="number"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            42
-          </span>
-        </td>
-        <td
-          className="lineCell percent link-full-td"
-          key="3"
+          NEW TICKETS #
+        </span>
+      </th>
+      <th
+        class="percent"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            12%
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-score link-full-td"
-          key="4"
+          PERCENT
+        </span>
+      </th>
+      <th
+        class="satisfaction-score"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <DistributionVariantStat
-              currentValue={93}
-              maxValue={5}
-              minValue={1}
-              variant="star"
-            />
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-score link-full-td"
-          key="5"
+          AGENT SCORE
+        </span>
+      </th>
+      <th
+        class="satisfaction-score"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <DistributionVariantStat
-              currentValue={3}
-              maxValue={5}
-              minValue={1}
-              variant="star"
-            />
-          </span>
-        </td>
-        <td
-          className="lineCell delta link-full-td"
-          key="6"
+          SURVEY SCORE
+        </span>
+      </th>
+      <th
+        class="delta"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <span>
-              <span
-                id="difference-0"
-              >
-                <StatDifference
-                  label={-1}
-                  value={-1}
-                />
-              </span>
-              <Tooltip
-                placement="top"
-                target="difference-0"
-              >
-                Compared to: Oct 22, 2018 - Oct 23, 2018
-              </Tooltip>
-            </span>
-          </span>
-        </td>
-        <td
-          className="lineCell currency link-full-td"
-          key="7"
+          DELTA
+        </span>
+      </th>
+      <th
+        class="currency"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            3.5
-          </span>
-        </td>
-        <td
-          className="lineCell online-time link-full-td"
-          key="8"
+          SALES
+        </span>
+      </th>
+      <th
+        class="online-time"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <div>
-              <div
-                className="statusDot isOnline"
-                id="Online-time-tooltip-0"
-              />
-              <Tooltip
-                target="Online-time-tooltip-0"
-              >
-                <b>
-                  Timezone 
-                </b>
-                US/Pacific
-                <br />
-                Session started at
-                 
-                09:55 am
-              </Tooltip>
-              <span>
-                4h 27m
-              </span>
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell ticket-details link-full-td"
-          key="9"
+          ONLINE TIME
+        </span>
+      </th>
+      <th
+        class="ticket-details"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
+          TICKET DETAILS
+        </span>
+      </th>
+      <th
+        class="customer-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          CUSTOMER LINK
+        </span>
+      </th>
+      <th
+        class="customer-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          CUSTOMER LINK - NULL
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK - NULL
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
+        </span>
+      </th>
+      <th
+        class="title-with-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          TITLE WITH LINK
+        </span>
+      </th>
+      <th
+        class="quick-response-title"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          TITLE FOR QUICK RESPONSE
+        </span>
+      </th>
+      <th
+        class="quick-response-automation-rate"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          QUICK RESPONSE AUTOMATION RATE
+        </span>
+      </th>
+      <th
+        class="article-recommendation-automation-rate"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          ARTICLE RECOMMENDATION AUTOMATION RATE
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        class="lineCell user link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
             <div
-              className="fit-cell"
-            >
-              <TicketDetailsStat
-                agentId={1}
-                agentName="Foo"
-                channelsBreakdown={
-                  {
-                    "aircall": 10,
-                    "api": 10,
-                    "chat": 10,
-                    "email": 11,
-                    "facebook": 10,
-                    "facebook-mention": 5,
-                    "facebook-messenger": 5,
-                    "facebook-recommendations": 5,
-                    "instagram-ad-comment": 10,
-                    "instagram-comment": 5,
-                    "instagram-direct-message": 5,
-                    "instagram-mention": 10,
-                    "internal-note": 10,
-                    "phone": 10,
-                    "sms": 10,
-                    "twitter": 10,
-                    "twitter-direct-message": 5,
-                    "yotpo-review": 10,
-                  }
-                }
-                openTickets={51}
-              />
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell customer-link link-full-td"
-          key="10"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              className="fit-cell"
-              to="/app/customer/1"
-            >
-              John Doe
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell customer-link link-full-td"
-          key="11"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              className="fit-cell"
-              to="/app/customer/1"
-            >
-              Go to customer
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="12"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
+              class="userName"
             >
               Foo
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="13"
+            </div>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell string link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          refund
+        </span>
+      </td>
+      <td
+        class="lineCell number link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          42
+        </span>
+      </td>
+      <td
+        class="lineCell percent link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          12%
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-score link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
           <span
-            className="cell-wrapper cell-content"
+            class="distribution"
           >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
-            >
-              Go to ticket
-            </Link>
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
           </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="14"
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-score link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
           <span
-            className="cell-wrapper cell-content"
+            class="distribution"
           >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
-            >
-              Go to ticket
-            </Link>
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="empty star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="empty star"
+              class="star"
+              src="test-file-stub"
+            />
           </span>
-        </td>
-        <td
-          className="lineCell title-with-link link-full-td"
-          key="15"
+        </span>
+      </td>
+      <td
+        class="lineCell delta link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            Article Title
-             
-            <a
-              className="material-icons-outlined openArticle"
-              href="fake url"
-              rel="noreferrer"
-              target="_blank"
-            >
-              open_in_new
-            </a>
-          </span>
-        </td>
-        <td
-          className="lineCell quick-response-title link-full-td"
-          key="16"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            title
-             
+          <span>
             <span
-              className="material-icons quickResponseEnabled"
+              id="difference-0"
             >
-              circle
+              <span>
+                <i
+                  class="material-icons mr-1 statsDifference"
+                >
+                  arrow_downward
+                </i>
+                -1
+                %
+              </span>
             </span>
           </span>
-        </td>
-        <td
-          className="lineCell quick-response-automation-rate link-full-td"
-          key="17"
+        </span>
+      </td>
+      <td
+        class="lineCell currency link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
+          3.5
+        </span>
+      </td>
+      <td
+        class="lineCell online-time link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="statusDot isOnline"
+              id="Online-time-tooltip-0"
+            />
+            <span>
+              4h 27m
+            </span>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell ticket-details link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div
+            class="fit-cell"
           >
             <div
-              className="flexAlignCenter"
+              class="wrapper"
             >
               <div
-                className="percentageValue"
+                class="openTickets"
               >
-                30
-                % 
+                <a
+                  class="viewLink"
+                  to="[object Object]"
+                >
+                  51
+                </a>
               </div>
-              <Link
-                to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+              <div
+                class="separator"
+              />
+              <div
+                class="channelsBreakdown"
               >
-                Edit quick response
-              </Link>
+                <div
+                  class="channel"
+                  title="Internal Note"
+                >
+                  <i
+                    class="icon d-inline-block text-warning material-icons channelIcon"
+                  >
+                    note
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Mention"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Comment"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Yotpo Review"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-yotpo-review channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Aircall"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    phone
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Messenger"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Phone"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    phone
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Mention"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Ad Comment"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Twitter"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-twitter channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Recommendations"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Chat"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    forum
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="SMS"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    sms
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Api"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    code
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Email"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    email
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    11
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Twitter Direct Message"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-twitter-dm channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Direct Message"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+              </div>
             </div>
-          </span>
-        </td>
-        <td
-          className="lineCell article-recommendation-automation-rate link-full-td"
-          key="18"
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell customer-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
+          <a
+            class="fit-cell"
+            to="/app/customer/1"
           >
-            30
-            %
-             
+            John Doe
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell customer-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            class="fit-cell"
+            to="/app/customer/1"
+          >
+            Go to customer
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Foo
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell title-with-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          Article Title
+           
+          <a
+            class="material-icons-outlined openArticle"
+            href="fake url"
+            rel="noreferrer"
+            target="_blank"
+          >
+            open_in_new
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell quick-response-title link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          title
+           
+          <span
+            class="material-icons quickResponseEnabled"
+          >
+            circle
           </span>
-        </td>
-      </tr>
-    </tbody>
-  </Table>
-</Fragment>
+        </span>
+      </td>
+      <td
+        class="lineCell quick-response-automation-rate link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div
+            class="flexAlignCenter"
+          >
+            <div
+              class="percentageValue"
+            >
+              30
+              % 
+            </div>
+            <a
+              to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+            >
+              Edit quick response
+            </a>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell article-recommendation-automation-rate link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          30
+          %
+           
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 exports[`TableStat should render a table chart with "no data" message 1`] = `
 <div
-  className="text-muted"
+  class="text-muted"
 >
   There is no data for this period.
 </div>
 `;
 
 exports[`TableStat should render a table with the expand button and one line visible 1`] = `
-<Fragment>
-  <Table
-    className="table"
-    hover={true}
-    responsiveTag="div"
-    tag="table"
-  >
-    <thead>
-      <tr>
-        <th
-          className="user"
-          key="0"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            AGENT
-          </span>
-        </th>
-        <th
-          className="string"
-          key="1"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TAGS
-          </span>
-        </th>
-        <th
-          className="number"
-          key="2"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            NEW TICKETS #
-          </span>
-        </th>
-        <th
-          className="percent"
-          key="3"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            PERCENT
-          </span>
-        </th>
-        <th
-          className="satisfaction-score"
-          key="4"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            AGENT SCORE
-          </span>
-        </th>
-        <th
-          className="satisfaction-score"
-          key="5"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SURVEY SCORE
-          </span>
-        </th>
-        <th
-          className="delta"
-          key="6"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            DELTA
-          </span>
-        </th>
-        <th
-          className="currency"
-          key="7"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SALES
-          </span>
-        </th>
-        <th
-          className="online-time"
-          key="8"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            ONLINE TIME
-          </span>
-        </th>
-        <th
-          className="ticket-details"
-          key="9"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TICKET DETAILS
-          </span>
-        </th>
-        <th
-          className="customer-link"
-          key="10"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            CUSTOMER LINK
-          </span>
-        </th>
-        <th
-          className="customer-link"
-          key="11"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            CUSTOMER LINK - NULL
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="12"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="13"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK - NULL
-          </span>
-        </th>
-        <th
-          className="satisfaction-survey-link"
-          key="14"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
-          </span>
-        </th>
-        <th
-          className="title-with-link"
-          key="15"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TITLE WITH LINK
-          </span>
-        </th>
-        <th
-          className="quick-response-title"
-          key="16"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            TITLE FOR QUICK RESPONSE
-          </span>
-        </th>
-        <th
-          className="quick-response-automation-rate"
-          key="17"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            QUICK RESPONSE AUTOMATION RATE
-          </span>
-        </th>
-        <th
-          className="article-recommendation-automation-rate"
-          key="18"
-        >
-          <span
-            className="cell-wrapper"
-          >
-            ARTICLE RECOMMENDATION AUTOMATION RATE
-          </span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        key="0"
+<table
+  class="table table table-hover"
+>
+  <thead>
+    <tr>
+      <th
+        class="user"
       >
-        <td
-          className="lineCell user link-full-td"
-          key="0"
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <div>
-              <div
-                className="userName"
-              >
-                Foo
-              </div>
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell string link-full-td"
-          key="1"
+          AGENT
+        </span>
+      </th>
+      <th
+        class="string"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            refund
-          </span>
-        </td>
-        <td
-          className="lineCell number link-full-td"
-          key="2"
+          TAGS
+        </span>
+      </th>
+      <th
+        class="number"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            42
-          </span>
-        </td>
-        <td
-          className="lineCell percent link-full-td"
-          key="3"
+          NEW TICKETS #
+        </span>
+      </th>
+      <th
+        class="percent"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            12%
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-score link-full-td"
-          key="4"
+          PERCENT
+        </span>
+      </th>
+      <th
+        class="satisfaction-score"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <DistributionVariantStat
-              currentValue={93}
-              maxValue={5}
-              minValue={1}
-              variant="star"
-            />
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-score link-full-td"
-          key="5"
+          AGENT SCORE
+        </span>
+      </th>
+      <th
+        class="satisfaction-score"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <DistributionVariantStat
-              currentValue={3}
-              maxValue={5}
-              minValue={1}
-              variant="star"
-            />
-          </span>
-        </td>
-        <td
-          className="lineCell delta link-full-td"
-          key="6"
+          SURVEY SCORE
+        </span>
+      </th>
+      <th
+        class="delta"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <span>
-              <span
-                id="difference-0"
-              >
-                <StatDifference
-                  label={-1}
-                  value={-1}
-                />
-              </span>
-              <Tooltip
-                placement="top"
-                target="difference-0"
-              >
-                Compared to: Oct 22, 2018 - Oct 23, 2018
-              </Tooltip>
-            </span>
-          </span>
-        </td>
-        <td
-          className="lineCell currency link-full-td"
-          key="7"
+          DELTA
+        </span>
+      </th>
+      <th
+        class="currency"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            3.5
-          </span>
-        </td>
-        <td
-          className="lineCell online-time link-full-td"
-          key="8"
+          SALES
+        </span>
+      </th>
+      <th
+        class="online-time"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <div>
-              <div
-                className="statusDot isOnline"
-                id="Online-time-tooltip-0"
-              />
-              <Tooltip
-                target="Online-time-tooltip-0"
-              >
-                <b>
-                  Timezone 
-                </b>
-                US/Pacific
-                <br />
-                Session started at
-                 
-                09:55 am
-              </Tooltip>
-              <span>
-                4h 27m
-              </span>
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell ticket-details link-full-td"
-          key="9"
+          ONLINE TIME
+        </span>
+      </th>
+      <th
+        class="ticket-details"
+      >
+        <span
+          class="cell-wrapper"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
+          TICKET DETAILS
+        </span>
+      </th>
+      <th
+        class="customer-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          CUSTOMER LINK
+        </span>
+      </th>
+      <th
+        class="customer-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          CUSTOMER LINK - NULL
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK - NULL
+        </span>
+      </th>
+      <th
+        class="satisfaction-survey-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
+        </span>
+      </th>
+      <th
+        class="title-with-link"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          TITLE WITH LINK
+        </span>
+      </th>
+      <th
+        class="quick-response-title"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          TITLE FOR QUICK RESPONSE
+        </span>
+      </th>
+      <th
+        class="quick-response-automation-rate"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          QUICK RESPONSE AUTOMATION RATE
+        </span>
+      </th>
+      <th
+        class="article-recommendation-automation-rate"
+      >
+        <span
+          class="cell-wrapper"
+        >
+          ARTICLE RECOMMENDATION AUTOMATION RATE
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        class="lineCell user link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
             <div
-              className="fit-cell"
-            >
-              <TicketDetailsStat
-                agentId={1}
-                agentName="Foo"
-                channelsBreakdown={
-                  {
-                    "aircall": 10,
-                    "api": 10,
-                    "chat": 10,
-                    "email": 11,
-                    "facebook": 10,
-                    "facebook-mention": 5,
-                    "facebook-messenger": 5,
-                    "facebook-recommendations": 5,
-                    "instagram-ad-comment": 10,
-                    "instagram-comment": 5,
-                    "instagram-direct-message": 5,
-                    "instagram-mention": 10,
-                    "internal-note": 10,
-                    "phone": 10,
-                    "sms": 10,
-                    "twitter": 10,
-                    "twitter-direct-message": 5,
-                    "yotpo-review": 10,
-                  }
-                }
-                openTickets={51}
-              />
-            </div>
-          </span>
-        </td>
-        <td
-          className="lineCell customer-link link-full-td"
-          key="10"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              className="fit-cell"
-              to="/app/customer/1"
-            >
-              John Doe
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell customer-link link-full-td"
-          key="11"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              className="fit-cell"
-              to="/app/customer/1"
-            >
-              Go to customer
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="12"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
+              class="userName"
             >
               Foo
-            </Link>
-          </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="13"
+            </div>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell string link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          refund
+        </span>
+      </td>
+      <td
+        class="lineCell number link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          42
+        </span>
+      </td>
+      <td
+        class="lineCell percent link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          12%
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-score link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
           <span
-            className="cell-wrapper cell-content"
+            class="distribution"
           >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
-            >
-              Go to ticket
-            </Link>
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
           </span>
-        </td>
-        <td
-          className="lineCell satisfaction-survey-link link-full-td"
-          key="14"
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-score link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
           <span
-            className="cell-wrapper cell-content"
+            class="distribution"
           >
-            <Link
-              to="/app/ticket/1#satisfactionSurvey"
-            >
-              Go to ticket
-            </Link>
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="filled star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="empty star"
+              class="star"
+              src="test-file-stub"
+            />
+            <img
+              alt="empty star"
+              class="star"
+              src="test-file-stub"
+            />
           </span>
-        </td>
-        <td
-          className="lineCell title-with-link link-full-td"
-          key="15"
+        </span>
+      </td>
+      <td
+        class="lineCell delta link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            Article Title
-             
-            <a
-              className="material-icons-outlined openArticle"
-              href="fake url"
-              rel="noreferrer"
-              target="_blank"
-            >
-              open_in_new
-            </a>
-          </span>
-        </td>
-        <td
-          className="lineCell quick-response-title link-full-td"
-          key="16"
-        >
-          <span
-            className="cell-wrapper cell-content"
-          >
-            title
-             
+          <span>
             <span
-              className="material-icons quickResponseEnabled"
+              id="difference-0"
             >
-              circle
+              <span>
+                <i
+                  class="material-icons mr-1 statsDifference"
+                >
+                  arrow_downward
+                </i>
+                -1
+                %
+              </span>
             </span>
           </span>
-        </td>
-        <td
-          className="lineCell quick-response-automation-rate link-full-td"
-          key="17"
+        </span>
+      </td>
+      <td
+        class="lineCell currency link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
+          3.5
+        </span>
+      </td>
+      <td
+        class="lineCell online-time link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div>
+            <div
+              class="statusDot isOnline"
+              id="Online-time-tooltip-0"
+            />
+            <span>
+              4h 27m
+            </span>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell ticket-details link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div
+            class="fit-cell"
           >
             <div
-              className="flexAlignCenter"
+              class="wrapper"
             >
               <div
-                className="percentageValue"
+                class="openTickets"
               >
-                30
-                % 
+                <a
+                  class="viewLink"
+                  to="[object Object]"
+                >
+                  51
+                </a>
               </div>
-              <Link
-                to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+              <div
+                class="separator"
+              />
+              <div
+                class="channelsBreakdown"
               >
-                Edit quick response
-              </Link>
+                <div
+                  class="channel"
+                  title="Internal Note"
+                >
+                  <i
+                    class="icon d-inline-block text-warning material-icons channelIcon"
+                  >
+                    note
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Mention"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Comment"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Yotpo Review"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-yotpo-review channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Aircall"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    phone
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Messenger"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Phone"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    phone
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Mention"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Ad Comment"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Twitter"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-twitter channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Facebook Recommendations"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Chat"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    forum
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="SMS"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    sms
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Api"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    code
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    10
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Email"
+                >
+                  <i
+                    class="icon d-inline-block material-icons channelIcon"
+                  >
+                    email
+                  </i>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    11
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Twitter Direct Message"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-twitter-dm channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+                <div
+                  class="channel"
+                  title="Instagram Direct Message"
+                >
+                  <i
+                    class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                  />
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    5
+                  </a>
+                </div>
+              </div>
             </div>
-          </span>
-        </td>
-        <td
-          className="lineCell article-recommendation-automation-rate link-full-td"
-          key="18"
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell customer-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
         >
-          <span
-            className="cell-wrapper cell-content"
+          <a
+            class="fit-cell"
+            to="/app/customer/1"
           >
-            30
-            %
-             
+            John Doe
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell customer-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            class="fit-cell"
+            to="/app/customer/1"
+          >
+            Go to customer
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Foo
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell satisfaction-survey-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <a
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell title-with-link link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          Article Title
+           
+          <a
+            class="material-icons-outlined openArticle"
+            href="fake url"
+            rel="noreferrer"
+            target="_blank"
+          >
+            open_in_new
+          </a>
+        </span>
+      </td>
+      <td
+        class="lineCell quick-response-title link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          title
+           
+          <span
+            class="material-icons quickResponseEnabled"
+          >
+            circle
           </span>
-        </td>
-      </tr>
-    </tbody>
-  </Table>
-  <button
-    className="showLinesButton"
-    onClick={[Function]}
-  >
-    <div>
-      <img
-        alt="Expand"
-        className="mr-3"
-        src="test-file-stub"
-      />
-      Show More
-    </div>
-  </button>
-</Fragment>
+        </span>
+      </td>
+      <td
+        class="lineCell quick-response-automation-rate link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          <div
+            class="flexAlignCenter"
+          >
+            <div
+              class="percentageValue"
+            >
+              30
+              % 
+            </div>
+            <a
+              to="/app/automation/shopify/test-shop/quick-responses?quickResponseId=fakeflowId"
+            >
+              Edit quick response
+            </a>
+          </div>
+        </span>
+      </td>
+      <td
+        class="lineCell article-recommendation-automation-rate link-full-td"
+      >
+        <span
+          class="cell-wrapper cell-content"
+        >
+          30
+          %
+           
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
