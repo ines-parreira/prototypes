@@ -79,7 +79,8 @@ export const useCustomFieldsTicketCountPerCustomFields = (
 export function enrichWithPercentagesAndDeciles(
     data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[],
     totalsSum?: number,
-    topLevelTimeSeriesSums?: TimeSeriesDataItem[]
+    topLevelTimeSeriesSums?: TimeSeriesDataItem[],
+    totalsMax?: number
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile>[] {
     const currentLevelTotalSum =
         totalsSum ||
@@ -96,15 +97,19 @@ export function enrichWithPercentagesAndDeciles(
                 value: sum.value + point.value,
             }))
         })
+    const currentLevelMax =
+        totalsMax ||
+        Math.max(
+            ...data.map((item) =>
+                Math.max(...item.timeSeries.map((item) => item.value))
+            )
+        )
 
     return data.map((item) => ({
         ...item,
         percentage: ((item[VALUE_FIELD] || 0) / currentLevelTotalSum) * 100,
         decile: calculateDecile(item[VALUE_FIELD], currentLevelTotalSum),
-        totalsDecile: calculateDecile(
-            item[VALUE_FIELD],
-            totalsSum || currentLevelTotalSum
-        ),
+        totalsDecile: calculateDecile(item[VALUE_FIELD], currentLevelMax),
         timeSeries: item.timeSeries.map((item, index) => ({
             ...item,
             percentage:
@@ -112,15 +117,13 @@ export function enrichWithPercentagesAndDeciles(
                     ? (item.value / sums[index].value) * 100
                     : 0,
             decile: calculateDecile(item.value, sums[index].value),
-            totalsDecile: calculateDecile(
-                item.value,
-                totalsSum || currentLevelTotalSum
-            ),
+            totalsDecile: calculateDecile(item.value, currentLevelMax),
         })),
         children: enrichWithPercentagesAndDeciles(
             item.children,
             currentLevelTotalSum,
-            sums
+            sums,
+            currentLevelMax
         ),
     }))
 }
