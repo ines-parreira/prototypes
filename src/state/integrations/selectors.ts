@@ -3,7 +3,7 @@ import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
 import {INTEGRATION_TYPE_CONFIG, isChannel} from 'config'
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
     AppIntegration,
     Integration,
@@ -22,10 +22,14 @@ import {getCurrentUserState} from 'state/currentUser/selectors'
 import {getNewPhoneNumbers as getNewPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
 import {nestedReplace} from 'state/ticket/utils'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
-import {ChannelLike, isLegacyChannel, toChannel} from 'services/channels'
+import {ChannelLike} from 'services/channels'
 import {SourceAddress} from 'models/ticket/types'
 import {getApplicationsByChannel} from 'services/applications'
-import {isSourceAddress} from 'models/ticket/predicates'
+import {
+    isSourceAddress,
+    isTicketChannel,
+    isTicketMessageSourceType,
+} from 'models/ticket/predicates'
 
 import {IntegrationListItem, IntegrationsState} from './types'
 
@@ -402,12 +406,14 @@ export const getChannelsByType = (type: string) =>
     )
 
 export const getChannelsForSourceType =
-    (sourceType: TicketMessageSourceType) => (state: RootState) => {
+    (sourceType: TicketMessageSourceType | TicketChannel) =>
+    (state: RootState) => {
         switch (sourceType) {
             case TicketMessageSourceType.Phone:
                 return getPhoneChannelsForPhoneSource(state)
             case TicketMessageSourceType.Sms:
                 return getPhoneChannelsForSmsSource(state)
+            case TicketChannel.WhatsApp:
             case TicketMessageSourceType.WhatsAppMessage:
                 return getWhatsAppChannels(state)
             default:
@@ -418,11 +424,12 @@ export const getChannelsForSourceType =
 export const getSendersForChannel =
     (channelLike: ChannelLike) =>
     (state: RootState): SourceAddress[] => {
-        if (isLegacyChannel(channelLike)) {
-            const channel = toChannel(channelLike)
-            const sendersForSource = getChannelsForSourceType(
-                channel?.slug as TicketMessageSourceType
-            )(state).toJS()
+        if (
+            isTicketChannel(channelLike) ||
+            isTicketMessageSourceType(channelLike)
+        ) {
+            const sendersForSource =
+                getChannelsForSourceType(channelLike)(state).toJS()
             return _isArray(sendersForSource)
                 ? sendersForSource.filter(isSourceAddress)
                 : []

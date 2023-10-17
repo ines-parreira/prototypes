@@ -7,7 +7,7 @@ import {applications as mockApplications} from 'fixtures/applications'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {integrationsState} from 'fixtures/integrations'
 import {
     Integration,
@@ -925,6 +925,14 @@ describe('integrations selectors', () => {
                 getChannelsForSourceType(TicketMessageSourceType.Email)(
                     state
                 ).toJS()
+            )
+            expect(getSendersForChannel('whatsapp-message')(state)).toEqual(
+                getChannelsForSourceType(
+                    TicketMessageSourceType.WhatsAppMessage
+                )(state).toJS()
+            )
+            expect(getSendersForChannel('whatsapp')(state)).toEqual(
+                getChannelsForSourceType(TicketChannel.WhatsApp)(state).toJS()
             )
         })
 
