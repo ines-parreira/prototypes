@@ -6,13 +6,8 @@ import React, {
     useLayoutEffect,
     useRef,
 } from 'react'
-import * as ReactDOM from 'react-dom'
 import {Container} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
-import NotificationsSystem, {
-    dismissNotification,
-    Notification as ReapopNotification,
-} from 'reapop'
 import {Map} from 'immutable'
 import {Program} from 'estree'
 
@@ -43,18 +38,13 @@ import {handle2FAEnforced} from 'state/currentUser/actions'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import css from './App.less'
-import BannerNotifications from './common/components/BannerNotifications/BannerNotifications'
 import FullPage from './common/components/FullPage'
 import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp'
-import notificationsTheme from './common/components/Notifications'
-import {NotificationIcon as GorgiasNotificationIcon} from './common/components/NotificationIcon'
 import {ErrorBoundary} from './ErrorBoundary'
 import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar'
 import IconButton from './common/components/button/IconButton'
 import Button from './common/components/button/Button'
 import Spotlight from './common/components/Spotlight/Spotlight'
-import EmailMigrationBanner from './common/components/EmailMigrationBanner/EmailMigrationBanner'
-import ScriptTagMigrationBanner from './common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
 
 type Props = {
     infobarOnMobile?: boolean
@@ -86,7 +76,6 @@ const App = ({
     const isPreviousCurrentUserActive = useRef()
 
     const currentAccount = useAppSelector((state) => state.currentAccount)
-    const notifications = useAppSelector((state) => state.notifications)
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
     const hasPhoneIntegration = useAppSelector(
         hasIntegrationOfTypes(IntegrationType.Phone)
@@ -187,14 +176,6 @@ const App = ({
         }
     }, [activeView, isCurrentUserActive, shouldFetchActiveViewTickets])
 
-    const bannerNotifications = notifications.filter(
-        (notif) => notif.style === 'banner'
-    )
-
-    const alertNotifications = notifications.filter(
-        (notif) => notif.style === 'alert'
-    ) as ReapopNotification[]
-
     const Wrapper = containerPadding ? FullPage : Container
     const wrapperProps = containerPadding
         ? {noContainerWidthLimit}
@@ -205,10 +186,6 @@ const App = ({
 
     return (
         <>
-            <BannerNotifications notifications={bannerNotifications} />
-            <EmailMigrationBanner />
-            <ScriptTagMigrationBanner />
-
             <div id="app-root" className={css.app}>
                 <Spotlight>{Navbar && <Navbar />}</Spotlight>
 
@@ -271,19 +248,6 @@ const App = ({
             </div>
 
             <KeyboardHelp />
-            {ReactDOM.createPortal(
-                <NotificationsSystem
-                    theme={notificationsTheme}
-                    notifications={alertNotifications}
-                    dismissNotification={(id) =>
-                        dispatch(dismissNotification(id))
-                    }
-                    components={{
-                        NotificationIcon: GorgiasNotificationIcon,
-                    }}
-                />,
-                document.body
-            )}
         </>
     )
 }
