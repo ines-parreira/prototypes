@@ -1,12 +1,12 @@
 import classnames from 'classnames'
-import React, {ReactNode, useContext, useMemo} from 'react'
+import React, {ReactNode, useMemo} from 'react'
 import {
     Tooltip as ControlledTooltip,
     UncontrolledTooltip,
     TooltipProps,
 } from 'reactstrap'
 
-import {AppUIContext} from 'providers/ui/AppUIContext'
+import {useAppNode} from 'appNode'
 import {isTouchDevice} from '../utils/mobile'
 
 import css from './Tooltip.less'
@@ -34,10 +34,10 @@ export default function Tooltip({
     isOpen,
     ...rest
 }: Props) {
-    const appUIContext = useContext(AppUIContext)
+    const appNode = useAppNode()
     const containerNode = useMemo(
-        () => container ?? appUIContext.appRef?.current,
-        [appUIContext, container]
+        () => container ?? appNode,
+        [appNode, container]
     )
 
     const tooltipDelay = useMemo(() => {

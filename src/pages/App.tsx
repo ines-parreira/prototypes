@@ -5,7 +5,6 @@ import React, {
     memo,
     useLayoutEffect,
     useRef,
-    useState,
 } from 'react'
 import * as ReactDOM from 'react-dom'
 import {Container} from 'reactstrap'
@@ -19,7 +18,6 @@ import {Program} from 'estree'
 
 import 'assets/css/main.less'
 import {useEffectOnce} from 'react-use'
-import {Theme, AppUIContext} from 'providers/ui/AppUIContext'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import pollingManager from 'services/pollingManager'
 import shortcutManager from 'services/shortcutManager'
@@ -97,9 +95,6 @@ const App = ({
     const shouldFetchActiveViewTickets = useAppSelector(
         shouldFetchActiveViewTicketsSelect
     )
-
-    const appRef = useRef<HTMLDivElement>(null)
-    const [theme] = useState<Theme>('modern')
 
     useEffectOnce(() => {
         const newAccountStatus = currentAccount.getIn(['status', 'status'])
@@ -209,115 +204,87 @@ const App = ({
     const hasOpenedPanel = !!openedPanel
 
     return (
-        <AppUIContext.Provider
-            value={{
-                appRef,
-                theme,
-            }}
-        >
-            <AppUIContext.Consumer>
-                {({theme}) => (
-                    <div ref={appRef} className={classnames(css.page, theme)}>
-                        <BannerNotifications
-                            notifications={bannerNotifications}
-                        />
-                        <EmailMigrationBanner />
-                        <ScriptTagMigrationBanner />
+        <>
+            <BannerNotifications notifications={bannerNotifications} />
+            <EmailMigrationBanner />
+            <ScriptTagMigrationBanner />
 
-                        <div id="app-root" className={css.app}>
-                            <Spotlight>{Navbar && <Navbar />}</Spotlight>
+            <div id="app-root" className={css.app}>
+                <Spotlight>{Navbar && <Navbar />}</Spotlight>
 
-                            <div
-                                className={classnames(
-                                    'd-flex flex-grow-1 flex-column',
-                                    css.container
-                                )}
-                            >
-                                <div
-                                    className="d-flex flex-grow-1"
-                                    style={{
-                                        overflow: 'hidden',
-                                    }}
+                <div
+                    className={classnames(
+                        'd-flex flex-grow-1 flex-column',
+                        css.container
+                    )}
+                >
+                    <div
+                        className="d-flex flex-grow-1"
+                        style={{
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <div className={classnames('app-content', css.content)}>
+                            <div className="mobile-nav">
+                                <IconButton
+                                    className="mr-3"
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                    onClick={() =>
+                                        dispatch(openPanel('navbar'))
+                                    }
                                 >
-                                    <div
-                                        className={classnames(
-                                            'app-content',
-                                            css.content
-                                        )}
+                                    menu
+                                </IconButton>
+                                {infobarOnMobile && (
+                                    <Button
+                                        className="ml-3"
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        onClick={() =>
+                                            dispatch(openPanel('infobar'))
+                                        }
                                     >
-                                        <div className="mobile-nav">
-                                            <IconButton
-                                                className="mr-3"
-                                                fillStyle="ghost"
-                                                intent="secondary"
-                                                onClick={() =>
-                                                    dispatch(
-                                                        openPanel('navbar')
-                                                    )
-                                                }
-                                            >
-                                                menu
-                                            </IconButton>
-                                            {infobarOnMobile && (
-                                                <Button
-                                                    className="ml-3"
-                                                    fillStyle="ghost"
-                                                    intent="secondary"
-                                                    onClick={() =>
-                                                        dispatch(
-                                                            openPanel('infobar')
-                                                        )
-                                                    }
-                                                >
-                                                    More info
-                                                </Button>
-                                            )}
-                                        </div>
-
-                                        <Wrapper {...wrapperProps}>
-                                            <ErrorBoundary>
-                                                {content || null}
-                                            </ErrorBoundary>
-                                        </Wrapper>
-                                    </div>
-
-                                    {!!Infobar && (
-                                        <Infobar
-                                            isEditingWidgets={
-                                                !!isEditingWidgets
-                                            }
-                                        />
-                                    )}
-                                </div>
-                                {hasPhoneIntegration && <PhoneIntegrationBar />}
+                                        More info
+                                    </Button>
+                                )}
                             </div>
 
-                            <div
-                                className={classnames(css.backdrop, {
-                                    [css.hidden]: !hasOpenedPanel,
-                                })}
-                                onClick={() => dispatch(closePanels())}
-                            />
+                            <Wrapper {...wrapperProps}>
+                                <ErrorBoundary>{content || null}</ErrorBoundary>
+                            </Wrapper>
                         </div>
 
-                        <KeyboardHelp />
-                        {ReactDOM.createPortal(
-                            <NotificationsSystem
-                                theme={notificationsTheme}
-                                notifications={alertNotifications}
-                                dismissNotification={(id) =>
-                                    dispatch(dismissNotification(id))
-                                }
-                                components={{
-                                    NotificationIcon: GorgiasNotificationIcon,
-                                }}
-                            />,
-                            document.body
+                        {!!Infobar && (
+                            <Infobar isEditingWidgets={!!isEditingWidgets} />
                         )}
                     </div>
-                )}
-            </AppUIContext.Consumer>
-        </AppUIContext.Provider>
+                    {hasPhoneIntegration && <PhoneIntegrationBar />}
+                </div>
+
+                <div
+                    className={classnames(css.backdrop, {
+                        [css.hidden]: !hasOpenedPanel,
+                    })}
+                    onClick={() => dispatch(closePanels())}
+                />
+            </div>
+
+            <KeyboardHelp />
+            {ReactDOM.createPortal(
+                <NotificationsSystem
+                    theme={notificationsTheme}
+                    notifications={alertNotifications}
+                    dismissNotification={(id) =>
+                        dispatch(dismissNotification(id))
+                    }
+                    components={{
+                        NotificationIcon: GorgiasNotificationIcon,
+                    }}
+                />,
+                document.body
+            )}
+        </>
     )
 }
 

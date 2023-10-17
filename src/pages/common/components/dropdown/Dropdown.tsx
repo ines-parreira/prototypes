@@ -20,7 +20,6 @@ import React, {
     Ref,
     RefObject,
     useCallback,
-    useContext,
     useEffect,
     useImperativeHandle,
     useLayoutEffect,
@@ -29,7 +28,7 @@ import React, {
 } from 'react'
 import {useEvent, useKey, usePrevious, useUpdateEffect} from 'react-use'
 
-import {AppUIContext} from 'providers/ui/AppUIContext'
+import {useAppNode} from 'appNode'
 import css from './Dropdown.less'
 
 type Props = {
@@ -104,10 +103,10 @@ const Dropdown = forwardRef(
         const [query, setQuery] = useState('')
         const previousQuery = usePrevious(query)
 
-        const appUIContext = useContext(AppUIContext)
+        const appNode = useAppNode()
         const floatingPortalRoot = useMemo(
-            () => root ?? appUIContext.appRef?.current,
-            [appUIContext, root]
+            () => root ?? appNode,
+            [appNode, root]
         )
 
         useLayoutEffect(() => {

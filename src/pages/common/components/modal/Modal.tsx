@@ -6,7 +6,6 @@ import React, {
     ReactNode,
     RefObject,
     useCallback,
-    useContext,
     useImperativeHandle,
     useMemo,
     useRef,
@@ -17,9 +16,9 @@ import {useKey} from 'react-use'
 import {CSSTransition} from 'react-transition-group'
 import FocusTrap from 'focus-trap-react'
 
+import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'
 
-import {AppUIContext} from 'providers/ui/AppUIContext'
 import css from './Modal.less'
 
 type Props = {
@@ -69,10 +68,10 @@ const Modal = (
     const ref = useRef<HTMLDivElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
 
-    const appUIContext = useContext(AppUIContext)
+    const appNode = useAppNode()
     const containerNode = useMemo(
-        () => container ?? appUIContext.appRef?.current ?? document.body,
-        [appUIContext, container]
+        () => container ?? appNode ?? document.body,
+        [appNode, container]
     )
     const containerNodeRef = useRef(containerNode)
     if (containerNode) {
