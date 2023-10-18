@@ -16,6 +16,7 @@ import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {Callbacks, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
+import {isNotPublished} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {TableActions} from '../../../TableActions'
 
 import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
@@ -184,6 +185,7 @@ export const ArticleRow = ({
                     status={article.translation.visibility_status}
                     isParentUnlisted={isAncestorUnlisted}
                     isArticle
+                    isDraft={isNotPublished(article)}
                 />
             </BodyCell>
             <BodyCell style={{width: 105, minWidth: 105}}>

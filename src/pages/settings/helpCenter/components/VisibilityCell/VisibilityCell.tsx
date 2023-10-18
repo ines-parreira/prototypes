@@ -10,6 +10,7 @@ export type VisibilityCellProps = {
     status: VisibilityStatus
     isParentUnlisted?: boolean
     isArticle?: boolean
+    isDraft?: boolean
 }
 
 export const optionsSharingStatus: Record<
@@ -30,9 +31,24 @@ const VisibilityCell = ({
     status = 'PUBLIC',
     isParentUnlisted = false,
     isArticle = false,
+    isDraft = false,
 }: VisibilityCellProps) => {
     const isPublicUnlisted = isParentUnlisted && status === 'PUBLIC'
     const ref = useRef<HTMLDivElement | null>(null)
+
+    if (isDraft) {
+        return (
+            <div className={css.container}>
+                <div
+                    className={classnames(css.title, {
+                        [css.light]: isPublicUnlisted,
+                    })}
+                >
+                    Draft
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className={css.container}>
