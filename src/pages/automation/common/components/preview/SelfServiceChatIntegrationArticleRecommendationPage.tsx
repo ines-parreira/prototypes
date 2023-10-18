@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {
+    GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
@@ -23,12 +24,14 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
 
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
+    const widgetTranslatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
     const {decoration} = integration
 
     const agentMessages: AgentMessage[] = [
         {
-            content: 'Here is an article that may help:',
+            content:
+                widgetTranslatedTexts.previewArticleRecommendationAgentInitialMessage,
             isHtml: false,
             attachments: [],
         },
@@ -37,9 +40,9 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
             isHtml: true,
             attachments: [
                 {
-                    title: 'What size should I order?',
+                    title: widgetTranslatedTexts.previewArticleRecommendationArticleTitle,
                     summary:
-                        'Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page...',
+                        widgetTranslatedTexts.previewArticleRecommendationArticleSummary,
                 },
             ],
         },
@@ -55,7 +58,9 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
             className={css.messageContent}
             conversationColor={decoration.conversation_color}
             currentUser={currentUser}
-            customerInitialMessages={['What size am I?']}
+            customerInitialMessages={[
+                widgetTranslatedTexts.previewArticleRecommendationCustomerInitialMessage,
+            ]}
             agentMessages={agentMessages}
             hideConversationTimestamp
         >

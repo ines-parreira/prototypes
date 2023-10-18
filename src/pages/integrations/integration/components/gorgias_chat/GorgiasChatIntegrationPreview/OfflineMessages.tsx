@@ -3,6 +3,7 @@ import React from 'react'
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
+    GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
 
 import BotMessages from './BotMessages'
@@ -20,6 +21,9 @@ const OfflineMessages: React.FC<Props> = ({mainColor, chatTitle, language}) => {
             language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
         ]
 
+    const sspTexts =
+        GORGIAS_CHAT_SSP_TEXTS[language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
+
     return (
         <>
             <BotMessages
@@ -28,14 +32,15 @@ const OfflineMessages: React.FC<Props> = ({mainColor, chatTitle, language}) => {
                     widgetTranslatedTexts.contactFormIntro,
                     widgetTranslatedTexts.contactFormAskSubject,
                 ]}
+                language={language}
             />
             <QuickReplies
                 quickReplies={[
-                    'Track Order',
-                    'Report Issue',
-                    'Cancel Order',
-                    'Product Question',
-                    'Other',
+                    sspTexts.trackOrderShort,
+                    sspTexts.reportIssueShort,
+                    sspTexts.cancelOrderShort,
+                    widgetTranslatedTexts.productQuestionShort,
+                    sspTexts.other,
                 ]}
                 mainColor={mainColor}
             />

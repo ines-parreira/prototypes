@@ -55,7 +55,11 @@ export default class AutoResponder extends Component<Props> {
         const message = this._getMessage()
 
         return (
-            <BotMessages chatTitle={chatTitle} messages={[message]}>
+            <BotMessages
+                chatTitle={chatTitle}
+                messages={[message]}
+                language={language}
+            >
                 {isEmailCaptureEnabled && (
                     <EmailCaptureMessage language={language} />
                 )}

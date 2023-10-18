@@ -1,5 +1,13 @@
 {
     "en-US": {
+        "automated": "Automated",
+        "previewAgentInitialMessage": "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
+        "previewArticleRecommendationAgentInitialMessage": "Here is an article that may help:",
+        "previewArticleRecommendationArticleSummary": "Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page...",
+        "previewArticleRecommendationArticleTitle": "What size should I order?",
+        "previewArticleRecommendationCustomerInitialMessage": "What size am I?",
+        "previewCustomerInitialMessage": "Hi, could you give me an update on my order status?",
+        "productQuestionShort": "Product Question",
         "replyTimeMoments": "We'll reply in a few moments",
         "emailCaptureTriggerTextBase": "Leave us your email and we'll get back to you.",
         "emailCaptureTriggerTypicalReplyHours": "We typically reply in a few hours.",
@@ -59,6 +67,14 @@
         "chatWithUs": "Chat with us"
     },
     "fr-FR": {
+        "automated": "Automatisé",
+        "previewAgentInitialMessage": "Bonjour, merci pour votre patience ! Bien sûr, laisse-moi vérifier. Quel est votre numéro de commande ?",
+        "previewArticleRecommendationAgentInitialMessage": "Voici un article qui pourrait vous aider :",
+        "previewArticleRecommendationArticleSummary": "Vous ne savez pas quelle taille vous conviendra ? Consultez notre guide des tailles situé au-dessus des tailles proposées sur chaque page produit…",
+        "previewArticleRecommendationArticleTitle": "Quelle taille dois-je commander ?",
+        "previewArticleRecommendationCustomerInitialMessage": "Quelle est ma taille ?",
+        "previewCustomerInitialMessage": "Bonjour, pouvez-vous me donner une mise à jour de l'état de ma commande ?",
+        "productQuestionShort": "Question produit",
         "replyTimeMoments": "Nous allons vous répondre dans quelques instants.",
         "emailCaptureTriggerTextBase": "Laissez-nous votre adresse e-mail et nous vous recontacterons.",
         "emailCaptureTriggerTypicalReplyHours": "Nous répondons généralement en quelques heures.",
@@ -117,6 +133,14 @@
         "chatWithUs": "Discutez avec nous"
     },
     "fr": {
+        "automated": "Automatisé",
+        "previewAgentInitialMessage": "Bonjour, merci pour votre patience ! Bien sûr, laisse-moi vérifier. Quel est votre numéro de commande ?",
+        "previewArticleRecommendationAgentInitialMessage": "Voici un article qui pourrait vous aider :",
+        "previewArticleRecommendationArticleSummary": "Vous ne savez pas quelle taille vous conviendra ? Consultez notre guide des tailles situé au-dessus des tailles proposées sur chaque page produit…",
+        "previewArticleRecommendationArticleTitle": "Quelle taille dois-je commander ?",
+        "previewArticleRecommendationCustomerInitialMessage": "Quelle est ma taille ?",
+        "previewCustomerInitialMessage": "Bonjour, pouvez-vous me donner une mise à jour de l'état de ma commande ?",
+        "productQuestionShort": "Question produit",
         "replyTimeMoments": "Nous allons vous répondre dans quelques instants.",
         "emailCaptureTriggerTextBase": "Laissez-nous votre adresse e-mail et nous vous recontacterons.",
         "emailCaptureTriggerTypicalReplyHours": "Nous répondons généralement en quelques heures.",
@@ -175,6 +199,14 @@
         "chatWithUs": "Discutez avec nous"
     },
     "fr-CA": {
+        "automated": "Automatisé",
+        "previewAgentInitialMessage": "Bonjour, merci pour votre patience! Bien sûr, laissez-moi vérifier. Quel est votre numéro de commande?",
+        "previewArticleRecommendationAgentInitialMessage": "Voici un article qui pourrait vous aider :",
+        "previewArticleRecommendationArticleSummary": "Vous ne savez pas quelle taille choisir? Consultez notre guide des tailles qui se trouve au-dessus des tailles offertes sur la page de chaque produit...",
+        "previewArticleRecommendationArticleTitle": "Quelle taille devrais-je commander?",
+        "previewArticleRecommendationCustomerInitialMessage": "Quelle est ma taille?",
+        "previewCustomerInitialMessage": "Bonjour, pouvez-vous me donner une mise à jour de l'état de ma commande?",
+        "productQuestionShort": "Question sur le produit",
         "replyTimeMoments": "Nous vous répondrons dans quelques instants",
         "emailCaptureTriggerTextBase": "Laissez-nous votre e-mail et nous vous répondrons.",
         "emailCaptureTriggerTypicalReplyHours": "Nous répondons généralement en quelques heures.",
@@ -233,6 +265,14 @@
         "chatWithUs": "Discutez avec nous"
     },
     "es": {
+        "automated": "Automatizado",
+        "previewAgentInitialMessage": "Hola, gracias por tu paciencia. Por supuesto, déjame comprobarlo. ¿Cuál es tu número de pedido?",
+        "previewArticleRecommendationAgentInitialMessage": "Aquí tienes un artículo que te puede ser útil:",
+        "previewArticleRecommendationArticleSummary": "¿No sabes qué talla te iría bien? Comprueba nuestra guía de tallas situada encima de las tallas ofrecidas en cada página de producto…",
+        "previewArticleRecommendationArticleTitle": "¿Qué talla debería pedir?",
+        "previewArticleRecommendationCustomerInitialMessage": "¿Cuál es mi talla?",
+        "previewCustomerInitialMessage": "Hola, ¿me podríais informar sobre el estado de mi pedido?",
+        "productQuestionShort": "Pregunta de un producto",
         "replyTimeMoments": "Te responderemos en unos momentos",
         "emailCaptureTriggerTextBase": "Déjanos tu correo electrónico y nos pondremos en contacto contigo.",
         "emailCaptureTriggerTypicalReplyHours": "Normalmente respondemos en unas horas.",
@@ -291,6 +331,14 @@
         "chatWithUs": "Chatea con nosotros"
     },
     "da": {
+        "automated": "Automatiseret",
+        "previewAgentInitialMessage": "Hejsa, tak for tålmodigheden! Selvfølgelig, lad mig tjekke det. Hvad er dit ordrenummer?",
+        "previewArticleRecommendationAgentInitialMessage": "Her er en nyttig artikel, der kan hjælpe:",
+        "previewArticleRecommendationArticleSummary": "I tvivl om hvilken størrelse der fungerer? Tjek vores størrelsesvejledning ovenfor de størrelser der tilbydes på hver produktside...",
+        "previewArticleRecommendationArticleTitle": "Hvilken størrelse skal jeg bestille?",
+        "previewArticleRecommendationCustomerInitialMessage": "Hvilken størrelse er jeg?",
+        "previewCustomerInitialMessage": "Hej, kan du give mig en opdatering på min ordrestatus?",
+        "productQuestionShort": "Spørgsmål til produkt",
         "replyTimeMoments": "Vi svarer inden for nogle få øjeblikke",
         "emailCaptureTriggerTextBase": "Skriv en e-mail til os, så vender vi tilbage til dig.",
         "emailCaptureTriggerTypicalReplyHours": "Vi svarer typisk inden for få timer.",
@@ -349,6 +397,14 @@
         "chatWithUs": "Chat med os"
     },
     "sv": {
+        "automated": "Automatiserat",
+        "previewAgentInitialMessage": "Hej, tack för ditt tålamod! Visst, jag ska kolla. Vad är ditt ordernummer?",
+        "previewArticleRecommendationAgentInitialMessage": "Här är en artikel som kan vara till hjälp:",
+        "previewArticleRecommendationArticleSummary": "Osäker på vilken storlek som passar? Kolla in vår storleksguide ovanför de storlekar som erbjuds på varje produktsida ...",
+        "previewArticleRecommendationArticleTitle": "Vilken storlek ska jag beställa?",
+        "previewArticleRecommendationCustomerInitialMessage": "Vilken storlek har jag?",
+        "previewCustomerInitialMessage": "Hej, skulle du kunna ge mig en uppdatering om statusen på min order?",
+        "productQuestionShort": "Produktfråga",
         "replyTimeMoments": "Vi svarar om ett ögonblick",
         "emailCaptureTriggerTextBase": "Lämna din e-postadress så hör vi av oss till dig.",
         "emailCaptureTriggerTypicalReplyHours": "Vi svarar i regel inom några timmar.",
@@ -407,6 +463,14 @@
         "chatWithUs": "Chatta med oss"
     },
     "nl": {
+        "automated": "Geautomatiseerd",
+        "previewAgentInitialMessage": "Hoi, bedankt voor je geduld! Natuurlijk, ik ga het controleren. Wat is je bestelnummer?",
+        "previewArticleRecommendationAgentInitialMessage": "Hier is een artikel dat kan helpen:",
+        "previewArticleRecommendationArticleSummary": "Niet zeker van de maat? Bekijk onze maattabel boven de maten die op elke productpagina aangeboden worden...",
+        "previewArticleRecommendationArticleTitle": "Welke maat moet ik bestellen?",
+        "previewArticleRecommendationCustomerInitialMessage": "Welke maat heb ik?",
+        "previewCustomerInitialMessage": "Hoi, kun je me een update geven over de status van mijn bestelling?",
+        "productQuestionShort": "Productvraag",
         "replyTimeMoments": "We zullen binnen enkele ogenblikken antwoorden",
         "emailCaptureTriggerTextBase": "Laat je e-mailadres achter en we nemen contact met je op.",
         "emailCaptureTriggerTypicalReplyHours": "We antwoorden doorgaans binnen een paar uur.",
@@ -465,6 +529,14 @@
         "chatWithUs": "Chat met ons"
     },
     "it": {
+        "automated": "Automatizzato",
+        "previewAgentInitialMessage": "Ciao, grazie per la pazienza! Certo, fammi controllare. Qual è il numero del tuo ordine?",
+        "previewArticleRecommendationAgentInitialMessage": "Ecco un articolo che potrebbe essere d'aiuto:",
+        "previewArticleRecommendationArticleSummary": "Non sai quale sia la taglia giusta? Controlla la nostra guida alle  taglie posta sopra le taglie offerte nella pagina di ciascun prodotto...",
+        "previewArticleRecommendationArticleTitle": "Che taglia dovrei ordinare?",
+        "previewArticleRecommendationCustomerInitialMessage": "Qual è la mia taglia?",
+        "previewCustomerInitialMessage": "Ciao, potresti darmi un aggiornamento sullo stato del mio ordine?",
+        "productQuestionShort": "Domanda su prodotto",
         "replyTimeMoments": "Risponderemo tra pochi secondi",
         "emailCaptureTriggerTextBase": "Lasciaci la tua email e ti ricontatteremo.",
         "emailCaptureTriggerTypicalReplyHours": "Generalmente rispondiamo in poche ore.",
@@ -523,6 +595,14 @@
         "chatWithUs": "Chatta con noi"
     },
     "de": {
+        "automated": "Automatisiert",
+        "previewAgentInitialMessage": "Hallo, vielen Dank für deine Geduld! Ja, natürlich, ich werde mal nachschauen. Wie lautet deine Bestellnummer?",
+        "previewArticleRecommendationAgentInitialMessage": "Dieser Artikel könnte helfen:",
+        "previewArticleRecommendationArticleSummary": "Du bist dir nicht sicher, welche Größe du brauchst? Schau dir unsere Größentabelle an, die sich über den angebotenen Größen auf jeder Produktseite befindet ...",
+        "previewArticleRecommendationArticleTitle": "Welche Größe sollte ich bestellen?",
+        "previewArticleRecommendationCustomerInitialMessage": "Welche Größe habe ich?",
+        "previewCustomerInitialMessage": "Hallo, könntest du mir ein Update über meinen Bestellstatus geben?",
+        "productQuestionShort": "Frage zum Produkt",
         "replyTimeMoments": "Wir antworten in wenigen Augenblicken",
         "emailCaptureTriggerTextBase": "Hinterlassen Sie uns Ihre E-Mail und wir melden uns bei Ihnen.",
         "emailCaptureTriggerTypicalReplyHours": "Wir antworten in der Regel innerhalb weniger Stunden.",
@@ -581,6 +661,14 @@
         "chatWithUs": "Chatten Sie mit uns"
     },
     "no": {
+        "automated": "Automatisert",
+        "previewAgentInitialMessage": "Heisann, takk for tålmodigheten! Javisst, la meg sjekke. Hva er bestillingsnummeret ditt?",
+        "previewArticleRecommendationAgentInitialMessage": "Her er en artikkel som kan være til hjelp:",
+        "previewArticleRecommendationArticleSummary": "Er du usikker på hvilken størrelse du trenger? Sjekk størrelsesveiledningen vår ovenfor størrelsene som tilbys på hver produktside …",
+        "previewArticleRecommendationArticleTitle": "Hvilken størrelse bør jeg bestille?",
+        "previewArticleRecommendationCustomerInitialMessage": "Hvilken størrelse er jeg?",
+        "previewCustomerInitialMessage": "Hei, kan du gi meg en oppdatering på bestillingsstatusen min?",
+        "productQuestionShort": "Produktspørsmål",
         "replyTimeMoments": "Vi svarer deg om et øyeblikk",
         "emailCaptureTriggerTextBase": "Legg igjen e-posten din, så kommer vi tilbake til deg.",
         "emailCaptureTriggerTypicalReplyHours": "Vi svarer typisk i løpet av noen få timer.",
@@ -639,6 +727,14 @@
         "chatWithUs": "Chatt med oss"
     },
     "cz": {
+        "automated": "Automatizováno",
+        "previewAgentInitialMessage": "Zdravím, díky za trpělivost! Jasné, podívám se. Jaké máš číslo objednávky?",
+        "previewArticleRecommendationAgentInitialMessage": "Tady je článek, který může pomoci:",
+        "previewArticleRecommendationArticleSummary": "Nevíš přesně, jaká velikost ti padne? Podívej se na našeho průvodce velikostmi umístěného nad nabízenými velikostmi na stránce každého produktu...",
+        "previewArticleRecommendationArticleTitle": "Jakou velikost mám objednat?",
+        "previewArticleRecommendationCustomerInitialMessage": "Jaká je moje velikost?",
+        "previewCustomerInitialMessage": "Ahoj, můžete mi říct něco nového ohledně stavu mojí objednávky?",
+        "productQuestionShort": "Otázka k produktu",
         "replyTimeMoments": "Za malou chvíli vám odpovíme",
         "emailCaptureTriggerTextBase": "Zanechte nám email a my se vám ozveme.",
         "emailCaptureTriggerTypicalReplyHours": "Obvykle odpovídáme do pár hodin.",
@@ -697,6 +793,14 @@
         "chatWithUs": "Chatujte s námi"
     },
     "en-GB": {
+        "automated": "Automated",
+        "previewAgentInitialMessage": "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
+        "previewArticleRecommendationAgentInitialMessage": "Here is an article that may help:",
+        "previewArticleRecommendationArticleSummary": "Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page...",
+        "previewArticleRecommendationArticleTitle": "What size should I order?",
+        "previewArticleRecommendationCustomerInitialMessage": "What size am I?",
+        "previewCustomerInitialMessage": "Hi, could you give me an update on my order status?",
+        "productQuestionShort": "Product Question",
         "replyTimeMoments": "We'll reply in a few moments",
         "emailCaptureTriggerTextBase": "Leave us your email and we'll get back to you.",
         "emailCaptureTriggerTypicalReplyHours": "We typically reply in a few hours.",
@@ -755,6 +859,14 @@
         "chatWithUs": "Chat with us"
     },
     "fi": {
+        "automated": "Automaattinen",
+        "previewAgentInitialMessage": "Hei, kiitos kärsivällisyydestäsi! Totta kai, tarkistetaan tilanne. Mikä tilausnumerosi on?",
+        "previewArticleRecommendationAgentInitialMessage": "Tästä artikkelista voisi olla apua:",
+        "previewArticleRecommendationArticleSummary": "Oletko epävarma koostasi? Käy katsomassa koko-oppaamme, joka sijaitsee kullakin tuotesivulla tarjolla olevien kokojen yläpuolella.",
+        "previewArticleRecommendationArticleTitle": "Minkä koon tilaisin?",
+        "previewArticleRecommendationCustomerInitialMessage": "Mikä on minun kokoni?",
+        "previewCustomerInitialMessage": "Hei, voisitko tarkistaa tilaukseni tilan?",
+        "productQuestionShort": "Tuotekysymys",
         "replyTimeMoments": "Vastaamme pienen hetken päästä",
         "emailCaptureTriggerTextBase": "Ilmoita meille sähköpostiosoitteesi, niin palaamme asiaan.",
         "emailCaptureTriggerTypicalReplyHours": "Vastaamme yleensä muutaman tunnin sisällä.",
@@ -813,6 +925,14 @@
         "chatWithUs": "Keskustele kanssamme"
     },
     "ja": {
+        "automated": "自動送信",
+        "previewAgentInitialMessage": "こんにちは。お待たせして申し訳ございません！もちろんご確認いたします。ご注文番号をお伝えいただけますでしょうか。",
+        "previewArticleRecommendationAgentInitialMessage": "ご参考になるかもしれない記事はこちら:",
+        "previewArticleRecommendationArticleSummary": "自分に合うサイズが分かりませんか？各商品のページに記載されているサイズの上にある弊社サイズガイドをご確認ください。",
+        "previewArticleRecommendationArticleTitle": "どのサイズを注文すればいいですか？",
+        "previewArticleRecommendationCustomerInitialMessage": "私のサイズはどれですか？",
+        "previewCustomerInitialMessage": "こんにちは。私の注文の状況について,最新情報をいただけますか。",
+        "productQuestionShort": "製品に関する質問",
         "replyTimeMoments": "間もなく返信いたします",
         "emailCaptureTriggerTextBase": "お客様の電子メールを残していただければ,ご連絡いたします。",
         "emailCaptureTriggerTypicalReplyHours": "通常,数時間以内に返信します。",
@@ -871,6 +991,14 @@
         "chatWithUs": "チャットで問い合わせる"
     },
     "pt-BR": {
+        "automated": "Automatizado",
+        "previewAgentInitialMessage": "Olá, obrigado pela paciência! Claro, deixe-me verificar. Qual é o número de seu pedido?",
+        "previewArticleRecommendationAgentInitialMessage": "Veja um artigo que pode ajudar:",
+        "previewArticleRecommendationArticleSummary": "Não tem certeza de qual é o tamanho correto? Confira nossa guia de tamanhos. Ela está localizada acima dos tamanhos que aparecem na página de cada produto...",
+        "previewArticleRecommendationArticleTitle": "Qual tamanho devo comprar?",
+        "previewArticleRecommendationCustomerInitialMessage": "Qual é o meu tamanho?",
+        "previewCustomerInitialMessage": "Olá, poderia me atualizar sobre o status do meu pedido?",
+        "productQuestionShort": "Pergunta Sobre o Produto",
         "replyTimeMoments": "Responderemos em alguns instantes",
         "emailCaptureTriggerTextBase": "Deixe-nos seu e-mail, e entraremos em contato com você.",
         "emailCaptureTriggerTypicalReplyHours": "Normalmente respondemos em algumas horas.",

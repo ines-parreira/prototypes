@@ -109,6 +109,8 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
         )
 
+    const widgetTranslatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
+
     return (
         <div className={css.wrapper}>
             <div
@@ -136,11 +138,9 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                 mainColor={mainColor}
                 mainFontFamily={mainFontFamily}
                 isOnline={isOnline}
-                introductionText={
-                    GORGIAS_CHAT_WIDGET_TEXTS[language]?.introductionText
-                }
+                introductionText={widgetTranslatedTexts?.introductionText}
                 offlineIntroductionText={
-                    GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
+                    widgetTranslatedTexts?.offlineIntroductionText
                 }
                 showBackground={false}
                 isOpen={isOpen}
@@ -153,17 +153,18 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                         avatar={avatar}
                         conversationColor={conversationColor}
                         customerInitialMessages={[
-                            'Hi, could you give me an update on my order status?',
+                            widgetTranslatedTexts?.previewCustomerInitialMessage,
                         ]}
                         agentMessages={[
                             {
                                 content:
-                                    "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
+                                    widgetTranslatedTexts?.previewAgentInitialMessage,
                                 isHtml: false,
                                 attachments: [],
                             },
                         ]}
                         currentUser={currentUser}
+                        language={language}
                     />
                 ) : (
                     <ChatIntegrationPreviewContent>

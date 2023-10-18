@@ -11,7 +11,7 @@ import BotMessages from './BotMessages'
 
 type Props = {
     name: Maybe<string>
-    language: Maybe<string>
+    language?: string
 }
 
 export default class RequiredEmailCapture extends React.Component<Props> {
@@ -34,6 +34,7 @@ export default class RequiredEmailCapture extends React.Component<Props> {
                     messages={[
                         translatedTexts.requiredEmailCaptureWelcomeMessage,
                     ]}
+                    language={language}
                 >
                     <div className={css.optionalEmailCapture}>
                         <InputPrompt
