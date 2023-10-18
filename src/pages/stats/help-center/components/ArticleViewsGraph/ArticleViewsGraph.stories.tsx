@@ -2,11 +2,11 @@ import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
 
 import {TimeSeriesDataItem} from '../../../../../hooks/reporting/useTimeSeries'
-import ArticleViewsGraph from './ArticleViewsGraph'
+import {ArticleViewsGraphComponent} from './ArticleViewsGraph'
 
-const meta: Meta<typeof ArticleViewsGraph> = {
+const meta: Meta<typeof ArticleViewsGraphComponent> = {
     title: 'Help Center Stats/ArticleViewsGraph ',
-    component: ArticleViewsGraph,
+    component: ArticleViewsGraphComponent,
     argTypes: {
         data: {
             table: {
@@ -18,7 +18,7 @@ const meta: Meta<typeof ArticleViewsGraph> = {
 
 export default meta
 
-type Story = StoryObj<typeof ArticleViewsGraph>
+type Story = StoryObj<typeof ArticleViewsGraphComponent>
 
 const DATA: TimeSeriesDataItem[][] = [
     [
@@ -51,5 +51,5 @@ const DATA: TimeSeriesDataItem[][] = [
 ]
 
 export const Default: Story = {
-    render: (args) => <ArticleViewsGraph {...args} data={DATA} />,
+    render: (args) => <ArticleViewsGraphComponent {...args} data={DATA} />,
 }

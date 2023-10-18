@@ -16,6 +16,9 @@ const defaultState = {
 jest.mock('../../hooks/useHelpCenterTrend', () => ({
     useHelpCenterTrend: () => ({data: 0, isFetching: false}),
 }))
+jest.mock('../../hooks/useArticleViewTimeSeries', () => ({
+    useArticleViewTimeSeries: () => ({data: undefined, isFetching: false}),
+}))
 
 const mockStore = configureMockStore([thunk])
 

@@ -11,6 +11,7 @@ import DashboardGridCell from '../../DashboardGridCell'
 import {useHelpCenterTrend} from '../hooks/useHelpCenterTrend'
 import TipsToggle from '../../TipsToggle'
 
+import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import css from './HelpCenterStats.less'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
@@ -23,27 +24,22 @@ const HelpCenterStats = () => {
     const timezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
-    const articleViewMetricTrend = useHelpCenterTrend({
-        statsFilters: {
-            period: {
-                end_datetime: START_DATE,
-                start_datetime: END_DATE,
-            },
+    const statsFilters = {
+        period: {
+            end_datetime: START_DATE,
+            start_datetime: END_DATE,
         },
+    }
+    const articleViewMetricTrend = useHelpCenterTrend({
+        statsFilters,
         timezone,
         metric: HelpCenterTrackingEventMeasures.ArticleView,
     })
     const searchesMetricTrend = useHelpCenterTrend({
-        statsFilters: {
-            period: {
-                end_datetime: START_DATE,
-                start_datetime: END_DATE,
-            },
-        },
+        statsFilters,
         timezone,
         metric: HelpCenterTrackingEventMeasures.Search,
     })
-
     const [isTipVisible, setIsTipsVisible] = useState(true)
 
     const onTipsToggleClick = () => {
@@ -124,7 +120,14 @@ const HelpCenterStats = () => {
                         />
                     </DashboardGridCell>
                 </DashboardSection>
-                <DashboardSection title="Performance">Content</DashboardSection>
+                <DashboardSection title="Performance">
+                    <DashboardGridCell size={12}>
+                        <ArticleViewsGraph
+                            statsFilters={statsFilters}
+                            timezone={timezone}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <DashboardSection title="Help Center searches">
                     Content
                 </DashboardSection>

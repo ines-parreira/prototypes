@@ -6,8 +6,13 @@ import LineChart from '../../../LineChart'
 import {formatTimeSeriesData, SHORT_FORMAT} from '../../../common/utils'
 import {ReportingGranularity} from '../../../../../models/reporting/types'
 import {TimeSeriesDataItem} from '../../../../../hooks/reporting/useTimeSeries'
+import {useArticleViewTimeSeries} from '../../hooks/useArticleViewTimeSeries'
+import {StatsFilters} from '../../../../../models/stat/types'
 
-type ArticleViewsGraphProps = {isLoading: boolean; data: TimeSeriesDataItem[][]}
+type ArticleViewsGraphComponentProps = {
+    isLoading: boolean
+    data?: TimeSeriesDataItem[][]
+}
 
 export const renderXTickLabel = function (
     this: Scale,
@@ -23,7 +28,10 @@ export const renderXTickLabel = function (
     return this.getLabelForValue(index)
 }
 
-const ArticleViewsGraph = ({isLoading, data}: ArticleViewsGraphProps) => {
+export const ArticleViewsGraphComponent = ({
+    isLoading,
+    data,
+}: ArticleViewsGraphComponentProps) => {
     const formattedDat = useMemo(
         () =>
             formatTimeSeriesData(
@@ -37,13 +45,35 @@ const ArticleViewsGraph = ({isLoading, data}: ArticleViewsGraphProps) => {
     return (
         <ChartCard title="Article views">
             <LineChart
-                yAxisScale={{min: 0, max: 5000}}
                 renderXTickLabel={renderXTickLabel}
                 isLoading={isLoading}
                 _displayLegacyTooltip
                 data={formattedDat}
             />
         </ChartCard>
+    )
+}
+
+type ArticleViewsGraphProps = {
+    statsFilters: StatsFilters
+    timezone: string
+}
+
+const ArticleViewsGraph = ({
+    statsFilters,
+    timezone,
+}: ArticleViewsGraphProps) => {
+    const articleViewTimeSeries = useArticleViewTimeSeries(
+        statsFilters,
+        timezone,
+        ReportingGranularity.Day
+    )
+
+    return (
+        <ArticleViewsGraphComponent
+            data={articleViewTimeSeries.data}
+            isLoading={articleViewTimeSeries.isFetching}
+        />
     )
 }
 
