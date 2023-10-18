@@ -208,7 +208,7 @@ exports[`UsageAndPlansView should render 1`] = `
             </div>
           </div>
           <div
-            class="container disabled"
+            class="container rounded disabled"
           >
             <div
               class="button"

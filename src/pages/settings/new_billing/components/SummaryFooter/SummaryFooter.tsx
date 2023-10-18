@@ -134,7 +134,7 @@ const SummaryFooter = ({
 
     return (
         <div
-            className={classNames(css.container, {
+            className={classNames(css.container, 'rounded', {
                 [css.disabled]:
                     !isTrialing &&
                     !isCurrentSubscriptionCanceled &&

@@ -147,19 +147,8 @@ export const PRODUCT_SUBSCRIPTION_DESCRIPTION = {
     [ProductType.Voice]: [],
     [ProductType.SMS]: [],
     [ProductType.Convert]: [
-        {
-            icon: 'info',
-            description:
-                'Provide the info and incentives customers need to place an order',
-        },
-        {
-            icon: 'sell',
-            description:
-                'Send special offers to customers about to exit your site',
-        },
-        {
-            icon: 'star',
-            description: 'Treat returning customers like VIPs',
-        },
+        'Incentivize customers to place orders',
+        'Send special offers to customers exiting your site',
+        'Treat returning customers like VIPs',
     ],
 }

@@ -20,18 +20,18 @@ import {
     getCurrentHelpdeskProduct,
 } from 'state/billing/selectors'
 import {isStarterTierPrice} from 'models/billing/utils'
-import {AutomationPrice, ConvertPrice, ProductType} from 'models/billing/types'
+import {Price, ProductType} from 'models/billing/types'
 import css from './SubscriptionModal.less'
 
 type Props = {
     productType: ProductType
     canduId: string
-    prices: AutomationPrice[] | ConvertPrice[]
+    prices: Price[]
     confirmLabel?: string
     confirmEnterpriseLabel?: string
     headerDescription: string
     currentPage: string
-    defaultPrice: AutomationPrice | ConvertPrice | undefined
+    defaultPrice: Price | undefined
     isTrialingSubscription: boolean
     isOpen: boolean
     onClose: () => void

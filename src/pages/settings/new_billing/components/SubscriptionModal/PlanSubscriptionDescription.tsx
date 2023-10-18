@@ -1,11 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
-import {
-    AutomationPrice,
-    ConvertPrice,
-    PlanInterval,
-    ProductType,
-} from 'models/billing/types'
+import {PlanInterval, Price, ProductType} from 'models/billing/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
@@ -31,15 +26,13 @@ import CounterText from 'pages/settings/new_billing/components/CounterText'
 
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
-    prices: AutomationPrice[] | ConvertPrice[]
+    prices: Price[]
     isStarterPlan: boolean
     isTrialing: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
-    selectedPrice: AutomationPrice | ConvertPrice | undefined
-    setSelectedPrice: React.Dispatch<
-        React.SetStateAction<AutomationPrice | ConvertPrice | undefined>
-    >
+    selectedPrice: Price | undefined
+    setSelectedPrice: React.Dispatch<React.SetStateAction<Price | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -71,7 +64,7 @@ const PlanSubscriptionDescription = ({
     )
 
     const formatOptionLabel = useCallback(
-        (price: ConvertPrice | AutomationPrice) => {
+        (price: Price) => {
             if (isTrialPrice(price, productType)) {
                 return 'Trial'
             }
@@ -139,25 +132,17 @@ const PlanSubscriptionDescription = ({
             data-testid={`${productInfo.title.toLowerCase()}ModalDescription`}
         >
             <div className={css.card}>
-                <Alert
-                    icon={
-                        <i className={classNames('material-icons', css.icon)}>
-                            auto_awesome
-                        </i>
-                    }
-                    className={css.alert}
-                >
-                    Unlock these features by subscribing to{' '}
-                    <strong>{productInfo.title}</strong>
-                </Alert>
+                <div className={css.title}>
+                    Ready to upgrade with {productInfo.title}?
+                </div>
                 <div className={css.features}>
-                    {descriptionInfo.map((info) => (
+                    {descriptionInfo.map((info, index) => (
                         <div
                             className={css.feature}
-                            key={`feature-${info.icon}`}
+                            key={`${productInfo.title}-feature-${index}`}
                         >
-                            <i className="material-icons">{info.icon}</i>
-                            <div>{info.description}</div>
+                            <i className="material-icons rounded">check</i>
+                            <div>{info}</div>
                         </div>
                     ))}
                 </div>
@@ -171,7 +156,7 @@ const PlanSubscriptionDescription = ({
                         target="_blank"
                         rel="noreferrer noopener"
                     >
-                        See Plans Details
+                        Explore Pricing Plans
                         <i className={`${css.linkIcon} material-icons`}>
                             open_in_new
                         </i>
