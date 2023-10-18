@@ -72,7 +72,7 @@ export class RowContainer extends Component<Props> {
             >
                 {selectable ? (
                     <td
-                        className="cell-wrapper cell-short clickable d-none d-md-table-cell"
+                        className="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
                         onClick={this._toggleSelection}
                     >
                         {
@@ -90,7 +90,11 @@ export class RowContainer extends Component<Props> {
                                 </div>
                             )
                         }
-                        <CheckBox isChecked={isSelected} />
+                        <CheckBox
+                            labelClassName={css.checkBoxLabel}
+                            className={css.checkBox}
+                            isChecked={isSelected}
+                        />
                     </td>
                 ) : null}
                 {fields.map((field: Map<any, any>) => (

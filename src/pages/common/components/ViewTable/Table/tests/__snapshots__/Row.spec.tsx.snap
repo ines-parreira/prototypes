@@ -5,11 +5,13 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
   className="highlighted"
 >
   <td
-    className="cell-wrapper cell-short clickable d-none d-md-table-cell"
+    className="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
     onClick={[Function]}
   >
     <ForwardRef(CheckBox)
+      className="checkBox"
       isChecked={false}
+      labelClassName="checkBoxLabel"
     />
   </td>
   <Connect(CellContainer)
@@ -1647,7 +1649,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
   className="highlighted"
 >
   <td
-    className="cell-wrapper cell-short clickable d-none d-md-table-cell"
+    className="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
     onClick={[Function]}
   >
     <div
@@ -1661,7 +1663,9 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
       </i>
     </div>
     <ForwardRef(CheckBox)
+      className="checkBox"
       isChecked={false}
+      labelClassName="checkBoxLabel"
     />
   </td>
   <Connect(CellContainer)

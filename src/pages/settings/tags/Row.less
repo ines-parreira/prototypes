@@ -24,10 +24,29 @@
                 display: inline-block;
             }
         }
+
+        td {
+            &.smallest {
+                white-space: nowrap;
+                width: 1px;
+            }
+        }
     }
 
     .listWrapper {
         margin-bottom: 0;
         padding-left: 22px;
+    }
+
+    .checkBox {
+        width: fit-content;
+
+        input[type='checkbox'] {
+            margin: 0;
+        }
+
+        .checkBoxLabel {
+            width: fit-content;
+        }
     }
 }

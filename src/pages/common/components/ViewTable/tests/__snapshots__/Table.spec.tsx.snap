@@ -8,11 +8,13 @@ exports[`<Table /> should display a default view 1`] = `
     <thead>
       <tr>
         <td
-          class="cell-wrapper cell-short clickable d-none d-md-table-cell"
+          class="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
         >
-          <div>
+          <div
+            class="checkBox"
+          >
             <label
-              class="label label"
+              class="label label checkBoxLabel"
               for="checkbox-2"
             >
               <input
@@ -126,11 +128,13 @@ exports[`<Table /> should display a view with no fields 1`] = `
     <thead>
       <tr>
         <td
-          class="cell-wrapper cell-short clickable d-none d-md-table-cell"
+          class="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
         >
-          <div>
+          <div
+            class="checkBox"
+          >
             <label
-              class="label label"
+              class="label label checkBoxLabel"
               for="checkbox-1"
             >
               <input

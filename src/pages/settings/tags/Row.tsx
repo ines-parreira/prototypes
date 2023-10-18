@@ -18,7 +18,7 @@ import {REMOVE_TAG_ERROR} from 'state/tags/constants'
 import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
 import {toJS} from 'utils'
 
-import css from './Row.style.less'
+import css from './Row.less'
 
 type Props = {
     row: Tag
@@ -132,7 +132,11 @@ export class Row extends Component<Props, State> {
                         className="cell-wrapper cell-short clickable"
                         onClick={this._onSelect}
                     >
-                        <CheckBox isChecked={meta.get('selected', false)} />
+                        <CheckBox
+                            labelClassName={css.checkBoxLabel}
+                            className={css.checkBox}
+                            isChecked={meta.get('selected', false)}
+                        />
                     </td>
 
                     <td colSpan={100}>
@@ -182,13 +186,17 @@ export class Row extends Component<Props, State> {
         return (
             <tr className={css.row}>
                 <td
-                    className="cell-wrapper cell-short clickable"
+                    className="cell-wrapper cell-short clickable smallest"
                     onClick={this._onSelect}
                 >
-                    <CheckBox isChecked={meta.get('selected', false)} />
+                    <CheckBox
+                        labelClassName={css.checkBoxLabel}
+                        className={css.checkBox}
+                        isChecked={meta.get('selected', false)}
+                    />
                 </td>
 
-                <td className="smallest">
+                <td>
                     <div className="cell-wrapper">
                         <TagLabel decoration={fromJS(row.decoration)}>
                             {row.name}
@@ -201,12 +209,10 @@ export class Row extends Component<Props, State> {
                 </td>
 
                 <td className="smallest">
-                    <div className="cell-wrapper justify-content-center">
-                        {row.usage}
-                    </div>
+                    <div className="cell-wrapper">{row.usage}</div>
                 </td>
 
-                <td className="smallest">
+                <td>
                     <div className={classNames('cell-wrapper', css.actions)}>
                         <IconButton
                             fillStyle="ghost"

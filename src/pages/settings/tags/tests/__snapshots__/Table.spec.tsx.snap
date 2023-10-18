@@ -9,9 +9,11 @@ exports[`ManageTags Table component should display the same number of rows as th
       <td
         class="cell-wrapper cell-short clickable"
       >
-        <div>
+        <div
+          class="checkBox"
+        >
           <label
-            class="label label"
+            class="label label checkBoxLabel"
             for="select-all"
           >
             <input
@@ -107,11 +109,13 @@ exports[`ManageTags Table component should display the same number of rows as th
       class="row"
     >
       <td
-        class="cell-wrapper cell-short clickable"
+        class="cell-wrapper cell-short clickable smallest"
       >
-        <div>
+        <div
+          class="checkBox"
+        >
           <label
-            class="label label"
+            class="label label checkBoxLabel"
             for="checkbox-4"
           >
             <input
@@ -123,9 +127,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           </label>
         </div>
       </td>
-      <td
-        class="smallest"
-      >
+      <td>
         <div
           class="cell-wrapper"
         >
@@ -146,14 +148,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         class="smallest"
       >
         <div
-          class="cell-wrapper justify-content-center"
+          class="cell-wrapper"
         >
           10
         </div>
       </td>
-      <td
-        class="smallest"
-      >
+      <td>
         <div
           class="cell-wrapper actions"
         >
@@ -187,11 +187,13 @@ exports[`ManageTags Table component should display the same number of rows as th
       class="row"
     >
       <td
-        class="cell-wrapper cell-short clickable"
+        class="cell-wrapper cell-short clickable smallest"
       >
-        <div>
+        <div
+          class="checkBox"
+        >
           <label
-            class="label label"
+            class="label label checkBoxLabel"
             for="checkbox-6"
           >
             <input
@@ -203,9 +205,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           </label>
         </div>
       </td>
-      <td
-        class="smallest"
-      >
+      <td>
         <div
           class="cell-wrapper"
         >
@@ -226,14 +226,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         class="smallest"
       >
         <div
-          class="cell-wrapper justify-content-center"
+          class="cell-wrapper"
         >
           20
         </div>
       </td>
-      <td
-        class="smallest"
-      >
+      <td>
         <div
           class="cell-wrapper actions"
         >
@@ -267,11 +265,13 @@ exports[`ManageTags Table component should display the same number of rows as th
       class="row"
     >
       <td
-        class="cell-wrapper cell-short clickable"
+        class="cell-wrapper cell-short clickable smallest"
       >
-        <div>
+        <div
+          class="checkBox"
+        >
           <label
-            class="label label"
+            class="label label checkBoxLabel"
             for="checkbox-8"
           >
             <input
@@ -283,9 +283,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           </label>
         </div>
       </td>
-      <td
-        class="smallest"
-      >
+      <td>
         <div
           class="cell-wrapper"
         >
@@ -306,14 +304,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         class="smallest"
       >
         <div
-          class="cell-wrapper justify-content-center"
+          class="cell-wrapper"
         >
           0
         </div>
       </td>
-      <td
-        class="smallest"
-      >
+      <td>
         <div
           class="cell-wrapper actions"
         >
@@ -347,11 +343,13 @@ exports[`ManageTags Table component should display the same number of rows as th
       class="row"
     >
       <td
-        class="cell-wrapper cell-short clickable"
+        class="cell-wrapper cell-short clickable smallest"
       >
-        <div>
+        <div
+          class="checkBox"
+        >
           <label
-            class="label label"
+            class="label label checkBoxLabel"
             for="checkbox-10"
           >
             <input
@@ -363,9 +361,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           </label>
         </div>
       </td>
-      <td
-        class="smallest"
-      >
+      <td>
         <div
           class="cell-wrapper"
         >
@@ -386,14 +382,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         class="smallest"
       >
         <div
-          class="cell-wrapper justify-content-center"
+          class="cell-wrapper"
         >
           0
         </div>
       </td>
-      <td
-        class="smallest"
-      >
+      <td>
         <div
           class="cell-wrapper actions"
         >

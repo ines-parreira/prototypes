@@ -275,10 +275,12 @@ const TableContainer = ({
                     <tr>
                         {selectable ? (
                             <td
-                                className="cell-wrapper cell-short clickable d-none d-md-table-cell"
+                                className="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
                                 onClick={toggleSelectAllPageItems}
                             >
                                 <CheckBox
+                                    labelClassName={css.checkBoxLabel}
+                                    className={css.checkBox}
                                     isChecked={areAllSelected}
                                     isIndeterminate={indeterminateCheckbox}
                                 />
