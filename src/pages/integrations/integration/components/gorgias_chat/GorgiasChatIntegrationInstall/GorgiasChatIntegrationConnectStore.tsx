@@ -122,7 +122,17 @@ const GorgiasChatIntegrationConnectStore = ({
                         alt="logo"
                         src={getIconFromType(storeIntegration.type)}
                     />
-                    {storeIntegration.name}
+                    {storeIntegration.type === IntegrationType.Shopify ? (
+                        <a
+                            href={`https://${storeIntegration.name}.myshopify.com`}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            {storeIntegration.name}
+                        </a>
+                    ) : (
+                        <>{storeIntegration.name}</>
+                    )}
                     <div className="ml-auto">
                         <Button
                             fillStyle="ghost"
