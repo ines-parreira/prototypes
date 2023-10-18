@@ -69,6 +69,7 @@ import {
 } from 'state/views/selectors'
 
 import {hasRole} from 'utils'
+import {systemViewIcons} from 'utils/views'
 
 import DeleteSectionModal from './DeleteSectionModal'
 import SectionFormModal from './SectionFormModal'
@@ -85,16 +86,6 @@ import css from './TicketNavbar.less'
 const viewCategories = {
     public: 'Shared views',
     private: 'Private views',
-}
-
-const systemViewIcons = {
-    all: 'people',
-    closed: 'check',
-    inbox: 'inbox',
-    snoozed: 'snooze',
-    spam: 'error_outline',
-    trash: 'delete',
-    unassigned: 'assignment_ind',
 }
 
 export function TicketNavbarContainer({

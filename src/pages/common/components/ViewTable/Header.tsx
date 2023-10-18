@@ -6,6 +6,7 @@ import classnames from 'classnames'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import {getConfigByName} from 'config/views'
+import {ViewCategory} from 'models/view/types'
 import EditableTitle from 'pages/common/components/EditableTitle'
 import Search from 'pages/common/components/Search'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -23,6 +24,7 @@ import {
 import {getActiveView, getLastViewId} from 'state/views/selectors'
 import {RootState} from 'state/types'
 import {slugify} from 'utils'
+import {systemViewIcons} from 'utils/views'
 
 import css from './Header.less'
 
@@ -117,6 +119,14 @@ export class HeaderContainer extends React.Component<Props, State> {
 
         const isEditMode = activeView.get('editMode')
         const emoji = activeView.getIn(['decoration', 'emoji'])
+        const category = activeView.get('category') as ViewCategory | null
+        const slug = activeView.get('slug') as keyof typeof systemViewIcons
+        const shouldDisplaySystemIcon =
+            category &&
+            [ViewCategory.SystemTop, ViewCategory.SystemBottom].includes(
+                category
+            ) &&
+            !!systemViewIcons[slug]
 
         return (
             <div className={css.component}>
@@ -214,6 +224,16 @@ export class HeaderContainer extends React.Component<Props, State> {
                                         this.props.setViewEditMode(activeView)
                                     }
                                 >
+                                    {shouldDisplaySystemIcon && (
+                                        <i
+                                            className={classnames(
+                                                'material-icons',
+                                                css.systemIcon
+                                            )}
+                                        >
+                                            {systemViewIcons[slug]}
+                                        </i>
+                                    )}
                                     <ViewName
                                         viewName={activeView.get('name')}
                                         emoji={activeView.getIn([

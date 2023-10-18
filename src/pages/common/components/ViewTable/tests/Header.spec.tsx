@@ -8,6 +8,8 @@ import {view as viewsFixture} from 'fixtures/views'
 import {fetchViewItems} from 'state/views/actions'
 import {getLDClient} from 'utils/launchDarkly'
 
+import {newViews} from 'models/view/mocks'
+import {systemViewIcons} from 'utils/views'
 import {HeaderContainer} from '../Header'
 
 jest.mock('lodash/uniqueId', () => () => '42')
@@ -295,5 +297,18 @@ describe('ViewTable::Header', () => {
                 ).not.toBeInTheDocument()
             })
         })
+    })
+
+    it('should display material icon next to the view name for a view system', () => {
+        const {getByText} = render(
+            <HeaderContainer {...minProps} activeView={fromJS(newViews[0])} />
+        )
+        expect(
+            getByText(
+                systemViewIcons[
+                    newViews[0].slug as keyof typeof systemViewIcons
+                ]
+            )
+        ).toBeInTheDocument()
     })
 })
