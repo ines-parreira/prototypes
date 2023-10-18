@@ -8,6 +8,7 @@ import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigration
 import {useTheme} from 'theme'
 
 import useAppShortcuts from '../hooks/useAppShortcuts'
+import usePollingManager from '../hooks/usePollingManager'
 import useStatusPageManager from '../hooks/useStatusPageManager'
 import useUsageBanner from '../hooks/useUsageBanner'
 
@@ -19,6 +20,7 @@ export default function App({children}: Props) {
     const theme = useTheme()
 
     useAppShortcuts()
+    usePollingManager()
     useStatusPageManager()
     useUsageBanner()
 
