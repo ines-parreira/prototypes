@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
@@ -9,7 +8,6 @@ import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 
@@ -109,8 +107,6 @@ export default function SupportPerformanceOverview() {
         )
     )
 
-    const hasPerformanceTips: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsPerformanceTips]
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
@@ -289,14 +285,10 @@ export default function SupportPerformanceOverview() {
                 <DashboardSection
                     title="Customer experience"
                     titleExtra={
-                        hasPerformanceTips && (
-                            <TipsToggle
-                                isVisible={!!areTipsVisible}
-                                onClick={() =>
-                                    setAreTipsVisible(!areTipsVisible)
-                                }
-                            />
-                        )
+                        <TipsToggle
+                            isVisible={!!areTipsVisible}
+                            onClick={() => setAreTipsVisible(!areTipsVisible)}
+                        />
                     }
                 >
                     <DashboardGridCell size={3}>
@@ -324,7 +316,6 @@ export default function SupportPerformanceOverview() {
                                 />
                             }
                             tip={
-                                hasPerformanceTips &&
                                 areTipsVisible &&
                                 (hasSatisfactionSurveyEnabledAndConfigured ? (
                                     <SupportPerformanceTip
@@ -376,7 +367,6 @@ export default function SupportPerformanceOverview() {
                                 />
                             }
                             tip={
-                                hasPerformanceTips &&
                                 areTipsVisible && (
                                     <SupportPerformanceTip
                                         metric={MetricName.FirstResponseTime}
@@ -418,7 +408,6 @@ export default function SupportPerformanceOverview() {
                                 />
                             }
                             tip={
-                                hasPerformanceTips &&
                                 areTipsVisible && (
                                     <SupportPerformanceTip
                                         metric={MetricName.ResolutionTime}
@@ -462,7 +451,6 @@ export default function SupportPerformanceOverview() {
                                 />
                             }
                             tip={
-                                hasPerformanceTips &&
                                 areTipsVisible && (
                                     <SupportPerformanceTip
                                         metric={MetricName.MessagesPerTicket}

@@ -6,9 +6,7 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import LD from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {
     useFirstResponseTimeWithAutomationTrend,
@@ -228,10 +226,6 @@ describe('<AutomationAddonOverview />', () => {
         } as UseQueryResult)
         useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
-
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsPerformanceTips]: true,
-        }))
     })
 
     it('should display paywall', () => {

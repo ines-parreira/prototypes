@@ -1,7 +1,6 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
     AnalyticsChannelFilter = 'analytics-channel-filter',
-    AnalyticsPerformanceTips = 'analytics-performance-tips',
     AnalyticsTicketInsights = 'analytics-ticket-insights',
     AnalyticsTicketInsightsFieldBreakdown = 'analytics-ticket-insights-field-breakdown',
     AnalyticsTicketInsightsTopFields = 'analytics-ticket-insights-top-fields',

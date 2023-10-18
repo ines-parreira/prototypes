@@ -1,5 +1,4 @@
 import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,7 +9,6 @@ import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import {FeatureFlagKey} from 'config/featureFlags'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
 import {TipQualifier} from 'services/supportPerformanceTipService'
 import {tags} from 'fixtures/tag'
@@ -311,9 +309,6 @@ describe('<SupportPerformanceOverview />', () => {
             average: '4.5',
             topTen: '3.9',
         })
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsPerformanceTips]: true,
-        }))
     })
 
     it('should render the page', () => {
@@ -396,12 +391,6 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     describe('Performance Tips', () => {
-        beforeEach(() => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.AnalyticsPerformanceTips]: true,
-            }))
-        })
-
         it('should show tips by default', () => {
             const {queryAllByText} = render(
                 <Provider store={mockStore(defaultState)}>
