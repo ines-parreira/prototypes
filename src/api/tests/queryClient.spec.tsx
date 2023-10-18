@@ -19,7 +19,7 @@ jest.mock(
 )
 
 describe('queryClient', () => {
-    it('should update query timestamp on success', async () => {
+    it('should update query timestamp when query cache updates', async () => {
         renderHook(
             () =>
                 useQuery({

@@ -7,8 +7,6 @@ import {
 } from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 
-import {queryCacheConfigWithoutRedux} from 'api/queryCacheConfig'
-
 export function mockQueryClient({
     cachedData,
 }: {
@@ -28,7 +26,7 @@ export function mockQueryClient({
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             error: () => {},
         },
-        queryCache: new QueryCache(queryCacheConfigWithoutRedux),
+        queryCache: new QueryCache(),
     })
 
     if (cachedData) {
