@@ -8,12 +8,14 @@ import {
     mapLanguageOptionsToLanguageDropdown,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     LanguageItem,
+    GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {IntegrationType} from 'models/integration/constants'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {GorgiasChatLauncherType} from 'models/integration/types/gorgiasChat'
 import {LanguageItemRow} from './types'
 
 const getLanguageLabel = (languageItem: LanguageItem) => {
@@ -27,6 +29,7 @@ const getLanguageLabel = (languageItem: LanguageItem) => {
 type SubmitForm = {
     id?: number
     meta: any
+    decoration?: any
 }
 
 export type UseGorgiasChatIntegrationLanguagesTableProps = {
@@ -128,13 +131,53 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
             const meta: Map<any, any> = integration.get('meta')
             const defaultLanguage = updatedLanguages.find(
                 (lang) => !!lang.primary
-            )
+            )?.language
+
+            if (!defaultLanguage) {
+                throw new Error('no default language found.')
+            }
+
             form.meta = meta
-                .set(
-                    'language',
-                    defaultLanguage?.language ?? Language.EnglishUs
-                )
+                .set('language', defaultLanguage)
                 .set('languages', updatedLanguages)
+
+            const initialLanguagesLength =
+                (
+                    integration.getIn(['meta', 'languages']) as List<
+                        Map<string, string>
+                    >
+                ).count() ?? 0
+
+            // When changing the default language, we also reset the decoration texts to the new language's defaults.
+            // We do this because the initial decoration texts were set using the default language when the chat was created.
+            // It's important to note that Tone of Voice overrides any legacy decoration texts. This reset is mainly to ensure that
+            // the newly selected language, which may lack Tone of Voice data, doesn't reuse the old decoration texts.
+            // See the function migrateNonLocalizedTextsIfNeeded for more details.
+            if (initialLanguagesLength === updatedLanguages.length) {
+                let decoration: Map<any, any> = integration.get('decoration')
+                decoration = decoration.set(
+                    'introduction_text',
+                    GORGIAS_CHAT_WIDGET_TEXTS[defaultLanguage]?.introductionText
+                )
+                decoration = decoration.set(
+                    'offline_introduction_text',
+                    GORGIAS_CHAT_WIDGET_TEXTS[defaultLanguage]
+                        ?.offlineIntroductionText
+                )
+
+                const launcherType = decoration.getIn(
+                    ['launcher', 'type'],
+                    GorgiasChatLauncherType.ICON
+                ) as GorgiasChatLauncherType
+                if (launcherType === GorgiasChatLauncherType.ICON_AND_LABEL) {
+                    decoration = decoration.set('launcher', {
+                        type: GorgiasChatLauncherType.ICON_AND_LABEL,
+                        label: GORGIAS_CHAT_WIDGET_TEXTS[defaultLanguage]
+                            ?.chatWithUs,
+                    })
+                }
+                form.decoration = decoration
+            }
 
             await dispatch(updateOrCreateIntegration(fromJS(form)))
             setLanguages(updatedLanguages)

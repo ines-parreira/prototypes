@@ -355,7 +355,7 @@ function GorgiasTranslateText({
      * when Tone of Voice don't have the texts yet (decoration texts are always present by default).
      * We're also migrating the chat integration name if needed, that is not exactly legacy but still localized.
      */
-    const migrateNonLocalizedTextsIfNeeded = useCallback(() => {
+    const migrateNonLocalizedTextsIfNeeded = () => {
         const introductionTextFromToneOfVoice: string | undefined =
             textsOfSelectedLanguage.texts?.introductionText
         const offlineIntroductionTextFromToneOfVoice: string | undefined =
@@ -422,7 +422,7 @@ function GorgiasTranslateText({
         }
 
         setTextsOfSelectedLanguage(newTextsOfSelectedLanguage)
-    }, [integrationChat, textsOfSelectedLanguage])
+    }
 
     useEffect(() => {
         if (
@@ -432,12 +432,12 @@ function GorgiasTranslateText({
         ) {
             migrateNonLocalizedTextsIfNeeded()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         IsLegacyMonoLanguageMode,
         dependenciesLoaded,
         integrationDefaultLanguage,
         language,
-        migrateNonLocalizedTextsIfNeeded,
     ])
 
     const handleLanguageChange = (
