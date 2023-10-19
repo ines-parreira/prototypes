@@ -12,10 +12,10 @@ import {
     formatMetricValue,
 } from 'pages/stats/common/utils'
 import colors from 'assets/tokens/colors.json'
+import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 
 import {DistributionCategoryCell} from './DistributionCategoryCell'
 import {NoDataAvailable} from './NoDataAvailable'
-import {useTicketsDistribution} from './useTicketsDistribution'
 
 import css from './TicketDistributionTable.less'
 
@@ -31,6 +31,7 @@ export const TicketDistributionTable = () => {
         ticketsCountTotal,
         outsideTopTotal,
         outsideTopTotalPercentage,
+        outsideTopTotalGaugePercentage,
     } = useTicketsDistribution()
 
     return (
@@ -100,7 +101,9 @@ export const TicketDistributionTable = () => {
                             <TableBodyRow>
                                 <BodyCell justifyContent="left">
                                     <GaugeCellAddon
-                                        progress={outsideTopTotalPercentage}
+                                        progress={
+                                            outsideTopTotalGaugePercentage
+                                        }
                                         color={OUTSIDE_TOP_DATA.color}
                                     />
                                     {OUTSIDE_TOP_DATA.title}

@@ -14,7 +14,7 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
-import {useTicketsDistribution} from '../useTicketsDistribution'
+import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -24,7 +24,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('pages/stats/useTicketsDistribution')
+jest.mock('hooks/reporting/useTicketsDistribution')
 const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
 describe('<TicketDistributionTable>', () => {
@@ -74,6 +74,7 @@ describe('<TicketDistributionTable>', () => {
         })),
         outsideTopTotal: 0,
         outsideTopTotalPercentage: 0,
+        outsideTopTotalGaugePercentage: 0,
         ticketsCountTotal,
         isFetching: false,
     }
@@ -118,6 +119,7 @@ describe('<TicketDistributionTable>', () => {
             ...useTicketsDistributionReturnValue,
             outsideTopTotal: 10,
             outsideTopTotalPercentage: 50,
+            outsideTopTotalGaugePercentage: 50,
         })
         render(
             <Provider store={mockStore({})}>

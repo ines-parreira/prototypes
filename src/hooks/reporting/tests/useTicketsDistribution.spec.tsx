@@ -9,7 +9,7 @@ import {
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {assumeMock} from 'utils/testing'
-import {useTicketsDistribution} from 'pages/stats/useTicketsDistribution'
+import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerDimension'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
@@ -89,6 +89,7 @@ describe('useTicketsDistribution', () => {
             isFetching: false,
             outsideTopTotal: 0,
             outsideTopTotalPercentage: 0,
+            outsideTopTotalGaugePercentage: 0,
             ticketsCountTotal,
             topData: allData.map((item) =>
                 transformData(item, ticketsCountTotal, maxTicketCount)
@@ -117,7 +118,9 @@ describe('useTicketsDistribution', () => {
         expect(result.current).toEqual({
             isFetching: false,
             outsideTopTotal: maxTicketCount,
-            outsideTopTotalPercentage: 100,
+            outsideTopTotalPercentage:
+                (100 * maxTicketCount) / ticketsCountTotal,
+            outsideTopTotalGaugePercentage: 100,
             ticketsCountTotal: ticketsCountTotal,
             topData: allData
                 .slice(0, 10)
