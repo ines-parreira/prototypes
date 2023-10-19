@@ -1,24 +1,43 @@
 import classnames from 'classnames'
-import React, {ComponentType, ReactNode, memo} from 'react'
+import React, {
+    ComponentType,
+    ReactNode,
+    memo,
+    useLayoutEffect,
+    useRef,
+} from 'react'
 import {Container} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
+import {Map} from 'immutable'
+import {Program} from 'estree'
 
 import 'assets/css/main.less'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
-import FullPage from 'pages/common/components/FullPage'
-import PhoneIntegrationBar from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar'
-import Spotlight from 'pages/common/components/Spotlight/Spotlight'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {useEffectOnce} from 'react-use'
+import pollingManager from 'services/pollingManager'
+import userActivityManager from 'services/userActivityManager'
 import {closePanels, openPanel} from 'state/layout/actions'
 import {getCurrentOpenedPanel} from 'state/layout/selectors'
+import {fetchVisibleViewsCounts} from 'state/views/actions'
+import {identifyUser} from 'store/middlewares/segmentTracker'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
+import {
+    getActiveView,
+    shouldFetchActiveViewTickets as shouldFetchActiveViewTicketsSelect,
+} from 'state/views/selectors'
+import {IntegrationType} from 'models/integration/types'
+import {getViewFilters} from 'state/views/utils'
+import {CollectionOperator, EqualityOperator} from 'state/rules/types'
+import {handle2FAEnforced} from 'state/currentUser/actions'
 
+import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
 import css from './App.less'
+import FullPage from './common/components/FullPage'
+import {ErrorBoundary} from './ErrorBoundary'
+import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar'
+import IconButton from './common/components/button/IconButton'
+import Button from './common/components/button/Button'
+import Spotlight from './common/components/Spotlight/Spotlight'
 
 type Props = {
     infobarOnMobile?: boolean
@@ -44,10 +63,75 @@ const App = ({
 }: Props) => {
     const dispatch = useAppDispatch()
 
+    const currentUser = useAppSelector((state) => state.currentUser)
+
+    const isCurrentUserActive = currentUser.get('is_active')
+    const isPreviousCurrentUserActive = useRef()
+
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
     const hasPhoneIntegration = useAppSelector(
         hasIntegrationOfTypes(IntegrationType.Phone)
     )
+    const activeView = useAppSelector(getActiveView)
+    const shouldFetchActiveViewTickets = useAppSelector(
+        shouldFetchActiveViewTicketsSelect
+    )
+
+    useEffectOnce(() => {
+        userActivityManager.watch()
+
+        // ask for the newest view counts
+        dispatch(fetchVisibleViewsCounts())
+
+        identifyUser(currentUser.toJS())
+
+        dispatch(handle2FAEnforced())
+
+        return () => {
+            pollingManager.stop()
+        }
+    })
+
+    useLayoutEffect(() => {
+        if (isPreviousCurrentUserActive.current && !isCurrentUserActive) {
+            if (activeView.get('filters_ast')) {
+                if (shouldFetchActiveViewTickets) {
+                    const filtersAST = (
+                        activeView.get('filters_ast') as Map<any, any>
+                    ).toJS() as Program
+
+                    const viewFilters = getViewFilters(filtersAST)
+
+                    const isChatView = viewFilters.some(
+                        (filter) =>
+                            filter.left === 'ticket.channel' &&
+                            (filter.operator === EqualityOperator.Eq ||
+                                CollectionOperator.ContainsAny) &&
+                            (filter.right as string | undefined)?.includes(
+                                'chat'
+                            )
+                    )
+
+                    if (isChatView) {
+                        pollingManager.stopRecentViewCountsInterval()
+                        return
+                    }
+                }
+            }
+
+            // Stop polling when current user becomes inactive
+            pollingManager.stop()
+        } else if (
+            !isPreviousCurrentUserActive.current &&
+            isCurrentUserActive
+        ) {
+            // Start polling when current user becomes active
+            pollingManager.start()
+        }
+        return () => {
+            isPreviousCurrentUserActive.current = isCurrentUserActive
+        }
+    }, [activeView, isCurrentUserActive, shouldFetchActiveViewTickets])
 
     const Wrapper = containerPadding ? FullPage : Container
     const wrapperProps = containerPadding
