@@ -309,29 +309,33 @@ const BillingStartView = () => {
     return (
         <div className="full-width">
             <PageHeader title="Billing" />
-            <SecondaryNavbar>
-                <NavLink
-                    to={BILLING_BASE_PATH}
-                    isActive={(match, location) => {
-                        if (!match) {
-                            return false
-                        }
+            {isCurrentSubscriptionCanceled ? null : (
+                <SecondaryNavbar>
+                    <NavLink
+                        to={BILLING_BASE_PATH}
+                        isActive={(match, location) => {
+                            if (!match) {
+                                return false
+                            }
 
-                        return (
-                            location.pathname === BILLING_BASE_PATH ||
-                            location.pathname.includes(BILLING_PROCESS_PATH)
-                        )
-                    }}
-                >
-                    Usage & Plans
-                </NavLink>
-                <NavLink to={BILLING_PAYMENT_PATH}>Payment Information</NavLink>
-                {!isPaymentShopify && (
-                    <NavLink to={BILLING_PAYMENTS_HISTORY_PATH}>
-                        Payment History
+                            return (
+                                location.pathname === BILLING_BASE_PATH ||
+                                location.pathname.includes(BILLING_PROCESS_PATH)
+                            )
+                        }}
+                    >
+                        Usage & Plans
                     </NavLink>
-                )}
-            </SecondaryNavbar>
+                    <NavLink to={BILLING_PAYMENT_PATH}>
+                        Payment Information
+                    </NavLink>
+                    {!isPaymentShopify && (
+                        <NavLink to={BILLING_PAYMENTS_HISTORY_PATH}>
+                            Payment History
+                        </NavLink>
+                    )}
+                </SecondaryNavbar>
+            )}
             <Container fluid className={css.mainContainer}>
                 {isUsageFetched ? (
                     <Switch>

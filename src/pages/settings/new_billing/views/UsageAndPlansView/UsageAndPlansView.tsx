@@ -195,8 +195,8 @@ const UsageAndPlansView = ({
                         </>
                     ) : (
                         <>
-                            Your trial has ended. Please select a plan and add a
-                            payment method.
+                            You don't have any active subscription. Please first
+                            select some plans.
                         </>
                     )}
                 </div>

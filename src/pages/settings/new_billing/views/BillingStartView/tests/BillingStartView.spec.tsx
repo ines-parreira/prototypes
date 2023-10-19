@@ -1,5 +1,4 @@
 import React from 'react'
-import LD from 'launchdarkly-react-client-sdk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
@@ -8,7 +7,6 @@ import {RootState, StoreDispatch} from 'state/types'
 import {products} from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
 import {BILLING_BASE_PATH} from 'pages/settings/new_billing/constants'
-import {FeatureFlagKey} from 'config/featureFlags'
 import BillingStartView from '../BillingStartView'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
@@ -41,12 +39,6 @@ const WrappedBillingStartView = () => (
 )
 
 describe('BillingStartView', () => {
-    beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.NewBillingInterface]: true,
-        })
-    })
-
     it('should render a BillingStartView component and load the Usage & Plans view', () => {
         const {container} = renderWithRouter(<WrappedBillingStartView />, {
             route: BILLING_BASE_PATH,

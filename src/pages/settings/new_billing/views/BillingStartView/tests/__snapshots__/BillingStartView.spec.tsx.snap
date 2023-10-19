@@ -14,31 +14,6 @@ exports[`BillingStartView should render a BillingStartView component and load th
         Billing
       </h1>
     </div>
-    <nav
-      class="navbar navbar"
-    >
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/settings/billing"
-      >
-        Usage & Plans
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/settings/billing/payment"
-      >
-        Payment Information
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/settings/billing/payment-history"
-      >
-        Payment History
-      </a>
-    </nav>
     <div
       class="mainContainer container-fluid"
     >
@@ -51,7 +26,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
           <div
             class="generalInfoItem"
           >
-            Your trial has ended. Please select a plan and add a payment method.
+            You don't have any active subscription. Please first select some plans.
           </div>
           <div
             class="generalInfoItem"

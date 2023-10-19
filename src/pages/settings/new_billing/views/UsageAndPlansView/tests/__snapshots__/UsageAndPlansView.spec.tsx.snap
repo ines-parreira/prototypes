@@ -11,7 +11,7 @@ exports[`UsageAndPlansView should render 1`] = `
       <div
         class="generalInfoItem"
       >
-        Your trial has ended. Please select a plan and add a payment method.
+        You don't have any active subscription. Please first select some plans.
       </div>
       <div
         class="generalInfoItem"
