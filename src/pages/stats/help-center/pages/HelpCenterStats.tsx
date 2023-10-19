@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import classnames from 'classnames'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import useAppSelector from '../../../../hooks/useAppSelector'
 import {getTimezone} from '../../../../state/currentUser/selectors'
 import {HelpCenterTrackingEventMeasures} from '../../../../models/reporting/cubes/HelpCenterTrackingEventCube'
@@ -12,7 +12,6 @@ import {useHelpCenterTrend} from '../hooks/useHelpCenterTrend'
 import TipsToggle from '../../TipsToggle'
 
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
-import css from './HelpCenterStats.less'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -132,16 +131,7 @@ const HelpCenterStats = () => {
                     Content
                 </DashboardSection>
 
-                {timezone && (
-                    <div
-                        className={classnames(
-                            css.pageFooter,
-                            'caption-regular'
-                        )}
-                    >
-                        Analytics are using {timezone} timezone
-                    </div>
-                )}
+                <AnalyticsFooter />
             </StatsPage>
         </div>
     )

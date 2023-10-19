@@ -1786,9 +1786,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
         <div
           class="pageFooter caption-regular"
         >
-          Analytics are using 
-          UTC
-           timezone
+          Analytics are using UTC timezone
         </div>
       </div>
     </div>

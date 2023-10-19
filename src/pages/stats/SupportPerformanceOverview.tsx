@@ -1,8 +1,8 @@
-import classnames from 'classnames'
 import React, {useMemo, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {
     useWorkloadPerChannelDistribution,
@@ -719,16 +719,7 @@ export default function SupportPerformanceOverview() {
                         </ChartCard>
                     </DashboardGridCell>
                 </DashboardSection>
-                {userTimezone && (
-                    <div
-                        className={classnames(
-                            css.pageFooter,
-                            'caption-regular'
-                        )}
-                    >
-                        Analytics are using {userTimezone} timezone
-                    </div>
-                )}
+                <AnalyticsFooter />
             </StatsPage>
         </div>
     )

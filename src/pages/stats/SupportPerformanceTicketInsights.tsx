@@ -1,5 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/CustomFieldsTicketCountBreakdownReport'
 import DashboardSection from 'pages/stats/DashboardSection'
@@ -76,6 +77,7 @@ export default function SupportPerformanceTicketInsights() {
                     )}
                 </DashboardSection>
             )}
+            <AnalyticsFooter />
         </StatsPage>
     )
 }

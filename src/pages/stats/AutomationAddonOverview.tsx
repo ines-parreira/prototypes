@@ -5,6 +5,7 @@ import moment, {Moment} from 'moment'
 import {useLocalStorage} from 'react-use'
 
 import {Scale, TooltipItem} from 'chart.js'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {saveReport} from 'services/reporting/automationAddOnReportingService'
 import {
     useAutomatedInteractionByEventTypesTimeSeries,
@@ -704,16 +705,7 @@ export function AutomationAddOnOverview() {
                         </ChartCard>
                     </DashboardGridCell>
                 </DashboardSection>
-                {userTimezone && (
-                    <div
-                        className={classnames(
-                            css.pageFooter,
-                            'caption-regular'
-                        )}
-                    >
-                        Analytics are using {userTimezone} timezone
-                    </div>
-                )}
+                <AnalyticsFooter />
             </StatsPage>
         </div>
     )

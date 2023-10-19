@@ -1,6 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 import {AgentPerformanceHeatmapSwitch} from 'pages/stats/AgentPerformanceHeatmapSwitch'
@@ -27,11 +28,12 @@ const AgentPerformanceHeatmapSwitchMock = assumeMock(
 )
 jest.mock('pages/stats/AgentsShoutouts.tsx')
 const AgentsShoutoutsMock = assumeMock(AgentsShoutouts)
+jest.mock('pages/stats/AnalyticsFooter.tsx')
+const AnalyticsFooterMock = assumeMock(AnalyticsFooter)
 jest.mock('hooks/reporting/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 jest.mock('hooks/reporting/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
-
 const componentMock = () => <div />
 
 describe('SupportPerformanceAgents', () => {
@@ -39,6 +41,7 @@ describe('SupportPerformanceAgents', () => {
     AgentsShoutoutsMock.mockImplementation(componentMock)
     AgentPerformanceHeatmapSwitchMock.mockImplementation(componentMock)
     AgentsTableMock.mockImplementation(componentMock)
+    AnalyticsFooterMock.mockImplementation(componentMock)
     useAgentsMetricsMock.mockReturnValue({
         reportData: {
             closedTicketsMetric: {

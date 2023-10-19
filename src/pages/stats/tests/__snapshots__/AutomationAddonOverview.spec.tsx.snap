@@ -662,9 +662,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
               <div
                 class="pageFooter caption-regular"
               >
-                Analytics are using 
-                UTC
-                 timezone
+                Analytics are using UTC timezone
               </div>
             </div>
           </div>
@@ -1408,9 +1406,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
             <div
               class="pageFooter caption-regular"
             >
-              Analytics are using 
-              UTC
-               timezone
+              Analytics are using UTC timezone
             </div>
           </div>
         </div>
@@ -2133,9 +2129,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
               <div
                 class="pageFooter caption-regular"
               >
-                Analytics are using 
-                UTC
-                 timezone
+                Analytics are using UTC timezone
               </div>
             </div>
           </div>
@@ -2879,9 +2873,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
             <div
               class="pageFooter caption-regular"
             >
-              Analytics are using 
-              UTC
-               timezone
+              Analytics are using UTC timezone
             </div>
           </div>
         </div>
@@ -3604,9 +3596,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
               <div
                 class="pageFooter caption-regular"
               >
-                Analytics are using 
-                UTC
-                 timezone
+                Analytics are using UTC timezone
               </div>
             </div>
           </div>
@@ -4350,9 +4340,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
             <div
               class="pageFooter caption-regular"
             >
-              Analytics are using 
-              UTC
-               timezone
+              Analytics are using UTC timezone
             </div>
           </div>
         </div>
@@ -5071,9 +5059,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
         <div
           class="pageFooter caption-regular"
         >
-          Analytics are using 
-          UTC
-           timezone
+          Analytics are using UTC timezone
         </div>
       </div>
     </div>

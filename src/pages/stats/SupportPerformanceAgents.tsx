@@ -1,4 +1,5 @@
 import React from 'react'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {AgentPerformanceHeatmapSwitch} from 'pages/stats/AgentPerformanceHeatmapSwitch'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -41,6 +42,7 @@ export default function SupportPerformanceAgents() {
                         </ChartCard>
                     </DashboardGridCell>
                 </DashboardSection>
+                <AnalyticsFooter />
             </StatsPage>
         </div>
     )
