@@ -5,7 +5,6 @@ import {Map} from 'immutable'
 
 import classnames from 'classnames'
 
-import {TagLabel} from 'pages/common/utils/labels'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Tooltip from 'pages/common/components/Tooltip'
 import {useHelpCenterPublishedArticlesCount} from 'pages/automation/common/hooks/useHelpCenterPublishedArticlesCount'
@@ -59,14 +58,6 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
         <div className={css.formSection}>
             <h4 className={classnames(css.title, 'mb-1')}>
                 Require automated interaction
-                <TagLabel
-                    className={classnames(css.controlTicketVolumeTag, 'ml-2')}
-                >
-                    <span className={classnames('material-icons', 'mr-1')}>
-                        bolt
-                    </span>
-                    {'Automation Add-on'}
-                </TagLabel>
             </h4>
             <div>
                 <p className="mb-4">
@@ -93,7 +84,7 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
                         <Link
                             to={`/app/automation/${shopType}/${shopName}/connected-channels?type=${TicketChannel.Chat}&id=${integrationId}`}
                         >
-                            article recommendation
+                            Article Recommendation
                         </Link>{' '}
                         to remove “Send us a message” button.
                     </Tooltip>
