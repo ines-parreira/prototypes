@@ -16,7 +16,7 @@ export function useStore() {
     const ticketState: Map<any, any> | undefined =
         useAppSelector(getTicketState).get('customer')
     const state: Customer | undefined = (
-        customerState ? customerState : ticketState
+        customerState?.isEmpty() ? ticketState : customerState
     )?.toJS()
     if (!state || !integration) {
         return
