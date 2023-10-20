@@ -36,8 +36,9 @@ describe('PlanSubscriptionDescription', () => {
         ).toBeInTheDocument()
         expect(getByText('$1/month', {exact: false})).toBeInTheDocument()
         expect(getByText('clicks/month')).toBeInTheDocument()
+        expect(getByText('See details')).toBeInTheDocument()
 
-        PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].forEach(
+        PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(
             (feature) => {
                 expect(getByText(feature)).toBeInTheDocument()
             }
@@ -57,7 +58,7 @@ describe('PlanSubscriptionDescription', () => {
             )
         ).toBeInTheDocument()
 
-        PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].forEach(
+        PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(
             (feature) => {
                 expect(getByText(feature)).toBeInTheDocument()
             }
@@ -78,7 +79,7 @@ describe('PlanSubscriptionDescription', () => {
             getByText('Contact our team to subscribe to an Enterprise plan.')
         ).toBeInTheDocument()
 
-        PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].forEach(
+        PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(
             (feature) => {
                 expect(getByText(feature)).toBeInTheDocument()
             }

@@ -9,7 +9,6 @@ import {
 } from 'pages/settings/new_billing/utils/formatAmount'
 import {
     ENTERPRISE_PRICE_ID,
-    PRICING_DETAILS_URL,
     PRODUCT_INFO,
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from 'pages/settings/new_billing/constants'
@@ -23,6 +22,7 @@ import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/S
 import {isTrialPrice} from 'models/billing/utils'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
 import CounterText from 'pages/settings/new_billing/components/CounterText'
+import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
 
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
@@ -58,7 +58,7 @@ const PlanSubscriptionDescription = ({
     )
 
     const productInfo = useMemo(() => PRODUCT_INFO[productType], [productType])
-    const descriptionInfo = useMemo(
+    const descriptionInfo: ProductSubscriptionDescription = useMemo(
         () => PRODUCT_SUBSCRIPTION_DESCRIPTION[productType],
         [productType]
     )
@@ -132,11 +132,13 @@ const PlanSubscriptionDescription = ({
             data-testid={`${productInfo.title.toLowerCase()}ModalDescription`}
         >
             <div className={css.card}>
-                <div className={css.title}>
-                    Ready to upgrade with {productInfo.title}?
+                <div className={css.cardHeader}>
+                    <div className={css.title}>
+                        Ready to upgrade with {productInfo.title}?
+                    </div>
                 </div>
                 <div className={css.features}>
-                    {descriptionInfo.map((info, index) => (
+                    {descriptionInfo?.features?.map((info, index) => (
                         <div
                             className={css.feature}
                             key={`${productInfo.title}-feature-${index}`}
@@ -152,11 +154,11 @@ const PlanSubscriptionDescription = ({
                     <div className={css.title}>Select a plan</div>
                     <a
                         className={css.link}
-                        href={PRICING_DETAILS_URL}
+                        href={descriptionInfo?.detailsLink?.url}
                         target="_blank"
                         rel="noreferrer noopener"
                     >
-                        Explore Pricing Plans
+                        {descriptionInfo?.detailsLink?.label}
                         <i className={`${css.linkIcon} material-icons`}>
                             open_in_new
                         </i>

@@ -1,6 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
-import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
@@ -126,9 +125,8 @@ const SubscriptionModal = ({
         <>
             <Modal
                 isOpen={isOpen}
-                size="xl"
+                size="lg"
                 toggle={onClose}
-                className={classnames(css.modal, css.wide)}
                 fade={fade}
                 centered
             >

@@ -4,7 +4,7 @@
     .container {
         display: flex;
         gap: 40px;
-        padding: 24px;
+        padding: 16px;
 
         @media @mobiles {
             display: grid;
@@ -16,22 +16,21 @@
     }
 
     .features {
-        padding-top: 16px;
         display: flex;
-        gap: 8px;
+        gap: 16px;
         flex-direction: column;
     }
 
     .feature {
         display: flex;
         gap: 8px;
-        align-items: center;
+        align-items: flex-start;
         font-size: 16px;
         color: var(--neutral-grey-5);
 
         i {
             color: var(--feedback-success-3);
-            font-size: 20px;
+            font-size: 24px;
         }
     }
 
@@ -39,7 +38,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-bottom: 12px;
+        padding-bottom: 16px;
     }
 
     .title {
@@ -52,20 +51,24 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }
 
     .selector {
         display: flex;
-        gap: 12px;
+        gap: 8px;
         align-items: center;
     }
 
     .counter {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-5);
         display: flex;
         gap: 4px;
         align-items: center;
+
+        i {
+            font-size: 16px;
+        }
     }
 
     .payment {

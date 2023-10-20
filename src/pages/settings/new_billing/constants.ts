@@ -1,5 +1,6 @@
 import {ProductType} from 'models/billing/types'
 import orderManagementIcon from 'assets/img/icons/order-management.svg'
+import {ProductSubscriptionDescriptions} from 'pages/settings/new_billing/types'
 import {Reason} from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
@@ -141,14 +142,21 @@ export const CANCEL_AUTOMATION_REASONS: Reason[] = [
     {value: false, label: `Other`},
 ]
 
-export const PRODUCT_SUBSCRIPTION_DESCRIPTION = {
-    [ProductType.Helpdesk]: [],
-    [ProductType.Automation]: [],
-    [ProductType.Voice]: [],
-    [ProductType.SMS]: [],
-    [ProductType.Convert]: [
-        'Incentivize customers to place orders',
-        'Send special offers to customers exiting your site',
-        'Treat returning customers like VIPs',
-    ],
-}
+export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =
+    {
+        [ProductType.Helpdesk]: {},
+        [ProductType.Automation]: {},
+        [ProductType.Voice]: {},
+        [ProductType.SMS]: {},
+        [ProductType.Convert]: {
+            detailsLink: {
+                label: 'See details',
+                url: 'https://www.gorgias.com/products/convert',
+            },
+            features: [
+                'Reach customers at the right time with personalized campaigns.',
+                'Boost cross-sells with targeted product recommendation.',
+                'Send exclusive offers to visitors about to leave your website.',
+            ],
+        },
+    }
