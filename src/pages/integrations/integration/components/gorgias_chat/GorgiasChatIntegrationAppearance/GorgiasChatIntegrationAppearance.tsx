@@ -245,8 +245,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
     const shouldShowLauncherCustomization =
         useFlags()[FeatureFlagKey.ChatLauncherCustomization]
-    const shouldShowFontCustomization =
-        useFlags()[FeatureFlagKey.ChatFontCustomization]
     const isChatHeaderPictureStyleEnabled =
         useFlags()[FeatureFlagKey.ChatHeaderPictureStyle]
 
@@ -1117,26 +1115,27 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             </div>
                         )}
 
-                        {shouldShowFontCustomization && (
-                            <div className={css.formSection}>
-                                <h2 className={css.title}>Font</h2>
-                                <div className={css.formGroup}>
-                                    <FontSelectField
-                                        value={state.mainFontFamily}
-                                        defaultFonts={
-                                            GORGIAS_CHAT_DEFAULT_FONTS
-                                        }
-                                        onChange={(mainFontFamily) => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                mainFontFamily,
-                                            }))
-                                        }}
-                                        placeholder="Select a font"
-                                    />
-                                </div>
+                        <div className={css.formSection}>
+                            <h2 className={css.title}>Font</h2>
+                            <div
+                                className={classNames(
+                                    css.formGroup,
+                                    css.fontInputWrapper
+                                )}
+                            >
+                                <FontSelectField
+                                    value={state.mainFontFamily}
+                                    defaultFonts={GORGIAS_CHAT_DEFAULT_FONTS}
+                                    onChange={(mainFontFamily) => {
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            mainFontFamily,
+                                        }))
+                                    }}
+                                    placeholder="Select a font"
+                                />
                             </div>
-                        )}
+                        </div>
 
                         {isUpdate && (
                             <>

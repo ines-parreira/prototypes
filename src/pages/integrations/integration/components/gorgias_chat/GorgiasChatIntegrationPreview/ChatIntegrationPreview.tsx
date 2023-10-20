@@ -3,10 +3,8 @@ import {ThemeProvider} from '@emotion/react'
 import styled from '@emotion/styled'
 import classnames from 'classnames'
 import {List} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
-import {FeatureFlagKey} from 'config/featureFlags'
 import ConversationHeader, {
     ConversationHeaderVariant,
 } from 'gorgias-design-system/Header/ConversationHeader'
@@ -24,7 +22,6 @@ import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
     isAutoresponderReply,
@@ -113,12 +110,6 @@ const ChatIntegrationPreview = (props: Props) => {
         backgroundColorStyle = GorgiasChatBackgroundColorStyle.Gradient,
         headerPictureUrl,
     } = props
-
-    const shoudShowFontCustomization =
-        useFlags()[FeatureFlagKey.ChatFontCustomization]
-    const finalMainFontFamily = shoudShowFontCustomization
-        ? mainFontFamily
-        : GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
 
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
 
@@ -254,7 +245,7 @@ const ChatIntegrationPreview = (props: Props) => {
                     css.preview,
                     showBackground && css.previewWithBackground
                 )}
-                mainFontFamily={finalMainFontFamily}
+                mainFontFamily={mainFontFamily}
                 launcher={launcher}
                 position={position}
                 mainColor={isOnline ? mainColor : offlineColor}

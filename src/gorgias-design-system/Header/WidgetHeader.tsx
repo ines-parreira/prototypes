@@ -137,7 +137,7 @@ const WidgetHeader: React.FC<
                         <StyledWidgetHeaderImageWrapper>
                             <StyledWidgetHeaderImage
                                 src={headerPictureUrl}
-                                alt=""
+                                alt="chat home header logo"
                             />
                         </StyledWidgetHeaderImageWrapper>
                     ) : (

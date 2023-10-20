@@ -27,7 +27,6 @@ import {
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 
-import {getLDClient} from 'utils/launchDarkly'
 import {GorgiasChatIntegrationAppearanceComponent} from '../GorgiasChatIntegrationAppearance'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -67,12 +66,6 @@ type Props = ComponentProps<typeof GorgiasChatIntegrationAppearanceComponent>
 
 jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
-})
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({
-    [FeatureFlagKey.ChatFontCustomization]: true,
 })
 
 jest.mock(

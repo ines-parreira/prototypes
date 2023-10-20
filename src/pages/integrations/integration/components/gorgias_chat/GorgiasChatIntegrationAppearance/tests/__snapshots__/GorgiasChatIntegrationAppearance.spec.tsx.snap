@@ -459,6 +459,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <h2
                   class="title"
                 >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
                   Launcher
                 </h2>
                 <div
@@ -1406,6 +1602,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           type="text"
                           value="#115cb5"
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -2606,6 +2998,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="formSection"
               >
                 <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
                   class="title mb-4"
                 >
                   Company logo
@@ -3759,6 +4347,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           type="text"
                           value="#115cb5"
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -4930,6 +5714,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 class="formSection"
               >
                 <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
                   class="title mb-4"
                 >
                   Company logo
@@ -6083,6 +7063,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           type="text"
                           value="#115cb5"
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -7352,6 +8528,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 <h2
                   class="title"
                 >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
                   Launcher
                 </h2>
                 <div
@@ -8262,6 +9634,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           type="text"
                           value="#115cb5"
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -9391,6 +10959,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                           type="text"
                           value="#115cb5"
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -10761,6 +12525,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <h2
                   class="title"
                 >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
                   Launcher
                 </h2>
                 <div
@@ -11708,6 +13668,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           type="text"
                           value="#115cb5"
                         />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
