@@ -627,7 +627,7 @@ Sincerely,
               <div
                 className="mt-5 form-group"
               >
-                <ForwardRef
+                <ForwardRef(Button)
                   className="mr-2"
                   isDisabled={false}
                   isLoading={false}
@@ -646,8 +646,8 @@ Sincerely,
                       Update macro
                     </button>
                   </BaseButton>
-                </ForwardRef>
-                <ForwardRef
+                </ForwardRef(Button)>
+                <ForwardRef(Button)
                   intent="secondary"
                   isDisabled={false}
                   isLoading={false}
@@ -667,7 +667,7 @@ Sincerely,
                       Duplicate macro
                     </button>
                   </BaseButton>
-                </ForwardRef>
+                </ForwardRef(Button)>
                 <Component
                   className="float-right"
                   confirmationContent="You are about to delete this macro."
@@ -791,14 +791,14 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
         className="mt-5"
         tag="div"
       >
-        <ForwardRef
+        <ForwardRef(Button)
           className="mr-2"
           isDisabled={false}
           isLoading={false}
           type="submit"
         >
           Create macro
-        </ForwardRef>
+        </ForwardRef(Button)>
       </FormGroup>
     </Form>
   </Container>

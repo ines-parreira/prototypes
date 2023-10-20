@@ -1,4 +1,9 @@
-import React, {forwardRef, InputHTMLAttributes, Ref, useState} from 'react'
+import React, {
+    ForwardedRef,
+    forwardRef,
+    InputHTMLAttributes,
+    useState,
+} from 'react'
 import classnames from 'classnames'
 
 import css from './StealthInput.less'
@@ -26,7 +31,7 @@ function StealthInput(
         isLarge = false,
         ...props
     }: Props,
-    ref: Ref<HTMLInputElement>
+    ref: ForwardedRef<HTMLInputElement>
 ) {
     const [isInputActive, setInputActive] = useState(false)
     const isActive = isExternalActive ?? isInputActive
@@ -64,4 +69,4 @@ function StealthInput(
     )
 }
 
-export default forwardRef(StealthInput)
+export default forwardRef<HTMLInputElement, Props>(StealthInput)

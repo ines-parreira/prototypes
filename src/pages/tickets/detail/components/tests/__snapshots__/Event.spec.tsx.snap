@@ -65,14 +65,14 @@ exports[`Event component should display correctly a failed event for a Recharge 
       <AgentLabel
         name="Acme Support"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -193,14 +193,14 @@ exports[`Event component should display correctly a failed event for a Recharge 
       <AgentLabel
         name="Acme Support"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -311,14 +311,14 @@ exports[`Event component should display correctly a failed event for a Shopify O
       <AgentLabel
         name="Acme Support"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -429,14 +429,14 @@ exports[`Event component should display correctly a successful event for a Recha
       <AgentLabel
         name="Acme Support"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -546,14 +546,14 @@ exports[`Event component should display correctly a successful event for a Recha
       <AgentLabel
         name="Acme Support"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -653,14 +653,14 @@ exports[`Event component should display correctly a successful event for a Shopi
       <AgentLabel
         name="Acme Support"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -760,14 +760,14 @@ exports[`Event component should display correctly a successful event for a Shopi
       <AgentLabel
         name="Acme Support"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -881,14 +881,14 @@ exports[`Event component should display the correct label for an action 1`] = `
       <AgentLabel
         name="Acme Support"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -988,14 +988,14 @@ exports[`Event component should fallback to email when user has no name 1`] = `
       <AgentLabel
         name="support@acme.gorgias.io"
       />
-      <ForwardRef
+      <ForwardRef(IconButton)
         fillStyle="ghost"
         intent="secondary"
         onClick={[Function]}
         title="More details"
       >
         expand_more
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"

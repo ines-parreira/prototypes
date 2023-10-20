@@ -176,4 +176,4 @@ const Modal = (
     )
 }
 
-export default forwardRef(Modal)
+export default forwardRef<HTMLDivElement, Props>(Modal)

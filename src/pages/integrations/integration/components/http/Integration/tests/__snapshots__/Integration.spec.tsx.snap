@@ -226,20 +226,20 @@ exports[`Integration should display data about the integration 1`] = `
         onChange={[Function]}
       />
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className="mr-2"
           isLoading={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
-        <ForwardRef
+        </ForwardRef(Button)>
+        <ForwardRef(Button)
           intent="destructive"
           isLoading={false}
           onClick={[Function]}
         >
           Deactivate HTTP integration
-        </ForwardRef>
+        </ForwardRef(Button)>
         <ConfirmButton
           className="float-right"
           confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -496,20 +496,20 @@ exports[`Integration should display data with url-encoded format 1`] = `
         />
       </FormGroup>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className="mr-2"
           isLoading={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
-        <ForwardRef
+        </ForwardRef(Button)>
+        <ForwardRef(Button)
           intent="destructive"
           isLoading={false}
           onClick={[Function]}
         >
           Deactivate HTTP integration
-        </ForwardRef>
+        </ForwardRef(Button)>
         <ConfirmButton
           className="float-right"
           confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -713,13 +713,13 @@ exports[`Integration should display default values because there is no integrati
         />
       </FormGroup>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className="mr-2"
           isLoading={false}
           type="submit"
         >
           Add integration
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>

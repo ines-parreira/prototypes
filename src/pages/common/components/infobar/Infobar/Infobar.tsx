@@ -1,4 +1,4 @@
-import React, {KeyboardEvent, useEffect, useMemo, useRef, useState} from 'react'
+import React, {KeyboardEvent, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
 import {useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
@@ -69,6 +69,8 @@ export const Infobar = ({
         null
     )
     const [isSearching, setIsSearching] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('')
+
     const [isFetchingCustomer, setIsFetchingCustomer] = useState(false)
     const [displaySearchResults, setDisplaySearchResults] = useState(false)
     const [displaySelectedCustomer, setDisplaySelectedCustomer] =
@@ -121,8 +123,6 @@ export const Infobar = ({
                 sources.getIn(['customer', 'id'])) as number,
         [sources]
     )
-
-    const searchRef = useRef<Search>(null)
 
     useUpdateEffect(() => {
         resetSearch()
@@ -284,7 +284,11 @@ export const Infobar = ({
     const returnToCurrentCustomerProfile = () => {
         resetSearch()
         resetSelected()
-        searchRef.current && searchRef.current._reset()
+        onChange('')
+    }
+
+    const onChange = (term: string) => {
+        setSearchTerm(term)
     }
 
     const handleSetCustomer = () => {
@@ -320,7 +324,8 @@ export const Infobar = ({
                         placeholder="Search for customers by email, order number, etc."
                         onKeyDown={handleKeyDown}
                         style={{maxWidth: 'none'}}
-                        ref={searchRef}
+                        onChange={onChange}
+                        value={searchTerm}
                     />
                     {isAdmin(currentUser) && (
                         <>

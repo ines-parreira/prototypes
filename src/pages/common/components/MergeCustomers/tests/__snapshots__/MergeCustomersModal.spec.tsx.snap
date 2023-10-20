@@ -256,13 +256,13 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       </div>
     </ForwardRef(ModalBody)>
     <ModalActionsFooter>
-      <ForwardRef
+      <ForwardRef(Button)
         className="mr-2"
         intent="secondary"
         onClick={[Function]}
       >
         Cancel
-      </ForwardRef>
+      </ForwardRef(Button)>
       <ConfirmButton
         confirmationContent="This action is irreversible. Are you sure you want to merge these customers?"
         isLoading={false}

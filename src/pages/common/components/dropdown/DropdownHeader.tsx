@@ -1,9 +1,9 @@
 import classnames from 'classnames'
 import React, {
+    ForwardedRef,
     forwardRef,
     HTMLProps,
     ReactNode,
-    Ref,
     useCallback,
     useImperativeHandle,
     useMemo,
@@ -18,51 +18,49 @@ type Props = {
     suffix?: ReactNode
 } & Omit<HTMLProps<HTMLDivElement>, 'prefix'>
 
-const DropdownHeader = forwardRef(
-    (
-        {children, className, prefix, suffix, ...other}: Props,
-        ref: Ref<HTMLDivElement> | null | undefined
-    ) => {
-        const elementRef = useRef<HTMLDivElement>(null)
-        useImperativeHandle(ref, () => elementRef.current!)
+const DropdownHeader = (
+    {children, className, prefix, suffix, ...other}: Props,
+    ref: ForwardedRef<HTMLDivElement>
+) => {
+    const elementRef = useRef<HTMLDivElement>(null)
+    useImperativeHandle(ref, () => elementRef.current!)
 
-        const isClickable = useMemo(
-            () =>
-                other.onClick != null ||
-                other.onMouseDown != null ||
-                other.onMouseUp != null,
-            [other.onClick, other.onMouseDown, other.onMouseUp]
-        )
+    const isClickable = useMemo(
+        () =>
+            other.onClick != null ||
+            other.onMouseDown != null ||
+            other.onMouseUp != null,
+        [other.onClick, other.onMouseDown, other.onMouseUp]
+    )
 
-        const handleKeyPress = useCallback(
-            (event: KeyboardEvent) => {
-                if (isClickable && event.target === elementRef.current) {
-                    elementRef.current?.click()
-                }
-            },
-            [isClickable]
-        )
+    const handleKeyPress = useCallback(
+        (event: KeyboardEvent) => {
+            if (isClickable && event.target === elementRef.current) {
+                elementRef.current?.click()
+            }
+        },
+        [isClickable]
+    )
 
-        useKey('Enter', handleKeyPress, undefined, [handleKeyPress])
-        useKey(' ', handleKeyPress, undefined, [handleKeyPress])
+    useKey('Enter', handleKeyPress, undefined, [handleKeyPress])
+    useKey(' ', handleKeyPress, undefined, [handleKeyPress])
 
-        return (
-            <div
-                className={classnames(css.wrapper, className, {
-                    [css.isClickable]: isClickable,
-                })}
-                ref={elementRef}
-                tabIndex={isClickable ? 0 : undefined}
-                {...other}
-            >
-                {prefix && <div className={css.prefix}>{prefix}</div>}
+    return (
+        <div
+            className={classnames(css.wrapper, className, {
+                [css.isClickable]: isClickable,
+            })}
+            ref={elementRef}
+            tabIndex={isClickable ? 0 : undefined}
+            {...other}
+        >
+            {prefix && <div className={css.prefix}>{prefix}</div>}
 
-                <div className={css.content}>{children}</div>
+            <div className={css.content}>{children}</div>
 
-                {suffix && <div className={css.suffix}>{suffix}</div>}
-            </div>
-        )
-    }
-)
+            {suffix && <div className={css.suffix}>{suffix}</div>}
+        </div>
+    )
+}
 
-export default DropdownHeader
+export default forwardRef<HTMLDivElement, Props>(DropdownHeader)

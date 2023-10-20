@@ -124,7 +124,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         className="wrapper smallest actions"
       >
         <BodyCellContent>
-          <ForwardRef
+          <ForwardRef(IconButton)
             className="mr-1"
             fillStyle="ghost"
             intent="secondary"
@@ -133,7 +133,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             title="Duplicate macro"
           >
             file_copy
-          </ForwardRef>
+          </ForwardRef(IconButton)>
           <ConfirmationPopover
             buttonProps={
               {
@@ -237,7 +237,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         className="wrapper smallest actions"
       >
         <BodyCellContent>
-          <ForwardRef
+          <ForwardRef(IconButton)
             className="mr-1"
             fillStyle="ghost"
             intent="secondary"
@@ -246,7 +246,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             title="Duplicate macro"
           >
             file_copy
-          </ForwardRef>
+          </ForwardRef(IconButton)>
           <ConfirmationPopover
             buttonProps={
               {

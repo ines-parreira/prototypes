@@ -46,7 +46,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
     <h4>
       An error occurred!
     </h4>
-    <ForwardRef
+    <ForwardRef(Button)
       className="mr-2 mb-2 float-left"
       onClick={[Function]}
     >
@@ -62,8 +62,8 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
           Reload page
         </button>
       </BaseButton>
-    </ForwardRef>
-    <ForwardRef
+    </ForwardRef(Button)>
+    <ForwardRef(Button)
       className="mr-2 mb-2"
       intent="secondary"
       onClick={[Function]}
@@ -81,7 +81,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
           Show details
         </button>
       </BaseButton>
-    </ForwardRef>
+    </ForwardRef(Button)>
     <Collapse
       appear={false}
       enter={true}

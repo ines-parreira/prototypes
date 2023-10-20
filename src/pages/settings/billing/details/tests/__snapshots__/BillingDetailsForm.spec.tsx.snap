@@ -846,7 +846,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                         </div>
                       </BillingAddressInputs>
                       <div>
-                        <ForwardRef
+                        <ForwardRef(Button)
                           className="submitButton"
                           isLoading={false}
                           type="submit"
@@ -864,7 +864,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                               Update Address
                             </button>
                           </BaseButton>
-                        </ForwardRef>
+                        </ForwardRef(Button)>
                       </div>
                     </form>
                   </Form>
@@ -1565,7 +1565,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                         </div>
                       </BillingAddressInputs>
                       <div>
-                        <ForwardRef
+                        <ForwardRef(Button)
                           className="submitButton"
                           isLoading={false}
                           type="submit"
@@ -1583,7 +1583,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                               Update Address
                             </button>
                           </BaseButton>
-                        </ForwardRef>
+                        </ForwardRef(Button)>
                       </div>
                     </form>
                   </Form>

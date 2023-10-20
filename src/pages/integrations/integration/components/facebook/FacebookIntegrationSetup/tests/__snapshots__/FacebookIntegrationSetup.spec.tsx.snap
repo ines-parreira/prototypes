@@ -81,14 +81,14 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -151,14 +151,14 @@ exports[`FacebookIntegrationSetup should render an empty list because there is n
       tag="form"
     >
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -418,14 +418,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -700,14 +700,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -1022,14 +1022,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -1304,14 +1304,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -1454,14 +1454,14 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -1728,14 +1728,14 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -2023,14 +2023,14 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -2166,14 +2166,14 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -2316,14 +2316,14 @@ exports[`FacebookIntegrationSetup should render the integration list without sho
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -2466,14 +2466,14 @@ exports[`FacebookIntegrationSetup should render the integration with canModerate
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={true}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -2775,14 +2775,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -2918,14 +2918,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -3227,14 +3227,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -3536,14 +3536,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -3845,14 +3845,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -3988,14 +3988,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -4297,14 +4297,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -4440,14 +4440,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -4749,14 +4749,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -4892,14 +4892,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -5201,14 +5201,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -5344,14 +5344,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -5625,14 +5625,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -5768,14 +5768,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -6077,14 +6077,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -6220,14 +6220,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -6363,14 +6363,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>
@@ -6644,14 +6644,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
         />
       </div>
       <div>
-        <ForwardRef
+        <ForwardRef(Button)
           className=""
           intent="primary"
           isDisabled={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </div>
     </Form>
   </Container>

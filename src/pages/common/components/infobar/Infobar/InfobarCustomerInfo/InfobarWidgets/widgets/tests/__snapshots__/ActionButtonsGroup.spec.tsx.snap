@@ -161,12 +161,12 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       color="secondary"
       tag="span"
     >
-      <ForwardRef
+      <ForwardRef(IconButton)
         intent="secondary"
         size="small"
       >
         more_horiz
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </DropdownToggle>
     <DropdownMenu
       flip={true}

@@ -20,7 +20,7 @@ exports[`<FileField/> render() should display a remove button 1`] = `
           src="value"
         />
       </div>
-      <ForwardRef
+      <ForwardRef(Button)
         intent="secondary"
         isDisabled={false}
         onClick={[Function]}
@@ -28,15 +28,15 @@ exports[`<FileField/> render() should display a remove button 1`] = `
         <span>
           Select a File...
         </span>
-      </ForwardRef>
-      <ForwardRef
+      </ForwardRef(Button)>
+      <ForwardRef(IconButton)
         aria-label="Remove the file"
         className="ml-2"
         intent="destructive"
         onClick={[Function]}
       >
         close
-      </ForwardRef>
+      </ForwardRef(IconButton)>
       <Input
         className="input"
         disabled={false}
@@ -74,7 +74,7 @@ exports[`<FileField/> render() should display loading when loading 1`] = `
           src="value"
         />
       </div>
-      <ForwardRef
+      <ForwardRef(Button)
         intent="secondary"
         isDisabled={true}
         onClick={[Function]}
@@ -87,7 +87,7 @@ exports[`<FileField/> render() should display loading when loading 1`] = `
           </i>
           Uploading...
         </span>
-      </ForwardRef>
+      </ForwardRef(Button)>
       <Input
         className="input"
         disabled={true}
@@ -117,7 +117,7 @@ exports[`<FileField/> render() should not render preview 1`] = `
     <div
       className="d-flex align-center"
     >
-      <ForwardRef
+      <ForwardRef(Button)
         intent="secondary"
         isDisabled={false}
         onClick={[Function]}
@@ -125,7 +125,7 @@ exports[`<FileField/> render() should not render preview 1`] = `
         <span>
           Select a File...
         </span>
-      </ForwardRef>
+      </ForwardRef(Button)>
       <Input
         className="input"
         disabled={false}
@@ -164,7 +164,7 @@ exports[`<FileField/> render() should render a basic file input 1`] = `
           src="value"
         />
       </div>
-      <ForwardRef
+      <ForwardRef(Button)
         intent="secondary"
         isDisabled={false}
         onClick={[Function]}
@@ -172,7 +172,7 @@ exports[`<FileField/> render() should render a basic file input 1`] = `
         <span>
           Select a File...
         </span>
-      </ForwardRef>
+      </ForwardRef(Button)>
       <Input
         className="input"
         disabled={false}
@@ -210,7 +210,7 @@ exports[`<FileField/> render() should render preview 1`] = `
           src="value"
         />
       </div>
-      <ForwardRef
+      <ForwardRef(Button)
         intent="secondary"
         isDisabled={false}
         onClick={[Function]}
@@ -218,7 +218,7 @@ exports[`<FileField/> render() should render preview 1`] = `
         <span>
           Select a File...
         </span>
-      </ForwardRef>
+      </ForwardRef(Button)>
       <Input
         className="input"
         disabled={false}

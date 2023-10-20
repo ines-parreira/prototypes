@@ -514,7 +514,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                               </Alert>
                             </div>
                           </CardBody>
-                          <ForwardRef
+                          <ForwardRef(Button)
                             className="copy mr-4"
                             data-clipboard-target="#code-snippet"
                             id="copy-code-snippet"
@@ -550,7 +550,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                                 Copy
                               </button>
                             </BaseButton>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </div>
                       </Card>
                     </CustomInstallationCard>

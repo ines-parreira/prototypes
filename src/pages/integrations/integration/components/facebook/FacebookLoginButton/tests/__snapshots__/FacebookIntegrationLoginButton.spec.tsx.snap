@@ -57,7 +57,7 @@ exports[`FacebookIntegrationLoginButton component should render a reconnect butt
       <FacebookLoginButton
         onClick={[Function]}
       >
-        <ForwardRef
+        <ForwardRef(Button)
           className="facebookButton primary"
           intent="primary"
           onClick={[Function]}
@@ -76,7 +76,7 @@ exports[`FacebookIntegrationLoginButton component should render a reconnect butt
               Reconnect
             </button>
           </BaseButton>
-        </ForwardRef>
+        </ForwardRef(Button)>
       </FacebookLoginButton>
     </FacebookIntegrationLoginButtonContainer>
   </Connect(FacebookIntegrationLoginButtonContainer)>

@@ -1,8 +1,8 @@
 import React, {
+    ForwardedRef,
     forwardRef,
     InputHTMLAttributes,
     ReactNode,
-    Ref,
     useEffect,
     useImperativeHandle,
     useRef,
@@ -45,7 +45,7 @@ function CheckBox(
         onChange,
         ...props
     }: Props,
-    ref: Ref<HTMLInputElement> | null | undefined
+    ref: ForwardedRef<HTMLInputElement>
 ) {
     const inputRef = useRef<HTMLInputElement>(null)
     useImperativeHandle(ref, () => inputRef.current!, [inputRef])
@@ -85,4 +85,4 @@ function CheckBox(
     )
 }
 
-export default forwardRef(CheckBox)
+export default forwardRef<HTMLInputElement, Props>(CheckBox)

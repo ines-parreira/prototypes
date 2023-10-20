@@ -1,4 +1,5 @@
 import React, {
+    ForwardedRef,
     forwardRef,
     useState,
     useCallback,
@@ -23,10 +24,10 @@ type UploadLogoModalHandleProps = {
     uploadMaxSize: number
 }
 
-const UploadLogoModal = forwardRef<
-    UploadLogoModalHandle,
-    UploadLogoModalHandleProps
->(({onConfirm, uploadMaxSize}, ref) => {
+const UploadLogoModal = (
+    {onConfirm, uploadMaxSize}: UploadLogoModalHandleProps,
+    ref: ForwardedRef<UploadLogoModalHandle>
+) => {
     const [url, setUrl] = useState<string>()
     const [isOpen, setIsOpen] = useState(false)
 
@@ -69,6 +70,8 @@ const UploadLogoModal = forwardRef<
             </ModalActionsFooter>
         </Modal>
     )
-})
+}
 
-export default UploadLogoModal
+export default forwardRef<UploadLogoModalHandle, UploadLogoModalHandleProps>(
+    UploadLogoModal
+)

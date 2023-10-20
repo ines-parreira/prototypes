@@ -1,153 +1,92 @@
 import React, {
-    CSSProperties,
-    Component,
     KeyboardEvent,
     InputHTMLAttributes,
-    RefObject,
+    useState,
+    useEffect,
+    useRef,
+    ForwardedRef,
+    forwardRef,
+    useImperativeHandle,
 } from 'react'
 import classnames from 'classnames'
-import _debounce from 'lodash/debounce'
-import _isUndefined from 'lodash/isUndefined'
 
+import {useDebounce} from 'react-use'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './Search.less'
 
 type Props = {
+    className?: string
     onChange?: (searchQuery: string) => void
     onKeyDown?: (event: KeyboardEvent, searchQuery: string) => void
-    onFocus?: () => void
-    forcedQuery?: string
-    shouldResetInput?: boolean
-    disabled: boolean
-    autoFocus?: boolean
-    className?: string
+    searchDebounceTime?: number
     textInputClassName?: string
-    placeholder: string
-    searchDebounceTime: number
-    // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
-    location?: string
-    style: CSSProperties
-    externalInputRef?: RefObject<HTMLInputElement>
-} & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyDown'>
+    value?: string
+} & Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'onChange' | 'onKeyDown' | 'value'
+>
 
-export default class Search extends Component<Props> {
-    private isInitialized: boolean
+const Search = (
+    {
+        className,
+        onChange,
+        onKeyDown,
+        placeholder = 'Search...',
+        searchDebounceTime = 0,
+        textInputClassName,
+        type,
+        value,
+        ...rest
+    }: Props,
+    forwardedRef: ForwardedRef<HTMLInputElement>
+) => {
+    const [internalValue, setInternalValue] = useState(value ?? '')
+    const [previousValue, setPreviousValue] = useState(value ?? '')
 
-    searchInputRef: Maybe<HTMLInputElement>
+    const ref = useRef<HTMLInputElement>(null)
+    useImperativeHandle(forwardedRef, () => ref.current!)
 
-    static defaultProps: Pick<
-        Props,
-        'disabled' | 'placeholder' | 'style' | 'searchDebounceTime'
-    > = {
-        disabled: false,
-        placeholder: 'Search...',
-        style: {},
-        searchDebounceTime: 0,
-    }
-
-    state = {
-        search: '',
-    }
-
-    constructor(props: Props) {
-        super(props)
-
-        this.isInitialized = false
-
-        this.state = {
-            search: props.forcedQuery || '',
+    useEffect(() => {
+        if (value !== undefined && previousValue !== value) {
+            setInternalValue(value)
+            setPreviousValue(value)
         }
-    }
+    }, [previousValue, value])
 
-    componentWillReceiveProps(nextProps: Props) {
-        const shouldSetValue =
-            !this.isInitialized ||
-            (nextProps.location && this.props.location !== nextProps.location)
-
-        if (shouldSetValue) {
-            this.setState({search: ''})
-
-            if (!_isUndefined(nextProps.forcedQuery)) {
-                this.setState({search: nextProps.forcedQuery || ''})
-            }
-
-            if (nextProps.forcedQuery) {
-                // `this._debouncedSearch()` is not necessary in the ticket-list context, but I think it's better for
-                // consistency that it gets executed anytime we force a query.
-                this._debouncedSearch()
-            }
-
-            this.isInitialized = true
-        }
-
-        if (!this.props.shouldResetInput && nextProps.shouldResetInput) {
-            this.setState({search: ''})
-        }
-    }
-
-    // search every XXXms
-    _debouncedSearch = _debounce(() => {
-        const {onChange} = this.props
-        if (onChange) {
-            return onChange(this.state.search)
-        }
-    }, this.props.searchDebounceTime)
-
-    _handleChange = (search: string) => {
-        this.setState({search})
-        return this._debouncedSearch()
-    }
-
-    _reset = () => {
-        return this._handleChange('')
-    }
-
-    handleKeyDown = (e: KeyboardEvent) => {
-        const {onKeyDown} = this.props
-        const {search} = this.state
-        const ref = this.props.externalInputRef?.current || this.searchInputRef
-
-        if (onKeyDown) {
-            onKeyDown(e, search)
-        }
+    const handleKeyDown = (e: KeyboardEvent) => {
+        onKeyDown?.(e, internalValue)
         if (e.key === 'Escape' && ref) {
-            ref.blur()
+            ref.current?.blur()
         }
     }
 
-    render() {
-        const {
-            style,
-            className,
-            textInputClassName,
-            onChange, // eslint-disable-line
-            forcedQuery, // eslint-disable-line
-            shouldResetInput, // eslint-disable-line
-            searchDebounceTime, // eslint-disable-line
-            location, // eslint-disable-line
-            type,
-            externalInputRef,
-            ...rest
-        } = this.props
+    useDebounce(
+        () => {
+            if (value !== internalValue) {
+                onChange?.(internalValue)
+            }
+        },
+        searchDebounceTime,
+        [internalValue]
+    )
 
-        return (
-            <div className={classnames(css.component, className)} style={style}>
-                <TextInput
-                    ref={
-                        externalInputRef ||
-                        ((ref) => (this.searchInputRef = ref))
-                    }
-                    type={type}
-                    className={classnames(css.input, textInputClassName)}
-                    value={this.state.search}
-                    onChange={(value) => this._handleChange(value)}
-                    prefix={<IconInput icon="search" />}
-                    {...rest}
-                    onKeyDown={this.handleKeyDown}
-                />
-            </div>
-        )
-    }
+    return (
+        <div className={classnames(css.component, className)}>
+            <TextInput
+                ref={ref}
+                type={type}
+                className={classnames(css.input, textInputClassName)}
+                value={internalValue}
+                onChange={setInternalValue}
+                prefix={<IconInput icon="search" />}
+                placeholder={placeholder}
+                {...rest}
+                onKeyDown={handleKeyDown}
+            />
+        </div>
+    )
 }
+
+export default forwardRef<HTMLInputElement, Props>(Search)

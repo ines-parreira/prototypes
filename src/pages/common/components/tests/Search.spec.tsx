@@ -1,40 +1,69 @@
 import React from 'react'
-import {mount, shallow} from 'enzyme'
-import _noop from 'lodash/noop'
-
-import TextInput from 'pages/common/forms/input/TextInput'
+import {render} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import Search from '../Search'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
-describe('Search component', () => {
-    it('handle change function', () => {
-        const component = mount<Search>(<Search onChange={_noop} />)
-        component.instance()._handleChange('text')
-        expect(component.instance().state.search).toEqual('text')
-        expect(component).toMatchSnapshot()
+describe('<Search />', () => {
+    beforeEach(() => {
+        jest.useFakeTimers()
     })
 
-    it('reset function', () => {
-        const component = mount<Search>(<Search onChange={_noop} />)
-        component.instance()._handleChange('text')
-        expect(component.instance().state.search).toEqual('text')
-        expect(component).toMatchSnapshot()
-        component.instance()._reset()
-        expect(component.instance().state.search).toEqual('')
-        expect(component).toMatchSnapshot()
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
-    it('should blur when pressing escape', () => {
-        const component = shallow<Search>(<Search onChange={_noop} />)
-        const mockBlur = jest.fn()
-        component.instance().searchInputRef = {
-            blur: mockBlur,
-        } as unknown as HTMLInputElement
-        component.find(TextInput).simulate('keydown', {key: 'a'})
-        component.find(TextInput).simulate('keydown', {key: 'Escape'})
+    it('render search input', () => {
+        const {getByPlaceholderText} = render(<Search />)
+        expect(getByPlaceholderText(/Search/)).toBeInTheDocument()
+    })
 
-        expect(mockBlur).toHaveBeenCalledTimes(1)
+    it('update input value', async () => {
+        const text = 'hello there'
+        const {getByPlaceholderText} = render(<Search />)
+        const input = getByPlaceholderText(/Search/)
+        await userEvent.type(input, text)
+        expect(input).toHaveValue(text)
+    })
+
+    it('handle controlled value', () => {
+        const text = 'hello there'
+        const {rerender, getByPlaceholderText} = render(<Search />)
+        const input = getByPlaceholderText(/Search/)
+
+        expect(input).toHaveValue('')
+
+        rerender(<Search value={text} />)
+
+        expect(input).toHaveValue(text)
+    })
+
+    it('debounce search value change', async () => {
+        const text = 'hello there'
+        const onChange = jest.fn()
+
+        const {getByPlaceholderText} = render(
+            <Search searchDebounceTime={100} onChange={onChange} />
+        )
+        const input = getByPlaceholderText(/Search/)
+        await userEvent.type(input, text)
+
+        expect(onChange).not.toHaveBeenCalled()
+
+        jest.advanceTimersByTime(100)
+
+        expect(onChange).toHaveBeenCalledWith(text)
+    })
+
+    it('blur input when entering escape key', async () => {
+        const onBlur = jest.fn()
+        const {getByPlaceholderText} = render(<Search onBlur={onBlur} />)
+
+        const input = getByPlaceholderText(/Search/)
+        await userEvent.type(input, '{esc}')
+
+        expect(onBlur).toHaveBeenCalled()
     })
 })

@@ -56,7 +56,7 @@ exports[`MergeTicketsContainer component should render the build component if th
   </ForwardRef(ModalBody)>
   <ModalActionsFooter
     extra={
-      <ForwardRef
+      <ForwardRef(Button)
         color="secondary"
         isDisabled={false}
         onClick={[Function]}
@@ -66,16 +66,16 @@ exports[`MergeTicketsContainer component should render the build component if th
         >
           Back
         </ButtonIconLabel>
-      </ForwardRef>
+      </ForwardRef(Button)>
     }
   >
-    <ForwardRef
+    <ForwardRef(Button)
       intent="secondary"
       isDisabled={false}
       onClick={[Function]}
     >
       Cancel
-    </ForwardRef>
+    </ForwardRef(Button)>
     <ConfirmButton
       confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
       isLoading={false}

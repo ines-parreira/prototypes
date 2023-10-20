@@ -62,7 +62,7 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             readOnly={true}
             value="https://justatest.gorgias.com/api/"
           />
-          <ForwardRef
+          <ForwardRef(Button)
             className="copyBtn"
             intent="secondary"
             onClick={[Function]}
@@ -72,7 +72,7 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             >
               Copy
             </ButtonIconLabel>
-          </ForwardRef>
+          </ForwardRef(Button)>
         </InputGroup>
       </FormGroup>
       <FormGroup
@@ -101,7 +101,7 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             readOnly={true}
             value=""
           />
-          <ForwardRef
+          <ForwardRef(Button)
             className="copyBtn"
             intent="secondary"
             onClick={[Function]}
@@ -111,7 +111,7 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             >
               Copy
             </ButtonIconLabel>
-          </ForwardRef>
+          </ForwardRef(Button)>
         </InputGroup>
       </FormGroup>
       <FormGroup
@@ -140,11 +140,11 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           >
             You can create an API Key using the button below.
           </p>
-          <ForwardRef
+          <ForwardRef(Button)
             onClick={[Function]}
           >
             Create API key
-          </ForwardRef>
+          </ForwardRef(Button)>
         </div>
       </FormGroup>
       <div
@@ -193,11 +193,11 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           , new features and integrations.
         </p>
       </div>
-      <ForwardRef
+      <ForwardRef(Button)
         onClick={[Function]}
       >
         Subscribe
-      </ForwardRef>
+      </ForwardRef(Button)>
     </div>
   </Container>
 </div>
@@ -265,7 +265,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             readOnly={true}
             value="https://justatest.gorgias.com/api/"
           />
-          <ForwardRef
+          <ForwardRef(Button)
             className="copyBtn"
             intent="secondary"
             onClick={[Function]}
@@ -275,7 +275,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             >
               Copy
             </ButtonIconLabel>
-          </ForwardRef>
+          </ForwardRef(Button)>
         </InputGroup>
       </FormGroup>
       <FormGroup
@@ -304,7 +304,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             readOnly={true}
             value=""
           />
-          <ForwardRef
+          <ForwardRef(Button)
             className="copyBtn"
             intent="secondary"
             onClick={[Function]}
@@ -314,7 +314,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             >
               Copy
             </ButtonIconLabel>
-          </ForwardRef>
+          </ForwardRef(Button)>
         </InputGroup>
       </FormGroup>
       <FormGroup
@@ -344,13 +344,13 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             type="password"
             value="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
           />
-          <ForwardRef
+          <ForwardRef(IconButton)
             intent="secondary"
             onClick={[Function]}
           >
             visibility
-          </ForwardRef>
-          <ForwardRef
+          </ForwardRef(IconButton)>
+          <ForwardRef(Button)
             intent="destructive"
             onClick={[Function]}
           >
@@ -359,8 +359,8 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             >
               Reset
             </ButtonIconLabel>
-          </ForwardRef>
-          <ForwardRef
+          </ForwardRef(Button)>
+          <ForwardRef(Button)
             className="copyBtn"
             intent="secondary"
             onClick={[Function]}
@@ -370,7 +370,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             >
               Copy
             </ButtonIconLabel>
-          </ForwardRef>
+          </ForwardRef(Button)>
         </InputGroup>
       </FormGroup>
       <div
@@ -419,11 +419,11 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           , new features and integrations.
         </p>
       </div>
-      <ForwardRef
+      <ForwardRef(Button)
         onClick={[Function]}
       >
         Subscribe
-      </ForwardRef>
+      </ForwardRef(Button)>
     </div>
   </Container>
 </div>

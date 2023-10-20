@@ -1,9 +1,9 @@
 import classnames from 'classnames'
 import React, {
     forwardRef,
+    ForwardedRef,
     KeyboardEvent,
     ReactNode,
-    Ref,
     useCallback,
     useContext,
     useImperativeHandle,
@@ -41,7 +41,7 @@ const DropdownQuickSelect = <T extends boolean | number | string>(
         shouldCloseOnSelect,
         values,
     }: Props<T>,
-    ref: Ref<HTMLDivElement> | null | undefined
+    ref: ForwardedRef<HTMLDivElement>
 ) => {
     const itemRef = useRef<HTMLDivElement>(null)
     const dropdownContext = useContext(DropdownContext)

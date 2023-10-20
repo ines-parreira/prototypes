@@ -10,7 +10,7 @@ exports[`ObjectListField component should display the field as empty 1`] = `
   <p>
     No field
   </p>
-  <ForwardRef
+  <ForwardRef(Button)
     intent="secondary"
     onClick={[Function]}
     size="small"
@@ -21,7 +21,7 @@ exports[`ObjectListField component should display the field as empty 1`] = `
       Add 
       field
     </ButtonIconLabel>
-  </ForwardRef>
+  </ForwardRef(Button)>
 </div>
 `;
 
@@ -106,17 +106,17 @@ exports[`ObjectListField component should display the field with items 1`] = `
       }
       xs="auto"
     >
-      <ForwardRef
+      <ForwardRef(IconButton)
         className="float-right"
         intent="destructive"
         onClick={[Function]}
         title="Remove field"
       >
         delete
-      </ForwardRef>
+      </ForwardRef(IconButton)>
     </Col>
   </Row>
-  <ForwardRef
+  <ForwardRef(Button)
     intent="secondary"
     onClick={[Function]}
     size="small"
@@ -127,6 +127,6 @@ exports[`ObjectListField component should display the field with items 1`] = `
       Add 
       field
     </ButtonIconLabel>
-  </ForwardRef>
+  </ForwardRef(Button)>
 </div>
 `;

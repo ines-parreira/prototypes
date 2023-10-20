@@ -175,7 +175,7 @@ export const FontCatalogueModal = ({
                                 placeholder="Search for fonts"
                                 onChange={setSearch}
                                 className={css.search}
-                                forcedQuery={search}
+                                value={search}
                             />
                         </div>
                         <div>

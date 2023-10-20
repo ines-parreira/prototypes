@@ -383,12 +383,12 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           </FormGroup>
         </div>
       </div>
-      <ForwardRef
+      <ForwardRef(Button)
         isLoading={false}
         type="submit"
       >
         Save Changes
-      </ForwardRef>
+      </ForwardRef(Button)>
     </Form>
   </Container>
 </div>
@@ -735,12 +735,12 @@ exports[`YourProfileView render should render current user profile form 2`] = `
           </FormGroup>
         </div>
       </div>
-      <ForwardRef
+      <ForwardRef(Button)
         isLoading={false}
         type="submit"
       >
         Save Changes
-      </ForwardRef>
+      </ForwardRef(Button)>
     </Form>
   </Container>
 </div>

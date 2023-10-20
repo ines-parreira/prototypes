@@ -1,9 +1,15 @@
-import React, {FormEvent, useEffect, useMemo, useState} from 'react'
+import React, {
+    FormEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Container, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import axios, {AxiosError, CancelToken} from 'axios'
-import {useAsyncFn, useDebounce, useEffectOnce} from 'react-use'
+import {useAsyncFn, useEffectOnce} from 'react-use'
 import {Map} from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -174,16 +180,15 @@ const ManageTags = () => {
         areAllTagsSelected && handleSelectAll()
     }
 
-    const [, cancel] = useDebounce(
-        () => {
+    const onSearchChange = useCallback(
+        (search: string) => {
+            setSearch(search)
             void fetchPage({search})
         },
-        1000,
-        [search]
+        [fetchPage]
     )
 
     useEffectOnce(() => {
-        cancel()
         void fetchPage()
     })
 
@@ -199,10 +204,10 @@ const ManageTags = () => {
                 <div className="manage-tags-bulk-actions">
                     <div className="d-flex">
                         <Search
-                            forcedQuery={search}
-                            onChange={setSearch}
+                            value={search}
+                            onChange={onSearchChange}
                             placeholder="Search tags by name..."
-                            searchDebounceTime={300}
+                            searchDebounceTime={500}
                             className="mr-2"
                         />
                         <Button

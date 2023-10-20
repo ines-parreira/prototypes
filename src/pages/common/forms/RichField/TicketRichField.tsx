@@ -1,4 +1,4 @@
-import React, {forwardRef, useMemo} from 'react'
+import React, {ForwardedRef, forwardRef, useMemo} from 'react'
 import {fromJS} from 'immutable'
 
 import ToolbarContext, {
@@ -35,130 +35,131 @@ type Props = {disableProductCards?: boolean} & RichFieldProps
 
 const getShopifyIntegrations = getIntegrationsByType(IntegrationType.Shopify)
 
-const TicketRichField = forwardRef<RichField, Props>(
-    ({disableProductCards, ...props}, ref) => {
-        const dispatch = useAppDispatch()
-        const currentAccount = useAppSelector(getCurrentAccountState)
-        const ticket = useAppSelector(getTicketState)
-        const newMessageChannel = useAppSelector(getNewMessageChannel)
-        const isNewMessagePublic = useAppSelector(getIsNewMessagePublic)
-        const shopifyIntegrations = useAppSelector(getShopifyIntegrations)
+const TicketRichField = (
+    {disableProductCards, ...props}: Props,
+    ref: ForwardedRef<RichField>
+) => {
+    const dispatch = useAppDispatch()
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const ticket = useAppSelector(getTicketState)
+    const newMessageChannel = useAppSelector(getNewMessageChannel)
+    const isNewMessagePublic = useAppSelector(getIsNewMessagePublic)
+    const shopifyIntegrations = useAppSelector(getShopifyIntegrations)
 
-        const toolbarContext: ToolbarContextType = useMemo(
-            () => ({
-                canAddVideoPlayer: canAddVideoPlayer(
-                    newMessageChannel,
-                    isNewMessagePublic
-                ),
-                onInsertVideoAddedFromInsertLink: () => {
-                    logEvent(SegmentEvent.InsertVideoAddedFromInsertLink, {
-                        account_id: currentAccount?.get('domain'),
-                        channel: newMessageChannel,
-                        ticket: ticket?.get('id') || 'new',
-                    })
-                },
-                canAddVideoLink:
-                    !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS.includes(
-                        newMessageChannel
-                    ),
-                onInsertVideoOpen: () => {
-                    logEvent(SegmentEvent.InsertVideoOpen, {
-                        account_id: currentAccount?.get('domain'),
-                        channel: newMessageChannel,
-                        ticket: ticket?.get('id') || 'new',
-                    })
-                },
-                onInsertVideoAdded: () => {
-                    logEvent(SegmentEvent.InsertVideoAdded, {
-                        account_id: currentAccount?.get('domain'),
-                        channel: newMessageChannel,
-                        ticket: ticket?.get('id') || 'new',
-                    })
-                },
-                canAddDiscountCodeLink:
-                    !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES.includes(
-                        newMessageChannel
-                    ),
-                onInsertDiscountCodeOpen: () => {
-                    const customerData = getAllCustomerIdsFromTicket(
-                        ticket,
-                        (integration) =>
-                            integration.get('__integration_type__') ===
-                            SHOPIFY_INTEGRATION_TYPE
-                    )
-
-                    logEvent(SegmentEvent.InsertDiscountCodeOpen, {
-                        account_domain: currentAccount?.get('domain'),
-                        channel: newMessageChannel,
-                        ticket: ticket?.get('id') || 'new',
-                        customer: customerData,
-                    })
-                },
-                onInsertDiscountCodeAdded: (discount) => {
-                    dispatch(
-                        addNewMessageDiscountCode(
-                            ticket?.get('id') || 'new',
-                            discount
-                        )
-                    )
-                },
-                canAddProductCard:
-                    !disableProductCards &&
-                    (newMessageChannel === TicketChannel.Chat ||
-                        !isNewMessagePublic),
-                canAddProductLink:
-                    !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
-                        newMessageChannel
-                    ),
-                onAddProductCardAttachment: (attachment) => {
-                    dispatch(addProductCardAttachment(ticket, attachment))
-                },
-                onInsertProductLinkOpen: () => {
-                    logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {
-                        account_id: currentAccount?.get('domain'),
-                        channel: newMessageChannel,
-                        ticket: ticket?.get('id') || 'new',
-                    })
-                },
-                onInsertProductLinkAdded: (productCardDetails) => {
-                    logEvent(SegmentEvent.ShopifyInsertProductLinkAdded, {
-                        account_id: currentAccount?.get('domain'),
-                        channel: newMessageChannel,
-                        product_id: productCardDetails.productId,
-                        variant_id: productCardDetails.variantId,
-                        ticket: ticket?.get('id') || 'new',
-                    })
-                },
-                shopifyIntegrations: fromJS(shopifyIntegrations),
-            }),
-            [
-                disableProductCards,
-                dispatch,
-                currentAccount,
-                ticket,
+    const toolbarContext: ToolbarContextType = useMemo(
+        () => ({
+            canAddVideoPlayer: canAddVideoPlayer(
                 newMessageChannel,
-                isNewMessagePublic,
-                shopifyIntegrations,
-            ]
-        )
+                isNewMessagePublic
+            ),
+            onInsertVideoAddedFromInsertLink: () => {
+                logEvent(SegmentEvent.InsertVideoAddedFromInsertLink, {
+                    account_id: currentAccount?.get('domain'),
+                    channel: newMessageChannel,
+                    ticket: ticket?.get('id') || 'new',
+                })
+            },
+            canAddVideoLink:
+                !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS.includes(
+                    newMessageChannel
+                ),
+            onInsertVideoOpen: () => {
+                logEvent(SegmentEvent.InsertVideoOpen, {
+                    account_id: currentAccount?.get('domain'),
+                    channel: newMessageChannel,
+                    ticket: ticket?.get('id') || 'new',
+                })
+            },
+            onInsertVideoAdded: () => {
+                logEvent(SegmentEvent.InsertVideoAdded, {
+                    account_id: currentAccount?.get('domain'),
+                    channel: newMessageChannel,
+                    ticket: ticket?.get('id') || 'new',
+                })
+            },
+            canAddDiscountCodeLink:
+                !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES.includes(
+                    newMessageChannel
+                ),
+            onInsertDiscountCodeOpen: () => {
+                const customerData = getAllCustomerIdsFromTicket(
+                    ticket,
+                    (integration) =>
+                        integration.get('__integration_type__') ===
+                        SHOPIFY_INTEGRATION_TYPE
+                )
 
-        return (
-            <ToolbarContext.Provider value={toolbarContext}>
-                <RichField
-                    ref={ref}
-                    canAddVideoPlayer={toolbarContext.canAddVideoPlayer}
-                    onInsertVideoAddedFromPastedLink={() => {
-                        logEvent(SegmentEvent.InsertVideoAddedFromPastedLink, {
-                            account_id: currentAccount?.get('domain'),
-                            channel: newMessageChannel,
-                            ticket: ticket?.get('id') || 'new',
-                        })
-                    }}
-                    {...props}
-                />
-            </ToolbarContext.Provider>
-        )
-    }
-)
+                logEvent(SegmentEvent.InsertDiscountCodeOpen, {
+                    account_domain: currentAccount?.get('domain'),
+                    channel: newMessageChannel,
+                    ticket: ticket?.get('id') || 'new',
+                    customer: customerData,
+                })
+            },
+            onInsertDiscountCodeAdded: (discount) => {
+                dispatch(
+                    addNewMessageDiscountCode(
+                        ticket?.get('id') || 'new',
+                        discount
+                    )
+                )
+            },
+            canAddProductCard:
+                !disableProductCards &&
+                (newMessageChannel === TicketChannel.Chat ||
+                    !isNewMessagePublic),
+            canAddProductLink:
+                !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
+                    newMessageChannel
+                ),
+            onAddProductCardAttachment: (attachment) => {
+                dispatch(addProductCardAttachment(ticket, attachment))
+            },
+            onInsertProductLinkOpen: () => {
+                logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {
+                    account_id: currentAccount?.get('domain'),
+                    channel: newMessageChannel,
+                    ticket: ticket?.get('id') || 'new',
+                })
+            },
+            onInsertProductLinkAdded: (productCardDetails) => {
+                logEvent(SegmentEvent.ShopifyInsertProductLinkAdded, {
+                    account_id: currentAccount?.get('domain'),
+                    channel: newMessageChannel,
+                    product_id: productCardDetails.productId,
+                    variant_id: productCardDetails.variantId,
+                    ticket: ticket?.get('id') || 'new',
+                })
+            },
+            shopifyIntegrations: fromJS(shopifyIntegrations),
+        }),
+        [
+            disableProductCards,
+            dispatch,
+            currentAccount,
+            ticket,
+            newMessageChannel,
+            isNewMessagePublic,
+            shopifyIntegrations,
+        ]
+    )
 
-export default TicketRichField
+    return (
+        <ToolbarContext.Provider value={toolbarContext}>
+            <RichField
+                ref={ref}
+                canAddVideoPlayer={toolbarContext.canAddVideoPlayer}
+                onInsertVideoAddedFromPastedLink={() => {
+                    logEvent(SegmentEvent.InsertVideoAddedFromPastedLink, {
+                        account_id: currentAccount?.get('domain'),
+                        channel: newMessageChannel,
+                        ticket: ticket?.get('id') || 'new',
+                    })
+                }}
+                {...props}
+            />
+        </ToolbarContext.Provider>
+    )
+}
+
+export default forwardRef<RichField, Props>(TicketRichField)

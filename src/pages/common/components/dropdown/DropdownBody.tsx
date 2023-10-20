@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {forwardRef, HTMLAttributes, ReactNode, Ref} from 'react'
+import React, {forwardRef, ForwardedRef, HTMLAttributes, ReactNode} from 'react'
 
 import Spinner from 'pages/common/components/Spinner'
 
@@ -13,7 +13,7 @@ type Props = {
 
 function DropdownBody(
     {children, className, isLoading, ...other}: Props,
-    ref: Ref<HTMLDivElement> | null | undefined
+    ref: ForwardedRef<HTMLDivElement>
 ) {
     return (
         <div
@@ -32,4 +32,4 @@ function DropdownBody(
     )
 }
 
-export default forwardRef(DropdownBody)
+export default forwardRef<HTMLDivElement, Props>(DropdownBody)

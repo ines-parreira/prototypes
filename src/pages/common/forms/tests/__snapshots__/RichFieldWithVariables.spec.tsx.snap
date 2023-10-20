@@ -15,7 +15,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         color="secondary"
         tag="div"
       >
-        <ForwardRef
+        <ForwardRef(Button)
           fillStyle="ghost"
           intent="secondary"
         >
@@ -25,7 +25,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           >
             Ticket customer
           </ButtonIconLabel>
-        </ForwardRef>
+        </ForwardRef(Button)>
       </DropdownToggle>
       <DropdownMenu
         flip={true}
@@ -77,7 +77,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         color="secondary"
         tag="div"
       >
-        <ForwardRef
+        <ForwardRef(Button)
           fillStyle="ghost"
           intent="secondary"
         >
@@ -87,7 +87,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           >
             Current agent
           </ButtonIconLabel>
-        </ForwardRef>
+        </ForwardRef(Button)>
       </DropdownToggle>
       <DropdownMenu
         flip={true}
@@ -141,7 +141,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <ForwardRef
+  <ForwardRef(TicketRichField)
     onChange={[Function]}
     value={
       {

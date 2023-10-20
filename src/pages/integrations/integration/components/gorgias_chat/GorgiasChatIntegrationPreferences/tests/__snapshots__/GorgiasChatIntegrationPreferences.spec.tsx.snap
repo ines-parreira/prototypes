@@ -777,13 +777,13 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             />
           </div>
         </div>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={true}
           isLoading={true}
           type="submit"
         >
           Save Changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </Form>
     </GorgiasChatIntegrationPreviewContainer>
   </div>
@@ -1307,13 +1307,13 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             />
           </div>
         </div>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={false}
           isLoading={false}
           type="submit"
         >
           Save Changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </Form>
     </GorgiasChatIntegrationPreviewContainer>
   </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import {screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,7 +9,6 @@ import MockAdapter from 'axios-mock-adapter'
 import {AxiosRequestConfig} from 'axios'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import userEvent from '@testing-library/user-event'
 import {RootState, StoreDispatch} from 'state/types'
 import {user} from 'fixtures/users'
 import client from 'models/api/resources'
@@ -195,11 +195,10 @@ describe('<TicketFields/>', () => {
             expect(screen.getByTestId('ticket-fields-list')).toBeDefined()
         })
 
-        const searchInput = screen.getByPlaceholderText(
-            'Search ticket fields...'
+        await userEvent.type(
+            screen.getByPlaceholderText('Search ticket fields...'),
+            'foo'
         )
-
-        await userEvent.type(searchInput, 'foo')
 
         jest.runAllTimers()
 

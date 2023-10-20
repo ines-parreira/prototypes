@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react'
+import React, {ForwardedRef, forwardRef} from 'react'
 import _debounce from 'lodash/debounce'
 import {CancelToken} from 'axios'
 import {isValidPhoneNumber} from 'libphonenumber-js'
@@ -35,133 +35,123 @@ type Props = {
     disableSearch?: boolean
 }
 
-const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
-    function ReceiversSelectField(
-        {
-            tabIndex,
-            disabled = false,
-            onChange,
-            required = false,
-            sourceType,
-            value,
-            placeholder,
-            disableSearch,
-        }: Props,
-        ref
-    ) {
-        const dispatch = useAppDispatch()
-        const valueProp = getValuePropFromSourceType(sourceType) // the property to display from the object
-        const searchType = isPhoneBasedSource(sourceType)
-            ? SearchType.UserChannelPhone
-            : SearchType.UserChannelEmail
-        const searchRankSource =
-            searchType === SearchType.UserChannelPhone
-                ? SearchRankSource.CustomerChannelPhone
-                : SearchRankSource.CustomerChannelEmail
+const ReceiversSelectField = function ReceiversSelectField(
+    {
+        tabIndex,
+        disabled = false,
+        onChange,
+        required = false,
+        sourceType,
+        value,
+        placeholder,
+        disableSearch,
+    }: Props,
+    ref: ForwardedRef<MultiSelectAsyncField>
+) {
+    const dispatch = useAppDispatch()
+    const valueProp = getValuePropFromSourceType(sourceType) // the property to display from the object
+    const searchType = isPhoneBasedSource(sourceType)
+        ? SearchType.UserChannelPhone
+        : SearchType.UserChannelEmail
+    const searchRankSource =
+        searchType === SearchType.UserChannelPhone
+            ? SearchRankSource.CustomerChannelPhone
+            : SearchRankSource.CustomerChannelEmail
 
-        const [cancellableUpdatePotentialCustomers] = useCancellableRequest(
-            (cancelToken: CancelToken) =>
-                async (queryText: string, searchType: SearchType) =>
-                    await dispatch(
-                        updatePotentialCustomers(
-                            queryText,
-                            searchType,
-                            cancelToken
-                        )
-                    )
-        )
+    const [cancellableUpdatePotentialCustomers] = useCancellableRequest(
+        (cancelToken: CancelToken) =>
+            async (queryText: string, searchType: SearchType) =>
+                await dispatch(
+                    updatePotentialCustomers(queryText, searchType, cancelToken)
+                )
+    )
 
-        const searchRank = useSearchRankScenario(searchRankSource)
+    const searchRank = useSearchRankScenario(searchRankSource)
 
-        const valueFromState = (options: Receiver[]) =>
-            receiversValueFromState({to: options}, sourceType).to
+    const valueFromState = (options: Receiver[]) =>
+        receiversValueFromState({to: options}, sourceType).to
 
-        const handleOnChange = (value: ReceiverValue[]) => {
-            onChange(
-                (receiversStateFromValue({to: value}, sourceType) as Receivers)
-                    .to
-            )
-        }
-
-        const handleOptionSelect = (option: ReceiverValue, index: number) => {
-            searchRank.registerResultSelection({
-                index,
-                id: option.id!,
-            })
-            searchRank.endScenario()
-        }
-
-        const search = _debounce(
-            async (
-                input: string,
-                callback: (options: ReceiverValue[]) => void
-            ) => {
-                searchRank.endScenario()
-                const queryText = input.toLowerCase()
-
-                if (!!input) {
-                    searchRank.registerResultsRequest({
-                        query: queryText,
-                        requestTime: Date.now(),
-                    })
-                }
-
-                if (!queryText) {
-                    callback([])
-                }
-
-                const resp = (await cancellableUpdatePotentialCustomers(
-                    queryText,
-                    searchType
-                )) as SearchResponse<Receiver>
-                if (!resp?.data) {
-                    return
-                }
-
-                if (!!input) {
-                    searchRank.registerResultsResponse({
-                        responseTime: Date.now(),
-                        numberOfResults: resp.data.length,
-                        searchEngine: resp.searchEngine,
-                    })
-                    callback(valueFromState(resp.data))
-                }
-            },
-            300
-        )
-
-        const _placeholder =
-            placeholder ??
-            (valueProp
-                ? `Search customers${
-                      searchType === SearchType.UserChannelPhone
-                          ? ' or enter a number'
-                          : ''
-                  }...`
-                : 'Sorry, no recipient for this type of message...')
-        const allowCreate =
-            sourceType === TicketMessageSourceType.Email ||
-            isPhoneBasedSource(sourceType)
-        const allowCreateConstraint = isPhoneBasedSource(sourceType)
-            ? isValidPhoneNumber
-            : isEmail
-
-        return (
-            <MultiSelectAsyncField
-                ref={ref}
-                tabIndex={tabIndex}
-                value={valueFromState(value)}
-                onChange={handleOnChange}
-                loadOptions={disableSearch ? undefined : search}
-                disabled={disabled}
-                required={required}
-                allowCreate={allowCreate}
-                allowCreateConstraint={allowCreateConstraint}
-                placeholder={_placeholder}
-                onOptionSelect={handleOptionSelect}
-            />
+    const handleOnChange = (value: ReceiverValue[]) => {
+        onChange(
+            (receiversStateFromValue({to: value}, sourceType) as Receivers).to
         )
     }
-)
 
-export default ReceiversSelectField
+    const handleOptionSelect = (option: ReceiverValue, index: number) => {
+        searchRank.registerResultSelection({
+            index,
+            id: option.id!,
+        })
+        searchRank.endScenario()
+    }
+
+    const search = _debounce(
+        async (input: string, callback: (options: ReceiverValue[]) => void) => {
+            searchRank.endScenario()
+            const queryText = input.toLowerCase()
+
+            if (!!input) {
+                searchRank.registerResultsRequest({
+                    query: queryText,
+                    requestTime: Date.now(),
+                })
+            }
+
+            if (!queryText) {
+                callback([])
+            }
+
+            const resp = (await cancellableUpdatePotentialCustomers(
+                queryText,
+                searchType
+            )) as SearchResponse<Receiver>
+            if (!resp?.data) {
+                return
+            }
+
+            if (!!input) {
+                searchRank.registerResultsResponse({
+                    responseTime: Date.now(),
+                    numberOfResults: resp.data.length,
+                    searchEngine: resp.searchEngine,
+                })
+                callback(valueFromState(resp.data))
+            }
+        },
+        300
+    )
+
+    const _placeholder =
+        placeholder ??
+        (valueProp
+            ? `Search customers${
+                  searchType === SearchType.UserChannelPhone
+                      ? ' or enter a number'
+                      : ''
+              }...`
+            : 'Sorry, no recipient for this type of message...')
+    const allowCreate =
+        sourceType === TicketMessageSourceType.Email ||
+        isPhoneBasedSource(sourceType)
+    const allowCreateConstraint = isPhoneBasedSource(sourceType)
+        ? isValidPhoneNumber
+        : isEmail
+
+    return (
+        <MultiSelectAsyncField
+            ref={ref}
+            tabIndex={tabIndex}
+            value={valueFromState(value)}
+            onChange={handleOnChange}
+            loadOptions={disableSearch ? undefined : search}
+            disabled={disabled}
+            required={required}
+            allowCreate={allowCreate}
+            allowCreateConstraint={allowCreateConstraint}
+            placeholder={_placeholder}
+            onOptionSelect={handleOptionSelect}
+        />
+    )
+}
+
+export default forwardRef<MultiSelectAsyncField, Props>(ReceiversSelectField)

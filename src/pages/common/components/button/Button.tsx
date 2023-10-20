@@ -1,6 +1,7 @@
 import React, {
     ButtonHTMLAttributes,
     ComponentProps,
+    ForwardedRef,
     forwardRef,
     useContext,
 } from 'react'
@@ -15,7 +16,7 @@ export type {ButtonIntent, ButtonSize} from './BaseButton'
 export type Props = ButtonHTMLAttributes<HTMLButtonElement> &
     Omit<ComponentProps<typeof BaseButton>, 'children'>
 
-const Button = forwardRef<HTMLButtonElement, Props>(function (
+const Button = (
     {
         children,
         className,
@@ -26,9 +27,9 @@ const Button = forwardRef<HTMLButtonElement, Props>(function (
         size,
         type = 'button',
         ...other
-    },
-    ref
-) {
+    }: Props,
+    ref: ForwardedRef<HTMLButtonElement>
+) => {
     const context = useContext(GroupContext)
     const safeIsDisabled = context?.isDisabled || isDisabled || isLoading
 
@@ -61,6 +62,6 @@ const Button = forwardRef<HTMLButtonElement, Props>(function (
             )}
         </BaseButton>
     )
-})
+}
 
-export default Button
+export default forwardRef<HTMLButtonElement, Props>(Button)

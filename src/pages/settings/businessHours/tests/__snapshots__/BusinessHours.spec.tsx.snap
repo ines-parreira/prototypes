@@ -106,7 +106,7 @@ exports[`BusinessHours component should render default values 1`] = `
                   </i>
                 </div>
               </div>
-              <ForwardRef
+              <ForwardRef(Button)
                 intent="secondary"
                 onClick={[Function]}
               >
@@ -115,7 +115,7 @@ exports[`BusinessHours component should render default values 1`] = `
                 >
                   Add business hours
                 </ButtonIconLabel>
-              </ForwardRef>
+              </ForwardRef(Button)>
             </div>
             <InputField
               className="inputField mb40"
@@ -146,13 +146,13 @@ exports[`BusinessHours component should render default values 1`] = `
             </InputField>
           </Col>
         </Row>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={false}
           isLoading={false}
           type="submit"
         >
           Save changes
-        </ForwardRef>
+        </ForwardRef(Button)>
       </Form>
     </div>
   </Container>
@@ -1179,7 +1179,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                 </i>
                               </div>
                             </div>
-                            <ForwardRef
+                            <ForwardRef(Button)
                               intent="secondary"
                               onClick={[Function]}
                             >
@@ -1212,7 +1212,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                   </ButtonIconLabel>
                                 </button>
                               </BaseButton>
-                            </ForwardRef>
+                            </ForwardRef(Button)>
                           </div>
                           <InputField
                             className="inputField mb40"
@@ -1296,7 +1296,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                       </Col>
                     </div>
                   </Row>
-                  <ForwardRef
+                  <ForwardRef(Button)
                     isDisabled={false}
                     isLoading={false}
                     type="submit"
@@ -1313,7 +1313,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                         Save changes
                       </button>
                     </BaseButton>
-                  </ForwardRef>
+                  </ForwardRef(Button)>
                 </form>
               </Form>
             </div>

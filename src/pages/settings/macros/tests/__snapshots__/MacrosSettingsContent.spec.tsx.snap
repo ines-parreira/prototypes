@@ -12,10 +12,10 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
     >
       <Component
         className="mr-2"
-        forcedQuery=""
         onChange={[Function]}
         placeholder="Search macros..."
         searchDebounceTime={300}
+        value=""
       />
       <MacroFilters
         onChange={[Function]}

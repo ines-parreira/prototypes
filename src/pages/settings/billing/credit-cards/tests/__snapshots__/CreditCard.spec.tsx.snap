@@ -116,7 +116,7 @@ exports[`CreditCard component should display credit card form 1`] = `
         >
           <Errors />
         </FormGroup>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={true}
           isLoading={false}
           type="submit"
@@ -124,7 +124,7 @@ exports[`CreditCard component should display credit card form 1`] = `
           Add payment method
            
            and pay $60
-        </ForwardRef>
+        </ForwardRef(Button)>
         <TaxDisclaimer
           className="taxDisclaimer"
         />
@@ -367,7 +367,7 @@ exports[`CreditCard component should not render the billing address form when a 
         >
           <Errors />
         </FormGroup>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={true}
           isLoading={false}
           type="submit"
@@ -375,7 +375,7 @@ exports[`CreditCard component should not render the billing address form when a 
           Add payment method
            
            and pay $60
-        </ForwardRef>
+        </ForwardRef(Button)>
         <TaxDisclaimer
           className="taxDisclaimer"
         />
@@ -610,7 +610,7 @@ exports[`CreditCard component should render billing plan card with automation fo
         >
           <Errors />
         </FormGroup>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={true}
           isLoading={false}
           type="submit"
@@ -618,7 +618,7 @@ exports[`CreditCard component should render billing plan card with automation fo
           Add payment method
            
            and pay $62
-        </ForwardRef>
+        </ForwardRef(Button)>
         <TaxDisclaimer
           className="taxDisclaimer"
         />
@@ -870,7 +870,7 @@ exports[`CreditCard component should render billing plan card with automation fo
         >
           <Errors />
         </FormGroup>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={true}
           isLoading={false}
           type="submit"
@@ -878,7 +878,7 @@ exports[`CreditCard component should render billing plan card with automation fo
           Add payment method
            
            and pay $62
-        </ForwardRef>
+        </ForwardRef(Button)>
         <TaxDisclaimer
           className="taxDisclaimer"
         />
@@ -1129,7 +1129,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
         >
           <Errors />
         </FormGroup>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={true}
           isLoading={false}
           type="submit"
@@ -1137,7 +1137,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
           Add payment method
            
            and pay $60
-        </ForwardRef>
+        </ForwardRef(Button)>
         <TaxDisclaimer
           className="taxDisclaimer"
         />
@@ -1397,7 +1397,7 @@ exports[`CreditCard component should render the billing address form when accoun
         >
           <Errors />
         </FormGroup>
-        <ForwardRef
+        <ForwardRef(Button)
           isDisabled={true}
           isLoading={false}
           type="submit"
@@ -1405,7 +1405,7 @@ exports[`CreditCard component should render the billing address form when accoun
           Add payment method
            
            and pay $60
-        </ForwardRef>
+        </ForwardRef(Button)>
         <TaxDisclaimer
           className="taxDisclaimer"
         />

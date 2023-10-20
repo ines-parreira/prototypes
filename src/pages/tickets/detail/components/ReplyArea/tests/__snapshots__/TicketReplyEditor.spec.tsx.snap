@@ -4,7 +4,7 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
 <div
   className="component"
 >
-  <ForwardRef
+  <ForwardRef(TicketRichField)
     attachFiles={[Function]}
     attachments={Immutable.List []}
     buttons={
@@ -121,7 +121,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
 <div
   className="component"
 >
-  <ForwardRef
+  <ForwardRef(TicketRichField)
     attachFiles={[Function]}
     attachments={Immutable.List []}
     buttons={[]}
@@ -205,7 +205,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
 <div
   className="component"
 >
-  <ForwardRef
+  <ForwardRef(TicketRichField)
     attachFiles={[Function]}
     attachments={Immutable.List []}
     buttons={
@@ -322,7 +322,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
 <div
   className="component"
 >
-  <ForwardRef
+  <ForwardRef(TicketRichField)
     attachFiles={[Function]}
     attachments={Immutable.List []}
     buttons={

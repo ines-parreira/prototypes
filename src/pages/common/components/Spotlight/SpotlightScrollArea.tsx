@@ -81,4 +81,4 @@ const Footer = ({context}: {context?: VirtuosoContext}) => {
     )
 }
 
-export default forwardRef(SpotlightScrollArea)
+export default forwardRef<VirtuosoHandle, Props>(SpotlightScrollArea)

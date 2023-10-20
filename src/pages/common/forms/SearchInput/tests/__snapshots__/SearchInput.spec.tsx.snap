@@ -262,7 +262,7 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
       tag="button"
       toggle={true}
     >
-      <ForwardRef
+      <ForwardRef(Button)
         className="mr-2 backButton"
         intent="secondary"
         onClick={[Function]}
@@ -273,7 +273,7 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
         >
           Back
         </ButtonIconLabel>
-      </ForwardRef>
+      </ForwardRef(Button)>
       2 sub results
     </DropdownItem>
     <DropdownItem

@@ -646,7 +646,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               className=""
                                               onClick={[Function]}
                                             >
-                                              <ForwardRef
+                                              <ForwardRef(Button)
                                                 fillStyle="ghost"
                                                 intent="secondary"
                                               >
@@ -680,7 +680,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     </ButtonIconLabel>
                                                   </button>
                                                 </BaseButton>
-                                              </ForwardRef>
+                                              </ForwardRef(Button)>
                                             </div>
                                           </InnerReference>
                                         </Reference>
@@ -803,7 +803,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               className=""
                                               onClick={[Function]}
                                             >
-                                              <ForwardRef
+                                              <ForwardRef(Button)
                                                 fillStyle="ghost"
                                                 intent="secondary"
                                               >
@@ -837,7 +837,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     </ButtonIconLabel>
                                                   </button>
                                                 </BaseButton>
-                                              </ForwardRef>
+                                              </ForwardRef(Button)>
                                             </div>
                                           </InnerReference>
                                         </Reference>
@@ -943,7 +943,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   </Manager>
                                 </Dropdown>
                               </UncontrolledDropdown>
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 fillStyle="ghost"
                                 intent="secondary"
                                 key="2"
@@ -962,9 +962,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     Satisfaction Survey
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
+                              </ForwardRef(Button)>
                             </div>
-                            <ForwardRef
+                            <ForwardRef(TicketRichField)
                               allowExternalChanges={true}
                               onChange={[Function]}
                               value={
@@ -3225,14 +3225,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       setEditorState={[Function]}
                                                       style="BOLD"
                                                     >
-                                                      <ForwardRef
+                                                      <ForwardRef(Button)
                                                         icon="format_bold"
                                                         isActive={false}
                                                         isDisabled={false}
                                                         name="Bold"
                                                         onToggle={[Function]}
                                                       >
-                                                        <ForwardRef
+                                                        <ForwardRef(IconButton)
                                                           className="button"
                                                           id="toolbar-button-3"
                                                           intent="secondary"
@@ -3240,7 +3240,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           onMouseDown={[Function]}
                                                           size="small"
                                                         >
-                                                          <ForwardRef
+                                                          <ForwardRef(Button)
                                                             className="button wrapper small"
                                                             id="toolbar-button-3"
                                                             intent="secondary"
@@ -3268,8 +3268,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 </i>
                                                               </button>
                                                             </BaseButton>
-                                                          </ForwardRef>
-                                                        </ForwardRef>
+                                                          </ForwardRef(Button)>
+                                                        </ForwardRef(IconButton)>
                                                         <Tooltip
                                                           autohide={false}
                                                           delay={100}
@@ -3363,7 +3363,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             </Tooltip>
                                                           </UncontrolledTooltip>
                                                         </Tooltip>
-                                                      </ForwardRef>
+                                                      </ForwardRef(Button)>
                                                     </InlineStyle>
                                                   </Decorated(InlineStyle)>
                                                   <Decorated(InlineStyle)
@@ -3377,14 +3377,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       setEditorState={[Function]}
                                                       style="ITALIC"
                                                     >
-                                                      <ForwardRef
+                                                      <ForwardRef(Button)
                                                         icon="format_italic"
                                                         isActive={false}
                                                         isDisabled={false}
                                                         name="Italic"
                                                         onToggle={[Function]}
                                                       >
-                                                        <ForwardRef
+                                                        <ForwardRef(IconButton)
                                                           className="button"
                                                           id="toolbar-button-4"
                                                           intent="secondary"
@@ -3392,7 +3392,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           onMouseDown={[Function]}
                                                           size="small"
                                                         >
-                                                          <ForwardRef
+                                                          <ForwardRef(Button)
                                                             className="button wrapper small"
                                                             id="toolbar-button-4"
                                                             intent="secondary"
@@ -3420,8 +3420,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 </i>
                                                               </button>
                                                             </BaseButton>
-                                                          </ForwardRef>
-                                                        </ForwardRef>
+                                                          </ForwardRef(Button)>
+                                                        </ForwardRef(IconButton)>
                                                         <Tooltip
                                                           autohide={false}
                                                           delay={100}
@@ -3515,7 +3515,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             </Tooltip>
                                                           </UncontrolledTooltip>
                                                         </Tooltip>
-                                                      </ForwardRef>
+                                                      </ForwardRef(Button)>
                                                     </InlineStyle>
                                                   </Decorated(InlineStyle)>
                                                   <Decorated(InlineStyle)
@@ -3529,14 +3529,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       setEditorState={[Function]}
                                                       style="UNDERLINE"
                                                     >
-                                                      <ForwardRef
+                                                      <ForwardRef(Button)
                                                         icon="format_underline"
                                                         isActive={false}
                                                         isDisabled={false}
                                                         name="Underline"
                                                         onToggle={[Function]}
                                                       >
-                                                        <ForwardRef
+                                                        <ForwardRef(IconButton)
                                                           className="button"
                                                           id="toolbar-button-5"
                                                           intent="secondary"
@@ -3544,7 +3544,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           onMouseDown={[Function]}
                                                           size="small"
                                                         >
-                                                          <ForwardRef
+                                                          <ForwardRef(Button)
                                                             className="button wrapper small"
                                                             id="toolbar-button-5"
                                                             intent="secondary"
@@ -3572,8 +3572,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 </i>
                                                               </button>
                                                             </BaseButton>
-                                                          </ForwardRef>
-                                                        </ForwardRef>
+                                                          </ForwardRef(Button)>
+                                                        </ForwardRef(IconButton)>
                                                         <Tooltip
                                                           autohide={false}
                                                           delay={100}
@@ -3667,7 +3667,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             </Tooltip>
                                                           </UncontrolledTooltip>
                                                         </Tooltip>
-                                                      </ForwardRef>
+                                                      </ForwardRef(Button)>
                                                     </InlineStyle>
                                                   </Decorated(InlineStyle)>
                                                   <Connect(Component)
@@ -3729,14 +3729,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           onClose={[Function]}
                                                           onOpen={[Function]}
                                                         >
-                                                          <ForwardRef
+                                                          <ForwardRef(Button)
                                                             icon="link"
                                                             isActive={false}
                                                             isDisabled={false}
                                                             name="Insert link"
                                                             onToggle={[Function]}
                                                           >
-                                                            <ForwardRef
+                                                            <ForwardRef(IconButton)
                                                               className="button"
                                                               id="toolbar-button-6"
                                                               intent="secondary"
@@ -3744,7 +3744,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               onMouseDown={[Function]}
                                                               size="small"
                                                             >
-                                                              <ForwardRef
+                                                              <ForwardRef(Button)
                                                                 className="button wrapper small"
                                                                 id="toolbar-button-6"
                                                                 intent="secondary"
@@ -3772,8 +3772,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     </i>
                                                                   </button>
                                                                 </BaseButton>
-                                                              </ForwardRef>
-                                                            </ForwardRef>
+                                                              </ForwardRef(Button)>
+                                                            </ForwardRef(IconButton)>
                                                             <Tooltip
                                                               autohide={false}
                                                               delay={100}
@@ -3816,7 +3816,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 </Tooltip>
                                                               </UncontrolledTooltip>
                                                             </Tooltip>
-                                                          </ForwardRef>
+                                                          </ForwardRef(Button)>
                                                           <Popover
                                                             className="popover"
                                                             isOpen={false}
@@ -3892,14 +3892,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       onClose={[Function]}
                                                       onOpen={[Function]}
                                                     >
-                                                      <ForwardRef
+                                                      <ForwardRef(Button)
                                                         icon="insert_photo"
                                                         isActive={false}
                                                         isDisabled={false}
                                                         name="Insert image"
                                                         onToggle={[Function]}
                                                       >
-                                                        <ForwardRef
+                                                        <ForwardRef(IconButton)
                                                           className="button"
                                                           id="toolbar-button-7"
                                                           intent="secondary"
@@ -3907,7 +3907,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           onMouseDown={[Function]}
                                                           size="small"
                                                         >
-                                                          <ForwardRef
+                                                          <ForwardRef(Button)
                                                             className="button wrapper small"
                                                             id="toolbar-button-7"
                                                             intent="secondary"
@@ -3935,8 +3935,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 </i>
                                                               </button>
                                                             </BaseButton>
-                                                          </ForwardRef>
-                                                        </ForwardRef>
+                                                          </ForwardRef(Button)>
+                                                        </ForwardRef(IconButton)>
                                                         <Tooltip
                                                           autohide={false}
                                                           delay={100}
@@ -4030,7 +4030,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             </Tooltip>
                                                           </UncontrolledTooltip>
                                                         </Tooltip>
-                                                      </ForwardRef>
+                                                      </ForwardRef(Button)>
                                                       <Popover
                                                         className="popover"
                                                         isOpen={false}
@@ -4155,14 +4155,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       onClose={[Function]}
                                                       onOpen={[Function]}
                                                     >
-                                                      <ForwardRef
+                                                      <ForwardRef(Button)
                                                         icon="insert_emoticon"
                                                         isActive={false}
                                                         isDisabled={false}
                                                         name="Insert emoji"
                                                         onToggle={[Function]}
                                                       >
-                                                        <ForwardRef
+                                                        <ForwardRef(IconButton)
                                                           className="button"
                                                           id="toolbar-button-8"
                                                           intent="secondary"
@@ -4170,7 +4170,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           onMouseDown={[Function]}
                                                           size="small"
                                                         >
-                                                          <ForwardRef
+                                                          <ForwardRef(Button)
                                                             className="button wrapper small"
                                                             id="toolbar-button-8"
                                                             intent="secondary"
@@ -4198,8 +4198,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 </i>
                                                               </button>
                                                             </BaseButton>
-                                                          </ForwardRef>
-                                                        </ForwardRef>
+                                                          </ForwardRef(Button)>
+                                                        </ForwardRef(IconButton)>
                                                         <Tooltip
                                                           autohide={false}
                                                           delay={100}
@@ -4293,7 +4293,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             </Tooltip>
                                                           </UncontrolledTooltip>
                                                         </Tooltip>
-                                                      </ForwardRef>
+                                                      </ForwardRef(Button)>
                                                       <Popover
                                                         className="popover"
                                                         isOpen={false}
@@ -4425,12 +4425,12 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   </Wrapper>
                                 </Wrapper>
                               </RichField>
-                            </ForwardRef>
+                            </ForwardRef(TicketRichField)>
                           </div>
                         </RichFieldWithVariables>
                       </div>
                     </FormGroup>
-                    <ForwardRef
+                    <ForwardRef(Button)
                       isLoading={false}
                       type="submit"
                     >
@@ -4446,7 +4446,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           Save
                         </button>
                       </BaseButton>
-                    </ForwardRef>
+                    </ForwardRef(Button)>
                   </form>
                 </Form>
               </div>

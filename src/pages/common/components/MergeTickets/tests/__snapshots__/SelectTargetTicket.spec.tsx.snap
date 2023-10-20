@@ -10,13 +10,10 @@ exports[`SelectTargetTicket component should render 1`] = `
     </b>
      with:
   </p>
-  <Search
+  <ForwardRef(Search)
     className="search"
-    disabled={false}
     onChange={[Function]}
-    placeholder="Search..."
     searchDebounceTime={300}
-    style={{}}
   />
   <div
     className="table-wrapper"

@@ -229,12 +229,6 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         shortcutManager.unbind('SpotlightModal')
     })
 
-    useEffect(() => {
-        if (isOpen) {
-            spotlightSearchInputRef?.current?.focus()
-        }
-    }, [isOpen])
-
     useUpdateEffect(() => {
         onCloseModal()
     }, [pathname])
@@ -690,10 +684,10 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     css.textInput,
                     'shortcuts-enable'
                 )}
+                value={searchQuery}
                 onChange={handleSearchInput}
                 onKeyDown={handleKeyDown}
-                externalInputRef={spotlightSearchInputRef}
-                shouldResetInput={!isOpen}
+                ref={spotlightSearchInputRef}
                 autoFocus
             />
             <TabNavigator

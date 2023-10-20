@@ -110,7 +110,7 @@ export function MacrosSettingsContentContainer({
                 <div className="d-flex">
                     <Search
                         className="mr-2"
-                        forcedQuery={options.search || ''}
+                        value={options.search || ''}
                         onChange={(search: string) =>
                             setOptions({
                                 ...options,

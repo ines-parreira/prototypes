@@ -1,4 +1,4 @@
-import React, {ComponentProps, forwardRef, Ref} from 'react'
+import React, {ComponentProps, ForwardedRef, forwardRef} from 'react'
 import classnames from 'classnames'
 
 import Button from './Button'
@@ -9,37 +9,33 @@ type Props = {
     iconClassName?: string
 } & Omit<ComponentProps<typeof Button>, 'children'>
 
-const IconButton = forwardRef(
-    (
-        {
-            children,
-            className,
-            fillStyle,
-            iconClassName = 'material-icons',
-            size,
-            ...others
-        }: Props,
-        ref: Ref<HTMLButtonElement> | null | undefined
-    ) => {
-        return (
-            <Button
-                className={classnames(
-                    className,
-                    css.wrapper,
-                    css[fillStyle || ''],
-                    css[size || '']
-                )}
-                fillStyle={fillStyle}
-                size={size}
-                {...others}
-                ref={ref}
-            >
-                <i className={classnames(iconClassName, css.icon)}>
-                    {children}
-                </i>
-            </Button>
-        )
-    }
-)
+const IconButton = (
+    {
+        children,
+        className,
+        fillStyle,
+        iconClassName = 'material-icons',
+        size,
+        ...others
+    }: Props,
+    ref: ForwardedRef<HTMLButtonElement>
+) => {
+    return (
+        <Button
+            className={classnames(
+                className,
+                css.wrapper,
+                css[fillStyle || ''],
+                css[size || '']
+            )}
+            fillStyle={fillStyle}
+            size={size}
+            {...others}
+            ref={ref}
+        >
+            <i className={classnames(iconClassName, css.icon)}>{children}</i>
+        </Button>
+    )
+}
 
-export default IconButton
+export default forwardRef<HTMLButtonElement, Props>(IconButton)

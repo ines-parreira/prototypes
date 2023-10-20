@@ -1,11 +1,12 @@
 import React, {
+    ForwardedRef,
+    forwardRef,
+    useCallback,
+    useContext,
+    useEffect,
+    useImperativeHandle,
     useMemo,
     useState,
-    useEffect,
-    useCallback,
-    useImperativeHandle,
-    forwardRef,
-    useContext,
 } from 'react'
 import {useAsyncFn} from 'react-use'
 import {FormGroup, Label} from 'reactstrap'
@@ -50,280 +51,275 @@ import css from './DefaultRuleEditor.less'
 import commonCss from './RuleEditor.less'
 import {getRuleActions} from './utils'
 
-export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
-    (
-        {
-            rule,
-            handleSubmit,
-            handleDelete,
-            handleDirtyForm,
-            isSubmitting,
-            isDeleting,
-        },
-        ref
-    ) => {
-        const {errors} = useContext(ErrorsContext)
+const DefaultRuleEditor = (
+    {
+        rule,
+        handleSubmit,
+        handleDelete,
+        handleDirtyForm,
+        isSubmitting,
+        isDeleting,
+    }: RuleEditorProps,
+    ref: ForwardedRef<EditorHandle>
+) => {
+    const {errors} = useContext(ErrorsContext)
 
-        const [ruleDraft, setRuleDraft] = useState<RuleDraft>(getEmptyRule())
-        const eventTypes = useMemo(() => getEventTypes(ruleDraft), [ruleDraft])
-        const dispatch = useAppDispatch()
-        const limitStatus = useAppSelector(getRulesLimitStatus)
-        const schemas = useAppSelector(getSchemas)
-        const hasAgentPrivileges = useHasAgentPrivileges()
+    const [ruleDraft, setRuleDraft] = useState<RuleDraft>(getEmptyRule())
+    const eventTypes = useMemo(() => getEventTypes(ruleDraft), [ruleDraft])
+    const dispatch = useAppDispatch()
+    const limitStatus = useAppSelector(getRulesLimitStatus)
+    const schemas = useAppSelector(getSchemas)
+    const hasAgentPrivileges = useHasAgentPrivileges()
 
-        const hasMissingFields = !!(errors.size || !ruleDraft.name)
+    const hasMissingFields = !!(errors.size || !ruleDraft.name)
 
-        const canSubmit = useMemo(
-            () =>
-                hasAgentPrivileges &&
-                !hasMissingFields &&
-                !!eventTypes.length &&
-                !isSubmitting,
-            [hasAgentPrivileges, hasMissingFields, eventTypes, isSubmitting]
-        )
+    const canSubmit = useMemo(
+        () =>
+            hasAgentPrivileges &&
+            !hasMissingFields &&
+            !!eventTypes.length &&
+            !isSubmitting,
+        [hasAgentPrivileges, hasMissingFields, eventTypes, isSubmitting]
+    )
 
-        const canDuplicate = useMemo(
-            () => canSubmit && limitStatus !== RuleLimitStatus.Reached,
-            [canSubmit, limitStatus]
-        )
+    const canDuplicate = useMemo(
+        () => canSubmit && limitStatus !== RuleLimitStatus.Reached,
+        [canSubmit, limitStatus]
+    )
 
-        const [{loading: isDuplicatePending}, handleRuleDuplicate] =
-            useAsyncFn(async () => {
-                if (!rule || !canDuplicate || isDuplicatePending) {
-                    return
-                }
-                const newName =
-                    ruleDraft.name === rule.name
-                        ? `(Copy) ${ruleDraft.name}`
-                        : ruleDraft.name
-
-                try {
-                    const newRule = await createRule({
-                        ...ruleDraft,
-                        name: newName,
-                        deactivated_datetime: null,
-                    })
-                    void dispatch(ruleCreated(newRule))
-                    void dispatch(
-                        notify({
-                            message: `Successfully duplicated rule.`,
-                            status: NotificationStatus.Success,
-                        })
-                    )
-                    history.push(`/app/automation/rules/${newRule.id}`)
-                } catch (error) {
-                    void notify({
-                        message: `Failed to duplicate rule.`,
-                        status: NotificationStatus.Error,
-                    })
-                }
-            }, [rule, ruleDraft, eventTypes, canDuplicate])
-
-        useEffect(() => {
-            if (rule) {
-                const {name, description, code, event_types} = rule
-                handleDirtyForm(
-                    ruleDraft.event_types !== event_types ||
-                        ruleDraft.name !== name ||
-                        ruleDraft.description !== description ||
-                        ruleDraft.code !== code
-                )
-            } else {
-                const emptyRule = getEmptyRule()
-                handleDirtyForm(
-                    ruleDraft.name !== emptyRule.name ||
-                        ruleDraft.code !== emptyRule.code ||
-                        ruleDraft.description !== emptyRule.description ||
-                        ruleDraft.event_types !== emptyRule.event_types
-                )
+    const [{loading: isDuplicatePending}, handleRuleDuplicate] =
+        useAsyncFn(async () => {
+            if (!rule || !canDuplicate || isDuplicatePending) {
+                return
             }
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [rule, ruleDraft])
+            const newName =
+                ruleDraft.name === rule.name
+                    ? `(Copy) ${ruleDraft.name}`
+                    : ruleDraft.name
 
-        const ruleDraftFromRule = (rule: Rule): RuleDraft => {
-            const {
-                code,
-                code_ast,
-                deactivated_datetime,
-                description,
-                event_types,
-                name,
-            } = rule
-
-            return {
-                code,
-                code_ast,
-                deactivated_datetime,
-                description,
-                event_types,
-                name,
-            } as RuleDraft
-        }
-
-        const handleActivate = () => {
-            setRuleDraft({...ruleDraft, deactivated_datetime: null})
-        }
-
-        const handleDeactivate = () => {
-            setRuleDraft({
-                ...ruleDraft,
-                deactivated_datetime: moment.utc().toISOString(),
-            })
-        }
-
-        const toggleActivation = () => {
-            if (ruleDraft.deactivated_datetime) {
-                handleActivate()
-            } else {
-                handleDeactivate()
-            }
-        }
-
-        useEffect(() => {
-            if (limitStatus === RuleLimitStatus.Reached && !rule) {
-                void notify({
-                    message: 'Cannot create a new rule: Rule limit reached',
-                    status: NotificationStatus.Warning,
+            try {
+                const newRule = await createRule({
+                    ...ruleDraft,
+                    name: newName,
+                    deactivated_datetime: null,
                 })
-                history.push('/app/automation/rules/')
+                void dispatch(ruleCreated(newRule))
+                void dispatch(
+                    notify({
+                        message: `Successfully duplicated rule.`,
+                        status: NotificationStatus.Success,
+                    })
+                )
+                history.push(`/app/automation/rules/${newRule.id}`)
+            } catch (error) {
+                void notify({
+                    message: `Failed to duplicate rule.`,
+                    status: NotificationStatus.Error,
+                })
             }
-        }, [rule, limitStatus])
+        }, [rule, ruleDraft, eventTypes, canDuplicate])
 
-        useEffect(() => {
-            if (rule) {
-                setRuleDraft(ruleDraftFromRule(rule))
-            }
-        }, [rule])
-
-        const modifyCodeAST = (
-            path: List<any>,
-            value: Maybe<string | Record<string, unknown>>,
-            operation: RuleOperation,
-            code_ast?: CodeASTType
-        ): esprima.Program => {
-            const {code, ast} = updateCodeAst(
-                schemas,
-                code_ast ?? ruleDraft.code_ast,
-                path,
-                value,
-                operation
+    useEffect(() => {
+        if (rule) {
+            const {name, description, code, event_types} = rule
+            handleDirtyForm(
+                ruleDraft.event_types !== event_types ||
+                    ruleDraft.name !== name ||
+                    ruleDraft.description !== description ||
+                    ruleDraft.code !== code
             )
-            setRuleDraft({...ruleDraft, code, code_ast: ast})
-            return ast
+        } else {
+            const emptyRule = getEmptyRule()
+            handleDirtyForm(
+                ruleDraft.name !== emptyRule.name ||
+                    ruleDraft.code !== emptyRule.code ||
+                    ruleDraft.description !== emptyRule.description ||
+                    ruleDraft.event_types !== emptyRule.event_types
+            )
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [rule, ruleDraft])
 
-        const getCondition = (path: List<any>) =>
-            fromAST(_getIn(ruleDraft, ['code_ast', ...path.toJS()])) as Map<
-                any,
-                any
-            >
+    const ruleDraftFromRule = (rule: Rule): RuleDraft => {
+        const {
+            code,
+            code_ast,
+            deactivated_datetime,
+            description,
+            event_types,
+            name,
+        } = rule
 
-        const submit = useCallback(
-            () => handleSubmit(ruleDraft, hasMissingFields),
-            [handleSubmit, hasMissingFields, ruleDraft]
-        )
-
-        useImperativeHandle(ref, () => ({submit}), [submit])
-
-        const ruleActions = useMemo(
-            () => getRuleActions(ruleDraft),
-            [ruleDraft]
-        )
-
-        return (
-            <div id="rule-form" className={css.form}>
-                {ruleActions.includes('replyToTicket') && (
-                    <div className="mb-4">
-                        <Alert type={AlertType.Warning} icon>
-                            <span>
-                                The rule has a "reply to customer" action which
-                                will create billable tickets. To avoid unwanted
-                                charges, make sure this rule is set up correctly
-                                and will reply only to intended tickets.
-                                <br />
-                                <a
-                                    href="https://docs.gorgias.com/en-US/rules---best-practices-81748#:~:text=messenger%20as%20well).-,Auto%2Dreply%20rules,-To%20further%20automate"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Learn about auto-reply rules best practices.
-                                </a>
-                            </span>
-                        </Alert>
-                    </div>
-                )}
-
-                <FormGroup>
-                    <Label
-                        for="ruleName"
-                        className={classnames(css.label, css.labelName)}
-                    >
-                        Rule name
-                    </Label>
-                    <TextInput
-                        id="ruleName"
-                        hasError={!ruleDraft.name}
-                        onChange={(name: string) =>
-                            setRuleDraft({...ruleDraft, name})
-                        }
-                        value={ruleDraft.name}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="ruleDescription" className={css.label}>
-                        Rule description
-                    </Label>
-                    <TextInput
-                        id="ruleDescription"
-                        onChange={(description: string) =>
-                            setRuleDraft({...ruleDraft, description})
-                        }
-                        value={ruleDraft.description}
-                        type="textarea"
-                    />
-                </FormGroup>
-                <Label for="ruleContainer" className={css.label}>
-                    Rule conditions
-                </Label>
-                <RuleEditor
-                    ruleDraft={ruleDraft}
-                    actions={{modifyCodeAST, getCondition}}
-                    handleEventChanges={(event_types: string) =>
-                        setRuleDraft({...ruleDraft, event_types})
-                    }
-                />
-                <div className={commonCss.toggleButtonContainer}>
-                    <span>
-                        <ToggleInput
-                            isToggled={!ruleDraft.deactivated_datetime}
-                            onClick={toggleActivation}
-                            isDisabled={!hasAgentPrivileges}
-                        />
-                    </span>
-                    <span>
-                        <Label
-                            className={classnames(
-                                commonCss.toggleLabel,
-                                'mr-2 mb-0'
-                            )}
-                        >
-                            Enable rule
-                        </Label>
-                    </span>
-                </div>
-                <RuleItemButtons
-                    ruleId={rule ? rule.id : undefined}
-                    canSubmit={canSubmit && !isDuplicatePending}
-                    canDuplicate={canDuplicate && !isDuplicatePending}
-                    canDelete={hasAgentPrivileges}
-                    isDeleting={isDeleting}
-                    onDuplicate={handleRuleDuplicate}
-                    onDelete={handleDelete}
-                    onSubmit={submit}
-                />
-            </div>
-        )
+        return {
+            code,
+            code_ast,
+            deactivated_datetime,
+            description,
+            event_types,
+            name,
+        } as RuleDraft
     }
-)
 
-export default DefaultRuleEditor
+    const handleActivate = () => {
+        setRuleDraft({...ruleDraft, deactivated_datetime: null})
+    }
+
+    const handleDeactivate = () => {
+        setRuleDraft({
+            ...ruleDraft,
+            deactivated_datetime: moment.utc().toISOString(),
+        })
+    }
+
+    const toggleActivation = () => {
+        if (ruleDraft.deactivated_datetime) {
+            handleActivate()
+        } else {
+            handleDeactivate()
+        }
+    }
+
+    useEffect(() => {
+        if (limitStatus === RuleLimitStatus.Reached && !rule) {
+            void notify({
+                message: 'Cannot create a new rule: Rule limit reached',
+                status: NotificationStatus.Warning,
+            })
+            history.push('/app/automation/rules/')
+        }
+    }, [rule, limitStatus])
+
+    useEffect(() => {
+        if (rule) {
+            setRuleDraft(ruleDraftFromRule(rule))
+        }
+    }, [rule])
+
+    const modifyCodeAST = (
+        path: List<any>,
+        value: Maybe<string | Record<string, unknown>>,
+        operation: RuleOperation,
+        code_ast?: CodeASTType
+    ): esprima.Program => {
+        const {code, ast} = updateCodeAst(
+            schemas,
+            code_ast ?? ruleDraft.code_ast,
+            path,
+            value,
+            operation
+        )
+        setRuleDraft({...ruleDraft, code, code_ast: ast})
+        return ast
+    }
+
+    const getCondition = (path: List<any>) =>
+        fromAST(_getIn(ruleDraft, ['code_ast', ...path.toJS()])) as Map<
+            any,
+            any
+        >
+
+    const submit = useCallback(
+        () => handleSubmit(ruleDraft, hasMissingFields),
+        [handleSubmit, hasMissingFields, ruleDraft]
+    )
+
+    useImperativeHandle(ref, () => ({submit}), [submit])
+
+    const ruleActions = useMemo(() => getRuleActions(ruleDraft), [ruleDraft])
+
+    return (
+        <div id="rule-form" className={css.form}>
+            {ruleActions.includes('replyToTicket') && (
+                <div className="mb-4">
+                    <Alert type={AlertType.Warning} icon>
+                        <span>
+                            The rule has a "reply to customer" action which will
+                            create billable tickets. To avoid unwanted charges,
+                            make sure this rule is set up correctly and will
+                            reply only to intended tickets.
+                            <br />
+                            <a
+                                href="https://docs.gorgias.com/en-US/rules---best-practices-81748#:~:text=messenger%20as%20well).-,Auto%2Dreply%20rules,-To%20further%20automate"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Learn about auto-reply rules best practices.
+                            </a>
+                        </span>
+                    </Alert>
+                </div>
+            )}
+
+            <FormGroup>
+                <Label
+                    for="ruleName"
+                    className={classnames(css.label, css.labelName)}
+                >
+                    Rule name
+                </Label>
+                <TextInput
+                    id="ruleName"
+                    hasError={!ruleDraft.name}
+                    onChange={(name: string) =>
+                        setRuleDraft({...ruleDraft, name})
+                    }
+                    value={ruleDraft.name}
+                />
+            </FormGroup>
+            <FormGroup>
+                <Label for="ruleDescription" className={css.label}>
+                    Rule description
+                </Label>
+                <TextInput
+                    id="ruleDescription"
+                    onChange={(description: string) =>
+                        setRuleDraft({...ruleDraft, description})
+                    }
+                    value={ruleDraft.description}
+                    type="textarea"
+                />
+            </FormGroup>
+            <Label for="ruleContainer" className={css.label}>
+                Rule conditions
+            </Label>
+            <RuleEditor
+                ruleDraft={ruleDraft}
+                actions={{modifyCodeAST, getCondition}}
+                handleEventChanges={(event_types: string) =>
+                    setRuleDraft({...ruleDraft, event_types})
+                }
+            />
+            <div className={commonCss.toggleButtonContainer}>
+                <span>
+                    <ToggleInput
+                        isToggled={!ruleDraft.deactivated_datetime}
+                        onClick={toggleActivation}
+                        isDisabled={!hasAgentPrivileges}
+                    />
+                </span>
+                <span>
+                    <Label
+                        className={classnames(
+                            commonCss.toggleLabel,
+                            'mr-2 mb-0'
+                        )}
+                    >
+                        Enable rule
+                    </Label>
+                </span>
+            </div>
+            <RuleItemButtons
+                ruleId={rule ? rule.id : undefined}
+                canSubmit={canSubmit && !isDuplicatePending}
+                canDuplicate={canDuplicate && !isDuplicatePending}
+                canDelete={hasAgentPrivileges}
+                isDeleting={isDeleting}
+                onDuplicate={handleRuleDuplicate}
+                onDelete={handleDelete}
+                onSubmit={submit}
+            />
+        </div>
+    )
+}
+
+export default forwardRef<EditorHandle, RuleEditorProps>(DefaultRuleEditor)

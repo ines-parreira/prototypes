@@ -189,7 +189,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </Tooltip>
       </span>
     </div>
-    <ForwardRef
+    <ForwardRef(Button)
       className="container"
       fillStyle="ghost"
       intent="primary"
@@ -230,7 +230,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           </ButtonIconLabel>
         </button>
       </BaseButton>
-    </ForwardRef>
+    </ForwardRef(Button)>
   </div>
 </CustomerInfoWrapper>
 `;
@@ -837,7 +837,7 @@ exports[`CustomerChannels component should display all passed channels (includin
       </i>
       Local time: 14:00
     </p>
-    <ForwardRef
+    <ForwardRef(Button)
       className="container"
       fillStyle="ghost"
       intent="primary"
@@ -878,7 +878,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           </ButtonIconLabel>
         </button>
       </BaseButton>
-    </ForwardRef>
+    </ForwardRef(Button)>
   </div>
 </CustomerInfoWrapper>
 `;

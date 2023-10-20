@@ -62,20 +62,20 @@ exports[`<ViewSharingModal/> render() should render as private 1`] = `
   <ModalFooter
     tag="div"
   >
-    <ForwardRef
+    <ForwardRef(Button)
       className="submit"
       id="view-sharing-submit"
       isDisabled={true}
       onClick={[Function]}
     >
       Update view sharing
-    </ForwardRef>
-    <ForwardRef
+    </ForwardRef(Button)>
+    <ForwardRef(Button)
       intent="secondary"
       onClick={[MockFunction]}
     >
       Cancel
-    </ForwardRef>
+    </ForwardRef(Button)>
   </ModalFooter>
 </Modal>
 `;
@@ -142,20 +142,20 @@ exports[`<ViewSharingModal/> render() should render as public 1`] = `
   <ModalFooter
     tag="div"
   >
-    <ForwardRef
+    <ForwardRef(Button)
       className="submit"
       id="view-sharing-submit"
       isDisabled={true}
       onClick={[Function]}
     >
       Update view sharing
-    </ForwardRef>
-    <ForwardRef
+    </ForwardRef(Button)>
+    <ForwardRef(Button)
       intent="secondary"
       onClick={[MockFunction]}
     >
       Cancel
-    </ForwardRef>
+    </ForwardRef(Button)>
   </ModalFooter>
 </Modal>
 `;
@@ -222,20 +222,20 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
   <ModalFooter
     tag="div"
   >
-    <ForwardRef
+    <ForwardRef(Button)
       className="submit"
       id="view-sharing-submit"
       isDisabled={true}
       onClick={[Function]}
     >
       Update view sharing
-    </ForwardRef>
-    <ForwardRef
+    </ForwardRef(Button)>
+    <ForwardRef(Button)
       intent="secondary"
       onClick={[MockFunction]}
     >
       Cancel
-    </ForwardRef>
+    </ForwardRef(Button)>
   </ModalFooter>
   <UncontrolledTooltip
     placement="top"

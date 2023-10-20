@@ -199,7 +199,7 @@ exports[`BillingInvoices component should display invoices, without PDF download
                 href="https://pay.stripe.com/invoice/example125/pdf"
                 target="_self"
               >
-                <ForwardRef
+                <ForwardRef(Button)
                   intent="secondary"
                 >
                   <BaseButton
@@ -230,7 +230,7 @@ exports[`BillingInvoices component should display invoices, without PDF download
                       </ButtonIconLabel>
                     </button>
                   </BaseButton>
-                </ForwardRef>
+                </ForwardRef(Button)>
               </a>
             </td>
           </tr>

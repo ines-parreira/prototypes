@@ -536,7 +536,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                             </div>
                           </ListField>
                           <div>
-                            <ForwardRef
+                            <ForwardRef(Button)
                               isDisabled={false}
                               isLoading={false}
                               type="submit"
@@ -553,7 +553,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                   Save Changes
                                 </button>
                               </BaseButton>
-                            </ForwardRef>
+                            </ForwardRef(Button)>
                           </div>
                         </form>
                       </Form>
@@ -1644,7 +1644,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                             </div>
                           </ListField>
                           <div>
-                            <ForwardRef
+                            <ForwardRef(Button)
                               isDisabled={false}
                               isLoading={false}
                               type="submit"
@@ -1661,7 +1661,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                   Save Changes
                                 </button>
                               </BaseButton>
-                            </ForwardRef>
+                            </ForwardRef(Button)>
                           </div>
                         </form>
                       </Form>

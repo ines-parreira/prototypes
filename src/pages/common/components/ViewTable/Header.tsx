@@ -39,6 +39,7 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 
 type State = {
     askDeleteConfirmation: boolean
+    searchTerm: string
 }
 
 export class HeaderContainer extends React.Component<Props, State> {
@@ -46,6 +47,17 @@ export class HeaderContainer extends React.Component<Props, State> {
 
     state = {
         askDeleteConfirmation: false,
+        searchTerm: this.props.activeView.get('search') || '',
+    }
+
+    componentDidUpdate(prevProps: Props) {
+        const searchTerm = this.props.activeView.get('search')
+        if (
+            searchTerm !== prevProps.activeView.get('search') &&
+            searchTerm !== this.state.searchTerm
+        ) {
+            this.setState({searchTerm})
+        }
     }
 
     _goBackUrl = () => {
@@ -60,21 +72,26 @@ export class HeaderContainer extends React.Component<Props, State> {
         return url
     }
 
-    handleKeyDown = (event: KeyboardEvent, searchQuery: string) => {
+    handleKeyDown = (event: KeyboardEvent) => {
         const {updateView, activeView, isSearch} = this.props
+        const {searchTerm} = this.state
 
         if (event.key !== 'Enter') {
             return
         }
 
-        if (isSearch && searchQuery !== activeView.get('search')) {
+        if (isSearch && searchTerm !== activeView.get('search')) {
             updateView(
                 activeView.merge({
-                    search: searchQuery,
+                    search: searchTerm,
                 }),
                 false
             )
         }
+    }
+
+    onSearchChange = (searchTerm: string) => {
+        this.setState({searchTerm})
     }
 
     _updateViewName = (name: string) => {
@@ -264,8 +281,8 @@ export class HeaderContainer extends React.Component<Props, State> {
                                     placeholder={`Search ${
                                         config.get('plural') as string
                                     }...`}
-                                    location={activeView.get('search', '')}
-                                    forcedQuery={activeView.get('search') || ''}
+                                    value={this.state.searchTerm}
+                                    onChange={this.onSearchChange}
                                     className={classnames(
                                         css.headerSearch,
                                         'mr-2',

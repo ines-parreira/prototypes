@@ -96,7 +96,7 @@ export default function TicketFields() {
                                 <Search
                                     id="custom-fields-search"
                                     name="custom-fields-search"
-                                    forcedQuery={search}
+                                    value={search}
                                     onChange={setSearch}
                                     placeholder="Search ticket fields..."
                                     className="mr-2"

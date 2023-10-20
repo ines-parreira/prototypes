@@ -2517,14 +2517,14 @@ exports[`RichField should render default content state 1`] = `
                           setEditorState={[Function]}
                           style="BOLD"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_bold"
                             isActive={false}
                             isDisabled={false}
                             name="Bold"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-13"
                               intent="secondary"
@@ -2532,7 +2532,7 @@ exports[`RichField should render default content state 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-13"
                                 intent="secondary"
@@ -2560,8 +2560,8 @@ exports[`RichField should render default content state 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -2604,7 +2604,7 @@ exports[`RichField should render default content state 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -2618,14 +2618,14 @@ exports[`RichField should render default content state 1`] = `
                           setEditorState={[Function]}
                           style="ITALIC"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_italic"
                             isActive={false}
                             isDisabled={false}
                             name="Italic"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-14"
                               intent="secondary"
@@ -2633,7 +2633,7 @@ exports[`RichField should render default content state 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-14"
                                 intent="secondary"
@@ -2661,8 +2661,8 @@ exports[`RichField should render default content state 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -2705,7 +2705,7 @@ exports[`RichField should render default content state 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -2719,14 +2719,14 @@ exports[`RichField should render default content state 1`] = `
                           setEditorState={[Function]}
                           style="UNDERLINE"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_underline"
                             isActive={false}
                             isDisabled={false}
                             name="Underline"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-15"
                               intent="secondary"
@@ -2734,7 +2734,7 @@ exports[`RichField should render default content state 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-15"
                                 intent="secondary"
@@ -2762,8 +2762,8 @@ exports[`RichField should render default content state 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -2806,7 +2806,7 @@ exports[`RichField should render default content state 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Connect(Component)
@@ -2868,14 +2868,14 @@ exports[`RichField should render default content state 1`] = `
                               onClose={[Function]}
                               onOpen={[Function]}
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 icon="link"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Insert link"
                                 onToggle={[Function]}
                               >
-                                <ForwardRef
+                                <ForwardRef(IconButton)
                                   className="button"
                                   id="toolbar-button-16"
                                   intent="secondary"
@@ -2883,7 +2883,7 @@ exports[`RichField should render default content state 1`] = `
                                   onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
+                                  <ForwardRef(Button)
                                     className="button wrapper small"
                                     id="toolbar-button-16"
                                     intent="secondary"
@@ -2911,8 +2911,8 @@ exports[`RichField should render default content state 1`] = `
                                         </i>
                                       </button>
                                     </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                  </ForwardRef(Button)>
+                                </ForwardRef(IconButton)>
                                 <Tooltip
                                   autohide={false}
                                   delay={100}
@@ -2955,7 +2955,7 @@ exports[`RichField should render default content state 1`] = `
                                     </Tooltip>
                                   </UncontrolledTooltip>
                                 </Tooltip>
-                              </ForwardRef>
+                              </ForwardRef(Button)>
                               <Popover
                                 className="popover"
                                 isOpen={false}
@@ -3031,14 +3031,14 @@ exports[`RichField should render default content state 1`] = `
                           onClose={[Function]}
                           onOpen={[Function]}
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="insert_photo"
                             isActive={false}
                             isDisabled={false}
                             name="Insert image"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-17"
                               intent="secondary"
@@ -3046,7 +3046,7 @@ exports[`RichField should render default content state 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-17"
                                 intent="secondary"
@@ -3074,8 +3074,8 @@ exports[`RichField should render default content state 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -3118,7 +3118,7 @@ exports[`RichField should render default content state 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                           <Popover
                             className="popover"
                             isOpen={false}
@@ -3192,14 +3192,14 @@ exports[`RichField should render default content state 1`] = `
                           onClose={[Function]}
                           onOpen={[Function]}
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="insert_emoticon"
                             isActive={false}
                             isDisabled={false}
                             name="Insert emoji"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-18"
                               intent="secondary"
@@ -3207,7 +3207,7 @@ exports[`RichField should render default content state 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-18"
                                 intent="secondary"
@@ -3235,8 +3235,8 @@ exports[`RichField should render default content state 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -3279,7 +3279,7 @@ exports[`RichField should render default content state 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                           <Popover
                             className="popover"
                             isOpen={false}
@@ -8585,14 +8585,14 @@ exports[`RichField should render immutable variable 1`] = `
                           setEditorState={[Function]}
                           style="BOLD"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_bold"
                             isActive={false}
                             isDisabled={false}
                             name="Bold"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-1"
                               intent="secondary"
@@ -8600,7 +8600,7 @@ exports[`RichField should render immutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-1"
                                 intent="secondary"
@@ -8628,8 +8628,8 @@ exports[`RichField should render immutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -8672,7 +8672,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -8686,14 +8686,14 @@ exports[`RichField should render immutable variable 1`] = `
                           setEditorState={[Function]}
                           style="ITALIC"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_italic"
                             isActive={false}
                             isDisabled={false}
                             name="Italic"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-2"
                               intent="secondary"
@@ -8701,7 +8701,7 @@ exports[`RichField should render immutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-2"
                                 intent="secondary"
@@ -8729,8 +8729,8 @@ exports[`RichField should render immutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -8773,7 +8773,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -8787,14 +8787,14 @@ exports[`RichField should render immutable variable 1`] = `
                           setEditorState={[Function]}
                           style="UNDERLINE"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_underline"
                             isActive={false}
                             isDisabled={false}
                             name="Underline"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-3"
                               intent="secondary"
@@ -8802,7 +8802,7 @@ exports[`RichField should render immutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-3"
                                 intent="secondary"
@@ -8830,8 +8830,8 @@ exports[`RichField should render immutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -8874,7 +8874,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Connect(Component)
@@ -8936,14 +8936,14 @@ exports[`RichField should render immutable variable 1`] = `
                               onClose={[Function]}
                               onOpen={[Function]}
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 icon="link"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Insert link"
                                 onToggle={[Function]}
                               >
-                                <ForwardRef
+                                <ForwardRef(IconButton)
                                   className="button"
                                   id="toolbar-button-4"
                                   intent="secondary"
@@ -8951,7 +8951,7 @@ exports[`RichField should render immutable variable 1`] = `
                                   onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
+                                  <ForwardRef(Button)
                                     className="button wrapper small"
                                     id="toolbar-button-4"
                                     intent="secondary"
@@ -8979,8 +8979,8 @@ exports[`RichField should render immutable variable 1`] = `
                                         </i>
                                       </button>
                                     </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                  </ForwardRef(Button)>
+                                </ForwardRef(IconButton)>
                                 <Tooltip
                                   autohide={false}
                                   delay={100}
@@ -9023,7 +9023,7 @@ exports[`RichField should render immutable variable 1`] = `
                                     </Tooltip>
                                   </UncontrolledTooltip>
                                 </Tooltip>
-                              </ForwardRef>
+                              </ForwardRef(Button)>
                               <Popover
                                 className="popover"
                                 isOpen={false}
@@ -9099,14 +9099,14 @@ exports[`RichField should render immutable variable 1`] = `
                           onClose={[Function]}
                           onOpen={[Function]}
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="insert_photo"
                             isActive={false}
                             isDisabled={false}
                             name="Insert image"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-5"
                               intent="secondary"
@@ -9114,7 +9114,7 @@ exports[`RichField should render immutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-5"
                                 intent="secondary"
@@ -9142,8 +9142,8 @@ exports[`RichField should render immutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -9186,7 +9186,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                           <Popover
                             className="popover"
                             isOpen={false}
@@ -9260,14 +9260,14 @@ exports[`RichField should render immutable variable 1`] = `
                           onClose={[Function]}
                           onOpen={[Function]}
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="insert_emoticon"
                             isActive={false}
                             isDisabled={false}
                             name="Insert emoji"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-6"
                               intent="secondary"
@@ -9275,7 +9275,7 @@ exports[`RichField should render immutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-6"
                                 intent="secondary"
@@ -9303,8 +9303,8 @@ exports[`RichField should render immutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -9347,7 +9347,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                           <Popover
                             className="popover"
                             isOpen={false}
@@ -11891,14 +11891,14 @@ exports[`RichField should render mutable variable 1`] = `
                           setEditorState={[Function]}
                           style="BOLD"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_bold"
                             isActive={false}
                             isDisabled={false}
                             name="Bold"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-7"
                               intent="secondary"
@@ -11906,7 +11906,7 @@ exports[`RichField should render mutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-7"
                                 intent="secondary"
@@ -11934,8 +11934,8 @@ exports[`RichField should render mutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -11978,7 +11978,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -11992,14 +11992,14 @@ exports[`RichField should render mutable variable 1`] = `
                           setEditorState={[Function]}
                           style="ITALIC"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_italic"
                             isActive={false}
                             isDisabled={false}
                             name="Italic"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-8"
                               intent="secondary"
@@ -12007,7 +12007,7 @@ exports[`RichField should render mutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-8"
                                 intent="secondary"
@@ -12035,8 +12035,8 @@ exports[`RichField should render mutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -12079,7 +12079,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Decorated(InlineStyle)
@@ -12093,14 +12093,14 @@ exports[`RichField should render mutable variable 1`] = `
                           setEditorState={[Function]}
                           style="UNDERLINE"
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="format_underline"
                             isActive={false}
                             isDisabled={false}
                             name="Underline"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-9"
                               intent="secondary"
@@ -12108,7 +12108,7 @@ exports[`RichField should render mutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-9"
                                 intent="secondary"
@@ -12136,8 +12136,8 @@ exports[`RichField should render mutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -12180,7 +12180,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
                       <Connect(Component)
@@ -12242,14 +12242,14 @@ exports[`RichField should render mutable variable 1`] = `
                               onClose={[Function]}
                               onOpen={[Function]}
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 icon="link"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Insert link"
                                 onToggle={[Function]}
                               >
-                                <ForwardRef
+                                <ForwardRef(IconButton)
                                   className="button"
                                   id="toolbar-button-10"
                                   intent="secondary"
@@ -12257,7 +12257,7 @@ exports[`RichField should render mutable variable 1`] = `
                                   onMouseDown={[Function]}
                                   size="small"
                                 >
-                                  <ForwardRef
+                                  <ForwardRef(Button)
                                     className="button wrapper small"
                                     id="toolbar-button-10"
                                     intent="secondary"
@@ -12285,8 +12285,8 @@ exports[`RichField should render mutable variable 1`] = `
                                         </i>
                                       </button>
                                     </BaseButton>
-                                  </ForwardRef>
-                                </ForwardRef>
+                                  </ForwardRef(Button)>
+                                </ForwardRef(IconButton)>
                                 <Tooltip
                                   autohide={false}
                                   delay={100}
@@ -12329,7 +12329,7 @@ exports[`RichField should render mutable variable 1`] = `
                                     </Tooltip>
                                   </UncontrolledTooltip>
                                 </Tooltip>
-                              </ForwardRef>
+                              </ForwardRef(Button)>
                               <Popover
                                 className="popover"
                                 isOpen={false}
@@ -12405,14 +12405,14 @@ exports[`RichField should render mutable variable 1`] = `
                           onClose={[Function]}
                           onOpen={[Function]}
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="insert_photo"
                             isActive={false}
                             isDisabled={false}
                             name="Insert image"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-11"
                               intent="secondary"
@@ -12420,7 +12420,7 @@ exports[`RichField should render mutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-11"
                                 intent="secondary"
@@ -12448,8 +12448,8 @@ exports[`RichField should render mutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -12492,7 +12492,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                           <Popover
                             className="popover"
                             isOpen={false}
@@ -12566,14 +12566,14 @@ exports[`RichField should render mutable variable 1`] = `
                           onClose={[Function]}
                           onOpen={[Function]}
                         >
-                          <ForwardRef
+                          <ForwardRef(Button)
                             icon="insert_emoticon"
                             isActive={false}
                             isDisabled={false}
                             name="Insert emoji"
                             onToggle={[Function]}
                           >
-                            <ForwardRef
+                            <ForwardRef(IconButton)
                               className="button"
                               id="toolbar-button-12"
                               intent="secondary"
@@ -12581,7 +12581,7 @@ exports[`RichField should render mutable variable 1`] = `
                               onMouseDown={[Function]}
                               size="small"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 className="button wrapper small"
                                 id="toolbar-button-12"
                                 intent="secondary"
@@ -12609,8 +12609,8 @@ exports[`RichField should render mutable variable 1`] = `
                                     </i>
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                            </ForwardRef>
+                              </ForwardRef(Button)>
+                            </ForwardRef(IconButton)>
                             <Tooltip
                               autohide={false}
                               delay={100}
@@ -12653,7 +12653,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 </Tooltip>
                               </UncontrolledTooltip>
                             </Tooltip>
-                          </ForwardRef>
+                          </ForwardRef(Button)>
                           <Popover
                             className="popover"
                             isOpen={false}

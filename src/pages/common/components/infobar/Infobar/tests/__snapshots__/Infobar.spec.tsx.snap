@@ -49,6 +49,7 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value="query"
       />
       <button
         aria-disabled="false"
@@ -121,6 +122,7 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value=""
       />
       <button
         aria-disabled="false"
@@ -212,6 +214,7 @@ exports[`<Infobar/> should render customer context 1`] = `
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value=""
       />
       <button
         aria-disabled="false"
@@ -258,6 +261,7 @@ exports[`<Infobar/> should render loading state because the customer is being fe
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value="query"
       />
       <button
         aria-disabled="false"
@@ -308,6 +312,7 @@ exports[`<Infobar/> should render loading state because the search is in progres
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value="query"
       />
       <button
         aria-disabled="false"
@@ -358,6 +363,7 @@ exports[`<Infobar/> should render search results 1`] = `
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value="query"
       />
       <button
         aria-disabled="false"
@@ -431,6 +437,7 @@ exports[`<Infobar/> should render selected customer 1`] = `
           placeholder="Search for customers by email, order number, etc."
           style="max-width: none;"
           tabindex="10"
+          value="query"
         />
         <button
           aria-disabled="true"
@@ -512,6 +519,7 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value="query"
       />
       <button
         aria-disabled="false"
@@ -585,6 +593,7 @@ exports[`<Infobar/> should render ticket context 1`] = `
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value=""
       />
       <button
         aria-disabled="false"
@@ -631,6 +640,7 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         placeholder="Search for customers by email, order number, etc."
         style="max-width: none;"
         tabindex="10"
+        value=""
       />
       <button
         aria-disabled="true"

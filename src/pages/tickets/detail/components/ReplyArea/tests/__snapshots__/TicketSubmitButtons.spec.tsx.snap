@@ -5,7 +5,7 @@ exports[`TicketSubmitButtons component should not render confirm popover 1`] = `
   className="buttons"
   id="submit-button-div"
 >
-  <ForwardRef
+  <ForwardRef(Button)
     className="mr-2"
     id="submit-button"
     isDisabled={false}
@@ -14,7 +14,7 @@ exports[`TicketSubmitButtons component should not render confirm popover 1`] = `
     type="submit"
   >
     Send
-  </ForwardRef>
+  </ForwardRef(Button)>
   <Tooltip
     offset="0, 4px"
     placement="top"
@@ -22,7 +22,7 @@ exports[`TicketSubmitButtons component should not render confirm popover 1`] = `
   >
     Ctrl + Enter
   </Tooltip>
-  <ForwardRef
+  <ForwardRef(Button)
     id="submit-and-close-button"
     intent="secondary"
     isDisabled={false}
@@ -32,7 +32,7 @@ exports[`TicketSubmitButtons component should not render confirm popover 1`] = `
   >
     Send
      & Close
-  </ForwardRef>
+  </ForwardRef(Button)>
   <Tooltip
     offset="0, 4px"
     placement="top"

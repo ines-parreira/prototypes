@@ -1,11 +1,12 @@
 import React, {
     ComponentProps,
+    ForwardedRef,
+    forwardRef,
     useCallback,
     useEffect,
-    useState,
     useImperativeHandle,
-    forwardRef,
     useMemo,
+    useState,
 } from 'react'
 import {useMeasure} from 'react-use'
 import {Label} from 'reactstrap'
@@ -66,204 +67,196 @@ export type ManagedRuleDetailProps<T> = {
     handleInstallationError?: (error: InstallationError | null) => void
 }
 
-export const ManagedRuleEditor = forwardRef<EditorHandle, Props>(
-    (
-        {
-            slug,
-            rule,
-            handleSubmit,
-            handleDelete,
-            handleDirtyForm,
-            isDeleting,
-            isSubmitting,
-        },
-        ref
-    ) => {
-        const [measureRef, {height: editorHeight}] = useMeasure()
+export const ManagedRuleEditor = (
+    {
+        slug,
+        rule,
+        handleSubmit,
+        handleDelete,
+        handleDirtyForm,
+        isDeleting,
+        isSubmitting,
+    }: Props,
+    ref: ForwardedRef<EditorHandle>
+) => {
+    const [measureRef, {height: editorHeight}] = useMeasure()
 
-        const componentTypes = {
-            [ManagedRulesSlugs.AutoCloseSpam]: AutoCloseSpamEditor,
-            [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoEditor,
-            [ManagedRulesSlugs.AutoReplyFAQ]: AutoReplyFAQEditor,
-            [ManagedRulesSlugs.AutoReplyReturn]: AutoReplyReturnEditor,
-        }
-        const demoTypes = {
-            [ManagedRulesSlugs.AutoCloseSpam]: FakeTicketComponent,
-            [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoDemo,
-            [ManagedRulesSlugs.AutoReplyFAQ]: AutoReplyFAQDemo,
-            [ManagedRulesSlugs.AutoReplyReturn]: AutoReplyReturnDemo,
-        }
-        const Editor = componentTypes[slug]
-        const Demo = demoTypes[slug]
-        type SettingsType = ComponentProps<typeof Editor>['settings']
-        const [editorHasError, setEditorHasError] = useState(false)
-        const [settings, setSettings] = useState<SettingsType>(rule.settings)
-        const [deactivatedDatetime, setDeactivatedDatetime] = useState(
-            rule.deactivated_datetime
-        )
-        const [installationError, setInstallationError] =
-            useState<InstallationError | null>()
-
-        const dispatch = useAppDispatch()
-        const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-        const hasAgentPrivileges = useHasAgentPrivileges()
-        const [
-            showAutomationSubscriptionModal,
-            setShowAutomationSubscriptionModal,
-        ] = useState(false)
-
-        const toggleActivation = () => {
-            if (!hasAutomationAddOn) {
-                setShowAutomationSubscriptionModal(true)
-                return
-            }
-            if (deactivatedDatetime) {
-                setDeactivatedDatetime(null)
-            } else {
-                setDeactivatedDatetime(moment.utc().toISOString())
-            }
-        }
-
-        const submit = useCallback(() => {
-            const newDeactivatedDatetime =
-                !deactivatedDatetime === !rule.deactivated_datetime
-                    ? rule.deactivated_datetime
-                    : deactivatedDatetime
-
-            handleSubmit(
-                {
-                    id: rule.id,
-                    deactivated_datetime: newDeactivatedDatetime,
-                    settings: {
-                        ...rule.settings,
-                        ...settings,
-                    },
-                },
-                editorHasError
-            )
-        }, [deactivatedDatetime, rule, settings, handleSubmit, editorHasError])
-
-        useImperativeHandle(ref, () => ({submit}), [submit])
-
-        const handleResubscribe = async () => {
-            try {
-                const res = await activateRule(rule.id)
-                void dispatch(ruleUpdated(res))
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Rule activated successfully',
-                    })
-                )
-                setDeactivatedDatetime(null)
-            } catch (error) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Unable to deactivate rule',
-                    })
-                )
-            }
-        }
-
-        const originalRuleSettings = useMemo(
-            () => forceEditorHtml(rule.settings),
-            [rule.settings]
-        )
-
-        useEffect(() => {
-            const ruleSettings = forceEditorHtml(settings)
-
-            if (!_isEqual(originalRuleSettings, ruleSettings)) {
-                handleDirtyForm(true)
-            }
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [settings, deactivatedDatetime])
-
-        const handleChange = () => {
-            if (!hasAutomationAddOn) {
-                void dispatch(
-                    notify({
-                        message:
-                            'Please upgrade to an automation add-on plan to edit this rule',
-                        status: NotificationStatus.Error,
-                    })
-                )
-                return
-            }
-            return (settings: SettingsType, hasInvalidField?: boolean) => {
-                setSettings(settings)
-                setEditorHasError(!!hasInvalidField)
-            }
-        }
-
-        return (
-            <div className={css.container}>
-                <div
-                    className={css.editorContainer}
-                    ref={measureRef as React.LegacyRef<HTMLDivElement>}
-                >
-                    <Editor
-                        onChange={handleChange}
-                        settings={settings}
-                        handleInstallationError={setInstallationError}
-                    />
-                    <div className={css.toggleButtonContainer}>
-                        <span>
-                            <ToggleInput
-                                isToggled={!deactivatedDatetime}
-                                onClick={toggleActivation}
-                                isDisabled={!hasAgentPrivileges}
-                            />
-                        </span>
-                        <span>
-                            <Label
-                                className={classnames(
-                                    css.toggleLabel,
-                                    'mr-2 mb-0'
-                                )}
-                            >
-                                Enable rule
-                            </Label>
-                        </span>
-                    </div>
-
-                    <RuleItemButtons
-                        ruleId={rule.id}
-                        canSubmit={
-                            !editorHasError &&
-                            hasAgentPrivileges &&
-                            !isSubmitting &&
-                            hasAutomationAddOn &&
-                            !installationError
-                        }
-                        canDuplicate={false}
-                        canDelete={hasAgentPrivileges}
-                        isDeleting={isDeleting}
-                        onDelete={handleDelete}
-                        onSubmit={submit}
-                    />
-
-                    {hasAgentPrivileges && (
-                        <AutomationSubscriptionModal
-                            onClose={() =>
-                                setShowAutomationSubscriptionModal(false)
-                            }
-                            confirmLabel="Upgrade and reactivate"
-                            onSubscribe={handleResubscribe}
-                            isOpen={showAutomationSubscriptionModal}
-                        />
-                    )}
-                </div>
-                <div
-                    className={css.demoContainer}
-                    style={{height: editorHeight}}
-                >
-                    <Demo settings={settings} />
-                </div>
-            </div>
-        )
+    const componentTypes = {
+        [ManagedRulesSlugs.AutoCloseSpam]: AutoCloseSpamEditor,
+        [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoEditor,
+        [ManagedRulesSlugs.AutoReplyFAQ]: AutoReplyFAQEditor,
+        [ManagedRulesSlugs.AutoReplyReturn]: AutoReplyReturnEditor,
     }
-)
+    const demoTypes = {
+        [ManagedRulesSlugs.AutoCloseSpam]: FakeTicketComponent,
+        [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoDemo,
+        [ManagedRulesSlugs.AutoReplyFAQ]: AutoReplyFAQDemo,
+        [ManagedRulesSlugs.AutoReplyReturn]: AutoReplyReturnDemo,
+    }
+    const Editor = componentTypes[slug]
+    const Demo = demoTypes[slug]
+    type SettingsType = ComponentProps<typeof Editor>['settings']
+    const [editorHasError, setEditorHasError] = useState(false)
+    const [settings, setSettings] = useState<SettingsType>(rule.settings)
+    const [deactivatedDatetime, setDeactivatedDatetime] = useState(
+        rule.deactivated_datetime
+    )
+    const [installationError, setInstallationError] =
+        useState<InstallationError | null>()
 
-export default ManagedRuleEditor
+    const dispatch = useAppDispatch()
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAgentPrivileges = useHasAgentPrivileges()
+    const [
+        showAutomationSubscriptionModal,
+        setShowAutomationSubscriptionModal,
+    ] = useState(false)
+
+    const toggleActivation = () => {
+        if (!hasAutomationAddOn) {
+            setShowAutomationSubscriptionModal(true)
+            return
+        }
+        if (deactivatedDatetime) {
+            setDeactivatedDatetime(null)
+        } else {
+            setDeactivatedDatetime(moment.utc().toISOString())
+        }
+    }
+
+    const submit = useCallback(() => {
+        const newDeactivatedDatetime =
+            !deactivatedDatetime === !rule.deactivated_datetime
+                ? rule.deactivated_datetime
+                : deactivatedDatetime
+
+        handleSubmit(
+            {
+                id: rule.id,
+                deactivated_datetime: newDeactivatedDatetime,
+                settings: {
+                    ...rule.settings,
+                    ...settings,
+                },
+            },
+            editorHasError
+        )
+    }, [deactivatedDatetime, rule, settings, handleSubmit, editorHasError])
+
+    useImperativeHandle(ref, () => ({submit}), [submit])
+
+    const handleResubscribe = async () => {
+        try {
+            const res = await activateRule(rule.id)
+            void dispatch(ruleUpdated(res))
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Rule activated successfully',
+                })
+            )
+            setDeactivatedDatetime(null)
+        } catch (error) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Unable to deactivate rule',
+                })
+            )
+        }
+    }
+
+    const originalRuleSettings = useMemo(
+        () => forceEditorHtml(rule.settings),
+        [rule.settings]
+    )
+
+    useEffect(() => {
+        const ruleSettings = forceEditorHtml(settings)
+
+        if (!_isEqual(originalRuleSettings, ruleSettings)) {
+            handleDirtyForm(true)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [settings, deactivatedDatetime])
+
+    const handleChange = () => {
+        if (!hasAutomationAddOn) {
+            void dispatch(
+                notify({
+                    message:
+                        'Please upgrade to an automation add-on plan to edit this rule',
+                    status: NotificationStatus.Error,
+                })
+            )
+            return
+        }
+        return (settings: SettingsType, hasInvalidField?: boolean) => {
+            setSettings(settings)
+            setEditorHasError(!!hasInvalidField)
+        }
+    }
+
+    return (
+        <div className={css.container}>
+            <div
+                className={css.editorContainer}
+                ref={measureRef as React.LegacyRef<HTMLDivElement>}
+            >
+                <Editor
+                    onChange={handleChange}
+                    settings={settings}
+                    handleInstallationError={setInstallationError}
+                />
+                <div className={css.toggleButtonContainer}>
+                    <span>
+                        <ToggleInput
+                            isToggled={!deactivatedDatetime}
+                            onClick={toggleActivation}
+                            isDisabled={!hasAgentPrivileges}
+                        />
+                    </span>
+                    <span>
+                        <Label
+                            className={classnames(css.toggleLabel, 'mr-2 mb-0')}
+                        >
+                            Enable rule
+                        </Label>
+                    </span>
+                </div>
+
+                <RuleItemButtons
+                    ruleId={rule.id}
+                    canSubmit={
+                        !editorHasError &&
+                        hasAgentPrivileges &&
+                        !isSubmitting &&
+                        hasAutomationAddOn &&
+                        !installationError
+                    }
+                    canDuplicate={false}
+                    canDelete={hasAgentPrivileges}
+                    isDeleting={isDeleting}
+                    onDelete={handleDelete}
+                    onSubmit={submit}
+                />
+
+                {hasAgentPrivileges && (
+                    <AutomationSubscriptionModal
+                        onClose={() =>
+                            setShowAutomationSubscriptionModal(false)
+                        }
+                        confirmLabel="Upgrade and reactivate"
+                        onSubscribe={handleResubscribe}
+                        isOpen={showAutomationSubscriptionModal}
+                    />
+                )}
+            </div>
+            <div className={css.demoContainer} style={{height: editorHeight}}>
+                <Demo settings={settings} />
+            </div>
+        </div>
+    )
+}
+
+export default forwardRef<EditorHandle, Props>(ManagedRuleEditor)

@@ -1,7 +1,7 @@
 import React, {
+    ForwardedRef,
     forwardRef,
     InputHTMLAttributes,
-    Ref,
     useImperativeHandle,
     useRef,
 } from 'react'
@@ -34,7 +34,7 @@ function RadioButton(
         id,
         ...props
     }: Props,
-    forwardedRef: Ref<HTMLInputElement> | null | undefined
+    forwardedRef: ForwardedRef<HTMLInputElement>
 ) {
     const ref = useRef<HTMLInputElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
@@ -63,4 +63,4 @@ function RadioButton(
     )
 }
 
-export default forwardRef(RadioButton)
+export default forwardRef<HTMLInputElement, Props>(RadioButton)

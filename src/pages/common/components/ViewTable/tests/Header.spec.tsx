@@ -1,6 +1,6 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import {screen} from '@testing-library/dom'
 
 import {getConfigByName} from 'config/views'
@@ -125,17 +125,24 @@ describe('ViewTable::Header', () => {
         expect(getByText(viewsFixture.name)).toBeInTheDocument()
     })
 
-    it('should update search of the active view and not fetch view items on search input submit', () => {
+    it('should update search of the active view and not fetch view items on search input submit', async () => {
         render(<HeaderContainer {...minProps} isSearch />)
         const searchTerm = 'term1'
         const searchInput = screen.getByPlaceholderText(/Search/i)
         fireEvent.change(searchInput, {target: {value: searchTerm}})
-        fireEvent.keyDown(searchInput, {key: 'Enter'})
 
-        expect(minProps.updateView).toHaveBeenLastCalledWith(
-            (fromJS(viewsFixture) as Map<any, any>).set('search', searchTerm),
-            false
-        )
+        await waitFor(() => {
+            expect(screen.getByDisplayValue(searchTerm)).toBeInTheDocument()
+            fireEvent.keyDown(searchInput, {key: 'Enter'})
+            expect(minProps.updateView).toHaveBeenLastCalledWith(
+                (fromJS(viewsFixture) as Map<any, any>).set(
+                    'search',
+                    searchTerm
+                ),
+                false
+            )
+        })
+
         expect(fetchViewItems).not.toHaveBeenCalled()
     })
 

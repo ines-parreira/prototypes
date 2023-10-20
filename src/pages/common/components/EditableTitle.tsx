@@ -2,7 +2,7 @@ import React, {
     ComponentProps,
     FocusEvent,
     KeyboardEvent,
-    Ref,
+    ForwardedRef,
     forwardRef,
     useEffect,
     useImperativeHandle,
@@ -40,7 +40,7 @@ const EditableTitle = (
         isRequired,
         ...props
     }: Props,
-    ref: Ref<HTMLInputElement> | null | undefined
+    ref: ForwardedRef<HTMLInputElement>
 ) => {
     const [inputElement, setInputElement] = useState<HTMLInputElement | null>(
         null
@@ -130,4 +130,4 @@ const EditableTitle = (
     )
 }
 
-export default forwardRef(EditableTitle)
+export default forwardRef<HTMLInputElement, Props>(EditableTitle)

@@ -1,8 +1,8 @@
 import React, {
+    ForwardedRef,
     forwardRef,
     InputHTMLAttributes,
     ReactNode,
-    Ref,
     useCallback,
     useContext,
     useImperativeHandle,
@@ -49,7 +49,7 @@ function TextInput(
         value,
         ...props
     }: Props,
-    ref: Ref<HTMLInputElement> | null | undefined
+    ref: ForwardedRef<HTMLInputElement>
 ) {
     const randomId = useId()
     const [inputElement, setInputElement] = useState<HTMLInputElement | null>(
@@ -126,4 +126,4 @@ function TextInput(
     )
 }
 
-export default forwardRef(TextInput)
+export default forwardRef<HTMLInputElement, Props>(TextInput)

@@ -1,8 +1,8 @@
 import React, {
+    ForwardedRef,
     forwardRef,
     TextareaHTMLAttributes,
     ReactNode,
-    Ref,
     useCallback,
     useRef,
     useImperativeHandle,
@@ -45,14 +45,14 @@ function TextArea(
         autoRowHeight,
         ...props
     }: Props,
-    ref: Ref<HTMLTextAreaElement | null> | null
+    ref: ForwardedRef<HTMLTextAreaElement>
 ) {
     const randomId = useId()
     const textareaId = id || 'textarea-' + randomId
     const captionId = `${textareaId}-caption`
     const innerTextAreaRef = useRef<HTMLTextAreaElement>(null)
 
-    useImperativeHandle(ref, () => innerTextAreaRef.current)
+    useImperativeHandle(ref, () => innerTextAreaRef.current!)
 
     const adjustRowHeight = useCallback(() => {
         if (!innerTextAreaRef.current) {
@@ -128,4 +128,4 @@ function TextArea(
     )
 }
 
-export default forwardRef(TextArea)
+export default forwardRef<HTMLTextAreaElement, Props>(TextArea)

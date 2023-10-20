@@ -1,4 +1,4 @@
-import React, {MouseEvent, forwardRef} from 'react'
+import React, {ForwardedRef, forwardRef, MouseEvent} from 'react'
 import classnames from 'classnames'
 
 import IconButton from 'pages/common/components/button/IconButton'
@@ -15,7 +15,7 @@ type Props = {
     onToggle: () => void
 }
 
-const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
+const Button = (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
     const randomId = useId()
     const id = `toolbar-button-${randomId}`
 
@@ -49,6 +49,6 @@ const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
             </Tooltip>
         </>
     )
-})
+}
 
-export default Button
+export default forwardRef<HTMLButtonElement, Props>(Button)

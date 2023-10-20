@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {HTMLProps, ReactNode} from 'react'
+import React, {ForwardedRef, forwardRef, HTMLProps, ReactNode} from 'react'
 
 import css from './TableBody.less'
 
@@ -10,7 +10,7 @@ type Props = HTMLProps<HTMLTableSectionElement> & {
 
 function TableBody(
     {children, className, ...otherProps}: Props,
-    ref: React.Ref<HTMLTableSectionElement> | null | undefined
+    ref: ForwardedRef<HTMLTableSectionElement>
 ) {
     return (
         <tbody
@@ -23,4 +23,4 @@ function TableBody(
     )
 }
 
-export default React.forwardRef(TableBody)
+export default forwardRef<HTMLTableSectionElement, Props>(TableBody)

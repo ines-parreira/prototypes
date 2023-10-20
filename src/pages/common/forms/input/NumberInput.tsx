@@ -247,4 +247,4 @@ function NumberInput(
     )
 }
 
-export default forwardRef(NumberInput)
+export default forwardRef<HTMLInputElement, Props>(NumberInput)

@@ -285,7 +285,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                             <span
                               className="buttons group vertical"
                             >
-                              <ForwardRef
+                              <ForwardRef(Button)
                                 intent="secondary"
                                 key=".$0"
                                 onClick={[Function]}
@@ -304,8 +304,8 @@ exports[`FacebookCarousel component render generic template 1`] = `
                                     View details
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                              <ForwardRef
+                              </ForwardRef(Button)>
+                              <ForwardRef(Button)
                                 isDisabled={true}
                                 key=".$1"
                               >
@@ -322,8 +322,8 @@ exports[`FacebookCarousel component render generic template 1`] = `
                                     Share
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
-                              <ForwardRef
+                              </ForwardRef(Button)>
+                              <ForwardRef(Button)
                                 intent="secondary"
                                 key=".$2"
                                 onClick={[Function]}
@@ -342,7 +342,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                                     Buy now
                                   </button>
                                 </BaseButton>
-                              </ForwardRef>
+                              </ForwardRef(Button)>
                             </span>
                           </Group>
                         </div>
