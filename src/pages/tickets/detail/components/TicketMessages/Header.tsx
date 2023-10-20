@@ -3,9 +3,9 @@ import {fromJS, Map} from 'immutable'
 import React from 'react'
 import classnames from 'classnames'
 
-import {TicketMessage} from '../../../../../models/ticket/types'
-import {isForwardedMessage} from '../../../../../state/ticket/utils'
-import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
+import {TicketMessage} from 'models/ticket/types'
+import {isForwardedMessage} from 'state/ticket/utils'
+import {AgentLabel, CustomerLabel} from 'pages/common/utils/labels'
 
 import css from './Header.less'
 import Meta from './Meta'
@@ -102,6 +102,7 @@ export default function Header(props: Props) {
                         id={props.id}
                         isForwarded={isForwarded}
                         createdDatetime={message.created_datetime}
+                        channel={message.channel}
                         source={message.source}
                     />
                 )}

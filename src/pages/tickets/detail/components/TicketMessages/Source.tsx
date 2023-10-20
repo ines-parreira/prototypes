@@ -2,15 +2,15 @@ import React from 'react'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
-import {TicketMessageSourceType} from '../../../../../business/types/ticket'
-import SourceIcon from '../../../../common/components/SourceIcon'
-import {DatetimeLabel} from '../../../../common/utils/labels'
-import {
-    Source as SourceType,
-    SourceAddress,
-} from '../../../../../models/ticket/types'
-import {getPersonLabelFromSource} from '../../../common/utils'
-import Tooltip from '../../../../common/components/Tooltip'
+import {Source as SourceType, SourceAddress} from 'models/ticket/types'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import SourceIcon from 'pages/common/components/SourceIcon'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import Tooltip from 'pages/common/components/Tooltip'
+import {isChannel, toChannel} from 'services/channels'
+import {isTicketMessageSourceType} from 'models/ticket/predicates'
+import {humanizeChannel} from 'state/ticket/utils'
 
 import css from './Source.less'
 
@@ -19,6 +19,7 @@ type Props = {
     isForwarded: boolean
     createdDatetime: string
     source: SourceType
+    channel?: TicketChannel | string
 }
 
 export default function Source({
@@ -26,7 +27,16 @@ export default function Source({
     id,
     isForwarded,
     source,
+    channel,
 }: Props) {
+    const channelIdentifier = source.type ?? channel
+    const sourceChannel = isTicketMessageSourceType(channelIdentifier)
+        ? channelIdentifier
+        : toChannel(channelIdentifier)
+    const channelName = isChannel(sourceChannel)
+        ? sourceChannel.name
+        : humanizeChannel(channelIdentifier)
+
     return (
         <div>
             <span className={classnames('clickable', css.source)}>
@@ -35,7 +45,7 @@ export default function Source({
                     type={
                         isForwarded
                             ? TicketMessageSourceType.EmailForward
-                            : source.type
+                            : sourceChannel
                     }
                     className="uncolored"
                 />
@@ -64,8 +74,8 @@ export default function Source({
                             source={source}
                         />
                         <li>
-                            <span className="text-faded">Sent via: </span>
-                            <strong>{source.type}</strong>
+                            <span className="text-faded">Channel: </span>
+                            <strong>{channelName}</strong>
                         </li>
                         <li>
                             <span className="text-faded">Date: </span>

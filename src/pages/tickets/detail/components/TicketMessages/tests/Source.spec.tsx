@@ -1,15 +1,27 @@
-import moment from 'moment'
 import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import moment from 'moment'
+import {omit} from 'lodash'
+
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {channels as mockChannels} from 'fixtures/channels'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {Source as MessageSource} from 'models/ticket/types'
 
 import Source from '../Source'
-import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
-import {DatetimeLabel} from '../../../../../common/utils/labels'
 
-jest.mock('../../../../../common/utils/labels', () => ({
+jest.mock('pages/common/utils/labels', () => ({
     DatetimeLabel: ({dateTime}: ComponentProps<typeof DatetimeLabel>) => {
         return <div>{dateTime}</div>
     },
+}))
+
+jest.mock('api/queryClient', () => ({
+    appQueryClient: mockQueryClient({
+        cachedData: [[mockChannelsQueryKeys.list(), mockChannels]],
+    }),
 }))
 
 const minProps = {
@@ -45,5 +57,56 @@ describe('<Source />', () => {
         const tooltipElement = await findByText(/From/i)
 
         expect(tooltipElement.parentElement?.parentElement).toMatchSnapshot()
+    })
+
+    it('should fallback to message channel if source.type is empty', () => {
+        const {container} = render(
+            <Source
+                {...minProps}
+                source={omit(minProps.source, 'type') as MessageSource}
+                channel="tiktok-shop"
+            />
+        )
+
+        expect(
+            container.querySelector('img[alt="TikTok Shop"]')
+        ).toBeInTheDocument()
+    })
+
+    it('should display source information in a tooltip', async () => {
+        const {getByText, findByText} = render(<Source {...minProps} />)
+
+        fireEvent.mouseOver(getByText('email'))
+        await findByText('From:')
+
+        expect(getByText('From:')).toBeInTheDocument()
+        expect(getByText('To:')).toBeInTheDocument()
+        expect(getByText('Channel:')).toBeInTheDocument()
+        expect(getByText('Date:')).toBeInTheDocument()
+        expect(
+            getByText('Acme Support (zp7d01g9zorymjke@foo.gorgi.us)')
+        ).toBeInTheDocument()
+        expect(getByText('Marie Curie (marie@gorgias.io)')).toBeInTheDocument()
+        expect(
+            getByText(
+                'Marie Curie (marie@gorgias.io), Gorgias Bot (support@acme.gorgias.io)'
+            )
+        ).toBeInTheDocument()
+        expect(getByText('Email')).toBeInTheDocument()
+    })
+
+    it('should use the channel name for new channels', async () => {
+        const {container, getByText, findByText} = render(
+            <Source
+                {...minProps}
+                source={omit(minProps.source, 'type') as MessageSource}
+                channel="tiktok-shop"
+            />
+        )
+
+        fireEvent.mouseOver(container.querySelector('img[alt="TikTok Shop"]')!)
+        await findByText('Channel:')
+
+        expect(getByText('TikTok Shop')).toBeInTheDocument()
     })
 })

@@ -226,6 +226,7 @@ export type Source = {
         score?: number
         external_product_id?: string
         unfetchable?: boolean
+        include_thread?: boolean
     }
 }
 
