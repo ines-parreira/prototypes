@@ -146,7 +146,7 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
                     integration.getIn(['meta', 'languages']) as List<
                         Map<string, string>
                     >
-                ).count() ?? 0
+                )?.count() ?? 0
 
             // When changing the default language, we also reset the decoration texts to the new language's defaults.
             // We do this because the initial decoration texts were set using the default language when the chat was created.
