@@ -153,7 +153,10 @@ export function handleDeviceEvents(device: Device, dispatch: StoreDispatch) {
 
     device.on(Device.EventName.Incoming, (call: Call) => {
         if (device.isBusy) {
-            reportError(new Error('Incoming call for agent already in a call'))
+            reportError(
+                new Error('Incoming call for agent already in a call'),
+                {extra: call}
+            )
 
             const launchDarklyClient = getLDClient()
             const isNewPhoneRoundRobinEnabled = launchDarklyClient.variation(
