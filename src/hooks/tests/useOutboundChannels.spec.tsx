@@ -483,10 +483,8 @@ describe('useSendersForSelectedChannel()', () => {
             const {result} = renderHookWithStore(store)
             expect(result.current?.senders).toEqual([
                 {
-                    id: 123,
                     address: 'theshop',
                     name: 'The Shop',
-                    type: 'app',
                 },
             ])
         })

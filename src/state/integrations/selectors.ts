@@ -448,9 +448,7 @@ export const getSendersForChannel =
                 )
             )
             .filter(isAppIntegration)
-            .map(({id, type, name, meta: {address}}) => ({
-                id,
-                type,
+            .map(({name, meta: {address}}) => ({
                 address,
                 name,
             }))

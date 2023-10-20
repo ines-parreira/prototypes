@@ -954,10 +954,8 @@ describe('integrations selectors', () => {
             } as RootState
             expect(getSendersForChannel('tiktok-shop')(state)).toEqual([
                 {
-                    id: 123,
                     address: 'theshop',
                     name: 'The Shop',
-                    type: 'app',
                 },
             ])
         })

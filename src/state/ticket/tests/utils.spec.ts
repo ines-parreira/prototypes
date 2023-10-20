@@ -1,5 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List, Map} from 'immutable'
+import {omit} from 'lodash'
 
 import {
     TicketChannel,
@@ -24,7 +25,11 @@ import {getEmailChannels} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
 
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {GorgiasContactFormTicketMeta, TicketMessage} from 'models/ticket/types'
+import {
+    GorgiasContactFormTicketMeta,
+    Source,
+    TicketMessage,
+} from 'models/ticket/types'
 import {generateTicketMessagesId} from 'utils'
 import {
     getNewMessageSender,
@@ -47,6 +52,7 @@ import {
     humanizeChannel,
     buildFirstTicketMessage,
     getValuePropFromSourceType,
+    getPendingMessageIndex,
     humanizeAddress,
 } from '../utils'
 
@@ -1954,6 +1960,115 @@ describe('ticket utils', () => {
             expect(getValuePropFromSourceType('some-other-channel')).toEqual(
                 'address'
             )
+        })
+    })
+
+    describe('getPendingMessageIndex()', () => {
+        const pendingMessage = {
+            body_html: '<i>pending<i>',
+            body_text: 'pending',
+            channel: 'email',
+            from_agent: false,
+            source: {
+                type: TicketMessageSourceType.Email,
+                from: {
+                    address: 'x@x.com',
+                    name: 'X',
+                },
+                to: [
+                    {
+                        address: 'y@y.com',
+                        name: 'Y',
+                    },
+                ],
+            },
+            integration_id: 123,
+            public: true,
+        } as unknown as TicketMessage
+
+        it('should match messages based on a subset of props', () => {
+            expect(
+                getPendingMessageIndex(
+                    [
+                        {
+                            ...pendingMessage,
+                            channel: TicketChannel.Facebook,
+                        },
+                        {
+                            ...pendingMessage,
+                            channel: TicketChannel.Phone,
+                        },
+                        pendingMessage,
+                    ],
+                    pendingMessage
+                )
+            ).toEqual(2)
+
+            expect(
+                getPendingMessageIndex(
+                    [
+                        {
+                            ...pendingMessage,
+                            source: {
+                                ...pendingMessage.source,
+                                type: 'tiktok-shop' as TicketMessageSourceType,
+                            },
+                        },
+                    ],
+                    pendingMessage
+                )
+            ).toEqual(0)
+
+            expect(
+                getPendingMessageIndex(
+                    [
+                        {
+                            ...pendingMessage,
+                            source: omit(
+                                pendingMessage.source,
+                                'type'
+                            ) as Source,
+                        },
+                    ],
+                    pendingMessage
+                )
+            ).toEqual(0)
+        })
+
+        it('should disregard some props and still match', () => {
+            expect(
+                getPendingMessageIndex(
+                    [{...pendingMessage, public: false}],
+                    pendingMessage
+                )
+            ).toEqual(0)
+        })
+
+        it('should return -1 if there is no match', () => {
+            expect(
+                getPendingMessageIndex([pendingMessage], {
+                    ...pendingMessage,
+                    channel: TicketChannel.Facebook,
+                })
+            ).toEqual(-1)
+
+            expect(
+                getPendingMessageIndex([pendingMessage], {
+                    ...pendingMessage,
+                    body_text: 'not pending!',
+                })
+            ).toEqual(-1)
+
+            expect(
+                getPendingMessageIndex([pendingMessage], {
+                    ...pendingMessage,
+                    source: {
+                        ...pendingMessage.source,
+                        type: TicketMessageSourceType.Email,
+                        to: [{address: 'z@z.com', name: 'z'}],
+                    },
+                })
+            ).toEqual(-1)
         })
     })
 })

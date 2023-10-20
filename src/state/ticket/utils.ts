@@ -3,7 +3,7 @@ import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
 import _isArray from 'lodash/isArray'
 import _isEqual from 'lodash/isEqual'
-import _pickBy from 'lodash/pickBy'
+import _pick from 'lodash/pick'
 import _first from 'lodash/first'
 import _last from 'lodash/last'
 import _set from 'lodash/set'
@@ -862,14 +862,18 @@ export function getPendingMessageIndex(
     }
 
     // props that are the same in the post body and the response
-    const props = ['body_html', 'body_text', 'channel', 'from_agent', 'source']
-
-    const whitelist = (v: string, key: string) => props.includes(key)
+    const props = [
+        'body_html',
+        'body_text',
+        'channel',
+        'from_agent',
+        'source.from',
+        'source.to',
+        'source.extra',
+    ]
 
     pendingMessages.some((pending, i) => {
-        if (
-            _isEqual(_pickBy(pending, whitelist), _pickBy(message, whitelist))
-        ) {
+        if (_isEqual(_pick(pending, props), _pick(message, props))) {
             index = i
             return true
         }
