@@ -227,6 +227,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -1344,6 +1345,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -2731,6 +2733,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -4089,6 +4092,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -5447,6 +5451,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -6805,6 +6810,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -8296,6 +8302,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -9413,6 +9420,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -10738,6 +10746,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -12293,6 +12302,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -13410,6 +13420,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     <input
                       class="field form-control"
                       id="id-input-42"
+                      maxlength="100"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"

@@ -1,5 +1,5 @@
 import {produce} from 'immer'
-import {Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {set} from 'lodash'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect} from 'react-redux'
@@ -41,6 +41,7 @@ import {
 import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
 import {
     GorgiasChatIntegration,
+    GorgiasChatLauncherType,
     IntegrationType,
 } from '../../../../../../../models/integration/types'
 import {
@@ -461,6 +462,13 @@ function GorgiasTranslateText({
         setTextsOfSelectedLanguage(textsOfSelectedLanguage)
     }
 
+    const isDefaultLanguageLoaded = useMemo(() => {
+        if (!language || !integrationDefaultLanguage) {
+            return false
+        }
+        return integrationDefaultLanguage === language?.get('value')
+    }, [integrationDefaultLanguage, language])
+
     const backUrl = IsLegacyMonoLanguageMode
         ? `/app/settings/channels/gorgias_chat/${
               integration.get('id') as number
@@ -537,13 +545,64 @@ function GorgiasTranslateText({
                 applicationId,
                 mergedData
             )
+            // When updating the default language copy, we need to update the integration decoration + name as well.
+            // It's important for integration.name, and less for decoration but we can sync until we fully drop the decoration texts.
+            if (!IsLegacyMonoLanguageMode && isDefaultLanguageLoaded) {
+                // NOTE. With isDefaultLanguageLoaded=true, `introductionText`, `offlineIntroductionText`, `launcherLabel` and `chatTitle`
+                // cannot be empty as they are marked as required.
+                let newDecoration = {
+                    ...integrationChat.decoration,
+                    introduction_text:
+                        textsOfSelectedLanguage.texts.introductionText,
+                    offline_introduction_text:
+                        textsOfSelectedLanguage.texts.offlineIntroductionText,
+                }
+                if (
+                    integrationChat.decoration.launcher?.type ===
+                    GorgiasChatLauncherType.ICON_AND_LABEL
+                ) {
+                    newDecoration = {
+                        ...newDecoration,
+                        launcher: {
+                            type: GorgiasChatLauncherType.ICON_AND_LABEL,
+                            label: textsOfSelectedLanguage.texts.launcherLabel,
+                        },
+                    }
+                }
+
+                await dispatch(
+                    IntegrationsActions.updateOrCreateIntegration(
+                        fromJS({
+                            ...integrationChat,
+                            name: textsOfSelectedLanguage.texts.chatTitle,
+                            decoration: newDecoration,
+                        }),
+                        undefined,
+                        undefined,
+                        undefined,
+                        true //disableSuccessNotification // TODO. Refactor updateOrCreateIntegration to use a options object.
+                    )
+                )
+                // Update the translations to reflect the new integration name in the page.
+                setTranslations({
+                    ...translations,
+                    texts: {
+                        ...translations.texts,
+                        chatTitle: `${textsOfSelectedLanguage.texts.chatTitle} (chat title)`,
+                    },
+                })
+            }
         }
     }, [
-        initialTexts,
         integration,
-        language,
         IsLegacyMonoLanguageMode,
         textsOfSelectedLanguage,
+        initialTexts,
+        language,
+        isDefaultLanguageLoaded,
+        integrationChat,
+        dispatch,
+        translations,
     ])
 
     const resetValues = useCallback(() => {
@@ -802,6 +861,11 @@ function GorgiasTranslateText({
                                 ? generalKeys
                                 : generalLegacySoloLanguage
                         }
+                        requiredKeys={
+                            !IsLegacyMonoLanguageMode && isDefaultLanguageLoaded
+                                ? ['texts.chatTitle', 'texts.chatWithUs']
+                                : []
+                        }
                         filtersForKeys={{}}
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
@@ -813,6 +877,15 @@ function GorgiasTranslateText({
                         <GorgiasTranslateInputGroup
                             title="Intro message"
                             keys={introKeys}
+                            requiredKeys={
+                                !IsLegacyMonoLanguageMode &&
+                                isDefaultLanguageLoaded
+                                    ? [
+                                          'texts.introductionText',
+                                          'texts.offlineIntroductionText',
+                                      ]
+                                    : []
+                            }
                             filtersForKeys={{}}
                             textsPerLanguage={textsOfSelectedLanguage}
                             translations={translations}

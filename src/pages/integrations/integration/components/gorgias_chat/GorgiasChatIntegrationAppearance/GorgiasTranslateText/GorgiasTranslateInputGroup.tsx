@@ -13,6 +13,10 @@ import {FilterProps, OptionFormat} from './translations-available-keys'
 export type Props = {
     title: string
     keys: string[]
+    /**
+     * Keys that must be filled in order to save the form.
+     */
+    requiredKeys?: string[]
     filtersForKeys: FilterProps
     textsPerLanguage: TextsPerLanguage | Record<string, unknown>
     translations: Translations
@@ -25,6 +29,7 @@ export type Props = {
 const GorgiasTranslateInputGroup = ({
     title,
     keys,
+    requiredKeys = [],
     filtersForKeys,
     textsPerLanguage,
     translations,
@@ -63,6 +68,7 @@ const GorgiasTranslateInputGroup = ({
                                 defaultValue={get(translations, key)}
                                 saveValue={saveValue}
                                 trackInputMethod={trackInputMethod}
+                                isRequired={requiredKeys.includes(key)}
                             />
                         </Col>
                     </Row>

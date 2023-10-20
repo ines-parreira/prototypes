@@ -1,4 +1,7 @@
-import {GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_NAME_MAX_LENGTH,
+    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
+} from 'config/integrations/gorgias_chat'
 
 export type FilterProps = {
     emailCaptureEnforcement?: string
@@ -19,7 +22,7 @@ export default {
         },
     },
     general: {
-        'texts.chatTitle': {maxLength: 100},
+        'texts.chatTitle': {maxLength: GORGIAS_CHAT_NAME_MAX_LENGTH},
         'texts.chatWithUs': {maxLength: 30},
         'sspTexts.sendUsAMessage': {maxLength: 30},
         'texts.leaveAMessage': {maxLength: 30},

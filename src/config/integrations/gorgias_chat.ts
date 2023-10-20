@@ -11,6 +11,7 @@ import {
 import gorgiasChatSSPTexts from './ssp_texts.json'
 import {widgetTexts} from './widget'
 
+export const GORGIAS_CHAT_NAME_MAX_LENGTH = 100
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT = Language.EnglishUs

@@ -26,6 +26,7 @@ import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+    GORGIAS_CHAT_NAME_MAX_LENGTH,
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_DEFAULT_FONTS,
@@ -961,6 +962,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 }
                                 placeholder="Ex: Company Support"
                                 required
+                                maxLength={GORGIAS_CHAT_NAME_MAX_LENGTH}
                             />
                             {!chatMultiLanguagesEnabled && (
                                 <DEPRECATED_InputField

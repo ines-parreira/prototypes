@@ -8,6 +8,7 @@ type Props = {
     maxLength: number
     keyName: string
     defaultValue: string
+    isRequired: boolean
     saveValue: (key: string, value: string) => void
     focus?: boolean
     trackInputMethod?: (key: string) => void
@@ -18,6 +19,7 @@ const GorgiasTranslateInputField = ({
     maxLength,
     keyName,
     defaultValue,
+    isRequired,
     saveValue,
     focus = false,
     trackInputMethod,
@@ -44,6 +46,7 @@ const GorgiasTranslateInputField = ({
                         autoFocus={focus}
                         rows={1}
                         autoRowHeight
+                        isRequired={isRequired}
                         onFocus={() => {
                             setHasFocus(true)
                             trackInputMethod?.(keyName)
