@@ -136,7 +136,7 @@ const SourceIcon = ({type, className, ...otherProps}: Props) => {
                     alt={channel.name}
                     width="14px"
                     height="14px"
-                    className="icon d-inline-block"
+                    className={classnames('icon d-inline-block', className)}
                     {...otherProps}
                 />
             )
