@@ -1,0 +1,59 @@
+import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import userActivityManager from 'services/userActivityManager'
+import {handle2FAEnforced} from 'state/currentUser/actions'
+import {fetchVisibleViewsCounts} from 'state/views/actions'
+import {identifyUser} from 'store/middlewares/segmentTracker'
+
+import useSharedLogic from '../useSharedLogic'
+
+jest.mock('hooks/useAppDispatch')
+jest.mock('hooks/useAppSelector')
+const useAppDispatchMock = useAppDispatch as jest.Mock
+const useAppSelectorMock = useAppSelector as jest.Mock
+
+jest.mock('services/userActivityManager')
+jest.mock('state/currentUser/actions')
+jest.mock('state/views/actions')
+jest.mock('store/middlewares/segmentTracker')
+
+describe('useSharedLogic', () => {
+    let dispatch: jest.Mock
+    const user = {
+        name: 'Current User',
+    }
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+        dispatch = jest.fn()
+        useAppDispatchMock.mockReturnValue(dispatch)
+        useAppSelectorMock.mockReturnValue(fromJS({...user}))
+    })
+
+    it('should start watching for user activity', () => {
+        renderHook(() => useSharedLogic())
+
+        expect(userActivityManager.watch).toHaveBeenCalled()
+    })
+
+    it("should fetch visible views' counts", () => {
+        renderHook(() => useSharedLogic())
+
+        expect(dispatch).toHaveBeenCalledWith(fetchVisibleViewsCounts())
+    })
+
+    it('should identify user', () => {
+        renderHook(() => useSharedLogic())
+
+        expect(identifyUser).toHaveBeenCalledWith(user)
+    })
+
+    it('should check 2FA status of current user', () => {
+        renderHook(() => useSharedLogic())
+
+        expect(dispatch).toHaveBeenCalledWith(handle2FAEnforced())
+    })
+})

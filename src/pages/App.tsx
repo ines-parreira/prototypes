@@ -4,25 +4,21 @@ import {Container} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
 import 'assets/css/main.less'
-import {useEffectOnce} from 'react-use'
-import userActivityManager from 'services/userActivityManager'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import FullPage from 'pages/common/components/FullPage'
+import PhoneIntegrationBar from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar'
+import Spotlight from 'pages/common/components/Spotlight/Spotlight'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {closePanels, openPanel} from 'state/layout/actions'
 import {getCurrentOpenedPanel} from 'state/layout/selectors'
-import {fetchVisibleViewsCounts} from 'state/views/actions'
-import {identifyUser} from 'store/middlewares/segmentTracker'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/types'
-import {handle2FAEnforced} from 'state/currentUser/actions'
 
-import useAppSelector from 'hooks/useAppSelector'
-import useAppDispatch from 'hooks/useAppDispatch'
 import css from './App.less'
-import FullPage from './common/components/FullPage'
-import {ErrorBoundary} from './ErrorBoundary'
-import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar'
-import IconButton from './common/components/button/IconButton'
-import Button from './common/components/button/Button'
-import Spotlight from './common/components/Spotlight/Spotlight'
 
 type Props = {
     infobarOnMobile?: boolean
@@ -48,23 +44,10 @@ const App = ({
 }: Props) => {
     const dispatch = useAppDispatch()
 
-    const currentUser = useAppSelector((state) => state.currentUser)
-
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
     const hasPhoneIntegration = useAppSelector(
         hasIntegrationOfTypes(IntegrationType.Phone)
     )
-
-    useEffectOnce(() => {
-        userActivityManager.watch()
-
-        // ask for the newest view counts
-        dispatch(fetchVisibleViewsCounts())
-
-        identifyUser(currentUser.toJS())
-
-        dispatch(handle2FAEnforced())
-    })
 
     const Wrapper = containerPadding ? FullPage : Container
     const wrapperProps = containerPadding
