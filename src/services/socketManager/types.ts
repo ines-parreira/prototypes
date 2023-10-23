@@ -1,14 +1,14 @@
 import {Map} from 'immutable'
 
+import {RecentChatTicket} from 'business/types/recentChats'
 import {TicketChannel} from 'business/types/ticket'
-import {MacrosProperties} from 'models/macro/types'
 import {CustomerExternalData} from 'models/customerExternalData/types'
-import {RecentChatTicket} from '../../business/types/recentChats'
-import {Ticket} from '../../models/ticket/types'
-import {View} from '../../models/view/types'
-import {Account} from '../../state/currentAccount/types'
-import {ActionData} from '../../state/infobar/utils'
-import {Section} from '../../models/section/types'
+import {MacrosProperties} from 'models/macro/types'
+import {Section} from 'models/section/types'
+import {Ticket} from 'models/ticket/types'
+import {View} from 'models/view/types'
+import {Account} from 'state/currentAccount/types'
+import {ActionData} from 'state/infobar/utils'
 
 export enum BroadcastChannelEvent {
     ServerMessage = 'SERVER_MESSAGE',
@@ -55,6 +55,9 @@ export enum SocketEventType {
     AgentAvailabilityUpdated = 'agent-availability-updated',
     CustomerExternalDataUpdated = 'customer-external-data-updated',
     TicketTypingActivityShopperStarted = 'ticket-typing-activity-shopper-started',
+    ViewSectionCreated = 'view-section-created',
+    ViewSectionDeleted = 'view-section-deleted',
+    ViewSectionUpdated = 'view-section-updated',
     WhatsAppOnboardingSucceeded = 'whatsapp-onboarding-succeeded',
     WhatsAppOnboardingFailed = 'whatsapp-onboarding-failed',
 }

@@ -87,11 +87,6 @@ import {selfServiceConfigurationsFetched} from '../state/entities/selfServiceCon
 import {setLoading} from '../state/ui/selfServiceConfigurations/actions'
 
 import {MAX_RECENT_CHATS} from './recentChats'
-import {
-    VIEW_SECTION_CREATED,
-    VIEW_SECTION_DELETED,
-    VIEW_SECTION_UPDATED,
-} from './socketConstants'
 
 export type SendData = {
     clientId?: string
@@ -427,7 +422,7 @@ export const receivedEvents: ReceivedEvent[] = [
         },
     },
     {
-        name: VIEW_SECTION_CREATED,
+        name: SocketEventType.ViewSectionCreated,
         onReceive: function (json) {
             reduxStore.dispatch(
                 sectionCreated((json as ViewSectionCreatedEvent).view_section)
@@ -435,7 +430,7 @@ export const receivedEvents: ReceivedEvent[] = [
         },
     },
     {
-        name: VIEW_SECTION_UPDATED,
+        name: SocketEventType.ViewSectionUpdated,
         onReceive: function (json) {
             reduxStore.dispatch(
                 sectionUpdated((json as ViewSectionUpdatedEvent).view_section)
@@ -443,7 +438,7 @@ export const receivedEvents: ReceivedEvent[] = [
         },
     },
     {
-        name: VIEW_SECTION_DELETED,
+        name: SocketEventType.ViewSectionDeleted,
         onReceive: function (json) {
             reduxStore.dispatch(
                 sectionDeleted(

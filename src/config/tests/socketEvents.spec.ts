@@ -49,11 +49,6 @@ import * as ticketActions from 'state/ticket/actions'
 import history from 'pages/history'
 import {mergeCustomerExternalData} from 'state/ticket/actions'
 
-import {
-    VIEW_SECTION_CREATED,
-    VIEW_SECTION_DELETED,
-    VIEW_SECTION_UPDATED,
-} from '../socketConstants'
 import * as socketEvents from '../socketEvents'
 
 //$TsFixMe remove once init.js is migrated
@@ -795,11 +790,11 @@ describe('Config: socketEvents', () => {
         describe('View section events', () => {
             it('should dispatch redux store action for `view-section-created` event', () => {
                 const handler = _find(receivedEvents, {
-                    name: VIEW_SECTION_CREATED,
+                    name: SocketEventType.ViewSectionCreated,
                 }) as socketEvents.ReceivedEvent
                 handler.onReceive({
                     event: {
-                        type: VIEW_SECTION_CREATED,
+                        type: SocketEventType.ViewSectionCreated,
                     },
                     view_section: section,
                 })
@@ -811,11 +806,11 @@ describe('Config: socketEvents', () => {
 
             it('should dispatch redux store action for `view-section-updated` event', () => {
                 const handler = _find(receivedEvents, {
-                    name: VIEW_SECTION_UPDATED,
+                    name: SocketEventType.ViewSectionUpdated,
                 }) as socketEvents.ReceivedEvent
                 handler.onReceive({
                     event: {
-                        type: VIEW_SECTION_UPDATED,
+                        type: SocketEventType.ViewSectionUpdated,
                     },
                     view_section: section,
                 })
@@ -827,11 +822,11 @@ describe('Config: socketEvents', () => {
 
             it('should dispatch redux store action for `view-section-deleted` event', () => {
                 const handler = _find(receivedEvents, {
-                    name: VIEW_SECTION_DELETED,
+                    name: SocketEventType.ViewSectionDeleted,
                 }) as socketEvents.ReceivedEvent
                 handler.onReceive({
                     event: {
-                        type: VIEW_SECTION_DELETED,
+                        type: SocketEventType.ViewSectionDeleted,
                     },
                     view_section: section,
                 })

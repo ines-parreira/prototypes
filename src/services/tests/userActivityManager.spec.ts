@@ -2,7 +2,8 @@ import configureMockStore, {MockStore} from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 
-import * as socketConstants from '../../config/socketConstants'
+import {SocketEventType} from 'services/socketManager/types'
+
 import userActivityManager from '../userActivityManager'
 import socketManager from '../socketManager/socketManager'
 
@@ -30,7 +31,7 @@ describe('services', () => {
             expect(store.getActions()).toMatchSnapshot()
 
             // Should send an event via websocket
-            expect(sendSpy).toHaveBeenCalledWith(socketConstants.AGENT_ACTIVE)
+            expect(sendSpy).toHaveBeenCalledWith(SocketEventType.AgentActive)
 
             // mark the current user as active
             store = mockStore({currentUser: fromJS({is_active: true})})
@@ -40,7 +41,7 @@ describe('services', () => {
             setTimeout(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(sendSpy).toHaveBeenCalledWith(
-                    socketConstants.AGENT_INACTIVE
+                    SocketEventType.AgentInactive
                 )
                 socketManager.send = send
                 done()

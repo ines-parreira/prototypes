@@ -8,7 +8,6 @@ import _range from 'lodash/range'
 import {waitFor} from '@testing-library/react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import * as socketConstants from 'config/socketConstants'
 import {baseView, getExpirationTimeForCount} from 'config/views'
 import {customer} from 'fixtures/customer'
 import {mockSearchRank} from 'fixtures/searchRank'
@@ -21,6 +20,7 @@ import {searchTickets} from 'models/ticket/resources'
 import {ViewType, ViewVisibility} from 'models/view/types'
 import {MoveIndexDirection} from 'pages/common/utils/keyboard'
 import socketManager from 'services/socketManager/socketManager'
+import {SocketEventType} from 'services/socketManager/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {getAST} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
@@ -257,7 +257,7 @@ describe('actions', () => {
             store.dispatch(actions.fetchRecentViewsCounts())
             expect(sendSpy).toHaveBeenNthCalledWith(
                 1,
-                socketConstants.VIEWS_COUNTS_EXPIRED,
+                SocketEventType.ViewsCountExpired,
                 {viewIds: [1]}
             )
         })
