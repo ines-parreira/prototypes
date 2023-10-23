@@ -23,6 +23,7 @@ const mockStore = configureMockStore([thunk])
 
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.ChatScopeUpdateBanner]: 'Scary Deadline',
+    [FeatureFlagKey.ChatScopeReinstallOnShopifyCallback]: true,
 }))
 
 describe('<ScriptTagMigrationBanner />', () => {

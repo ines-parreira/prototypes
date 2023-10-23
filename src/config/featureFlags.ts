@@ -17,6 +17,7 @@ export enum FeatureFlagKey {
     ChatMultiLanguages = 'chat-multi-languages',
     ChatRenameContactForm = 'chat-rename-contact-form',
     ChatScopeUpdateBanner = 'chat-scope-update-banner',
+    ChatScopeReinstallOnShopifyCallback = 'chat-scope-reinstall-on-shopify-callback',
     ChatShowOrHideOnSelectedUrls = 'chat-show-or-hide-on-selected-urls',
     ChatSnippetV3Banner = 'chat-snippet-v3-banner',
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',

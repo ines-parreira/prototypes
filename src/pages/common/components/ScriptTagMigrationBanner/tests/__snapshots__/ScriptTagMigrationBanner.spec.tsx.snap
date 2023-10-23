@@ -37,11 +37,7 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
            
           your chat using the
            
-          <a
-            to="/app/settings/channels/gorgias_chat/test-chat-id/installation"
-          >
-            1-click install method
-          </a>
+          1-click install method
            
           to ensure better chat stability by 
           <b>
@@ -82,6 +78,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
             Update your Shopify permissions
           </a>
            
+           
           to ensure better chat stability by 
           <b>
             Scary Deadline
@@ -120,6 +117,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
           >
             Update your Shopify permissions
           </a>
+           
            
           to ensure better chat stability by 
           <b>
@@ -263,11 +261,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
            
           your chat using the
            
-          <a
-            to="/app/settings/channels/gorgias_chat/test-chat-id/installation"
-          >
-            1-click install method
-          </a>
+          1-click install method
            
           to ensure better chat stability by 
           <b>
@@ -317,11 +311,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for multipl
            
           your chat using the
            
-          <a
-            to="/app/settings/channels/gorgias_chat"
-          >
-            1-click install method
-          </a>
+          1-click install method
            
           to ensure better chat stability by 
           <b>

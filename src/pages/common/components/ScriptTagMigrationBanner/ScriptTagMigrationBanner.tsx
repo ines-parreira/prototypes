@@ -25,6 +25,9 @@ const ScriptTagMigrationBanner = () => {
     const migrationDueDate: string | undefined =
         useFlags()[FeatureFlagKey.ChatScopeUpdateBanner]
 
+    const reinstallsOnShopifyCallback: boolean | undefined =
+        useFlags()[FeatureFlagKey.ChatScopeReinstallOnShopifyCallback]
+
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
 
     const currentUser = useAppSelector(getCurrentUser)
@@ -109,11 +112,16 @@ const ScriptTagMigrationBanner = () => {
                                 re-install
                             </span>{' '}
                             your chat using the{' '}
-                            <Link to={reInstallLink}>
-                                1-click install method
-                            </Link>{' '}
+                            {reinstallsOnShopifyCallback &&
+                            storesRequiringPermissionUpdates.length ? (
+                                '1-click install method'
+                            ) : (
+                                <Link to={reInstallLink}>
+                                    1-click install method
+                                </Link>
+                            )}
                         </>
-                    )}
+                    )}{' '}
                     to ensure better chat stability by <b>{migrationDueDate}</b>
                 </>
             }
