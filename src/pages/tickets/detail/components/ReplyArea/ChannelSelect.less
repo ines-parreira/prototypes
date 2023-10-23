@@ -1,9 +1,23 @@
-:local .dropdownToggle {
-    padding: 0;
-    background: transparent;
-    color: var(--neutral-grey-6);
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        height: 27px;
+    }
 
-    &:after {
-        margin-left: 4px;
+    .dropdownToggle {
+        display: flex;
+        align-items: center;
+        padding: 0;
+        background: transparent;
+        color: var(--neutral-grey-6);
+        &:after {
+            margin-left: 4px;
+        }
+    }
+
+    .newChannelIcon {
+        width: 17px;
+        height: 17px;
     }
 }

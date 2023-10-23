@@ -44,7 +44,7 @@ export default function ChannelSelect() {
     )
 
     return (
-        <div className="mt-1 mr-2">
+        <div className={css.container}>
             <UncontrolledDropdown>
                 <DropdownToggle
                     caret
@@ -53,14 +53,14 @@ export default function ChannelSelect() {
                     className={css.dropdownToggle}
                     innerRef={dropdownToggleRef}
                 >
-                    <SourceIcon
-                        type={
-                            isTicketMessageSourceType(selectedChannel)
-                                ? selectedChannel
-                                : selectedChannel?.slug
-                        }
-                        className="md-2"
-                    />
+                    {isTicketMessageSourceType(selectedChannel) ? (
+                        <SourceIcon type={selectedChannel} className="md-2" />
+                    ) : (
+                        <SourceIcon
+                            type={selectedChannel?.slug}
+                            className={css.newChannelIcon}
+                        />
+                    )}
                 </DropdownToggle>
                 <ConvertToForwardPopover target={dropdownToggleRef} />
                 <DropdownMenu>
