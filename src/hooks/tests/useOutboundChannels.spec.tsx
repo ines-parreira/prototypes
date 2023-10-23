@@ -27,8 +27,11 @@ import useOutboundChannels, {
     useSendersForSelectedChannel,
 } from '../useOutboundChannels'
 
-const {getReplyChannelsForTicket, getLegacyReplySourcesForTicket} =
-    privateFunctions
+const {
+    getReplyChannelsForTicket,
+    getLegacyReplySourcesForTicket,
+    getSelectedChannel,
+} = privateFunctions
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({
@@ -430,6 +433,25 @@ describe('getLegacyReplySourcesForTicket()', () => {
 
             expect(sources).toEqual(expectedSources)
         })
+    })
+})
+
+describe('getSelectedChannel()', () => {
+    it('should infer the selected channel from a given ticket message source', () => {
+        expect(
+            getSelectedChannel({type: TicketMessageSourceType.Email})
+        ).toEqual('email')
+
+        expect(
+            getSelectedChannel({
+                type: TicketMessageSourceType.Email,
+                extra: {forward: true},
+            })
+        ).toEqual('email-forward')
+
+        expect(
+            getSelectedChannel({type: 'tiktok-shop' as TicketMessageSourceType})
+        ).toEqual(getChannelBySlug('tiktok-shop'))
     })
 })
 

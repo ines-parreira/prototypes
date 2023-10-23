@@ -10,6 +10,7 @@ import {
 
 import type {
     GorgiasContactFormTicketMeta,
+    Source,
     SourceAddress,
     TicketEvent,
     TicketMessage,
@@ -22,6 +23,11 @@ export const isTicketMessage = (
 export const isTicketEvent = (
     obj: Record<string, unknown>
 ): obj is TicketEvent => obj.isEvent as boolean
+
+export function isSource(input: unknown): input is Source {
+    const maybeSource = input as Source
+    return isObject(maybeSource) && typeof maybeSource?.type === 'string'
+}
 
 export function isTicketMessageSourceType(
     input: unknown

@@ -10,13 +10,14 @@ import {
     getSendersForChannel,
 } from 'state/integrations/selectors'
 import {
+    getNewMessageSource,
     getNewMessageSourceProperty,
-    getNewMessageType,
 } from 'state/newMessage/selectors'
 
 import {Application, getApplications} from 'services/applications'
-import {SourceAddress, Ticket} from 'models/ticket/types'
+import {Source, SourceAddress, Ticket} from 'models/ticket/types'
 import {
+    isSource,
     isSourceAddress,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
@@ -24,6 +25,7 @@ import {Integration, IntegrationType} from 'models/integration/types'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
 import {Channel, getChannels, isNewChannel, toChannel} from 'services/channels'
+import {DEFAULT_SOURCE_TYPE} from 'config/ticket'
 
 const LEGACY_OUTBOUND_SOURCES_BY_INTEGRATION: Partial<
     Record<IntegrationType, TicketMessageSourceType[]>
@@ -78,10 +80,8 @@ export default function useOutboundChannels(): {
     const newChannels = getReplyChannelsForTicket(ticket, applications)
     const legacyChannels = getLegacyReplySourcesForTicket(ticket, integrations)
 
-    const newMessageSourceType = useAppSelector(getNewMessageType)
-    const selectedChannel = isTicketMessageSourceType(newMessageSourceType)
-        ? newMessageSourceType
-        : toChannel(newMessageSourceType)
+    const source = useAppSelector(getNewMessageSource).toJS()
+    const selectedChannel = getSelectedChannel(source)
 
     const selectChannel = useCallback(
         (channel: Maybe<Channel | TicketMessageSourceType>) => {
@@ -105,6 +105,27 @@ export default function useOutboundChannels(): {
         selectChannel,
         selectedChannel,
     }
+}
+
+function getSelectedChannel(
+    source: Maybe<Source>
+): Maybe<Channel | TicketMessageSourceType> {
+    if (!isSource(source)) {
+        return DEFAULT_SOURCE_TYPE
+    }
+
+    if (isTicketMessageSourceType(source.type)) {
+        if (
+            source.type === TicketMessageSourceType.Email &&
+            source.extra?.forward
+        ) {
+            return TicketMessageSourceType.EmailForward
+        }
+
+        return source.type
+    }
+
+    return toChannel(source.type)
 }
 
 function getReplyChannelsForTicket(
@@ -236,6 +257,7 @@ function getLegacyReplySourcesForTicket(
 }
 
 export const privateFunctions = {
+    getSelectedChannel,
     getReplyChannelsForTicket,
     getLegacyReplySourcesForTicket,
 }

@@ -1199,6 +1199,10 @@ export function humanizeChannel(channel: string): string {
             return humanize(channel)
         }
 
+        if (channel === TicketMessageSourceType.EmailForward) {
+            return 'Forward'
+        }
+
         const channelFromSource = ticketConfig.sourceTypeToChannel(channel)
         return (
             TICKET_CHANNEL_NAMES[channelFromSource] ??
