@@ -15,6 +15,7 @@ type Props = {
     callStatus: JSX.Element | string | null
     dateTime: string
     voiceCall: VoiceCall
+    icon: string
 }
 
 export default function TicketVoiceCallContainer({
@@ -23,6 +24,7 @@ export default function TicketVoiceCallContainer({
     callStatus,
     dateTime,
     voiceCall,
+    icon,
 }: Props) {
     return (
         <div className={css.container}>
@@ -37,7 +39,7 @@ export default function TicketVoiceCallContainer({
                                 css.phoneIcon
                             )}
                         >
-                            phone
+                            {icon}
                         </i>
                     </div>
                     <DatetimeLabel

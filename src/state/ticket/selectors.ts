@@ -199,10 +199,13 @@ const getVoiceCallQueryTimestamp = createSelector(
     }
 )
 
-const getVoiceCalls = createSelector(getTicketState, (ticket) =>
-    appQueryClient.getQueryData<Awaited<ReturnType<typeof listVoiceCalls>>>(
-        voiceCallsKeys.list({ticket_id: ticket.get('id')})
-    )
+const getVoiceCalls = createSelector(
+    getTicketState,
+    getVoiceCallQueryTimestamp,
+    (ticket) =>
+        appQueryClient.getQueryData<Awaited<ReturnType<typeof listVoiceCalls>>>(
+            voiceCallsKeys.list({ticket_id: ticket.get('id')})
+        )
 )
 
 // return elements we display in the body of a ticket (messages, events, etc.)
@@ -214,7 +217,6 @@ export const getBody = createImmutableSelector(
     getRuleSuggestion,
     getAISuggestion,
     getTicketFieldState,
-    getVoiceCallQueryTimestamp,
     getVoiceCalls,
     (
         messages,
@@ -224,7 +226,6 @@ export const getBody = createImmutableSelector(
         ruleSuggestion,
         aiSuggestion,
         ticketFieldState,
-        _,
         voiceCallsData
     ) => {
         const nextMessages = messages.map((message) => {

@@ -29,6 +29,7 @@ export default function TicketVoiceCallOutbound({voiceCall}: Props) {
                         : 'is making a call'}
                 </>
             }
+            icon={'call_made'}
             callStatus={<TicketVoiceCallOutboundStatus voiceCall={voiceCall} />}
             voiceCall={voiceCall}
         />

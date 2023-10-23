@@ -1,5 +1,6 @@
 import React from 'react'
 import {fromJS} from 'immutable'
+import {isEmpty} from 'lodash'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import {useCustomerDetails} from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
@@ -21,7 +22,11 @@ export default function VoiceCallCustomerLabel({
     return (
         <div className={css.name}>
             <CustomerLabel
-                customer={error ? formattedPhoneNumber : fromJS(customer)}
+                customer={
+                    error || isEmpty(customer)
+                        ? formattedPhoneNumber
+                        : fromJS(customer)
+                }
             />
         </div>
     )

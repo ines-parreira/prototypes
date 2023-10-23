@@ -74,6 +74,12 @@ describe('TicketVoiceCallInbound', () => {
         expect(callDuration).toBeInTheDocument()
     })
 
+    it('renders the call icon', () => {
+        const {getByText} = renderComponent()
+        const icon = getByText('call_received')
+        expect(icon).toBeInTheDocument()
+    })
+
     it('displays correct header when call is still in progress', () => {
         isFinalVoiceCallSpy.mockReturnValue(false)
         const {getByText} = renderComponent()
