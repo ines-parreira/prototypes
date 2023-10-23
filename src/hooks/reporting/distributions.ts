@@ -1,40 +1,15 @@
 import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {
-    TicketDimension,
-    TicketMeasure,
-    TicketSegment,
-} from 'models/reporting/cubes/TicketCube'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
-import {ReportingQuery} from 'models/reporting/types'
+import {workloadPerChannelDistributionQueryFactory} from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
 import {StatsFilters} from 'models/stat/types'
 import {OneDimensionalDataItem} from 'pages/stats/types'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {
-    getPreviousPeriod,
-    NotSpamNorTrashedTicketsFilter,
-    statsFiltersToReportingFilters,
-    TicketStatsFiltersMembers,
-} from 'utils/reporting'
-
-const workloadPerChannelDistributionQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    measures: [TicketMeasure.TicketCount],
-    order: [[TicketMeasure.TicketCount, OrderDirection.Desc]],
-    dimensions: [TicketDimension.Channel],
-    segments: [TicketSegment.WorkloadTickets],
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
-    ],
-    timezone,
-})
+import {getPreviousPeriod} from 'utils/reporting'
 
 export const useWorkloadPerChannelDistribution = (
     filters: StatsFilters,

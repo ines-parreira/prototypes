@@ -171,6 +171,20 @@ exports[`time series useTicketsClosedTimeSeries should create reporting filters 
     "dimensions": [],
     "filters": [
       {
+        "member": "Ticket.isTrashed",
+        "operator": "equals",
+        "values": [
+          "0",
+        ],
+      },
+      {
+        "member": "Ticket.isSpam",
+        "operator": "equals",
+        "values": [
+          "0",
+        ],
+      },
+      {
         "member": "Ticket.periodStart",
         "operator": "afterDate",
         "values": [
@@ -212,20 +226,6 @@ exports[`time series useTicketsClosedTimeSeries should create reporting filters 
         "values": [
           "1",
           "2",
-        ],
-      },
-      {
-        "member": "Ticket.isTrashed",
-        "operator": "equals",
-        "values": [
-          "0",
-        ],
-      },
-      {
-        "member": "Ticket.isSpam",
-        "operator": "equals",
-        "values": [
-          "0",
         ],
       },
     ],

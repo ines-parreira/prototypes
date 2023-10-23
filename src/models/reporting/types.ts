@@ -84,6 +84,13 @@ export type ReportingQuery<TCube extends Cube = Cube> = {
     timezone?: string
 }
 
+export type TimeSeriesQuery<TCube extends Cube = Cube> = Omit<
+    ReportingQuery<TCube>,
+    'timeDimensions'
+> & {
+    timeDimensions: [Required<ReportingTimeDimension<TCube['timeDimensions']>>]
+}
+
 export type ReportingParams<TCube extends Cube = Cube> = ReportingQuery<TCube>[]
 
 export type ReportingResponse<TData extends unknown[]> = {

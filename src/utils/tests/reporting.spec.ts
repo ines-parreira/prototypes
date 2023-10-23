@@ -1,6 +1,6 @@
 import {TicketChannel} from 'business/types/ticket'
-import {messagesSentQueryFactory} from 'hooks/reporting/metricTrends'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {
     ReportingFilterOperator,
     ReportingGranularity,

@@ -1,10 +1,6 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 import {
-    customFieldsTicketCountQueryFactory,
-    firstResponseTimeMetricPerAgentQueryFactory,
-} from 'hooks/reporting/metricsPerDimension'
-import {
     QueryReturnType,
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
@@ -16,6 +12,8 @@ import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
+import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {firstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
 import {ReportingQuery} from 'models/reporting/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {assumeMock} from 'utils/testing'

@@ -8,6 +8,8 @@ src/config/stats.tsx @gorgias/analytics-frontend
 src/fixtures/stats.ts @gorgias/analytics-frontend
 src/hooks/reporting @gorgias/analytics-frontend
 src/models/reporting @gorgias/analytics-frontend
+src/models/reporting/queryFactories/automation @gorgias/automations-engine
+src/models/reporting/queryFactories/help-center @gorgias/automations-help-center
 src/pages/stats @gorgias/analytics-frontend
 src/services/performanceTipService.ts @gorgias/analytics-frontend
 src/services/reporting @gorgias/analytics-frontend

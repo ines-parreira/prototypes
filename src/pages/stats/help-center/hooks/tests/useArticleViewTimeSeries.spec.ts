@@ -18,6 +18,7 @@ describe('useArticleViewTimeSeries', () => {
         jest.useFakeTimers()
         jest.setSystemTime(mockedDate)
     })
+
     it('should call useTimeSeries hook with correct params', () => {
         const periodStart = formatReportingQueryDate(moment())
         const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))

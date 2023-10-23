@@ -1,13 +1,11 @@
-import {
-    closedTicketsQueryFactory,
-    customerSatisfactionQueryFactory,
-    firstResponseTimeQueryFactory,
-    messagesSentQueryFactory,
-    resolutionTimeQueryFactory,
-    ticketsRepliedQueryFactory,
-} from 'hooks/reporting/metricTrends'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {firstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {resolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {withFilter} from 'utils/reporting'

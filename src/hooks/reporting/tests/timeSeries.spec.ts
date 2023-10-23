@@ -1,40 +1,22 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import {TicketChannel} from 'business/types/ticket'
 import {
     AutomationBillingEventMeasure,
     AutomationBillingEventMember,
 } from 'models/reporting/cubes/AutomationBillingEventCube'
-import {
-    HelpdeskMessageDimension,
-    HelpdeskMessageMeasure,
-    HelpdeskMessageMember,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {
-    TicketDimension,
-    TicketMeasure,
-    TicketMember,
-} from 'models/reporting/cubes/TicketCube'
-import {
-    TicketCustomFieldsDimension,
-    TicketCustomFieldsMeasure,
-    TicketCustomFieldsMember,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {
-    TicketMessagesMember,
-    TicketMessagesSegment,
-} from 'models/reporting/cubes/TicketMessagesCube'
+import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {NotSpamNorTrashedTicketsFilter} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
 import {
-    ticketsCreatedQueryFactory,
     useAutomatedInteractionByEventTypesTimeSeries,
     useAutomatedInteractionTimeSeries,
     useAutomationRateTimeSeries,
@@ -87,95 +69,6 @@ describe('time series', () => {
         }
     )
 
-    describe('ticketsCreatedQueryFactory', () => {
-        it('should build expected query', () => {
-            const query = ticketsCreatedQueryFactory(
-                statsFilters,
-                timezone,
-                granularity
-            )
-
-            expect(query).toEqual({
-                measures: [TicketMeasure.TicketCount],
-                order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
-                dimensions: [],
-                filters: [
-                    {
-                        member: TicketMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                    {
-                        member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [periodEnd],
-                    },
-                    ...NotSpamNorTrashedTicketsFilter,
-                ],
-                segments: [],
-                timeDimensions: [
-                    {
-                        dimension: TicketDimension.CreatedDatetime,
-                        granularity: ReportingGranularity.Day,
-                        dateRange: [periodStart, periodEnd],
-                    },
-                ],
-                timezone,
-            })
-        })
-
-        it('should build expected query with Agents filter', () => {
-            const agentIds = [1, 2]
-            const filters = {
-                ...statsFilters,
-                agents: agentIds,
-            }
-            const query = ticketsCreatedQueryFactory(
-                filters,
-                timezone,
-                granularity
-            )
-
-            expect(query).toEqual({
-                measures: [TicketMeasure.TicketCount],
-                order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
-                dimensions: [],
-                filters: [
-                    {
-                        member: TicketMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                    {
-                        member: TicketMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [periodEnd],
-                    },
-                    ...NotSpamNorTrashedTicketsFilter,
-                    {
-                        member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: agentIds.map(String),
-                    },
-                    {
-                        member: TicketMessagesMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                ],
-                segments: [TicketMessagesSegment.TicketCreatedByAgent],
-                timeDimensions: [
-                    {
-                        dimension: TicketDimension.CreatedDatetime,
-                        granularity: ReportingGranularity.Day,
-                        dateRange: [periodStart, periodEnd],
-                    },
-                ],
-                timezone,
-            })
-        })
-    })
-
     describe('useTicketsCreatedTimeSeries', () => {
         it('should pass the query to the useTimeSeriesHook', () => {
             renderHook(
@@ -189,7 +82,11 @@ describe('time series', () => {
             )
 
             expect(useTimeSeriesMock.mock.calls[0]).toEqual([
-                ticketsCreatedQueryFactory(statsFilters, timezone, granularity),
+                ticketsCreatedTimeSeriesQueryFactory(
+                    statsFilters,
+                    timezone,
+                    granularity
+                ),
             ])
         })
     })
@@ -207,46 +104,11 @@ describe('time series', () => {
             )
 
             expect(useTimeSeriesMock.mock.calls[0]).toEqual([
-                {
-                    measures: [HelpdeskMessageMeasure.TicketCount],
-                    dimensions: [],
-                    filters: [
-                        {
-                            member: HelpdeskMessageMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [periodStart],
-                        },
-                        {
-                            member: HelpdeskMessageMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [periodEnd],
-                        },
-                        ...NotSpamNorTrashedTicketsFilter,
-                        {
-                            member: TicketMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [periodStart],
-                        },
-                        {
-                            member: TicketMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [periodEnd],
-                        },
-                        {
-                            member: HelpdeskMessageMember.Channel,
-                            operator: ReportingFilterOperator.NotEquals,
-                            values: [TicketMessageSourceType.InternalNote],
-                        },
-                    ],
-                    timeDimensions: [
-                        {
-                            dimension: HelpdeskMessageDimension.SentDatetime,
-                            granularity: ReportingGranularity.Day,
-                            dateRange: [periodStart, periodEnd],
-                        },
-                    ],
+                ticketsRepliedTimeSeriesQueryFactory(
+                    statsFilters,
                     timezone,
-                },
+                    granularity
+                ),
             ])
         })
     })
@@ -264,40 +126,11 @@ describe('time series', () => {
             )
 
             expect(useTimeSeriesMock.mock.calls[0]).toEqual([
-                {
-                    measures: [HelpdeskMessageMeasure.MessageCount],
-                    dimensions: [],
-                    timeDimensions: [
-                        {
-                            dimension: HelpdeskMessageDimension.SentDatetime,
-                            granularity: ReportingGranularity.Day,
-                            dateRange: [periodStart, periodEnd],
-                        },
-                    ],
+                messagesSentTimeSeriesQueryFactory(
+                    statsFilters,
                     timezone,
-                    filters: [
-                        {
-                            member: TicketMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [periodStart],
-                        },
-                        {
-                            member: TicketMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [periodEnd],
-                        },
-                        {
-                            member: HelpdeskMessageMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [periodStart],
-                        },
-                        {
-                            member: HelpdeskMessageMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [periodEnd],
-                        },
-                    ],
-                },
+                    granularity
+                ),
             ])
         })
     })
@@ -324,47 +157,12 @@ describe('time series', () => {
             )
 
             expect(useTimeSeriesPerDimensionMock.mock.calls[0]).toEqual([
-                {
-                    measures: [
-                        TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                    ],
-                    dimensions: [
-                        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-                    ],
+                customFieldsTicketCountTimeSeriesQueryFactory(
+                    statsFilters,
                     timezone,
-                    segments: [],
-                    filters: [
-                        ...NotSpamNorTrashedTicketsFilter,
-                        {
-                            member: TicketMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [periodStart],
-                        },
-                        {
-                            member: TicketMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [periodEnd],
-                        },
-                        {
-                            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                            operator: ReportingFilterOperator.Equals,
-                            values: [customFieldId],
-                        },
-                        {
-                            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                            operator: ReportingFilterOperator.InDateRange,
-                            values: [periodStart, periodEnd],
-                        },
-                    ],
-                    timeDimensions: [
-                        {
-                            dimension:
-                                TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                            granularity: ReportingGranularity.Day,
-                            dateRange: [periodStart, periodEnd],
-                        },
-                    ],
-                },
+                    granularity,
+                    customFieldId
+                ),
             ])
         })
     })
@@ -418,7 +216,6 @@ describe('time series', () => {
                                 operator: ReportingFilterOperator.BeforeDate,
                                 values: [periodEnd],
                             },
-
                             {
                                 member: AutomationBillingEventMember.PeriodEnd,
                                 operator: ReportingFilterOperator.BeforeDate,

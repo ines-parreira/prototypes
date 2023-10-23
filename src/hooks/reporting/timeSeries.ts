@@ -1,92 +1,17 @@
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {customFieldsTicketCountQueryFactory} from 'hooks/reporting/metricsPerDimension'
 import {OrderDirection} from 'models/api/types'
-import {
-    AutomationBillingEventDimension,
-    AutomationBillingEventMeasure,
-    AutomationBillingEventMember,
-} from 'models/reporting/cubes/AutomationBillingEventCube'
-import {
-    HelpdeskMessageCubeWithJoins,
-    HelpdeskMessageDimension,
-    HelpdeskMessageMeasure,
-    HelpdeskMessageMember,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {
-    TicketDimension,
-    TicketMeasure,
-    TicketMember,
-    TicketSegment,
-} from 'models/reporting/cubes/TicketCube'
-import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {
-    TicketMessagesMember,
-    TicketMessagesSegment,
-} from 'models/reporting/cubes/TicketMessagesCube'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-    ReportingGranularity,
-} from 'models/reporting/types'
+
+import {automatedInteractionsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automation/automatedInteractions'
+import {automatedInteractionsByEventTypeQueryFactory} from 'models/reporting/queryFactories/automation/automatedInteractionsByEventType'
+import {automationRateTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automation/automationRate'
+import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {
-    AutomationAddonStatsFiltersMembers,
-    getFilterDateRange,
-    HelpdeskMessagesStatsFiltersMembers,
-    NotSpamNorTrashedTicketsFilter,
-    statsFiltersToReportingFilters,
-    TicketStatsFiltersMembers,
-} from 'utils/reporting'
 
-import useTimeSeries, {
-    TimeSeriesQuery,
-    useTimeSeriesPerDimension,
-} from './useTimeSeries'
-
-export const ticketsCreatedQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity
-): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => {
-    const {agents, ...statFiltersWithoutAgents} = statsFilters
-    const commonFilters: ReportingFilter[] = [...NotSpamNorTrashedTicketsFilter]
-    if (agents?.length) {
-        commonFilters.push({
-            member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-            operator: ReportingFilterOperator.Equals,
-            values: agents.map(String),
-        })
-        commonFilters.push({
-            member: TicketMessagesMember.PeriodStart,
-            operator: ReportingFilterOperator.AfterDate,
-            values: [statFiltersWithoutAgents.period.start_datetime],
-        })
-    }
-
-    return {
-        measures: [TicketMeasure.TicketCount],
-        dimensions: [],
-        segments: agents?.length
-            ? [TicketMessagesSegment.TicketCreatedByAgent]
-            : [],
-        timeDimensions: [
-            {
-                dimension: TicketDimension.CreatedDatetime,
-                granularity,
-                dateRange: getFilterDateRange(statsFilters),
-            },
-        ],
-        timezone,
-        order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
-        filters: [
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                statFiltersWithoutAgents
-            ),
-            ...commonFilters,
-        ],
-    }
-}
+import useTimeSeries, {useTimeSeriesPerDimension} from './useTimeSeries'
 
 export function useTicketsCreatedTimeSeries(
     filters: StatsFilters,
@@ -94,7 +19,7 @@ export function useTicketsCreatedTimeSeries(
     granularity: ReportingGranularity
 ) {
     return useTimeSeries(
-        ticketsCreatedQueryFactory(filters, timezone, granularity)
+        ticketsCreatedTimeSeriesQueryFactory(filters, timezone, granularity)
     )
 }
 
@@ -103,27 +28,9 @@ export function useTicketsClosedTimeSeries(
     timezone: string,
     granularity: ReportingGranularity
 ) {
-    return useTimeSeries({
-        measures: [TicketMeasure.TicketCount],
-        timeDimensions: [
-            {
-                dimension: TicketDimension.ClosedDatetime,
-                granularity,
-                dateRange: getFilterDateRange(filters),
-            },
-        ],
-        timezone,
-        dimensions: [],
-        order: [[TicketDimension.ClosedDatetime, OrderDirection.Asc]],
-        segments: [TicketSegment.ClosedTickets],
-        filters: [
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                filters
-            ),
-            ...NotSpamNorTrashedTicketsFilter,
-        ],
-    })
+    return useTimeSeries(
+        closedTicketsTimeSeriesQueryFactory(filters, timezone, granularity)
+    )
 }
 
 export function useTicketsRepliedTimeSeries(
@@ -131,40 +38,9 @@ export function useTicketsRepliedTimeSeries(
     timezone: string,
     granularity: ReportingGranularity
 ) {
-    return useTimeSeries({
-        measures: [HelpdeskMessageMeasure.TicketCount],
-        dimensions: [],
-        timeDimensions: [
-            {
-                dimension: HelpdeskMessageDimension.SentDatetime,
-                granularity,
-                dateRange: getFilterDateRange(filters),
-            },
-        ],
-        timezone,
-        filters: [
-            ...statsFiltersToReportingFilters(
-                HelpdeskMessagesStatsFiltersMembers,
-                filters
-            ),
-            ...NotSpamNorTrashedTicketsFilter,
-            {
-                member: TicketMember.PeriodStart,
-                operator: ReportingFilterOperator.AfterDate,
-                values: [filters.period.start_datetime],
-            },
-            {
-                member: TicketMember.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: [filters.period.end_datetime],
-            },
-            {
-                member: HelpdeskMessageMember.Channel,
-                operator: ReportingFilterOperator.NotEquals,
-                values: [TicketMessageSourceType.InternalNote],
-            },
-        ],
-    })
+    return useTimeSeries(
+        ticketsRepliedTimeSeriesQueryFactory(filters, timezone, granularity)
+    )
 }
 
 export function useMessagesSentTimeSeries(
@@ -172,34 +48,9 @@ export function useMessagesSentTimeSeries(
     timezone: string,
     granularity: ReportingGranularity
 ) {
-    return useTimeSeries({
-        measures: [HelpdeskMessageMeasure.MessageCount],
-        dimensions: [],
-        timeDimensions: [
-            {
-                dimension: HelpdeskMessageDimension.SentDatetime,
-                granularity,
-                dateRange: getFilterDateRange(filters),
-            },
-        ],
-        timezone,
-        filters: [
-            {
-                member: TicketMember.PeriodStart,
-                operator: ReportingFilterOperator.AfterDate,
-                values: [filters.period.start_datetime],
-            },
-            {
-                member: TicketMember.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: [filters.period.end_datetime],
-            },
-            ...statsFiltersToReportingFilters(
-                HelpdeskMessagesStatsFiltersMembers,
-                filters
-            ),
-        ],
-    })
+    return useTimeSeries(
+        messagesSentTimeSeriesQueryFactory(filters, timezone, granularity)
+    )
 }
 
 export const useCustomFieldsTicketCountTimeSeries = (
@@ -209,23 +60,15 @@ export const useCustomFieldsTicketCountTimeSeries = (
     customFieldId: string,
     sorting?: OrderDirection
 ) => {
-    return useTimeSeriesPerDimension({
-        ...customFieldsTicketCountQueryFactory(
+    return useTimeSeriesPerDimension(
+        customFieldsTicketCountTimeSeriesQueryFactory(
             filters,
             timezone,
+            granularity,
             customFieldId,
             sorting
-        ),
-        timeDimensions: [
-            {
-                dimension:
-                    TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                granularity,
-                dateRange: getFilterDateRange(filters),
-            },
-        ],
-        timezone,
-    })
+        )
+    )
 }
 
 // Automation add-on
@@ -234,58 +77,23 @@ export function useAutomationRateTimeSeries(
     timezone: string,
     granularity: ReportingGranularity
 ) {
-    return useTimeSeries({
-        measures: [AutomationBillingEventMeasure.AutomationRate],
-        dimensions: [],
-        timeDimensions: [
-            {
-                dimension: AutomationBillingEventDimension.CreatedDate,
-                granularity,
-                dateRange: getFilterDateRange(filters),
-            },
-        ],
-        timezone,
-        filters: [
-            ...statsFiltersToReportingFilters(
-                AutomationAddonStatsFiltersMembers,
-                filters
-            ),
-            {
-                member: AutomationBillingEventMember.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: [filters.period.end_datetime],
-            },
-        ],
-    })
+    return useTimeSeries(
+        automationRateTimeSeriesQueryFactory(filters, timezone, granularity)
+    )
 }
+
 export function useAutomatedInteractionTimeSeries(
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity
 ) {
-    return useTimeSeries({
-        measures: [AutomationBillingEventMeasure.AutomatedInteractions],
-        dimensions: [],
-        timeDimensions: [
-            {
-                dimension: AutomationBillingEventDimension.CreatedDate,
-                granularity,
-                dateRange: getFilterDateRange(filters),
-            },
-        ],
-        timezone,
-        filters: [
-            ...statsFiltersToReportingFilters(
-                AutomationAddonStatsFiltersMembers,
-                filters
-            ),
-            {
-                member: AutomationBillingEventMember.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: [filters.period.end_datetime],
-            },
-        ],
-    })
+    return useTimeSeries(
+        automatedInteractionsTimeSeriesQueryFactory(
+            filters,
+            timezone,
+            granularity
+        )
+    )
 }
 
 export function useAutomatedInteractionByEventTypesTimeSeries(
@@ -293,35 +101,11 @@ export function useAutomatedInteractionByEventTypesTimeSeries(
     timezone: string,
     granularity: ReportingGranularity
 ) {
-    return useTimeSeries({
-        measures: [
-            AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder,
-            AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns,
-            AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse,
-            AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation,
-            AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse,
-            AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows,
-            AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders,
-        ],
-        dimensions: [],
-        timeDimensions: [
-            {
-                dimension: AutomationBillingEventDimension.CreatedDate,
-                granularity,
-                dateRange: getFilterDateRange(filters),
-            },
-        ],
-        timezone,
-        filters: [
-            ...statsFiltersToReportingFilters(
-                AutomationAddonStatsFiltersMembers,
-                filters
-            ),
-            {
-                member: AutomationBillingEventMember.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: [filters.period.end_datetime],
-            },
-        ],
-    })
+    return useTimeSeries(
+        automatedInteractionsByEventTypeQueryFactory(
+            filters,
+            timezone,
+            granularity
+        )
+    )
 }

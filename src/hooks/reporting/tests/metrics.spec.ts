@@ -1,13 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {
-    closedTicketsQueryFactory,
-    customerSatisfactionQueryFactory,
-    firstResponseTimeQueryFactory,
-    messagesSentQueryFactory,
-    ticketsRepliedQueryFactory,
-    resolutionTimeQueryFactory,
-} from 'hooks/reporting/metricTrends'
+import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {firstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {resolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, withFilter} from 'utils/reporting'

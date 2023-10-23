@@ -3,21 +3,9 @@ import moment from 'moment-timezone'
 import {DataResponse} from 'hooks/reporting/withDeciles'
 import {Cubes} from 'models/reporting/cubes'
 import {usePostReporting} from 'models/reporting/queries'
-import {
-    Cube,
-    ReportingGranularity,
-    ReportingQuery,
-    ReportingTimeDimension,
-} from 'models/reporting/types'
+import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
 
 import {formatReportingQueryDate} from 'utils/reporting'
-
-export type TimeSeriesQuery<TCube extends Cube = Cube> = Omit<
-    ReportingQuery<TCube>,
-    'timeDimensions'
-> & {
-    timeDimensions: [Required<ReportingTimeDimension<TCube['timeDimensions']>>]
-}
 
 export type TimeSeriesDataItem = {
     dateTime: string

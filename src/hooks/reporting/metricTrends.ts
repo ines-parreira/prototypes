@@ -1,62 +1,20 @@
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {firstResponseTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTimeWithAutomationQueryFactory'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import {
-    AutomationBillingEventMeasure,
-    AutomationBillingEventMember,
-} from 'models/reporting/cubes/AutomationBillingEventCube'
-import {
-    HelpdeskMessageCubeWithJoins,
-    HelpdeskMessageMeasure,
-    HelpdeskMessageMember,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {
-    TicketMeasure,
-    TicketMember,
-    TicketSegment,
-} from 'models/reporting/cubes/TicketCube'
-import {
-    TicketMessagesMeasure,
-    TicketMessagesMember,
-    TicketMessagesSegment,
-} from 'models/reporting/cubes/TicketMessagesCube'
-import {
-    TicketSatisfactionSurveyMeasure,
-    TicketSatisfactionSurveySegment,
-} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'models/reporting/types'
+import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automation/automatedInteractions'
+import {automationRateQueryFactory} from 'models/reporting/queryFactories/automation/automationRate'
+import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {firstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {messagesPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
+import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
+import {overallTimeSavedWithAutomationQueryFactory} from 'models/reporting/queryFactories/automation/overallTimeSavedWithAutomation'
+import {resolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {resolutionTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/automation/resolutionTimeWithAutomation'
+import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {StatsFilters} from 'models/stat/types'
-import {
-    AutomationAddonStatsFiltersMembers,
-    formatReportingQueryDate,
-    getFilterDateRange,
-    getPreviousPeriod,
-    HelpdeskMessagesStatsFiltersMembers,
-    NotSpamNorTrashedTicketsFilter,
-    PublicHelpdeskAndApiMessagesFilter,
-    statsFiltersToReportingFilters,
-    TicketStatsFiltersMembers,
-} from 'utils/reporting'
-
-export const customerSatisfactionQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [TicketSatisfactionSurveyMeasure.SurveyScore],
-    dimensions: [],
-    timezone,
-    segments: [TicketSatisfactionSurveySegment.SurveyScored],
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(
-            TicketStatsFiltersMembers,
-            statsFilters
-        ),
-    ],
-})
+import {getPreviousPeriod} from 'utils/reporting'
 
 export const useCustomerSatisfactionTrend = (
     filters: StatsFilters,
@@ -73,42 +31,6 @@ export const useCustomerSatisfactionTrend = (
         )
     )
 
-export const firstResponseTimeQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string
-) => {
-    const {agents, ...statFiltersWithoutAgents} = statsFilters
-    const commonFilters: ReportingFilter[] = [
-        ...NotSpamNorTrashedTicketsFilter,
-        {
-            member: TicketMessagesMember.FirstHelpdeskMessageDatetime,
-            operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(statsFilters),
-        },
-    ]
-    if (agents?.length) {
-        commonFilters.push({
-            member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-            operator: ReportingFilterOperator.Equals,
-            values: agents.map((agent) => agent.toString()),
-        })
-    }
-
-    return {
-        measures: [TicketMessagesMeasure.FirstResponseTime],
-        dimensions: [],
-        timezone,
-        segments: [TicketMessagesSegment.ConversationStarted],
-        filters: [
-            ...commonFilters,
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                statFiltersWithoutAgents
-            ),
-        ],
-    }
-}
-
 export const useFirstResponseTimeTrend = (
     filters: StatsFilters,
     timezone: string
@@ -123,29 +45,6 @@ export const useFirstResponseTimeTrend = (
             timezone
         )
     )
-
-export const messagesPerTicketQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [TicketMessagesMeasure.MessagesAverage],
-    dimensions: [],
-    timezone,
-    filters: [
-        {
-            member: HelpdeskMessageMember.SentDatetime,
-            operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(filters),
-        },
-        ...PublicHelpdeskAndApiMessagesFilter,
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
-    ],
-    segments: [
-        TicketSegment.ClosedTickets,
-        TicketMessagesSegment.ConversationStarted,
-    ],
-})
 
 export const useMessagesPerTicketTrend = (
     filters: StatsFilters,
@@ -162,26 +61,6 @@ export const useMessagesPerTicketTrend = (
         )
     )
 
-export const resolutionTimeQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [TicketMessagesMeasure.ResolutionTime],
-    dimensions: [],
-    timezone,
-    segments: [
-        TicketSegment.ClosedTickets,
-        TicketMessagesSegment.ConversationStarted,
-    ],
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(
-            TicketStatsFiltersMembers,
-            statsFilters
-        ),
-    ],
-})
-
 export const useResolutionTimeTrend = (
     filters: StatsFilters,
     timezone: string
@@ -197,33 +76,10 @@ export const useResolutionTimeTrend = (
         )
     )
 
-export const openTicketsTrendQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [TicketMeasure.TicketCount],
-    dimensions: [],
-    timezone,
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        {
-            member: TicketMember.Status,
-            operator: ReportingFilterOperator.Equals,
-            values: ['open'],
-        },
-        ...statsFiltersToReportingFilters(
-            TicketStatsFiltersMembers,
-            filters
-        ).filter(
-            (filter) => filter.member !== TicketStatsFiltersMembers.periodStart
-        ),
-    ],
-})
-
 export const useOpenTicketsTrend = (filters: StatsFilters, timezone: string) =>
     useMetricTrend(
-        openTicketsTrendQueryFactory(filters, timezone),
-        openTicketsTrendQueryFactory(
+        openTicketsQueryFactory(filters, timezone),
+        openTicketsQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
@@ -231,23 +87,6 @@ export const useOpenTicketsTrend = (filters: StatsFilters, timezone: string) =>
             timezone
         )
     )
-
-export const closedTicketsQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [TicketMeasure.TicketCount],
-    dimensions: [],
-    timezone,
-    segments: [TicketSegment.ClosedTickets],
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(
-            TicketStatsFiltersMembers,
-            statsFilters
-        ),
-    ],
-})
 
 export const useClosedTicketsTrend = (
     filters: StatsFilters,
@@ -264,49 +103,6 @@ export const useClosedTicketsTrend = (
         )
     )
 
-export const ticketsCreatedQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string
-) => {
-    const {agents, ...statFiltersWithoutAgents} = statsFilters
-    const commonFilters: ReportingFilter[] = [
-        {
-            member: TicketMember.CreatedDatetime,
-            operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(statsFilters),
-        },
-        ...NotSpamNorTrashedTicketsFilter,
-    ]
-    if (agents?.length) {
-        commonFilters.push({
-            member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-            operator: ReportingFilterOperator.Equals,
-            values: agents.map((agent) => agent.toString()),
-        })
-        commonFilters.push({
-            member: TicketMessagesMember.PeriodStart,
-            operator: ReportingFilterOperator.AfterDate,
-            values: [statFiltersWithoutAgents.period.start_datetime],
-        })
-    }
-
-    return {
-        measures: [TicketMeasure.TicketCount],
-        dimensions: [],
-        segments: agents?.length
-            ? [TicketMessagesSegment.TicketCreatedByAgent]
-            : [],
-        timezone,
-        filters: [
-            ...commonFilters,
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                statFiltersWithoutAgents
-            ),
-        ],
-    }
-}
-
 export const useTicketsCreatedTrend = (
     filters: StatsFilters,
     timezone: string
@@ -318,43 +114,6 @@ export const useTicketsCreatedTrend = (
             timezone
         )
     )
-
-export const ticketsRepliedQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [HelpdeskMessageMeasure.TicketCount],
-    dimensions: [],
-    timezone,
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        {
-            member: HelpdeskMessageMember.SentDatetime,
-            operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(filters),
-        },
-        {
-            member: TicketMember.PeriodStart,
-            operator: ReportingFilterOperator.AfterDate,
-            values: [formatReportingQueryDate(filters.period.start_datetime)],
-        },
-        {
-            member: TicketMember.PeriodEnd,
-            operator: ReportingFilterOperator.BeforeDate,
-            values: [formatReportingQueryDate(filters.period.end_datetime)],
-        },
-        {
-            member: TicketMember.Channel,
-            operator: ReportingFilterOperator.NotEquals,
-            values: [TicketMessageSourceType.InternalNote],
-        },
-        ...PublicHelpdeskAndApiMessagesFilter,
-        ...statsFiltersToReportingFilters(
-            HelpdeskMessagesStatsFiltersMembers,
-            filters
-        ),
-    ],
-})
 
 export const useTicketsRepliedTrend = (
     filters: StatsFilters,
@@ -368,37 +127,6 @@ export const useTicketsRepliedTrend = (
         )
     )
 
-export const messagesSentQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    measures: [HelpdeskMessageMeasure.MessageCount],
-    dimensions: [],
-    timezone,
-    filters: [
-        {
-            member: TicketMember.PeriodStart,
-            operator: ReportingFilterOperator.AfterDate,
-            values: [formatReportingQueryDate(filters.period.start_datetime)],
-        },
-        {
-            member: TicketMember.PeriodEnd,
-            operator: ReportingFilterOperator.BeforeDate,
-            values: [formatReportingQueryDate(filters.period.end_datetime)],
-        },
-        {
-            member: HelpdeskMessageMember.SentDatetime,
-            operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(filters),
-        },
-        ...PublicHelpdeskAndApiMessagesFilter,
-        ...statsFiltersToReportingFilters(
-            HelpdeskMessagesStatsFiltersMembers,
-            filters
-        ),
-    ],
-})
-
 export const useMessagesSentTrend = (filters: StatsFilters, timezone: string) =>
     useMetricTrend(
         messagesSentQueryFactory(filters, timezone),
@@ -407,28 +135,6 @@ export const useMessagesSentTrend = (filters: StatsFilters, timezone: string) =>
             timezone
         )
     )
-
-const automationAddOnDefaultFilters = (filters: StatsFilters) => [
-    {
-        member: AutomationBillingEventMember.CreatedDate,
-        operator: ReportingFilterOperator.InDateRange,
-        values: getFilterDateRange(filters),
-    },
-    ...statsFiltersToReportingFilters(
-        AutomationAddonStatsFiltersMembers,
-        filters
-    ),
-]
-
-export const firstResponseTimeWithAutomationQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [AutomationBillingEventMeasure.FirstResponseTimeWithAutomation],
-    dimensions: [],
-    timezone,
-    filters: automationAddOnDefaultFilters(filters),
-})
 
 export const useFirstResponseTimeWithAutomationTrend = (
     filters: StatsFilters,
@@ -442,16 +148,6 @@ export const useFirstResponseTimeWithAutomationTrend = (
         )
     )
 
-export const resolutionTimeWithAutomationQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [AutomationBillingEventMeasure.ResolutionTimeWithAutomation],
-    dimensions: [],
-    timezone,
-    filters: automationAddOnDefaultFilters(filters),
-})
-
 export const useResolutionTimeWithAutomationTrend = (
     filters: StatsFilters,
     timezone: string
@@ -463,16 +159,6 @@ export const useResolutionTimeWithAutomationTrend = (
             timezone
         )
     )
-
-export const overallTimeSavedWithAutomationQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [AutomationBillingEventMeasure.OverallTimeSaved],
-    dimensions: [],
-    timezone,
-    filters: automationAddOnDefaultFilters(filters),
-})
 
 export const useOverallTimeSavedWithAutomationTrend = (
     filters: StatsFilters,
@@ -486,16 +172,6 @@ export const useOverallTimeSavedWithAutomationTrend = (
         )
     )
 
-export const automationRateQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [AutomationBillingEventMeasure.AutomationRate],
-    dimensions: [],
-    timezone,
-    filters: automationAddOnDefaultFilters(filters),
-})
-
 export const useAutomationRateTrend = (
     filters: StatsFilters,
     timezone: string
@@ -507,16 +183,6 @@ export const useAutomationRateTrend = (
             timezone
         )
     )
-
-export const automatedInteractionsQueryFactory = (
-    filters: StatsFilters,
-    timezone: string
-) => ({
-    measures: [AutomationBillingEventMeasure.AutomatedInteractions],
-    dimensions: [],
-    timezone,
-    filters: automationAddOnDefaultFilters(filters),
-})
 
 export const useAutomatedInteractionsTrend = (
     filters: StatsFilters,
