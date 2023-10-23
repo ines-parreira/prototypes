@@ -161,7 +161,7 @@ module.exports = (env = {}) => {
         devServer,
         devtool,
         entry: {
-            build: `${srcDir}/main.tsx`,
+            build: `${srcDir}/core/init`,
         },
         output: {
             ...outputOptions,

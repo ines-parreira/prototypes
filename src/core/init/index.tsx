@@ -4,9 +4,10 @@ import {render} from 'react-dom'
 import 'init'
 
 import {store} from 'common/store'
-import Root from './pages/Root'
+import Root from 'pages/Root'
+
 // eslint-disable-next-line
-import mobileScrollManager from './services/mobileScrollManager.js'
+import mobileScrollManager from 'services/mobileScrollManager.js'
 
 const container = document.getElementById('App')
 
