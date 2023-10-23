@@ -59,4 +59,5 @@ export enum FeatureFlagKey {
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     EnableNewLanguages = 'enable-new-languages',
     TaapNewReplyMessageChannelSelector = 'taap-new-reply-message-channel-selector',
+    DisplayVoiceAnalytics = 'display-voice-analytics',
 }

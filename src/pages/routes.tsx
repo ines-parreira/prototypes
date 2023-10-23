@@ -154,6 +154,7 @@ import {
 } from './stats/self-service/constants'
 import CampaignStatsPaywallView from './stats/revenue/pages/CampaignsStats/CampaignStatsPaywallView'
 import HelpCenterStats from './stats/help-center/pages/HelpCenterStats'
+import VoiceOverview from './stats/voice/pages/VoiceOverview'
 import ClickTrackingSettingsView from './settings/revenue/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
@@ -440,6 +441,8 @@ export function StatsRoutes() {
         useFlags()[FeatureFlagKey.NewAutomationAddon]
     const hasAnalyticsTicketInsights: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsTicketInsights]
+    const displayVoiceAnalytics: boolean | undefined =
+        useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -587,6 +590,14 @@ export function StatsRoutes() {
                         navbar={StatsNavbarContainer}
                     />
                 </Route>
+                {displayVoiceAnalytics && (
+                    <Route exact path={`${path}/voice-overview`}>
+                        <App
+                            content={VoiceOverview}
+                            navbar={StatsNavbarContainer}
+                        />
+                    </Route>
+                )}
             </Switch>
         </DefaultStatsFilters>
     )
