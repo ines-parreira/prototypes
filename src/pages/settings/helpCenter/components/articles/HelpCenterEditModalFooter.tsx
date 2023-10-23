@@ -109,7 +109,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     isDisabled={canManageArticle ? !canSave : true}
                     color="primary"
                 >
-                    Create &amp; Publish
+                    Save &amp; Publish
                 </Button>
                 {canManageArticle && canSave && (
                     <DropdownToggle tag="span">
@@ -130,10 +130,10 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
 
             <DropdownMenu right style={{width: '100%'}}>
                 <DropdownItem onClick={() => mode.onCreate(false)}>
-                    Create Article
+                    Save Draft
                 </DropdownItem>
                 <DropdownItem onClick={() => mode.onCreate(true)}>
-                    Create &amp; Publish
+                    Save &amp; Publish
                 </DropdownItem>
             </DropdownMenu>
         </UncontrolledDropdown>

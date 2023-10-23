@@ -91,7 +91,7 @@ describe('<HelpCenterEditModalFooter />', () => {
         )
 
         const createAndPublish = getByRole('button', {
-            name: /Create & Publish/i,
+            name: /Save & Publish/i,
         })
         fireEvent.click(createAndPublish)
 
