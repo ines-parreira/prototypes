@@ -207,4 +207,29 @@ describe('<NumberField />', () => {
             })
         }
     )
+
+    it('should update the value when the value prop changes', () => {
+        const {rerender} = render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <NumberField {...initialProps} />
+                </Provider>
+            </QueryClientProvider>
+        )
+        const input = screen.getByRole('spinbutton')
+        expect(input).toHaveValue(fieldState.value)
+
+        const newFieldState = {
+            ...fieldState,
+            value: 123,
+        }
+        rerender(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <NumberField {...initialProps} fieldState={newFieldState} />
+                </Provider>
+            </QueryClientProvider>
+        )
+        expect(input).toHaveValue(newFieldState.value)
+    })
 })

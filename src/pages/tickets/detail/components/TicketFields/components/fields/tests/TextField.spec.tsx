@@ -173,4 +173,29 @@ describe('<TextField />', () => {
             )
         })
     })
+
+    it('should update the value when the value prop changes', () => {
+        const {rerender} = render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <TextField {...initialProps} />
+                </Provider>
+            </QueryClientProvider>
+        )
+        const input = screen.getByRole('textbox')
+        expect(input).toHaveValue(fieldState.value)
+
+        const newFieldState = {
+            ...fieldState,
+            value: 'some new value',
+        }
+        rerender(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <TextField {...initialProps} fieldState={newFieldState} />
+                </Provider>
+            </QueryClientProvider>
+        )
+        expect(input).toHaveValue(newFieldState.value)
+    })
 })

@@ -42,6 +42,13 @@ export default function TextField({
     const [currentValue, setCurrentValue] = useState(initialValue)
     const [isActive, setActive] = useState(false)
 
+    // Update the value when the initial value changes
+    const [previousValue, setPreviousValue] = useState(initialValue)
+    if (initialValue !== previousValue) {
+        setPreviousValue(initialValue)
+        setCurrentValue(initialValue)
+    }
+
     const handleChange = useCallback(
         (newValue: string) => {
             if (hasError && newValue !== '') {
