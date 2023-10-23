@@ -22,6 +22,8 @@ import {
 import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
 import {LanguageBullet} from 'pages/common/components/LanguageBulletList'
 import {Language} from 'constants/languages'
+import useAppSelector from 'hooks/useAppSelector'
+import {makeGetRedirectUri} from 'state/integrations/selectors'
 import Tooltip from '../../../../common/components/Tooltip'
 import history from '../../../../history'
 import {
@@ -56,10 +58,14 @@ const GorgiasChatIntegrationListRow = ({
     integrations,
     isLoadingIntegrations,
 }: GorgiasChatIntegrationListRowProps) => {
+    const getRedirectUri = useAppSelector(makeGetRedirectUri)
+
     const {chatStatus, isChatStatusLoading, isChatStatusError} =
         useGorgiasChatIntegrationStatusData(chat, isLoadingIntegrations)
     const isChatCreationWizardEnabled =
         useFlags()[FeatureFlagKey.ChatCreationWizard]
+    const showUpdatePermissions =
+        useFlags()[FeatureFlagKey.ChatScopeUpdateChatList]
     const integrationId: number = chat.get('id')
 
     const wizardStatus: GorgiasChatCreationWizardStatus = chat.getIn([
@@ -87,6 +93,20 @@ const GorgiasChatIntegrationListRow = ({
     const isStoreDisconnected =
         !storeIntegration || storeIntegration.get('deactivated_datetime')
 
+    const needScopeUpdate = Boolean(
+        storeIntegration?.getIn(['meta', 'need_scope_update'], false)
+    )
+
+    const shopifyIntegrationIds: List<number> = chat.getIn(
+        ['meta', 'shopify_integration_ids'],
+        fromJS([])
+    )
+    const isOneClickInstallation = shopIntegrationId
+        ? shopifyIntegrationIds.includes(shopIntegrationId)
+        : undefined
+
+    const shopName = storeIntegration?.getIn(['meta', 'shop_name'])
+
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
 
@@ -103,7 +123,21 @@ const GorgiasChatIntegrationListRow = ({
 
     const secondaryLanguages = getSecondaryLanguages(languages)
 
-    const goToChat = () => history.push(editLink)
+    const redirectUri = getRedirectUri(IntegrationType.Shopify)
+
+    const retriggerOAuthFlow = (ev: React.MouseEvent) => {
+        ev.stopPropagation()
+        window.location.href = redirectUri.replace('{shop_name}', shopName)
+    }
+
+    const goToChat = () => {
+        if (needScopeUpdate) {
+            history.push(installationLink)
+            return
+        }
+
+        history.push(editLink)
+    }
 
     const stopPropagation = (ev: React.MouseEvent) => {
         ev.stopPropagation()
@@ -299,6 +333,12 @@ const GorgiasChatIntegrationListRow = ({
                     <Link to={editLink} onClick={stopPropagation}>
                         Continue Setup
                     </Link>
+                ) : showUpdatePermissions &&
+                  isOneClickInstallation &&
+                  needScopeUpdate ? (
+                    <a onClick={retriggerOAuthFlow} href="#">
+                        Update Permissions
+                    </a>
                 ) : (
                     <ForwardIcon href={editLink} onClick={stopPropagation} />
                 )}

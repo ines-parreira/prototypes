@@ -196,6 +196,73 @@ describe('<GorgiasChatIntegrationListRow />', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('should render "Update Permissions" link for chat with store integration requiring scope update', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ChatCreationWizard]: true,
+            [FeatureFlagKey.ChatScopeUpdateChatList]: true,
+        }))
+        jest.spyOn(
+            hookGorgiasChatIntegrationStatusData,
+            'useGorgiasChatIntegrationStatusData'
+        ).mockImplementation(() => ({
+            chatStatus: undefined,
+            isChatStatusLoading: false,
+            isChatStatusError: true,
+        }))
+
+        const {container, queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TestWrapper>
+                    <GorgiasChatIntegrationListRow
+                        {...defaultProps}
+                        integrations={
+                            fromJS([
+                                defaultChat,
+                                {
+                                    id: 3,
+                                    name: 'my associated Shopify store',
+                                    type: IntegrationType.Shopify,
+                                    meta: {
+                                        self_service: {
+                                            enabled: false,
+                                        },
+                                        need_scope_update: true,
+                                    },
+                                    decoration: {
+                                        introduction_text: 'this is an intro',
+                                        input_placeholder:
+                                            'type something please',
+                                        main_color: '#123456',
+                                    },
+                                    deactivated_datetime: new Date(
+                                        '2020-12-17'
+                                    ),
+                                },
+                            ]) as List<Map<any, any>>
+                        }
+                        chat={fromJS({
+                            ...defaultChat,
+                            meta: {
+                                ...defaultChat.meta,
+                                shop_integration_id: 3,
+                                shopify_integration_ids: [3],
+                                wizard: {
+                                    status: GorgiasChatCreationWizardStatus.Published,
+                                    step: GorgiasChatCreationWizardSteps.Basics,
+                                },
+                            },
+                        })}
+                    />
+                </TestWrapper>
+            </Provider>
+        )
+
+        expect(queryByText('Update Permissions')).toBeInTheDocument()
+        expect(
+            container.querySelector('.icon-go-forward')
+        ).not.toBeInTheDocument()
+    })
+
     it.each(Object.entries(GorgiasChatIntegrationStatusFeedbackMapping))(
         'for chat status %s should render %s feedback',
         (status, expected) => {
