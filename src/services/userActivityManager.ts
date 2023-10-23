@@ -1,9 +1,9 @@
 import _throttle from 'lodash/throttle'
 import {AnyAction} from 'redux'
 
-import {store as reduxStore} from '../init'
-import {toggleActiveStatus} from '../state/currentUser/actions'
-import {RootState} from '../state/types'
+import {toggleActiveStatus} from 'state/currentUser/actions'
+import {RootState} from 'state/types'
+import {store as reduxStore} from 'common/store'
 
 import {SocketEventType} from './socketManager/types'
 import socketManager from './socketManager/socketManager'

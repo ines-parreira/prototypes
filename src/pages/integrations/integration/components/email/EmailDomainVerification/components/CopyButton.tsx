@@ -2,9 +2,9 @@ import React, {ComponentProps} from 'react'
 import Clipboard from 'clipboard'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import {store} from '../../../../../../../init'
-import {notify} from '../../../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../../../state/notifications/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {store} from 'common/store'
 
 import css from '../EmailDomainVerification.less'
 

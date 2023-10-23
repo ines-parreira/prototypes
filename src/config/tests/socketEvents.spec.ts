@@ -13,47 +13,48 @@ import {
 } from 'fixtures/productPrices'
 import * as currentUserActions from 'state/currentUser/actions'
 import {HelpdeskPrice} from 'models/billing/types'
-import {TicketStatuses} from '../../business/ticket'
-import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
+import {TicketStatuses} from 'business/ticket'
+import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
 
-import * as chatActions from '../../state/chats/actions'
-import * as currentAccountConstants from '../../state/currentAccount/constants'
-import * as currentAccountSelectors from '../../state/currentAccount/selectors'
-import * as billingSelectors from '../../state/billing/selectors'
-import {viewsCountFetched} from '../../state/entities/viewsCount/actions'
-import * as integrationActions from '../../state/integrations/actions'
-import * as notificationActions from '../../state/notifications/actions'
-import {handleViewsCount} from '../../state/views/actions'
+import * as chatActions from 'state/chats/actions'
+import * as currentAccountConstants from 'state/currentAccount/constants'
+import * as currentAccountSelectors from 'state/currentAccount/selectors'
+import * as billingSelectors from 'state/billing/selectors'
+import {viewsCountFetched} from 'state/entities/viewsCount/actions'
+import * as integrationActions from 'state/integrations/actions'
+import * as notificationActions from 'state/notifications/actions'
+import {handleViewsCount} from 'state/views/actions'
 import {
     CustomerExternalDataUpdatedEvent,
     OutboundPhoneCallInitiated,
     SocketEventType,
-} from '../../services/socketManager/types'
-import * as socketEvents from '../socketEvents'
-import {view} from '../../fixtures/views'
+} from 'services/socketManager/types'
+import {view} from 'fixtures/views'
 import {
     viewCreated,
     viewUpdated,
     viewDeleted,
-} from '../../state/entities/views/actions'
-import {isViewSharedWithUser} from '../../state/views/utils'
+} from 'state/entities/views/actions'
+import {isViewSharedWithUser} from 'state/views/utils'
 
-import {isCurrentlyOnTicket} from '../../utils'
-import {store as reduxStore} from '../../init'
-import {section} from '../../fixtures/section'
+import {isCurrentlyOnTicket} from 'utils'
+import {store as reduxStore} from 'common/store'
+import {section} from 'fixtures/section'
+import {
+    sectionCreated,
+    sectionDeleted,
+    sectionUpdated,
+} from 'state/entities/sections/actions'
+import * as ticketActions from 'state/ticket/actions'
+import history from 'pages/history'
+import {mergeCustomerExternalData} from 'state/ticket/actions'
+
 import {
     VIEW_SECTION_CREATED,
     VIEW_SECTION_DELETED,
     VIEW_SECTION_UPDATED,
 } from '../socketConstants'
-import {
-    sectionCreated,
-    sectionDeleted,
-    sectionUpdated,
-} from '../../state/entities/sections/actions'
-import * as ticketActions from '../../state/ticket/actions'
-import history from '../../pages/history'
-import {mergeCustomerExternalData} from '../../state/ticket/actions'
+import * as socketEvents from '../socketEvents'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -61,13 +62,13 @@ const typeSafeReduxStore = reduxStore as EnhancedStore
 jest.mock('services/browserNotification', () => ({newMessage: jest.fn()}))
 
 jest.spyOn(browserNotification, 'newMessage')
-jest.mock('../../state/chats/actions')
-jest.mock('../../state/views/actions')
-jest.mock('../../state/entities/viewsCount/actions')
-jest.mock('../../state/ticket/actions')
+jest.mock('state/chats/actions')
+jest.mock('state/views/actions')
+jest.mock('state/entities/viewsCount/actions')
+jest.mock('state/ticket/actions')
 jest.mock('state/currentUser/actions')
 
-jest.mock('../../init', () => {
+jest.mock('common/store', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
     const {fromJS}: {fromJS: (value: any) => any} = require('immutable')
     const {MAX_RECENT_CHATS} = require('../recentChats')

@@ -1,4 +1,3 @@
-import {fromJS} from 'immutable'
 import moment from 'moment-timezone'
 import {Store} from 'redux'
 import {
@@ -15,26 +14,20 @@ import {
     Filler,
 } from 'chart.js'
 import {SankeyController, Flow} from 'chartjs-chart-sankey'
-import {omit} from 'lodash'
 
 import './polyfills'
 
+import {store} from 'common/store'
 import {EditableUserProfile} from 'config/types/user'
 import {resendVerificationEmail} from 'state/currentAccount/actions'
 import {getBaseEmailIntegration} from 'state/integrations/selectors'
-import {recentViewsStorage} from 'state/views/utils'
 import {notify} from 'state/notifications/actions'
-import configureStore from 'store/configureStore'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {transformSystemMessagesToNotifications} from 'utils'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {GorgiasInitialState, InitialRootState} from 'types'
 import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
 import {initializeNewReleaseHandler} from 'models/api/resources'
-import {Tag} from 'models/tag/types'
-import {View} from 'models/view/types'
-import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
 import {initLaunchDarkly} from 'utils/launchDarkly'
 import {getEnvironment, isProduction, isStaging} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
@@ -54,69 +47,6 @@ const initMoment = (currentUser: EditableUserProfile) => {
     if (currentUser.timezone) {
         moment.tz.setDefault(currentUser.timezone)
     }
-}
-
-export const toInitialStoreState = (initialState: GorgiasInitialState) => {
-    const nextState: Record<keyof GorgiasInitialState | string, any> = {
-        ...initialState,
-    }
-    const sections = initialState.viewSections
-    delete nextState.viewSections
-
-    const recentViews = recentViewsStorage.get()
-    if (recentViews) {
-        ;(nextState.views as GorgiasInitialState['views']).recent = recentViews
-    }
-
-    ;(Object.keys(nextState) as (keyof GorgiasInitialState)[]).forEach(
-        (key) => {
-            nextState[key] = fromJS(nextState[key])
-        }
-    )
-
-    const tags = initialState.tags?.items.reduce(
-        (acc: {[key: string]: Tag}, tag) => {
-            acc[tag.id] = tag as Tag
-            return acc
-        },
-        {}
-    )
-
-    const views = initialState.views?.items.reduce(
-        (acc: {[key: string]: View}, view) => {
-            acc[view.id] = view
-            return acc
-        },
-        {}
-    )
-
-    const phoneNumbers = initialState.phoneNumbers?.reduce(
-        (acc: {[key: number]: OldPhoneNumber}, phoneNumber) => {
-            acc[phoneNumber.id] = phoneNumber
-            return acc
-        },
-        {}
-    )
-    delete nextState.phoneNumbers
-
-    const newPhoneNumbers = initialState.newPhoneNumbers?.reduce(
-        (acc: {[key: number]: NewPhoneNumber}, phoneNumber) => {
-            acc[phoneNumber.id] = phoneNumber
-            return acc
-        },
-        {}
-    )
-    delete nextState.newPhoneNumbers
-
-    nextState.entities = {
-        sections,
-        tags,
-        views,
-        phoneNumbers,
-        newPhoneNumbers,
-    }
-
-    return nextState as InitialRootState
 }
 
 export const notifyAccountNotVerified = (reduxStore: Store) => {
@@ -186,10 +116,10 @@ export function initApp() {
     }
 
     // Supply an initial state to redux for faster page loads. See #752
-    const initialState = omit(window.GORGIAS_STATE, 'channels') || {}
+    const state = store.getState() as RootState
 
-    if (initialState.currentUser) {
-        initMoment(initialState.currentUser as unknown as EditableUserProfile)
+    if (state.currentUser) {
+        initMoment(state.currentUser.toJS())
     }
 
     const eventsToTrack = window.SEGMENT_EVENTS_TO_TRACK
@@ -199,8 +129,6 @@ export function initApp() {
         })
         delete window.SEGMENT_EVENTS_TO_TRACK
     }
-
-    const store = configureStore(toInitialStoreState(initialState))
 
     initializeNewReleaseHandler(store)
 
@@ -213,8 +141,7 @@ export function initApp() {
     ).forEach((notification) => {
         store.dispatch(notify(notification) as any)
     })
-    const state = store.getState()
-    const hasBillingInitialized = !(state as RootState).billing.isEmpty()
+    const hasBillingInitialized = !state.billing.isEmpty()
     const currentHelpdeskProduct = hasBillingInitialized
         ? getCurrentHelpdeskProduct(state)
         : undefined
@@ -223,8 +150,8 @@ export function initApp() {
         : undefined
 
     initLaunchDarkly(
-        initialState.currentUser,
-        initialState.currentAccount,
+        state.currentUser.toJS(),
+        state.currentAccount.toJS(),
         currentHelpdeskProduct?.price_id,
         currentAutomationProduct?.price_id
     )
@@ -248,4 +175,4 @@ export function initApp() {
     return store
 }
 
-export const store = initApp()
+initApp()

@@ -2,7 +2,7 @@ import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 import * as Sentry from '@sentry/react'
 
-import {store as reduxStore} from 'init'
+import {store as reduxStore} from 'common/store'
 import {appQueryClient} from 'api/queryClient'
 import browserNotification from 'services/browserNotification'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'

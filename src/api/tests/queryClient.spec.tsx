@@ -3,9 +3,9 @@ import {act, renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 import {waitFor} from '@testing-library/react'
 import {appQueryClient} from 'api/queryClient'
-import {store as reduxStore} from 'init'
+import {store as reduxStore} from 'common/store'
 
-jest.mock('init')
+jest.mock('common/store')
 jest.mock('state/queries/actions', () => ({
     updateQueryTimestamp: jest.fn((arg: unknown) => arg),
 }))

@@ -3,8 +3,8 @@ import {AnyAction} from 'redux'
 import {
     fetchActiveViewTickets,
     fetchRecentViewsCounts,
-} from '../state/views/actions'
-import {store as reduxStore} from '../init'
+} from 'state/views/actions'
+import {store as reduxStore} from 'common/store'
 
 type Intervals = {
     activeViewTickets: ReturnType<typeof setTimeout>

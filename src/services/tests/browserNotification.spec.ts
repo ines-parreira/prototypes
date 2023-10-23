@@ -5,7 +5,7 @@ import {getNotificationSettings} from 'state/currentUser/selectors'
 
 import {BrowserNotification} from '../browserNotification'
 
-jest.mock('init', () => ({
+jest.mock('common/store', () => ({
     store: {
         getState: jest.fn(),
     },

@@ -3,18 +3,16 @@ import {dismissNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable'
 
-import {store as reduxStore} from '../../init'
-import {notify} from '../../state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from '../../state/notifications/types'
-import {getActiveIntegrations} from '../../state/integrations/selectors'
-import {IntegrationType} from '../../models/integration/types'
+import {notify} from 'state/notifications/actions'
+import {HelpCenter} from 'models/helpCenter/types'
+import {IntegrationType} from 'models/integration/types'
+import {getHelpCenters} from 'state/entities/helpCenter/helpCenters'
+import {getActiveIntegrations} from 'state/integrations/selectors'
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {store as reduxStore} from 'common/store'
+
 import {tryLocalStorage} from '../common/utils'
 
-import {getHelpCenters} from '../../state/entities/helpCenter/helpCenters'
-import {HelpCenter} from '../../models/helpCenter/types'
 import {
     CLUSTER_GROUP_ID,
     INCIDENTS_NOTIFICATION_ID,

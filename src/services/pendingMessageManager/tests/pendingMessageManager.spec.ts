@@ -4,9 +4,10 @@ import {dismissNotification} from 'reapop'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
-} from '../../../state/newMessage/actions'
-import {applyMacro, messageDeleted} from '../../../state/ticket/actions'
-import history from '../../../pages/history'
+} from 'state/newMessage/actions'
+import {applyMacro, messageDeleted} from 'state/ticket/actions'
+import history from 'pages/history'
+
 import pendingMessageManager, {
     PendingMessageManager,
     SendMessageArgs,
@@ -18,7 +19,7 @@ jest.spyOn(window, 'addEventListener')
 jest.spyOn(window, 'removeEventListener')
 jest.mock('react-router-dom')
 jest.mock('reapop')
-jest.mock('../../../init', () => {
+jest.mock('common/store', () => {
     const {fromJS} = jest.requireActual('immutable')
     return {
         store: {
@@ -29,9 +30,9 @@ jest.mock('../../../init', () => {
         },
     }
 })
-jest.mock('../../../state/newMessage/actions.ts')
-jest.mock('../../../state/notifications/actions.ts')
-jest.mock('../../../state/ticket/actions.ts')
+jest.mock('state/newMessage/actions.ts')
+jest.mock('state/notifications/actions.ts')
+jest.mock('state/ticket/actions.ts')
 jest.useFakeTimers()
 
 describe('services', () => {

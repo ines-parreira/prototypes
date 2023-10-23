@@ -5,7 +5,7 @@ import {dismissNotification} from 'reapop'
 
 import refreshIcon from 'assets/img/icons/refresh.svg'
 
-import {store} from 'init'
+import {store} from 'common/store'
 import {devLog} from 'utils'
 import * as socketEvents from 'config/socketEvents'
 import {notify} from 'state/notifications/actions'

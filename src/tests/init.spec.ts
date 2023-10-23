@@ -3,13 +3,7 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {EMAIL_INTEGRATION_TYPE} from 'constants/integration'
-import {initialState} from 'fixtures/initialState'
-import {
-    initApp,
-    notifyAccountNotVerified,
-    notifyUserImpersonated,
-    toInitialStoreState,
-} from 'init'
+import {initApp, notifyAccountNotVerified, notifyUserImpersonated} from 'init'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
 import {
@@ -24,6 +18,22 @@ import {GorgiasUIEnv} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
 
 const mockStore = configureMockStore([thunk])
+
+type fromJSType = typeof fromJS
+
+jest.mock('common/store', () => {
+    const {fromJS} = jest.requireActual('immutable')
+    return {
+        store: {
+            dispatch: jest.fn(),
+            getState: () => ({
+                billing: (fromJS as fromJSType)([]),
+                currentAccount: (fromJS as fromJSType)({id: 1}),
+                currentUser: (fromJS as fromJSType)({id: 1}),
+            }),
+        },
+    }
+})
 
 jest.mock('utils/datadog')
 jest.mock('utils/errors')
@@ -101,12 +111,6 @@ describe('init', () => {
             notifyUserImpersonated(reduxStore)
 
             expect(reduxStore.getActions()).toMatchSnapshot()
-        })
-    })
-
-    describe('toInitialStoreState()', () => {
-        it('should return the expected store state', () => {
-            expect(toInitialStoreState(initialState)).toMatchSnapshot()
         })
     })
 
