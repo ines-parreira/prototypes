@@ -11,7 +11,6 @@ import {IntegrationType, Category, PricingPlan} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Customer} from 'models/customer/types'
 
-import {daysToHours, hoursToSeconds} from 'utils'
 import {AccountFeature} from 'state/currentAccount/types'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {
@@ -23,6 +22,8 @@ import {
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetContextType} from 'state/widgets/types'
+import daysToHours from 'utils/daysToHours'
+import hoursToSeconds from 'utils/hoursToSeconds'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
 
