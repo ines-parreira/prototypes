@@ -61,6 +61,7 @@
                     left: 0;
                     z-index: 2;
                     background-color: var(--neutral-grey-0);
+                    transition: background-color 0.3s;
                 }
 
                 &:first-child {
@@ -72,6 +73,19 @@
                         background-color: var(--neutral-grey-1);
                         font-weight: @body-medium-font-weight;
                     }
+                }
+            }
+        }
+
+        tbody tr {
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: var(--neutral-grey-1);
+
+                & > td.sticky,
+                & > td:first-child {
+                    background-color: var(--neutral-grey-1);
                 }
             }
         }
