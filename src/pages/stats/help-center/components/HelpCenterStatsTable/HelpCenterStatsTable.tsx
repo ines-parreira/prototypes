@@ -1,0 +1,187 @@
+import React, {UIEventHandler, useState} from 'react'
+import classNames from 'classnames'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import TableHead from 'pages/common/components/table/TableHead'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBody from 'pages/common/components/table/TableBody'
+import {formatPercentage} from 'pages/common/utils/numbers'
+import {formatDatetime} from 'utils'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {TooltipData} from 'pages/stats/types'
+import {formatMetricValue} from 'pages/stats/common/utils'
+import css from './HelpCenterStatsTable.less'
+
+export enum TableCellType {
+    String = 'string',
+    Link = 'link',
+    Number = 'number',
+    Percent = 'percent',
+    Date = 'date',
+}
+
+export type HelpCenterTableColumn = {
+    type: TableCellType
+    name: string
+    width?: number
+    tooltip?: TooltipData
+}
+
+export type HelpCenterTableCell = {link?: string; onClick?: () => void} & (
+    | {
+          type: TableCellType.String
+          value: string
+      }
+    | {
+          type: TableCellType.Number
+          value: number
+      }
+    | {
+          type: TableCellType.Percent
+          value: number
+      }
+    | {
+          type: TableCellType.Date
+          value: Date | string
+      }
+)
+
+const getCellFormatter = (cell: HelpCenterTableCell) => {
+    switch (cell.type) {
+        case TableCellType.String:
+            return cell.value
+        case TableCellType.Number:
+            return formatMetricValue(cell.value)
+        case TableCellType.Percent:
+            return formatPercentage(cell.value)
+        case TableCellType.Date:
+            return formatDatetime(cell.value)
+    }
+}
+
+type HelpCenterStatsTableProps = {
+    isLoading?: boolean
+    pageSize?: number
+    columns: HelpCenterTableColumn[]
+    data: HelpCenterTableCell[][]
+}
+
+const DEFAULT_PAGE_SIZE = 10
+const DEFAULT_COLUMN_WIDTH = 130
+
+const HelpCenterStatsTable = ({
+    isLoading,
+    pageSize = DEFAULT_PAGE_SIZE,
+    data,
+    columns,
+}: HelpCenterStatsTableProps) => {
+    const tableWidth = columns.map((column) => column.width)
+
+    const [isTableScrolled, setIsTableScrolled] = useState(false)
+    const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
+        if (event.currentTarget.scrollLeft > 0) {
+            setIsTableScrolled(true)
+        } else {
+            setIsTableScrolled(false)
+        }
+    }
+
+    return (
+        <div
+            className={css.container}
+            onScroll={handleScroll}
+            data-testid="help-center-stats-table"
+        >
+            <TableWrapper className={css.table}>
+                <TableHead>
+                    {columns.map((column, index) => (
+                        <HeaderCellProperty
+                            key={column.name}
+                            title={column.name}
+                            width={tableWidth[index] ?? DEFAULT_COLUMN_WIDTH}
+                            justifyContent={index === 0 ? 'left' : 'right'}
+                            wrapContent
+                            className={classNames({
+                                [css.withShadow]:
+                                    isTableScrolled && index === 0,
+                            })}
+                        >
+                            {column.tooltip && (
+                                <HintTooltip {...column.tooltip} />
+                            )}
+                        </HeaderCellProperty>
+                    ))}
+                </TableHead>
+
+                <TableBody>
+                    {isLoading
+                        ? Array(pageSize)
+                              .fill(null)
+                              .map((_, index) => (
+                                  <TableBodyRow key={index}>
+                                      {columns.map((_, index) => (
+                                          <BodyCell
+                                              key={index}
+                                              width={
+                                                  tableWidth[index] ??
+                                                  DEFAULT_COLUMN_WIDTH
+                                              }
+                                          >
+                                              <div className={css.loader}>
+                                                  <Skeleton />
+                                              </div>
+                                          </BodyCell>
+                                      ))}
+                                  </TableBodyRow>
+                              ))
+                        : data.map((line, index) => (
+                              <TableBodyRow key={index}>
+                                  {line.map((cell, lineIndex) => (
+                                      <BodyCell
+                                          key={cell.value.toString()}
+                                          className={classNames({
+                                              [css.withShadow]:
+                                                  isTableScrolled &&
+                                                  lineIndex === 0,
+                                          })}
+                                          innerClassName={css.bodyCellContent}
+                                          justifyContent={
+                                              lineIndex === 0 ? 'left' : 'right'
+                                          }
+                                          width={
+                                              tableWidth[lineIndex] ??
+                                              DEFAULT_COLUMN_WIDTH
+                                          }
+                                          onClick={cell.onClick}
+                                      >
+                                          <span
+                                              className={css.textTruncate}
+                                              title={getCellFormatter(
+                                                  cell
+                                              ).toString()}
+                                          >
+                                              {cell.link ? (
+                                                  <a
+                                                      href={cell.link}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                  >
+                                                      {getCellFormatter(cell)}
+                                                  </a>
+                                              ) : (
+                                                  getCellFormatter(cell)
+                                              )}
+                                          </span>
+                                      </BodyCell>
+                                  ))}
+                              </TableBodyRow>
+                          ))}
+                </TableBody>
+            </TableWrapper>
+        </div>
+    )
+}
+
+export default HelpCenterStatsTable

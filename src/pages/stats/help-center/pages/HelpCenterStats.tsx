@@ -12,6 +12,7 @@ import {useHelpCenterTrend} from '../hooks/useHelpCenterTrend'
 import TipsToggle from '../../TipsToggle'
 
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
+import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -125,6 +126,9 @@ const HelpCenterStats = () => {
                             statsFilters={statsFilters}
                             timezone={timezone}
                         />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={12}>
+                        <PerformanceByArticle />
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Help Center searches">

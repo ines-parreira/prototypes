@@ -1,0 +1,50 @@
+:local {
+    .loader {
+        width: 100%;
+        height: 100%;
+    }
+
+    .container {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .bodyCellContent {
+        cursor: auto;
+    }
+
+    .textTruncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .table {
+        th:first-child,
+        td:first-child {
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            background-color: var(--neutral-grey-0);
+        }
+
+        td,
+        td {
+            &.withShadow {
+                &:after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: -1px;
+                    width: 30px;
+                    box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.1);
+
+                    transform: translateX(100%);
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+}
