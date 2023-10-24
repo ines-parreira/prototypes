@@ -70,13 +70,13 @@ export const mockResourceServerReplies = (
 
     if (options.updatePageEmbedment === 'success') {
         mockedServer
-            .onPut('/api/help-center/contact-forms/1/shopify-page-embedments/1')
+            .onPut('/api/help-center/help-centers/1/shopify-page-embedments/1')
             .reply(200, PageEmbedmentFixture)
     }
 
     if (options.updatePageEmbedment === 'error') {
         mockedServer
-            .onPut('/api/help-center/contact-forms/1/shopify-page-embedments/1')
+            .onPut('/api/help-center/help-centers/1/shopify-page-embedments/1')
             .reply(500, PageEmbedmentsGeneric500ErrorFixture)
     }
 

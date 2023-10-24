@@ -3499,6 +3499,69 @@
                 "tags": ["help-center-shopify-page-embedments"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/shopify-page-embedments/{embedment_id}": {
+            "put": {
+                "operationId": "updateHelpCenterShopifyPageEmbedment",
+                "summary": "Update a Help Center Shopify Page Embedment",
+                "parameters": [
+                    {
+                        "name": "embedment_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePageEmbedmentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageEmbedmentDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-shopify-page-embedments"]
+            },
+            "delete": {
+                "operationId": "deleteHelpCenterShopifyPageEmbedment",
+                "summary": "Delete a Help Center Shopify Page Embedment",
+                "parameters": [
+                    {
+                        "name": "embedment_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["help-center-shopify-page-embedments"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/shopify-pages": {
             "get": {
                 "operationId": "listHelpCenterShopifyPages",
@@ -3519,7 +3582,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/HelpCenterPageDto"
+                                        "$ref": "#/components/schemas/HelpCenterStorePageDto"
                                     }
                                 }
                             }
@@ -7368,7 +7431,7 @@
                 },
                 "required": ["external_id", "title", "url_path", "body_html"]
             },
-            "HelpCenterPageDto": {
+            "HelpCenterStorePageDto": {
                 "type": "object",
                 "properties": {
                     "external_id": {"type": "string"},

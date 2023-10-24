@@ -6,22 +6,21 @@ import {Provider} from 'react-redux'
 import {screen, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import userEvent from '@testing-library/user-event'
-import {ContactFormPageEmbedment} from 'models/contactForm/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
 import {account as accountFixture} from 'fixtures/account'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
+import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
 import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {user as userFixture} from 'fixtures/users'
+import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
 import {
     useUpdatePageEmbedment,
     useDeletePageEmbedment,
-} from 'pages/settings/contactForm/queries'
+} from 'pages/settings/helpCenter/queries'
 import ManageEmbedments from '../ManageEmbedments'
 
 jest.mock('store/middlewares/segmentTracker')
@@ -30,10 +29,10 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const queryClient = mockQueryClient()
 jest.mock(
-    'pages/settings/contactForm/queries',
+    'pages/settings/helpCenter/queries',
     () =>
         ({
-            ...jest.requireActual('pages/settings/contactForm/queries'),
+            ...jest.requireActual('pages/settings/helpCenter/queries'),
             useUpdatePageEmbedment: jest.fn(),
             useDeletePageEmbedment: jest.fn(),
         } as Record<string, unknown>)
@@ -43,7 +42,7 @@ const mockDeletePageEmbedment = jest.fn()
 const useUpdatePageEmbedmentMock = assumeMock(useUpdatePageEmbedment)
 const useDeletePageEmbedmentMock = assumeMock(useDeletePageEmbedment)
 
-const embedments: ContactFormPageEmbedment[] = Array.from({length: 3}).map(
+const embedments: HelpCenterPageEmbedment[] = Array.from({length: 3}).map(
     (_, i) => ({
         id: i + 1,
         page_path_url: `/pages/test-${i}`,
@@ -55,8 +54,8 @@ const embedments: ContactFormPageEmbedment[] = Array.from({length: 3}).map(
     })
 )
 
-const contactForm = {
-    ...ContactFormFixture,
+const helpCenter = {
+    ...getSingleHelpCenterResponseFixture,
     shop_name: 'shop-name',
 }
 
@@ -68,22 +67,26 @@ const defaultState: Partial<RootState> = {
 
 const renderView = ({
     state,
-    path = CONTACT_FORM_PUBLISH_PATH,
-    route = CONTACT_FORM_PUBLISH_PATH,
+    path = `${HELP_CENTER_BASE_PATH}/publish-track`,
+    route = `${HELP_CENTER_BASE_PATH}/publish-track`,
     embedments,
 }: {
     state: Partial<RootState>
     path?: string
     route?: string
-    embedments: ContactFormPageEmbedment[]
+    embedments: HelpCenterPageEmbedment[]
 }) => {
     return renderWithRouter(
         <QueryClientProvider client={queryClient}>
-            <CurrentContactFormContext.Provider value={contactForm}>
-                <Provider store={mockStore(state)}>
-                    <ManageEmbedments embedments={embedments} />,
-                </Provider>
-            </CurrentContactFormContext.Provider>
+            <Provider store={mockStore(state)}>
+                <ManageEmbedments
+                    embedments={embedments}
+                    isEmbedmentsLoading={false}
+                    helpCenterId={helpCenter.id}
+                    shopName={helpCenter.shop_name}
+                />
+                ,
+            </Provider>
         </QueryClientProvider>,
         {
             path,
@@ -92,7 +95,7 @@ const renderView = ({
     )
 }
 
-describe('ContactFormPublish', () => {
+describe('<ManageEmbedments', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useUpdatePageEmbedmentMock.mockImplementation(() => {
@@ -115,8 +118,8 @@ describe('ContactFormPublish', () => {
         renderView({state: defaultState, embedments})
 
         screen.getByText('Manage embedded pages')
-        screen.getByText(/Edit the position of the contact form/)
-        screen.getByText(/Note: Manually embedded pages will/)
+        screen.getByText(/Edit the position of your Help Center/)
+        screen.getByText(/Note: Please allow a few minutes/)
     })
 
     it('renders the embedments', () => {
@@ -133,7 +136,7 @@ describe('ContactFormPublish', () => {
             const link = screen.getByTestId(`preview-button-${embedment.id}`)
             expect(link).toHaveAttribute(
                 'href',
-                `https://${contactForm.shop_name}.myshopify.com${embedment.page_path_url}`
+                `https://${helpCenter.shop_name}.myshopify.com${embedment.page_path_url}`
             )
         })
 
@@ -150,11 +153,11 @@ describe('ContactFormPublish', () => {
         userEvent.click(button)
 
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.ContactFormAutoEmbedEmbedOnAnotherPageClicked,
+            SegmentEvent.HelpCenterAutoEmbedEmbedOnAnotherPageClicked,
             {
                 user_id: userFixture.id,
                 account_domain: accountFixture.domain,
-                contact_form_id: contactForm.id,
+                help_center_id: helpCenter.id,
                 page_embedments_count: embedments.length,
             }
         )
@@ -187,7 +190,7 @@ describe('ContactFormPublish', () => {
 
         const deleteButton = screen.getByTestId(`delete-button-1`)
         userEvent.click(deleteButton)
-        const confirmButton = screen.getByText(/remove form/i, {
+        const confirmButton = screen.getByText(/remove embed/i, {
             selector: 'button',
         })
         userEvent.click(confirmButton)

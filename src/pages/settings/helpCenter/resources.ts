@@ -44,12 +44,12 @@ export const createPageEmbedment = async (
 
 export const updatePageEmbedment = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.UpdateContactFormShopifyPageEmbedment.PathParameters,
+    pathParameters: Paths.UpdateHelpCenterShopifyPageEmbedment.PathParameters,
     body: UpdateShopifyPageEmbedmentDto
 ) => {
     if (!client) return null
 
-    const res = await client.updateContactFormShopifyPageEmbedment(
+    const res = await client.updateHelpCenterShopifyPageEmbedment(
         pathParameters,
         body
     )
@@ -59,11 +59,11 @@ export const updatePageEmbedment = async (
 
 export const deletePageEmbedment = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.DeleteContactFormShopifyPageEmbedment.PathParameters
+    pathParameters: Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters
 ) => {
     if (!client) return null
 
-    await client.deleteContactFormShopifyPageEmbedment(pathParameters)
+    await client.deleteHelpCenterShopifyPageEmbedment(pathParameters)
 
     return null
 }

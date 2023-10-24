@@ -16,6 +16,10 @@
         &[data-is-open='true'] {
             border-color: var(--main-primary);
         }
+
+        &:hover {
+            outline: var(--neutral-grey-3) 1px solid;
+        }
     }
 
     .disabled {
@@ -37,5 +41,10 @@
         display: inline-block;
         margin-left: @layout-spacing-xs;
         transform: translateY(-2px);
+    }
+
+    .caret {
+        font-size: 24px;
+        color: var(--neutral-grey-4);
     }
 }

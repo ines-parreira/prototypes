@@ -22,9 +22,10 @@ import {
     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
     CONTACT_FORM_PUBLISH_PATH,
 } from 'pages/settings/contactForm/constants'
-import BackLink from 'pages/settings/contactForm/components/BackLink/BackLink'
+import BackLink from 'pages/common/components/BackLink'
 import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
 import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
+import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
 
 const ContactFormPublish = (): JSX.Element => {
@@ -44,7 +45,13 @@ const ContactFormPublish = (): JSX.Element => {
         <Container fluid className={settingsCss.pageContainer}>
             <Switch>
                 <Route exact path={CONTACT_FORM_MANAGE_EMBEDMENTS_PATH}>
-                    <BackLink contactFormId={contactForm.id} />
+                    <BackLink
+                        path={insertContactFormIdParam(
+                            CONTACT_FORM_PUBLISH_PATH,
+                            contactForm.id
+                        )}
+                        label={'Back to publishing methods'}
+                    />
                     <ManageEmbedments
                         embedments={getPageEmbedments.data ?? []}
                     />

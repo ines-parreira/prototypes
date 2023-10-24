@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
 import _debounce from 'lodash/debounce'
-import {useHistory, useLocation} from 'react-router-dom'
+import {Route, Switch, useHistory, useLocation} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import Button from 'pages/common/components/button/Button'
@@ -33,8 +33,8 @@ import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {useGetPageEmbedments} from 'pages/settings/helpCenter/queries'
+import BackLink from 'pages/common/components/BackLink'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {
     getSubdomainValidationError,
@@ -45,6 +45,7 @@ import {useHelpCenterPreferencesSettings} from '../providers/HelpCenterPreferenc
 import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
 import {
+    HELP_CENTER_BASE_PATH,
     MANUALLY_EMBED_STEPS,
     MANUALLY_EMBED_TABS,
     ManuallyEmbedOptions,
@@ -58,15 +59,16 @@ import GoogleAnalyticsSection from './GoogleAnalyticSection'
 import {UpdateToggle} from './UpdateToggle'
 import {ConnectToShopSection} from './ConnectToShopSection'
 import HelpCenterAutoEmbedPublishSection from './HelpCenterAutoEmbedPublishSection'
+import ManageEmbedments from './ManageEmbedments'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
     const canUseHelpCenterAutoEmbed =
         useFlags()[FeatureFlagKey.HelpCenterAutoEmbed]
-    const helpCenterId = useHelpCenterIdParam()
     const history = useHistory()
     const location = useLocation()
     const helpCenter = useCurrentHelpCenter()
+    const helpCenterId = helpCenter.id
     const {client} = useHelpCenterApi()
     const [subdomainValue, setSubdomainValue] = useState<string>()
     const [gaid, setGaid] = useState<string | null>(null)
@@ -275,264 +277,315 @@ export const HelpCenterInstallationView: React.FC = () => {
             isDirty={isNewSubdomainValid || isUpdatedGaid}
             onSaveChanges={handleOnSave}
         >
-            <ConnectToShopSection
-                onUpdate={onConnectedShopChange}
-                shopName={preferences.connectedShop.shopName}
-            />
-            <section className="mb-4">
-                <h3 className={css.sectionTitle}>Publish</h3>
-                <UpdateToggle
-                    activated={!Boolean(helpCenter.deactivated_datetime)}
-                    description="You must set your Help Center live to make it visible to customers via the direct link or embed options."
-                    fieldName="deactivated"
-                    label="Set Help Center live"
-                />
-                {canUseHelpCenterAutoEmbed ? (
-                    // The new Publish section
-                    <div className={css.cards}>
-                        {!isConnectedToShop && showConnectToStoreWarning && (
-                            <Alert
-                                type={AlertType.Warning}
-                                icon
-                                onClose={() =>
-                                    setShowConnectToStoreWarning(false)
-                                }
-                            >
-                                Connect Shopify to enable auto-embedding to your
-                                website.
-                            </Alert>
-                        )}
-                        <HelpCenterAutoEmbedPublishSection
-                            helpCenterId={helpCenterId}
-                            helpCenterShopName={helpCenter.shop_name}
-                            pageEmbedments={getPageEmbedments.data ?? []}
-                            isDisabled={
-                                getPageEmbedments.isLoading &&
-                                !getPageEmbedments.isFetched
+            <Switch>
+                <Route
+                    exact
+                    path={`${HELP_CENTER_BASE_PATH}/:helpCenterId/publish-track/embedments`}
+                >
+                    <BackLink
+                        path={`${HELP_CENTER_BASE_PATH}/${helpCenterId}/publish-track`}
+                        label={'Back to Publish & Track'}
+                    />
+                    <ManageEmbedments
+                        embedments={getPageEmbedments.data ?? []}
+                        isEmbedmentsLoading={getPageEmbedments.isLoading}
+                        helpCenterId={helpCenterId}
+                        shopName={helpCenter.shop_name}
+                    />
+                </Route>
+                <Route
+                    exact
+                    path={`${HELP_CENTER_BASE_PATH}/:helpCenterId/publish-track`}
+                >
+                    <ConnectToShopSection
+                        onUpdate={onConnectedShopChange}
+                        shopName={preferences.connectedShop.shopName}
+                    />
+                    <section className="mb-4">
+                        <h3 className={css.sectionTitle}>Publish</h3>
+                        <UpdateToggle
+                            activated={
+                                !Boolean(helpCenter.deactivated_datetime)
                             }
+                            description="You must set your Help Center live to make it visible to customers via the direct link or embed options."
+                            fieldName="deactivated"
+                            label="Set Help Center live"
                         />
-                        <Accordion>
-                            <AccordionItem>
-                                <AccordionHeader>
-                                    <div>
-                                        <div className={css.cardHeader}>
-                                            Manually embed with code
-                                        </div>
-                                        <div>
-                                            Use HTML to manually display your
-                                            Help Center on specific pages of
-                                            your website.
-                                            <br />
-                                            Note: You must have access to your
-                                            site theme.
-                                        </div>
-                                    </div>
-                                </AccordionHeader>
-                                <AccordionBody>
-                                    <TabNavigator
-                                        tabs={MANUALLY_EMBED_TABS}
-                                        className={css.tabNavigator}
-                                        activeTab={activeTab}
-                                        onTabChange={(tab) => setActiveTab(tab)}
-                                    />
-                                    <>
-                                        <div className={css.steps}>
-                                            {MANUALLY_EMBED_STEPS[
-                                                activeTab as keyof typeof MANUALLY_EMBED_STEPS
-                                            ].map((step: JSX.Element) => step)}
-                                        </div>
+                        {canUseHelpCenterAutoEmbed ? (
+                            // The new Publish section
+                            <div className={css.cards}>
+                                {!isConnectedToShop &&
+                                    showConnectToStoreWarning && (
                                         <Alert
                                             type={AlertType.Warning}
-                                            className={settingsCss.mb24}
-                                        >
-                                            Make sure to insert the code on{' '}
-                                            <b>all pages</b> you wish to display
-                                            your Help Center.
-                                        </Alert>
-                                        <InstallationCodeSnippet
-                                            onCopy={() =>
-                                                logEvent(
-                                                    SegmentEvent.HelpCenterManualEmbedCopyCode
+                                            icon
+                                            onClose={() =>
+                                                setShowConnectToStoreWarning(
+                                                    false
                                                 )
                                             }
-                                            code={
-                                                '<div>This will be the code<script/></div>'
-                                            }
-                                        />
-                                    </>
-                                </AccordionBody>
-                            </AccordionItem>
-                            <AccordionItem>
-                                <AccordionHeader>
-                                    <div>
-                                        <div className={css.cardHeader}>
-                                            Share your Help Center using a
-                                            subdomain or custom domain
-                                        </div>
-                                        <CopyText text={helpCenterUrl} />
-                                    </div>
-                                </AccordionHeader>
-                                <AccordionBody>
-                                    {showWarning && (
-                                        <LinkAlert
-                                            actionLabel="Learn more"
-                                            type={AlertType.Warning}
-                                            className={css.alert}
-                                            actionHref="https://docs.gorgias.com/en-US/help-center---setup-81865#link-to-shopify"
-                                            onClose={() => {
-                                                setShowWarning(false)
-                                            }}
                                         >
-                                            <div className={css.alertContent}>
-                                                <img
-                                                    src={warningIcon}
-                                                    alt="warning icon"
-                                                />
+                                            Connect Shopify to enable
+                                            auto-embedding to your website.
+                                        </Alert>
+                                    )}
+                                <HelpCenterAutoEmbedPublishSection
+                                    helpCenterId={helpCenterId}
+                                    helpCenterShopName={helpCenter.shop_name}
+                                    pageEmbedments={
+                                        getPageEmbedments.data ?? []
+                                    }
+                                    isDisabled={
+                                        getPageEmbedments.isLoading &&
+                                        !getPageEmbedments.isFetched
+                                    }
+                                />
+                                <Accordion>
+                                    <AccordionItem>
+                                        <AccordionHeader>
+                                            <div>
+                                                <div className={css.cardHeader}>
+                                                    Manually embed with code
+                                                </div>
                                                 <div>
-                                                    Don't forget to link the
-                                                    Help Center to your website.
+                                                    Use HTML to manually display
+                                                    your Help Center on specific
+                                                    pages of your website.
+                                                    <br />
+                                                    Note: You must have access
+                                                    to your site theme.
                                                 </div>
                                             </div>
-                                        </LinkAlert>
-                                    )}
-                                    <div className={css.subdomainSection}>
-                                        <SubdomainSection
-                                            value={subdomainValue}
-                                            caption="The URL used to access your help center."
-                                            placeholder="brand-name"
-                                            onChange={setSubdomainValue}
-                                            error={subdomainError}
-                                        />
-                                    </div>
-                                    <CustomDomain />
-                                </AccordionBody>
-                            </AccordionItem>
-                        </Accordion>
-                    </div>
-                ) : (
-                    // The old Publish section
-                    <>
-                        <SubdomainSection
-                            value={subdomainValue}
-                            caption="This is the URL that can be used to access your help center."
-                            placeholder="brand-name"
-                            onChange={setSubdomainValue}
-                            error={subdomainError}
-                        />
-                        <CustomDomain className={settingsCss.mb40} />
-                    </>
-                )}
-            </section>
+                                        </AccordionHeader>
+                                        <AccordionBody>
+                                            <TabNavigator
+                                                tabs={MANUALLY_EMBED_TABS}
+                                                className={css.tabNavigator}
+                                                activeTab={activeTab}
+                                                onTabChange={(tab) =>
+                                                    setActiveTab(tab)
+                                                }
+                                            />
+                                            <>
+                                                <div className={css.steps}>
+                                                    {MANUALLY_EMBED_STEPS[
+                                                        activeTab as keyof typeof MANUALLY_EMBED_STEPS
+                                                    ].map(
+                                                        (step: JSX.Element) =>
+                                                            step
+                                                    )}
+                                                </div>
+                                                <Alert
+                                                    type={AlertType.Warning}
+                                                    className={settingsCss.mb24}
+                                                >
+                                                    Make sure to insert the code
+                                                    on <b>all pages</b> you wish
+                                                    to display your Help Center.
+                                                </Alert>
+                                                <InstallationCodeSnippet
+                                                    onCopy={() =>
+                                                        logEvent(
+                                                            SegmentEvent.HelpCenterManualEmbedCopyCode
+                                                        )
+                                                    }
+                                                    code={
+                                                        '<div>This will be the code<script/></div>'
+                                                    }
+                                                />
+                                            </>
+                                        </AccordionBody>
+                                    </AccordionItem>
+                                    <AccordionItem>
+                                        <AccordionHeader>
+                                            <div>
+                                                <div className={css.cardHeader}>
+                                                    Share your Help Center using
+                                                    a subdomain or custom domain
+                                                </div>
+                                                <CopyText
+                                                    text={helpCenterUrl}
+                                                />
+                                            </div>
+                                        </AccordionHeader>
+                                        <AccordionBody>
+                                            {showWarning && (
+                                                <LinkAlert
+                                                    actionLabel="Learn more"
+                                                    type={AlertType.Warning}
+                                                    className={css.alert}
+                                                    actionHref="https://docs.gorgias.com/en-US/help-center---setup-81865#link-to-shopify"
+                                                    onClose={() => {
+                                                        setShowWarning(false)
+                                                    }}
+                                                >
+                                                    <div
+                                                        className={
+                                                            css.alertContent
+                                                        }
+                                                    >
+                                                        <img
+                                                            src={warningIcon}
+                                                            alt="warning icon"
+                                                        />
+                                                        <div>
+                                                            Don't forget to link
+                                                            the Help Center to
+                                                            your website.
+                                                        </div>
+                                                    </div>
+                                                </LinkAlert>
+                                            )}
+                                            <div
+                                                className={css.subdomainSection}
+                                            >
+                                                <SubdomainSection
+                                                    value={subdomainValue}
+                                                    caption="The URL used to access your help center."
+                                                    placeholder="brand-name"
+                                                    onChange={setSubdomainValue}
+                                                    error={subdomainError}
+                                                />
+                                            </div>
+                                            <CustomDomain />
+                                        </AccordionBody>
+                                    </AccordionItem>
+                                </Accordion>
+                            </div>
+                        ) : (
+                            // The old Publish section
+                            <>
+                                <SubdomainSection
+                                    value={subdomainValue}
+                                    caption="This is the URL that can be used to access your help center."
+                                    placeholder="brand-name"
+                                    onChange={setSubdomainValue}
+                                    error={subdomainError}
+                                />
+                                <CustomDomain className={settingsCss.mb40} />
+                            </>
+                        )}
+                    </section>
 
-            <section className="mb-4">
-                <h3 className={css.sectionTitle}>Track</h3>
-            </section>
-            <GoogleAnalyticsSection
-                gaid={gaid ?? ''}
-                onChange={(value) => {
-                    setGaid(value.toUpperCase())
-                }}
-                onDelete={
-                    helpCenter.gaid
-                        ? () => {
-                              void handleOnUpdateHelpCenter({gaid: null})
-                          }
-                        : null
-                }
-            />
-
-            <div className={css.ctasGroup}>
-                <div className={css.leftSideButtons}>
-                    <Button
-                        isDisabled={!isNewSubdomainValid && !isUpdatedGaid}
-                        onClick={() =>
-                            handleOnUpdateHelpCenter({
-                                ...(isNewSubdomainValid
-                                    ? {subdomain: subdomainValue}
-                                    : {}),
-                                ...(isUpdatedGaid ? {gaid: gaid || null} : {}),
-                            })
+                    <section className="mb-4">
+                        <h3 className={css.sectionTitle}>Track</h3>
+                    </section>
+                    <GoogleAnalyticsSection
+                        gaid={gaid ?? ''}
+                        onChange={(value) => {
+                            setGaid(value.toUpperCase())
+                        }}
+                        onDelete={
+                            helpCenter.gaid
+                                ? () => {
+                                      void handleOnUpdateHelpCenter({
+                                          gaid: null,
+                                      })
+                                  }
+                                : null
                         }
-                    >
-                        Save Changes
-                    </Button>
-                    <Button intent="secondary" onClick={handleOnCancel}>
-                        Cancel
-                    </Button>
-                </div>
+                    />
 
-                <ConfirmModalAction
-                    actions={(onClose) => (
-                        <>
+                    <div className={css.ctasGroup}>
+                        <div className={css.leftSideButtons}>
                             <Button
-                                intent="secondary"
-                                onClick={() => {
-                                    setDeleteModalConfirmation('')
-                                    onClose()
-                                }}
-                                className={css['cancel-btn']}
+                                isDisabled={
+                                    !isNewSubdomainValid && !isUpdatedGaid
+                                }
+                                onClick={() =>
+                                    handleOnUpdateHelpCenter({
+                                        ...(isNewSubdomainValid
+                                            ? {subdomain: subdomainValue}
+                                            : {}),
+                                        ...(isUpdatedGaid
+                                            ? {gaid: gaid || null}
+                                            : {}),
+                                    })
+                                }
                             >
+                                Save Changes
+                            </Button>
+                            <Button intent="secondary" onClick={handleOnCancel}>
                                 Cancel
                             </Button>
-                            <Button
-                                className={css['delete-btn']}
-                                isDisabled={deleteBtnDisabled}
-                                intent="secondary"
-                                onClick={handleOnDeleteHelpCenter}
-                            >
-                                <i className="material-icons">delete</i>
-                                Delete Forever
-                            </Button>
-                        </>
-                    )}
-                    content={
-                        <>
-                            <p>
-                                This Help Center and its articles, categories,
-                                pages and images will be deleted permanently.
-                                Future contact form submissions will not be
-                                captured.
-                            </p>
+                        </div>
 
-                            <p>
-                                <strong>
-                                    Confirm by typing{' '}
-                                    <span
-                                        className={
-                                            css['delete-modal-help-center']
-                                        }
+                        <ConfirmModalAction
+                            actions={(onClose) => (
+                                <>
+                                    <Button
+                                        intent="secondary"
+                                        onClick={() => {
+                                            setDeleteModalConfirmation('')
+                                            onClose()
+                                        }}
+                                        className={css['cancel-btn']}
                                     >
-                                        {helpCenter.name}
-                                    </span>{' '}
-                                    below
-                                </strong>
-                            </p>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        className={css['delete-btn']}
+                                        isDisabled={deleteBtnDisabled}
+                                        intent="secondary"
+                                        onClick={handleOnDeleteHelpCenter}
+                                    >
+                                        <i className="material-icons">delete</i>
+                                        Delete Forever
+                                    </Button>
+                                </>
+                            )}
+                            content={
+                                <>
+                                    <p>
+                                        This Help Center and its articles,
+                                        categories, pages and images will be
+                                        deleted permanently. Future contact form
+                                        submissions will not be captured.
+                                    </p>
 
-                            <InputField
-                                type="text"
-                                className={css['delete-modal-input']}
-                                name="help-center-delete-confirmation"
-                                placeholder={'[Help Center Name]'}
-                                value={deleteModalConfirmation}
-                                onChange={setDeleteModalConfirmation}
-                            />
-                        </>
-                    }
-                    title="Delete confirmation"
-                >
-                    {(onClick) => (
-                        <Button
-                            className={css['delete-btn']}
-                            intent="destructive"
-                            fillStyle="ghost"
-                            onClick={onClick}
+                                    <p>
+                                        <strong>
+                                            Confirm by typing{' '}
+                                            <span
+                                                className={
+                                                    css[
+                                                        'delete-modal-help-center'
+                                                    ]
+                                                }
+                                            >
+                                                {helpCenter.name}
+                                            </span>{' '}
+                                            below
+                                        </strong>
+                                    </p>
+
+                                    <InputField
+                                        type="text"
+                                        className={css['delete-modal-input']}
+                                        name="help-center-delete-confirmation"
+                                        placeholder={'[Help Center Name]'}
+                                        value={deleteModalConfirmation}
+                                        onChange={setDeleteModalConfirmation}
+                                    />
+                                </>
+                            }
+                            title="Delete confirmation"
                         >
-                            <i className="material-icons">delete</i>
-                            Delete Help Center
-                        </Button>
-                    )}
-                </ConfirmModalAction>
-            </div>
+                            {(onClick) => (
+                                <Button
+                                    className={css['delete-btn']}
+                                    intent="destructive"
+                                    fillStyle="ghost"
+                                    onClick={onClick}
+                                >
+                                    <i className="material-icons">delete</i>
+                                    Delete Help Center
+                                </Button>
+                            )}
+                        </ConfirmModalAction>
+                    </div>
+                </Route>
+            </Switch>
         </HelpCenterPageWrapper>
     )
 }

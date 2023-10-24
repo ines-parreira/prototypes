@@ -1530,7 +1530,7 @@ declare namespace Components {
        */
       automation_settings_id: number | null;
     }
-    export interface HelpCenterPageDto {
+    export interface HelpCenterStorePageDto {
       external_id: string;
       title: string;
       url_path: string;
@@ -2749,6 +2749,16 @@ declare namespace Paths {
       help_center_id: Parameters.HelpCenterId;
     }
   }
+  namespace DeleteHelpCenterShopifyPageEmbedment {
+    namespace Parameters {
+      export type EmbedmentId = number;
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      embedment_id: Parameters.EmbedmentId;
+      help_center_id: Parameters.HelpCenterId;
+    }
+  }
   namespace DeleteHelpCenterTranslation {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -3295,7 +3305,7 @@ declare namespace Paths {
       help_center_id: Parameters.HelpCenterId;
     }
     namespace Responses {
-      export type $200 = Components.Schemas.HelpCenterPageDto[];
+      export type $200 = Components.Schemas.HelpCenterStorePageDto[];
     }
   }
   namespace ListHelpCenterTranslations {
@@ -3587,6 +3597,20 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.UpdateHelpCenterDto;
     namespace Responses {
       export type $200 = Components.Schemas.HelpCenterDto;
+    }
+  }
+  namespace UpdateHelpCenterShopifyPageEmbedment {
+    namespace Parameters {
+      export type EmbedmentId = number;
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      embedment_id: Parameters.EmbedmentId;
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export type RequestBody = Components.Schemas.UpdatePageEmbedmentDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.PageEmbedmentDto;
     }
   }
   namespace UpdateHelpCenterTranslation {
@@ -4460,6 +4484,22 @@ export interface OperationMethods {
     data?: Paths.CreateHelpCenterShopifyPageEmbedment.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateHelpCenterShopifyPageEmbedment.Responses.$201>
+  /**
+   * updateHelpCenterShopifyPageEmbedment - Update a Help Center Shopify Page Embedment
+   */
+  'updateHelpCenterShopifyPageEmbedment'(
+    parameters?: Parameters<Paths.UpdateHelpCenterShopifyPageEmbedment.PathParameters> | null,
+    data?: Paths.UpdateHelpCenterShopifyPageEmbedment.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateHelpCenterShopifyPageEmbedment.Responses.$200>
+  /**
+   * deleteHelpCenterShopifyPageEmbedment - Delete a Help Center Shopify Page Embedment
+   */
+  'deleteHelpCenterShopifyPageEmbedment'(
+    parameters?: Parameters<Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
   /**
    * listHelpCenterShopifyPages - List the Help Center Shopify Pages available for a Help Center Embedment
    */
@@ -5406,6 +5446,24 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListHelpCenterShopifyPageEmbedments.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/shopify-page-embedments/{embedment_id}']: {
+    /**
+     * updateHelpCenterShopifyPageEmbedment - Update a Help Center Shopify Page Embedment
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateHelpCenterShopifyPageEmbedment.PathParameters> | null,
+      data?: Paths.UpdateHelpCenterShopifyPageEmbedment.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateHelpCenterShopifyPageEmbedment.Responses.$200>
+    /**
+     * deleteHelpCenterShopifyPageEmbedment - Delete a Help Center Shopify Page Embedment
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/shopify-pages']: {
     /**

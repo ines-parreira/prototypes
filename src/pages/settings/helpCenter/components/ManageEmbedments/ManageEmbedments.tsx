@@ -3,8 +3,11 @@ import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import {useQueryClient} from '@tanstack/react-query'
 import {useHistory, Link} from 'react-router-dom'
-import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
-import {ContactFormPageEmbedment} from 'models/contactForm/types'
+import {
+    PageEmbedmentPosition,
+    EmbeddablePage,
+} from 'pages/common/components/PageEmbedmentForm'
+import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -15,24 +18,16 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
-import settingsCss from 'pages/settings/settings.less'
-import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import {
-    contactFormPageEmbedmentsKeys,
+    helpCenterPageEmbedmentsKeys,
     useUpdatePageEmbedment,
     useDeletePageEmbedment,
     useGetShopifyPages,
-} from 'pages/settings/contactForm/queries'
+} from 'pages/settings/helpCenter/queries'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import ContactFormAutoEmbedModalAssistant from 'pages/settings/contactForm/components/ContactFormAutoEmbedModalAssistant'
-import {
-    CONTACT_FORM_EMBEDMENTS_LIMIT,
-    CONTACT_FORM_PUBLISH_PATH,
-} from 'pages/settings/contactForm/constants'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import {CONTACT_FORM_EMBEDMENTS_LIMIT} from 'pages/settings/contactForm/constants'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
@@ -40,11 +35,15 @@ import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
+import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
+import {HELP_CENTER_BASE_PATH} from '../../constants'
 import css from './ManageEmbedments.less'
 
 type ManageEmbedmentsProps = {
-    embedments: ContactFormPageEmbedment[]
+    embedments: HelpCenterPageEmbedment[]
+    isEmbedmentsLoading: boolean
+    helpCenterId: number
+    shopName: string | null
 }
 
 const PositionOptions = Object.values(PageEmbedmentPosition).map(
@@ -55,7 +54,7 @@ const PositionOptions = Object.values(PageEmbedmentPosition).map(
 )
 
 const resetDraftPositions = (
-    embedments: ContactFormPageEmbedment[]
+    embedments: HelpCenterPageEmbedment[]
 ): Record<number, PageEmbedmentPosition> =>
     embedments.reduce(
         (acc, embedment) => ({
@@ -67,6 +66,9 @@ const resetDraftPositions = (
 
 const ManageEmbedments = ({
     embedments,
+    isEmbedmentsLoading,
+    helpCenterId,
+    shopName,
 }: ManageEmbedmentsProps): JSX.Element | null => {
     const appDispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
@@ -75,7 +77,6 @@ const ManageEmbedments = ({
     const queryClient = useQueryClient()
     const [isEmbedModalOpen, setIsEmbedModalOpen] = useState(false)
     const [isChangesModalShown, setIsChangesModalShown] = useState(false)
-    const contactForm = useCurrentContactForm()
     const [draftPositions, setDraftPositions] = useState<
         Record<string, PageEmbedmentPosition>
     >(() => resetDraftPositions(embedments))
@@ -83,18 +84,12 @@ const ManageEmbedments = ({
         number | null
     >(null)
 
-    const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
-
     useEffect(() => {
-        if (!isWorking && !isLoading) {
-            history.push(
-                insertContactFormIdParam(
-                    CONTACT_FORM_PUBLISH_PATH,
-                    contactForm.id
-                )
-            )
-        }
-    }, [embedments.length, history, contactForm, isWorking, isLoading])
+        // If there are no embedments, redirect to the publish page
+        if (embedments.length || isEmbedmentsLoading) return
+
+        history.push(`${HELP_CENTER_BASE_PATH}/${helpCenterId}/publish-track`)
+    }, [embedments.length, isEmbedmentsLoading, helpCenterId, history])
 
     useEffect(() => {
         setDraftPositions({
@@ -114,13 +109,13 @@ const ManageEmbedments = ({
 
             void appDispatch(
                 notify({
-                    message: 'Form position updated',
+                    message: 'Help Center position updated',
                     status: NotificationStatus.Success,
                 })
             )
 
             await queryClient.invalidateQueries(
-                contactFormPageEmbedmentsKeys.lists(contactForm.id)
+                helpCenterPageEmbedmentsKeys.lists(helpCenterId)
             )
         },
         onError: () => {
@@ -137,13 +132,13 @@ const ManageEmbedments = ({
         onSuccess: async () => {
             void appDispatch(
                 notify({
-                    message: 'Form removed from page.',
+                    message: 'Help Center removed from page.',
                     status: NotificationStatus.Success,
                 })
             )
 
             await queryClient.invalidateQueries(
-                contactFormPageEmbedmentsKeys.lists(contactForm.id)
+                helpCenterPageEmbedmentsKeys.lists(helpCenterId)
             )
         },
         onError: () => {
@@ -156,7 +151,7 @@ const ManageEmbedments = ({
         },
     })
 
-    const getShopifyPages = useGetShopifyPages(contactForm.id, {
+    const getShopifyPages = useGetShopifyPages(helpCenterId, {
         enabled: isEmbedModalOpen,
     })
     const pages: EmbeddablePage[] = getShopifyPages.data ?? []
@@ -179,7 +174,7 @@ const ManageEmbedments = ({
         await deletePageEmbedmentMutation.mutateAsync([
             undefined,
             {
-                contact_form_id: contactForm.id,
+                help_center_id: helpCenterId,
                 embedment_id: embedmentId,
             },
         ])
@@ -198,7 +193,7 @@ const ManageEmbedments = ({
                 [
                     undefined,
                     {
-                        contact_form_id: contactForm.id,
+                        help_center_id: helpCenterId,
                         embedment_id: embedment.id,
                     },
                     {position: newPosition},
@@ -225,15 +220,8 @@ const ManageEmbedments = ({
             draftPositions[embedment.id] !== embedment.position
     )
 
-    if (!contactForm) return null
-
     return (
-        <div
-            className={classNames(
-                contactFormCss.mtXl,
-                settingsCss.contentWrapper
-            )}
-        >
+        <div className={contactFormCss.mtXl}>
             <section className={contactFormCss.mbM}>
                 <h2
                     className={classNames(
@@ -244,10 +232,12 @@ const ManageEmbedments = ({
                     Manage embedded pages
                 </h2>
                 <div>
-                    Edit the position of the contact form or remove it from the
+                    Edit the position of your Help Center or remove it from the
                     page where it's currently embedded.
                     <br />
-                    Note: Manually embedded pages will not appear in this list.
+                    Note: Please allow a few minutes for the embed to reflect on
+                    your Shopify page. Manually embedded pages will not appear
+                    in this list.
                 </div>
             </section>
 
@@ -262,30 +252,25 @@ const ManageEmbedments = ({
                             tooltip={
                                 <span>
                                     If you want to position the
-                                    <br /> form anywhere other than
+                                    <br /> Help Center anywhere other than
                                     <br /> top or bottom, add{' '}
                                     <Link
-                                        to={insertContactFormIdParam(
-                                            CONTACT_FORM_PUBLISH_PATH,
-                                            contactForm.id
-                                        )}
+                                        to={`${HELP_CENTER_BASE_PATH}/${helpCenterId}/publish-track`}
                                     >
                                         HTML <br /> code
                                     </Link>{' '}
                                     on the page instead.
                                 </span>
                             }
-                            title="Form Position"
+                            title="Help Center position"
                         />
                         <HeaderCell />
                     </TableHead>
                     <TableBody>
                         {embedments.map(
-                            (embedment: ContactFormPageEmbedment) => {
-                                const previewLink = contactForm?.shop_name
-                                    ? `https://${
-                                          contactForm.shop_name
-                                      }.myshopify.com/${
+                            (embedment: HelpCenterPageEmbedment) => {
+                                const previewLink = shopName
+                                    ? `https://${shopName}.myshopify.com/${
                                           embedment.page_path_url.startsWith(
                                               '/'
                                           )
@@ -323,6 +308,7 @@ const ManageEmbedments = ({
                                                 }
                                                 options={PositionOptions}
                                                 aria-label="language selector"
+                                                data-testid={`position-select-${embedment.id}`}
                                             />
                                         </BodyCell>
 
@@ -352,11 +338,10 @@ const ManageEmbedments = ({
                                                 }}
                                                 content={
                                                     <>
-                                                        Removing the contact
-                                                        form from this page
-                                                        cannot be undone. You
-                                                        can re-embed the form
-                                                        again later.
+                                                        Removing the Help center
+                                                        from this page cannot be
+                                                        undone. You can re-embed
+                                                        it again later.
                                                     </>
                                                 }
                                                 onConfirm={onDelete(
@@ -365,11 +350,10 @@ const ManageEmbedments = ({
                                                 placement="bottom"
                                                 title={
                                                     <b>
-                                                        Remove embedded Contact
-                                                        Form?
+                                                        Remove embed from page?
                                                     </b>
                                                 }
-                                                confirmLabel={'Remove Form'}
+                                                confirmLabel={'Remove Embed'}
                                                 showCancelButton
                                             >
                                                 {({
@@ -414,11 +398,11 @@ const ManageEmbedments = ({
                 <Button
                     onClick={() => {
                         logEvent(
-                            SegmentEvent.ContactFormAutoEmbedEmbedOnAnotherPageClicked,
+                            SegmentEvent.HelpCenterAutoEmbedEmbedOnAnotherPageClicked,
                             {
                                 user_id: currentUser.get('id'),
                                 account_domain: currentAccount.get('domain'),
-                                contact_form_id: contactForm.id,
+                                help_center_id: helpCenterId,
                                 page_embedments_count: embedments.length,
                             }
                         )
@@ -453,11 +437,11 @@ const ManageEmbedments = ({
                 </div>
             </section>
 
-            <ContactFormAutoEmbedModalAssistant
+            <HelpCenterAutoEmbedModalAssistant
                 isOpen={isEmbedModalOpen}
                 onClose={() => setIsEmbedModalOpen(false)}
                 pages={availablePages}
-                contactFormId={contactForm.id}
+                helpCenterId={helpCenterId}
             />
 
             <PendingChangesModal

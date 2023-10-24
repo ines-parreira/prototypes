@@ -67,7 +67,9 @@ export default function HeaderCellProperty({
                     {tooltip && (
                         <span>
                             <StatsHelpIcon ref={tooltipRef} />
-                            <Tooltip target={tooltipRef}>{tooltip}</Tooltip>
+                            <Tooltip target={tooltipRef} autohide={false}>
+                                {tooltip}
+                            </Tooltip>
                         </span>
                     )}
                     <i

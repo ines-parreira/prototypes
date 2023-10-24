@@ -8,6 +8,7 @@ import HelpCenterAutoEmbedWarningBanner, {
 } from '../HelpCenterAutoEmbedWarningBanner'
 import HelpCenterAutoEmbedCard from '../HelpCenterAutoEmbedCard'
 import {HelpCenterAutoEmbedReadinessStatus} from './types'
+import css from './HelpCenterAutoEmbedPublishSection.less'
 
 export type HelpCenterAutoEmbedPublishSectionProps = {
     helpCenterShopName: string | null
@@ -52,7 +53,7 @@ const HelpCenterAutoEmbedPublishSection = (
     }
 
     return (
-        <section>
+        <section className={css.container}>
             <HelpCenterAutoEmbedWarningBanner details={bannerDetails} />
             <HelpCenterAutoEmbedCard
                 isDisabled={props.isDisabled}

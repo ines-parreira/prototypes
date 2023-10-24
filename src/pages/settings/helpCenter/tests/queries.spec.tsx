@@ -26,7 +26,7 @@ const wrapper: React.FC = ({children}) => (
 
 describe('useGetShopifyPages', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
-    const contactFormId = 1
+    const helpCenterId = 1
 
     beforeEach(async () => {
         sdkMocks = await buildSDKMocks()
@@ -43,7 +43,7 @@ describe('useGetShopifyPages', () => {
         })
 
         const {result, waitFor} = renderHook(
-            () => useGetShopifyPages(contactFormId),
+            () => useGetShopifyPages(helpCenterId),
             {
                 wrapper,
             }
@@ -62,7 +62,7 @@ describe('useGetShopifyPages', () => {
         })
 
         const {result, waitFor} = renderHook(
-            () => useGetShopifyPages(contactFormId),
+            () => useGetShopifyPages(helpCenterId),
             {
                 wrapper,
             }
@@ -79,7 +79,7 @@ describe('useGetShopifyPages', () => {
 
 describe('useGetPageEmbedments', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
-    const contactFormId = 1
+    const helpCenterId = 1
 
     beforeEach(async () => {
         sdkMocks = await buildSDKMocks()
@@ -96,7 +96,7 @@ describe('useGetPageEmbedments', () => {
         })
 
         const {result, waitFor} = renderHook(
-            () => useGetPageEmbedments(contactFormId),
+            () => useGetPageEmbedments(helpCenterId),
             {
                 wrapper,
             }
@@ -115,7 +115,7 @@ describe('useGetPageEmbedments', () => {
         })
 
         const {result, waitFor} = renderHook(
-            () => useGetPageEmbedments(contactFormId),
+            () => useGetPageEmbedments(helpCenterId),
             {
                 wrapper,
             }
@@ -192,13 +192,13 @@ describe('useCreatePageEmbedment', () => {
 describe('useUpdatePageEmbedment', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const payload = {
-        contact_form_id: 1,
+        help_center_id: 1,
         page_id: 1,
         position: 'TOP',
     } as const
 
     const pathParams = {
-        contact_form_id: 1,
+        help_center_id: 1,
         embedment_id: 1,
     }
 

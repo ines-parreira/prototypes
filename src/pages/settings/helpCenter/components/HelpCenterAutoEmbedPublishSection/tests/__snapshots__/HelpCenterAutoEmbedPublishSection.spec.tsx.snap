@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-shopify store should render correct section 1`] = `
-<section>
+<section
+  class="container"
+>
   <div
     class="card disabled"
     data-testid="help-center-auto-embed-card"
@@ -35,7 +37,9 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
 `;
 
 exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions needed should render correct section 1`] = `
-<section>
+<section
+  class="container"
+>
   <div
     class="alert warning closable"
   >
@@ -107,7 +111,9 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
 `;
 
 exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions not needed should render correct section 1`] = `
-<section>
+<section
+  class="container"
+>
   <div
     class="card"
     data-testid="help-center-auto-embed-card"
@@ -141,7 +147,9 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
 `;
 
 exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shopify store when update permissions not needed should render correct section when store has embedments already 1`] = `
-<section>
+<section
+  class="container"
+>
   <div
     class="card clickable"
     data-testid="help-center-auto-embed-card"
@@ -164,7 +172,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       </div>
     </div>
     <i
-      class="material-icons"
+      class="material-icons caret"
     >
       keyboard_arrow_right
     </i>

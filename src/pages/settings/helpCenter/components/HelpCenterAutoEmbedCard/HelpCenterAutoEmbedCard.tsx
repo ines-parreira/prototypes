@@ -190,7 +190,9 @@ const HelpCenterAutoEmbedCard = ({
                         hasEmbeddedPages={true}
                         isDisabled={isDisabled}
                     />
-                    <i className={`material-icons`}>keyboard_arrow_right</i>
+                    <i className={classnames(`material-icons`, css.caret)}>
+                        keyboard_arrow_right
+                    </i>
                 </div>
             )
         }

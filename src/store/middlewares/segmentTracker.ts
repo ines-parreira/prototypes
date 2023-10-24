@@ -260,6 +260,7 @@ export enum SegmentEvent {
     HelpCenterContactFormCopyCode = 'help-center/contact-form/copy-code',
     HelpCenterManualEmbedCopyCode = 'help-center/manual-embed/copy-code',
     HelpCenterAutoEmbedEmbedFormClicked = 'help-center/auto-embed/embed-form-clicked',
+    HelpCenterAutoEmbedEmbedOnAnotherPageClicked = 'help-center/auto-embed/embed-on-another-page-clicked',
     HelpCenterArticleRowSettingsClicked = 'help-center/articles-view/article-row-settings-clicked',
     ContactFormAutoEmbedEmbedFormClicked = 'contact-form/auto-embed/embed-form-clicked',
     ContactFormAutoEmbedEmbedOnAnotherPageClicked = 'contact-form/auto-embed/embed-on-another-page-clicked',
