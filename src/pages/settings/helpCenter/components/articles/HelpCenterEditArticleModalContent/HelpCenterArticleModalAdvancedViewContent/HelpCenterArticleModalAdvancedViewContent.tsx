@@ -14,6 +14,7 @@ import {
     isExistingArticle,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
+import Tooltip from 'pages/common/components/Tooltip'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
@@ -90,20 +91,29 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 title="Article Settings"
                 onClose={onArticleModalClose}
                 toggleModalBtn={
-                    <IconButton
-                        onClick={() =>
-                            setEditModal({
-                                isOpened: true,
-                                view: HelpCenterArticleModalView.BASIC,
-                            })
-                        }
-                        fillStyle="ghost"
-                        intent="secondary"
-                        size="medium"
-                        aria-label="basic editor modal"
-                    >
-                        edit
-                    </IconButton>
+                    <>
+                        <Tooltip
+                            placement="bottom-end"
+                            target="back-edit-button"
+                        >
+                            Open editor
+                        </Tooltip>
+                        <IconButton
+                            onClick={() =>
+                                setEditModal({
+                                    isOpened: true,
+                                    view: HelpCenterArticleModalView.BASIC,
+                                })
+                            }
+                            id="back-edit-button"
+                            fillStyle="ghost"
+                            intent="secondary"
+                            size="medium"
+                            aria-label="basic editor modal"
+                        >
+                            edit
+                        </IconButton>
+                    </>
                 }
                 onArticleLanguageSelectActionClick={
                     onArticleLanguageSelectActionClick

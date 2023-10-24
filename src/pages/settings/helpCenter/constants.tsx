@@ -126,7 +126,7 @@ export const CATEGORY_ROW_ACTIONS = [
     {
         name: 'createNestedCategory',
         icon: 'playlist_add',
-        tooltip: 'Create category',
+        tooltip: 'Create subcategory',
     },
     {
         name: 'createNestedArticle',

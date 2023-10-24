@@ -107,28 +107,36 @@ export const HelpCenterEditModalHeader = ({
         )
     }, [isParentUnlisted, selectedArticle?.translation.visibility_status])
 
-    const getResizeModalButton = () =>
-        isFullscreen ? (
-            <IconButton
-                onClick={onResize}
-                fillStyle="ghost"
-                intent="secondary"
-                size="medium"
-                aria-label="halfscreen modal"
-            >
-                fullscreen_exit
-            </IconButton>
-        ) : (
-            <IconButton
-                onClick={onResize}
-                fillStyle="ghost"
-                intent="secondary"
-                size="medium"
-                aria-label="fullscreen modal"
-            >
-                fullscreen
-            </IconButton>
-        )
+    const getResizeModalButton = () => (
+        <>
+            <Tooltip placement="bottom-end" target="fullscreen-button">
+                {isFullscreen ? 'Halfscreen mode' : 'Fullscreen mode'}
+            </Tooltip>
+            <div id="fullscreen-button">
+                {isFullscreen ? (
+                    <IconButton
+                        onClick={onResize}
+                        fillStyle="ghost"
+                        intent="secondary"
+                        size="medium"
+                        aria-label="halfscreen modal"
+                    >
+                        fullscreen_exit
+                    </IconButton>
+                ) : (
+                    <IconButton
+                        onClick={onResize}
+                        fillStyle="ghost"
+                        intent="secondary"
+                        size="medium"
+                        aria-label="fullscreen modal"
+                    >
+                        fullscreen
+                    </IconButton>
+                )}
+            </div>
+        </>
+    )
 
     const localeOptions = useMemo(
         () =>
@@ -249,40 +257,65 @@ export const HelpCenterEditModalHeader = ({
                     )}
                     {onResize && getResizeModalButton()}
                     {publishedPreviewUrl && (
-                        <IconButton
-                            onClick={() =>
-                                window
-                                    .open(publishedPreviewUrl, '_blank')
-                                    ?.focus()
-                            }
-                            fillStyle="ghost"
-                            intent="secondary"
-                            size="medium"
-                            aria-label="preview article"
-                        >
-                            open_in_new
-                        </IconButton>
+                        <>
+                            <Tooltip
+                                placement="bottom-end"
+                                target="preview-button"
+                            >
+                                View Article
+                            </Tooltip>
+                            <IconButton
+                                onClick={() =>
+                                    window
+                                        .open(publishedPreviewUrl, '_blank')
+                                        ?.focus()
+                                }
+                                fillStyle="ghost"
+                                intent="secondary"
+                                size="medium"
+                                id="preview-button"
+                                aria-label="preview article"
+                            >
+                                open_in_new
+                            </IconButton>
+                        </>
                     )}
                     {isExistingArticle(selectedArticle) && (
-                        <IconButton
-                            onClick={() =>
-                                onCopyLinkToClipboard(
-                                    selectedArticle,
-                                    isUnlisted
-                                )
-                            }
-                            fillStyle="ghost"
-                            intent="secondary"
-                            size="medium"
-                            aria-label="copy url"
-                        >
-                            share
-                        </IconButton>
+                        <>
+                            <Tooltip
+                                placement="bottom-end"
+                                target="copy-url-button"
+                            >
+                                Copy URL
+                            </Tooltip>
+                            <IconButton
+                                id="copy-url-button"
+                                onClick={() =>
+                                    onCopyLinkToClipboard(
+                                        selectedArticle,
+                                        isUnlisted
+                                    )
+                                }
+                                fillStyle="ghost"
+                                intent="secondary"
+                                size="medium"
+                                aria-label="copy url"
+                            >
+                                share
+                            </IconButton>
+                        </>
                     )}
                     {toggleModalBtn}
+                    <Tooltip
+                        placement="bottom-end"
+                        target="close-edit-mode-button"
+                    >
+                        Close edit mode
+                    </Tooltip>
                     <IconButton
                         onClick={onClose}
                         fillStyle="ghost"
+                        id="close-edit-mode-button"
                         intent="secondary"
                         size="medium"
                         aria-label="close edit modal"

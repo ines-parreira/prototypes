@@ -41,7 +41,7 @@ describe('useCategoryRowActions()', () => {
                 "icon": "playlist_add",
                 "name": "createNestedCategory",
                 "tooltip": {
-                  "content": "Create category",
+                  "content": "Create subcategory",
                   "target": "createNestedCategory-1",
                 },
               },
@@ -78,7 +78,7 @@ describe('useCategoryRowActions()', () => {
                 "icon": "playlist_add",
                 "name": "createNestedCategory",
                 "tooltip": {
-                  "content": "Create category",
+                  "content": "Create subcategory",
                   "target": "createNestedCategory-1",
                 },
               },
@@ -119,7 +119,7 @@ describe('useCategoryRowActions()', () => {
                 "icon": "playlist_add",
                 "name": "createNestedCategory",
                 "tooltip": {
-                  "content": "Create category",
+                  "content": "Create subcategory",
                   "target": "createNestedCategory-1",
                 },
               },

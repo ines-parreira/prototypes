@@ -59,6 +59,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           aria-disabled="false"
           aria-label="copy url"
           class="wrapper wrapper ghost medium ghost secondary medium"
+          id="copy-url-button"
           type="button"
         >
           <i
@@ -71,6 +72,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           aria-disabled="false"
           aria-label="close edit modal"
           class="wrapper wrapper ghost medium ghost secondary medium"
+          id="close-edit-mode-button"
           type="button"
         >
           <i
@@ -228,6 +230,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           aria-disabled="false"
           aria-label="copy url"
           class="wrapper wrapper ghost medium ghost secondary medium"
+          id="copy-url-button"
           type="button"
         >
           <i
@@ -240,6 +243,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           aria-disabled="false"
           aria-label="close edit modal"
           class="wrapper wrapper ghost medium ghost secondary medium"
+          id="close-edit-mode-button"
           type="button"
         >
           <i
@@ -326,6 +330,7 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
           aria-disabled="false"
           aria-label="copy url"
           class="wrapper wrapper ghost medium ghost secondary medium"
+          id="copy-url-button"
           type="button"
         >
           <i
@@ -338,6 +343,7 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
           aria-disabled="false"
           aria-label="close edit modal"
           class="wrapper wrapper ghost medium ghost secondary medium"
+          id="close-edit-mode-button"
           type="button"
         >
           <i

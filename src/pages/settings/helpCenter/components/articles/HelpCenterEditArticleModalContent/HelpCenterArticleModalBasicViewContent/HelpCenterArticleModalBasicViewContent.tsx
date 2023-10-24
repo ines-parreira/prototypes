@@ -19,6 +19,7 @@ import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionMana
 import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
 import IconButton from 'pages/common/components/button/IconButton'
 import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
+import Tooltip from 'pages/common/components/Tooltip'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
@@ -177,21 +178,30 @@ const HelpCenterArticleModalBasicViewContent = ({
                 }
                 onCopyLinkToClipboard={onCopyLinkToClipboard}
                 toggleModalBtn={
-                    <IconButton
-                        onClick={() =>
-                            setEditModal({
-                                isOpened: true,
-                                view: HelpCenterArticleModalView.ADVANCED,
-                            })
-                        }
-                        isDisabled={!canUpdateArticle}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        size="medium"
-                        aria-label="advanced editor modal"
-                    >
-                        settings
-                    </IconButton>
+                    <>
+                        <Tooltip
+                            placement="bottom-end"
+                            target="settings-button"
+                        >
+                            Open settings
+                        </Tooltip>
+                        <IconButton
+                            onClick={() =>
+                                setEditModal({
+                                    isOpened: true,
+                                    view: HelpCenterArticleModalView.ADVANCED,
+                                })
+                            }
+                            isDisabled={!canUpdateArticle}
+                            fillStyle="ghost"
+                            intent="secondary"
+                            id="settings-button"
+                            size="medium"
+                            aria-label="advanced editor modal"
+                        >
+                            settings
+                        </IconButton>
+                    </>
                 }
                 autoFocus={autoFocus}
                 domain={helpCenterDomain}
