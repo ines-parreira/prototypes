@@ -1,237 +1,156 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DEPRECATED_BooleanField should render a basic boolean input 1`] = `
-<FormGroup
-  check={true}
-  className=""
+<div
+  class="form-check"
   color=""
-  tag="div"
 >
-  <Label
-    check={true}
-    className="control-label"
-    htmlFor="id-mybooleanfield"
-    tag="label"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <label
+    class="control-label form-check-label"
+    for="id-mybooleanfield"
   >
-    <Input
-      checked={false}
-      className="form-check-input"
+    <input
+      class="form-check-input form-control"
       id="id-mybooleanfield"
-      onChange={[Function]}
       placeholder="placeholder"
       type="text"
     />
     <span
-      style={
-        {
-          "verticalAlign": "middle",
-        }
-      }
+      style="vertical-align: middle;"
     >
       label
     </span>
-  </Label>
-</FormGroup>
+  </label>
+</div>
 `;
 
 exports[`DEPRECATED_BooleanField should render a help text 1`] = `
-<FormGroup
-  check={true}
-  className=""
+<div
+  class="form-check"
   color=""
-  tag="div"
 >
-  <Label
-    check={true}
-    className="control-label"
-    htmlFor="id-mybooleanfield"
-    tag="label"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <label
+    class="control-label form-check-label"
+    for="id-mybooleanfield"
   >
-    <Input
-      checked={false}
-      className="form-check-input"
+    <input
+      class="form-check-input form-control"
       id="id-mybooleanfield"
-      onChange={[Function]}
       placeholder="placeholder"
       type="text"
     />
     <span
-      style={
-        {
-          "verticalAlign": "middle",
-        }
-      }
+      style="vertical-align: middle;"
     >
       label
     </span>
-  </Label>
-  <FormText
-    color="muted"
-    tag="small"
+  </label>
+  <small
+    class="form-text text-muted"
   >
     help text
-  </FormText>
-</FormGroup>
+  </small>
+</div>
 `;
 
 exports[`DEPRECATED_BooleanField should render a required input 1`] = `
-<FormGroup
-  check={true}
-  className="required"
+<div
+  class="required form-check"
   color=""
-  tag="div"
 >
-  <Label
-    check={true}
-    className="control-label"
-    htmlFor="id-mybooleanfield"
-    tag="label"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <label
+    class="control-label form-check-label"
+    for="id-mybooleanfield"
   >
-    <Input
-      checked={false}
-      className="form-check-input"
+    <input
+      class="form-check-input form-control"
       id="id-mybooleanfield"
-      onChange={[Function]}
       placeholder="placeholder"
-      required={true}
+      required=""
       type="text"
     />
     <span
-      style={
-        {
-          "verticalAlign": "middle",
-        }
-      }
+      style="vertical-align: middle;"
     >
       label
     </span>
-  </Label>
-</FormGroup>
+  </label>
+</div>
 `;
 
 exports[`DEPRECATED_BooleanField should render inline 1`] = `
-<FormGroup
-  check={true}
-  className="d-inline-block"
+<div
+  class="d-inline-block form-check"
   color=""
-  tag="div"
 >
-  <Label
-    check={true}
-    className="control-label"
-    htmlFor="id-mybooleanfield"
-    tag="label"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <label
+    class="control-label form-check-label"
+    for="id-mybooleanfield"
   >
-    <Input
-      checked={false}
-      className="form-check-input"
+    <input
+      class="form-check-input form-control"
       id="id-mybooleanfield"
-      onChange={[Function]}
       placeholder="placeholder"
       type="text"
     />
     <span
-      style={
-        {
-          "verticalAlign": "middle",
-        }
-      }
+      style="vertical-align: middle;"
     >
       label
     </span>
-  </Label>
-</FormGroup>
+  </label>
+</div>
 `;
 
 exports[`DEPRECATED_BooleanField should render the input with an error 1`] = `
-<FormGroup
-  check={true}
-  className=""
+<div
+  class="form-check"
   color="danger"
-  tag="div"
 >
-  <Label
-    check={true}
-    className="control-label"
-    htmlFor="id-mybooleanfield"
-    tag="label"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <label
+    class="control-label form-check-label"
+    for="id-mybooleanfield"
   >
-    <Input
-      checked={false}
-      className="form-check-input form-control-danger"
+    <input
+      class="form-check-input form-control-danger form-control"
       id="id-mybooleanfield"
-      onChange={[Function]}
       placeholder="placeholder"
       type="text"
     />
     <span
-      style={
-        {
-          "verticalAlign": "middle",
-        }
-      }
+      style="vertical-align: middle;"
     >
       label
     </span>
-  </Label>
-  <Errors>
+  </label>
+  <div
+    class="invalid-feedback"
+  >
     the value is wrong
-  </Errors>
-</FormGroup>
+  </div>
+</div>
 `;
 
 exports[`DEPRECATED_BooleanField should use default props 1`] = `
-{
-  "label": "label",
-  "name": "mybooleanfield",
-  "onChange": [Function],
-  "placeholder": "placeholder",
-  "type": "checkbox",
-  "value": false,
-}
+<div
+  class="form-check"
+  color=""
+>
+  <label
+    class="control-label form-check-label"
+    for="id-mybooleanfield"
+  >
+    <input
+      class="form-check-input form-check-input"
+      id="id-mybooleanfield"
+      placeholder="placeholder"
+      type="checkbox"
+    />
+    <span
+      style="vertical-align: middle;"
+    >
+      label
+    </span>
+  </label>
+</div>
 `;

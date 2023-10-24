@@ -2,153 +2,150 @@
 
 exports[`RichFieldWithVariables should render an input with variable dropdowns 1`] = `
 <div
-  className="field"
+  class="field"
 >
   <div
-    className="textarea-toolbar toolbar"
+    class="textarea-toolbar toolbar"
   >
-    <UncontrolledDropdown
-      key="0"
+    <div
+      class="dropdown"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        color="secondary"
-        tag="div"
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
       >
-        <ForwardRef(Button)
-          fillStyle="ghost"
-          intent="secondary"
+        <button
+          aria-disabled="false"
+          class="wrapper ghost secondary medium"
+          type="button"
         >
-          <ButtonIconLabel
-            icon="arrow_drop_down"
-            position="right"
+          <span
+            class="wrapper"
           >
             Ticket customer
-          </ButtonIconLabel>
-        </ForwardRef(Button)>
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        tag="div"
+            <i
+              class="material-icons icon isRight medium"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </div>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          key="0"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           First name
-        </DropdownItem>
-        <DropdownItem
-          key="1"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Last name
-        </DropdownItem>
-        <DropdownItem
-          key="2"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Full name
-        </DropdownItem>
-        <DropdownItem
-          key="3"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Email
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
-    <UncontrolledDropdown
-      key="1"
+        </button>
+      </div>
+    </div>
+    <div
+      class="dropdown"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        color="secondary"
-        tag="div"
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
       >
-        <ForwardRef(Button)
-          fillStyle="ghost"
-          intent="secondary"
+        <button
+          aria-disabled="false"
+          class="wrapper ghost secondary medium"
+          type="button"
         >
-          <ButtonIconLabel
-            icon="arrow_drop_down"
-            position="right"
+          <span
+            class="wrapper"
           >
             Current agent
-          </ButtonIconLabel>
-        </ForwardRef(Button)>
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        tag="div"
+            <i
+              class="material-icons icon isRight medium"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </div>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          key="0"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           First name
-        </DropdownItem>
-        <DropdownItem
-          key="1"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Last name
-        </DropdownItem>
-        <DropdownItem
-          key="2"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Full name
-        </DropdownItem>
-        <DropdownItem
-          key="3"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Email
-        </DropdownItem>
-        <DropdownItem
-          key="4"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Bio
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
+        </button>
+      </div>
+    </div>
   </div>
-  <ForwardRef(TicketRichField)
-    onChange={[Function]}
-    value={
-      {
-        "html": "html",
-        "text": "text",
-      }
-    }
-  />
+  <div />
 </div>
 `;

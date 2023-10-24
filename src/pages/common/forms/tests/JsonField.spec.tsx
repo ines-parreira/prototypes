@@ -1,5 +1,6 @@
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
-import {shallow, mount} from 'enzyme'
+import {act, render, screen} from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import JsonField from '../JsonField'
@@ -11,13 +12,18 @@ describe('JsonField', () => {
     }
 
     it('should render input', () => {
-        const component = mount(<JsonField {...minProps} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<JsonField {...minProps} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('display invalid message', () => {
-        const component = shallow(<JsonField {...minProps} />)
-        component.setState({isJsonValid: false})
-        expect(component).toMatchSnapshot()
+    it('display invalid message', async () => {
+        const {container} = render(<JsonField {...minProps} />)
+
+        await act(async () => {
+            await userEvent.type(screen.getByRole('textbox'), 'some input')
+        })
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

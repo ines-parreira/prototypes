@@ -1,84 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`JsonField display invalid message 1`] = `
-<FormGroup
-  className="InputField"
+<div
+  class="InputField form-group"
   color=""
-  tag="div"
 >
   <div
-    className=""
+    class=""
   >
-    <FormGroup
-      tag="div"
+    <div
+      class="form-group"
     >
       <div
-        className="controls"
+        class="controls"
       >
-        <Input
+        <textarea
+          aria-invalid="true"
+          class="is-invalid form-control"
           id="id-input-2"
-          invalid={true}
-          onChange={[Function]}
           rows="6"
-          type="textarea"
-          value=""value""
-        />
-        <Errors>
+        >
+          "value"t
+        </textarea>
+        <div
+          class="invalid-feedback"
+        >
           Invalid JSON : changes will not be saved until the JSON is fixed
-        </Errors>
+        </div>
       </div>
-    </FormGroup>
+    </div>
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`JsonField should render input 1`] = `
-<JsonField
-  onChange={[Function]}
-  type="text"
-  value="value"
+<div
+  class="InputField form-group"
+  color=""
 >
-  <FormGroup
-    className="InputField"
-    color=""
-    tag="div"
+  <div
+    class=""
   >
     <div
-      className="InputField form-group"
-      color=""
+      class="form-group"
     >
       <div
-        className=""
+        class="controls"
       >
-        <FormGroup
-          tag="div"
+        <textarea
+          class="form-control"
+          id="id-input-1"
+          rows="6"
         >
-          <div
-            className="form-group"
-          >
-            <div
-              className="controls"
-            >
-              <Input
-                id="id-input-1"
-                onChange={[Function]}
-                rows="6"
-                type="textarea"
-                value=""value""
-              >
-                <textarea
-                  className="form-control"
-                  id="id-input-1"
-                  onChange={[Function]}
-                  rows="6"
-                  value=""value""
-                />
-              </Input>
-            </div>
-          </div>
-        </FormGroup>
+          "value"
+        </textarea>
       </div>
     </div>
-  </FormGroup>
-</JsonField>
+  </div>
+</div>
 `;
