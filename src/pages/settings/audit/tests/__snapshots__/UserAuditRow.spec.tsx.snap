@@ -302,7 +302,7 @@ exports[`<UserAuditRow/> should render with a link to User object type 1`] = `
         class="cell-content"
       >
         <a
-          to="/app/customer/10/"
+          to="/app/settings/users/10/"
         >
           User #10
         </a>

@@ -48,8 +48,7 @@ const UserAuditRow = ({eventItem}: Props) => {
         const objectTypeRoutes = {
             Ticket: `/app/ticket/${eventItem.object_id}/`,
             Customer: `/app/customer/${eventItem.object_id}/`,
-            // TODO(customers-migration): remove this when we updated the object type for customers-related events
-            User: `/app/customer/${eventItem.object_id}/`,
+            User: `/app/settings/users/${eventItem.object_id}/`,
         }
         const objectType =
             eventItem.object_type as keyof typeof objectTypeRoutes
