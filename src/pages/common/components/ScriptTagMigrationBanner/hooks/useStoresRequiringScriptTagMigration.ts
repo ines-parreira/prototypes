@@ -41,43 +41,20 @@ const getRequiresScriptTagMigration = ({
     storeIntegration: ShopifyIntegration
     gorgiasChatIntegration: Map<any, any>
 }) => {
-    let gorgiasChatRequiresReinstall = false,
-        storeRequiresPermissionUpdates = false
-
-    const shopIntegrationId = gorgiasChatIntegration.getIn([
-        'meta',
-        'shop_integration_id',
-    ])
-
-    const shopifyIntegrationIds: List<number> = gorgiasChatIntegration.getIn(
-        ['meta', 'shopify_integration_ids'],
-        fromJS([])
-    )
-    const isOneClickInstallation = shopIntegrationId
-        ? shopifyIntegrationIds.includes(shopIntegrationId)
-        : false
-
-    if (!isOneClickInstallation) {
-        return {
-            gorgiasChatRequiresReinstall,
-            storeRequiresPermissionUpdates,
-        }
-    }
-
     const oneClickInstallationMethod: string =
         gorgiasChatIntegration.getIn([
             'meta',
             'one_click_installation_method',
         ]) ?? GorgiasChatInstallationMethod.Asset
 
-    gorgiasChatRequiresReinstall =
+    const gorgiasChatRequiresReinstall =
         oneClickInstallationMethod !== GorgiasChatInstallationMethod.ScriptTag
 
     const hasShopifyScriptTagScope = getHasShopifyScriptTagScopes({
         storeIntegration,
     })
 
-    storeRequiresPermissionUpdates = !hasShopifyScriptTagScope
+    const storeRequiresPermissionUpdates = !hasShopifyScriptTagScope
 
     return {
         gorgiasChatRequiresReinstall,
@@ -109,10 +86,33 @@ const useStoresRequiringScriptTagMigration = () => {
             }
 
             const gorgiasChatIntegration = gorgiasChatIntegrations.find(
-                (integration) =>
-                    !integration?.get('deactivated_datetime') &&
-                    integration?.getIn(['meta', 'shop_integration_id']) ===
-                        storeIntegration.id
+                (integration) => {
+                    if (integration?.get('deactivated_datetime')) {
+                        return false
+                    }
+
+                    const shopIntegrationId = integration?.getIn([
+                        'meta',
+                        'shop_integration_id',
+                    ])
+
+                    if (
+                        !shopIntegrationId ||
+                        shopIntegrationId !== storeIntegration.id
+                    ) {
+                        return false
+                    }
+
+                    const shopifyIntegrationIds: List<number> | undefined =
+                        integration?.getIn(
+                            ['meta', 'shopify_integration_ids'],
+                            fromJS([])
+                        )
+                    const isOneClickInstallation =
+                        shopifyIntegrationIds?.includes(shopIntegrationId)
+
+                    return !!isOneClickInstallation
+                }
             )
 
             if (!gorgiasChatIntegration) {
