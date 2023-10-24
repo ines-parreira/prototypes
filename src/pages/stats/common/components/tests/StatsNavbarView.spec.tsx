@@ -124,4 +124,19 @@ describe('StatsNavbarView', () => {
 
         expect(screen.getByText('Help Center')).toBeInTheDocument()
     })
+
+    it('should render the link to the Voice Overview (FF on)', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.DisplayVoiceAnalytics]: true,
+        }))
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        expect(screen.getByText('Voice')).toBeInTheDocument()
+    })
 })

@@ -1,4 +1,4 @@
-import React, {RefObject} from 'react'
+import React, {ReactNode, RefObject} from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -9,6 +9,8 @@ type Props = {
     onButtonClick: () => void
     isOpened: boolean
     setIsOpened: (isOpened: boolean) => void
+    buttonContent?: ReactNode
+    buttonClassName?: string
 }
 
 const PaywallPopover = ({
@@ -17,6 +19,8 @@ const PaywallPopover = ({
     onButtonClick,
     isOpened,
     setIsOpened,
+    buttonContent,
+    buttonClassName,
 }: Props) => {
     return (
         iconRef.current && (
@@ -34,12 +38,16 @@ const PaywallPopover = ({
                     Subscribe to the {featureName} <br /> to unlock this feature
                     <Button
                         size="small"
-                        className="mt-3"
+                        className={buttonClassName ? buttonClassName : 'mt-3'}
                         onClick={onButtonClick}
                     >
-                        <ButtonIconLabel icon="auto_awesome">
-                            Get This Feature
-                        </ButtonIconLabel>
+                        {buttonContent ? (
+                            buttonContent
+                        ) : (
+                            <ButtonIconLabel icon="auto_awesome">
+                                Get This Feature
+                            </ButtonIconLabel>
+                        )}
                     </Button>
                 </PopoverBody>
             </Popover>

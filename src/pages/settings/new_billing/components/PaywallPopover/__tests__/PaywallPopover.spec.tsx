@@ -31,4 +31,20 @@ describe('<PaywallPopover />', () => {
 
         expect(queryByText('Get This Feature')).toBe(null)
     })
+
+    it('should render with custom button content', () => {
+        const {getByText, queryByText, getByRole} = render(
+            <PaywallPopover
+                {...defaultProps}
+                buttonContent={'Learn more'}
+                buttonClassName={'mt-2'}
+            />
+        )
+        expect(getByText('Learn more')).toBeInTheDocument()
+        expect(queryByText('auto_awesome')).toBeNull()
+
+        const button = getByRole('button', {name: 'Learn more'})
+        expect(button).toHaveClass('mt-2')
+        expect(button).not.toHaveClass('mt-3')
+    })
 })

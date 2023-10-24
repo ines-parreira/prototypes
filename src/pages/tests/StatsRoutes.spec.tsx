@@ -6,8 +6,8 @@ import thunk from 'redux-thunk'
 import {Route, Switch} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {act} from '@testing-library/react'
-
 import {createBrowserHistory} from 'history'
+
 import {user} from 'fixtures/users'
 import {StatsFilters} from 'models/stat/types'
 import {RootState} from 'state/types'

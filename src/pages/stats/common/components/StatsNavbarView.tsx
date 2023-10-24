@@ -27,6 +27,7 @@ import {
 import {Category} from 'models/integration/types/app'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
+import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -42,6 +43,8 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.NewAutomationAddon]
     const isHelpCenterAnalyticsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
+    const isVoiceAnalyticsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
 
     const isConvertSubscriber = useIsConvertSubscriber()
     const isConvertBillingEnabled = useIsRevenueBillingEnabled()
@@ -339,6 +342,15 @@ export default function StatsNavbarView() {
                             commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                         />
                     </div>
+                </NavbarBlock>
+            )}
+            {isVoiceAnalyticsEnabled && (
+                <NavbarBlock title={'Voice'} icon={'phone'}>
+                    <VoiceStatsNavbarItem
+                        to={'/app/stats/voice-overview'}
+                        title={'Overview'}
+                        commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                    />
                 </NavbarBlock>
             )}
         </>
