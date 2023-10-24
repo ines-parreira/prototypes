@@ -5,6 +5,7 @@ import {AlertNotifications, BannerNotifications} from 'notifications'
 import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
 import KeyboardHelp from 'pages/common/components/KeyboardHelp/KeyboardHelp'
 import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
+import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal'
 import {useTheme} from 'theme'
 
 import useAppShortcuts from '../hooks/useAppShortcuts'
@@ -32,6 +33,7 @@ export default function App({children}: Props) {
             <BannerNotifications />
             <EmailMigrationBanner />
             <ScriptTagMigrationBanner />
+            <ScriptTagMigrationModal />
             {children}
             <KeyboardHelp />
             <AlertNotifications />

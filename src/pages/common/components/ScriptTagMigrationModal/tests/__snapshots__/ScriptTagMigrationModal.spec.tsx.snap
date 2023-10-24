@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ScriptTagMigrationModal /> should hide modal if period is not over yet 1`] = `
+HTMLCollection [
+  <div />,
+]
+`;
+
+exports[`<ScriptTagMigrationModal /> should hide modal if period is over but no stores require permission updates 1`] = `
+HTMLCollection [
+  <div />,
+]
+`;
+
+exports[`<ScriptTagMigrationModal /> should show modal if period is over 1`] = `
+HTMLCollection [
+  <div />,
+  <div
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
+    aria-modal="true"
+    class="modal modalEnter modalEnterActive"
+    role="dialog"
+  >
+    <div
+      class="dialog"
+    >
+      <div
+        class="modalContent"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-1-title"
+            >
+              Update Shopify store permissions
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-1-desc"
+        >
+          To keep 1-click installation for chat, you must update your Shopify permissions by 
+          <b>
+            Scary Deadline
+          </b>
+        </div>
+        <div
+          class="wrapper wrapper"
+        >
+          <div
+            class="actions"
+          >
+            <div
+              class="childWrapper"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                Update permissions
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;

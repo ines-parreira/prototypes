@@ -23,6 +23,9 @@ import useStoresRequiringScriptTagMigration from './hooks/useStoresRequiringScri
 
 const ScriptTagMigrationBanner = () => {
     const migrationDueDate: string | undefined =
+        useFlags()[FeatureFlagKey.ChatScopeUpdateDueDate]
+
+    const showMigrationBanner: boolean | undefined =
         useFlags()[FeatureFlagKey.ChatScopeUpdateBanner]
 
     const reinstallsOnShopifyCallback: boolean | undefined =
@@ -64,6 +67,7 @@ const ScriptTagMigrationBanner = () => {
     }
 
     if (
+        !showMigrationBanner ||
         !migrationDueDate ||
         !isAdmin(currentUser) ||
         (!storesRequiringPermissionUpdates.length &&
