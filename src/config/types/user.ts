@@ -35,10 +35,28 @@ export type User = UserDraft & {
     firstname: string
     id: number
     lastname: string
-    meta: Maybe<{
-        profile_picture_url: string | null
-        [key: string]: any
-    }>
+    meta: {
+        last_phone_call_ended_at?: string
+        profile_picture_url?: string | null
+        sso?: string
+        name_set_via?: string
+        location_info?: {
+            calling_code?: string
+            city?: string
+            country_code?: string
+            country_name?: string
+            currency?: {code?: string}
+            ip?: string
+            languages?: {name?: string}[]
+            region?: string
+            region_code?: string
+            time_zone?: {
+                abbr?: string
+                name?: string
+                offset?: string
+            }
+        }
+    } | null
     updated_datetime: string
     settings: UserSetting[]
     timezone: string | null

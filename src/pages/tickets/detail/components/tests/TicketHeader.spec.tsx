@@ -19,7 +19,12 @@ import shortcutManager from 'services/shortcutManager'
 import useAppDispatch from 'hooks/useAppDispatch'
 import TicketHeader from '../TicketHeader'
 
-jest.mock('../../../../../services/shortcutManager')
+jest.mock(
+    'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee',
+    () => () => <div>TicketAssigneeMock</div>
+)
+
+jest.mock('services/shortcutManager')
 
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(() => () => Promise.resolve()),

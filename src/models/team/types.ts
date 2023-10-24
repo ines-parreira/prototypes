@@ -1,34 +1,13 @@
 import {EmojiData} from 'emoji-mart'
 
-import {UserRole} from 'config/types/user'
+import {User, UserRole} from 'config/types/user'
 import {ApiPaginationParams, OrderParams} from 'models/api/types'
 
 export type Member = {
     id: number
     name: string
     email: string
-    meta: {
-        last_phone_call_ended_at?: string
-        profile_picture_url?: string
-        sso?: string
-        name_set_via?: string
-        location_info?: {
-            calling_code?: string
-            city?: string
-            country_code?: string
-            country_name?: string
-            currency?: {code?: string}
-            ip?: string
-            languages?: {name?: string}[]
-            region?: string
-            region_code?: string
-            time_zone?: {
-                abbr?: string
-                name?: string
-                offset?: string
-            }
-        }
-    } | null
+    meta: User['meta']
     role?: {
         id?: number
         name: UserRole

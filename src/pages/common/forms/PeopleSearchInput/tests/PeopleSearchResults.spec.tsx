@@ -40,11 +40,12 @@ describe('<PeopleSearchResults/>', () => {
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should render with custom children displayed before teams', () => {
-            const {container} = render(
+            const customContent = 'foo'
+            const {getByText} = render(
                 <PeopleSearchResults
                     handleTeams
                     handleUsers
@@ -57,11 +58,11 @@ describe('<PeopleSearchResults/>', () => {
                 </PeopleSearchResults>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText(customContent)).toBeInTheDocument()
         })
 
         it('should render without teams', () => {
-            const {container} = render(
+            const {queryByText} = render(
                 <PeopleSearchResults
                     handleTeams={false}
                     handleUsers
@@ -72,11 +73,11 @@ describe('<PeopleSearchResults/>', () => {
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(queryByText('Teams')).not.toBeInTheDocument()
         })
 
         it('should render without users', () => {
-            const {container} = render(
+            const {queryByText} = render(
                 <PeopleSearchResults
                     handleTeams
                     handleUsers={false}
@@ -87,7 +88,7 @@ describe('<PeopleSearchResults/>', () => {
                 />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(queryByText('Users')).not.toBeInTheDocument()
         })
     })
 })

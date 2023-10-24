@@ -32,10 +32,6 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
     role="menu"
     tabindex="-1"
   >
-    <div
-      class="dropdown-divider"
-      tabindex="-1"
-    />
     <h6
       class="text-uppercase dropdown-header"
       tabindex="-1"

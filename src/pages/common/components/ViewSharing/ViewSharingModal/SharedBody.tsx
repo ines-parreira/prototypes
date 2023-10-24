@@ -4,9 +4,8 @@ import {ListGroup, ListGroupItem} from 'reactstrap'
 import classnames from 'classnames'
 
 import IconButton from 'pages/common/components/button/IconButton'
-
-import UncontrolledPeopleSearchInput from '../../../forms/PeopleSearchInput/UncontrolledPeopleSearchInput'
-import {AgentLabel, TeamLabel} from '../../../utils/labels'
+import UncontrolledPeopleSearchInput from 'pages/common/forms/PeopleSearchInput/UncontrolledPeopleSearchInput'
+import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
 
 import css from './SharedBody.less'
 

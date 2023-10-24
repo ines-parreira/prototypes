@@ -28,7 +28,7 @@ export default function PeopleSearchResults({
     return (
         <>
             {children}
-            {handleTeams && <DropdownItem divider />}
+            {handleTeams && children && <DropdownItem divider />}
             {handleTeams && <TeamResults teams={teams} onClick={onTeamClick} />}
             {handleUsers && <DropdownItem divider />}
             {handleUsers && <UserResults users={users} onClick={onUserClick} />}

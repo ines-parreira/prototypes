@@ -5,16 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import TicketAssignee, {
-    TicketAssigneeContainer,
-} from '../TicketAssignee/TicketAssignee'
-
-const teams: Map<any, any> = fromJS({
-    all: [
-        {id: 1, name: 'Team 1', decoration: {}},
-        {id: 2, name: 'Team 2', decoration: {}},
-    ],
-})
+import TicketAssignee from '../TicketAssignee/TicketAssignee'
 
 const users: Map<any, any> = fromJS({
     all: [
@@ -24,7 +15,7 @@ const users: Map<any, any> = fromJS({
 })
 
 const minProps: Omit<
-    ComponentProps<typeof TicketAssigneeContainer>,
+    ComponentProps<typeof TicketAssignee>,
     'handleTeams' | 'handleUsers'
 > = {
     currentAssigneeUser: null,
@@ -34,125 +25,125 @@ const minProps: Omit<
     setTeam: jest.fn(),
     className: 'classname',
     transparent: true,
-    dispatch: jest.fn(),
-    users: users.get('all'),
-    teams: teams.get('all'),
-    currentUser: fromJS({}),
 }
 
-describe('<TicketAssignee/>', () => {
+const mockStore = configureMockStore([thunk])
+
+describe('<TicketAssignee />', () => {
+    const store = mockStore({
+        agents: users,
+        teams: fromJS({
+            all: [
+                {id: 1, name: 'Team 1', decoration: {}},
+                {id: 2, name: 'Team 2', decoration: {}},
+            ],
+        }),
+        currentUser: fromJS({id: 1, email: 'steve@acme.gorgias.io'}),
+    })
+
     describe('render()', () => {
         it('should not display any agent info because there is no assignee', () => {
-            const {container} = render(
-                <TicketAssigneeContainer {...minProps} />
+            const {getByText} = render(
+                <Provider store={store}>
+                    <TicketAssignee {...minProps} />
+                </Provider>
             )
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText(/Unassigned/)).toBeInTheDocument()
         })
 
         it('should display the info of the agent assigned', () => {
-            const {container} = render(
-                <TicketAssigneeContainer
-                    {...minProps}
-                    currentAssigneeUser={fromJS({id: 1, name: 'Steve Frizeli'})}
-                    profilePictureUrl="profilePictureUrl"
-                />
+            const {getAllByText} = render(
+                <Provider store={store}>
+                    <TicketAssignee
+                        {...minProps}
+                        currentAssigneeUser={fromJS({
+                            id: 1,
+                            name: 'Steve Frizeli',
+                        })}
+                        profilePictureUrl="profilePictureUrl"
+                    />
+                </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getAllByText(/Steve Frizeli/)).toHaveLength(2)
+            expect(getAllByText(/SF/)).toHaveLength(2)
         })
 
         it('should display the email of the agent assigned as its name because it has no name', () => {
-            const {container} = render(
-                <TicketAssigneeContainer
-                    {...minProps}
-                    users={fromJS([
-                        {id: 1, email: 'steve@acme.gorgias.io'},
-                        users.getIn(['all', 1]),
-                    ])}
-                    currentAssigneeUser={fromJS({
-                        id: 1,
-                        email: 'steve@acme.gorgias.io',
-                    })}
-                />
+            const email = 'steve@acme.gorgias.io'
+            const {getAllByText} = render(
+                <Provider store={store}>
+                    <TicketAssignee
+                        {...minProps}
+                        currentAssigneeUser={fromJS({
+                            id: 1,
+                            email,
+                        })}
+                    />
+                </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getAllByText(email)).toHaveLength(2)
         })
 
         it('should display the info of the agent assigned even if a team is assigned too', () => {
-            const {container} = render(
-                <TicketAssigneeContainer
-                    {...minProps}
-                    currentAssigneeUser={fromJS({
-                        id: 1,
-                        email: 'steve@acme.gorgias.io',
-                    })}
-                    currentAssigneeTeam={fromJS({id: 1, name: 'Team 1'})}
-                />
+            const email = 'steve@acme.gorgias.io'
+            const {getAllByText} = render(
+                <Provider store={store}>
+                    <TicketAssignee
+                        {...minProps}
+                        currentAssigneeUser={fromJS({
+                            id: 1,
+                            email,
+                        })}
+                        currentAssigneeTeam={fromJS({
+                            id: 1,
+                            name: 'Team 1',
+                        })}
+                    />
+                </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getAllByText(email)).toHaveLength(2)
         })
 
         it('should display the name of the team assigned because there is no user assigned', () => {
-            const {container} = render(
-                <TicketAssigneeContainer
-                    {...minProps}
-                    currentAssigneeTeam={fromJS({id: 1, name: 'Team 1'})}
-                />
+            const name = 'Team 1'
+            const {getAllByText} = render(
+                <Provider store={store}>
+                    <TicketAssignee
+                        {...minProps}
+                        currentAssigneeTeam={fromJS({
+                            id: 1,
+                            name,
+                        })}
+                    />
+                </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getAllByText(name)).toHaveLength(2)
         })
 
         it('should display users only', () => {
-            const {container} = render(
-                <TicketAssigneeContainer {...minProps} handleTeams={false} />
+            const {getByText, queryByText} = render(
+                <Provider store={store}>
+                    <TicketAssignee {...minProps} handleTeams={false} />
+                </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText(/Users/)).toBeInTheDocument()
+            expect(queryByText(/Teams/)).not.toBeInTheDocument()
         })
 
         it('should display teams only', () => {
-            const {container} = render(
-                <TicketAssigneeContainer {...minProps} handleUsers={false} />
+            const {getByText, queryByText} = render(
+                <Provider store={store}>
+                    <TicketAssignee {...minProps} handleUsers={false} />
+                </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(queryByText(/Users/)).not.toBeInTheDocument()
+            expect(getByText(/Teams/)).toBeInTheDocument()
         })
-
-        it('should not display teams because object is empty', () => {
-            const {container} = render(
-                <TicketAssigneeContainer {...minProps} teams={fromJS([])} />
-            )
-
-            expect(container.firstChild).toMatchSnapshot()
-        })
-    })
-
-    it('should read data from the redux store correctly', () => {
-        const mockStore = configureMockStore([thunk])
-        const store = mockStore({
-            agents: users,
-            teams,
-            currentUser: fromJS({id: 1, email: 'steve@acme.gorgias.io'}),
-        })
-
-        const defaultProps: ComponentProps<typeof TicketAssignee> = {
-            currentAssigneeUser: null,
-            currentAssigneeTeam: null,
-            menuDirection: 'right',
-            setUser: jest.fn(),
-            setTeam: jest.fn(),
-            className: 'classname',
-            transparent: false,
-        }
-
-        const {container} = render(
-            <Provider store={store}>
-                <TicketAssignee {...defaultProps} />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
     })
 })
