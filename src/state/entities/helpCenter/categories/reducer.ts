@@ -3,6 +3,7 @@ import _uniq from 'lodash/uniq'
 
 import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
+import {reportError} from 'utils/errors'
 import {HelpCenterCategoriesState} from './types'
 
 import {
@@ -69,14 +70,22 @@ export default createReducer<HelpCenterCategoriesState>(
 
             .addCase(updateCategoriesArticleCount, (state, {payload}) => {
                 payload.forEach(({articleCount, categoryId}) => {
-                    const category =
-                        state.categoriesById[
-                            (
-                                categoryId ?? HELP_CENTER_ROOT_CATEGORY_ID
-                            ).toString()
-                        ]
+                    const category = categoryId
+                        ? state.categoriesById[categoryId.toString()]
+                        : state.categoriesById[HELP_CENTER_ROOT_CATEGORY_ID]
 
-                    category.articleCount = articleCount
+                    if (category) {
+                        category.articleCount = articleCount
+                    } else {
+                        // This should never happen
+                        reportError(
+                            new Error(
+                                `No categories with id: ${
+                                    categoryId ?? 'unknown'
+                                } found in state during updateCategoriesArticleCount`
+                            )
+                        )
+                    }
                 })
             })
 

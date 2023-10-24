@@ -10,6 +10,7 @@ import {
     getSingleCategory,
 } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 
+import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
 import reducer, {initialState} from '../reducer'
 import {
     saveCategories,
@@ -18,6 +19,7 @@ import {
     deleteCategory,
     resetCategories,
     pushCategorySupportedLocales,
+    updateCategoriesArticleCount,
 } from '../actions'
 
 import {CategoriesAction} from '../types'
@@ -186,6 +188,57 @@ describe('Help Center/Categories reducer', () => {
             )
 
             expect(nextState).toEqual(initialState)
+        })
+    })
+
+    describe('dispatch updateCategoriesArticleCount', () => {
+        it('should save new categories article count', () => {
+            const nextState = reducer(
+                {
+                    categoriesById: {
+                        [categoryResponse.id]: categoryResponse,
+                    },
+                },
+                updateCategoriesArticleCount([
+                    {
+                        categoryId: categoryResponse.id,
+                        articleCount: 10,
+                    },
+                ])
+            )
+
+            expect(nextState).toEqual({
+                categoriesById: {
+                    [categoryResponse.id]: {
+                        ...categoryResponse,
+                        articleCount: 10,
+                    },
+                },
+            })
+        })
+        it('should update default category article count when cattegory id is null', () => {
+            const nextState = reducer(
+                {
+                    categoriesById: {
+                        [HELP_CENTER_ROOT_CATEGORY_ID]: categoryResponse,
+                    },
+                },
+                updateCategoriesArticleCount([
+                    {
+                        categoryId: null,
+                        articleCount: 10,
+                    },
+                ])
+            )
+
+            expect(nextState).toEqual({
+                categoriesById: {
+                    [HELP_CENTER_ROOT_CATEGORY_ID]: {
+                        ...categoryResponse,
+                        articleCount: 10,
+                    },
+                },
+            })
         })
     })
 })
