@@ -129,6 +129,7 @@ export const defaultContent = {
     mainFontFamily: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     backgroundColorStyle: GorgiasChatBackgroundColorStyle.Gradient,
     headerPictureUrl: undefined,
+    headerPictureUrlOffline: undefined,
 }
 
 const avatarNameTypeOptions = [
@@ -197,7 +198,8 @@ type State = {
     avatar: GorgiasChatAvatarSettings
     mainFontFamily: string
     backgroundColorStyle: GorgiasChatBackgroundColorStyle
-    headerPictureUrl?: string | null
+    headerPictureUrl?: string
+    headerPictureUrlOffline?: string
 }
 
 type SubmitForm = {
@@ -453,6 +455,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         'decoration',
                         'header_picture_url',
                     ]),
+                    headerPictureUrlOffline: integration.getIn([
+                        'decoration',
+                        'header_picture_url_offline',
+                    ]),
                 },
                 defaultContent
             )
@@ -544,15 +550,20 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             }
         }
 
-        if (!!state.avatar.companyLogoUrl) {
+        if (state.avatar.companyLogoUrl) {
             form.decoration.avatar = {
                 ...form.decoration.avatar,
                 company_logo_url: state.avatar.companyLogoUrl,
             }
         }
 
-        if (!!state.headerPictureUrl) {
+        if (state.headerPictureUrl) {
             form.decoration.header_picture_url = state.headerPictureUrl
+        }
+
+        if (state.headerPictureUrlOffline) {
+            form.decoration.header_picture_url_offline =
+                state.headerPictureUrlOffline
         }
 
         let actionToUse = actions.createGorgiasChatIntegration
@@ -654,7 +665,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         introductionText,
         offlineIntroductionText,
         avatar,
-        headerPictureUrl,
         mainColor,
         conversationColor,
         mainFontFamily,
@@ -664,6 +674,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         position,
         editedPositionAxis,
         backgroundColorStyle,
+        headerPictureUrl,
+        headerPictureUrlOffline,
     } = state
 
     const isSubmitting = _isSubmitting()
@@ -740,7 +752,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 }
                 isWidgetConversation={preview === PREVIEW_CONVERSATION}
                 backgroundColorStyle={backgroundColorStyle}
-                headerPictureUrl={headerPictureUrl}
+                headerPictureUrl={
+                    isOnline ? headerPictureUrl : headerPictureUrlOffline
+                }
             >
                 <ChatIntegrationPreviewContent
                     style={
@@ -806,6 +820,14 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         setState((prevState) => ({
             ...prevState,
             headerPictureUrl,
+        }))
+        setPreview(PREVIEW_HOME_PAGE)
+    }
+
+    const onHeaderLogoUrlOfflineChange = (headerPictureUrlOffline?: string) => {
+        setState((prevState) => ({
+            ...prevState,
+            headerPictureUrlOffline,
         }))
         setPreview(PREVIEW_HOME_PAGE)
     }
@@ -1142,57 +1164,102 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         {isUpdate && (
                             <>
                                 <div className={css.formSection}>
-                                    <h2
-                                        className={classNames(
-                                            css.title,
-                                            'mb-4'
-                                        )}
-                                    >
-                                        Company logo
-                                    </h2>
-
                                     {isChatHeaderPictureStyleEnabled ? (
-                                        <div className={css.logoInputsWrapper}>
-                                            <section>
-                                                <h3 className={css.subtitle}>
-                                                    Header logo
-                                                </h3>
-                                                <p className="mb-4">
-                                                    Used in the header instead
-                                                    of chat title.
-                                                </p>
-                                                <ImageField
-                                                    isDiscardable={true}
-                                                    onChange={
-                                                        onHeaderLogoUrlChange
-                                                    }
-                                                    url={headerPictureUrl}
-                                                    maxSize={500 * 1000}
-                                                    variant={
-                                                        ImageFieldVariant.Header
-                                                    }
-                                                />
-                                            </section>
-                                            <section>
-                                                <h3 className={css.subtitle}>
-                                                    Avatar logo
-                                                </h3>
-                                                <p className="mb-4">
-                                                    Used as your team's or bot
-                                                    avatar.
-                                                </p>
-                                                <ImageField
-                                                    isDiscardable={true}
-                                                    onChange={
-                                                        onCompanyLogoUrlChange
-                                                    }
-                                                    url={avatar.companyLogoUrl}
-                                                    maxSize={500 * 1000}
-                                                />
-                                            </section>
-                                        </div>
+                                        <>
+                                            <h2 className={css.title}>
+                                                Company logo
+                                            </h2>
+                                            <h3 className={css.subtitle}>
+                                                Header logo
+                                            </h3>
+                                            <p className="mb-4">
+                                                Used in the header instead of
+                                                chat title.
+                                            </p>
+                                            <div
+                                                className={
+                                                    css.logoInputsWrapper
+                                                }
+                                            >
+                                                <section>
+                                                    <h3
+                                                        className={classNames(
+                                                            css.subtitle,
+                                                            'mb-2'
+                                                        )}
+                                                    >
+                                                        During business hours
+                                                    </h3>
+                                                    <ImageField
+                                                        isDiscardable={true}
+                                                        onChange={
+                                                            onHeaderLogoUrlChange
+                                                        }
+                                                        url={headerPictureUrl}
+                                                        maxSize={500 * 1000}
+                                                        variant={
+                                                            ImageFieldVariant.Header
+                                                        }
+                                                    />
+                                                </section>
+                                                <section>
+                                                    <h3
+                                                        className={classNames(
+                                                            css.subtitle,
+                                                            'mb-2'
+                                                        )}
+                                                    >
+                                                        Outside business hours
+                                                    </h3>
+                                                    <ImageField
+                                                        isDiscardable={true}
+                                                        onChange={
+                                                            onHeaderLogoUrlOfflineChange
+                                                        }
+                                                        url={
+                                                            headerPictureUrlOffline
+                                                        }
+                                                        maxSize={500 * 1000}
+                                                        variant={
+                                                            ImageFieldVariant.Header
+                                                        }
+                                                    />
+                                                </section>
+                                            </div>
+                                            <div>
+                                                <section>
+                                                    <h3
+                                                        className={css.subtitle}
+                                                    >
+                                                        Avatar logo
+                                                    </h3>
+                                                    <p className="mb-4">
+                                                        Used as your team's or
+                                                        bot avatar.
+                                                    </p>
+                                                    <ImageField
+                                                        isDiscardable={true}
+                                                        onChange={
+                                                            onCompanyLogoUrlChange
+                                                        }
+                                                        url={
+                                                            avatar.companyLogoUrl
+                                                        }
+                                                        maxSize={500 * 1000}
+                                                    />
+                                                </section>
+                                            </div>
+                                        </>
                                     ) : (
                                         <>
+                                            <h2
+                                                className={classNames(
+                                                    css.title,
+                                                    'mb-1'
+                                                )}
+                                            >
+                                                Company logo
+                                            </h2>
                                             <p className="mb-4">
                                                 Customize your team's or robot
                                                 avatars by uploading your
@@ -1208,16 +1275,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             />
                                         </>
                                     )}
+                                </div>
 
-                                    <h2
-                                        className={classNames(
-                                            css.title,
-                                            'mt-5'
-                                        )}
-                                    >
-                                        Agent avatar
-                                    </h2>
-
+                                <div className={css.formSection}>
+                                    <h2 className={css.title}>Agent avatar</h2>
                                     <div className={css.avatarInputsWrapper}>
                                         <RadioFieldSet
                                             className={css.radioFieldSet}

@@ -75,7 +75,7 @@ type Props = {
     showBackground?: boolean
     isWidgetConversation?: boolean
     backgroundColorStyle?: GorgiasChatBackgroundColorStyle
-    headerPictureUrl?: string | null
+    headerPictureUrl?: string
 }
 
 const ChatIntegrationPreview = (props: Props) => {

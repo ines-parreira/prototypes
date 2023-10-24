@@ -6,7 +6,7 @@ export interface WidgetHeaderProps {
     /**
      * The URL of the image to be displayed in the home page.
      */
-    headerPictureUrl?: string | null
+    headerPictureUrl?: string
     /**
      * The title of the chat.
      */

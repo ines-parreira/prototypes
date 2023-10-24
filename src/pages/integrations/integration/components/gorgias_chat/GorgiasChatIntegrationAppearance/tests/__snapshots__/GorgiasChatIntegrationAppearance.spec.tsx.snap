@@ -1809,7 +1809,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="formSection"
               >
                 <h2
-                  class="title mb-4"
+                  class="title mb-1"
                 >
                   Company logo
                 </h2>
@@ -1860,8 +1860,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     false
                   </div>
                 </div>
+              </div>
+              <div
+                class="formSection"
+              >
                 <h2
-                  class="title mt-5"
+                  class="title"
                 >
                   Agent avatar
                 </h2>
@@ -3197,7 +3201,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="formSection"
               >
                 <h2
-                  class="title mb-4"
+                  class="title mb-1"
                 >
                   Company logo
                 </h2>
@@ -3248,8 +3252,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     false
                   </div>
                 </div>
+              </div>
+              <div
+                class="formSection"
+              >
                 <h2
-                  class="title mt-5"
+                  class="title"
                 >
                   Agent avatar
                 </h2>
@@ -4556,7 +4564,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 class="formSection"
               >
                 <h2
-                  class="title mb-4"
+                  class="title mb-1"
                 >
                   Company logo
                 </h2>
@@ -4607,8 +4615,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     false
                   </div>
                 </div>
+              </div>
+              <div
+                class="formSection"
+              >
                 <h2
-                  class="title mt-5"
+                  class="title"
                 >
                   Agent avatar
                 </h2>
@@ -5915,7 +5927,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 class="formSection"
               >
                 <h2
-                  class="title mb-4"
+                  class="title mb-1"
                 >
                   Company logo
                 </h2>
@@ -5966,8 +5978,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     false
                   </div>
                 </div>
+              </div>
+              <div
+                class="formSection"
+              >
                 <h2
-                  class="title mt-5"
+                  class="title"
                 >
                   Agent avatar
                 </h2>
@@ -7274,7 +7290,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 class="formSection"
               >
                 <h2
-                  class="title mb-4"
+                  class="title mb-1"
                 >
                   Company logo
                 </h2>
@@ -7325,8 +7341,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     false
                   </div>
                 </div>
+              </div>
+              <div
+                class="formSection"
+              >
                 <h2
-                  class="title mt-5"
+                  class="title"
                 >
                   Agent avatar
                 </h2>
@@ -9847,7 +9867,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                 class="formSection"
               >
                 <h2
-                  class="title mb-4"
+                  class="title mb-1"
                 >
                   Company logo
                 </h2>
@@ -9898,8 +9918,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     false
                   </div>
                 </div>
+              </div>
+              <div
+                class="formSection"
+              >
                 <h2
-                  class="title mt-5"
+                  class="title"
                 >
                   Agent avatar
                 </h2>
@@ -11173,24 +11197,29 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                 class="formSection"
               >
                 <h2
-                  class="title mb-4"
+                  class="title"
                 >
                   Company logo
                 </h2>
+                <h3
+                  class="subtitle"
+                >
+                  Header logo
+                </h3>
+                <p
+                  class="mb-4"
+                >
+                  Used in the header instead of chat title.
+                </p>
                 <div
                   class="logoInputsWrapper"
                 >
                   <section>
                     <h3
-                      class="subtitle"
+                      class="subtitle mb-2"
                     >
-                      Header logo
+                      During business hours
                     </h3>
-                    <p
-                      class="mb-4"
-                    >
-                      Used in the header instead of chat title.
-                    </p>
                     <div
                       class="previewHeaderLogoContainer mb-3"
                     >
@@ -11246,6 +11275,61 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       </div>
                     </div>
                   </section>
+                  <section>
+                    <h3
+                      class="subtitle mb-2"
+                    >
+                      Outside business hours
+                    </h3>
+                    <div
+                      class="previewHeaderLogoContainer mb-3"
+                    >
+                      <div
+                        class="previewHeaderLogoContent"
+                      >
+                        <div
+                          class="imagePreview imagePreviewHeader"
+                        >
+                          <i
+                            class="material-icons"
+                          >
+                            image
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      class="mb-3"
+                      href="#"
+                    >
+                      <b>
+                        Upload
+                         image
+                      </b>
+                    </a>
+                    <span
+                      class="imageInfo"
+                    >
+                      <span
+                        class="ml-1"
+                      >
+                         – 
+                      </span>
+                      <span>
+                        Works best with horizontal logos with transparent background. Max 500 KB.
+                      </span>
+                    </span>
+                    <div
+                      class="d-none"
+                    >
+                      <div>
+                        FileField component is required ? 
+                        false
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <div>
                   <section>
                     <h3
                       class="subtitle"
@@ -11309,8 +11393,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     </div>
                   </section>
                 </div>
+              </div>
+              <div
+                class="formSection"
+              >
                 <h2
-                  class="title mt-5"
+                  class="title"
                 >
                   Agent avatar
                 </h2>
@@ -13884,7 +13972,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 class="formSection"
               >
                 <h2
-                  class="title mb-4"
+                  class="title mb-1"
                 >
                   Company logo
                 </h2>
@@ -13935,8 +14023,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     false
                   </div>
                 </div>
+              </div>
+              <div
+                class="formSection"
+              >
                 <h2
-                  class="title mt-5"
+                  class="title"
                 >
                   Agent avatar
                 </h2>
