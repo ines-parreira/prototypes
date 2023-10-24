@@ -105,7 +105,7 @@ const ScriptTagMigrationModal = () => {
     const onConfirm = () => {
         if (storesRequiringPermissionUpdates.length > 1) {
             setShowModal(false)
-            history.push('/app/settings/integrations/shopify/connections')
+            history.push('/app/settings/channels/gorgias_chat')
             return
         }
 

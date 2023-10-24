@@ -93,7 +93,7 @@ const ScriptTagMigrationBanner = () => {
                     {!!storesRequiringPermissionUpdates.length && (
                         <>
                             {storesRequiringPermissionUpdates.length > 1 ? (
-                                <Link to="/app/settings/integrations/shopify/connections">
+                                <Link to="/app/settings/channels/gorgias_chat">
                                     Update your Shopify permissions
                                 </Link>
                             ) : (

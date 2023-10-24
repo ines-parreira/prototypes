@@ -113,7 +113,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
           :
            
           <a
-            to="/app/settings/integrations/shopify/connections"
+            to="/app/settings/channels/gorgias_chat"
           >
             Update your Shopify permissions
           </a>
@@ -247,7 +247,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
           :
            
           <a
-            to="/app/settings/integrations/shopify/connections"
+            to="/app/settings/channels/gorgias_chat"
           >
             Update your Shopify permissions
           </a>
