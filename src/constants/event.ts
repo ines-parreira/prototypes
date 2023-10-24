@@ -38,3 +38,10 @@ export const PHONE_EVENTS_MAP = Object.freeze({
 })
 
 export const PHONE_EVENTS = Object.freeze(Object.values(PHONE_EVENTS_MAP))
+export const LEGACY_PHONE_EVENTS = [
+    INCOMING_PHONE_CALL,
+    OUTGOING_PHONE_CALL,
+    COMPLETED_PHONE_CALL,
+    MISSED_PHONE_CALL,
+    PHONE_CALL_ANSWERED,
+]

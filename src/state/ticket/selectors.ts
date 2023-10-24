@@ -23,6 +23,9 @@ import {listVoiceCalls} from 'models/voiceCall/resources'
 import {voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
 import {getQueriesState, getQueryTimestamp} from 'state/queries/selectors'
+import {LEGACY_PHONE_EVENTS} from 'constants/event'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketState, TicketStateWithoutImmutable} from './types'
 
 export const getTicketState = (state: RootState): TicketState =>
@@ -162,6 +165,25 @@ export const getEvents = createImmutableSelector(
     (state) => (state.get('events') || fromJS([])) as List<any>
 )
 
+export const getDisplayableEvents = createImmutableSelector(
+    getEvents,
+    (events) => {
+        const launchDarklyClient = getLDClient()
+        const isNewCallUIEnabled = launchDarklyClient?.variation(
+            FeatureFlagKey.NewVoiceCallUI
+        )
+
+        if (!isNewCallUIEnabled) {
+            return events
+        }
+
+        return events.filter(
+            (event: Map<any, any>) =>
+                !LEGACY_PHONE_EVENTS.includes(event.get('type'))
+        ) as List<any>
+    }
+)
+
 export const getSatisfactionSurveys = createImmutableSelector(
     getTicketState,
     (state) =>
@@ -212,7 +234,7 @@ const getVoiceCalls = createSelector(
 export const getBody = createImmutableSelector(
     getMessages,
     getPendingMessages,
-    getEvents,
+    getDisplayableEvents,
     getSatisfactionSurveys,
     getRuleSuggestion,
     getAISuggestion,
