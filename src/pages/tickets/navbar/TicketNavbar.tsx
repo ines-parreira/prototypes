@@ -88,12 +88,6 @@ const viewCategories = {
     private: 'Private views',
 }
 
-type OwnProps = {
-    disableResize?: boolean
-}
-
-type Props = OwnProps & ConnectedProps<typeof connector>
-
 export function TicketNavbarContainer({
     activeViewId,
     activeViewIdSet,
@@ -114,8 +108,7 @@ export function TicketNavbarContainer({
     accountSetting,
     userSetting,
     submitSettingSuccess,
-    disableResize = false,
-}: Props) {
+}: ConnectedProps<typeof connector>) {
     const history = useHistory()
     const params = useParams<{viewId?: string}>()
     const {viewId} = useSearch<{viewId?: string}>()
@@ -439,11 +432,7 @@ export function TicketNavbarContainer({
     const {scrollableAreaRef} = useAutoScrollOnDragging()
 
     return (
-        <Navbar
-            activeContent="tickets"
-            disableResize={disableResize}
-            navbarContentRef={scrollableAreaRef}
-        >
+        <Navbar activeContent="tickets" navbarContentRef={scrollableAreaRef}>
             <RecentChats />
             {!!systemTopElements.length && (
                 <div className={navbarCss.category}>

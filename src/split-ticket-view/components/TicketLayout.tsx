@@ -1,7 +1,6 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
-import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import {Config, Panel, Panels} from 'panels'
 import {TicketListView} from 'ticket-list-view'
 
@@ -14,7 +13,7 @@ export default function Ticket() {
     const {ticketId, viewId} = useParams<Params>()
 
     const panelsConfig: Config = [
-        [238, 200, 350],
+        [200, 200, 350],
         [300, 300, 450],
         [Infinity, 300],
         [Infinity, 300, 400],
@@ -23,7 +22,7 @@ export default function Ticket() {
     return (
         <Panels config={panelsConfig}>
             <Panel>
-                <TicketNavbar disableResize />
+                <p>navbar</p>
             </Panel>
             <Panel>
                 <TicketListView viewId={viewId} />

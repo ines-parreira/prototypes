@@ -11,8 +11,6 @@
         display: flex;
         flex-direction: row;
         z-index: 2;
-        width: 100%;
-        height: 100%;
 
         @media @mobiles {
             min-width: 0;
@@ -22,125 +20,6 @@
 
         &.isResizing {
             user-select: none;
-        }
-
-        .dropdown-toggle {
-            height: 60px;
-            padding: 20px 19px 17px 20px;
-            width: 100%;
-            transition: all 0.1s linear;
-            box-shadow: none;
-            border-color: hsla(
-                var(--neutral-grey-0-h),
-                var(--neutral-grey-0-s),
-                var(--neutral-grey-0-l),
-                0.08
-            );
-            border-style: solid;
-            border-width: 0 0 1px;
-            border-radius: 0;
-
-            color: var(--neutral-grey-0);
-            .heading-subsection-semibold();
-
-            > div {
-                // content is wrapped in div because some browsers forbid flex in buttons
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            &:hover {
-                background-color: hsl(
-                    var(--neutral-grey-6-h),
-                    var(--neutral-grey-6-s),
-                    calc(var(--neutral-grey-6-l) - 4%)
-                );
-                color: var(--neutral-grey-0);
-            }
-
-            &:active {
-                background-color: hsl(
-                    var(--neutral-grey-6-h),
-                    var(--neutral-grey-6-s),
-                    calc(var(--neutral-grey-6-l) - 8%)
-                );
-            }
-
-            &.show > button {
-                background-color: hsl(
-                    var(--neutral-grey-6-h),
-                    var(--neutral-grey-6-s),
-                    calc(var(--neutral-grey-6-l) - 4%)
-                );
-            }
-        }
-
-        .dropdown-toggle-dropup {
-            background: var(--neutral-grey-6);
-            border-width: 1px 0 0;
-            padding-top: 12px;
-            padding-bottom: 12px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--neutral-grey-0);
-            .body-semibold();
-
-            &.active {
-                background-color: hsl(
-                    var(--neutral-grey-6-h),
-                    var(--neutral-grey-6-s),
-                    calc(var(--neutral-grey-6-l) - 8%)
-                );
-            }
-
-            &:focus {
-                outline: none;
-            }
-        }
-
-        .dropdown-menu {
-            width: 100%;
-            /* HACK Popper.js's preventOverflow adds 5px to the left of the dropdowns.
-            * Need the negativ margin until we can configure it in bootstrap:
-            * https://github.com/twbs/bootstrap/issues/25529
-            */
-            margin: 0 0 0 -5px;
-            border-radius: 0;
-            border: solid 1px #cfe0ee;
-            border-top: none;
-            padding: 4px 0;
-        }
-
-        .dropdown-item {
-            display: flex;
-            padding: 8px 16px;
-            align-items: center;
-            color: var(--neutral-grey-6);
-            font-weight: normal;
-            outline: none;
-
-            &:global.current {
-                color: var(--neutral-grey-6);
-                font-weight: 600;
-            }
-
-            &:global:hover {
-                background-color: var(--neutral-grey-2);
-                color: var(--neutral-grey-6);
-            }
-        }
-
-        .icon {
-            font-size: 16px;
-            vertical-align: middle;
-        }
-
-        .icon-more {
-            font-size: 21px;
         }
     }
 
@@ -214,6 +93,116 @@
         }
     }
 
+    .dropdown-toggle {
+        height: 60px;
+        padding: 20px 19px 17px 20px;
+        width: 100%;
+        transition: all 0.1s linear;
+        box-shadow: none;
+        border-color: hsla(
+            var(--neutral-grey-0-h),
+            var(--neutral-grey-0-s),
+            var(--neutral-grey-0-l),
+            0.08
+        );
+        border-style: solid;
+        border-width: 0 0 1px;
+        border-radius: 0;
+
+        color: var(--neutral-grey-0);
+        .heading-subsection-semibold();
+
+        > div {
+            // content is wrapped in div because some browsers forbid flex in buttons
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &:hover {
+            background-color: hsl(
+                var(--neutral-grey-6-h),
+                var(--neutral-grey-6-s),
+                calc(var(--neutral-grey-6-l) - 4%)
+            );
+            color: var(--neutral-grey-0);
+        }
+
+        &:active {
+            background-color: hsl(
+                var(--neutral-grey-6-h),
+                var(--neutral-grey-6-s),
+                calc(var(--neutral-grey-6-l) - 8%)
+            );
+        }
+
+        &.show > button {
+            background-color: hsl(
+                var(--neutral-grey-6-h),
+                var(--neutral-grey-6-s),
+                calc(var(--neutral-grey-6-l) - 4%)
+            );
+        }
+    }
+
+    .dropdown-toggle-dropup {
+        background: var(--neutral-grey-6);
+        border-width: 1px 0 0;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--neutral-grey-0);
+        .body-semibold();
+
+        &.active {
+            background-color: hsl(
+                var(--neutral-grey-6-h),
+                var(--neutral-grey-6-s),
+                calc(var(--neutral-grey-6-l) - 8%)
+            );
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        /* HACK Popper.js's preventOverflow adds 5px to the left of the dropdowns.
+        * Need the negativ margin until we can configure it in bootstrap:
+        * https://github.com/twbs/bootstrap/issues/25529
+        */
+        margin: 0 0 0 -5px;
+        border-radius: 0;
+        border: solid 1px #cfe0ee;
+        border-top: none;
+        padding: 4px 0;
+    }
+
+    .dropdown-item {
+        display: flex;
+        padding: 8px 16px;
+        align-items: center;
+        color: var(--neutral-grey-6);
+        font-weight: normal;
+        outline: none;
+
+        &:global.current {
+            color: var(--neutral-grey-6);
+            font-weight: 600;
+        }
+
+        &:global:hover {
+            background-color: var(--neutral-grey-2);
+            color: var(--neutral-grey-6);
+        }
+    }
+
     .navbar-content {
         flex: 1;
         overflow: auto;
@@ -231,6 +220,15 @@
         &::-webkit-scrollbar-track {
             background-color: var(--neutral-grey-6);
         }
+    }
+
+    .icon {
+        font-size: 16px;
+        vertical-align: middle;
+    }
+
+    .icon-more {
+        font-size: 21px;
     }
 
     .menu-item {
