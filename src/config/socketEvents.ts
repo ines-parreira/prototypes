@@ -60,6 +60,7 @@ import {
     UserTypingStatusUpdatedEvent,
     ViewCountUpdatedEvent,
     ViewCreatedEvent,
+    ViewDeactivated,
     ViewDeletedEvent,
     ViewsDeactivated,
     ViewSectionCreatedEvent,
@@ -826,6 +827,21 @@ export const receivedEvents: ReceivedEvent[] = [
 
             reduxStore.dispatch(
                 ticketActions.setTypingActivityShopper(ticket.id) as any
+            )
+        },
+    },
+    {
+        name: SocketEventType.ViewDeactivated,
+        onReceive: function (json) {
+            const {event} = json as unknown as ViewDeactivated
+            const message = `View "${event.name}" has been deactivated.`
+
+            reduxStore.dispatch(
+                notificationsActions.notify({
+                    status: NotificationStatus.Warning,
+                    allowHTML: true,
+                    message,
+                }) as any
             )
         },
     },

@@ -55,6 +55,7 @@ export enum SocketEventType {
     AgentAvailabilityUpdated = 'agent-availability-updated',
     CustomerExternalDataUpdated = 'customer-external-data-updated',
     TicketTypingActivityShopperStarted = 'ticket-typing-activity-shopper-started',
+    ViewDeactivated = 'view-deactivated',
     ViewSectionCreated = 'view-section-created',
     ViewSectionDeleted = 'view-section-deleted',
     ViewSectionUpdated = 'view-section-updated',
@@ -297,6 +298,13 @@ export type TicketTypingActivityShopperStartedEvent = {
     }
 }
 
+export type ViewDeactivated = {
+    event: {
+        type: SocketEventType.ViewDeactivated
+        name: string
+    }
+}
+
 export type WhatsAppOnboardingSucceededEvent = {
     event: {
         type: SocketEventType.WhatsAppOnboardingFailed
@@ -347,6 +355,7 @@ export type ServerMessage =
     | MacroParamsUpdatedEvent
     | AgentAvailabilityUpdatedEvent
     | TicketTypingActivityShopperStartedEvent
+    | ViewDeactivated
     | WhatsAppOnboardingSucceededEvent
     | WhatsAppOnboardingFailedEvent
 
