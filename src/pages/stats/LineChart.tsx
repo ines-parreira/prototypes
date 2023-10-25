@@ -19,6 +19,9 @@ import css from './LineChart.less'
 import {TwoDimensionalDataItem} from './types'
 import {getGradient, renderTickLabelAsNumber} from './utils'
 import {GreyArea} from './ChartPluginGreyArea'
+import {useCustomTooltip} from './useCustomTooltip'
+import {ChartTooltip} from './ChartTooltip'
+import {LineChartTooltip} from './LineChartTooltip'
 
 const STAT_COLORS = Object.freeze([
     colors['📺 Classic'].Main.Primary.value,
@@ -131,6 +134,8 @@ const LINE_OPTIONS: DeepPartial<ChartOptions<'line'>> = fromJS({
     resizeDelay: 1000,
 })
 
+export const CHART_TOOLTIP_TARGET = 'lineChartTooltip'
+
 export default function LineChart({
     data,
     options,
@@ -156,6 +161,8 @@ export default function LineChart({
     const [chart, setChart] = useState<Chart>()
     const [chartArea, setChartArea] = useState<ChartArea>()
     const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
+    const {customTooltip, tooltipData, tooltipStyle} = useCustomTooltip()
+
     const chartColors = useCallback(
         (index: number) => customColors?.[index] || STAT_COLORS[index],
         [customColors]
@@ -257,6 +264,10 @@ export default function LineChart({
                             callbacks: {
                                 label: _renderLegacyTooltipLabel,
                             },
+                            position: 'nearest',
+                            intersect: false,
+                            mode: 'index',
+                            external: customTooltip,
                         },
                         greyArea,
                     },
@@ -282,6 +293,7 @@ export default function LineChart({
             renderXTickLabel,
             _displayLegacyTooltip,
             _renderLegacyTooltipLabel,
+            customTooltip,
             greyArea,
             isCurvedLine,
             options,
@@ -295,15 +307,29 @@ export default function LineChart({
 
     return (
         <div className={classNames(css.wrapper, wrapperclassNames)}>
-            <Line
-                data={formattedData}
-                options={lineOptions.toJS()}
-                ref={(chart: Chart<'line'> | null | undefined) => {
-                    setChartContext(chart?.ctx)
-                    setChartArea(chart?.chartArea)
-                    chart && setChart(chart)
-                }}
-            />
+            <div className={css.container}>
+                <Line
+                    id={CHART_TOOLTIP_TARGET}
+                    data={formattedData}
+                    options={lineOptions.toJS()}
+                    ref={(chart: Chart<'line'> | null | undefined) => {
+                        setChartContext(chart?.ctx)
+                        setChartArea(chart?.chartArea)
+                        chart && setChart(chart)
+                    }}
+                />
+                {!_displayLegacyTooltip && (
+                    <ChartTooltip
+                        target={CHART_TOOLTIP_TARGET}
+                        tooltipStyle={tooltipStyle}
+                        title={tooltipData?.title}
+                    >
+                        {tooltipData && (
+                            <LineChartTooltip tooltip={tooltipData} />
+                        )}
+                    </ChartTooltip>
+                )}
+            </div>
             {displayLegend && (
                 <Legend
                     toggleLegend={toggleLegend}

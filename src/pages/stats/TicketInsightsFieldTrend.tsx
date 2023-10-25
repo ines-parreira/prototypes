@@ -52,7 +52,6 @@ export function TicketInsightsFieldTrend() {
                         },
                     },
                 }}
-                _displayLegacyTooltip
             />
         </ChartCard>
     )

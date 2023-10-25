@@ -5,11 +5,16 @@ exports[`<LineChart /> should render the line chart 1`] = `
   <div
     class="wrapper"
   >
-    <canvas
-      height="150"
-      role="img"
-      width="300"
-    />
+    <div
+      class="container"
+    >
+      <canvas
+        height="150"
+        id="lineChartTooltip"
+        role="img"
+        width="300"
+      />
+    </div>
   </div>
 </div>
 `;

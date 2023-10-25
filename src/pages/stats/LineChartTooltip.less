@@ -1,0 +1,25 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/layout.less';
+
+:local {
+    .tooltipItem {
+        .caption-regular();
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        margin-top: @layout-spacing-xs;
+    }
+
+    .tooltipItemBox {
+        width: 14px;
+        height: 14px;
+        border-style: solid;
+        box-shadow: inset 0 0 0 1px #fff;
+        margin-right: @layout-spacing-xs;
+    }
+
+    .tooltipItemValue {
+        .caption-semibold();
+        margin-left: @layout-spacing-xxs;
+    }
+}

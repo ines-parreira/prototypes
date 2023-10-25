@@ -567,7 +567,11 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                       </div>
                       <div
                         class="wrapper"
-                      />
+                      >
+                        <div
+                          class="container"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
@@ -600,7 +604,11 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                       </div>
                       <div
                         class="wrapper"
-                      />
+                      >
+                        <div
+                          class="container"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
@@ -634,6 +642,9 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                       <div
                         class="wrapper chartWrapper"
                       >
+                        <div
+                          class="container"
+                        />
                         <div
                           class="legend legend legendOnLeft"
                         >
@@ -1311,7 +1322,11 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                     </div>
                     <div
                       class="wrapper"
-                    />
+                    >
+                      <div
+                        class="container"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1344,7 +1359,11 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                     </div>
                     <div
                       class="wrapper"
-                    />
+                    >
+                      <div
+                        class="container"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1378,6 +1397,9 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                     <div
                       class="wrapper chartWrapper"
                     >
+                      <div
+                        class="container"
+                      />
                       <div
                         class="legend legend legendOnLeft"
                       >
@@ -2034,7 +2056,11 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                       </div>
                       <div
                         class="wrapper"
-                      />
+                      >
+                        <div
+                          class="container"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
@@ -2067,7 +2093,11 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                       </div>
                       <div
                         class="wrapper"
-                      />
+                      >
+                        <div
+                          class="container"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
@@ -2101,6 +2131,9 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                       <div
                         class="wrapper chartWrapper"
                       >
+                        <div
+                          class="container"
+                        />
                         <div
                           class="legend legend legendOnLeft"
                         >
@@ -2778,7 +2811,11 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                     </div>
                     <div
                       class="wrapper"
-                    />
+                    >
+                      <div
+                        class="container"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div
@@ -2811,7 +2848,11 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                     </div>
                     <div
                       class="wrapper"
-                    />
+                    >
+                      <div
+                        class="container"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div
@@ -2845,6 +2886,9 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                     <div
                       class="wrapper chartWrapper"
                     >
+                      <div
+                        class="container"
+                      />
                       <div
                         class="legend legend legendOnLeft"
                       >
@@ -3501,7 +3545,11 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                       </div>
                       <div
                         class="wrapper"
-                      />
+                      >
+                        <div
+                          class="container"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
@@ -3534,7 +3582,11 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                       </div>
                       <div
                         class="wrapper"
-                      />
+                      >
+                        <div
+                          class="container"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
@@ -3568,6 +3620,9 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                       <div
                         class="wrapper chartWrapper"
                       >
+                        <div
+                          class="container"
+                        />
                         <div
                           class="legend legend legendOnLeft"
                         >
@@ -4245,7 +4300,11 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                     </div>
                     <div
                       class="wrapper"
-                    />
+                    >
+                      <div
+                        class="container"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div
@@ -4278,7 +4337,11 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                     </div>
                     <div
                       class="wrapper"
-                    />
+                    >
+                      <div
+                        class="container"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div
@@ -4312,6 +4375,9 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                     <div
                       class="wrapper chartWrapper"
                     >
+                      <div
+                        class="container"
+                      />
                       <div
                         class="legend legend legendOnLeft"
                       >
@@ -4964,7 +5030,11 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                 </div>
                 <div
                   class="wrapper"
-                />
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -4997,7 +5067,11 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                 </div>
                 <div
                   class="wrapper"
-                />
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -5031,6 +5105,9 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                 <div
                   class="wrapper chartWrapper"
                 >
+                  <div
+                    class="container"
+                  />
                   <div
                     class="legend legend legendOnLeft"
                   >

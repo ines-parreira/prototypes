@@ -1613,7 +1613,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
                 <div
                   class="wrapper"
-                />
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -1646,7 +1650,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
                 <div
                   class="wrapper"
-                />
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -1679,7 +1687,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
                 <div
                   class="wrapper"
-                />
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -1712,7 +1724,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
                 <div
                   class="wrapper"
-                />
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
             <div
