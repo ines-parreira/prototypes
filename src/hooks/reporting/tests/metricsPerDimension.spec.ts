@@ -7,6 +7,7 @@ import {firstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/quer
 import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {resolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -18,6 +19,7 @@ import {
     useMessagesSentMetricPerAgent,
     useResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
+    useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {
     useMetricPerDimension,
@@ -239,6 +241,30 @@ describe('metricsPerDimension', () => {
                     customFieldId,
                     sorting
                 )
+            )
+        })
+    })
+
+    describe('useOneTouchTicketsMetricPerAgent', () => {
+        it('should pass the query to useMetricPerDimension hook', () => {
+            renderHook(
+                () =>
+                    useOneTouchTicketsMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId
+                    ),
+                {}
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                oneTouchTicketsPerAgentQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting
+                ),
+                agentId
             )
         })
     })

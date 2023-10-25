@@ -29,6 +29,7 @@ describe('useAgentsMetric', () => {
             percentageOfClosedTicketsMetric: metricData,
             resolutionTimeMetric: metricData,
             ticketsRepliedMetric: metricData,
+            oneTouchTicketsMetric: metricData,
         },
         isLoading: false,
         period: {

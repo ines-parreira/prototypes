@@ -27,6 +27,8 @@ import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClos
 import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
 import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
 import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
+import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
+import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
 import {SummaryCell} from 'pages/stats/SummaryCell'
 import {
     getColumnAlignment,
@@ -66,6 +68,8 @@ const getCell = (
             return AgentCellContent
         case TableColumn.ResolutionTime:
             return ResolutionTimeCellContent
+        case TableColumn.OneTouchTickets:
+            return OneTouchTicketsCellContent
     }
 }
 
@@ -85,6 +89,8 @@ const getSummaryCell = (column: TableColumn): React.FC => {
             return CustomerSatisfactionCellSummary
         case TableColumn.ResolutionTime:
             return ResolutionTimeCellSummary
+        case TableColumn.OneTouchTickets:
+            return OneTouchTicketsCellSummary
         case TableColumn.AgentName:
             return SummaryCell
     }

@@ -26,6 +26,7 @@ describe('agentsPerformanceReportingService', () => {
         percentageOfClosedTicketsMetric: buildQuery(false, reportData),
         resolutionTimeMetric: buildQuery(false, reportData),
         ticketsRepliedMetric: buildQuery(false, reportData),
+        oneTouchTicketsMetric: buildQuery(false, reportData),
     }
     const data: Parameters<typeof saveReport>[0] = {
         agents: [],

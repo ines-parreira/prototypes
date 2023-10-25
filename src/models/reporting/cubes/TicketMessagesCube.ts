@@ -11,6 +11,7 @@ export enum TicketMessagesDimension {
     FirstMessageChannel = 'TicketMessages.firstMessageChannel',
     Integration = 'TicketMessages.integration',
     FirstHelpdeskMessageUserId = 'TicketMessages.firstHelpdeskMessageUserId',
+    OneTouchTickets = 'TicketMessages.oneTouchTickets',
 }
 
 export enum TicketMessagesSegment {

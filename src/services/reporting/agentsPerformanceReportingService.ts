@@ -35,6 +35,7 @@ export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     closedTicketsMetric: T
     ticketsRepliedMetric: T
     messagesSentMetric: T
+    oneTouchTicketsMetric: T
 }
 
 const formatMetric = {
@@ -58,6 +59,7 @@ export const saveReport = async (
         percentageOfClosedTicketsMetric,
         ticketsRepliedMetric,
         messagesSentMetric,
+        oneTouchTicketsMetric,
     } = data
 
     const getAgentMetric = (
@@ -146,6 +148,15 @@ export const saveReport = async (
             )
         )
 
+    const getOneTouchTicketsAgentMetric = (agentId: number) =>
+        formatMetric.percent(
+            getAgentMetric(
+                agentId,
+                oneTouchTicketsMetric,
+                TicketMeasure.TicketCount
+            )
+        )
+
     const agentsMetricData = [
         [
             TableLabels.agent_name,
@@ -156,6 +167,7 @@ export const saveReport = async (
             TableLabels.percentage_of_closed_tickets,
             TableLabels.replied_tickets,
             TableLabels.messages_sent,
+            TableLabels.one_touch_tickets,
         ],
         [
             'Average',
@@ -180,6 +192,11 @@ export const saveReport = async (
                     ? summary.messagesSentMetric.data.value / agents.length
                     : summary.messagesSentMetric.data?.value
             ),
+            formatMetric.percent(
+                summary.oneTouchTicketsMetric.data?.value
+                    ? summary.oneTouchTicketsMetric.data.value / agents.length
+                    : summary.oneTouchTicketsMetric.data?.value
+            ),
         ],
         ...agents.map((agent) => {
             return [
@@ -191,6 +208,7 @@ export const saveReport = async (
                 getPercentageOfClosedTicketsAgentMetric(agent.id),
                 getTicketsRepliedAgentMetric(agent.id),
                 getMessagesSentAgentMetric(agent.id),
+                getOneTouchTicketsAgentMetric(agent.id),
             ]
         }),
     ]

@@ -25,7 +25,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
     const metricReturnValue = {
         isFetching: false,
         isError: false,
-        data: {allData: [], value: null, decile: null},
+        data: {allData: [], value: null, decile: 0},
     }
     const summaryMetricReturnValue = {
         ...metricReturnValue,
@@ -43,6 +43,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
             percentageOfClosedTicketsMetric: metricReturnValue,
             resolutionTimeMetric: metricReturnValue,
             ticketsRepliedMetric: metricReturnValue,
+            oneTouchTicketsMetric: metricReturnValue,
         },
         isLoading: false,
         period: {
@@ -60,6 +61,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
             percentageOfClosedTicketsMetric: summaryMetricReturnValue,
             resolutionTimeMetric: summaryMetricReturnValue,
             ticketsRepliedMetric: summaryMetricReturnValue,
+            oneTouchTicketsMetric: summaryMetricReturnValue,
         },
         isLoading: false,
         period: {

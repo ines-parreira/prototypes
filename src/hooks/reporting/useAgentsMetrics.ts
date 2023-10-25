@@ -9,6 +9,7 @@ import {
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
+import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCleanStatsFiltersWithTimezone,
@@ -52,6 +53,10 @@ export function useAgentsMetrics() {
         cleanStatsFilters,
         userTimezone
     )
+    const oneTouchTicketsMetric = useOneTouchTicketsPercentageMetricPerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
 
     const loading = useMemo(() => {
         return Object.values({
@@ -62,6 +67,7 @@ export function useAgentsMetrics() {
             messagesSentMetric,
             resolutionTimeMetric,
             ticketsRepliedMetric,
+            oneTouchTicketsMetric,
         }).some((metric) => metric.isFetching)
     }, [
         customerSatisfactionMetric,
@@ -71,6 +77,7 @@ export function useAgentsMetrics() {
         messagesSentMetric,
         resolutionTimeMetric,
         ticketsRepliedMetric,
+        oneTouchTicketsMetric,
     ])
 
     return {
@@ -83,6 +90,7 @@ export function useAgentsMetrics() {
             messagesSentMetric,
             resolutionTimeMetric,
             ticketsRepliedMetric,
+            oneTouchTicketsMetric,
         },
         isLoading: loading,
         period: cleanStatsFilters.period,

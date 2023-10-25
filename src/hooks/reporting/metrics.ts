@@ -6,6 +6,7 @@ import {firstResponseTimeQueryFactory} from 'models/reporting/queryFactories/sup
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {resolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {withFilter} from 'utils/reporting'
@@ -86,6 +87,17 @@ export const useMessagesSentMetric = (
     useMetric(
         withFilter(
             messagesSentQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter
+        )
+    )
+
+export const useOneTouchTicketsMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric =>
+    useMetric(
+        withFilter(
+            oneTouchTicketsQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter
         )
     )

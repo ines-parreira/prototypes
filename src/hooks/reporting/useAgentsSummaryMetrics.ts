@@ -7,6 +7,7 @@ import {
     useResolutionTimeMetric,
     useTicketsRepliedMetric,
     useMessagesSentMetric,
+    useOneTouchTicketsMetric,
 } from 'hooks/reporting/metrics'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 
@@ -44,6 +45,10 @@ export function useAgentsSummaryMetrics() {
         cleanStatsFilters,
         userTimezone
     )
+    const oneTouchTicketsMetric = useOneTouchTicketsMetric(
+        cleanStatsFilters,
+        userTimezone
+    )
 
     const loading = useMemo(() => {
         return Object.values({
@@ -54,6 +59,7 @@ export function useAgentsSummaryMetrics() {
             messagesSentMetric,
             resolutionTimeMetric,
             ticketsRepliedMetric,
+            oneTouchTicketsMetric,
         }).some((metric) => metric.isFetching)
     }, [
         customerSatisfactionMetric,
@@ -63,6 +69,7 @@ export function useAgentsSummaryMetrics() {
         messagesSentMetric,
         resolutionTimeMetric,
         ticketsRepliedMetric,
+        oneTouchTicketsMetric,
     ])
 
     return {
@@ -74,6 +81,7 @@ export function useAgentsSummaryMetrics() {
             messagesSentMetric,
             resolutionTimeMetric,
             ticketsRepliedMetric,
+            oneTouchTicketsMetric,
         },
         isLoading: loading,
         period: cleanStatsFilters.period,

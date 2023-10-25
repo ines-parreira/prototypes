@@ -6,6 +6,7 @@ import {firstResponseTimeQueryFactory} from 'models/reporting/queryFactories/sup
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {resolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, withFilter} from 'utils/reporting'
@@ -18,6 +19,7 @@ import {
     useMessagesSentMetric,
     useResolutionTimeMetric,
     useTicketsRepliedMetric,
+    useOneTouchTicketsMetric,
 } from 'hooks/reporting/metrics'
 import {useMetric} from 'hooks/reporting/useMetric'
 
@@ -73,6 +75,11 @@ describe('metrics', () => {
             'useTicketsRepliedMetric',
             useTicketsRepliedMetric,
             ticketsRepliedQueryFactory,
+        ],
+        [
+            'useOneTouchTicketsMetric',
+            useOneTouchTicketsMetric,
+            oneTouchTicketsQueryFactory,
         ],
     ])(
         '%s',

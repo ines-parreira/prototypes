@@ -32,4 +32,5 @@ export enum TableColumn {
     PercentageOfClosedTickets = 'percentage_of_closed_tickets',
     ClosedTickets = 'closed_tickets',
     RepliedTickets = 'replied_tickets',
+    OneTouchTickets = 'one_touch_tickets',
 }

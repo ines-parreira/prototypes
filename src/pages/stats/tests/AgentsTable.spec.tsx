@@ -22,6 +22,8 @@ import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
 import {TableColumnsOrder} from 'pages/stats/TableConfig'
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
+import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
+import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {
@@ -67,6 +69,8 @@ jest.mock('pages/stats/PercentageOfClosedTicketsCellContent.tsx')
 const PercentageOfClosedTicketsCellContentMock = assumeMock(
     PercentageOfClosedTicketsCellContent
 )
+jest.mock('pages/stats/OneTouchTicketsCellContent.tsx')
+const OneTouchTicketsCellContentMock = assumeMock(OneTouchTicketsCellContent)
 
 jest.mock('pages/stats/FirstResponseTimeCellSummary.tsx')
 const FirstResponseTimeCellSummaryMock = assumeMock(
@@ -90,6 +94,8 @@ jest.mock('pages/stats/PercentageOfClosedTicketsCellSummary.tsx')
 const PercentageOfClosedTicketsCellSummaryMock = assumeMock(
     PercentageOfClosedTicketsCellSummary
 )
+jest.mock('pages/stats/OneTouchTicketsCellSummary.tsx')
+const OneTouchTicketsCellSummaryMock = assumeMock(OneTouchTicketsCellSummary)
 
 jest.mock('pages/stats/AgentsHeaderCellContent.tsx')
 const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
@@ -112,6 +118,7 @@ describe('<AgentTable>', () => {
         ResolutionTimeCellContentMock,
         CustomerSatisfactionCellContentMock,
         PercentageOfClosedTicketsCellContentMock,
+        OneTouchTicketsCellContentMock,
     ]
     metricCells.forEach((metricCell) => metricCell.mockImplementation(cellMock))
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
@@ -124,6 +131,7 @@ describe('<AgentTable>', () => {
         ResolutionTimeCellSummaryMock,
         CustomerSatisfactionCellSummaryMock,
         PercentageOfClosedTicketsCellSummaryMock,
+        OneTouchTicketsCellSummaryMock,
     ]
     metricSummaryCells.forEach((metricCell) =>
         metricCell.mockImplementation(cellMock)

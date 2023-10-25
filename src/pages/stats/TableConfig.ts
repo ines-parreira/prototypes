@@ -6,6 +6,7 @@ import {
     useResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
+import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
@@ -22,6 +23,7 @@ export const TableColumnsOrder: TableColumn[] = [
     TableColumn.MessagesSent,
     TableColumn.FirstResponseTime,
     TableColumn.ResolutionTime,
+    TableColumn.OneTouchTickets,
 ]
 
 export const TableLabels: Record<TableColumn, string> = {
@@ -33,6 +35,7 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.PercentageOfClosedTickets]: '% of Closed Tickets',
     [TableColumn.RepliedTickets]: 'Tickets Replied',
     [TableColumn.MessagesSent]: 'Messages Sent',
+    [TableColumn.OneTouchTickets]: 'One-touch Tickets',
 }
 
 export const AGENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 200 : 300
@@ -67,6 +70,9 @@ export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
     [TableColumn.RepliedTickets]: {
         title: 'Number of unique tickets where the agent sent a message within the selected timeframe',
         link: 'https://docs.gorgias.com/en-US/agents-report-292100#6-tickets-replied',
+    },
+    [TableColumn.OneTouchTickets]: {
+        title: 'Percentage of closed tickets assigned to the agent with exactly 1 message sent by the agent (or rule).',
     },
 }
 
@@ -106,5 +112,7 @@ export const getQuery = (
             return useResolutionTimeMetricPerAgent
         case TableColumn.CustomerSatisfaction:
             return useCustomerSatisfactionMetricPerAgent
+        case TableColumn.OneTouchTickets:
+            return useOneTouchTicketsPercentageMetricPerAgent
     }
 }
