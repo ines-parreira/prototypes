@@ -10,6 +10,7 @@ import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -28,6 +29,7 @@ export const oneTouchTicketsQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['closed'],
         },
+        ...NotSpamNorTrashedTicketsFilter,
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
     segments: [TicketMessagesDimension.OneTouchTickets],

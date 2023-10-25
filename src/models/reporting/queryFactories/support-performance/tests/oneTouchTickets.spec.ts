@@ -13,7 +13,10 @@ import {
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import {
+    formatReportingQueryDate,
+    NotSpamNorTrashedTicketsFilter,
+} from 'utils/reporting'
 
 describe('oneTouchTicketsPerAgentQueryFactory', () => {
     const periodStart = moment()
@@ -41,6 +44,7 @@ describe('oneTouchTicketsPerAgentQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: ['closed'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
                 {
                     member: TicketMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
@@ -91,6 +95,7 @@ describe('oneTouchTicketsPerAgentQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: ['closed'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
                 {
                     member: TicketMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
