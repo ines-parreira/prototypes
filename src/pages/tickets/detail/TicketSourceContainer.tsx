@@ -22,7 +22,7 @@ export const TicketSourceContainer = ({
     const params = useParams<{ticketId: string}>()
 
     useEffect(() => {
-        actions.fetchTicket(params.ticketId)
+        actions.fetchTicket(params.ticketId, {isCurrentlyOnTicket: true})
 
         if (customer) {
             if (

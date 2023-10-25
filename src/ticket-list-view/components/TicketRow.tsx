@@ -2,28 +2,31 @@ import React from 'react'
 import classNames from 'classnames'
 import moment from 'moment'
 
+import {Link} from 'react-router-dom'
 import {TicketStatus} from 'business/types/ticket'
 import {Ticket} from 'models/ticket/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import TicketIcon from 'pages/common/components/TicketIcon'
 
 import css from './TicketRow.less'
 
-type TicketSummary = Pick<Ticket, 'channel' | 'excerpt' | 'status' | 'subject'>
+type TicketSummary = Pick<
+    Ticket,
+    'channel' | 'excerpt' | 'id' | 'is_unread' | 'status' | 'subject'
+>
 
 type Props = {
     ticket: TicketSummary
     lastMessageDatetime?: Ticket['last_message_datetime']
-    messagesCount?: Ticket['messages_count']
+    viewId: string
 }
 
 export default function TicketRow({
     lastMessageDatetime,
-    messagesCount,
-    ticket: {channel, excerpt, status, subject},
+    ticket: {channel, excerpt, id, is_unread, status, subject},
+    viewId,
 }: Props) {
     return (
-        <div className={css.wrapper}>
+        <Link className={css.wrapper} to={`/app/views/${viewId}/${id}`}>
             <TicketIcon
                 className={css.icon}
                 channel={channel}
@@ -33,16 +36,12 @@ export default function TicketRow({
                 <div className={css.subjectWrapper}>
                     <div
                         className={classNames(css.subject, {
-                            [css.withCounter]: messagesCount !== undefined,
+                            [css.withCounter]: is_unread,
                         })}
                     >
                         {subject}
                     </div>
-                    {messagesCount !== undefined && (
-                        <Badge className={css.counter} type={ColorType.Error}>
-                            {messagesCount}
-                        </Badge>
-                    )}
+                    {is_unread && <div className={css.counter} />}
                 </div>
                 <div className={css.excerptWrapper}>
                     <div className={css.excerpt}>{excerpt}</div>
@@ -51,6 +50,6 @@ export default function TicketRow({
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }

@@ -296,11 +296,13 @@ export const setSpam =
                                         dismissNotification(`spam-${ticketId}`)
                                     )
                                     history.push(`/app/ticket/${ticketId}`)
-                                    return dispatch(fetchTicket(ticketId)).then(
-                                        () => {
-                                            void dispatch(setSpam(false))
-                                        }
-                                    )
+                                    return dispatch(
+                                        fetchTicket(ticketId, {
+                                            isCurrentlyOnTicket: true,
+                                        })
+                                    ).then(() => {
+                                        void dispatch(setSpam(false))
+                                    })
                                 },
                                 primary: true,
                             },
@@ -357,7 +359,9 @@ export const setTrashed =
                                         )
                                         history.push(`/app/ticket/${ticketId}`)
                                         return dispatch(
-                                            fetchTicket(ticketId)
+                                            fetchTicket(ticketId, {
+                                                isCurrentlyOnTicket: true,
+                                            })
                                         ).then(() => {
                                             void dispatch(setTrashed(null))
                                         })
@@ -756,8 +760,9 @@ export const clearAppliedMacro = (ticketId: number | string) => ({
 export const fetchTicket =
     (
         ticketId: string,
-        options: {discreetly?: boolean} = {
+        options: {discreetly?: boolean; isCurrentlyOnTicket?: boolean} = {
             discreetly: false,
+            isCurrentlyOnTicket: false,
         }
     ) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
@@ -787,7 +792,7 @@ export const fetchTicket =
         return client
             .get<Ticket>(url)
             .then((response) => {
-                if (isCurrentlyOnTicket(ticketId)) {
+                if (options.isCurrentlyOnTicket) {
                     const wasRedirected =
                         response?.data?.uri &&
                         response.data?.id &&
@@ -806,7 +811,7 @@ export const fetchTicket =
                         console.error('No results for', url)
                     }
 
-                    if (!isCurrentlyOnTicket(ticketId)) {
+                    if (!options.isCurrentlyOnTicket) {
                         return Promise.resolve()
                     }
 
@@ -1153,7 +1158,12 @@ export const handleMessageActionError =
                 },
             ]
         } else {
-            fetchPromise = dispatch(fetchTicket(ticketId, {discreetly: true}))
+            fetchPromise = dispatch(
+                fetchTicket(ticketId, {
+                    discreetly: true,
+                    isCurrentlyOnTicket: true,
+                })
+            )
         }
 
         void dispatch(
@@ -1188,6 +1198,7 @@ export const handleMessageError =
             fetchPromise = dispatch(
                 fetchTicket(json.ticket_id as unknown as string, {
                     discreetly: true,
+                    isCurrentlyOnTicket: true,
                 })
             )
         }

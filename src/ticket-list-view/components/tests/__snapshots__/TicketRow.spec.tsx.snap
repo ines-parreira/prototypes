@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TicketRow /> should display a ticket basic information 1`] = `
-<div
+<a
   class="wrapper"
+  to="/app/views/1/152"
 >
   <div
     class="ticketIconWrapper isOpen icon"
@@ -26,10 +27,8 @@ exports[`<TicketRow /> should display a ticket basic information 1`] = `
         Great ticket
       </div>
       <div
-        class="badge counter"
-      >
-        1
-      </div>
+        class="counter"
+      />
     </div>
     <div
       class="excerptWrapper"
@@ -44,5 +43,5 @@ exports[`<TicketRow /> should display a ticket basic information 1`] = `
       </div>
     </div>
   </div>
-</div>
+</a>
 `;

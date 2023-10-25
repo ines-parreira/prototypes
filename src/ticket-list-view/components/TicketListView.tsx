@@ -35,19 +35,23 @@ export default function TicketListView({viewId}: {viewId: string}) {
                             id,
                             is_unread,
                             last_message_datetime,
-                            messages_count,
                             status,
                             subject,
                         }) => (
                             <TicketRow
                                 key={id}
-                                ticket={{excerpt, channel, status, subject}}
+                                viewId={viewId}
+                                ticket={{
+                                    excerpt,
+                                    channel,
+                                    id,
+                                    is_unread,
+                                    status,
+                                    subject,
+                                }}
                                 lastMessageDatetime={
                                     last_message_datetime ?? created_datetime
                                 }
-                                {...(is_unread
-                                    ? {messagesCount: messages_count}
-                                    : {})}
                             />
                         )
                     )

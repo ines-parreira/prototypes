@@ -71,7 +71,9 @@ describe('<TicketSourceContainer />', () => {
             route: '/foo/32',
         })
 
-        expect(minProps.actions.fetchTicket).toHaveBeenCalledWith('32')
+        expect(minProps.actions.fetchTicket).toHaveBeenCalledWith('32', {
+            isCurrentlyOnTicket: true,
+        })
     })
 
     it('should fetch the customer if ticket is new, customer is provided through the URL and is different from the one in the ticket', () => {

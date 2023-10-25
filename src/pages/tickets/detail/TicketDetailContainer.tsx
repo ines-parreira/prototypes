@@ -420,7 +420,7 @@ export const TicketDetailContainer = ({
     useEffect(() => {
         if ((ticket.get('id', '') as number).toString() !== ticketIdParam) {
             clearTicket()
-            void fetchTicket(ticketIdParam || '')
+            void fetchTicket(ticketIdParam || '', {isCurrentlyOnTicket: true})
         }
 
         showTicket()

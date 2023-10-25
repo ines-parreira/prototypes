@@ -30,7 +30,6 @@ import {
 import {appQueryClient} from 'api/queryClient'
 import {customFieldDefinitionKeys} from 'models/customField/queries'
 import {getCustomFields} from 'models/customField/resources'
-import {isCurrentlyOnTicket} from 'utils'
 import {initialState} from '../reducers'
 import * as actions from '../actions'
 
@@ -536,7 +535,7 @@ describe('ticket actions', () => {
                 currentUser: fromJS({id: 1}),
             })
             return store
-                .dispatch(actions.fetchTicket('1'))
+                .dispatch(actions.fetchTicket('1', {isCurrentlyOnTicket: true}))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -552,7 +551,7 @@ describe('ticket actions', () => {
                 currentUser: fromJS({id: 1}),
             })
             return store
-                .dispatch(actions.fetchTicket('1'))
+                .dispatch(actions.fetchTicket('1', {isCurrentlyOnTicket: true}))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -595,13 +594,15 @@ describe('ticket actions', () => {
                 ticket: initialState.set('id', 1),
                 currentUser: fromJS({id: 1}),
             })
-            return store.dispatch(actions.fetchTicket('1')).then(() => {
-                expect(socketManager.send).toHaveBeenCalledWith(
-                    SocketEventType.TicketViewed,
-                    1
-                )
-                expect(store.getActions()).toMatchSnapshot()
-            })
+            return store
+                .dispatch(actions.fetchTicket('1', {isCurrentlyOnTicket: true}))
+                .then(() => {
+                    expect(socketManager.send).toHaveBeenCalledWith(
+                        SocketEventType.TicketViewed,
+                        1
+                    )
+                    expect(store.getActions()).toMatchSnapshot()
+                })
         })
 
         it('should not send ticket-viewed event when ticket is read', () => {
@@ -628,17 +629,19 @@ describe('ticket actions', () => {
             })
 
             it('should redirect to the merged ticket if the current URL is of the old (merged) ticket', () => {
-                return store.dispatch(actions.fetchTicket('1')).finally(() => {
-                    expect(isCurrentlyOnTicket).toHaveReturnedWith(true)
-                    expect(history.push).toHaveBeenCalledWith('/app/ticket/2')
-                })
+                return store
+                    .dispatch(
+                        actions.fetchTicket('1', {isCurrentlyOnTicket: true})
+                    )
+                    .finally(() => {
+                        expect(history.push).toHaveBeenCalledWith(
+                            '/app/ticket/2'
+                        )
+                    })
             })
 
             it('should NOT redirect if the current URL is NOT of the merged ticket', () => {
                 return store.dispatch(actions.fetchTicket('99')).finally(() => {
-                    // isCurrentlyOnTicket is implicitly mocked to return:
-                    // `true` for ticketId 1 and `false` for any other ticketId
-                    expect(isCurrentlyOnTicket).toHaveReturnedWith(false)
                     expect(history.push).not.toHaveBeenCalledWith(
                         '/app/ticket/2'
                     )

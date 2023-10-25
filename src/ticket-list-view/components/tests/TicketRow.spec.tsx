@@ -12,8 +12,9 @@ describe('<TicketRow />', () => {
     const {
         channel,
         excerpt,
+        id,
+        is_unread,
         last_message_datetime,
-        messages_count,
         status,
         subject,
     } = ticket
@@ -22,12 +23,13 @@ describe('<TicketRow />', () => {
         ticket: {
             channel,
             excerpt,
+            id,
+            is_unread,
             status,
             subject,
         },
-
         lastMessageDatetime: last_message_datetime,
-        messagesCount: messages_count,
+        viewId: '1',
     }
 
     it('should display a ticket basic information', () => {
@@ -51,7 +53,13 @@ describe('<TicketRow />', () => {
 
     it('should display the ticket without the counter of unread messages', () => {
         const {getByText, queryByText} = render(
-            <TicketRow {...props} messagesCount={undefined} />
+            <TicketRow
+                {...props}
+                ticket={{
+                    ...props.ticket,
+                    is_unread: false,
+                }}
+            />
         )
 
         expect(

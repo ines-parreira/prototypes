@@ -19,7 +19,9 @@ const TicketPrintContainer = () => {
     const dispatch = useAppDispatch()
 
     useEffectOnce(() => {
-        void dispatch(fetchTicket(ticketIdParam || ''))
+        void dispatch(
+            fetchTicket(ticketIdParam || '', {isCurrentlyOnTicket: true})
+        )
     })
 
     const isLoading =
