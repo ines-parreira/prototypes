@@ -114,10 +114,28 @@ const data: HelpCenterTableCell[][] = [
     ],
 ]
 
+const PAGES_COUNT = 10
+const ITEMS_PER_PAGE = 20
+
 export const PerformanceByArticle = () => {
+    const [currentPage, setCurrentPage] = React.useState(1)
+
+    const onPageChange = (page: number) => {
+        if (currentPage !== page) {
+            setCurrentPage(page)
+        }
+    }
+
     return (
         <ChartCard title="Performance by articles" noPadding>
-            <HelpCenterStatsTable columns={columns} data={data} />
+            <HelpCenterStatsTable
+                onPageChange={onPageChange}
+                currentPage={currentPage}
+                count={PAGES_COUNT}
+                pageSize={ITEMS_PER_PAGE}
+                columns={columns}
+                data={data}
+            />
         </ChartCard>
     )
 }

@@ -98,7 +98,10 @@ const data: HelpCenterTableCell[][] = [
 ]
 
 export const Default: Story = {
-    render: (args) => (
-        <HelpCenterStatsTable {...args} columns={columns} data={data} />
-    ),
+    render: (args) => <HelpCenterStatsTable {...args} />,
+    args: {
+        columns,
+        data,
+        count: 10,
+    },
 }

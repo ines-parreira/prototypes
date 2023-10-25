@@ -12,6 +12,7 @@ import {formatDatetime} from 'utils'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {TooltipData} from 'pages/stats/types'
 import {formatMetricValue} from 'pages/stats/common/utils'
+import {NumberedPagination} from 'pages/common/components/Paginations'
 import css from './HelpCenterStatsTable.less'
 
 export enum TableCellType {
@@ -66,6 +67,9 @@ type HelpCenterStatsTableProps = {
     pageSize?: number
     columns: HelpCenterTableColumn[]
     data: HelpCenterTableCell[][]
+    currentPage: number
+    count: number
+    onPageChange: (page: number) => void
 }
 
 const DEFAULT_PAGE_SIZE = 10
@@ -75,6 +79,9 @@ const HelpCenterStatsTable = ({
     isLoading,
     pageSize = DEFAULT_PAGE_SIZE,
     data,
+    currentPage,
+    count,
+    onPageChange,
     columns,
 }: HelpCenterStatsTableProps) => {
     const tableWidth = columns.map((column) => column.width)
@@ -89,98 +96,119 @@ const HelpCenterStatsTable = ({
     }
 
     return (
-        <div
-            className={css.container}
-            onScroll={handleScroll}
-            data-testid="help-center-stats-table"
-        >
-            <TableWrapper className={css.table}>
-                <TableHead>
-                    {columns.map((column, index) => (
-                        <HeaderCellProperty
-                            key={column.name}
-                            title={column.name}
-                            width={tableWidth[index] ?? DEFAULT_COLUMN_WIDTH}
-                            justifyContent={index === 0 ? 'left' : 'right'}
-                            wrapContent
-                            className={classNames({
-                                [css.withShadow]:
-                                    isTableScrolled && index === 0,
-                            })}
-                        >
-                            {column.tooltip && (
-                                <HintTooltip {...column.tooltip} />
-                            )}
-                        </HeaderCellProperty>
-                    ))}
-                </TableHead>
+        <>
+            <div
+                className={css.container}
+                onScroll={handleScroll}
+                data-testid="help-center-stats-table"
+            >
+                <TableWrapper className={css.table}>
+                    <TableHead>
+                        {columns.map((column, index) => (
+                            <HeaderCellProperty
+                                key={column.name}
+                                title={column.name}
+                                width={
+                                    tableWidth[index] ?? DEFAULT_COLUMN_WIDTH
+                                }
+                                justifyContent={index === 0 ? 'left' : 'right'}
+                                wrapContent
+                                className={classNames({
+                                    [css.withShadow]:
+                                        isTableScrolled && index === 0,
+                                })}
+                            >
+                                {column.tooltip && (
+                                    <HintTooltip {...column.tooltip} />
+                                )}
+                            </HeaderCellProperty>
+                        ))}
+                    </TableHead>
 
-                <TableBody>
-                    {isLoading
-                        ? Array(pageSize)
-                              .fill(null)
-                              .map((_, index) => (
+                    <TableBody>
+                        {isLoading
+                            ? Array(pageSize)
+                                  .fill(null)
+                                  .map((_, index) => (
+                                      <TableBodyRow key={index}>
+                                          {columns.map((_, index) => (
+                                              <BodyCell
+                                                  key={index}
+                                                  width={
+                                                      tableWidth[index] ??
+                                                      DEFAULT_COLUMN_WIDTH
+                                                  }
+                                              >
+                                                  <div className={css.loader}>
+                                                      <Skeleton />
+                                                  </div>
+                                              </BodyCell>
+                                          ))}
+                                      </TableBodyRow>
+                                  ))
+                            : data.map((line, index) => (
                                   <TableBodyRow key={index}>
-                                      {columns.map((_, index) => (
+                                      {line.map((cell, lineIndex) => (
                                           <BodyCell
-                                              key={index}
+                                              key={cell.value.toString()}
+                                              className={classNames({
+                                                  [css.withShadow]:
+                                                      isTableScrolled &&
+                                                      lineIndex === 0,
+                                              })}
+                                              innerClassName={
+                                                  css.bodyCellContent
+                                              }
+                                              justifyContent={
+                                                  lineIndex === 0
+                                                      ? 'left'
+                                                      : 'right'
+                                              }
                                               width={
-                                                  tableWidth[index] ??
+                                                  tableWidth[lineIndex] ??
                                                   DEFAULT_COLUMN_WIDTH
                                               }
+                                              onClick={cell.onClick}
                                           >
-                                              <div className={css.loader}>
-                                                  <Skeleton />
-                                              </div>
+                                              <span
+                                                  className={css.textTruncate}
+                                                  title={getCellFormatter(
+                                                      cell
+                                                  ).toString()}
+                                              >
+                                                  {cell.link ? (
+                                                      <a
+                                                          href={cell.link}
+                                                          target="_blank"
+                                                          rel="noopener noreferrer"
+                                                      >
+                                                          {getCellFormatter(
+                                                              cell
+                                                          )}
+                                                      </a>
+                                                  ) : (
+                                                      getCellFormatter(cell)
+                                                  )}
+                                              </span>
                                           </BodyCell>
                                       ))}
                                   </TableBodyRow>
-                              ))
-                        : data.map((line, index) => (
-                              <TableBodyRow key={index}>
-                                  {line.map((cell, lineIndex) => (
-                                      <BodyCell
-                                          key={cell.value.toString()}
-                                          className={classNames({
-                                              [css.withShadow]:
-                                                  isTableScrolled &&
-                                                  lineIndex === 0,
-                                          })}
-                                          innerClassName={css.bodyCellContent}
-                                          justifyContent={
-                                              lineIndex === 0 ? 'left' : 'right'
-                                          }
-                                          width={
-                                              tableWidth[lineIndex] ??
-                                              DEFAULT_COLUMN_WIDTH
-                                          }
-                                          onClick={cell.onClick}
-                                      >
-                                          <span
-                                              className={css.textTruncate}
-                                              title={getCellFormatter(
-                                                  cell
-                                              ).toString()}
-                                          >
-                                              {cell.link ? (
-                                                  <a
-                                                      href={cell.link}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                  >
-                                                      {getCellFormatter(cell)}
-                                                  </a>
-                                              ) : (
-                                                  getCellFormatter(cell)
-                                              )}
-                                          </span>
-                                      </BodyCell>
-                                  ))}
-                              </TableBodyRow>
-                          ))}
-                </TableBody>
-            </TableWrapper>
-        </div>
+                              ))}
+                    </TableBody>
+                </TableWrapper>
+            </div>
+
+            {count >= data.length && (
+                <div data-testid="help-center-table-pagination">
+                    <NumberedPagination
+                        count={count}
+                        page={currentPage}
+                        onChange={onPageChange}
+                        className={css.pagination}
+                    />
+                </div>
+            )}
+        </>
     )
 }
 
