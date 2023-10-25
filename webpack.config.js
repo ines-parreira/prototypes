@@ -1,8 +1,10 @@
+const fs = require('fs')
 const path = require('path')
 
 const webpack = require('webpack')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CircularDependencyPlugin = require('circular-dependency-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const {WebpackManifestPlugin} = require('webpack-manifest-plugin')
@@ -29,6 +31,9 @@ const styleBundleFile = __PRODUCTION__
 const vendorsBundleFile = __PRODUCTION__
     ? `helpdesk.vendors.${HASH}.js`
     : 'helpdesk.vendors.js'
+
+let circularDepsCount = 0
+let cdHandle
 
 const mode = __PRODUCTION__ ? 'production' : 'development'
 const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
@@ -242,6 +247,23 @@ module.exports = (env = {}) => {
             ],
         },
         plugins: [
+            new CircularDependencyPlugin({
+                exclude: /node_modules/,
+                onStart: () => {
+                    circularDepsCount = 0
+                    cdHandle = fs.openSync(`${__dirname}/circular_deps`, 'w')
+                },
+                onDetected({paths}) {
+                    circularDepsCount++
+                    fs.appendFileSync(cdHandle, `${paths.join(' -> ')}\n`, 'utf8')
+                },
+                onEnd({compilation}) {
+                    if (circularDepsCount > 0) {
+                        compilation.warnings.push(new Error(`${circularDepsCount} circular dependencies detected, check ./circular_deps for a full list.`))
+                    }
+                    fs.closeSync(cdHandle)
+                },
+            }),
             new MiniCssExtractPlugin({
                 filename: styleBundleFile,
             }),
