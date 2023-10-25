@@ -28,7 +28,9 @@ variables:
 
 .yarn cache:
   cache:
-   key: node-16-yarn-1.22 # Change this key when Node or Yarn versions change, to invalidate cache
+   key:
+     files:
+       - yarn.lock
    paths: # Paths are relative to the project directory ($CI_PROJECT_DIR) and can’t directly link outside it.
     - .yarn-cache/
 
