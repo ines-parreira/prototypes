@@ -1,20 +1,18 @@
 import React from 'react'
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
+import {Route, RouteComponentProps, Switch} from 'react-router-dom'
 
 import TicketLayout from './TicketLayout'
 import ViewLayout from './ViewLayout'
 
-export default function Routes() {
-    const {path} = useRouteMatch()
-
+export default function Routes({match: {path}}: RouteComponentProps) {
     return (
         <Switch>
-            <Route exact path={`${path}/:viewId`}>
-                <ViewLayout />
-            </Route>
-            <Route exact path={`${path}/:viewId/:ticketId`}>
-                <TicketLayout />
-            </Route>
+            <Route exact path={`${path}/:viewId`} render={ViewLayout} />
+            <Route
+                exact
+                path={`${path}/:viewId/:ticketId`}
+                render={TicketLayout}
+            />
         </Switch>
     )
 }

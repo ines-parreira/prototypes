@@ -1,5 +1,5 @@
 import React from 'react'
-import {useParams} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 
 import TicketDetail from 'pages/tickets/detail/TicketDetailContainer'
 import {Config, Panel, Panels} from 'panels'
@@ -9,9 +9,11 @@ type Params = {
     viewId: string
 }
 
-export default function Ticket() {
-    const {viewId} = useParams<Params>()
-
+export default function TicketLayout({
+    match: {
+        params: {viewId},
+    },
+}: RouteComponentProps<Params>) {
     const panelsConfig: Config = [
         [200, 200, 350],
         [300, 300, 450],

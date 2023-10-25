@@ -1,5 +1,5 @@
 import React from 'react'
-import {useParams} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 
 import {Config, Panel, Panels} from 'panels'
 import {TicketListView} from 'ticket-list-view'
@@ -9,8 +9,11 @@ type Params = {
     viewId: string
 }
 
-export default function View() {
-    const {viewId} = useParams<Params>()
+export default function ViewLayout({
+    match: {
+        params: {viewId},
+    },
+}: RouteComponentProps<Params>) {
     const panelsConfig: Config = [
         [200, 200, 350],
         [300, 300, 450],
