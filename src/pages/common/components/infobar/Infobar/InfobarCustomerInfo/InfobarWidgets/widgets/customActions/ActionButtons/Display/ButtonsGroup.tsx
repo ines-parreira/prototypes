@@ -7,12 +7,7 @@ import React, {
     useState,
     useRef,
 } from 'react'
-import {
-    UncontrolledDropdown,
-    DropdownMenu,
-    DropdownToggle,
-    Modal,
-} from 'reactstrap'
+import {UncontrolledDropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
 import {Map} from 'immutable'
 import {useDebounce} from 'react-use'
 
@@ -33,6 +28,7 @@ import {
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 import useAppSelector from 'hooks/useAppSelector'
 
+import Modal from 'pages/common/components/modal/Modal'
 import Button from './Button'
 import ActionEditor from './ActionEditor'
 
@@ -165,14 +161,7 @@ function ButtonsGroup({buttons, source}: Props) {
                     </UncontrolledDropdown>
                 )}
             </Group>
-            <Modal
-                isOpen={isEditorOpen}
-                toggle={handleCloseEditor}
-                backdrop="static"
-                // prevent the Modal's default autofocus so that we
-                // manually focus the first input of the editor
-                autoFocus={false}
-            >
+            <Modal isOpen={isEditorOpen} onClose={handleCloseEditor}>
                 <ActionEditor
                     onSubmit={handleSubmit!}
                     onClose={handleCloseEditor}

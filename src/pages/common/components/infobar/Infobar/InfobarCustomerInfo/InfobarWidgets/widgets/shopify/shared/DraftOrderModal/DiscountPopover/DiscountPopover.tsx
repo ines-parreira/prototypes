@@ -5,6 +5,7 @@ import React, {
     MouseEvent,
     PureComponent,
     ReactNode,
+    RefObject,
     SyntheticEvent,
 } from 'react'
 import {
@@ -21,17 +22,14 @@ import {
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {getDiscountAmount} from '../../../../../../../../../../../../business/shopify/discount'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {getDiscountAmount} from 'business/shopify/discount'
 import {
     AppliedDiscount,
     DiscountType,
-} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
+} from 'constants/integrations/types/shopify'
+import {formatPrice} from 'business/shopify/number'
+import {focusElement} from 'utils/html'
 import getShopifyMoneySymbol from '../../helpers'
 import AmountInput from '../../AmountInput/AmountInput'
 import {ShopifyActionType} from '../../../types'
@@ -49,6 +47,7 @@ type Props = {
     max: number
     value: Map<any, any> | null
     onChange: (arg0: Map<any, any> | null) => void
+    container?: RefObject<HTMLDivElement>
 }
 
 type State = {
@@ -251,6 +250,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
             editable,
             value,
             max,
+            container,
         } = this.props
         const {isOpen, type, discountValue, title} = this.state
         const discountValueMax = type === 'percentage' ? 100 : max
@@ -274,11 +274,13 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                     <span className={css.title}>{value.get('title')}</span>
                 ) : null}
                 <Popover
+                    popperClassName={css.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
                     toggle={this._toggle}
                     trigger="legacy"
+                    container={container?.current ?? document.body}
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
@@ -309,6 +311,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                                         </Button>
                                     </InputGroupAddon>
                                     <AmountInput
+                                        className={css.amountInput}
                                         value={discountValue}
                                         id="discount-value"
                                         max={discountValueMax}

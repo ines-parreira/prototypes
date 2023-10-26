@@ -217,7 +217,6 @@ describe('<Modifiers />', () => {
         (product) => {
             const props = {...defaultProps, product}
             const {container} = render(<Modifiers {...props} />)
-            screen.debug()
             expect(container.childElementCount).toEqual(0)
         }
     )
@@ -252,7 +251,6 @@ describe('<Modifiers />', () => {
 
         const props = {...defaultProps, lineItem}
         const {getByRole} = render(<Modifiers {...props} />)
-        screen.debug()
         const item = getByRole('listitem')
         expect(item.textContent).toEqual(title)
     })
@@ -270,7 +268,6 @@ describe('<Modifiers />', () => {
 
         const props = {...defaultProps, lineItem}
         const {queryAllByRole} = render(<Modifiers {...props} />)
-        screen.debug()
         const item = queryAllByRole('listitem')
         expect(item.length).toEqual(0)
     })

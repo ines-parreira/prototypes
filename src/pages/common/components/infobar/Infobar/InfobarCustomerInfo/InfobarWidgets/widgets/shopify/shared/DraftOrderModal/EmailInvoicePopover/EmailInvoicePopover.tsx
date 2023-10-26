@@ -5,6 +5,7 @@ import React, {
     FormEvent,
     ComponentProps,
     KeyboardEvent,
+    RefObject,
 } from 'react'
 import {
     Button,
@@ -18,12 +19,10 @@ import {
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {DraftOrderInvoice} from 'constants/integrations/types/shopify'
+import {focusElement} from 'utils/html'
+
 import {ShopifyActionType} from '../../../types'
 
 import css from './EmailInvoicePopover.less'
@@ -37,6 +36,7 @@ type Props = {
     customerEmail: string
     disabled: boolean
     onSubmit: (record: Map<any, any>) => void
+    container?: RefObject<HTMLDivElement>
 }
 
 type State = {
@@ -145,7 +145,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
     }
 
     render() {
-        const {id, children, placement, color, disabled} = this.props
+        const {id, children, placement, color, disabled, container} = this.props
         const {isOpen, to, customMessage} = this.state
 
         return (
@@ -168,6 +168,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
                     target={id}
                     toggle={this._toggle}
                     trigger="legacy"
+                    container={container?.current ?? document.body}
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">

@@ -30,7 +30,6 @@ export type InfobarAction = {
 }
 
 export type InfobarModalProps = {
-    header: ReactNode
     isOpen: boolean
     onChange: (
         name: string,
@@ -47,4 +46,4 @@ export type InfobarModalProps = {
     onSubmit: () => void
     onClose: () => void
     data: any
-}
+} & Pick<InfobarAction, 'title'>

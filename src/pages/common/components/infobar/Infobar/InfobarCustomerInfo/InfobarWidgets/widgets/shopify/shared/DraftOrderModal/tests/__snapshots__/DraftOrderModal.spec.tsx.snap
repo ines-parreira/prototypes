@@ -8,6 +8,11 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
     data-testid="Modal"
   >
     <div
+      data-testid="Modal-Header"
+    >
+      Duplicate order
+    </div>
+    <div
       class="formHeader"
     >
       <div
@@ -389,29 +394,37 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
-      <button
-        class="focusable ml-auto btn btn-primary"
-        tabindex="0"
-        type="button"
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+      <div
+        class="buttonGroup"
       >
-        Create order as paid
-      </button>
-      <button
-        class="focusable btn btn-primary"
-        tabindex="0"
-        type="button"
-      >
-        Create order as pending
-      </button>
+        <button
+          class="focusable btn btn-primary"
+          tabindex="0"
+          type="button"
+        >
+          Create order as paid
+        </button>
+        <button
+          class="focusable btn btn-primary"
+          tabindex="0"
+          type="button"
+        >
+          Create order as pending
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -422,6 +435,11 @@ exports[`<DraftOrderModal/> should render a spinner when missing data 1`] = `
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Duplicate order
+    </div>
     <div
       class="formHeader"
     >
@@ -458,31 +476,39 @@ exports[`<DraftOrderModal/> should render a spinner when missing data 1`] = `
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
-      <button
-        class="focusable ml-auto btn btn-primary disabled"
-        disabled=""
-        tabindex="0"
-        type="button"
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+      <div
+        class="buttonGroup"
       >
-        Create order as paid
-      </button>
-      <button
-        class="focusable btn btn-primary disabled"
-        disabled=""
-        tabindex="0"
-        type="button"
-      >
-        Create order as pending
-      </button>
+        <button
+          class="focusable btn btn-primary disabled"
+          disabled=""
+          tabindex="0"
+          type="button"
+        >
+          Create order as paid
+        </button>
+        <button
+          class="focusable btn btn-primary disabled"
+          disabled=""
+          tabindex="0"
+          type="button"
+        >
+          Create order as pending
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -493,6 +519,11 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Duplicate order
+    </div>
     <div
       class="formHeader"
     >
@@ -864,29 +895,37 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
-      <button
-        class="focusable ml-auto btn btn-primary"
-        tabindex="0"
-        type="button"
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+      <div
+        class="buttonGroup"
       >
-        Create order as paid
-      </button>
-      <button
-        class="focusable btn btn-primary"
-        tabindex="0"
-        type="button"
-      >
-        Create order as pending
-      </button>
+        <button
+          class="focusable btn btn-primary"
+          tabindex="0"
+          type="button"
+        >
+          Create order as paid
+        </button>
+        <button
+          class="focusable btn btn-primary"
+          tabindex="0"
+          type="button"
+        >
+          Create order as pending
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -897,6 +936,11 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Duplicate order
+    </div>
     <div
       class="formHeader"
     >
@@ -1268,29 +1312,37 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
-      <button
-        class="focusable ml-auto btn btn-primary"
-        tabindex="0"
-        type="button"
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+      <div
+        class="buttonGroup"
       >
-        Create order as paid
-      </button>
-      <button
-        class="focusable btn btn-primary"
-        tabindex="0"
-        type="button"
-      >
-        Create order as pending
-      </button>
+        <button
+          class="focusable btn btn-primary"
+          tabindex="0"
+          type="button"
+        >
+          Create order as paid
+        </button>
+        <button
+          class="focusable btn btn-primary"
+          tabindex="0"
+          type="button"
+        >
+          Create order as pending
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -1301,6 +1353,11 @@ exports[`<DraftOrderModal/> should render with an empty order table when data is
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Duplicate order
+    </div>
     <div
       class="formHeader"
     >
@@ -1386,31 +1443,39 @@ exports[`<DraftOrderModal/> should render with an empty order table when data is
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
-      <button
-        class="focusable ml-auto btn btn-primary disabled"
-        disabled=""
-        tabindex="0"
-        type="button"
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+      <div
+        class="buttonGroup"
       >
-        Create order as paid
-      </button>
-      <button
-        class="focusable btn btn-primary disabled"
-        disabled=""
-        tabindex="0"
-        type="button"
-      >
-        Create order as pending
-      </button>
+        <button
+          class="focusable btn btn-primary disabled"
+          disabled=""
+          tabindex="0"
+          type="button"
+        >
+          Create order as paid
+        </button>
+        <button
+          class="focusable btn btn-primary disabled"
+          disabled=""
+          tabindex="0"
+          type="button"
+        >
+          Create order as pending
+        </button>
+      </div>
     </div>
   </div>
 </div>

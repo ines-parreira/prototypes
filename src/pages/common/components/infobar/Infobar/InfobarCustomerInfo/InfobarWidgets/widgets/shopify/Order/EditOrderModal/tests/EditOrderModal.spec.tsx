@@ -28,7 +28,14 @@ jest.mock('pages/common/utils/labels', () => ({
 }))
 
 jest.mock(
-    'pages/common/components/DEPRECATED_Modal',
+    'pages/common/components/modal/ModalHeader',
+    () =>
+        ({title}: {title: ReactNode}) =>
+            <div data-testid="Modal-Header">{title}</div>
+)
+
+jest.mock(
+    'pages/common/components/modal/Modal',
     () =>
         ({
             isOpen,
@@ -55,7 +62,7 @@ const mockIntegrationDataItemProductFixture = integrationDataItemProductFixture
 const mockShopifyCustomLineItemFixture = shopifyCustomLineItemFixture
 
 jest.mock(
-    '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput',
+    'pages/common/forms/ProductSearchInput/ProductSearchInput',
     () =>
         ({onVariantClicked}: ComponentProps<typeof ProductSearchInput>) => {
             const item = mockIntegrationDataItemProductFixture()
@@ -141,7 +148,7 @@ const payload = getDuplicateOrderPayload(draftOrder)
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}
 const minProps = {
     isOpen: true,
-    header: 'Edit order',
+    title: 'Edit order',
     onOpen: jest.fn(),
     onChange: jest.fn(),
     onLineItemChange: jest.fn(),

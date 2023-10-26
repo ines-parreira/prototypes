@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useState} from 'react'
+import React, {RefObject, memo, useCallback, useEffect, useState} from 'react'
 import {Map, List} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
 import classnames from 'classnames'
@@ -36,6 +36,7 @@ type Props = {
     removable: boolean
     onChange: onChange
     onDelete: (index: number) => void
+    container?: RefObject<HTMLDivElement>
 }
 
 const debouncedRestock = _debounce(
@@ -95,6 +96,7 @@ function DraftOrderLineItemRow({
     removable,
     onChange,
     onDelete,
+    container,
 }: Props) {
     const [quantity, setQuantity] = useState<number>(lineItem.get('quantity'))
     const [restock, setRestock] = useState<boolean>(
@@ -267,6 +269,7 @@ function DraftOrderLineItemRow({
                                 value={lineItem.get('applied_discount')}
                                 max={parseFloat(price)}
                                 onChange={handleAppliedDiscountChange}
+                                container={container}
                             >
                                 <MoneyAmount
                                     renderIfZero
@@ -292,6 +295,7 @@ function DraftOrderLineItemRow({
                                 value={lineItem.get('applied_discount')}
                                 max={parseFloat(price)}
                                 onChange={handleAppliedDiscountChange}
+                                container={container}
                             >
                                 <MoneyAmount
                                     renderIfZero
@@ -312,6 +316,7 @@ function DraftOrderLineItemRow({
         id,
         isShownInEditOrder,
         lineItem,
+        container,
     ])
 
     const renderQuantity = useCallback(() => {

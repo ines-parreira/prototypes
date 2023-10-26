@@ -6,38 +6,45 @@ exports[`<RefundOrderModal /> should render a spinner when missing data 1`] = `
 <div
   data-testid="Modal"
 >
+  <div
+    data-testid="Modal-Header"
+  >
+    Refund order
+  </div>
   <form
     class=""
   >
     <div
-      class="footer modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
-      >
-        Cancel
-      </button>
       <div
-        class="ml-3"
+        class="buttonGroup"
       >
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
         <div
-          class="container spinner"
+          class="buttonGroup"
         >
           <div
-            class="inner"
-            style="min-height: 20px;"
+            class="container spinner"
           >
-            <i
-              class="icon-custom icon-circle-o-notch md-spin"
-              style="font-size: 20px;"
-            />
+            <div
+              class="inner"
+              style="min-height: 20px;"
+            >
+              <i
+                class="icon-custom icon-circle-o-notch md-spin"
+                style="font-size: 20px;"
+              />
+            </div>
           </div>
+          <span />
         </div>
-        <span
-          class="ml-2"
-        />
       </div>
       <button
         class="focusable ml-auto btn btn-primary disabled"
@@ -60,6 +67,11 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
 <div
   data-testid="Modal"
 >
+  <div
+    data-testid="Modal-Header"
+  >
+    Refund order
+  </div>
   <form
     class=""
   >
@@ -557,15 +569,19 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
       </div>
     </div>
     <div
-      class="footer modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
       <button
         class="focusable ml-auto btn btn-primary disabled"
         disabled=""
@@ -587,6 +603,11 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
 <div
   data-testid="Modal"
 >
+  <div
+    data-testid="Modal-Header"
+  >
+    Refund order
+  </div>
   <form
     class=""
   >
@@ -845,15 +866,19 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
       </div>
     </div>
     <div
-      class="footer modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
       <button
         class="focusable ml-auto btn btn-primary disabled"
         disabled=""

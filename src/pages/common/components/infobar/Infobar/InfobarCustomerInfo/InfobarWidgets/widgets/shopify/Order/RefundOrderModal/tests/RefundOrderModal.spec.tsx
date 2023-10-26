@@ -26,7 +26,14 @@ jest.mock('pages/common/utils/labels', () => ({
 }))
 
 jest.mock(
-    'pages/common/components/DEPRECATED_Modal',
+    'pages/common/components/modal/ModalHeader',
+    () =>
+        ({title}: {title: ReactNode}) =>
+            <div data-testid="Modal-Header">{title}</div>
+)
+
+jest.mock(
+    'pages/common/components/modal/Modal',
     () =>
         ({
             isOpen,
@@ -61,7 +68,7 @@ describe('<RefundOrderModal />', () => {
             actionName: ShopifyActionType.RefundOrder,
             order,
         },
-        header: 'Refund order',
+        title: 'Refund order',
         integrations: (
             integrationsStateWithShopify.get('integrations') as List<any>
         ).toJS(),

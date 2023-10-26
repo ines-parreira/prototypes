@@ -369,7 +369,6 @@ export function OrderModal({
         }
     )
 
-    const containerElement = document.getElementById('App') as Element
     const [discounts, setDiscounts] = useState<Map<string, number>>(new Map())
 
     return (
@@ -380,7 +379,6 @@ export function OrderModal({
                 isClosable={false}
                 onClose={() => handleCancel('header')}
                 size="medium"
-                container={containerElement}
             >
                 <ModalHeader
                     title={

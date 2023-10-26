@@ -23,9 +23,11 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
     foo
   </span>
   <Popover
+    container={<body />}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
+    popperClassName="popover"
     target="discount-popover"
     toggle={[Function]}
     trigger="legacy"
@@ -91,7 +93,7 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
               </Button>
             </InputGroupAddon>
             <AmountInput
-              className={null}
+              className="amountInput"
               currencyCode="USD"
               disabled={false}
               id="discount-value"
@@ -184,9 +186,11 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
     </strong>
   </Button>
   <Popover
+    container={<body />}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
+    popperClassName="popover"
     target="discount-popover"
     toggle={[Function]}
     trigger="legacy"
@@ -252,7 +256,7 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
               </Button>
             </InputGroupAddon>
             <AmountInput
-              className={null}
+              className="amountInput"
               currencyCode="USD"
               disabled={false}
               id="discount-value"

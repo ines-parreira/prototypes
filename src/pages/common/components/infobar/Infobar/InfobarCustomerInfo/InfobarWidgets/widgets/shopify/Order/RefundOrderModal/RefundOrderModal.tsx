@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback, useContext, useMemo} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Form, ModalFooter} from 'reactstrap'
+import {Button, Form} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect, usePrevious} from 'react-use'
 
@@ -24,9 +24,11 @@ import {
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Loader from 'pages/common/components/Loader/Loader'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {getRefundAmount} from 'business/shopify/refund'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {InfobarModalProps} from '../../../types'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
@@ -46,7 +48,6 @@ export const RefundOrderModalContainer = ({
         actionName: null,
         order: fromJS({}),
     },
-    header,
     integrations,
     isOpen,
     lineItems,
@@ -63,6 +64,7 @@ export const RefundOrderModalContainer = ({
     payload,
     refund,
     setPayload,
+    title,
 }: Props) => {
     const previousIsOpen = usePrevious(isOpen)
     const {integrationId} = useContext(IntegrationContext)
@@ -134,17 +136,14 @@ export const RefundOrderModalContainer = ({
     const amount = !!payload ? getRefundAmount(payload) : 0
 
     return integration ? (
-        <DEPRECATED_Modal
-            header={header}
+        <Modal
+            size="huge"
             isOpen={isOpen}
             onClose={() => {
                 handleCancel('header')
             }}
-            keyboard={false}
-            size="xl"
-            bodyClassName="p-0"
-            backdrop="static"
         >
+            <ModalHeader title={title} />
             <Form onSubmit={handleSubmit}>
                 {payload && lineItems && (
                     <RefundOrderForm
@@ -168,25 +167,27 @@ export const RefundOrderModalContainer = ({
                     />
                 )}
                 <ModalFooter className={css.footer}>
-                    <Button
-                        tabIndex={0}
-                        className={css.focusable}
-                        onClick={() => {
-                            handleCancel('footer')
-                        }}
-                    >
-                        Cancel
-                    </Button>
-                    {loading && (
-                        <div className="ml-3">
-                            <Loader
-                                className={css.spinner}
-                                minHeight="20px"
-                                size="20px"
-                            />
-                            <span className="ml-2">{loadingMessage}</span>
-                        </div>
-                    )}
+                    <div className={css.buttonGroup}>
+                        <Button
+                            tabIndex={0}
+                            className={css.focusable}
+                            onClick={() => {
+                                handleCancel('footer')
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        {loading && (
+                            <div className={css.buttonGroup}>
+                                <Loader
+                                    className={css.spinner}
+                                    minHeight="20px"
+                                    size="20px"
+                                />
+                                <span>{loadingMessage}</span>
+                            </div>
+                        )}
+                    </div>
                     <Button
                         color="primary"
                         type="submit"
@@ -207,7 +208,7 @@ export const RefundOrderModalContainer = ({
                     </Button>
                 </ModalFooter>
             </Form>
-        </DEPRECATED_Modal>
+        </Modal>
     ) : null
 }
 

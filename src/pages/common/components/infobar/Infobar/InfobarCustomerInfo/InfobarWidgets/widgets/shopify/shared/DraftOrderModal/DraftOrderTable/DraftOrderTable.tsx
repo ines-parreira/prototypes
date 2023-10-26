@@ -1,4 +1,4 @@
-import React, {memo} from 'react'
+import React, {RefObject, memo} from 'react'
 import {Table} from 'reactstrap'
 import {fromJS, List, Map as ImmutableMap} from 'immutable'
 
@@ -16,6 +16,7 @@ type Props = {
     products?: Map<number, ImmutableMap<any, any>>
     onLineItemUpdate: (record: ImmutableMap<any, any>, index: number) => void
     onLineItemDelete: (index: number) => void
+    container?: RefObject<HTMLDivElement>
 }
 function DraftOrderTable({
     lineItems,
@@ -26,6 +27,7 @@ function DraftOrderTable({
     currencyCode,
     onLineItemUpdate,
     onLineItemDelete,
+    container,
 }: Props): JSX.Element {
     return (
         <Table hover={!!lineItems.size} className={css.table}>
@@ -70,6 +72,7 @@ function DraftOrderTable({
                             removable={lineItems.size > 1}
                             onChange={onLineItemUpdate}
                             onDelete={onLineItemDelete}
+                            container={container}
                         />
                     )
                 })}

@@ -5,6 +5,7 @@ import React, {
     ChangeEvent,
     FormEvent,
     KeyboardEvent,
+    RefObject,
 } from 'react'
 import {Button, Form, Input, Popover, PopoverBody} from 'reactstrap'
 import {fromJS, Map, List} from 'immutable'
@@ -31,6 +32,7 @@ type Props = {
     value: Map<any, any> | null
     availableShippingRates: List<any>
     onChange: (arg0: Map<any, any> | null) => void
+    container?: RefObject<HTMLDivElement>
 }
 
 type State = {
@@ -251,6 +253,7 @@ export default class ShippingPopover extends Component<Props, State> {
             value,
             currencyCode,
             availableShippingRates,
+            container,
         } = this.props
         const {isOpen, handle, title, price} = this.state
 
@@ -274,11 +277,13 @@ export default class ShippingPopover extends Component<Props, State> {
                     </span>
                 )}
                 <Popover
+                    popperClassName={css.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
                     toggle={this._toggle}
                     trigger="legacy"
+                    container={container?.current ?? document.body}
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="py-3">

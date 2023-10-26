@@ -6,6 +6,7 @@ import React, {
     useReducer,
     useState,
 } from 'react'
+
 import {
     BigCommerceActionType,
     BigCommerceIntegration,
@@ -18,11 +19,11 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import Button from 'pages/common/components/button/Button'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import GeneralErrorPopupModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal'
 import {

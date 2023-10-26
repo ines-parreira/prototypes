@@ -15,7 +15,14 @@ jest.mock('pages/common/utils/labels', () => ({
 }))
 
 jest.mock(
-    'pages/common/components/DEPRECATED_Modal',
+    'pages/common/components/modal/ModalHeader',
+    () =>
+        ({title}: {title: ReactNode}) =>
+            <div data-testid="Modal-Header">{title}</div>
+)
+
+jest.mock(
+    'pages/common/components/modal/Modal',
     () =>
         ({
             isOpen,
@@ -56,7 +63,7 @@ const minProps = {
     shippingAddresses: fromJS([{}]),
     onChange: jest.fn(),
     isOpen: true,
-    header: 'Edit Address',
+    title: 'Edit Address',
     onOpen: jest.fn(),
     //eslint-disable-next-line @typescript-eslint/require-await
     onBulkChange: jest.fn(async (params, callBackFunc?: () => void) => {

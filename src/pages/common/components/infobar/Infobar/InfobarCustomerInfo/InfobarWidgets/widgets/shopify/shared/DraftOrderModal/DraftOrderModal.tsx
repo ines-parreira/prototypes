@@ -1,8 +1,7 @@
-import React, {useCallback, useContext, useMemo} from 'react'
+import React, {useCallback, useContext, useMemo, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, ModalFooter} from 'reactstrap'
+import {Button} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
-import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {useUpdateEffect, usePrevious} from 'react-use'
 
@@ -33,10 +32,12 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import Loader from 'pages/common/components/Loader/Loader'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Modal from 'pages/common/components/modal/Modal'
 
 import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import {InfobarModalProps} from '../../../types'
 import {ShopifyActionType} from '../../types'
 
@@ -62,7 +63,6 @@ export function DraftOrderModalContainer({
     defaultCurrency = 'USD',
     draftOrder = fromJS({}),
     data = {actionName: null, order: null},
-    header,
     integrations,
     isOpen,
     loading,
@@ -79,12 +79,14 @@ export function DraftOrderModalContainer({
     onBulkChange,
     onSubmit,
     onReset,
+    title,
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
     const {widget_resource_ids} = useContext(WidgetContext)
+    const modalRef = useRef<HTMLDivElement>(null)
 
     const currentIntegration = useMemo(
         () =>
@@ -228,14 +230,14 @@ export function DraftOrderModalContainer({
 
     if (!hasScope) {
         return (
-            <DEPRECATED_Modal
-                header={header}
+            <Modal
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
                     handleReset()
                 }}
             >
+                <ModalHeader title={title} />
                 <Alert type={AlertType.Error}>
                     Missing Shopify permissions. To use this new feature, please
                     go to the{' '}
@@ -246,19 +248,18 @@ export function DraftOrderModalContainer({
                     </Link>{' '}
                     and click on "Update App Permissions".
                 </Alert>
-            </DEPRECATED_Modal>
+            </Modal>
         )
     }
+
     return (
-        <DEPRECATED_Modal
-            header={header}
+        <Modal
+            ref={modalRef}
+            size="huge"
             isOpen={isOpen}
             onClose={handleCancel('header')}
-            keyboard={false}
-            size="xl"
-            bodyClassName="p-0"
-            backdrop="static"
         >
+            <ModalHeader title={title} />
             <div className={css.formHeader}>
                 <ProductSearchInput
                     className={css.searchInput}
@@ -284,6 +285,7 @@ export function DraftOrderModalContainer({
                     onSubmit={(lineItem) => {
                         void addCustomRow(integrationId!, lineItem)
                     }}
+                    container={modalRef}
                 />
             </div>
             {payload ? (
@@ -297,6 +299,7 @@ export function DraftOrderModalContainer({
                         products={products}
                         onLineItemUpdate={handleLineItemUpdate}
                         onLineItemDelete={handleLineItemDelete}
+                        container={modalRef}
                     />
                     <DraftOrderFooter
                         editable
@@ -309,6 +312,7 @@ export function DraftOrderModalContainer({
                                 widget_resource_ids.target_id ||
                                 customerId,
                         }}
+                        container={modalRef}
                     />
                     {draftOrder.get('status') === 'invoice_sent' ? (
                         <div className={css.emailInvoiceContainer}>
@@ -331,6 +335,7 @@ export function DraftOrderModalContainer({
                                 ])}
                                 disabled={loading || isEmpty}
                                 onSubmit={handleInvoiceSubmit}
+                                container={modalRef}
                             >
                                 Email new invoice
                             </EmailInvoicePopover>
@@ -350,6 +355,7 @@ export function DraftOrderModalContainer({
                                 ])}
                                 disabled={loading || isEmpty}
                                 onSubmit={handleInvoiceSubmit}
+                                container={modalRef}
                             >
                                 Create Draft Order
                             </EmailInvoicePopover>
@@ -359,44 +365,48 @@ export function DraftOrderModalContainer({
             ) : (
                 <Loader />
             )}
-            <ModalFooter className={css.formFooter}>
-                <Button
-                    tabIndex={0}
-                    className={css.focusable}
-                    onClick={handleCancel('footer')}
-                >
-                    Cancel
-                </Button>
-                {loading && (
-                    <div className="ml-3">
-                        <Loader
-                            className={css.spinner}
-                            minHeight="20px"
-                            size="20px"
-                        />
-                        <span className="ml-2">{loadingMessage}</span>
-                    </div>
-                )}
-                <Button
-                    color="primary"
-                    disabled={loading || isEmpty}
-                    tabIndex={0}
-                    className={classnames(css.focusable, 'ml-auto')}
-                    onClick={handlePaymentSubmit()}
-                >
-                    Create order as paid
-                </Button>
-                <Button
-                    color="primary"
-                    disabled={loading || isEmpty}
-                    tabIndex={0}
-                    className={css.focusable}
-                    onClick={handlePaymentSubmit(true)}
-                >
-                    Create order as pending
-                </Button>
+            <ModalFooter className={css.footer}>
+                <div className={css.buttonGroup}>
+                    <Button
+                        tabIndex={0}
+                        className={css.focusable}
+                        onClick={handleCancel('footer')}
+                    >
+                        Cancel
+                    </Button>
+                    {loading && (
+                        <div className={css.buttonGroup}>
+                            <Loader
+                                className={css.spinner}
+                                minHeight="20px"
+                                size="20px"
+                            />
+                            <span>{loadingMessage}</span>
+                        </div>
+                    )}
+                </div>
+                <div className={css.buttonGroup}>
+                    <Button
+                        color="primary"
+                        disabled={loading || isEmpty}
+                        tabIndex={0}
+                        className={css.focusable}
+                        onClick={handlePaymentSubmit()}
+                    >
+                        Create order as paid
+                    </Button>
+                    <Button
+                        color="primary"
+                        disabled={loading || isEmpty}
+                        tabIndex={0}
+                        className={css.focusable}
+                        onClick={handlePaymentSubmit(true)}
+                    >
+                        Create order as pending
+                    </Button>
+                </div>
             </ModalFooter>
-        </DEPRECATED_Modal>
+        </Modal>
     )
 }
 

@@ -7,6 +7,11 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Edit Address
+    </div>
     <form
       class=""
     >
@@ -2766,15 +2771,19 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
         </div>
       </div>
       <div
-        class="formFooter modal-footer"
+        class="wrapper footer"
       >
-        <button
-          class="focusable btn btn-secondary"
-          tabindex="0"
-          type="button"
+        <div
+          class="buttonGroup"
         >
-          Cancel
-        </button>
+          <button
+            class="focusable btn btn-secondary"
+            tabindex="0"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
         <button
           class="focusable ml-auto btn btn-primary"
           type="submit"
@@ -2792,6 +2801,11 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Edit Address
+    </div>
     <form
       class=""
     >
@@ -6219,15 +6233,19 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
         </div>
       </div>
       <div
-        class="formFooter modal-footer"
+        class="wrapper footer"
       >
-        <button
-          class="focusable btn btn-secondary"
-          tabindex="0"
-          type="button"
+        <div
+          class="buttonGroup"
         >
-          Cancel
-        </button>
+          <button
+            class="focusable btn btn-secondary"
+            tabindex="0"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
         <button
           class="focusable ml-auto btn btn-primary"
           type="submit"

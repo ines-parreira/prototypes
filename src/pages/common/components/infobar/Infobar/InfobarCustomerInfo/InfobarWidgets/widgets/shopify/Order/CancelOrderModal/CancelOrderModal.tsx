@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Form, ModalFooter} from 'reactstrap'
+import {Button, Form} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import {usePrevious, useUpdateEffect} from 'react-use'
 
@@ -27,8 +27,11 @@ import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {getFinalCancelOrderPayload} from 'business/shopify/order'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Loader from 'pages/common/components/Loader/Loader'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import Modal from 'pages/common/components/modal/Modal'
 import {aggregateMaximumRefundableByGateway} from 'business/shopify/refund'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+
 import {InfobarModalProps} from '../../../types'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
@@ -46,7 +49,6 @@ export const CancelOrderModalContainer = ({
         actionName: null,
         order: fromJS({}),
     },
-    header,
     integrations,
     isOpen,
     loading,
@@ -63,8 +65,10 @@ export const CancelOrderModalContainer = ({
     payload,
     refund,
     setPayload,
+    title,
 }: Props) => {
     const {integrationId} = useContext(IntegrationContext)
+
     const previousIsOpen = usePrevious(isOpen)
     const hasMultipleGateways =
         aggregateMaximumRefundableByGateway(refund).keySeq().count() > 1
@@ -152,17 +156,14 @@ export const CancelOrderModalContainer = ({
     )
 
     return integration ? (
-        <DEPRECATED_Modal
-            header={header}
+        <Modal
             isOpen={isOpen}
             onClose={() => {
                 handleCancel('header')
             }}
-            keyboard={false}
-            size="xl"
-            bodyClassName="p-0"
-            backdrop="static"
+            size="huge"
         >
+            <ModalHeader title={title} />
             <Form onSubmit={handleSubmit}>
                 {payload && lineItems && (
                     <RefundOrderForm
@@ -193,13 +194,13 @@ export const CancelOrderModalContainer = ({
                         Keep order
                     </Button>
                     {loading && (
-                        <div className="ml-3">
+                        <div className={css.loading}>
                             <Loader
                                 className={css.spinner}
                                 minHeight="20px"
                                 size="20px"
                             />
-                            <span className="ml-2">{loadingMessage}</span>
+                            <span>{loadingMessage}</span>
                         </div>
                     )}
                     <Button
@@ -213,7 +214,7 @@ export const CancelOrderModalContainer = ({
                     </Button>
                 </ModalFooter>
             </Form>
-        </DEPRECATED_Modal>
+        </Modal>
     ) : null
 }
 

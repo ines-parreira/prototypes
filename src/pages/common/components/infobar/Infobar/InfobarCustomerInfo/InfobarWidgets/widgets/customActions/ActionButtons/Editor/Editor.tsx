@@ -1,6 +1,4 @@
 import React, {useCallback, useContext, useMemo, useState} from 'react'
-import {Modal} from 'reactstrap'
-
 import {Map} from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -24,6 +22,7 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 
+import Modal from 'pages/common/components/modal/Modal'
 import Form from './Form'
 import EditableButton from './Button'
 
@@ -166,14 +165,7 @@ export function Editor({
                 <ButtonIconLabel icon="add" />
                 Add Button
             </Button>
-            <Modal
-                isOpen={isFormOpen}
-                toggle={handleCloseForm}
-                backdrop="static"
-                size="lg"
-                // it has to be above popover which is currently set to 1560
-                zIndex={1561}
-            >
+            <Modal isOpen={isFormOpen} onClose={handleCloseForm} size="large">
                 <Form {...formProps} />
             </Modal>
         </>

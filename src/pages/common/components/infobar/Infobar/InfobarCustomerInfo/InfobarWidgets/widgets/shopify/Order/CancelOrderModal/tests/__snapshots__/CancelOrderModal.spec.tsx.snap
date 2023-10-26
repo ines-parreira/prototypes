@@ -6,11 +6,16 @@ exports[`<CancelOrderContainer /> should render a spinner when missing data 1`] 
 <div
   data-testid="Modal"
 >
+  <div
+    data-testid="Modal-Header"
+  >
+    Cancel order
+  </div>
   <form
     class=""
   >
     <div
-      class="footer modal-footer"
+      class="wrapper footer"
     >
       <button
         class="focusable btn btn-secondary"
@@ -20,7 +25,7 @@ exports[`<CancelOrderContainer /> should render a spinner when missing data 1`] 
         Keep order
       </button>
       <div
-        class="ml-3"
+        class="loading"
       >
         <div
           class="container spinner"
@@ -35,9 +40,7 @@ exports[`<CancelOrderContainer /> should render a spinner when missing data 1`] 
             />
           </div>
         </div>
-        <span
-          class="ml-2"
-        />
+        <span />
       </div>
       <button
         class="focusable ml-auto btn btn-primary disabled"
@@ -56,6 +59,11 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
 <div
   data-testid="Modal"
 >
+  <div
+    data-testid="Modal-Header"
+  >
+    Cancel order
+  </div>
   <form
     class=""
   >
@@ -572,7 +580,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
       </div>
     </div>
     <div
-      class="footer modal-footer"
+      class="wrapper footer"
     >
       <button
         class="focusable btn btn-secondary"
@@ -597,6 +605,11 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
 <div
   data-testid="Modal"
 >
+  <div
+    data-testid="Modal-Header"
+  >
+    Cancel order
+  </div>
   <form
     class=""
   >
@@ -874,7 +887,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
       </div>
     </div>
     <div
-      class="footer modal-footer"
+      class="wrapper footer"
     >
       <button
         class="focusable btn btn-secondary"

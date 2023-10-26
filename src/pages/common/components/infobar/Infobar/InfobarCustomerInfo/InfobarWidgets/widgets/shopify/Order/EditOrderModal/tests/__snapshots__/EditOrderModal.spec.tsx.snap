@@ -8,6 +8,11 @@ exports[`<EditOrderModal/> should render a spinner when missing data 1`] = `
     data-testid="Modal"
   >
     <div
+      data-testid="Modal-Header"
+    >
+      Edit order
+    </div>
+    <div
       class="formHeader"
     >
       <div
@@ -43,15 +48,19 @@ exports[`<EditOrderModal/> should render a spinner when missing data 1`] = `
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
       <button
         class="focusable ml-auto btn btn-primary disabled"
         disabled=""
@@ -70,6 +79,11 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Edit order
+    </div>
     <div
       class="formHeader"
     >
@@ -529,15 +543,19 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
       <button
         class="focusable ml-auto btn btn-primary disabled"
         disabled=""
@@ -556,6 +574,11 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Edit order
+    </div>
     <div
       class="formHeader"
     >
@@ -1015,15 +1038,19 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
       <button
         class="focusable ml-auto btn btn-primary disabled"
         disabled=""
@@ -1042,6 +1069,11 @@ exports[`<EditOrderModal/> should render with an empty order table when data is 
   <div
     data-testid="Modal"
   >
+    <div
+      data-testid="Modal-Header"
+    >
+      Edit order
+    </div>
     <div
       class="formHeader"
     >
@@ -1229,15 +1261,19 @@ exports[`<EditOrderModal/> should render with an empty order table when data is 
       </div>
     </div>
     <div
-      class="formFooter modal-footer"
+      class="wrapper footer"
     >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
+      <div
+        class="buttonGroup"
       >
-        Cancel
-      </button>
+        <button
+          class="focusable btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
       <button
         class="focusable ml-auto btn btn-primary disabled"
         disabled=""

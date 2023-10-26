@@ -12,7 +12,6 @@ import {useUpdateEffect, usePrevious} from 'react-use'
 import {
     Button,
     Form,
-    ModalFooter,
     ButtonDropdown,
     DropdownToggle,
     DropdownItem,
@@ -40,7 +39,9 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import Loader from 'pages/common/components/Loader/Loader'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import {InfobarModalProps} from '../../../types'
 import {ShopifyActionType} from '../../types'
 
@@ -70,7 +71,6 @@ const defaultCurrentAddressState = fromJS({
 
 export function EditOrderShippingAddressModal({
     isOpen,
-    header,
     data = {
         actionName: null,
         customer_id: '',
@@ -88,6 +88,7 @@ export function EditOrderShippingAddressModal({
     onSubmit,
     onReset,
     onBulkChange,
+    title,
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
@@ -267,15 +268,8 @@ export function EditOrderShippingAddressModal({
     ])
 
     return (
-        <DEPRECATED_Modal
-            header={header}
-            isOpen={isOpen}
-            onClose={handleCancel()}
-            keyboard={false}
-            size="xl"
-            bodyClassName="p-0"
-            backdrop="static"
-        >
+        <Modal size="huge" isOpen={isOpen} onClose={handleCancel()}>
+            <ModalHeader title={title} />
             <Form onSubmit={_handleSubmit}>
                 <div className={css.formBody}>
                     <div className="row">
@@ -536,24 +530,26 @@ export function EditOrderShippingAddressModal({
                         </div>
                     </div>
                 </div>
-                <ModalFooter className={css.formFooter}>
-                    <Button
-                        tabIndex={0}
-                        className={css.focusable}
-                        onClick={handleCancel()}
-                    >
-                        Cancel
-                    </Button>
-                    {loading && (
-                        <div className="ml-3">
-                            <Loader
-                                className={css.spinner}
-                                minHeight="20px"
-                                size="20px"
-                            />
-                            <span className="ml-2">{loadingMessage}</span>
-                        </div>
-                    )}
+                <ModalFooter className={css.footer}>
+                    <div className={css.buttonGroup}>
+                        <Button
+                            tabIndex={0}
+                            className={css.focusable}
+                            onClick={handleCancel()}
+                        >
+                            Cancel
+                        </Button>
+                        {loading && (
+                            <div className={css.buttonGroup}>
+                                <Loader
+                                    className={css.spinner}
+                                    minHeight="20px"
+                                    size="20px"
+                                />
+                                <span>{loadingMessage}</span>
+                            </div>
+                        )}
+                    </div>
                     <Button
                         type="submit"
                         color="primary"
@@ -564,7 +560,7 @@ export function EditOrderShippingAddressModal({
                     </Button>
                 </ModalFooter>
             </Form>
-        </DEPRECATED_Modal>
+        </Modal>
     )
 }
 

@@ -279,7 +279,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         const {isUiOpen} = this.state
         return (
             <Modal
-                header={title}
+                title={title}
                 isOpen={isUiOpen}
                 onChange={this.updateActionParameter}
                 onBulkChange={this.updateActionParameters}

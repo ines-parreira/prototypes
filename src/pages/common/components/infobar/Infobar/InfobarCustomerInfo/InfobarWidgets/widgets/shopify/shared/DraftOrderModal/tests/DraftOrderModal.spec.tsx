@@ -31,7 +31,14 @@ jest.mock('pages/common/utils/labels', () => ({
 }))
 
 jest.mock(
-    'pages/common/components/DEPRECATED_Modal',
+    'pages/common/components/modal/ModalHeader',
+    () =>
+        ({title}: {title: ReactNode}) =>
+            <div data-testid="Modal-Header">{title}</div>
+)
+
+jest.mock(
+    'pages/common/components/modal/Modal',
     () =>
         ({
             isOpen,
@@ -59,7 +66,7 @@ const mockShopifyCustomLineItemFixture = shopifyCustomLineItemFixture
 const mockShopifyInvoicePayloadFixture = shopifyInvoicePayloadFixture
 
 jest.mock(
-    '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput',
+    'pages/common/forms/ProductSearchInput/ProductSearchInput',
     () =>
         ({onVariantClicked}: ComponentProps<typeof ProductSearchInput>) => {
             const item = mockIntegrationDataItemProductFixture()
@@ -184,7 +191,7 @@ const payload = getDuplicateOrderPayload(draftOrder)
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}
 const minProps = {
     isOpen: true,
-    header: 'Duplicate order',
+    title: 'Duplicate order',
     onOpen: jest.fn(),
     onChange: jest.fn(),
     onLineItemChange: jest.fn(),
@@ -505,7 +512,7 @@ describe('<DraftOrderModal/>', () => {
         await waitFor(() => expect(minProps.onReset).toHaveBeenCalled())
     })
 
-    it('should cancel when closing the modal"', () => {
+    it('should cancel when closing the modal', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const {getByTestId} = render(

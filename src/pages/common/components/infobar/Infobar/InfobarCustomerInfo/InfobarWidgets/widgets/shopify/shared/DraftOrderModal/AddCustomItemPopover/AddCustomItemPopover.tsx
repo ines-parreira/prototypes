@@ -4,6 +4,7 @@ import React, {
     ComponentProps,
     PureComponent,
     KeyboardEvent,
+    RefObject,
 } from 'react'
 import {ulid} from 'ulidx'
 import {
@@ -35,6 +36,7 @@ type Props = {
     className: string | null
     currencyCode: string
     onSubmit: (record: Map<any, any>) => void
+    container?: RefObject<HTMLDivElement>
 }
 
 type State = {
@@ -178,7 +180,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
     }
 
     render() {
-        const {id, placement, className, currencyCode} = this.props
+        const {id, placement, className, currencyCode, container} = this.props
         const {isOpen, title, price, quantity, taxable, requiresShipping} =
             this.state
 
@@ -195,11 +197,13 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                     Add custom item
                 </Button>
                 <Popover
+                    popperClassName={css.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
                     toggle={this._toggle}
                     trigger="legacy"
+                    container={container?.current ?? document.body}
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">

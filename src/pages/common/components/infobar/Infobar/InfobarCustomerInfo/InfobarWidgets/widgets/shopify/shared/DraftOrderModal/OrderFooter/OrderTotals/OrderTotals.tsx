@@ -1,4 +1,4 @@
-import React, {Component, ContextType} from 'react'
+import React, {Component, ContextType, RefObject} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
@@ -26,6 +26,7 @@ type Props = {
     payload: Map<any, any>
     calculatedDraftOrder: Map<any, any>
     onPayloadChange: (integrationId: number, record: Map<any, any>) => void
+    container?: RefObject<HTMLDivElement>
 }
 
 export class OrderTotalsComponent extends Component<Props> {
@@ -60,6 +61,7 @@ export class OrderTotalsComponent extends Component<Props> {
             calculatedDraftOrder,
             currencyCode,
             actionName,
+            container,
         } = this.props
         const taxLines = calculatedDraftOrder.get('taxLines', []) as List<any>
 
@@ -75,6 +77,7 @@ export class OrderTotalsComponent extends Component<Props> {
                         value={payload.get('applied_discount')}
                         max={getDraftOrderTotalLineItemsPrice(payload)}
                         onChange={this._onAppliedDiscountChange}
+                        container={container}
                     >
                         Add discount
                     </DiscountPopover>
@@ -119,6 +122,7 @@ export class OrderTotalsComponent extends Component<Props> {
                             []
                         )}
                         onChange={this._onShippingLineChange}
+                        container={container}
                     >
                         {!!payload.get('shipping_line')
                             ? 'Shipping'
@@ -145,6 +149,7 @@ export class OrderTotalsComponent extends Component<Props> {
                             actionName={actionName}
                             value={payload.get('tax_exempt')}
                             onChange={this._onTaxExemptChange}
+                            container={container}
                         >
                             Taxes
                         </TaxesPopover>

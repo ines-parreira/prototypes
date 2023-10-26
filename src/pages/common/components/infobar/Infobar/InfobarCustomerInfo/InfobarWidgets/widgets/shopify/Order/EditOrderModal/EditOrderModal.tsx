@@ -1,6 +1,6 @@
-import React, {useCallback, useContext, useMemo} from 'react'
+import React, {useCallback, useContext, useMemo, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, ModalFooter} from 'reactstrap'
+import {Button} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
@@ -25,13 +25,16 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
-import {InfobarModalProps} from '../../../types'
-import {ShopifyActionType} from '../../types'
-import AddCustomItemPopover from '../../shared/DraftOrderModal/AddCustomItemPopover/AddCustomItemPopover'
+import Modal from 'pages/common/components/modal/Modal'
+import AddCustomItemPopover from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/AddCustomItemPopover/AddCustomItemPopover'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import DraftOrderTable from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/DraftOrderTable/DraftOrderTable'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+
 import EditOrderForm from '../EditOrderForm/EditOrderForm'
-import DraftOrderTable from '../../shared/DraftOrderModal//DraftOrderTable/DraftOrderTable'
 
 import css from './EditOrderModal.less'
 
@@ -51,7 +54,6 @@ export function EditOrderModalContainer({
     onLineItemChange,
     defaultCurrency = 'USD',
     data = {actionName: null, order: null},
-    header,
     integrations,
     isOpen,
     loading,
@@ -68,10 +70,13 @@ export function EditOrderModalContainer({
     onBulkChange,
     onSubmit,
     onReset,
+    title,
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
     const {integrationId} = useContext(IntegrationContext)
+    const modalRef = useRef<HTMLDivElement>(null)
+
     const currentIntegration = useMemo(
         () =>
             integrations.find(
@@ -182,14 +187,16 @@ export function EditOrderModalContainer({
     ])
     if (!hasScope) {
         return (
-            <DEPRECATED_Modal
-                header={header}
+            <Modal
+                ref={modalRef}
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
                     handleReset()
                 }}
+                size="huge"
             >
+                <ModalHeader title={title} />
                 <Alert type={AlertType.Error}>
                     Missing Shopify permissions. To use this new feature, please
                     go to the{' '}
@@ -200,19 +207,12 @@ export function EditOrderModalContainer({
                     </Link>
                     and click on "Update App Permissions".
                 </Alert>
-            </DEPRECATED_Modal>
+            </Modal>
         )
     }
     return (
-        <DEPRECATED_Modal
-            header={header}
-            isOpen={isOpen}
-            onClose={handleCancel('header')}
-            keyboard={false}
-            size="xl"
-            bodyClassName="p-0"
-            backdrop="static"
-        >
+        <Modal isOpen={isOpen} onClose={handleCancel('header')} size="huge">
+            <ModalHeader title={title} />
             <div className={css.formHeader}>
                 <ProductSearchInput
                     className={css.searchInput}
@@ -271,24 +271,26 @@ export function EditOrderModalContainer({
             ) : (
                 <Loader />
             )}
-            <ModalFooter className={css.formFooter}>
-                <Button
-                    tabIndex={0}
-                    className={css.focusable}
-                    onClick={handleCancel('footer')}
-                >
-                    Cancel
-                </Button>
-                {loading && (
-                    <div className="ml-3">
-                        <Loader
-                            className={css.spinner}
-                            minHeight="20px"
-                            size="20px"
-                        />
-                        <span className="ml-2">{loadingMessage}</span>
-                    </div>
-                )}
+            <ModalFooter className={css.footer}>
+                <div className={css.buttonGroup}>
+                    <Button
+                        tabIndex={0}
+                        className={css.focusable}
+                        onClick={handleCancel('footer')}
+                    >
+                        Cancel
+                    </Button>
+                    {loading && (
+                        <div className={css.buttonGroup}>
+                            <Loader
+                                className={css.spinner}
+                                minHeight="20px"
+                                size="20px"
+                            />
+                            <span>{loadingMessage}</span>
+                        </div>
+                    )}
+                </div>
                 <Button
                     color="primary"
                     disabled={
@@ -304,7 +306,7 @@ export function EditOrderModalContainer({
                     Edit order
                 </Button>
             </ModalFooter>
-        </DEPRECATED_Modal>
+        </Modal>
     )
 }
 

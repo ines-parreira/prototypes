@@ -26,7 +26,14 @@ jest.mock('pages/common/utils/labels', () => ({
 }))
 
 jest.mock(
-    'pages/common/components/DEPRECATED_Modal',
+    'pages/common/components/modal/ModalHeader',
+    () =>
+        ({title}: {title: ReactNode}) =>
+            <div data-testid="Modal-Header">{title}</div>
+)
+
+jest.mock(
+    'pages/common/components/modal/Modal',
     () =>
         ({
             isOpen,
@@ -61,7 +68,6 @@ describe('<CancelOrderContainer />', () => {
             actionName: ShopifyActionType.CancelOrder,
             order,
         },
-        header: 'Cancel order',
         integrations: (
             integrationsStateWithShopify.get('integrations') as List<any>
         ).toJS(),
@@ -71,6 +77,7 @@ describe('<CancelOrderContainer />', () => {
         loadingMessage: '',
         payload: null,
         refund: fromJS({}),
+        title: 'Cancel order',
         onBulkChange: jest.fn(),
         onCancel: jest.fn(),
         onChange: jest
@@ -252,7 +259,7 @@ describe('<CancelOrderContainer />', () => {
     it('should call onSubmit() when submitting the form', () => {
         const payload = fromJS(shopifyCancelOrderPayloadFixture())
 
-        const {getByText} = render(
+        const {getAllByText} = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -263,7 +270,7 @@ describe('<CancelOrderContainer />', () => {
             </IntegrationContext.Provider>
         )
 
-        fireEvent.click(getByText('Cancel order'))
+        fireEvent.click(getAllByText('Cancel order')[1])
 
         const finalPayload = getFinalCancelOrderPayload(payload, refund).toJS()
 
@@ -333,7 +340,7 @@ describe('<CancelOrderContainer />', () => {
             ],
         })
 
-        const {getByText} = render(
+        const {getAllByText} = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -343,7 +350,7 @@ describe('<CancelOrderContainer />', () => {
                 />
             </IntegrationContext.Provider>
         )
-        const button = getByText('Cancel order')
+        const button = getAllByText('Cancel order')[1]
         expect(button).toBeDisabled()
     })
 })

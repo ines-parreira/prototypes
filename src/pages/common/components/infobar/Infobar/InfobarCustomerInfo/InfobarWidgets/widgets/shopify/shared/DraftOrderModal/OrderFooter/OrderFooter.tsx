@@ -1,4 +1,4 @@
-import React, {Component, ChangeEvent, ContextType} from 'react'
+import React, {Component, ChangeEvent, ContextType, RefObject} from 'react'
 import {Col, Container, Row} from 'reactstrap'
 import {Map} from 'immutable'
 import {connect} from 'react-redux'
@@ -33,6 +33,7 @@ type Props = {
     ) => void
     currentAccount: Map<any, any>
     widgetData?: Record<string, any>
+    container?: RefObject<HTMLDivElement>
 }
 
 type State = {
@@ -133,6 +134,7 @@ export class OrderFooterComponent extends Component<Props, State> {
             actionName,
             widgetData,
             currentAccount,
+            container,
         } = this.props
         const {note, options} = this.state
         const tags = payload.get('tags') || ''
@@ -213,6 +215,7 @@ export class OrderFooterComponent extends Component<Props, State> {
                             editable={editable}
                             actionName={actionName}
                             currencyCode={currencyCode}
+                            container={container}
                         />
                     </Col>
                 </Row>
