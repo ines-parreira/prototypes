@@ -1,7 +1,6 @@
 import React, {PropsWithChildren, useCallback, useEffect} from 'react'
 import {
     ReactFlow,
-    Background,
     MiniMap,
     Controls,
     ReactFlowProvider,
@@ -27,6 +26,7 @@ import FileUploadNode from './nodes/FileUploadNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
 
 import css from './WorkflowVisualBuilder.less'
+import {VisualBuilderBackground} from './components/VisualBuilderBackground'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
@@ -135,6 +135,7 @@ export function WorkflowVisualBuilderWrapped() {
                                     zoomable
                                     pannable
                                     position="top-left"
+                                    className={css.minimap}
                                 />
                             )}
                             <Controls
@@ -142,7 +143,7 @@ export function WorkflowVisualBuilderWrapped() {
                                 position="top-left"
                                 style={!isDegradedMode ? {left: 200 + 15} : {}}
                             />
-                            <Background />
+                            <VisualBuilderBackground />
                         </ReactFlow>
                     </div>
                     <NodeEditorDrawer

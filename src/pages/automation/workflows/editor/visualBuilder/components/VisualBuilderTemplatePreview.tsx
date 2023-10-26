@@ -1,5 +1,5 @@
 import React, {PropsWithChildren} from 'react'
-import {Background, ReactFlow, ReactFlowProvider, Controls} from 'reactflow'
+import {ReactFlow, ReactFlowProvider, Controls} from 'reactflow'
 
 import {VisualBuilderGraph} from 'pages/automation/workflows/models/visualBuilderGraph.types'
 import {
@@ -22,6 +22,7 @@ import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
 } from '../../../../common/hooks/useSelfServiceStoreIntegration'
+import {VisualBuilderBackground} from './VisualBuilderBackground'
 
 type VisualBuilderTemplatePreviewProps = {
     visualBuilderGraph: VisualBuilderGraph
@@ -69,7 +70,7 @@ function VisualBuilderTemplatePreview({
             panOnScroll={true}
         >
             <Controls showInteractive={false} position="top-left" />
-            <Background />
+            <VisualBuilderBackground />
         </ReactFlow>
     )
 }
