@@ -1,5 +1,27 @@
+@import (reference) '~css/typography.less';
+
 :local {
     .arrowIcon {
         font-size: 18px;
+    }
+
+    .rulesHeader {
+        gap: 12px;
+        .caption-allcaps();
+        letter-spacing: 0.05em;
+    }
+
+    .rulesHeaderLink {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .rulesHeaderLink span {
+        .component-button-small();
+    }
+
+    .rulesHeaderLink i {
+        font-size: 16px;
     }
 }

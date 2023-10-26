@@ -157,15 +157,6 @@ export function RulesList() {
                             <i className="material-icons">menu_book</i>{' '}
                             <span>How To Set Up Rules</span>
                         </a>
-                        <a
-                            className={css.link}
-                            href="https://docs.gorgias.com/en-US/rules-faq-82011"
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
-                            <i className="material-icons">menu_book</i>{' '}
-                            <span>Learn How To Prioritize Rules</span>
-                        </a>
                     </div>
                     <div className="d-flex">
                         <Video

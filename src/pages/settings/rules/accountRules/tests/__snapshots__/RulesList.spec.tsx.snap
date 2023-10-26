@@ -21,7 +21,32 @@ exports[`<RulesList/> should render the rule views 1`] = `
         <td
           colspan="2"
         >
-          rules trigger in the order below
+          <div
+            class="d-flex align-items-center rulesHeader"
+          >
+            <span>
+               
+              rules trigger in the order below
+            </span>
+            <span>
+              <a
+                class="rulesHeaderLink"
+                href="https://docs.gorgias.com/en-US/rules-faq-82011"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons"
+                >
+                  menu_book
+                </i>
+                 
+                <span>
+                  Learn How To Prioritize Rules
+                </span>
+              </a>
+            </span>
+          </div>
         </td>
         <td
           class="text-nowrap"

@@ -148,7 +148,33 @@ export function RulesList({
                                 </i>
                             </td>
                             <td colSpan={2}>
-                                rules trigger in the order below
+                                <div
+                                    className={classnames(
+                                        'd-flex',
+                                        'align-items-center',
+                                        css.rulesHeader
+                                    )}
+                                >
+                                    <span>
+                                        {' '}
+                                        rules trigger in the order below
+                                    </span>
+                                    <span>
+                                        <a
+                                            className={css.rulesHeaderLink}
+                                            href="https://docs.gorgias.com/en-US/rules-faq-82011"
+                                            rel="noopener noreferrer"
+                                            target="_blank"
+                                        >
+                                            <i className="material-icons">
+                                                menu_book
+                                            </i>{' '}
+                                            <span>
+                                                Learn How To Prioritize Rules
+                                            </span>
+                                        </a>
+                                    </span>
+                                </div>
                             </td>
                             <td className="text-nowrap">last updated</td>
                             <td></td>

@@ -90,22 +90,6 @@ exports[`<RulesList/> should render the rules list 1`] = `
             How To Set Up Rules
           </span>
         </a>
-        <a
-          class="link"
-          href="https://docs.gorgias.com/en-US/rules-faq-82011"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <i
-            class="material-icons"
-          >
-            menu_book
-          </i>
-           
-          <span>
-            Learn How To Prioritize Rules
-          </span>
-        </a>
       </div>
       <div
         class="d-flex"
