@@ -14,7 +14,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 import {createErrorNotification} from 'state/utils'
-import {LDUser, getLDClient} from 'utils/launchDarkly'
+import {LDContext, getLDClient} from 'utils/launchDarkly'
 
 export const LIMIT = 5
 
@@ -52,7 +52,7 @@ export function searchTickets(
         try {
             await launchDarklyClient.waitForInitialization()
         } catch (error) {
-            if (!isEmpty(LDUser)) {
+            if (!isEmpty(LDContext)) {
                 throw error
             }
         }

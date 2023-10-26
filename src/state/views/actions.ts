@@ -31,7 +31,7 @@ import {fetchViewsPaginated} from 'models/view/resources'
 import {SearchEngine, SearchType} from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
-import {getLDClient, LDUser} from 'utils/launchDarkly'
+import {getLDClient, LDContext} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {searchTickets} from 'models/ticket/resources'
 import {searchCustomers} from 'models/customer/resources'
@@ -407,7 +407,7 @@ export function fetchViewItems(
         try {
             await launchDarklyClient.waitForInitialization()
         } catch (error) {
-            if (!isEmpty(LDUser)) {
+            if (!isEmpty(LDContext)) {
                 throw error
             }
         }

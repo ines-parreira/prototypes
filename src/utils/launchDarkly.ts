@@ -4,7 +4,7 @@ import {User} from 'config/types/user'
 import {Account} from 'state/currentAccount/types'
 
 let client: LDClient.LDClient
-export let LDUser: LDClient.LDUser = {}
+export let LDContext: LDClient.LDContext = {}
 
 export function getLDClient(): LDClient.LDClient {
     return client
@@ -25,23 +25,22 @@ export function initLaunchDarkly(
             ? {automationPriceId: currentAutomationProductId}
             : ({} as Record<string, never>)
 
-        LDUser = {
+        LDContext = {
+            kind: 'user',
             key: account.id.toString(),
-            custom: {
-                ...helpdeskMap,
-                ...automationMap,
-                userId: user.id.toString(),
-                domain: account.domain,
-                cluster: window.GORGIAS_CLUSTER,
-                userImpersonated: window.USER_IMPERSONATED || false,
-            },
+            ...helpdeskMap,
+            ...automationMap,
+            userId: user.id.toString(),
+            domain: account.domain,
+            cluster: window.GORGIAS_CLUSTER,
+            userImpersonated: window.USER_IMPERSONATED || false,
         }
     }
 
     try {
         client = LDClient.initialize(
             window.GORGIAS_LAUNCHDARKLY_CLIENT_ID,
-            LDUser
+            LDContext
         )
     } catch (err) {
         console.error(err)
