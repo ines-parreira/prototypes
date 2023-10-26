@@ -12,12 +12,14 @@ import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 
 type OwnProps = {
     isEditingWidgets?: boolean
+    isOnNewLayout?: boolean
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export const TicketInfobarContainer = ({
     isEditingWidgets,
+    isOnNewLayout,
     sources,
     widgets,
 }: Props) => {
@@ -42,6 +44,7 @@ export const TicketInfobarContainer = ({
             customer={customer}
             widgets={widgets}
             context={WidgetContextType.Ticket}
+            isOnNewLayout={isOnNewLayout}
         />
     )
 }

@@ -3,6 +3,7 @@ import {RouteComponentProps} from 'react-router-dom'
 
 import TicketDetail from 'pages/tickets/detail/TicketDetailContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
+import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import {Config, Panel, Panels} from 'panels'
 import {TicketListView} from 'ticket-list-view'
 
@@ -34,7 +35,7 @@ export default function TicketLayout({
                 <TicketDetail />
             </Panel>
             <Panel>
-                <p>infobar</p>
+                <TicketInfobarContainer isOnNewLayout />
             </Panel>
         </Panels>
     )

@@ -13,6 +13,7 @@ import css from './Infobar.less'
 type Props = {
     children?: ReactNode
     className?: string
+    isOnNewLayout?: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -44,17 +45,21 @@ export class InfobarLayout extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        window.addEventListener('mousedown', this.dragStart)
-        window.addEventListener('mouseup', this.dragStop)
-        window.addEventListener('contextmenu', this.dragStop)
-        window.addEventListener('mousemove', this.drag)
+        if (!this.props.isOnNewLayout) {
+            window.addEventListener('mousedown', this.dragStart)
+            window.addEventListener('mouseup', this.dragStop)
+            window.addEventListener('contextmenu', this.dragStop)
+            window.addEventListener('mousemove', this.drag)
+        }
     }
 
     componentWillUnmount() {
-        window.removeEventListener('mousedown', this.dragStart)
-        window.removeEventListener('mouseup', this.dragStop)
-        window.removeEventListener('contextmenu', this.dragStop)
-        window.removeEventListener('mousemove', this.drag)
+        if (!this.props.isOnNewLayout) {
+            window.removeEventListener('mousedown', this.dragStart)
+            window.removeEventListener('mouseup', this.dragStop)
+            window.removeEventListener('contextmenu', this.dragStop)
+            window.removeEventListener('mousemove', this.drag)
+        }
     }
 
     dragStart = (e: MouseEvent) => {
@@ -117,9 +122,11 @@ export class InfobarLayout extends React.Component<Props, State> {
                     this.props.className
                 )}
                 ref={(ref) => (this.containerRef = ref)}
-                style={style}
+                {...(this.props.isOnNewLayout ? {} : {style})}
             >
-                <div className={this.classHandle} />
+                {!this.props.isOnNewLayout && (
+                    <div className={this.classHandle} />
+                )}
                 <ErrorBoundary>{this.props.children}</ErrorBoundary>
             </div>
         )

@@ -49,6 +49,7 @@ type Props = {
     isRouteEditingWidgets: boolean
     sources: Map<any, any>
     widgets: Map<any, any>
+    isOnNewLayout?: boolean
 }
 
 const MERGE_ERROR_MESSAGE = `You can only edit customers and orders of the customer associated with this ticket.
@@ -61,6 +62,7 @@ export const Infobar = ({
     isRouteEditingWidgets,
     sources,
     widgets,
+    isOnNewLayout,
 }: Props) => {
     const location = useLocation()
     const dispatch = useAppDispatch()
@@ -308,17 +310,13 @@ export const Infobar = ({
 
     return (
         <InfobarLayout
+            isOnNewLayout={isOnNewLayout}
             className={classnames({
                 [css.editing]: isEditing,
             })}
         >
             <div className={css.infobarContent}>
-                <div
-                    className={classnames(
-                        css.infobarSearchWrapper,
-                        'd-flex align-items-center justify-content-between'
-                    )}
-                >
+                <div className={css.infobarSearchWrapper}>
                     <Search
                         tabIndex={10}
                         placeholder="Search for customers by email, order number, etc."
@@ -453,11 +451,7 @@ export const Infobar = ({
                                                 css.infobarSectionSeparator
                                             }
                                         />
-                                        <div
-                                            className={classnames(
-                                                css.suggestedCustomer
-                                            )}
-                                        >
+                                        <div className={css.suggestedCustomer}>
                                             <h4>Merge customer profiles?</h4>
                                             <p>
                                                 Another customer profile looks
