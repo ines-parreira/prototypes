@@ -1,6 +1,7 @@
 import React from 'react'
 import {RouteComponentProps} from 'react-router-dom'
 
+import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import {Config, Panel, Panels} from 'panels'
 import {TicketListView} from 'ticket-list-view'
 import EmptyTicket from 'ticket-page/components/EmptyTicket'
@@ -15,7 +16,7 @@ export default function ViewLayout({
     },
 }: RouteComponentProps<Params>) {
     const panelsConfig: Config = [
-        [200, 200, 350],
+        [238, 200, 350],
         [300, 300, 450],
         [Infinity, 100, Infinity],
     ]
@@ -23,7 +24,7 @@ export default function ViewLayout({
     return (
         <Panels config={panelsConfig}>
             <Panel>
-                <p>navbar</p>
+                <TicketNavbar disableResize />
             </Panel>
             <Panel>
                 <TicketListView viewId={viewId} />

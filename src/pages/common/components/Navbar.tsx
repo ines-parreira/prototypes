@@ -130,6 +130,7 @@ const mainMenu: MenuItem[] = [
 type OwnProps = {
     activeContent: Maybe<string>
     children: ReactNode
+    disableResize?: boolean
     navbarContentRef?: RefObject<HTMLDivElement>
 }
 
@@ -322,6 +323,7 @@ export class Navbar extends Component<Props, State> {
             available,
             currentHelpdeskProduct,
             currentUser,
+            disableResize,
             isTrialing,
             isPreferencesLoading,
             navbarContentRef,
@@ -336,7 +338,9 @@ export class Navbar extends Component<Props, State> {
                 className={classnames(css.sidebar, {
                     [css.isResizing]: isResizing,
                 })}
-                style={{width: `${this.state.navbarWidth}px`}}
+                style={
+                    disableResize ? {} : {width: `${this.state.navbarWidth}px`}
+                }
             >
                 <div
                     className={classnames(css['nav-primary'], {
@@ -907,14 +911,16 @@ export class Navbar extends Component<Props, State> {
                         </Screens>
                     </Dropdown>
                 </div>
-                <div
-                    className={classnames(css['sidebar-resizer'], {
-                        [css.isTouched]: this.state.isResizing,
-                    })}
-                    style={{left: `${this.state.navbarWidth}px`}}
-                    onMouseDown={this.startResizing}
-                    onTouchMove={this.startResizing}
-                />
+                {!disableResize && (
+                    <div
+                        className={classnames(css['sidebar-resizer'], {
+                            [css.isTouched]: this.state.isResizing,
+                        })}
+                        style={{left: `${this.state.navbarWidth}px`}}
+                        onMouseDown={this.startResizing}
+                        onTouchMove={this.startResizing}
+                    />
+                )}
             </div>
         )
     }
