@@ -30,8 +30,13 @@ const mockStore = configureMockStore([thunk])
 const integration = fromJS({
     id: 1,
     name: 'Test Integration',
-    meta: {shop_integration_id: 1, language: 'en-US'},
+    meta: {
+        shop_integration_id: 1,
+        language: 'en-US',
+        meta: {oauth: {scope: ['read_script_tags', 'write_script_tags']}},
+    },
     decoration: {},
+    type: IntegrationType.Shopify,
 })
 
 const minProps: React.ComponentProps<

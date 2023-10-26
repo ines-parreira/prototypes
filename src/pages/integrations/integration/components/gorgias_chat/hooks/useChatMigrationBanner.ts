@@ -10,6 +10,7 @@ import {
     latestSnippetVersion,
 } from 'models/integration/types'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import {getHasShopifyScriptTagScopes} from 'config/integrations/gorgias_chat'
 
 const useChatMigrationBanner = (
     integration: Map<any, any>
@@ -78,20 +79,11 @@ const useChatMigrationBanner = (
         oneClickUninstallationDate,
     ])
 
-    const hasShopifyScriptTagScope = useMemo(
-        () =>
-            ['read_script_tags', 'write_script_tags'].every((scope) => {
-                if (
-                    !storeIntegration ||
-                    storeIntegration?.type !== IntegrationType.Shopify
-                ) {
-                    return []
-                }
-
-                return storeIntegration?.meta.oauth.scope?.includes(scope)
-            }),
-        [storeIntegration]
-    )
+    const hasShopifyScriptTagScope =
+        storeIntegration &&
+        getHasShopifyScriptTagScopes({
+            storeIntegration,
+        })
 
     const {
         showSnippetV3Banner,

@@ -3,6 +3,7 @@ import {List, Map, fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getHasShopifyScriptTagScopes} from 'config/integrations/gorgias_chat'
 
 import {IntegrationType} from 'models/integration/constants'
 
@@ -17,22 +18,6 @@ import {
     DEPRECATED_getIntegrationsByTypes,
     getStoreIntegrations,
 } from 'state/integrations/selectors'
-
-const getHasShopifyScriptTagScopes = ({
-    storeIntegration,
-}: {
-    storeIntegration: ShopifyIntegration
-}) =>
-    ['read_script_tags', 'write_script_tags'].every((scope) => {
-        if (
-            !storeIntegration ||
-            storeIntegration.type !== IntegrationType.Shopify
-        ) {
-            return false
-        }
-
-        return storeIntegration.meta.oauth.scope?.includes(scope)
-    })
 
 const getRequiresScriptTagMigration = ({
     storeIntegration,

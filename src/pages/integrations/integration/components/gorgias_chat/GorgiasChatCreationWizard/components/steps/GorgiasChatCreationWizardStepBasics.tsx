@@ -23,6 +23,7 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
     mapLanguagePickerToIntegrationLanguages,
     getGorgiasChatLanguageOptions,
+    getHasShopifyScriptTagScopes,
 } from 'config/integrations/gorgias_chat'
 
 import {
@@ -42,7 +43,10 @@ import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/u
 
 import history from 'pages/history'
 
-import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
+import {
+    DEPRECATED_getIntegrationsByTypes,
+    makeGetRedirectUri,
+} from 'state/integrations/selectors'
 
 import Label from 'pages/common/forms/Label/Label'
 import Button from 'pages/common/components/button/Button'
@@ -59,6 +63,10 @@ import {
 } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Tooltip from 'pages/common/components/Tooltip'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
@@ -100,6 +108,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const [currentName, setCurrentName] = useState<string>()
     const [currentLanguage, setCurrentLanguage] = useState<string>()
     const [currentLanguages, setCurrentLanguages] = useState<LanguageItem[]>()
+    const [oAuthFlowTriggered, setOAuthFlowTriggered] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
         // Used to keep saving the correct `language` with `languages` for the time being.
@@ -143,6 +153,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const name = currentName ?? integration.get('name')
 
+    const getRedirectUri = useAppSelector(makeGetRedirectUri)
+    const redirectUri = getRedirectUri(IntegrationType.Shopify)
+
     const language: string =
         currentLanguage ||
         integration.getIn(
@@ -173,6 +186,24 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             ? storeIntegrations.first()
             : undefined)
 
+    const hasShopifyScriptTagScope =
+        storeIntegration &&
+        getHasShopifyScriptTagScopes({
+            storeIntegration: storeIntegration.toJS(),
+        })
+
+    const retriggerOAuthFlow = () => {
+        setOAuthFlowTriggered(true)
+        setIsModalOpen(false)
+        const shopName = (storeIntegration as Map<any, any>)?.getIn([
+            'meta',
+            'shop_name',
+        ])
+        onSave()?.then(() => {
+            window.location.href = redirectUri.replace('{shop_name}', shopName)
+        })
+    }
+
     const [currentInstallationMethod, setCurrentInstallationMethod] =
         useState<GorgiasChatCreationWizardInstallationMethod>()
 
@@ -189,9 +220,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const hasIncompleteFields = !name || (isStoreRequired && !storeIntegration)
 
-    const goToNextStep = (id: number) => {
-        navigateWizardSteps.goToNextStep()
-
+    const goToCreatedIntegrationWizard = (id: number) => {
         if (!isUpdate) {
             history.replace(
                 `/app/settings/channels/gorgias_chat/${id}/create-wizard`
@@ -211,9 +240,22 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const offlineIntroductionText =
         GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
 
-    const onSave = (shouldGoToNextStep = false, isContinueLater = false) => {
+    const onSave = (
+        shouldGoToNextStep = false,
+        isContinueLater = false,
+        shouldCheckShopifyPermissions = false
+    ) => {
         if (hasIncompleteFields) {
             setHasFailedSubmit(true)
+            return
+        }
+
+        if (
+            shouldCheckShopifyPermissions &&
+            isStoreRequired &&
+            !hasShopifyScriptTagScope
+        ) {
+            setIsModalOpen(true)
             return
         }
 
@@ -279,7 +321,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     },
                     wizard: {
                         status: GorgiasChatCreationWizardStatus.Draft,
-                        step: GorgiasChatCreationWizardSteps.Branding,
+                        step: shouldGoToNextStep
+                            ? GorgiasChatCreationWizardSteps.Branding
+                            : GorgiasChatCreationWizardSteps.Basics,
                         installation_method: installationMethod,
                     },
                 },
@@ -318,7 +362,12 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     )
 
                     setHasSubmitted(true)
-                    shouldGoToNextStep && goToNextStep(id)
+
+                    if (shouldGoToNextStep) {
+                        navigateWizardSteps.goToNextStep()
+                    }
+
+                    goToCreatedIntegrationWizard(id)
                 },
                 shouldGoToNextStep,
                 'Changes saved'
@@ -329,14 +378,48 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const hasStoreError =
         hasFailedSubmit && isStoreRequired && !storeIntegration
 
+    const ShopifyScriptTagScopeModal = () => {
+        return (
+            <Modal
+                onClose={() => setIsModalOpen(false)}
+                isOpen={isModalOpen}
+                container={document.getElementById('root') as Element}
+                data-testid="shopify-script-tag-scope-modal"
+            >
+                <ModalHeader title="Update Shopify permissions" />
+                <ModalBody>
+                    Please update Shopify permissions before installing your
+                    chat to ensure better stability.
+                </ModalBody>
+                <ModalActionsFooter>
+                    <Button
+                        intent="secondary"
+                        onClick={() => setIsModalOpen(false)}
+                    >
+                        Close
+                    </Button>
+                    <Button onClick={retriggerOAuthFlow}>Update</Button>
+                </ModalActionsFooter>
+            </Modal>
+        )
+    }
+
     return (
         <>
-            <DiscardNewChatPrompt when={!isUpdate && !isPristine} />
+            <DiscardNewChatPrompt
+                when={!isUpdate && !isPristine && !oAuthFlowTriggered}
+            />
             <UnsavedChangesPrompt
                 onSave={() => onSave()}
-                when={isUpdate && !isPristine && !hasSubmitted}
+                when={
+                    isUpdate &&
+                    !isPristine &&
+                    !hasSubmitted &&
+                    !oAuthFlowTriggered
+                }
                 shouldRedirectAfterSave
             />
+            <ShopifyScriptTagScopeModal />
             <GorgiasChatCreationWizardStep
                 step={GorgiasChatCreationWizardSteps.Basics}
                 preview={
@@ -380,7 +463,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             </Link>
                         )}
                         <Button
-                            onClick={() => onSave(true)}
+                            onClick={() => onSave(true, false, true)}
                             isLoading={isSubmitting}
                         >
                             {isUpdate ? 'Next' : 'Create & Customize'}
@@ -534,6 +617,22 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 This field is required.
                             </div>
                         )}
+
+                        {isStoreRequired &&
+                            storeIntegration &&
+                            !hasShopifyScriptTagScope && (
+                                <div
+                                    className={css.info}
+                                    data-testid="has-shopify-script-tag-scope"
+                                >
+                                    Please{' '}
+                                    <a onClick={retriggerOAuthFlow} href="#">
+                                        update Shopify permissions
+                                    </a>{' '}
+                                    to ensure better chat stability. Your
+                                    progress on this page will be saved.
+                                </div>
+                            )}
                     </div>
                     <div className={css.section}>
                         <div className={css.sectionHeading}>

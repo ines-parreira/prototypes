@@ -6,6 +6,8 @@ import {
     GorgiasChatIntegrationMeta,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
+    Integration,
+    IntegrationType,
 } from '../../models/integration/types'
 
 import gorgiasChatSSPTexts from './ssp_texts.json'
@@ -417,3 +419,19 @@ export const isTextsMultiLanguage = (value: unknown): boolean => {
     }
     return false
 }
+
+export const getHasShopifyScriptTagScopes = ({
+    storeIntegration,
+}: {
+    storeIntegration: Integration
+}) =>
+    ['read_script_tags', 'write_script_tags'].every((scope) => {
+        if (
+            !storeIntegration ||
+            storeIntegration.type !== IntegrationType.Shopify
+        ) {
+            return false
+        }
+
+        return storeIntegration.meta?.oauth?.scope?.includes(scope)
+    })

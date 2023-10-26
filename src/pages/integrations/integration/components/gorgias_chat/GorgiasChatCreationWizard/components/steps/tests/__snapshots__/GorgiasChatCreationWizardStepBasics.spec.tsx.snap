@@ -68,6 +68,14 @@ exports[`<GorgiasChatCreationWizardStepBasics /> should include languages when u
       "meta": Immutable.Map {
         "shop_integration_id": null,
         "language": "en-US",
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "scope": Immutable.List [
+              "read_script_tags",
+              "write_script_tags",
+            ],
+          },
+        },
         "preferences": Immutable.Map {
           "live_chat_availability": "auto-based-on-agent-availability",
         },
@@ -108,6 +116,14 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat
       "meta": Immutable.Map {
         "shop_integration_id": null,
         "language": "en-US",
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "scope": Immutable.List [
+              "read_script_tags",
+              "write_script_tags",
+            ],
+          },
+        },
         "preferences": Immutable.Map {
           "live_chat_availability": "auto-based-on-agent-availability",
         },
