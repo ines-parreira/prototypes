@@ -259,7 +259,7 @@ module.exports = (env = {}) => {
                 },
                 onEnd({compilation}) {
                     if (circularDepsCount > 0) {
-                        compilation.warnings.push(new Error(`${circularDepsCount} circular dependencies detected, check ./circular_deps for a full list.`))
+                        console.info(`\n\n${circularDepsCount} circular dependencies detected, check ./circular_deps for a full list.`)
                     }
                     fs.closeSync(cdHandle)
                 },
