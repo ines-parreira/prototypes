@@ -7,7 +7,7 @@ import ViewLayout from './ViewLayout'
 export default function Routes({match: {path}}: RouteComponentProps) {
     return (
         <Switch>
-            <Route exact path={`${path}/:viewId`} render={ViewLayout} />
+            <Route exact path={`${path}/:viewId?`} render={ViewLayout} />
             <Route
                 exact
                 path={`${path}/:viewId/:ticketId`}
