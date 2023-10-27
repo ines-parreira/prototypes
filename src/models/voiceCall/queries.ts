@@ -1,7 +1,7 @@
 import {UseQueryOptions, useQuery} from '@tanstack/react-query'
 
-import {ListVoiceCallsParams} from './types'
-import {listVoiceCalls} from './resources'
+import {ListCallRecordingsParams, ListVoiceCallsParams} from './types'
+import {listVoiceCallRecordings, listVoiceCalls} from './resources'
 
 export const voiceCallsKeys = {
     all: () => ['voiceCalls'] as const,
@@ -10,6 +10,8 @@ export const voiceCallsKeys = {
         ...voiceCallsKeys.lists(),
         params,
     ],
+    listRecordings: (params?: ListCallRecordingsParams) =>
+        [...voiceCallsKeys.all(), 'recordings', params] as const,
 }
 
 export const useListVoiceCalls = (
@@ -19,6 +21,19 @@ export const useListVoiceCalls = (
     return useQuery({
         queryKey: voiceCallsKeys.list(params),
         queryFn: () => listVoiceCalls(params),
+        ...overrides,
+    })
+}
+
+export const useListRecordings = (
+    params?: ListCallRecordingsParams,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof listVoiceCallRecordings>>
+    >
+) => {
+    return useQuery({
+        queryKey: voiceCallsKeys.listRecordings(params),
+        queryFn: () => listVoiceCallRecordings(params),
         ...overrides,
     })
 }

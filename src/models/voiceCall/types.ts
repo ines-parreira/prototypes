@@ -37,10 +37,33 @@ export type VoiceCall = {
     last_answered_by_agent_id: number | null
     initiated_by_agent_id?: number | null
     customer_id: number
+    has_call_recording: boolean
+    has_voicemail: boolean
+}
+
+export enum VoiceCallRecordingType {
+    Recording = 'call-recording',
+    Voicemail = 'voicemail',
+}
+
+export type VoiceCallRecording = {
+    id: number
+    call_id: number
+    external_id: string
+    url: string
+    duration: number
+    type: VoiceCallRecordingType
+    created_datetime: string
+    deleted_datetime: string | null
+    deleted_by_user_id: number | null
 }
 
 export type ListVoiceCallsParams = {
     ticket_id?: number
+}
+
+export type ListCallRecordingsParams = {
+    call_id?: number
 }
 
 export const isVoiceCall = (object: unknown): object is VoiceCall => {

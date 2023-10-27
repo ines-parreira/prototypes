@@ -4,9 +4,13 @@ import React from 'react'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import * as resources from '../resources'
-import {useListVoiceCalls} from '../queries'
+import {useListVoiceCalls, useListRecordings} from '../queries'
 
 const listVoiceCallsSpy = jest.spyOn(resources, 'listVoiceCalls')
+const listVoiceCallRecordingsSpy = jest.spyOn(
+    resources,
+    'listVoiceCallRecordings'
+)
 
 const queryClient = mockQueryClient()
 const wrapper = ({children}: any) => (
@@ -39,6 +43,37 @@ describe('voiceCall queries', () => {
             listVoiceCallsSpy.mockRejectedValueOnce(Error('test error'))
             const {result, waitFor} = renderHook(
                 () => useListVoiceCalls({ticket_id: 1}),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isError).toBe(true))
+            expect(result.current.error).toStrictEqual(Error('test error'))
+        })
+    })
+
+    describe('useListRecordings', () => {
+        it('should return correct data on success', async () => {
+            listVoiceCallRecordingsSpy.mockResolvedValueOnce(
+                axiosSuccessResponse(['testRecording']) as any
+            )
+            const recordings = ['testRecording']
+            const {result, waitFor} = renderHook(
+                () => useListRecordings({call_id: 1}),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data?.data).toStrictEqual(recordings)
+        })
+
+        it('should return expected error on failure', async () => {
+            listVoiceCallRecordingsSpy.mockRejectedValueOnce(
+                Error('test error')
+            )
+            const {result, waitFor} = renderHook(
+                () => useListRecordings({call_id: 1}),
                 {
                     wrapper,
                 }

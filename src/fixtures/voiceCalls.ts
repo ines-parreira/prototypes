@@ -20,4 +20,6 @@ export const voiceCall: VoiceCall = {
     initiated_by_agent_id: 567,
     last_answered_by_agent_id: 678,
     customer_id: 789,
+    has_call_recording: false,
+    has_voicemail: false,
 }
