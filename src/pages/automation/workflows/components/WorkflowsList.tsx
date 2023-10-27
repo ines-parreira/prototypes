@@ -1,10 +1,9 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 
 import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
-import {compare} from 'utils'
 import {LanguageCode} from '../models/workflowConfiguration.types'
 
 import css from './WorkflowsList.less'
@@ -16,8 +15,7 @@ export type Workflow = {
 }
 
 type Props = {
-    shopType: string
-    shopName: string
+    storeIntegrationId: number
     storeWorkflows: Workflow[]
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
     onDelete: (workflowId: string) => Promise<void>
@@ -30,9 +28,8 @@ type Props = {
 }
 
 const WorkflowsList = ({
-    shopType,
-    shopName,
     storeWorkflows: entrypoints,
+    storeIntegrationId,
     onDelete,
     onDuplicate,
     goToEditWorkflowPage,
@@ -40,25 +37,20 @@ const WorkflowsList = ({
     notifyMerchant,
 }: Props) => {
     const storeIntegrations = useStoreIntegrations()
-    const sortedStoreIntegrations = useMemo(
-        () => [...storeIntegrations].sort((a, b) => compare(a.name, b.name)),
-        [storeIntegrations]
-    )
 
     return (
         <TableWrapper className={css.container}>
             <TableBody>
                 {entrypoints.map((entrypoint) => (
                     <WorkflowsRow
-                        shopType={shopType}
-                        shopName={shopName}
+                        storeIntegrationId={storeIntegrationId}
                         key={entrypoint.workflow_id}
                         entrypoint={entrypoint}
                         goToEditWorkflowPage={goToEditWorkflowPage}
                         onDuplicate={onDuplicate}
                         onDelete={onDelete}
                         isUpdatePending={isUpdatePending}
-                        sortedStoreIntegrations={sortedStoreIntegrations}
+                        storeIntegrations={storeIntegrations}
                         notifyMerchant={notifyMerchant}
                     />
                 ))}

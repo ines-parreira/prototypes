@@ -14,8 +14,10 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 describe('<WorkflowsRow />', () => {
     const duplicateFunction = jest.fn()
     const notifyMerchant = jest.fn()
+
     const shop1 = 'ShopName'
     const shop2 = 'ShopName1'
+
     const sortedIntegrations = [
         {
             id: 1,
@@ -33,8 +35,6 @@ describe('<WorkflowsRow />', () => {
     const comp = (
         <Provider store={mockStore()}>
             <WorkflowsRow
-                shopName={shop1}
-                shopType={IntegrationType.Shopify}
                 goToEditWorkflowPage={jest.fn()}
                 onDuplicate={duplicateFunction}
                 onDelete={jest.fn()}
@@ -47,7 +47,8 @@ describe('<WorkflowsRow />', () => {
                     } as Workflow
                 }
                 isUpdatePending={false}
-                sortedStoreIntegrations={sortedIntegrations}
+                storeIntegrations={sortedIntegrations}
+                storeIntegrationId={1}
             />
         </Provider>
     )

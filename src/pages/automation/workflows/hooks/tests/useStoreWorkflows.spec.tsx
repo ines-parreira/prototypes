@@ -1,224 +1,98 @@
 import React, {ComponentType, ReactChildren} from 'react'
-import {act, renderHook} from '@testing-library/react-hooks'
+import {renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
-import {waitFor} from '@testing-library/react'
-import {RootState, StoreDispatch} from 'state/types'
-import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {fromJS} from 'immutable'
+import {IntegrationType} from 'models/integration/constants'
+import {RootState} from 'state/types'
+import {billingState} from 'fixtures/billing'
+import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import useStoreWorkflows from '../useStoreWorkflows'
-import useWorkflowApi from '../useWorkflowApi'
-import {
-    WorkflowConfiguration,
-    WorkflowStepMessages,
-    WorkflowTransition,
-} from '../../models/workflowConfiguration.types'
+import {getIntegration} from './fixtures/utils'
+import {useWorkflowApiMockSetter} from './fixtures/mockBuilders'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const shopName = 'ShopName'
+const shopType = 'shopify'
+const mockStore = configureMockStore()
+
+const defaultState = {
+    integrations: fromJS({
+        integrations: [
+            getIntegration(1, IntegrationType.Shopify, shopName),
+            getIntegration(2, IntegrationType.Magento2),
+        ],
+    }),
+    billing: fromJS(billingState),
+} as RootState
+
 const renderHookOptions = {
     wrapper: (({children}: {children: ReactChildren}) => (
-        <Provider store={mockStore({})}>{children}</Provider>
+        <Provider store={mockStore(defaultState)}>{children}</Provider>
     )) as ComponentType,
 }
 
-const mockSelfServiceConfiguration: ReturnType<
-    typeof useSelfServiceConfiguration
-> = {
-    isFetchPending: false,
-    isUpdatePending: false,
-    storeIntegration: undefined,
-    selfServiceConfiguration: undefined,
-    handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
-} as const
-
-function mockWorkflowConfiguration(uid: string): WorkflowConfiguration {
-    return {
-        id: uid,
-        account_id: 1,
-        internal_id: `int-${uid}`,
-        name: uid,
-        is_draft: false,
-        initial_step_id: 's1',
-        steps: [] as WorkflowStepMessages[],
-        transitions: [] as WorkflowTransition[],
-        available_languages: [],
-    }
-}
-
-const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
-    isFetchPending: false,
-    isUpdatePending: false,
-    fetchWorkflowConfigurations: () => {
-        return Promise.resolve([
-            mockWorkflowConfiguration('a'),
-            mockWorkflowConfiguration('b'),
-            mockWorkflowConfiguration('c'),
-        ])
-    },
-    deleteWorkflowConfiguration: jest.fn(() => Promise.resolve()),
-} as const
-
-jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration', () => {
-    return {
-        __esModule: true,
-        default: jest.fn().mockReturnValue(mockSelfServiceConfiguration),
-    }
-})
-
 jest.mock('pages/automation/workflows/hooks/useWorkflowApi.ts')
-
-function updateMock(
-    overrides: Partial<ReturnType<typeof useSelfServiceConfiguration>>
-) {
-    ;(
-        useSelfServiceConfiguration as jest.MockedFn<
-            typeof useSelfServiceConfiguration
-        >
-    ).mockReturnValue({
-        ...mockSelfServiceConfiguration,
-        ...overrides,
-    })
-    ;(useWorkflowApi as jest.MockedFn<typeof useWorkflowApi>).mockReturnValue(
-        mockWorkflowApi as ReturnType<typeof useWorkflowApi>
-    )
-}
-
-const entrypointsFixtures = [
-    {workflow_id: 'a'},
-    {workflow_id: 'b'},
-    {workflow_id: 'c'},
-]
-const entrypointsWithNameFixtures = entrypointsFixtures.map((entrypoint) => ({
-    ...entrypoint,
-    name: entrypoint.workflow_id,
-    available_languages: [],
-}))
+jest.mock('state/entities/selfServiceConfigurations/selectors')
 
 describe('useStoreWorkflows', () => {
     beforeEach(() => {
-        jest.resetAllMocks()
-        updateMock({})
+        useWorkflowApiMockSetter()
+        ;(
+            getSelfServiceConfigurations as jest.MockedFn<
+                typeof getSelfServiceConfigurations
+            >
+        ).mockReturnValue([
+            {
+                id: 1,
+                type: 'shopify' as any,
+                shop_name: 'ShopName',
+                created_datetime: '2021-03-31T14:00:00.000Z',
+                updated_datetime: '2021-03-31T14:00:00.000Z',
+                quick_response_policies: [],
+                workflows_entrypoints: [
+                    {
+                        workflow_id: 'a',
+                    },
+                    {
+                        workflow_id: 'b',
+                    },
+                ],
+            },
+        ] as unknown as ReturnType<typeof getSelfServiceConfigurations>)
     })
-    it('isFetchPending and isUpdatePending', () => {
-        updateMock({
-            isFetchPending: true,
-            isUpdatePending: true,
-        })
+    it('should return workflows', () => {
         const {result} = renderHook(
-            () => useStoreWorkflows('', '', () => null),
+            () =>
+                useStoreWorkflows({
+                    shopType,
+                    shopName,
+                    notifyMerchant: () => null,
+                    configurationsMap: {
+                        a: {
+                            id: 'a',
+                            internal_id: 'a',
+                            account_id: 1,
+                            is_draft: false,
+                            name: 'a',
+                            initial_step_id: 'a',
+                            steps: [],
+                            available_languages: [],
+                        },
+                    },
+                }),
             renderHookOptions
         )
-        expect(result.current).toMatchObject({
-            isFetchPending: true,
-            isUpdatePending: true,
-            storeWorkflows: [],
+
+        expect(result.current).toEqual({
+            workflows: [
+                {
+                    available_languages: [],
+                    name: 'a',
+                    workflow_id: 'a',
+                },
+            ],
+            isFetchPending: false,
+            storeIntegrationId: 1,
         })
-    })
-
-    it('hydrates storeWorkflows once configuration fetched', async () => {
-        const {result, rerender} = renderHook(
-            () => useStoreWorkflows('', '', () => null),
-            renderHookOptions
-        )
-        updateMock({
-            selfServiceConfiguration: {
-                workflows_entrypoints: entrypointsFixtures,
-            } as SelfServiceConfiguration,
-        })
-        await waitFor(() =>
-            expect(result.current.isFetchPending).toEqual(false)
-        )
-        rerender()
-        expect(result.current.storeWorkflows).toEqual(
-            entrypointsWithNameFixtures
-        )
-    })
-
-    it('deleteWorkflowEntrypoint', async () => {
-        const selfServiceConfiguration = {
-            workflows_entrypoints: [...entrypointsFixtures],
-        } as SelfServiceConfiguration
-
-        const handleSelfServiceConfigurationUpdateMock = jest
-            .fn()
-            .mockImplementation(
-                (
-                    patchSelfServiceConfiguration: (
-                        draft: SelfServiceConfiguration
-                    ) => void
-                ) => {
-                    patchSelfServiceConfiguration(selfServiceConfiguration)
-                }
-            )
-
-        updateMock({
-            selfServiceConfiguration,
-            handleSelfServiceConfigurationUpdate:
-                handleSelfServiceConfigurationUpdateMock,
-        })
-        const {result} = renderHook(
-            () => useStoreWorkflows('', '', () => null),
-            renderHookOptions
-        )
-        await waitFor(() =>
-            expect(result.current.isFetchPending).toEqual(false)
-        )
-        await act(() =>
-            result.current.removeWorkflowFromStore(
-                mockWorkflowConfiguration('a').id
-            )
-        )
-        expect(selfServiceConfiguration.workflows_entrypoints).toEqual(
-            entrypointsFixtures.slice(1)
-        )
-        expect(
-            mockWorkflowApi.deleteWorkflowConfiguration
-        ).toHaveBeenCalledTimes(1)
-        expect(
-            mockWorkflowApi.deleteWorkflowConfiguration
-        ).toHaveBeenCalledWith(mockWorkflowConfiguration('a').internal_id)
-    })
-
-    it('appendWorkflowInStore', async () => {
-        const selfServiceConfiguration = {
-            workflows_entrypoints: [...entrypointsFixtures],
-        } as SelfServiceConfiguration
-
-        const handleSelfServiceConfigurationUpdateMock = jest
-            .fn()
-            .mockImplementation(
-                (
-                    patchSelfServiceConfiguration: (
-                        draft: SelfServiceConfiguration
-                    ) => void
-                ) => {
-                    patchSelfServiceConfiguration(selfServiceConfiguration)
-                }
-            )
-
-        updateMock({
-            selfServiceConfiguration,
-            handleSelfServiceConfigurationUpdate:
-                handleSelfServiceConfigurationUpdateMock,
-        })
-        const {result} = renderHook(
-            () => useStoreWorkflows('', '', () => null),
-            renderHookOptions
-        )
-        await waitFor(() =>
-            expect(result.current.isFetchPending).toEqual(false)
-        )
-        await act(() => result.current.appendWorkflowInStore('z'))
-        expect(selfServiceConfiguration.workflows_entrypoints).toEqual([
-            ...entrypointsFixtures,
-            {workflow_id: 'z'},
-        ])
-
-        // doesn’t append duplicate workflow
-        await act(() => result.current.appendWorkflowInStore('c'))
-        expect(selfServiceConfiguration.workflows_entrypoints).toEqual([
-            ...entrypointsFixtures,
-            {workflow_id: 'z'},
-        ])
     })
 })

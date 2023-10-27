@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React from 'react'
 import {Container} from 'reactstrap'
 import {Link} from 'react-router-dom'
 
@@ -7,15 +7,12 @@ import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert from 'pages/common/components/Alert/Alert'
 import Video from 'pages/common/components/Video/Video'
-
-import {NotificationStatus} from 'state/notifications/types'
-import {useSelfServiceConfigurationUpdate} from '../common/hooks/useSelfServiceConfigurationUpdate'
 import CreateWorkflowFooter from './components/CreateWorkflowFooter'
 import WorkflowsList from './components/WorkflowsList'
-import useStoreWorkflows from './hooks/useStoreWorkflows'
 
 import css from './WorkflowsView.less'
-import useWorkflowApi from './hooks/useWorkflowApi'
+import useStoreWorkflows from './hooks/useStoreWorkflows'
+import {useStoreWorkflowsApi} from './hooks/useStoreWorkflowsApi'
 
 type WorkflowsViewProps = {
     shopType: string
@@ -32,67 +29,31 @@ export default function WorkflowsView({
     shopType,
     goToWorkflowTemplatesPage,
     goToEditWorkflowPage,
-    connectedChannelsUrl,
     notifyMerchant,
+    connectedChannelsUrl,
 }: WorkflowsViewProps) {
-    const [isDuplicatingDifferentStore, setIsDuplicatingDifferentStore] =
-        useState(false)
     const {
-        storeWorkflows,
-        removeWorkflowFromStore: deleteWorkflowEntrypoint,
-        duplicateWorkflow: duplicateCurrentStoreWorkflow,
-        isFetchPending,
-        storeIntegrationId: currentStoreIntegrationId,
         isUpdatePending,
-    } = useStoreWorkflows(shopType, shopName, notifyMerchant)
+        duplicateWorkflow,
+        removeWorkflowFromStore,
+        workflowConfigurationById,
+        isFetchPending: isWorkflowsApiFetchPending,
+    } = useStoreWorkflowsApi(notifyMerchant)
 
-    const {duplicateWorkflowConfiguration} = useWorkflowApi()
     const {
-        handleSelfServiceConfigurationUpdate,
-        isUpdatePending: isDifferentStoreUpdatePending,
-    } = useSelfServiceConfigurationUpdate({
-        handleNotify: (notify) => {
-            if (notify.status === NotificationStatus.Error && notify.message) {
-                notifyMerchant(notify.message, 'error')
-            }
-        },
+        workflows,
+        storeIntegrationId,
+        isFetchPending: isStoreWorkflowsFetchPending,
+    } = useStoreWorkflows({
+        shopName,
+        shopType,
+        notifyMerchant,
+        configurationsMap: workflowConfigurationById,
     })
 
-    const duplicateWorkflow = useCallback(
-        async (workflowId: string, storeIntegrationId: number) => {
-            if (currentStoreIntegrationId === storeIntegrationId) {
-                const duplicatedCurrentStoreWorkflow =
-                    await duplicateCurrentStoreWorkflow(workflowId)
-                return {
-                    id: duplicatedCurrentStoreWorkflow.id,
-                }
-            }
-            setIsDuplicatingDifferentStore(true)
-            const duplicatedWorkflow = await duplicateWorkflowConfiguration(
-                workflowId
-            )
-            await handleSelfServiceConfigurationUpdate(
-                (draft) => {
-                    draft.workflows_entrypoints ??= []
-                    draft.workflows_entrypoints?.unshift({
-                        workflow_id: duplicatedWorkflow.id,
-                    })
-                },
-                undefined,
-                storeIntegrationId
-            )
-            setIsDuplicatingDifferentStore(false)
-            return {id: duplicatedWorkflow.id}
-        },
-        [
-            currentStoreIntegrationId,
-            duplicateCurrentStoreWorkflow,
-            handleSelfServiceConfigurationUpdate,
-            duplicateWorkflowConfiguration,
-        ]
-    )
-
-    const hasStoreWorkflows = storeWorkflows.length > 0
+    const hasStoreWorkflows = workflows.length > 0
+    const isFetchPending =
+        isStoreWorkflowsFetchPending || isWorkflowsApiFetchPending
 
     return (
         <div className="full-width overflow-auto">
@@ -111,7 +72,7 @@ export default function WorkflowsView({
                 </PageHeader>
             </div>
 
-            {isFetchPending ? (
+            {isFetchPending || !storeIntegrationId ? (
                 <Loader data-testid="loader" />
             ) : (
                 <Container fluid className={css.pageContainer}>
@@ -160,18 +121,18 @@ export default function WorkflowsView({
                     </div>
                     {hasStoreWorkflows ? (
                         <WorkflowsList
-                            shopType={shopType}
-                            shopName={shopName}
+                            storeIntegrationId={storeIntegrationId}
                             notifyMerchant={notifyMerchant}
-                            storeWorkflows={storeWorkflows}
-                            onDelete={deleteWorkflowEntrypoint}
+                            storeWorkflows={workflows}
+                            onDelete={(workflowId) =>
+                                removeWorkflowFromStore(
+                                    workflowId,
+                                    storeIntegrationId
+                                )
+                            }
                             onDuplicate={duplicateWorkflow}
                             goToEditWorkflowPage={goToEditWorkflowPage}
-                            isUpdatePending={
-                                isUpdatePending ||
-                                isDuplicatingDifferentStore ||
-                                isDifferentStoreUpdatePending
-                            }
+                            isUpdatePending={isUpdatePending}
                         />
                     ) : (
                         <CreateWorkflowFooter

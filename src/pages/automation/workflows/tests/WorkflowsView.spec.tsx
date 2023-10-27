@@ -1,43 +1,38 @@
 import React from 'react'
-import {screen} from '@testing-library/react'
+import {screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouterAndDnD} from 'utils/testing'
-import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import {IntegrationType} from 'models/integration/constants'
 import {billingState} from 'fixtures/billing'
-import useWorkflowApi from '../hooks/useWorkflowApi'
-import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
 import WorkflowsView from '../WorkflowsView'
+import {useWorkflowApiMockSetter} from '../hooks/tests/fixtures/mockBuilders'
+import useStoreWorkflows from '../hooks/useStoreWorkflows'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration')
+jest.mock('../hooks/useStoreWorkflows.ts')
 jest.mock('../hooks/useWorkflowApi')
+jest.mock('state/entities/selfServiceConfigurations/selectors', () => {
+    return {
+        __esModule: true,
+        getSelfServiceConfigurations: jest.fn(() => [
+            {
+                id: 1,
+                type: 'shopify',
+                shop_name: 'ShopName',
+                created_datetime: '2021-03-31T14:00:00.000Z',
+                updated_datetime: '2021-03-31T14:00:00.000Z',
+                quick_response_policies: [],
+                workflows_entrypoints: [{workflow_id: 'a'}, {workflow_id: 'b'}],
+            },
+        ]),
+    }
+})
 
-const useSelfServiceConfigurationMock =
-    useSelfServiceConfiguration as jest.MockedFunction<
-        typeof useSelfServiceConfiguration
-    >
-
-const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
-    fetchWorkflowConfigurations: () => {
-        return Promise.resolve([])
-    },
-} as const
-
-function updateUseWorkflowApiMock(
-    overrides: Partial<ReturnType<typeof useWorkflowApi>>
-) {
-    ;(useWorkflowApi as jest.MockedFn<typeof useWorkflowApi>).mockReturnValue({
-        ...mockWorkflowApi,
-        ...overrides,
-    } as ReturnType<typeof useWorkflowApi>)
-}
 function getIntegration(id: number, type: IntegrationType) {
     return {
         id,
@@ -46,74 +41,31 @@ function getIntegration(id: number, type: IntegrationType) {
         meta: {
             emoji: '',
             phone_number_id: id,
+            shop_name: 'ShopName',
         },
     }
 }
+
 const defaultState = {
     integrations: fromJS({
-        integrations: [
-            getIntegration(1, IntegrationType.Shopify),
-            getIntegration(2, IntegrationType.Magento2),
-        ],
+        integrations: [getIntegration(1, IntegrationType.Shopify)],
     }),
     billing: fromJS(billingState),
 } as RootState
+
+const useStoreWorkflowsMock = useStoreWorkflows as jest.MockedFunction<
+    typeof useStoreWorkflows
+>
+
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
-        updateUseWorkflowApiMock({})
+        useWorkflowApiMockSetter()
     })
-
-    it('should display skeleton while workflow entrypoints are being fetched', () => {
-        useSelfServiceConfigurationMock.mockReturnValue({
+    it('should display skeleton while workflow entrypoints are being fetched', async () => {
+        useStoreWorkflowsMock.mockReturnValue({
             isFetchPending: true,
-            isUpdatePending: false,
-            storeIntegration: undefined,
-            selfServiceConfiguration: undefined,
-            handleSelfServiceConfigurationUpdate: jest.fn(),
-        })
-
-        renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
-                <WorkflowsView
-                    shopName=""
-                    shopType=""
-                    goToEditWorkflowPage={jest.fn()}
-                    goToWorkflowTemplatesPage={jest.fn()}
-                    quickResponsesUrl=""
-                    connectedChannelsUrl=""
-                    notifyMerchant={jest.fn()}
-                />
-            </Provider>
-        )
-
-        const loader = screen.queryAllByTestId('loader')
-        expect(loader.length).toBe(1)
-    })
-
-    it('should display actual rows once workflow entrypoints have been fetched', async () => {
-        useSelfServiceConfigurationMock.mockReturnValue({
-            isFetchPending: false,
-            isUpdatePending: false,
-            storeIntegration: undefined,
-            selfServiceConfiguration: {
-                workflows_entrypoints: [
-                    {
-                        workflow_id: 'a',
-                    },
-                    {
-                        workflow_id: 'b',
-                    },
-                ],
-            } as SelfServiceConfiguration,
-            handleSelfServiceConfigurationUpdate: jest.fn(),
-        })
-        updateUseWorkflowApiMock({
-            fetchWorkflowConfigurations() {
-                return Promise.resolve([
-                    {id: 'a', name: 'my workflow a'} as WorkflowConfiguration,
-                    {id: 'b', name: 'my workflow b'} as WorkflowConfiguration,
-                ])
-            },
+            workflows: [],
+            storeIntegrationId: 1,
         })
 
         renderWithRouterAndDnD(
@@ -130,12 +82,52 @@ describe('<WorkflowsView />', () => {
             </Provider>
         )
 
-        const skeletonRows = screen.queryAllByTestId(
-            'shopper-flows-skeleton-row'
-        )
-        expect(skeletonRows.length).toBe(0)
+        await waitFor(() => {
+            const loader = screen.queryAllByTestId('loader')
+            expect(loader.length).toBe(1)
+        })
+    })
 
-        await screen.findByText('my workflow a')
-        await screen.findByText('my workflow b')
+    it('should display actual rows once workflow entrypoints have been fetched', async () => {
+        useStoreWorkflowsMock.mockReturnValue({
+            isFetchPending: false,
+            workflows: [
+                {
+                    workflow_id: 'a',
+                    name: 'a',
+                    available_languages: [],
+                },
+                {
+                    workflow_id: 'b',
+                    name: 'b',
+                    available_languages: [],
+                },
+            ],
+            storeIntegrationId: 1,
+        })
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <WorkflowsView
+                    shopName="ShopName"
+                    shopType="shopify"
+                    goToEditWorkflowPage={jest.fn()}
+                    goToWorkflowTemplatesPage={jest.fn()}
+                    quickResponsesUrl=""
+                    connectedChannelsUrl=""
+                    notifyMerchant={jest.fn()}
+                />
+            </Provider>
+        )
+
+        await waitFor(async () => {
+            const skeletonRows = screen.queryAllByTestId(
+                'shopper-flows-skeleton-row'
+            )
+            expect(skeletonRows.length).toBe(0)
+
+            await screen.findByText('a')
+            await screen.findByText('b')
+        })
     })
 })

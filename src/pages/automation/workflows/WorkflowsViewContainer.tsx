@@ -17,6 +17,7 @@ export default function WorkflowsViewContainer() {
     }>()
     const history = useHistory()
     const dispatch = useAppDispatch()
+
     const goToWorkflowTemplatesPage = useCallback(() => {
         history.push(`${history.location.pathname}/templates`)
     }, [history])

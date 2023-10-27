@@ -21,8 +21,7 @@ import css from './WorkflowsRow.less'
 import DeleteWorkflowAction from './DeleteWorkflowAction'
 
 type Props = {
-    shopType: string
-    shopName: string
+    storeIntegrationId: number
     entrypoint: Workflow
     onDelete: (workflowId: string) => Promise<void>
     onDuplicate: (
@@ -31,7 +30,7 @@ type Props = {
     ) => Promise<{id: string}>
     goToEditWorkflowPage: (workflowId: string) => void
     isUpdatePending: boolean
-    sortedStoreIntegrations: StoreIntegration[]
+    storeIntegrations: StoreIntegration[]
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 }
 
@@ -57,14 +56,13 @@ export const getLink = (
 }</a>`
 
 const WorkflowsRow = ({
-    shopType,
-    shopName,
+    storeIntegrationId,
     entrypoint,
     onDelete,
     onDuplicate,
     goToEditWorkflowPage,
     isUpdatePending,
-    sortedStoreIntegrations,
+    storeIntegrations,
     notifyMerchant,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -72,32 +70,29 @@ const WorkflowsRow = ({
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     const currentFirstSorted = useMemo(() => {
-        return [...sortedStoreIntegrations].sort(
-            (integrationA, integrationB) => {
-                const shopNameA = getShopNameFromStoreIntegration(integrationA)
-                const shopNameB = getShopNameFromStoreIntegration(integrationB)
-                if (shopNameA === shopName) return -1
-                if (shopNameB === shopName) return 1
+        return [...storeIntegrations].sort(
+            ({id: integrationIdA}, {id: integrationIdB}) => {
+                if (integrationIdA === storeIntegrationId) return -1
+                if (integrationIdB === storeIntegrationId) return 1
                 return 0
             }
         )
-    }, [shopName, sortedStoreIntegrations])
+    }, [storeIntegrationId, storeIntegrations])
 
     const isCurrentStore = useCallback(
         (storeIntegration: StoreIntegration) =>
-            shopName === getShopNameFromStoreIntegration(storeIntegration) &&
-            storeIntegration.type === shopType,
-        [shopName, shopType]
+            storeIntegration.id === storeIntegrationId,
+        [storeIntegrationId]
     )
 
     const handleToggle = () => setIsOpen(!isOpen)
 
     const handleDuplicateCurrentStore = async (workflowId: string) => {
-        await onDuplicate(workflowId, currentFirstSorted[0].id)
+        await onDuplicate(workflowId, storeIntegrationId)
         notifyMerchant(`Successfully duplicated`, 'success')
     }
 
-    const isDropdownVisible = sortedStoreIntegrations.length > 1
+    const isDropdownVisible = storeIntegrations.length > 1
 
     return (
         <TableBodyRow key={entrypoint.workflow_id}>

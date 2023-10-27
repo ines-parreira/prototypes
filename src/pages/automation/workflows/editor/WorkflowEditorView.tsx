@@ -13,17 +13,20 @@ import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {withSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
-import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
+import {
+    useSelfServiceStoreIntegrationContext,
+    withSelfServiceStoreIntegrationContext,
+} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
+
 import useSearch from 'hooks/useSearch'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
+import {useSelfServiceConfigurationUpdate} from 'pages/automation/common/hooks/useSelfServiceConfigurationUpdate'
 import {supportedLanguages} from '../models/workflowConfiguration.types'
 import {
     MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD,
     WORKFLOW_TEMPLATES,
 } from '../constants'
-import useStoreWorkflows from '../hooks/useStoreWorkflows'
 import {
     useWorkflowEditorContext,
     withWorkflowEditorContext,
@@ -34,6 +37,7 @@ import useWorkflowChannelSupport, {
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
 
+import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
@@ -63,30 +67,34 @@ function WorkflowEditorViewWrapped({
 }: WorkflowEditorViewProps) {
     const {template: templateSlug} = useSearch<{template: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
-    const {handleSelfServiceConfigurationUpdate} = useSelfServiceConfiguration(
-        shopType,
-        shopName
+
+    const handleNotify = useCallback(
+        (message: string, kind: 'success' | 'error') => {
+            notifyMerchant({
+                message,
+                status:
+                    kind === 'success'
+                        ? NotificationStatus.Success
+                        : NotificationStatus.Error,
+            })
+        },
+        [notifyMerchant]
     )
-    const {appendWorkflowInStore} = useStoreWorkflows(
-        shopType,
-        shopName,
-        useCallback(
-            (message: string, kind: 'success' | 'error') => {
-                void notifyMerchant({
-                    message,
-                    status:
-                        kind === 'success'
-                            ? NotificationStatus.Success
-                            : NotificationStatus.Error,
-                })
-            },
-            [notifyMerchant]
-        )
-    )
+
+    const {handleSelfServiceConfigurationUpdate} =
+        useSelfServiceConfigurationUpdate({
+            handleNotify: notifyMerchant,
+        })
+
+    const {appendWorkflowInStore} = useStoreWorkflowsApi(handleNotify)
+
+    const {id: storeIntegrationId} = useSelfServiceStoreIntegrationContext()
+
     const workflowChannelSupportContext = useWorkflowChannelSupport(
         shopType,
         shopName
     )
+
     const canShowSizeLimitWarning = useRef(true)
 
     // flags
@@ -151,15 +159,20 @@ function WorkflowEditorViewWrapped({
             })
             return
         }
+        if (!storeIntegrationId) return
         try {
             await workflowEditorContext.handleSave()
             if (isNewWorkflow) {
-                await appendWorkflowInStore(workflowId)
+                await appendWorkflowInStore(workflowId, storeIntegrationId)
             } else {
                 // trigger channel cache invalidation to refresh the entrypoint labels and deleted translations on their side
-                void handleSelfServiceConfigurationUpdate(() => {
-                    // update without modifying anything, just make it trigger channels cache invalidation
-                })
+                void handleSelfServiceConfigurationUpdate(
+                    () => {
+                        // update without modifying anything, just make it trigger channels cache invalidation
+                    },
+                    {},
+                    storeIntegrationId
+                )
             }
         } catch (e) {
             notifyMerchant({
