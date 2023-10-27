@@ -74,7 +74,10 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
             }
             backgroundColorStyle={decoration.background_color_style}
-            headerPictureUrl={decoration.header_picture_url}
+            headerPictureUrl={
+                decoration.header_picture_url ||
+                decoration.header_picture_url_offline
+            }
         >
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>

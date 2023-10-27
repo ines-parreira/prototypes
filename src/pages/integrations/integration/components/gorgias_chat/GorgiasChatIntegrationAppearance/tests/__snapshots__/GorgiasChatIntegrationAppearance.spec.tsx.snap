@@ -11280,6 +11280,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="subtitle mb-2"
                     >
                       Outside business hours
+                      <span
+                        id="header-picture-offline"
+                      >
+                        <i
+                          class="material-icons-outlined tooltipIcon"
+                        >
+                          info
+                        </i>
+                      </span>
                     </h3>
                     <div
                       class="previewHeaderLogoContainer mb-3"

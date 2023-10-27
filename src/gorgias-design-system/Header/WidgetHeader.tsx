@@ -107,7 +107,11 @@ const StyledWidgetHeaderImageWrapper = styled.div`
 `
 
 const StyledWidgetHeaderImage = styled.img`
-    max-height: 100%;
+    display: block;
+    max-height: 28px;
+    height: auto;
+    max-width: 100%;
+    width: 100%;
 `
 
 /**

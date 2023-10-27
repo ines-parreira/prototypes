@@ -753,7 +753,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 isWidgetConversation={preview === PREVIEW_CONVERSATION}
                 backgroundColorStyle={backgroundColorStyle}
                 headerPictureUrl={
-                    isOnline ? headerPictureUrl : headerPictureUrlOffline
+                    isOnline
+                        ? headerPictureUrl || headerPictureUrlOffline
+                        : headerPictureUrlOffline || headerPictureUrl
                 }
             >
                 <ChatIntegrationPreviewContent
@@ -820,6 +822,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         setState((prevState) => ({
             ...prevState,
             headerPictureUrl,
+            isOnline: true,
         }))
         setPreview(PREVIEW_HOME_PAGE)
     }
@@ -828,6 +831,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         setState((prevState) => ({
             ...prevState,
             headerPictureUrlOffline,
+            isOnline: false,
         }))
         setPreview(PREVIEW_HOME_PAGE)
     }
@@ -1210,6 +1214,37 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                         )}
                                                     >
                                                         Outside business hours
+                                                        <span id="header-picture-offline">
+                                                            <i
+                                                                className={classNames(
+                                                                    'material-icons-outlined',
+                                                                    css.tooltipIcon
+                                                                )}
+                                                            >
+                                                                info
+                                                            </i>
+                                                            <Tooltip
+                                                                style={{
+                                                                    textAlign:
+                                                                        'left',
+                                                                }}
+                                                                target="header-picture-offline"
+                                                            >
+                                                                If your default
+                                                                logo is light in
+                                                                color, please
+                                                                upload a dark
+                                                                version for when
+                                                                your chat is
+                                                                outside of
+                                                                business hours.
+                                                                This will
+                                                                improve
+                                                                readability
+                                                                against the gray
+                                                                background.
+                                                            </Tooltip>
+                                                        </span>
                                                     </h3>
                                                     <ImageField
                                                         isDiscardable={true}
