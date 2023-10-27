@@ -1,6 +1,6 @@
 import {wyboTheme, Theme, STATUSES} from 'reapop'
 
-import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colorTokens from 'assets/tokens/colors.json'
 
 const colors = {
     [STATUSES.info]: colorTokens['📺 Classic'].Main.Primary.value,

@@ -10,7 +10,7 @@ declare module '*.svg' {
 
 declare module '*.js'
 
-// declare module '*.json'
+declare module '*.json'
 
 declare module '*.png'
 
