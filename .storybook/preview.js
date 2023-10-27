@@ -14,6 +14,7 @@ import {
     LinearScale,
     CategoryScale,
     Filler,
+    ArcElement,
 } from 'chart.js'
 import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
@@ -21,7 +22,7 @@ export const parameters = {
     chromatic: {disableSnapshot: true},
     viewMode: 'docs',
     docs: {
-        canvas: { sourceState: 'shown' },
+        canvas: {sourceState: 'shown'},
     },
     options: {
         storySort: {
@@ -69,5 +70,6 @@ Chart.register(
     CategoryScale,
     SankeyController,
     Flow,
-    Filler
+    Filler,
+    ArcElement
 )

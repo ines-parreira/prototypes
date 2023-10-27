@@ -12,6 +12,7 @@ import {
     Tooltip,
     Legend,
     Filler,
+    ArcElement,
 } from 'chart.js'
 import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
@@ -169,7 +170,8 @@ export function initApp() {
         SankeyController,
         Flow,
         Filler,
-        GreyArea
+        GreyArea,
+        ArcElement
     )
 
     return store
