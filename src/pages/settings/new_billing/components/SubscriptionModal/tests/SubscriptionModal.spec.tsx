@@ -35,6 +35,7 @@ describe('SubscriptionModal', () => {
         productType: ProductType.Convert,
         canduId: canduId,
         prices: convertProduct.prices,
+        tagline: '',
         confirmLabel: confirmLabel,
         headerDescription: headerDescription,
         currentPage: currentPage,

@@ -108,6 +108,10 @@ const ProductPlanSelection = ({
                 | SMSOrVoicePrice
                 | ConvertPrice
         ) => {
+            if (isTrialPrice(price, type) && type === ProductType.Convert) {
+                return 'Pay as you go'
+            }
+
             if (isTrialPrice(price, type)) {
                 return 'Trial'
             }

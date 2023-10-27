@@ -32,8 +32,8 @@ const CampaignInfobarPaywall = () => {
                 }
                 type={AlertType.Info}
             >
-                Sort your campaigns with custom segments by subscribing to
-                Convert
+                Optimize your campaign targeting using shoppers' purchase intent
+                with Convert, and boost your CTR by 15%.
             </Alert>
 
             <ConvertSubscriptionModal

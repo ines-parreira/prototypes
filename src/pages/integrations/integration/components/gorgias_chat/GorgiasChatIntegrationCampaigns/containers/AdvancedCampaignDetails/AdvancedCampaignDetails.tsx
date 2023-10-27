@@ -610,7 +610,7 @@ export const AdvancedCampaignDetails = memo(
                                 {shouldShowContactCsm && (
                                     <Alert icon type={AlertType.Warning}>
                                         Advanced triggers are only available to
-                                        Revenue subscribers.To update them,
+                                        Convert subscribers.To update them,
                                         please contact your Customer Success
                                         Manager to activate this subscription.
                                     </Alert>

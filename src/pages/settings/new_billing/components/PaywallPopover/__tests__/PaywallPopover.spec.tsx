@@ -18,10 +18,21 @@ describe('<PaywallPopover />', () => {
             <PaywallPopover {...defaultProps} />
         )
 
-        expect(getByText('Get This Feature')).toBeInTheDocument()
+        expect(getByText('Get Convert')).toBeInTheDocument()
         expect(
-            queryByText('Subscribe to the Convert', {exact: false})
+            queryByText('Subscribe to Convert', {exact: false})
         ).toBeInTheDocument()
+    })
+
+    it('should render with custom tagline', () => {
+        const propsWithTagline = {
+            ...defaultProps,
+            tagline: 'Trololo',
+        }
+
+        const {getByText} = render(<PaywallPopover {...propsWithTagline} />)
+
+        expect(getByText('Trololo')).toBeInTheDocument()
     })
 
     it('should not render if closed', () => {

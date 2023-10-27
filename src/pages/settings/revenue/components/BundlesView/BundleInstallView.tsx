@@ -157,7 +157,7 @@ export const BundleInstallView = () => {
                             Connect a store
                         </Label>
                         <div className={pageCss.connectStoreDescription}>
-                            Connect a store to use Revenue tracking features.
+                            Connect a store to use Convert tracking features.
                         </div>
                         <StoreNameDropdown
                             gorgiasChatIntegrations={

@@ -45,7 +45,7 @@ describe('CampaignsStats', () => {
     describe('when on Starter plan', () => {
         const mockedState = getStateWithPrice(starterHelpdeskPrice)
 
-        it('should render the default paywall', () => {
+        it('should render the default paywall with upgrade label', () => {
             jest.spyOn(
                 isConvertSubscriberHook,
                 'useIsConvertSubscriber'
@@ -53,7 +53,9 @@ describe('CampaignsStats', () => {
 
             const {getByText} = renderWithStore(mockedState)
 
-            expect(getByText('Track chat campaigns')).toBeInTheDocument()
+            expect(
+                getByText('Level up your chat campaign conversions')
+            ).toBeInTheDocument()
             expect(getByText('Upgrade to Convert')).toBeInTheDocument()
         })
     })

@@ -16,6 +16,7 @@ describe('PlanSubscriptionDescription', () => {
     const props = {
         productType: ProductType.Convert,
         prices: convertProduct.prices,
+        tagline: '',
         isStarterPlan: false,
         isTrialing: false,
         isEnterprisePlan: false,
@@ -36,7 +37,6 @@ describe('PlanSubscriptionDescription', () => {
         ).toBeInTheDocument()
         expect(getByText('$1/month', {exact: false})).toBeInTheDocument()
         expect(getByText('clicks/month')).toBeInTheDocument()
-        expect(getByText('See details')).toBeInTheDocument()
 
         PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(
             (feature) => {

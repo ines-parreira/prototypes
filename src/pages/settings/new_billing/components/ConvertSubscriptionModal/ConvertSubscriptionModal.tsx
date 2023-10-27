@@ -79,6 +79,7 @@ const ConvertSubscriptionModal = ({
             canduId={canduId}
             prices={convertPrices ?? []}
             headerDescription={'Subscribe to Convert'}
+            tagline={'Ready to boost sales with Convert?'}
             currentPage={currentPath}
             defaultPrice={defaultPrice}
             // Convert doesn't have helpdesk trial

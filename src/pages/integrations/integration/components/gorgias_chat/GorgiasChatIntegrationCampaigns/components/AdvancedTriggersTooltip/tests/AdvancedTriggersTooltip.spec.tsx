@@ -41,7 +41,7 @@ describe('<AdvancedTriggersTooltip />', () => {
 
         await waitFor(() => {
             expect(
-                getByText(/Unlock all conditions by subscribing to Convert/i)
+                getByText(/Unlock all conditions by subscribing to Convert./i)
             ).toBeInTheDocument()
         })
 

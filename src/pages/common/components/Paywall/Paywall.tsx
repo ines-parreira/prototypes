@@ -22,6 +22,7 @@ export enum PaywallTheme {
 export enum UpgradeType {
     Plan = 'Plan',
     AddOn = 'Add-on',
+    None = '',
 }
 
 type Props = {

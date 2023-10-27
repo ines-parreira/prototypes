@@ -42,6 +42,7 @@ const ConvertPaywallView = ({
                 onClick={() => {
                     setIsModalOpened(true)
                 }}
+                hasIcon={false}
                 label="Get Convert"
             />
         )
@@ -72,7 +73,7 @@ const ConvertPaywallView = ({
                     description={description}
                     previewImage={previewImage}
                     requiredUpgrade={'Convert'}
-                    upgradeType={UpgradeType.AddOn}
+                    upgradeType={UpgradeType.None}
                     showUpgradeCta
                     renderFilterShadow
                     customCta={customCta}

@@ -234,7 +234,7 @@ export const BundleDetailView = () => {
                                 1-click installation for Shopify
                             </div>
                             <div>
-                                Add the Revenue bundle to your Shopify store in
+                                Add the Convert bundle to your Shopify store in
                                 one click.
                             </div>
                         </div>
@@ -270,7 +270,7 @@ export const BundleDetailView = () => {
                                     Manual installation
                                 </div>
                                 <div>
-                                    Add the Revenue tracking to specific pages
+                                    Add the Convert tracking to specific pages
                                     on a Shopify store and to other e-commerce
                                     platforms or website.
                                 </div>

@@ -149,10 +149,6 @@ export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =
         [ProductType.Voice]: {},
         [ProductType.SMS]: {},
         [ProductType.Convert]: {
-            detailsLink: {
-                label: 'See details',
-                url: 'https://www.gorgias.com/products/convert',
-            },
             features: [
                 'Reach customers at the right time with personalized campaigns.',
                 'Boost cross-sells with targeted product recommendation.',

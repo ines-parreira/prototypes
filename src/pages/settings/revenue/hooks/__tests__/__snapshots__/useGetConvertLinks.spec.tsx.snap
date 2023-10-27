@@ -12,6 +12,13 @@ exports[`useGetConvertLinks is not Convert subscriber should render upgrade icon
     isOpened={false}
     onButtonClick={[Function]}
     setIsOpened={[Function]}
+    tagline={
+      <React.Fragment>
+        Subscribe to Convert
+        <br />
+         to unlock this product
+      </React.Fragment>
+    }
   />
   <mockConstructor
     canduId="campaign-list-convert-modal-body"

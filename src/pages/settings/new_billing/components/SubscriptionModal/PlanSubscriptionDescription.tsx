@@ -27,6 +27,7 @@ import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
     prices: Price[]
+    tagline: string
     isStarterPlan: boolean
     isTrialing: boolean
     isEnterprisePlan: boolean
@@ -39,6 +40,7 @@ export type PlanSubscriptionDescriptionProps = {
 const PlanSubscriptionDescription = ({
     productType,
     prices,
+    tagline,
     isStarterPlan,
     isTrialing,
     isEnterprisePlan,
@@ -66,6 +68,10 @@ const PlanSubscriptionDescription = ({
     const formatOptionLabel = useCallback(
         (price: Price) => {
             if (isTrialPrice(price, productType)) {
+                if (productType === ProductType.Convert) {
+                    return 'Pay as you go'
+                }
+
                 return 'Trial'
             }
 
@@ -134,7 +140,9 @@ const PlanSubscriptionDescription = ({
             <div className={css.card}>
                 <div className={css.cardHeader}>
                     <div className={css.title}>
-                        Ready to upgrade with {productInfo.title}?
+                        {tagline || (
+                            <>Ready to upgrade with {productInfo.title}?</>
+                        )}
                     </div>
                 </div>
                 <div className={css.features}>
@@ -152,17 +160,19 @@ const PlanSubscriptionDescription = ({
             <div className={css.card}>
                 <div className={css.cardHeader}>
                     <div className={css.title}>Select a plan</div>
-                    <a
-                        className={css.link}
-                        href={descriptionInfo?.detailsLink?.url}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                    >
-                        {descriptionInfo?.detailsLink?.label}
-                        <i className={`${css.linkIcon} material-icons`}>
-                            open_in_new
-                        </i>
-                    </a>
+                    {descriptionInfo?.detailsLink && (
+                        <a
+                            className={css.link}
+                            href={descriptionInfo?.detailsLink?.url}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                        >
+                            {descriptionInfo?.detailsLink?.label}
+                            <i className={`${css.linkIcon} material-icons`}>
+                                open_in_new
+                            </i>
+                        </a>
+                    )}
                 </div>
                 <div className={css.selectedPlan}>
                     <div className={css.selector}>

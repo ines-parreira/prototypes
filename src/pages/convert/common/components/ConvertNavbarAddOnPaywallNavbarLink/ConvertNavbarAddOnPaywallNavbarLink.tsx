@@ -32,6 +32,13 @@ const ConvertNavbarAddOnPaywallNavbarLink = ({
         onSubscribeToAddOnClick()
     }
 
+    const tagline = (
+        <>
+            Subscribe to Convert
+            <br /> to unlock this product
+        </>
+    )
+
     return (
         <>
             <div
@@ -57,6 +64,7 @@ const ConvertNavbarAddOnPaywallNavbarLink = ({
                 onButtonClick={handleSubscribeToAddOnClick}
                 isOpened={isPopoverOpen}
                 setIsOpened={setIsPopoverOpen}
+                tagline={tagline}
             />
         </>
     )

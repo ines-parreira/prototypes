@@ -19,13 +19,16 @@ describe('ConvertNavbarAddOnPaywallNavbarLink', () => {
         fireEvent.mouseEnter(iconElement)
 
         await waitFor(() => {
-            const popoverContent = screen.getByText('Subscribe to the', {
-                exact: false,
-            })
+            const popoverContent = screen.getByText(
+                'Subscribe to Convert to unlock this product',
+                {
+                    exact: false,
+                }
+            )
             expect(popoverContent).toBeInTheDocument()
         })
 
-        fireEvent.click(getByText('Get This Feature'))
+        fireEvent.click(getByText('Get Convert'))
         expect(onSubscribeToAddOnClick).toHaveBeenCalled()
     })
 })

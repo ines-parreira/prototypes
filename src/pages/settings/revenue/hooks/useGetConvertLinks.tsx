@@ -38,6 +38,12 @@ const useGetConvertLinks = (): CategoryLink[] => {
     }, [isConvertSubscriber, iconRef, handeIconMouseEnter])
 
     const popoverComponent = useMemo(() => {
+        const tagline = (
+            <>
+                Subscribe to Convert
+                <br /> to unlock this product
+            </>
+        )
         return (
             <PaywallPopover
                 featureName="Convert"
@@ -45,6 +51,7 @@ const useGetConvertLinks = (): CategoryLink[] => {
                 onButtonClick={() => setISubscriptionModalOpen(true)}
                 isOpened={isPopoverOpen}
                 setIsOpened={setIsPopoverOpen}
+                tagline={tagline}
             />
         )
     }, [isPopoverOpen])

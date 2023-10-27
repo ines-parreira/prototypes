@@ -103,7 +103,7 @@ export const CampaignAudienceStep = ({
             <div className="mb-4">
                 {shouldShowContactCsm && (
                     <Alert icon type={AlertType.Warning}>
-                        Advanced triggers are only available to Revenue
+                        Advanced triggers are only available to Convert
                         subscribers. To update them, please contact your
                         Customer Success Manager to activate this subscription.
                     </Alert>

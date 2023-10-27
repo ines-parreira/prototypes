@@ -29,6 +29,7 @@ type Props = {
     confirmLabel?: string
     confirmEnterpriseLabel?: string
     headerDescription: string
+    tagline: string
     currentPage: string
     defaultPrice: Price | undefined
     isTrialingSubscription: boolean
@@ -46,6 +47,7 @@ const SubscriptionModal = ({
     confirmLabel = 'Subscribe',
     confirmEnterpriseLabel = 'Contact Us',
     headerDescription,
+    tagline,
     currentPage,
     defaultPrice,
     isTrialingSubscription,
@@ -139,6 +141,7 @@ const SubscriptionModal = ({
                         isTrialing={isTrialingSubscription}
                         isEnterprisePlan={isEnterprisePlan}
                         prices={prices}
+                        tagline={tagline}
                         interval={interval}
                         selectedPrice={selectedPrice}
                         setSelectedPrice={setSelectedPrice}
