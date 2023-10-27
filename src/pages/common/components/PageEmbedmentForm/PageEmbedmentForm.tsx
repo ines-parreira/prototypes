@@ -218,6 +218,7 @@ const PageEmbedmentForm = ({
                                 ref={floatingRef}
                                 target={targetRef}
                                 value={selectedPage.external_id}
+                                shouldFlip={false}
                             >
                                 <DropdownSearch
                                     placeholder="Select page"
@@ -277,63 +278,67 @@ const PageEmbedmentForm = ({
                     </SelectInputBoxContext.Consumer>
                 </SelectInputBox>
 
-                <div
-                    className={classNames({
-                        [css.hidden]: !selectedPage,
-                        [css.pagePositionSelectionSection]:
-                            Boolean(selectedPage),
-                    })}
-                >
-                    <h2 className={css.modalBodyHeading}>
-                        {positionSelectionTitle}
-                    </h2>
-                    <p>
-                        You can modify the position anytime after embedding it.
-                    </p>
+                {!!selectedPage.title && (
+                    <div
+                        className={classNames({
+                            [css.hidden]: !selectedPage,
+                            [css.pagePositionSelectionSection]:
+                                Boolean(selectedPage),
+                        })}
+                    >
+                        <h2 className={css.modalBodyHeading}>
+                            {positionSelectionTitle}
+                        </h2>
+                        <p>
+                            You can modify the position anytime after embedding
+                            it.
+                        </p>
 
-                    <div className={css.pagePositionSelectionGroup}>
-                        <PreviewRadioButton
-                            value={PageEmbedmentPosition.TOP}
-                            isSelected={
-                                pagePosition === PageEmbedmentPosition.TOP
-                            }
-                            label="Top"
-                            preview={
-                                <img
-                                    src={imageLayoutTop}
-                                    alt="layout top of the page"
-                                />
-                            }
-                            onClick={(ev) => {
-                                ev.preventDefault()
-                                dispatch({
-                                    type: 'setPagePosition',
-                                    payload: PageEmbedmentPosition.TOP,
-                                })
-                            }}
-                        />
-                        <PreviewRadioButton
-                            value={PageEmbedmentPosition.BOTTOM}
-                            isSelected={
-                                pagePosition === PageEmbedmentPosition.BOTTOM
-                            }
-                            label="Bottom"
-                            preview={
-                                <img
-                                    src={imageLayoutBottom}
-                                    alt="layout bottom of the page"
-                                />
-                            }
-                            onClick={(ev) => {
-                                ev.preventDefault()
-                                dispatch({
-                                    type: 'setPagePosition',
-                                    payload: PageEmbedmentPosition.BOTTOM,
-                                })
-                            }}
-                        />
+                        <div className={css.pagePositionSelectionGroup}>
+                            <PreviewRadioButton
+                                value={PageEmbedmentPosition.TOP}
+                                isSelected={
+                                    pagePosition === PageEmbedmentPosition.TOP
+                                }
+                                label="Top"
+                                preview={
+                                    <img
+                                        src={imageLayoutTop}
+                                        alt="layout top of the page"
+                                    />
+                                }
+                                onClick={(ev) => {
+                                    ev.preventDefault()
+                                    dispatch({
+                                        type: 'setPagePosition',
+                                        payload: PageEmbedmentPosition.TOP,
+                                    })
+                                }}
+                            />
+                            <PreviewRadioButton
+                                value={PageEmbedmentPosition.BOTTOM}
+                                isSelected={
+                                    pagePosition ===
+                                    PageEmbedmentPosition.BOTTOM
+                                }
+                                label="Bottom"
+                                preview={
+                                    <img
+                                        src={imageLayoutBottom}
+                                        alt="layout bottom of the page"
+                                    />
+                                }
+                                onClick={(ev) => {
+                                    ev.preventDefault()
+                                    dispatch({
+                                        type: 'setPagePosition',
+                                        payload: PageEmbedmentPosition.BOTTOM,
+                                    })
+                                }}
+                            />
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </ModalBody>
     )

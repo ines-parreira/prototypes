@@ -45,6 +45,7 @@ type Props = {
     target: RefObject<HTMLElement | null>
     value?: boolean | number | string | Array<number | string> | null
     contained?: boolean
+    shouldFlip?: boolean
 }
 
 type DropdownContextState = Pick<Props, 'isMultiple' | 'onToggle' | 'value'> & {
@@ -71,6 +72,7 @@ const Dropdown = forwardRef(
             target,
             value,
             contained = false,
+            shouldFlip = true,
         }: Props,
         ref: Ref<HTMLElement> | null | undefined
     ) => {
@@ -79,10 +81,11 @@ const Dropdown = forwardRef(
             middleware: [
                 shift(),
                 offsetMiddleware(offset),
-                flip({
-                    fallbackPlacements: ['right', 'bottom', 'top', 'left'],
-                    padding: safeDistance,
-                }),
+                shouldFlip &&
+                    flip({
+                        fallbackPlacements: ['right', 'bottom', 'top', 'left'],
+                        padding: safeDistance,
+                    }),
                 size({
                     apply({elements}) {
                         Object.assign(elements.floating.style ?? {}, {

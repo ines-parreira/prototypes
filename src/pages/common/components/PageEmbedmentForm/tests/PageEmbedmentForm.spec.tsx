@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
 import PageEmbedmentForm, {PageEmbedmentFormProps} from '../PageEmbedmentForm'
@@ -64,8 +64,18 @@ describe('<PageEmbedmentForm />', () => {
 
     it('should dispatch the appropriate action for the existing page mode', () => {
         const dispatch = jest.fn()
+        const selectedPage = ShopifyPagesListFixture[1]
 
-        render(<PageEmbedmentForm {...baseProps} dispatch={dispatch} />)
+        render(
+            <PageEmbedmentForm
+                {...baseProps}
+                state={{
+                    ...DEFAULT_VALUES,
+                    selectedPage,
+                }}
+                dispatch={dispatch}
+            />
+        )
 
         // navigate to existing page mode
         const ctaMode = screen.getByText(/Embed to existing page/i)
@@ -85,10 +95,29 @@ describe('<PageEmbedmentForm />', () => {
         expect(dispatch).toHaveBeenCalledTimes(1)
 
         // we verify the component is present, we don't need to test the component itself as it's part of the design system
-        screen.getByText('Select a page')
+        screen.getByText(selectedPage.title)
+
+        // select the first page
+        const selectPage = screen.getByText('arrow_drop_down')
+        userEvent.click(selectPage)
+
+        const firstPage = screen.getByText(ShopifyPagesListFixture[0].title)
+        fireEvent.click(firstPage)
+        expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
+            [
+              {
+                "payload": {
+                  "body_html": "<h1>About us</h1>",
+                  "external_id": "12345543211",
+                  "title": "About us",
+                  "url_path": "about-us",
+                },
+                "type": "setSelectedPage",
+              },
+            ]
+        `)
 
         const ctaPosition = screen.getByText(/bottom/i)
-
         userEvent.click(ctaPosition)
 
         expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
@@ -100,7 +129,7 @@ describe('<PageEmbedmentForm />', () => {
             ]
         `)
 
-        expect(dispatch).toHaveBeenCalledTimes(2)
+        expect(dispatch).toHaveBeenCalledTimes(3)
     })
 
     it('should go from existing page mode to new page mode if there are no page left', () => {
