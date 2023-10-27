@@ -5,7 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 
-import {Tab} from '../../Integration'
+import {Tab} from '../../types'
 
 import GorgiasChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 import GorgiasChatIntegrationNotInstalledBanner from './GorgiasChatIntegrationNotInstalledBanner'

@@ -6,7 +6,7 @@ import {IntegrationType} from 'models/integration/types'
 
 import {NotificationStatus} from 'state/notifications/types'
 
-import {Tab} from 'pages/integrations/integration/Integration'
+import {Tab} from 'pages/integrations/integration/types'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 
 type Props = {

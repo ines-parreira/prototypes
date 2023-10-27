@@ -14,7 +14,7 @@ import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import {Tab} from 'pages/integrations/integration/Integration'
+import {Tab} from 'pages/integrations/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import warningIcon from 'assets/img/icons/warning.svg'

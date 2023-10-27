@@ -99,27 +99,7 @@ import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import EmailMigration from './components/email/EmailMigration/EmailMigration'
 import SmoochDeprecatedIntegration from './components/deprecated/SmoochDeprecatedIntegration'
-
-export enum Tab {
-    EmailForwarding = 'forwarding',
-    EmailVerification = 'verification',
-    EmailDomainVerification = 'dns',
-    EmailOutboundVerification = 'outbound-verification',
-    EmailCustom = 'custom',
-    FacebookCustomerChat = 'customer_chat',
-    Preferences = 'preferences',
-    FacebookAds = 'ads',
-    HttpEvents = 'events',
-    Installation = 'installation',
-    QuickReplies = 'quick_replies',
-    Campaigns = 'campaigns',
-    Appearance = 'appearance',
-    PhoneVoicemail = 'voicemail',
-    PhoneGreetingMessage = 'greeting-message',
-    PhoneIvr = 'ivr',
-    CreateWizard = 'create-wizard',
-    Languages = 'languages',
-}
+import {Tab} from './types'
 
 export const IntegrationDetail = ({
     actions,

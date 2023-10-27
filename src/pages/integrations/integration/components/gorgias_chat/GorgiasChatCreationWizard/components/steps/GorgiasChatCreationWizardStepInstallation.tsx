@@ -17,7 +17,7 @@ import {
 } from 'models/integration/types'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
-import {Tab} from 'pages/integrations/integration/Integration'
+import {Tab} from 'pages/integrations/integration/types'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'

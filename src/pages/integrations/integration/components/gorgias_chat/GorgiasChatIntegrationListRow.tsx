@@ -32,7 +32,7 @@ import {
     IntegrationType,
 } from '../../../../../models/integration/types'
 
-import {Tab} from '../../Integration'
+import {Tab} from '../../types'
 
 import BodyCell from '../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../common/components/table/TableBodyRow'

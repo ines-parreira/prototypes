@@ -7,7 +7,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {IntegrationType} from 'models/integration/types'
 
-import {IntegrationDetail, Tab} from '../Integration'
+import {IntegrationDetail} from '../Integration'
+import {Tab} from '../types'
 
 jest.mock('../components/aircall/AircallIntegrationList.tsx', () => () => (
     <div>AircallIntegrationList</div>
