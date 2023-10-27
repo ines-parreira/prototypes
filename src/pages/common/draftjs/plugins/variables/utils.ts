@@ -3,8 +3,8 @@ import findWithRegex from 'find-with-regex'
 import _get from 'lodash/get'
 
 import {templateRegex} from 'pages/common/utils/template'
+import {getVariableWithValue} from 'tickets/common/utils'
 
-import * as ticketConfig from '../../../../../config/ticket'
 import {DecoratorComponentProps} from '../types'
 
 /**
@@ -87,7 +87,7 @@ export const attachEntitiesToVariables = (
                 .set('anchorOffset', start)
                 .set('focusOffset', end) as SelectionState
             const value = plainText.substring(start, end)
-            const variable = ticketConfig.getVariableWithValue(value)
+            const variable = getVariableWithValue(value)
 
             if (!variable) {
                 return

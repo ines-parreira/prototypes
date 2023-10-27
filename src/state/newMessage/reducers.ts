@@ -12,13 +12,13 @@ import {
     TicketChannel,
     TicketVia,
 } from 'business/types/ticket'
-import * as ticketConfig from 'config/ticket'
 import * as ticketTypes from 'state/ticket/constants'
 import {
     getSourceTypeOfResponse,
     getChannelFromSourceType,
 } from 'state/ticket/utils'
 import {GorgiasAction} from 'state/types'
+import {isPublic} from 'tickets/common/utils'
 
 import {MacroAction} from 'models/macroAction/types'
 import {addEmailExtra} from './actions'
@@ -52,7 +52,7 @@ export const makeNewMessage = (
 ) => {
     return fromJS({
         via: 'helpdesk',
-        public: ticketConfig.isPublic(sourceType),
+        public: isPublic(sourceType),
         from_agent: true,
         sender: null,
         source: {
@@ -380,7 +380,7 @@ export default function reducer(
                 .setIn(['newMessage', 'source', 'type'], sourceType)
                 .setIn(
                     ['newMessage', 'public'],
-                    ticketConfig.isPublic(sourceType as TicketMessageSourceType)
+                    isPublic(sourceType as TicketMessageSourceType)
                 )
         }
 

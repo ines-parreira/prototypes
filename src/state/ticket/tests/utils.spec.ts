@@ -37,7 +37,6 @@ import {
     getPreferredChannel,
     getSourceTypeOfResponse,
     guessReceiversFromTicket,
-    isForwardedMessage,
     persistLastSenderChannel,
     Receivers,
     ReceiversValue,
@@ -78,11 +77,11 @@ import {
     smsTicket,
 } from './fixtures'
 
-jest.mock('../../../config/ticket', () => {
-    const ticketConfig = jest.requireActual('../../../config/ticket')
+jest.mock('tickets/common/utils', () => {
+    const ticketUtils = jest.requireActual('tickets/common/utils')
 
     return {
-        ...ticketConfig,
+        ...ticketUtils,
         getVariableWithValue: (variable: string) => {
             if (variable.includes('variableWithReplace')) {
                 return 'my value'
@@ -1295,21 +1294,6 @@ describe('ticket utils', () => {
                 ).toEqual(fromJS(expectedSender))
             }
         )
-    })
-
-    describe('isForwardedMessage()', () => {
-        it('should detect forwarded message', () => {
-            expect(
-                isForwardedMessage(fromJS({source: {extra: {forward: true}}}))
-            ).toEqual(true)
-        })
-
-        it('should not detect forwarded message', () => {
-            expect(
-                isForwardedMessage(fromJS({source: {extra: {forward: false}}}))
-            ).toEqual(false)
-            expect(isForwardedMessage(fromJS({}))).toEqual(false)
-        })
     })
 
     describe('replaceIntegrationVariables()', () => {

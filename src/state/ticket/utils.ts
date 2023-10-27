@@ -18,7 +18,6 @@ import {
 } from 'business/types/ticket'
 import {SOURCE_VALUE_PROP} from 'config'
 import {INTEGRATION_TYPE_WITH_VARIABLES} from 'config/integrations'
-import * as ticketConfig from 'config/ticket'
 import {PHONE_EVENTS} from 'constants/event'
 import {MacroActionName} from 'models/macroAction/types'
 import {TicketEvent, TicketMessage} from 'models/ticket/types'
@@ -32,6 +31,14 @@ import * as responseUtils from 'state/newMessage/responseUtils'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
+import {
+    getVariableWithValue,
+    isForwardedMessage,
+    isSystemType,
+    orderedMessages,
+    responseSourceType,
+    sourceTypeToChannel,
+} from 'tickets/common/utils'
 import {
     generateTicketMessagesId,
     getActionTemplate,
@@ -102,8 +109,7 @@ export function getLastSameSourceTypeMessage(
         ]
     }
 
-    const msg = ticketConfig
-        .orderedMessages(messages)
+    const msg = orderedMessages(messages)
         .filter((m) => !isForwardedMessage(m))
         .filter((m: Map<any, any>) =>
             sourceTypesToSearch.includes(m.getIn(['source', 'type'], ''))
@@ -202,11 +208,7 @@ export function getSourceTypeOfResponse(
             return cachedSourceType
         }
     }
-    return ticketConfig.responseSourceType(
-        immutableMessages.toJS(),
-        via,
-        jsEvents
-    )
+    return responseSourceType(immutableMessages.toJS(), via, jsEvents)
 }
 
 /**
@@ -217,7 +219,7 @@ export function getChannelFromSourceType(
     sourceType: TicketMessageSourceType,
     messages: List<any> | any[]
 ) {
-    return ticketConfig.sourceTypeToChannel(sourceType, toImmutable(messages))
+    return sourceTypeToChannel(sourceType, toImmutable(messages))
 }
 
 export function isSupportAddress(
@@ -347,14 +349,11 @@ export function guessReceiversFromTicket(
     // if no `to` has been found in messages, try to pick it from customer channels
     if (ret.to.length === 0) {
         // if selected type needs a `to` field
-        if (!ticketConfig.isSystemType(newMessageSourceType)) {
+        if (!isSystemType(newMessageSourceType)) {
             const newMessageChannel =
                 newMessageSourceType === TicketMessageSourceType.Sms
                     ? TicketChannel.Phone
-                    : ticketConfig.sourceTypeToChannel(
-                          newMessageSourceType,
-                          messages
-                      )
+                    : sourceTypeToChannel(newMessageSourceType, messages)
             const customerChannel = (
                 ticket.getIn(['customer', 'channels'], fromJS([])) as List<any>
             )
@@ -662,7 +661,7 @@ export function getNewMessageSender(
 
     const preferredChannel =
         getPreferredChannel(
-            ticketConfig.sourceTypeToChannel(newMessageSourceType),
+            sourceTypeToChannel(newMessageSourceType),
             channels
         ) || fromJS({})
 
@@ -882,20 +881,6 @@ export function getPendingMessageIndex(
     return index
 }
 
-/**
- * Return whether or not the message is forwarded
- */
-export function isForwardedMessage(message: Map<any, any> | TicketMessage) {
-    return (
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-        ((toImmutable(message) as Map<any, any>).getIn([
-            'source',
-            'extra',
-            'forward',
-        ]) as boolean) || false
-    )
-}
-
 export const renderObject = (
     argument: string | Map<any, any>,
     context: Record<string, string>
@@ -956,7 +941,7 @@ export const replaceIntegrationVariables = (
         return newArgument.replace(variable, '')
     }
 
-    const variableConfig = ticketConfig.getVariableWithValue(variable)
+    const variableConfig = getVariableWithValue(variable)
     let newVariable = variable.replace(
         `integrations.${integrationType}`,
         `integrations[${integrationId!}]`
@@ -1203,7 +1188,7 @@ export function humanizeChannel(channel: string): string {
             return 'Forward'
         }
 
-        const channelFromSource = ticketConfig.sourceTypeToChannel(channel)
+        const channelFromSource = sourceTypeToChannel(channel)
         return (
             TICKET_CHANNEL_NAMES[channelFromSource] ??
             humanize(channelFromSource)

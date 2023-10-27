@@ -14,13 +14,13 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {insertText} from 'utils'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import {convertToHTML, getPlainText} from 'utils/editor'
-import {getVariables} from 'config/ticket'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import {MacroActionName} from 'models/macroAction/types'
+import {getVariables} from 'tickets/common/utils'
 
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,

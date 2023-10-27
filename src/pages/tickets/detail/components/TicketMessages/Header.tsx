@@ -4,8 +4,8 @@ import React from 'react'
 import classnames from 'classnames'
 
 import {TicketMessage} from 'models/ticket/types'
-import {isForwardedMessage} from 'state/ticket/utils'
 import {AgentLabel, CustomerLabel} from 'pages/common/utils/labels'
+import {isForwardedMessage} from 'tickets/common/utils'
 
 import css from './Header.less'
 import Meta from './Meta'

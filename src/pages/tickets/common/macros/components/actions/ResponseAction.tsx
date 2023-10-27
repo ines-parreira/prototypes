@@ -15,7 +15,6 @@ import Button from 'pages/common/components/button/Button'
 import Tip from 'pages/common/components/tip/Tip'
 import {insertText} from 'utils'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
-import {getVariables} from 'config/ticket'
 import {convertToHTML, getPlainText} from 'utils/editor'
 import {IntegrationType} from 'models/integration/types'
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -23,6 +22,7 @@ import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {MacroActionName} from 'models/macroAction/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {getVariables} from 'tickets/common/utils'
 
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,

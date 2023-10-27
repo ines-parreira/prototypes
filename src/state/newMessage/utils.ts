@@ -5,7 +5,6 @@ import _get from 'lodash/get'
 
 import {omit} from 'lodash'
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {canLeaveInternalNote} from 'config/ticket'
 import {MacroAction, MacroActionName} from 'models/macroAction/types'
 import {EMPTY_SENDER} from 'state/ticket/constants'
 import {ApplyExternalTemplateAction} from 'models/whatsAppMessageTemplates/types'
@@ -13,6 +12,7 @@ import {
     whatsAppMessageTemplateToHtml,
     WHATSAPP_VARIABLE_REGEX,
 } from 'pages/integrations/integration/components/whatsapp/utils'
+import {canLeaveInternalNote} from 'tickets/common/utils'
 import {isImmutable} from 'utils'
 import {MacroActions, NewMessage} from './types'
 

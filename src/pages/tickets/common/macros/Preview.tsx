@@ -7,11 +7,11 @@ import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {isRichType} from 'config/ticket'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 
 import {actionTypeToName, MacroActionName} from 'models/macroAction/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import {isRichType} from 'tickets/common/utils'
 
 import {
     TagLabel,
