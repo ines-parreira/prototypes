@@ -3,6 +3,7 @@ import {fromJS, Map, List} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import randomstring from 'randomstring'
 
+import * as esprima from 'esprima'
 import * as utils from 'utils'
 import * as envUtils from 'utils/environment'
 import schemasJSON from 'fixtures/openapi.json'
@@ -14,6 +15,7 @@ import {
     OBSERVER_AGENT_ROLE,
 } from 'config/user'
 import client from 'models/api/resources'
+import {getCode} from 'utils'
 
 jest.mock('utils/environment')
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
@@ -1066,6 +1068,16 @@ describe('global utils', () => {
             const event = new MouseEvent('mousemove')
 
             expect(utils.isTouchEvent(event)).toEqual(false)
+        })
+    })
+
+    describe('getCode', () => {
+        it('should return the generated code for a valid AST', () => {
+            const script =
+                "containsAll(ticket.tags.name, [\n    '😍 heart',\n    'refund'\n]) && eq(ticket.assignee_team.id, 1) && eq(ticket.channel, 'chat') && gteTimedelta(ticket.created_datetime, '1d') && gteTimedelta(ticket.closed_datetime, '1d') && eq(ticket.messages.integration_id, 5) && isEmpty(ticket.snooze_datetime) && eq(ticket.status, 'open')"
+            const ast = esprima.parseScript(script)
+            const code = getCode(ast)
+            expect(code).toBe(script)
         })
     })
 })

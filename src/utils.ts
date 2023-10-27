@@ -221,6 +221,7 @@ export function getCode(ast: esprima.Program): string {
     return escodegen.generate(ast, {
         format: {
             semicolons: false,
+            escapeless: true,
         },
     })
 }
