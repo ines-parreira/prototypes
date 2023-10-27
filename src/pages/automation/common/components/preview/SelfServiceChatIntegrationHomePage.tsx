@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
+import styled from '@emotion/styled'
 
 import {
     GORGIAS_CHAT_SSP_TEXTS,
@@ -27,6 +28,10 @@ import ConversationAvatars from 'pages/integrations/integration/components/gorgi
 import css from './SelfServiceChatIntegrationHomePage.less'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
+
+const StyledCard = styled(Card)`
+    padding: 8px 16px 8px 8px;
+`
 
 type Props = {
     integration: GorgiasChatIntegration
@@ -140,7 +145,7 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
             <div className={css.contentContainer}>
                 {(quickResponses.length > 0 ||
                     workflowsEntrypoints.length > 0) && (
-                    <List style={{marginBottom: '20px'}}>
+                    <List>
                         {workflowsEntrypoints.map((entrypoint) => (
                             <ListItem
                                 key={entrypoint.workflow_id}
@@ -163,7 +168,7 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                     </List>
                 )}
                 {canManageOrders && (
-                    <Card
+                    <StyledCard
                         leadIcon={<BoxIcon />}
                         title={
                             canTrackOrders

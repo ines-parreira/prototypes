@@ -72,15 +72,15 @@ const StyledWidgetHeader = styled.div<{isExpandable?: boolean}>`
 
     ${({isExpandable}) =>
         isExpandable
-            ? ' padding: 14px 16px 14px 32px;'
-            : 'padding: 34px 16px 14px 32px;'}
+            ? ' padding: 12px 16px 12px 32px;'
+            : 'padding: 32px 16px 12px 32px;'}
 `
 const StyledTitle = styled.div`
     font-size: 16px;
     font-weight: 600;
     line-height: 24px;
     display: flex;
-    height: 32px;
+    height: 28px;
     align-items: center;
 `
 
@@ -94,10 +94,10 @@ const StyledMessage = styled.div<{
 }>`
     color: ${({variant}) =>
         variant === 'light' ? gorgiasColors.white : gorgiasColors.dark};
-    padding: 20px 32px;
-    font-size: 24px;
+    padding: 8px 32px 20px 32px;
+    font-size: 20px;
     font-weight: 600;
-    line-height: 32px;
+    line-height: 28px;
     z-index: 2;
 `
 

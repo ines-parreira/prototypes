@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 import React from 'react'
+import styled from '@emotion/styled'
 
 import {
     GORGIAS_CHAT_SSP_TEXTS,
@@ -19,6 +20,10 @@ import css from './ChatHomePreview.less'
 import {BoxIcon, ChevronRightIcon, PlaneIcon, AddIcon} from './icon-utils'
 import ConversationAvatars from './ConversationAvatars'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
+
+const StyledCard = styled(Card)`
+    padding: 8px 16px 8px 8px;
+`
 
 type Props = {
     avatar?: GorgiasChatAvatarSettings
@@ -103,7 +108,7 @@ const ChatHomePreview: React.FC<Props> = ({
     return (
         <div className={css.contentContainer}>
             {quickResponses.length > 0 && (
-                <List style={{marginBottom: '20px'}}>
+                <List>
                     {quickResponses.map((quickResponse) => (
                         <ListItem
                             key={quickResponse.id}
@@ -114,8 +119,7 @@ const ChatHomePreview: React.FC<Props> = ({
                 </List>
             )}
             {canManageOrders && (
-                <Card
-                    style={{marginBottom: '20px'}}
+                <StyledCard
                     leadIcon={<BoxIcon />}
                     title={
                         canTrackOrders

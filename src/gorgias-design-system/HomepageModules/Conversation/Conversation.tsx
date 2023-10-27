@@ -15,7 +15,7 @@ const StyledContentPlaceholder = styled.div`
 `
 
 const StyledContent = styled.div<{variant: ConversationVariant}>`
-    ${({variant}) => variant === 'collapsed' && 'padding: 16px;'}
+    ${({variant}) => variant === 'collapsed' && 'padding: 12px 16px;'}
 
     overflow-y: auto;
     overflow-x: hidden;
@@ -29,9 +29,10 @@ const StyledContent = styled.div<{variant: ConversationVariant}>`
 const StyledDescription = styled.div`
     color: ${gorgiasColors.neutralGrey5};
 
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     letter-spacing: -0.14px;
+    line-height: 16px;
 `
 
 const StyledTitle = styled.div`
@@ -45,7 +46,6 @@ const StyledTitle = styled.div`
 const StyledSubject = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 4px;
 `
 
 const StyledConversationFooter = styled.div`
@@ -60,8 +60,7 @@ const StyledConversationHeader = styled.div<{
     display: flex;
     align-items: center;
     gap: 8px;
-
-    padding: ${({variant}) => (variant === 'expanded' ? '12px 16px' : '16px')};
+    padding: 12px 16px;
 
     svg .withFill {
         fill: ${({theme}) => theme?.mainColor};
