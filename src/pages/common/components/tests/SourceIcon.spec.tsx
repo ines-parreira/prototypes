@@ -2,8 +2,8 @@ import React from 'react'
 import {render} from '@testing-library/react'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {USABLE_SOURCE_TYPES, SYSTEM_SOURCE_TYPES} from 'config/ticket'
 import {getChannelBySlug} from 'services/channels'
+import {SYSTEM_SOURCE_TYPES, USABLE_SOURCE_TYPES} from 'tickets/common/config'
 import {channels as mockChannels} from 'fixtures/channels'
 
 import SourceIcon from '../SourceIcon'

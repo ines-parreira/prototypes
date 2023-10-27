@@ -25,7 +25,7 @@ import {Integration, IntegrationType} from 'models/integration/types'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
 import {Channel, getChannels, isNewChannel, toChannel} from 'services/channels'
-import {DEFAULT_SOURCE_TYPE} from 'config/ticket'
+import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
 
 const LEGACY_OUTBOUND_SOURCES_BY_INTEGRATION: Partial<
     Record<IntegrationType, TicketMessageSourceType[]>

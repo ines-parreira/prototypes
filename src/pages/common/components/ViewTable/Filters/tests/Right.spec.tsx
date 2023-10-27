@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Identifier} from 'estree'
 
-import {CHANNELS} from 'config/ticket'
+import {CHANNELS} from 'tickets/common/config'
 import {RightContainer} from '../Right'
 
 jest.mock('moment-timezone', () => () => {

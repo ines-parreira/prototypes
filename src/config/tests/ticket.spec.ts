@@ -1,20 +1,27 @@
-import _isString from 'lodash/isString'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 import _isBoolean from 'lodash/isBoolean'
 import {Map} from 'immutable'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {EventType} from 'models/event/types'
-import {channels as mockChannels} from 'fixtures/channels'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
-} from '../../business/types/ticket'
-import {TicketEvent, TicketMessage} from '../../models/ticket/types'
+} from 'business/types/ticket'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {channels as mockChannels} from 'fixtures/channels'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {EventType} from 'models/event/types'
+import {TicketEvent, TicketMessage} from 'models/ticket/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {
+    DEFAULT_CHANNEL,
+    DEFAULT_SOURCE_TYPE,
+    SYSTEM_SOURCE_TYPES,
+    USABLE_SOURCE_TYPES,
+    VARIABLES,
+} from 'tickets/common/config'
+
 import * as ticketConfig from '../ticket'
 
 jest.mock('api/queryClient', () => ({
@@ -24,73 +31,6 @@ jest.mock('api/queryClient', () => ({
 }))
 
 describe('Config: ticket', () => {
-    describe('DEFAULT_CHANNEL', () => {
-        it('is string', () => {
-            expect(_isString(ticketConfig.DEFAULT_CHANNEL)).toBe(true)
-        })
-    })
-
-    describe('DEFAULT_SOURCE_TYPE', () => {
-        it('is string', () => {
-            expect(_isString(ticketConfig.DEFAULT_SOURCE_TYPE)).toBe(true)
-        })
-    })
-
-    describe('STATUSES', () => {
-        it('is array', () => {
-            expect(_isArray(ticketConfig.STATUSES)).toBe(true)
-        })
-    })
-
-    describe('CHANNELS', () => {
-        it('is array', () => {
-            expect(_isArray(ticketConfig.CHANNELS)).toBe(true)
-        })
-    })
-
-    describe('SYSTEM_SOURCE_TYPES', () => {
-        it('is array', () => {
-            expect(_isArray(ticketConfig.SYSTEM_SOURCE_TYPES)).toBe(true)
-        })
-    })
-
-    describe('USABLE_SOURCE_TYPES', () => {
-        it('is array', () => {
-            expect(_isArray(ticketConfig.USABLE_SOURCE_TYPES)).toBe(true)
-        })
-    })
-
-    const variables: ['VARIABLES', 'PREVIOUS_VARIABLES'] = [
-        'VARIABLES',
-        'PREVIOUS_VARIABLES',
-    ]
-
-    variables.forEach((name) => {
-        const value = ticketConfig[name]
-
-        describe(name, () => {
-            it('is array', () => {
-                expect(_isArray(value)).toBe(true)
-            })
-
-            it('is array of objects', () => {
-                expect(_isObject(value[0])).toBe(true)
-            })
-
-            it('structure of objects', () => {
-                const object = value[0]
-                expect(object).toHaveProperty('name')
-                expect(object).toHaveProperty('children')
-            })
-
-            it("structure of object's children", () => {
-                const child = value[0].children ? value[0].children[0] : {}
-                expect(child).toHaveProperty('name')
-                expect(child).toHaveProperty('value')
-            })
-        })
-    })
-
     describe('orderedMessages', () => {
         it('order messages', () => {
             const messages = [
@@ -137,10 +77,7 @@ describe('Config: ticket', () => {
 
     describe('isAnswerableType', () => {
         it('is correct', () => {
-            const validTypes = [
-                ...ticketConfig.USABLE_SOURCE_TYPES,
-                'tiktok-shop',
-            ]
+            const validTypes = [...USABLE_SOURCE_TYPES, 'tiktok-shop']
             const invalidTypes = ['test', 123, undefined, null, {}, []]
 
             validTypes.forEach((type) => {
@@ -155,7 +92,7 @@ describe('Config: ticket', () => {
 
     describe('isSystemType', () => {
         it('is correct', () => {
-            const validTypes = ticketConfig.SYSTEM_SOURCE_TYPES
+            const validTypes = SYSTEM_SOURCE_TYPES
             const invalidTypes: any[] = ['test', 123, undefined, null, {}, []]
 
             validTypes.forEach((type) => {
@@ -210,7 +147,7 @@ describe('Config: ticket', () => {
         })
 
         it('ignores system messages', () => {
-            const systemType = ticketConfig.SYSTEM_SOURCE_TYPES[0]
+            const systemType = SYSTEM_SOURCE_TYPES[0]
 
             const lastMessage = ticketConfig.lastNonSystemTypeMessage([
                 {
@@ -301,9 +238,7 @@ describe('Config: ticket', () => {
         })
 
         it('returns correct config object', () => {
-            const config =
-                ticketConfig.VARIABLES[0].children &&
-                ticketConfig.VARIABLES[0].children[0]
+            const config = VARIABLES[0].children && VARIABLES[0].children[0]
             if (!config) {
                 throw new Error('config is undefined')
             }
@@ -485,7 +420,7 @@ describe('Config: ticket', () => {
 
             expect(
                 ticketConfig.responseSourceType(messages, via, events)
-            ).toEqual(ticketConfig.DEFAULT_SOURCE_TYPE)
+            ).toEqual(DEFAULT_SOURCE_TYPE)
         })
 
         it('should return default message source type for email ticket that has one email message', () => {
@@ -498,7 +433,7 @@ describe('Config: ticket', () => {
 
             expect(
                 ticketConfig.responseSourceType(messages, via, events)
-            ).toEqual(ticketConfig.DEFAULT_SOURCE_TYPE)
+            ).toEqual(DEFAULT_SOURCE_TYPE)
         })
 
         it.each([
@@ -547,7 +482,7 @@ describe('Config: ticket', () => {
                 null as unknown as TicketMessageSourceType,
                 []
             )
-            expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
+            expect(channel).toBe(DEFAULT_CHANNEL)
         })
 
         it('should return the default channel if there is no message and source type is internal note', () => {
@@ -555,7 +490,7 @@ describe('Config: ticket', () => {
                 TicketMessageSourceType.InternalNote,
                 []
             )
-            expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
+            expect(channel).toBe(DEFAULT_CHANNEL)
         })
 
         it('should return the phone channel if the last not system message is from twilio', () => {

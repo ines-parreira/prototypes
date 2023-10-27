@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import {ContentBlock, ContentState} from 'draft-js'
 
 import {IntegrationType} from 'models/integration/constants'
-import {Variable} from 'config/ticket'
+import {Variable} from 'tickets/common/config'
 
 import {DecoratorComponentProps, DecoratorStrategyCallback} from '../types'
 import * as integrationsHelpers from '../../../../../state/integrations/helpers'

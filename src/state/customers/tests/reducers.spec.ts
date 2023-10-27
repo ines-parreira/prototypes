@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {OPEN_STATUS, CLOSED_STATUS} from '../../../config/ticket'
+import {TicketStatus} from 'business/types/ticket'
 import reducer, {initialState} from '../reducers'
 import * as newMessageTypes from '../../newMessage/constants'
 import * as viewTypes from '../../views/constants'
@@ -203,12 +203,17 @@ describe('customers reducers', () => {
         const state = initialState.setIn(
             ['customerHistory', 'tickets'],
             fromJS([
-                {id: 1, excerpt: 'OK', messages_count: 1, status: OPEN_STATUS},
+                {
+                    id: 1,
+                    excerpt: 'OK',
+                    messages_count: 1,
+                    status: TicketStatus.Open,
+                },
                 {
                     id: 2,
                     excerpt: 'Alright',
                     messages_count: 3,
-                    status: OPEN_STATUS,
+                    status: TicketStatus.Open,
                 },
             ])
         )
@@ -228,8 +233,8 @@ describe('customers reducers', () => {
         const state = initialState.setIn(
             ['customerHistory', 'tickets'],
             fromJS([
-                {id: 1, excerpt: 'OK', status: OPEN_STATUS},
-                {id: 2, excerpt: 'Alright', status: OPEN_STATUS},
+                {id: 1, excerpt: 'OK', status: TicketStatus.Open},
+                {id: 2, excerpt: 'Alright', status: TicketStatus.Open},
             ])
         )
 
@@ -242,7 +247,7 @@ describe('customers reducers', () => {
                         name: 'New Assignee',
                     },
                     subject: 'New subject',
-                    status: CLOSED_STATUS,
+                    status: TicketStatus.Closed,
                 },
             }).toJS()
         ).toMatchSnapshot()

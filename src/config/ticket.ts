@@ -1,244 +1,34 @@
 import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {isTicketMessageSourceType} from 'models/ticket/predicates'
-import {ChannelLike, toChannel} from 'services/channels'
-
 import {
     TicketChannel,
     TicketMessageSourceType,
-    TicketStatus,
     TicketVia,
-} from '../business/types/ticket'
-import {TicketEvent, TicketMessage} from '../models/ticket/types'
+} from 'business/types/ticket'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {isTicketMessageSourceType} from 'models/ticket/predicates'
+import {TicketEvent, TicketMessage} from 'models/ticket/types'
+import {ChannelLike, toChannel} from 'services/channels'
+import {isForwardedMessage} from 'state/ticket/utils'
 import {
     compare,
     getLastEvent,
     getLastMessage,
     isLastItemInTicketAnEvent,
     toImmutable,
-} from '../utils'
-import {isForwardedMessage} from '../state/ticket/utils'
+} from 'utils'
 
 import {
-    INTEGRATION_HIDDEN_VARIABLES,
-    INTEGRATION_PREVIOUS_VARIABLES,
-    INTEGRATION_VARIABLES,
-} from './integrations/index'
-
-// TODO(business-extract): Deprecated constants => Use directly Channels.XXX in your code
-//$TsFixMe fallback constants for js files, remove once replaced with TicketChannel enum
-export const CHAT_CHANNEL = TicketChannel.Chat
-export const EMAIL_CHANNEL = TicketChannel.Email
-export const FACEBOOK_MESSENGER_CHANNEL = TicketChannel.FacebookMessenger
-export const INSTAGRAM_DM_CHANNEL = TicketChannel.InstagramDirectMessage
-export const TWITTER_DM_CHANNEL = TicketChannel.TwitterDirectMessage
-export const CHANNELS = Object.values(TicketChannel)
-
-export const DEFAULT_CHANNEL = TicketChannel.Email
-
-// TODO(business-extract): Deprecated constants => Use directly Statuses.XXX in your code
-//$TsFixMe fallback constants for js files, remove once replaced with TicketStatus enum
-export const OPEN_STATUS = TicketStatus.Open
-export const CLOSED_STATUS = TicketStatus.Closed
-export const STATUSES = Object.values(TicketStatus)
-
-// TODO(business-extract): Deprecated constants => Use directly SourceTypes.XXX in your code
-//$TsFixMe fallback constants for js files, remove once replaced with TicketMessageSourceType enum
-export const AIRCALL_SOURCE = TicketMessageSourceType.Aircall
-export const API_SOURCE = TicketMessageSourceType.Api
-export const CHAT_SOURCE = TicketMessageSourceType.Chat
-export const EMAIL_FORWARD_SOURCE = TicketMessageSourceType.EmailForward
-export const EMAIL_SOURCE = TicketMessageSourceType.Email
-export const FACEBOOK_COMMENT_SOURCE = TicketMessageSourceType.FacebookComment
-export const FACEBOOK_REVIEW_COMMENT_SOURCE =
-    TicketMessageSourceType.FacebookReviewComment
-export const FACEBOOK_MESSAGE_SOURCE = TicketMessageSourceType.FacebookMessage
-export const FACEBOOK_MESSENGER_SOURCE =
-    TicketMessageSourceType.FacebookMessenger
-export const FACEBOOK_POST_SOURCE = TicketMessageSourceType.FacebookPost
-export const FACEBOOK_MENTION_POST_SOURCE =
-    TicketMessageSourceType.FacebookMentionPost
-export const FACEBOOK_MENTION_COMMENT_SOURCE =
-    TicketMessageSourceType.FacebookMentionComment
-export const FACEBOOK_REVIEW_SOURCE = TicketMessageSourceType.FacebookReview
-export const INSTAGRAM_AD_COMMENT_SOURCE =
-    TicketMessageSourceType.InstagramAdComment
-export const INSTAGRAM_AD_MEDIA_SOURCE =
-    TicketMessageSourceType.InstagramAdMedia
-export const INSTAGRAM_COMMENT_SOURCE = TicketMessageSourceType.InstagramComment
-export const INSTAGRAM_MEDIA_SOURCE = TicketMessageSourceType.InstagramMedia
-export const INSTAGRAM_MENTION_MEDIA_SOURCE =
-    TicketMessageSourceType.InstagramMentionMedia
-export const INSTAGRAM_MENTION_COMMENT_SOURCE =
-    TicketMessageSourceType.InstagramMentionComment
-export const INSTAGRAM_DM_SOURCE =
-    TicketMessageSourceType.InstagramDirectMessage
-export const INTERNAL_NOTE_SOURCE = TicketMessageSourceType.InternalNote
-export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceType.OttspottCall
-export const PHONE_SOURCE = TicketMessageSourceType.Phone
-export const SYSTEM_MESSAGE_SOURCE = TicketMessageSourceType.SystemMessage
-export const YOTPO_REVIEW_SOURCE = TicketMessageSourceType.YotpoReview
-export const YOTPO_REVIEW_PUBLIC_COMMENT_SOURCE =
-    TicketMessageSourceType.YotpoReviewPublicComment
-export const YOTPO_REVIEW_PRIVATE_COMMENT_SOURCE =
-    TicketMessageSourceType.YotpoReviewPrivateComment
-export const TWITTER_TWEET_SOURCE = TicketMessageSourceType.TwitterTweet
-export const TWITTER_QUOTED_TWEET_SOURCE =
-    TicketMessageSourceType.TwitterQuotedTweet
-export const TWITTER_MENTION_TWEET_SOURCE =
-    TicketMessageSourceType.TwitterMentionTweet
-
-export const SOURCE_TYPES = Object.values(TicketMessageSourceType)
-
-export const SYSTEM_SOURCE_TYPES = [INTERNAL_NOTE_SOURCE, SYSTEM_MESSAGE_SOURCE]
-
-// source types that can be used to answer
-export const USABLE_SOURCE_TYPES = [
-    CHAT_SOURCE,
-    EMAIL_SOURCE,
-    FACEBOOK_COMMENT_SOURCE,
-    FACEBOOK_MENTION_COMMENT_SOURCE,
-    FACEBOOK_REVIEW_COMMENT_SOURCE,
-    FACEBOOK_MESSAGE_SOURCE,
-    FACEBOOK_MESSENGER_SOURCE,
-    INSTAGRAM_AD_COMMENT_SOURCE,
-    INSTAGRAM_COMMENT_SOURCE,
-    INSTAGRAM_MENTION_MEDIA_SOURCE,
-    INSTAGRAM_MENTION_COMMENT_SOURCE,
-    INSTAGRAM_DM_SOURCE,
-    INTERNAL_NOTE_SOURCE,
-    YOTPO_REVIEW_SOURCE,
-    YOTPO_REVIEW_PUBLIC_COMMENT_SOURCE,
-    YOTPO_REVIEW_PRIVATE_COMMENT_SOURCE,
-    TWITTER_TWEET_SOURCE,
-    TWITTER_QUOTED_TWEET_SOURCE,
-    TWITTER_MENTION_TWEET_SOURCE,
-    TicketMessageSourceType.TwitterDirectMessage,
-]
-
-export const DEFAULT_SOURCE_TYPE = TicketMessageSourceType.Email
-
-export type Variable = {
-    type: string
-    name: string
-    children?: VariableChild[]
-    value?: string
-    explicit?: boolean
-    fullName?: string
-
-    integration?: string
-    replace?: (object: Map<any, any>, value: any) => string
-}
-
-type VariableChild = {
-    name: string
-    fullName: string
-    value: string
-}
-
-// available variables in macros
-export const VARIABLES: Variable[] = [
-    {
-        type: 'ticket.customer',
-        name: 'Ticket customer',
-        children: [
-            {
-                name: 'First name',
-                fullName: 'Customer first name',
-                value: '{{ticket.customer.firstname}}',
-            },
-            {
-                name: 'Last name',
-                fullName: 'Customer last name',
-                value: '{{ticket.customer.lastname}}',
-            },
-            {
-                name: 'Full name',
-                fullName: 'Customer full name',
-                value: '{{ticket.customer.name}}',
-            },
-            {
-                name: 'Email',
-                fullName: 'Customer email',
-                value: '{{ticket.customer.email}}',
-            },
-        ],
-    },
-    {
-        type: 'current_user',
-        name: 'Current agent',
-        children: [
-            {
-                name: 'First name',
-                fullName: 'Current agent first name',
-                value: '{{current_user.firstname}}',
-            },
-            {
-                name: 'Last name',
-                fullName: 'Current agent last name',
-                value: '{{current_user.lastname}}',
-            },
-            {
-                name: 'Full name',
-                fullName: 'Current agent full name',
-                value: '{{current_user.name}}',
-            },
-            {
-                name: 'Email',
-                fullName: 'Current agent email',
-                value: '{{current_user.email}}',
-            },
-            {
-                name: 'Bio',
-                fullName: 'Current agent bio',
-                value: '{{current_user.bio}}',
-            },
-        ],
-    },
-    {
-        type: 'survey',
-        explicit: true,
-        name: 'Satisfaction Survey',
-        value: '{{satisfaction_survey_url}}',
-    },
-    ...(INTEGRATION_VARIABLES as Variable[]),
-]
-
-// variables used in some other variables, but which are never available to use on their own
-export const HIDDEN_VARIABLES = [...INTEGRATION_HIDDEN_VARIABLES] as Variable[]
-
-// previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
-export const PREVIOUS_VARIABLES: Variable[] = [
-    {
-        name: 'Ticket Customer',
-        type: 'ticket.requester',
-        children: [
-            {
-                name: 'First name',
-                fullName: 'Customer first name',
-                value: '{{ticket.customer.firstname}}',
-            },
-            {
-                name: 'Last name',
-                fullName: 'Customer last name',
-                value: '{{ticket.customer.lastname}}',
-            },
-            {
-                name: 'Full name',
-                fullName: 'Customer full name',
-                value: '{{ticket.customer.name}}',
-            },
-            {
-                name: 'Email',
-                fullName: 'Customer email',
-                value: '{{ticket.customer.email}}',
-            },
-        ],
-    },
-    ...(INTEGRATION_PREVIOUS_VARIABLES as Variable[]),
-]
+    DEFAULT_CHANNEL,
+    DEFAULT_SOURCE_TYPE,
+    HIDDEN_VARIABLES,
+    PREVIOUS_VARIABLES,
+    SYSTEM_SOURCE_TYPES,
+    USABLE_SOURCE_TYPES,
+    Variable,
+    VARIABLES,
+} from 'tickets/common/config'
 
 /**
  * Return passed messages ordered by created_datetime

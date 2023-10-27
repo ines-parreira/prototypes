@@ -1,11 +1,8 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {FacebookReactionType} from 'constants/integrations/facebook'
-import {
-    FACEBOOK_COMMENT_SOURCE,
-    FACEBOOK_MENTION_COMMENT_SOURCE,
-} from 'config/ticket'
 import {
     duplicatedHiddenFacebookMessage,
     facebookMessageNoMeta,
@@ -25,7 +22,10 @@ describe('<SourceActionsFooter/>', () => {
         executeAction: jest.fn(),
     }
 
-    it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
+    it.each([
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionComment,
+    ])(
         "should only render a `Like` action because it's a Facebook message with no meta",
         (source_type) => {
             const facebookMessage = {
@@ -45,7 +45,10 @@ describe('<SourceActionsFooter/>', () => {
         }
     )
 
-    it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
+    it.each([
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionComment,
+    ])(
         "should render a `Unlike` action because it's a Facebook message with already a page reaction",
         (source_type) => {
             const facebookMessage = {
@@ -65,7 +68,10 @@ describe('<SourceActionsFooter/>', () => {
         }
     )
 
-    it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
+    it.each([
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionComment,
+    ])(
         "should render the customer's reaction and a `Like` action because the message has a customer reaction and no page reaction",
         (source_type) => {
             const facebookMessage = {
@@ -85,7 +91,10 @@ describe('<SourceActionsFooter/>', () => {
         }
     )
 
-    it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
+    it.each([
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionComment,
+    ])(
         'should render page, customer and other reactions because we have all three types of reactions',
         (source_type) => {
             const facebookMessage = {
@@ -105,7 +114,10 @@ describe('<SourceActionsFooter/>', () => {
         }
     )
 
-    it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
+    it.each([
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionComment,
+    ])(
         'should not render any reactions because the message is hidden',
         (source_type) => {
             const facebookMessage = {
@@ -126,7 +138,10 @@ describe('<SourceActionsFooter/>', () => {
         }
     )
 
-    it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
+    it.each([
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionComment,
+    ])(
         'should not render any reactions because the message is deleted',
         (source_type) => {
             const facebookMessage = {
@@ -147,7 +162,10 @@ describe('<SourceActionsFooter/>', () => {
         }
     )
 
-    it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
+    it.each([
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionComment,
+    ])(
         'should render text reactions because the reactions types have no corresponding icons',
         (source_type) => {
             const facebookMessage = {
@@ -171,7 +189,10 @@ describe('<SourceActionsFooter/>', () => {
         }
     )
 
-    it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
+    it.each([
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionComment,
+    ])(
         "should render nothing because it's a duplicated Facebook message",
         (source_type) => {
             const facebookMessage = {
@@ -194,7 +215,8 @@ describe('<SourceActionsFooter/>', () => {
 
     it("should not render actions because it's an unfetchable mention comment", () => {
         const facebookMessage = {...facebookMessageWithPageAndCustomerReactions}
-        facebookMessage.source!.type = FACEBOOK_MENTION_COMMENT_SOURCE
+        facebookMessage.source!.type =
+            TicketMessageSourceType.FacebookMentionComment
         facebookMessage.source!.extra = {unfetchable: true}
         const {container} = render(
             <SourceActionsFooter

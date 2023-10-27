@@ -3,8 +3,9 @@ import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import {shallow} from 'enzyme'
 
-import {EMAIL_CHANNEL} from '../../../../../config/ticket'
-import {mergeCustomers} from '../../../../../state/customers/actions'
+import {TicketChannel} from 'business/types/ticket'
+import {mergeCustomers} from 'state/customers/actions'
+
 import MergeCustomersModal from '../MergeCustomersModal'
 
 const address1 = 'pierre@gorgias.io'
@@ -15,7 +16,7 @@ const customer1 = fromJS({
     data: {},
     channels: [
         {
-            type: EMAIL_CHANNEL,
+            type: TicketChannel.Email,
             address: address1,
             preferred: true,
             customer: {
@@ -34,7 +35,7 @@ const customer2 = fromJS({
     data: {},
     channels: [
         {
-            type: EMAIL_CHANNEL,
+            type: TicketChannel.Email,
             address: address2,
             preferred: false,
             customer: {

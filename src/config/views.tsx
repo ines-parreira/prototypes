@@ -2,20 +2,20 @@ import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
-import {BASE_VIEW_ID} from '../constants/view'
-import {OrderDirection} from '../models/api/types'
-import {ViewField, ViewType, ViewVisibility} from '../models/view/types'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import {BASE_VIEW_ID} from 'constants/view'
+import {OrderDirection} from 'models/api/types'
+import {ViewField, ViewType, ViewVisibility} from 'models/view/types'
+import {CHANNELS, STATUSES} from 'tickets/common/config'
 import {
     fieldPath,
     fromAST,
     getAST,
     getLanguageDisplayName,
     stripHTML,
-} from '../utils'
-import {getMomentUtcISOString} from '../utils/date'
+} from 'utils'
+import {getMomentUtcISOString} from 'utils/date'
 
-import * as ticketConfig from './ticket'
 import ticketLanguages from './ticketLanguages'
 
 // Number of maximum recent views we store in the reducer and local storage.
@@ -147,7 +147,7 @@ export const views = fromAST([
                 name: ViewField.Status,
                 title: 'Status',
                 filter: {
-                    enum: ticketConfig.STATUSES,
+                    enum: STATUSES,
                 },
             },
             {
@@ -161,7 +161,7 @@ export const views = fromAST([
                 name: ViewField.Channel,
                 title: 'Channel',
                 filter: {
-                    enum: ticketConfig.CHANNELS,
+                    enum: CHANNELS,
                 },
             },
             {

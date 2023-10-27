@@ -6,23 +6,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    CHAT_SOURCE,
-    EMAIL_SOURCE,
-    FACEBOOK_COMMENT_SOURCE,
-    FACEBOOK_MENTION_COMMENT_SOURCE,
-    FACEBOOK_MENTION_POST_SOURCE,
-    FACEBOOK_MESSENGER_SOURCE,
-    FACEBOOK_POST_SOURCE,
-    INSTAGRAM_AD_COMMENT_SOURCE,
-    INSTAGRAM_AD_MEDIA_SOURCE,
-    INSTAGRAM_COMMENT_SOURCE,
-    INSTAGRAM_MEDIA_SOURCE,
-    TWITTER_TWEET_SOURCE,
-    TWITTER_QUOTED_TWEET_SOURCE,
-    TWITTER_MENTION_TWEET_SOURCE,
-    YOTPO_REVIEW_SOURCE,
-} from 'config/ticket'
 import {TicketMessageSourceType} from 'business/types/ticket'
 
 import {ReplyMessageChannelContainer} from '../DEPRECATED_ReplyMessageChannel'
@@ -92,35 +75,35 @@ describe('ReplyMessageChannel component', () => {
     })
 
     const types = [
-        CHAT_SOURCE,
-        EMAIL_SOURCE,
-        FACEBOOK_MESSENGER_SOURCE,
-        FACEBOOK_POST_SOURCE,
-        FACEBOOK_COMMENT_SOURCE,
-        FACEBOOK_MENTION_POST_SOURCE,
-        FACEBOOK_MENTION_COMMENT_SOURCE,
-        INSTAGRAM_AD_MEDIA_SOURCE,
-        INSTAGRAM_AD_COMMENT_SOURCE,
-        INSTAGRAM_MEDIA_SOURCE,
-        INSTAGRAM_COMMENT_SOURCE,
-        TWITTER_TWEET_SOURCE,
-        TWITTER_QUOTED_TWEET_SOURCE,
-        TWITTER_MENTION_TWEET_SOURCE,
-        YOTPO_REVIEW_SOURCE,
+        TicketMessageSourceType.Chat,
+        TicketMessageSourceType.Email,
+        TicketMessageSourceType.FacebookMessenger,
+        TicketMessageSourceType.FacebookPost,
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookMentionPost,
+        TicketMessageSourceType.FacebookMentionComment,
+        TicketMessageSourceType.InstagramAdMedia,
+        TicketMessageSourceType.InstagramAdComment,
+        TicketMessageSourceType.InstagramMedia,
+        TicketMessageSourceType.InstagramComment,
+        TicketMessageSourceType.TwitterTweet,
+        TicketMessageSourceType.TwitterQuotedTweet,
+        TicketMessageSourceType.TwitterMentionTweet,
+        TicketMessageSourceType.YotpoReview,
     ]
 
     types.forEach((type) => {
         it(`existing ticket with message of type ${type}`, () => {
             let newMessageType = type
 
-            if (type === FACEBOOK_POST_SOURCE) {
-                newMessageType = FACEBOOK_COMMENT_SOURCE
-            } else if (type === FACEBOOK_MENTION_POST_SOURCE) {
-                newMessageType = FACEBOOK_MENTION_COMMENT_SOURCE
-            } else if (type === INSTAGRAM_MEDIA_SOURCE) {
-                newMessageType = INSTAGRAM_COMMENT_SOURCE
-            } else if (type === INSTAGRAM_AD_MEDIA_SOURCE) {
-                newMessageType = INSTAGRAM_AD_COMMENT_SOURCE
+            if (type === TicketMessageSourceType.FacebookPost) {
+                newMessageType = TicketMessageSourceType.FacebookComment
+            } else if (type === TicketMessageSourceType.FacebookMentionPost) {
+                newMessageType = TicketMessageSourceType.FacebookMentionComment
+            } else if (type === TicketMessageSourceType.InstagramMedia) {
+                newMessageType = TicketMessageSourceType.InstagramComment
+            } else if (type === TicketMessageSourceType.InstagramAdMedia) {
+                newMessageType = TicketMessageSourceType.InstagramAdComment
             }
 
             const replyOptions = {
