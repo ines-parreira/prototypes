@@ -29,7 +29,7 @@ import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_AVAILABLE_FONTS,
 } from 'pages/settings/helpCenter/constants'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {
     HelpCenterTheme,
     isHelpCenterTheme,

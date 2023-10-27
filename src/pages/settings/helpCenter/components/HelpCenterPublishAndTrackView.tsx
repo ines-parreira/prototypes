@@ -35,7 +35,7 @@ import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {useGetPageEmbedments} from 'pages/settings/helpCenter/queries'
 import BackLink from 'pages/common/components/BackLink'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {
     getSubdomainValidationError,
     isValidSubdomain,

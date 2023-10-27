@@ -5,7 +5,7 @@ import {AxiosError} from 'axios'
 import {fromJS, Map} from 'immutable'
 
 import Loader from 'pages/common/components/Loader/Loader'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import Button from 'pages/common/components/button/Button'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 

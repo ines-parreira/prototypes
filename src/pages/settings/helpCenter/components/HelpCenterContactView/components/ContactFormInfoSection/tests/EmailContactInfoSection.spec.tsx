@@ -65,7 +65,7 @@ const defaultState: Partial<RootState> = {
     ui: {helpCenter: {...uiState}} as any,
 }
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 
 const mockedUpdateHelpCenterTranslation = jest.fn()
 const mockedUpdateHelpCenter = jest.fn()

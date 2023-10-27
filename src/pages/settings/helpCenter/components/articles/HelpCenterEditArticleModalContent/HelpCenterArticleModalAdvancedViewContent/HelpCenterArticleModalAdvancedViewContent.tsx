@@ -7,7 +7,7 @@ import {
     LocaleCode,
 } from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
     getHelpCenterDomain,

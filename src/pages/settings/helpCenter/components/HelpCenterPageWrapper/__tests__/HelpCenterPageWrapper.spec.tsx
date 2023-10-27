@@ -15,10 +15,10 @@ import {
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

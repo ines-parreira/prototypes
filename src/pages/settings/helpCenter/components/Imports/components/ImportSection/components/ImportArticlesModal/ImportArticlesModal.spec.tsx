@@ -12,7 +12,7 @@ import {initialState as articlesState} from 'state/entities/helpCenter/articles/
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 
 import {FetchedProvidersState} from '../../types'
 import {migrationProviders} from '../../fixtures/migration-providers'
@@ -51,7 +51,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

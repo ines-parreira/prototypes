@@ -24,7 +24,7 @@ import {
     useNavigationLinks,
     useSocialNavigationLinks,
 } from '../hooks/useNavigationLinks'
-import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {saveNavigationLinks, saveSocialLinks} from '../utils/navigationLinks'
 import CodeEditor from '../../../common/components/CodeEditor/CodeEditor'
 import ToggleInput from '../../../common/forms/ToggleInput'

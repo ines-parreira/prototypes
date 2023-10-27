@@ -12,7 +12,7 @@ import PhoneContactInfoSection from '../PhoneContactInfoSection'
 import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
 import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import {useCurrentHelpCenter} from '../../../../../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../../../../../hooks/useCurrentHelpCenter'
 import {getHelpCenterTranslationsResponseFixture} from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
@@ -86,7 +86,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

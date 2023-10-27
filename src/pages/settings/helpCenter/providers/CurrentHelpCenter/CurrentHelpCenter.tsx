@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import axios from 'axios'
 import {
     Route,
@@ -10,7 +10,6 @@ import {
 import {Container} from 'reactstrap'
 
 import Loader from 'pages/common/components/Loader/Loader'
-import {HelpCenter} from 'models/helpCenter/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -40,14 +39,13 @@ import {
 
 import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
+import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
 import {EditionManagerContextProvider} from '../EditionManagerContext'
 import {SearchContextProvider} from '../SearchContext'
 import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
 import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
 import HelpCenterPaywall from '../../components/Paywalls/HelpCenterPaywall'
 import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
-
-const CurrentHelpCenterContext = createContext<HelpCenter | null>(null)
 
 const CurrentHelpCenter: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -180,18 +178,6 @@ const CurrentHelpCenter: React.FC = () => {
             </Switch>
         </CurrentHelpCenterContext.Provider>
     )
-}
-
-export const useCurrentHelpCenter = () => {
-    const helpCenter = useContext(CurrentHelpCenterContext)
-
-    if (!helpCenter) {
-        throw new Error(
-            `useCurrentHelpCenter should be used inside the CurrentHelpCenterContext provider`
-        )
-    }
-
-    return helpCenter
 }
 
 export default withFeaturePaywall(

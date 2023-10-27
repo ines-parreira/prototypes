@@ -14,7 +14,7 @@ import {initialState as articlesState} from 'state/entities/helpCenter/articles/
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {HelpCenterTranslationProvider} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {UpdateSubjectLinesProps} from 'models/contactForm/types'
 import SubjectLines from '../SubjectLines'
 
@@ -27,7 +27,7 @@ jest.mock('lodash/uniqueId', () => {
     }
 })
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

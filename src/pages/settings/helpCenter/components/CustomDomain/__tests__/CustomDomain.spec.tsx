@@ -15,7 +15,7 @@ import {initialState as categoriesState} from 'state/entities/helpCenter/categor
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {RootState, StoreDispatch} from 'state/types'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {CustomDomain} from '../CustomDomain'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
@@ -103,7 +103,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

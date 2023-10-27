@@ -30,7 +30,7 @@ import {
 import {useArticlesActions} from '../hooks/useArticlesActions'
 import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {useHelpCenterApi, useAbilityChecker} from '../hooks/useHelpCenterApi'
-import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {
     articleRequiredFields,
     getArticleUrl,

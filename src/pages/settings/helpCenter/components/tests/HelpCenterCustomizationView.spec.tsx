@@ -9,7 +9,7 @@ import {initialState as articlesState} from 'state/entities/helpCenter/articles/
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
-import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
@@ -37,7 +37,7 @@ jest.spyOn(helpCenterApi, 'useAbilityChecker').mockReturnValue({
     isPassingRulesCheck: () => true,
 })
 
-jest.mock('../../providers/CurrentHelpCenter')
+jest.mock('../../hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

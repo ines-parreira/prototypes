@@ -22,7 +22,7 @@ import {reportError} from 'utils/errors'
 import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
-import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 
 import {HelpText} from './components/HelpText'
 

@@ -11,7 +11,7 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useMigrationApi} from 'pages/settings/helpCenter/hooks/useMigrationApi'
 
 import {RootState, StoreDispatch} from 'state/types'
@@ -89,7 +89,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

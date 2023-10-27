@@ -18,7 +18,7 @@ import {HelpCenterArticleModalState} from 'pages/settings/helpCenter/components/
 import {changeViewLanguage} from 'state/ui/helpCenter'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useCurrentHelpCenter} from '../CurrentHelpCenter'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 
 // TODO: move to redux (as UI states?)
 type EditionManagerContextValues = {

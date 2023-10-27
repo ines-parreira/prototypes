@@ -6,7 +6,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {Category} from 'models/helpCenter/types'
 import {getCategories} from 'state/entities/helpCenter/categories'
 
-import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {useCategoriesActions} from './useCategoriesActions'
 
 type HelpCenterCategoriesHook = {

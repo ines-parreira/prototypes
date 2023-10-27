@@ -5,7 +5,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 
-import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {useHelpCenterApi} from './useHelpCenterApi'
 
 export const useHelpCenterActions = () => {

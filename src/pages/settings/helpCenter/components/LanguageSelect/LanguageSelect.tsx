@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 type Props = {

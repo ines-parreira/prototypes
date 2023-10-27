@@ -12,7 +12,7 @@ import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/
 import {getCategories} from 'state/entities/helpCenter/categories'
 
 import {useHelpCenterCategories} from '../useHelpCenterCategories'
-import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {useCategoriesActions} from '../useCategoriesActions'
 
@@ -21,7 +21,7 @@ jest.mock('../useCategoriesActions')
     fetchCategories: () => Promise.resolve(),
 })
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

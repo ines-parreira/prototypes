@@ -2,7 +2,7 @@ import React from 'react'
 
 import settingsCss from 'pages/settings/settings.less'
 
-import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {useHelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'

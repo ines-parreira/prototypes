@@ -14,7 +14,7 @@ import {
     isExistingArticle,
     slugify,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
 import IconButton from 'pages/common/components/button/IconButton'

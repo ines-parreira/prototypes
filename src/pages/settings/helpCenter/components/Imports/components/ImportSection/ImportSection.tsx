@@ -13,7 +13,7 @@ import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import {useMigrationApi} from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import Tooltip from 'pages/common/components/Tooltip'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'

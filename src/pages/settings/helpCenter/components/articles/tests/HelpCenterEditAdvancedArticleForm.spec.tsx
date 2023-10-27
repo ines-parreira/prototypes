@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
@@ -18,7 +18,7 @@ const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 const mockedOnChange = jest.fn()
 const mockedOnCategoryChange = jest.fn()
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

@@ -2,7 +2,7 @@ import React, {Fragment} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
 import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
-import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import Loader from '../../../../common/components/Loader/Loader'
 import {isProduction, isStaging} from '../../../../../utils/environment'
 import {

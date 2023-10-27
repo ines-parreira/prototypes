@@ -7,7 +7,7 @@ import {keyBy as _keyBy} from 'lodash'
 
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
@@ -19,7 +19,7 @@ import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/
 
 import useCategoriesOptions from '../hooks/useCategoriesOptions'
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )

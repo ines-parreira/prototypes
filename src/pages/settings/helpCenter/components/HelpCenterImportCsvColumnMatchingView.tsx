@@ -7,7 +7,7 @@ import {getAccessToken} from 'rest_api/utils'
 
 import {CsvColumnPreview} from '../../../../models/helpCenter/types'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {useSupportedLocales} from '../providers/SupportedLocales'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'

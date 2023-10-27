@@ -16,7 +16,7 @@ import {
     useHelpCenterTranslation,
 } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
 import {flushPromises} from 'utils/testing'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {HelpCenter} from 'models/helpCenter/types'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -65,7 +65,7 @@ const defaultState: Partial<RootState> = {
     ui: {helpCenter: {...uiState}} as any,
 }
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 
 const mockedUpdateHelpCenterTranslation = jest.fn()
 const mockedUpdateHelpCenter = jest.fn()

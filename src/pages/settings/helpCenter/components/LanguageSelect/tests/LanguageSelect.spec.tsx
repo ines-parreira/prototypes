@@ -9,7 +9,7 @@ import {initialState as articlesState} from 'state/entities/helpCenter/articles/
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import LanguageSelect from '../LanguageSelect'
-import {useCurrentHelpCenter} from '../../../providers/CurrentHelpCenter'
+import useCurrentHelpCenter from '../../../hooks/useCurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
 import {useSupportedLocales} from '../../../providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
@@ -33,7 +33,7 @@ const store = mockStore(defaultState)
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
-jest.mock('../../../providers/CurrentHelpCenter')
+jest.mock('../../../hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )
