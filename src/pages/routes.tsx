@@ -99,7 +99,6 @@ import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCe
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
-import TicketFieldsStatsPagePlaceholder from 'pages/stats/TicketFieldsStatsPagePlaceholder'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
 import SupportPerformanceChannels from 'pages/stats/SupportPerformanceChannels'
@@ -494,8 +493,6 @@ export function StatsRoutes() {
     )
     const isNewAutomationAddonEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewAutomationAddon]
-    const hasAnalyticsTicketInsights: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsTicketInsights]
     const displayVoiceAnalytics: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
 
@@ -576,11 +573,7 @@ export function StatsRoutes() {
                     path={`${path}/ticket-fields`}
                     render={() => (
                         <App
-                            content={
-                                hasAnalyticsTicketInsights
-                                    ? SupportPerformanceTicketInsights
-                                    : TicketFieldsStatsPagePlaceholder
-                            }
+                            content={SupportPerformanceTicketInsights}
                             navbar={StatsNavbarContainer}
                         />
                     )}

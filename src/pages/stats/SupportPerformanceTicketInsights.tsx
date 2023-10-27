@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 
@@ -12,7 +11,6 @@ import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
 import {TicketFieldsBlankState} from 'pages/stats/TicketFieldsBlankState'
 import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
 import StatsPage from 'pages/stats/StatsPage'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import useAppSelector from 'hooks/useAppSelector'
@@ -20,19 +18,9 @@ import useAppSelector from 'hooks/useAppSelector'
 export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
 
 export default function SupportPerformanceTicketInsights() {
-    const hasAnalyticsTicketInsightsTopFields: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsTicketInsightsTopFields]
-    const hasAnalyticsTicketInsightsFieldTrends: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsTicketInsightsFieldTrends]
-    const hasAnalyticsTicketInsightsFieldBreakdown: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsTicketInsightsFieldBreakdown]
-
     const selectedCustomField = useAppSelector(getSelectedCustomField)
 
-    if (
-        selectedCustomField.isLoading === false &&
-        selectedCustomField.id === null
-    ) {
+    if (!selectedCustomField.isLoading && selectedCustomField.id === null) {
         return (
             <StatsPage title={TICKET_INSIGHTS_PAGE_TITLE} filters={null}>
                 <TicketFieldsBlankState />
@@ -60,21 +48,21 @@ export default function SupportPerformanceTicketInsights() {
 
             {selectedCustomField.id && (
                 <DashboardSection>
-                    {hasAnalyticsTicketInsightsTopFields && (
+                    {
                         <DashboardGridCell size={1}>
                             <TicketDistributionTable />
                         </DashboardGridCell>
-                    )}
-                    {hasAnalyticsTicketInsightsFieldTrends && (
+                    }
+                    {
                         <DashboardGridCell size={11}>
                             <TicketInsightsFieldTrend />
                         </DashboardGridCell>
-                    )}
-                    {hasAnalyticsTicketInsightsFieldBreakdown && (
+                    }
+                    {
                         <DashboardGridCell>
                             <CustomFieldsTicketCountBreakdownReport />
                         </DashboardGridCell>
-                    )}
+                    }
                 </DashboardSection>
             )}
             <AnalyticsFooter />

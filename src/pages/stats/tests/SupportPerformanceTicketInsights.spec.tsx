@@ -1,6 +1,5 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -14,7 +13,6 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 import SupportPerformanceTicketInsights, {
     TICKET_INSIGHTS_PAGE_TITLE,
 } from 'pages/stats/SupportPerformanceTicketInsights'
@@ -124,9 +122,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
     })
 
     it('should render the TicketDistributionTable', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsTicketInsightsTopFields]: true,
-        }))
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTicketInsights />
@@ -135,10 +130,8 @@ describe('<SupportPerformanceTicketInsights />', () => {
 
         expect(TicketDistributionTableMock).toHaveBeenCalled()
     })
+
     it('should render the TicketInsightsFieldTrend', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsTicketInsightsFieldTrends]: true,
-        }))
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTicketInsights />
@@ -165,11 +158,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
     })
 
     it('should render only the CustomFieldSelect', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsTicketInsightsFieldTrends]: true,
-            [FeatureFlagKey.AnalyticsTicketInsightsTopFields]: true,
-        }))
-
         useAppSelectorMock.mockReturnValue({id: null, isLoading: false})
 
         useCustomFieldDefinitionsMock.mockReturnValue({
@@ -188,9 +176,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
     })
 
     it('should render the CustomFieldsTicketCountBreakdownReport', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsTicketInsightsFieldBreakdown]: true,
-        }))
         render(<CustomFieldsTicketCountBreakdownReport />)
 
         expect(CustomFieldsTicketCountBreakdownReportMock).toHaveBeenCalled()
