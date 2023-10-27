@@ -65,29 +65,7 @@ export const ticketsRepliedTimeSeriesQueryFactory = (
     timezone: string,
     granularity: ReportingGranularity
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...ticketsRepliedQueryFactory(filters, timezone), // ticketsRepliedQueryFactory had one more filter then the timeSeries query - was that an error ?
-    filters: [
-        {
-            member: TicketMember.PeriodStart,
-            operator: ReportingFilterOperator.AfterDate,
-            values: [filters.period.start_datetime],
-        },
-        {
-            member: TicketMember.PeriodEnd,
-            operator: ReportingFilterOperator.BeforeDate,
-            values: [filters.period.end_datetime],
-        },
-        {
-            member: HelpdeskMessageMember.Channel,
-            operator: ReportingFilterOperator.NotEquals,
-            values: [TicketMessageSourceType.InternalNote],
-        },
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(
-            HelpdeskMessagesStatsFiltersMembers,
-            filters
-        ),
-    ],
+    ...ticketsRepliedQueryFactory(filters, timezone),
     timeDimensions: [
         {
             dimension: HelpdeskMessageDimension.SentDatetime,

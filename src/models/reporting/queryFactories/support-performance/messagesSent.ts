@@ -58,22 +58,6 @@ export const messagesSentTimeSeriesQueryFactory = (
     granularity: ReportingGranularity
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...messagesSentQueryFactory(filters, timezone),
-    filters: [
-        {
-            member: TicketMember.PeriodStart,
-            operator: ReportingFilterOperator.AfterDate,
-            values: [filters.period.start_datetime],
-        },
-        {
-            member: TicketMember.PeriodEnd,
-            operator: ReportingFilterOperator.BeforeDate,
-            values: [filters.period.end_datetime],
-        },
-        ...statsFiltersToReportingFilters(
-            HelpdeskMessagesStatsFiltersMembers,
-            filters
-        ),
-    ],
     timeDimensions: [
         {
             dimension: HelpdeskMessageDimension.SentDatetime,

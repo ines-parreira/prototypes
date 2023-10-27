@@ -11,11 +11,16 @@ import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     messagesSentMetricPerAgentQueryFactory,
     messagesSentQueryFactory,
+    messagesSentTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {ReportingFilterOperator} from 'models/reporting/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     formatReportingQueryDate,
+    getFilterDateRange,
     PublicHelpdeskAndApiMessagesFilter,
 } from 'utils/reporting'
 
@@ -62,6 +67,68 @@ describe('messagesSentQueryFactory', () => {
                     member: HelpdeskMessageMember.PeriodEnd,
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [periodEnd],
+                },
+            ],
+            timezone,
+        })
+    })
+})
+
+describe('messagesSentTimeSeriesQueryFactory', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment())
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd,
+            start_datetime: periodStart,
+        },
+    }
+    const granularity = ReportingGranularity.Day
+    const timezone = 'someTimeZone'
+
+    it('should create a query', () => {
+        const query = messagesSentTimeSeriesQueryFactory(
+            statsFilters,
+            timezone,
+            granularity
+        )
+
+        expect(query).toEqual({
+            measures: [HelpdeskMessageMeasure.MessageCount],
+            dimensions: [],
+            filters: [
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+                {
+                    member: HelpdeskMessageMember.SentDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [periodStart, periodEnd],
+                },
+                ...PublicHelpdeskAndApiMessagesFilter,
+                {
+                    member: HelpdeskMessageMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: HelpdeskMessageMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timeDimensions: [
+                {
+                    dimension: HelpdeskMessageDimension.SentDatetime,
+                    granularity,
+                    dateRange: getFilterDateRange(statsFilters),
                 },
             ],
             timezone,

@@ -11,11 +11,16 @@ import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ticketsRepliedMetricPerAgentQueryFactory,
     ticketsRepliedQueryFactory,
+    ticketsRepliedTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {ReportingFilterOperator} from 'models/reporting/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     formatReportingQueryDate,
+    getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     PublicHelpdeskAndApiMessagesFilter,
 } from 'utils/reporting'
@@ -69,6 +74,74 @@ describe('ticketsRepliedQueryFactory', () => {
                     member: HelpdeskMessageMember.PeriodEnd,
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [periodEnd],
+                },
+            ],
+            timezone,
+        })
+    })
+})
+
+describe('ticketsRepliedTimeSeriesQueryFactory', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment())
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd,
+            start_datetime: periodStart,
+        },
+    }
+    const timezone = 'someTimeZone'
+    const granularity = ReportingGranularity.Day
+
+    it('should build a query', () => {
+        const query = ticketsRepliedTimeSeriesQueryFactory(
+            statsFilters,
+            timezone,
+            granularity
+        )
+
+        expect(query).toEqual({
+            dimensions: [],
+            measures: [HelpdeskMessageMeasure.TicketCount],
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: HelpdeskMessageMember.SentDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [periodStart, periodEnd],
+                },
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [TicketMessageSourceType.InternalNote],
+                },
+                ...PublicHelpdeskAndApiMessagesFilter,
+                {
+                    member: HelpdeskMessageMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: HelpdeskMessageMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timeDimensions: [
+                {
+                    dimension: HelpdeskMessageDimension.SentDatetime,
+                    granularity,
+                    dateRange: getFilterDateRange(statsFilters),
                 },
             ],
             timezone,
