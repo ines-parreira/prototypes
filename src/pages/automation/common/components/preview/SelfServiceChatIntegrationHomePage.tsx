@@ -1,9 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -46,9 +44,6 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
 
     const workflowsEntrypoints = useWorkflowsEntrypoints(language)
-
-    const flipOrderOfQuickResponsesAndFlows =
-        useFlags()[FeatureFlagKey.ChatFlipOrderOfQuickResponsesAndFlows]
 
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
     const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
@@ -136,15 +131,6 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         )
     }
 
-    const renderWorkflowsEntrypoints = () =>
-        workflowsEntrypoints.map((entrypoint) => (
-            <ListItem
-                key={entrypoint.workflow_id}
-                label={entrypoint.label}
-                trailIcon={<ChevronRightIcon />}
-            />
-        ))
-
     return (
         <div
             className={classnames(css.container, {
@@ -155,8 +141,13 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                 {(quickResponses.length > 0 ||
                     workflowsEntrypoints.length > 0) && (
                     <List style={{marginBottom: '20px'}}>
-                        {!flipOrderOfQuickResponsesAndFlows &&
-                            renderWorkflowsEntrypoints()}
+                        {workflowsEntrypoints.map((entrypoint) => (
+                            <ListItem
+                                key={entrypoint.workflow_id}
+                                label={entrypoint.label}
+                                trailIcon={<ChevronRightIcon />}
+                            />
+                        ))}
                         {quickResponses.map((quickResponse) => (
                             <ListItem
                                 key={quickResponse.id}
@@ -169,8 +160,6 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                                 }
                             />
                         ))}
-                        {flipOrderOfQuickResponsesAndFlows &&
-                            renderWorkflowsEntrypoints()}
                     </List>
                 )}
                 {canManageOrders && (

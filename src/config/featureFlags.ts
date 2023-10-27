@@ -7,7 +7,6 @@ export enum FeatureFlagKey {
     ChatBackgroundColorStyle = 'chat-background-color-style',
     ChatCreationWizard = 'chat-creation-wizard',
     ChatEnableTranslationEdit = 'enable-translations-edit',
-    ChatFlipOrderOfQuickResponsesAndFlows = 'flip-order-of-quick-responses-and-flows',
     ChatHeaderPictureStyle = 'chat-header-picture-style',
     ChatLauncherCustomization = 'chat-launcher-customization',
     ChatMultiLanguages = 'chat-multi-languages',
