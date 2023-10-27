@@ -46,7 +46,7 @@ export const DownloadTicketFieldsDataButton = ({
 
                 await saveReport(
                     timeSeriesData,
-                    dateTimes.map((item) => formatDates(granularity)(item)),
+                    dateTimes.map((item) => formatDates(granularity, item)),
                     cleanStatsFilters.period,
                     order.direction
                 )

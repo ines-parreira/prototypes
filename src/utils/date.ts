@@ -76,3 +76,8 @@ export const getDetailedFormattedDate = (date: string, locale?: string) => {
         DETAILED_FORMATTED_DATE_OPTIONS
     ).format(new Date(date))
 }
+export const SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US = 'ddd, MMM D'
+export const SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD = 'ddd, D MMM'
+export const SHORT_DATE_FORMAT_US = 'MMM D'
+export const SHORT_DATE_FORMAT_WORLD = 'D MMM'
+export const MONTH_AND_YEAR_SHORT = 'MMM`YY'

@@ -114,7 +114,7 @@ describe('DownloadTicketFieldsDataButton', () => {
         fireEvent.click(screen.getByRole('button'))
         expect(saveReportMock).toHaveBeenCalledWith(
             data,
-            dateTimes.map((date) => formatDates(granularity)(date)),
+            dateTimes.map((date) => formatDates(granularity, date)),
             period,
             OrderDirection.Desc
         )

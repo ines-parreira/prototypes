@@ -1,6 +1,7 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -26,6 +27,13 @@ import {
     setOrder,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
+import {
+    MONTH_AND_YEAR_SHORT,
+    SHORT_DATE_FORMAT_US,
+    SHORT_DATE_FORMAT_WORLD,
+    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
+    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
+} from 'utils/date'
 import {getFilterDateRange} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
@@ -261,7 +269,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         )
         act(() => {
             const categoryLabel = screen.getByText(
-                formatDates(granularity)(dataPoint.timeSeries[0].label)
+                formatDates(granularity, dataPoint.timeSeries[0].label)
             )
             userEvent.click(categoryLabel)
         })
@@ -423,4 +431,66 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             })
         })
     })
+})
+
+describe('formatDates', () => {
+    const languageMock = jest.fn()
+    Object.defineProperty(global.navigator, 'language', {
+        get: languageMock,
+    })
+    const date = moment()
+
+    it.each([
+        {
+            locale: 'en-US',
+            granularity: ReportingGranularity.Day,
+            formatted: date.format(SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US),
+        },
+        {
+            locale: 'world',
+            granularity: ReportingGranularity.Day,
+            formatted: date.format(
+                SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD
+            ),
+        },
+        {
+            locale: 'en-US',
+            granularity: ReportingGranularity.Week,
+            formatted: `${date
+                .clone()
+                .subtract(6, 'days')
+                .format(SHORT_DATE_FORMAT_US)} - ${date.format(
+                SHORT_DATE_FORMAT_US
+            )}`,
+        },
+        {
+            locale: 'world',
+            granularity: ReportingGranularity.Week,
+            formatted: `${date
+                .clone()
+                .subtract(6, 'days')
+                .format(SHORT_DATE_FORMAT_WORLD)} - ${date.format(
+                SHORT_DATE_FORMAT_WORLD
+            )}`,
+        },
+        {
+            locale: 'en-US',
+            granularity: ReportingGranularity.Month,
+            formatted: date.format(MONTH_AND_YEAR_SHORT),
+        },
+        {
+            locale: 'world',
+            granularity: ReportingGranularity.Month,
+            formatted: date.format(MONTH_AND_YEAR_SHORT),
+        },
+    ])(
+        'should format dates based on granularity ($granularity) and Users`s locale ($locale)',
+        ({locale, granularity, formatted}) => {
+            languageMock.mockReturnValue(locale)
+
+            expect(formatDates(granularity, date.toISOString())).toEqual(
+                formatted
+            )
+        }
+    )
 })
