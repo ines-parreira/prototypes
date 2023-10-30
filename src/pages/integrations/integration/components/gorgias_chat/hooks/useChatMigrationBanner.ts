@@ -17,6 +17,7 @@ const useChatMigrationBanner = (
 ): {
     showScriptTagMigrationBanner: boolean
     showSnippetV3MigrationBanner: boolean
+    hasShopifyScriptTagScope: boolean
 } => {
     const hasScriptTagFeatureFlagOn: boolean =
         useFlags()[FeatureFlagKey.ShopifyIntegrationScopeScriptTag] ?? false
@@ -80,7 +81,7 @@ const useChatMigrationBanner = (
     ])
 
     const hasShopifyScriptTagScope =
-        storeIntegration &&
+        !!storeIntegration &&
         getHasShopifyScriptTagScopes({
             storeIntegration,
         })
@@ -133,6 +134,7 @@ const useChatMigrationBanner = (
     return {
         showScriptTagMigrationBanner: showScriptTagBanner,
         showSnippetV3MigrationBanner: showSnippetV3Banner,
+        hasShopifyScriptTagScope: hasShopifyScriptTagScope,
     }
 }
 

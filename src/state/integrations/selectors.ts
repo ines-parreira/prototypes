@@ -489,6 +489,12 @@ export const getRedirectUri = (type: IntegrationType) =>
         (state) => state.get('redirect_uri', '') as string
     )
 
+export const getPreRedirectUri = (type: IntegrationType) =>
+    createSelector(
+        getAuthData(type),
+        (state) => state.get('pre_redirect_uri', '') as string
+    )
+
 export const getForwardingEmailAddress = createSelector(
     getAuthData(IntegrationType.Email),
     (state) => state.get('forwarding_email_address', '') as string
@@ -507,6 +513,16 @@ export const getFacebookRedirectUri = (reconnect = false) =>
 export const makeGetRedirectUri =
     (state: RootState) => (type: IntegrationType) =>
         getRedirectUri(type)(state)
+
+export const makeGetPreRedirectUri =
+    (state: RootState) =>
+    (
+        type: IntegrationType,
+        params: {shop_name: string; install_chat_integration_id: string}
+    ) => {
+        const preRedirectUri = getPreRedirectUri(type)(state)
+        return `${preRedirectUri}?shop_name=${params.shop_name}&install_chat_integration_id=${params.install_chat_integration_id}`
+    }
 
 // return the list of integration used to send messages from the helpdesk
 export const getMessagingIntegrations = createSelector(

@@ -67,7 +67,8 @@ const GorgiasChatIntegrationInstall = ({
         ? shopifyIntegrationIds.includes(shopIntegrationId)
         : undefined
 
-    const {showScriptTagMigrationBanner} = useChatMigrationBanner(integration)
+    const {showScriptTagMigrationBanner, hasShopifyScriptTagScope} =
+        useChatMigrationBanner(integration)
 
     return (
         <>
@@ -188,6 +189,9 @@ const GorgiasChatIntegrationInstall = ({
                                         isConnected={isConnected}
                                         isInstalled={
                                             isOneClickInstallation ?? false
+                                        }
+                                        hasShopifyScriptTagScope={
+                                            hasShopifyScriptTagScope
                                         }
                                     />
                                 )}

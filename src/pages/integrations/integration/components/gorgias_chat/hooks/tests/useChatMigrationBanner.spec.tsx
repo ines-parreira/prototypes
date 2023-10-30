@@ -58,17 +58,17 @@ describe('useChatMigrationBanner', () => {
     const missing_scopes = `[]`
 
     it.each`
-        featureFlagV3Banner | featureFlagScriptTag | metaOauthScope       | minSnipV | o_c_install_dt | o_c_uninstall_dt | o_c_install_m   | clickInstalled | showBanners       | description
-        ${false}            | ${false}             | ${script_tags_scope} | ${'v2'}  | ${now}         | ${now}           | ${'script_tag'} | ${true}        | ${[false, false]} | ${'[v3-banner:N, ST-banner:N] all feature flag OFF'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${false}       | ${[true, false]}  | ${'[v3-banner:Y, ST-banner:N] not using 1click'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${false}       | ${[false, false]} | ${'[v3-banner:N, ST-banner:N] already v3, not using 1click'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${true}        | ${[false, true]}  | ${'[v3-banner:N, ST-banner:Y] using 1click, having v2, not showing the 2 banners'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${sixDaysAgo}  | ${sixDaysAgo}    | ${'asset'}      | ${false}       | ${[true, false]}  | ${'[v3-banner:Y, ST-banner:N] 1click churned > 5days'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${sixDaysAgo}  | ${sixDaysAgo}    | ${'asset'}      | ${false}       | ${[false, false]} | ${'[v3-banner:N, ST-banner:N] already v3, 1click churned > 5days'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${now}         | ${now}           | ${'asset'}      | ${false}       | ${[false, true]}  | ${'[v3-banner:N, ST-banner:Y] already v3, 1click churned < 5days'}
-        ${true}             | ${true}              | ${missing_scopes}    | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${true}        | ${[false, true]}  | ${'[v3-banner:N, ST-banner:Y] using 1click, missing scope, not showing the 2 banners'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${undefined}   | ${undefined}     | ${'script_tag'} | ${true}        | ${[false, false]} | ${'[v3-banner:N, ST-banner:N] already v3, script tab migrated'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${'script_tag'} | ${true}        | ${[false, false]} | ${'[v3-banner:N, ST-banner:N] do not show v3 banner if script tag migrated'}
+        featureFlagV3Banner | featureFlagScriptTag | metaOauthScope       | minSnipV | o_c_install_dt | o_c_uninstall_dt | o_c_install_m   | clickInstalled | showBanners             | description
+        ${false}            | ${false}             | ${script_tags_scope} | ${'v2'}  | ${now}         | ${now}           | ${'script_tag'} | ${true}        | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] all feature flag OFF'}
+        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${false}       | ${[true, false, true]}  | ${'[v3-banner:Y, ST-banner:N] not using 1click'}
+        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${false}       | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] already v3, not using 1click'}
+        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${true}        | ${[false, true, true]}  | ${'[v3-banner:N, ST-banner:Y] using 1click, having v2, not showing the 2 banners'}
+        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${sixDaysAgo}  | ${sixDaysAgo}    | ${'asset'}      | ${false}       | ${[true, false, true]}  | ${'[v3-banner:Y, ST-banner:N] 1click churned > 5days'}
+        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${sixDaysAgo}  | ${sixDaysAgo}    | ${'asset'}      | ${false}       | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] already v3, 1click churned > 5days'}
+        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${now}         | ${now}           | ${'asset'}      | ${false}       | ${[false, true, true]}  | ${'[v3-banner:N, ST-banner:Y] already v3, 1click churned < 5days'}
+        ${true}             | ${true}              | ${missing_scopes}    | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${true}        | ${[false, true, false]} | ${'[v3-banner:N, ST-banner:Y] using 1click, missing scope, not showing the 2 banners'}
+        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${undefined}   | ${undefined}     | ${'script_tag'} | ${true}        | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] already v3, script tab migrated'}
+        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${'script_tag'} | ${true}        | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] do not show v3 banner if script tag migrated'}
     `(
         'Should return the correct banner state ($description)',
         ({
@@ -134,6 +134,7 @@ describe('useChatMigrationBanner', () => {
             expect(result.current).toEqual({
                 showSnippetV3MigrationBanner: (showBanners as boolean[])[0],
                 showScriptTagMigrationBanner: (showBanners as boolean[])[1],
+                hasShopifyScriptTagScope: (showBanners as boolean[])[2],
             })
         }
     )
