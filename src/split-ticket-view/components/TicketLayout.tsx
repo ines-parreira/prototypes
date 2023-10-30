@@ -5,7 +5,8 @@ import TicketDetail from 'pages/tickets/detail/TicketDetailContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import {Config, Panel, Panels} from 'panels'
-import {TicketListView} from 'ticket-list-view'
+
+import DefaultViewFallback from './DefaultViewFallback'
 
 type Params = {
     viewId: string
@@ -29,7 +30,7 @@ export default function TicketLayout({
                 <TicketNavbar disableResize />
             </Panel>
             <Panel>
-                <TicketListView viewId={viewId} />
+                <DefaultViewFallback viewId={viewId} />
             </Panel>
             <Panel>
                 <TicketDetail />
