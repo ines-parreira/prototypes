@@ -5,9 +5,11 @@ import {User} from 'config/types/user'
 import {Customer} from 'models/customer/types'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 
-import {VoiceCall} from 'models/voiceCall/types'
+import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
 import css from './TicketVoiceCallContainer.less'
 import TicketVoiceCallDuration from './TicketVoiceCallDuration'
+import TicketVoiceCallAudio from './TicketVoiceCallAudio'
+import CollapsibleDetails from './CollapsibleDetails'
 
 type Props = {
     header: JSX.Element
@@ -52,6 +54,21 @@ export default function TicketVoiceCallContainer({
                     <div>{callStatus}</div>
                     <TicketVoiceCallDuration voiceCall={voiceCall} />
                 </div>
+                {voiceCall.has_call_recording && (
+                    <CollapsibleDetails
+                        title={
+                            <>
+                                <i className="material-icons">graphic_eq</i>
+                                <span>Call Recording</span>
+                            </>
+                        }
+                    >
+                        <TicketVoiceCallAudio
+                            voiceCall={voiceCall}
+                            type={VoiceCallRecordingType.Recording}
+                        />
+                    </CollapsibleDetails>
+                )}
             </div>
         </div>
     )

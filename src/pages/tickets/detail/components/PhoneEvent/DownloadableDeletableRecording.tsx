@@ -121,8 +121,9 @@ const DeleteButton = ({url}: ButtonProps) => {
 
     return (
         <ConfirmButton
-            className="float-right"
-            intent="destructive"
+            className={css.button}
+            fillStyle="ghost"
+            intent="secondary"
             isDisabled={isRequestPending}
             onConfirm={deleteRecording}
             confirmationContent="You are about to delete this call recording. You cannot recover a deleted recording."
@@ -137,7 +138,9 @@ const DownloadButton = ({url}: ButtonProps) => {
 
     return (
         <Button
+            className={css.button}
             intent="secondary"
+            fillStyle="ghost"
             isDisabled={isRequestPending}
             onClick={downloadRecording}
         >

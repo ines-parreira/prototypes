@@ -1,0 +1,26 @@
+@import '~css/new/layout.less';
+
+:local {
+    .header {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+        cursor: pointer;
+
+        .title {
+            gap: @layout-spacing-xxs;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .arrow {
+            color: var(--main-primary);
+            font-size: 16px;
+        }
+    }
+
+    .content {
+        margin-top: @layout-spacing-xs;
+    }
+}

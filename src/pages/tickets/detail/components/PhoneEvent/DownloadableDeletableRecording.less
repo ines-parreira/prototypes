@@ -1,9 +1,15 @@
+@import '~css/new/layout.less';
+
 :local .recording-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     gap: 5px;
+
+    .button {
+        padding: @layout-spacing-xs;
+    }
 }
 
 :local .recording-controls {

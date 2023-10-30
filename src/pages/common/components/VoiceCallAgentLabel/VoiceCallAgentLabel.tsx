@@ -6,7 +6,7 @@ import css from './VoiceCallAgentLabel.less'
 
 type AgentLabelProps = {
     agentId: number
-    phoneNumber: string
+    phoneNumber?: string
 }
 
 export default function VoiceCallAgentLabel({

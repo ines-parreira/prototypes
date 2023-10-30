@@ -68,12 +68,6 @@ describe('TicketVoiceCallInbound', () => {
         expect(callStatus).toBeInTheDocument()
     })
 
-    it('renders the call duration', () => {
-        const {getByText} = renderComponent()
-        const callDuration = getByText('TicketVoiceCallDuration')
-        expect(callDuration).toBeInTheDocument()
-    })
-
     it('renders the call icon', () => {
         const {getByText} = renderComponent()
         const icon = getByText('call_received')

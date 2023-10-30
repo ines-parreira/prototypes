@@ -96,7 +96,7 @@ exports[`<PhoneEventDetails/> render() should render call recording event 1`] = 
         />
         <button
           aria-disabled="false"
-          class="wrapper fill secondary medium"
+          class="wrapper button ghost secondary medium"
           type="button"
         >
           <i
@@ -107,7 +107,7 @@ exports[`<PhoneEventDetails/> render() should render call recording event 1`] = 
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="wrapper button ghost secondary medium"
           id="confirm-2"
           type="button"
         >
@@ -337,7 +337,7 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
         />
         <button
           aria-disabled="false"
-          class="wrapper fill secondary medium"
+          class="wrapper button ghost secondary medium"
           type="button"
         >
           <i
@@ -348,7 +348,7 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="wrapper button ghost secondary medium"
           id="confirm-1"
           type="button"
         >

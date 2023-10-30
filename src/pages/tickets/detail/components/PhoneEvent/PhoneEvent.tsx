@@ -1,8 +1,9 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
+import {useEffectOnce} from 'react-use'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 
@@ -121,7 +122,7 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
     const [displayAdditionalInfo, setDisplayAdditionalInfo] =
         useState<boolean>(false)
 
-    useEffect(() => {
+    useEffectOnce(() => {
         if (
             eventType === PhoneIntegrationEvent.VoicemailRecording ||
             (eventType === PhoneIntegrationEvent.CompletedPhoneCall &&
@@ -129,11 +130,8 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
         ) {
             setDisplayAdditionalInfo(true)
         }
-    }, [eventType, callRecording, setDisplayAdditionalInfo])
+    })
 
-    const handleOpenTicketAdditionalInfo = useCallback(() => {
-        setDisplayAdditionalInfo(!displayAdditionalInfo)
-    }, [displayAdditionalInfo, setDisplayAdditionalInfo])
     const doesEventTypeHaveDetails = withDetailsEvents.includes(eventType)
 
     const getEventTitle = useCallback(() => {
@@ -229,7 +227,14 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
                         </span>
                     )}
                     {doesEventTypeHaveDetails && (
-                        <span onClick={handleOpenTicketAdditionalInfo}>
+                        <span
+                            onClick={() =>
+                                setDisplayAdditionalInfo(
+                                    (displayAdditionalInfo) =>
+                                        !displayAdditionalInfo
+                                )
+                            }
+                        >
                             <i
                                 className={`material-icons blue ${css.eventDetailsIcon} cursor-pointer`}
                             >
