@@ -1,25 +1,23 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map, List} from 'immutable'
+import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
 import {assetsUrl} from 'utils'
 import CustomInstallationCard from 'pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard'
-import InstallOnIntegrationsCard from 'pages/integrations/common/components/InstallOnIntegrationsCard/InstallOnIntegrationsCard'
 import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import {makeGetIntegrationsByTypes} from 'state/integrations/selectors'
 import settingsCss from 'pages/settings/settings.less'
-import {IntegrationType} from 'models/integration/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
 
+import BannerNotification from '../../../../../common/components/BannerNotifications/BannerNotification'
+import {NotificationStatus} from '../../../../../../state/notifications/types'
 import {renderFacebookCodeSnippet} from './utils'
 import css from './FacebookIntegrationCustomerChat.less'
-
-const targetIntegrationTypes: List<any> = fromJS([IntegrationType.Shopify])
 
 type Props = {
     integration: Map<any, any>
@@ -31,6 +29,17 @@ type State = {
     integrationLoading: boolean | null
 }
 
+const deprecationBanner = (
+    <p>
+        We are no longer supporting our one click installation method for the
+        Messenger chat widget. Existing Messenger chat widgets already installed
+        via one click installation
+        <strong> will remain completely functional, </strong>
+        but can only be removed by manually removing the Messenger code in your
+        storefront.
+    </p>
+)
+
 class FacebookIntegrationCustomerChat extends Component<Props, State> {
     state = {
         name: '',
@@ -39,8 +48,7 @@ class FacebookIntegrationCustomerChat extends Component<Props, State> {
     }
 
     render() {
-        const {integration, getIntegrationsByTypes, updateOrCreateIntegration} =
-            this.props
+        const {integration} = this.props
 
         return (
             <div className="full-width">
@@ -69,58 +77,57 @@ class FacebookIntegrationCustomerChat extends Component<Props, State> {
                 <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col md="6">
-                            {targetIntegrationTypes.map(
-                                (targetIntegrationType) => {
-                                    return (
-                                        <InstallOnIntegrationsCard
-                                            key={targetIntegrationType}
-                                            integrationType={
-                                                targetIntegrationType
-                                            }
-                                            targetIntegrations={getIntegrationsByTypes(
-                                                targetIntegrationType
-                                            )}
-                                            integration={integration}
-                                            updateOrCreateIntegration={
-                                                updateOrCreateIntegration
-                                            }
-                                        />
-                                    )
-                                }
+                            {(
+                                integration.getIn(
+                                    ['meta', 'shopify_integration_ids'],
+                                    []
+                                ) as List<number>
+                            ).size > 0 && (
+                                <Row className="mb-4">
+                                    <BannerNotification
+                                        message={deprecationBanner}
+                                        status={NotificationStatus.Warning}
+                                        dismissible={false}
+                                    />
+                                </Row>
                             )}
-
-                            <CustomInstallationCard
-                                integrationType={integration.get('type')}
-                                description={
-                                    <p>
-                                        To install the Messenger widget on your
-                                        website manually, you first need to
-                                        whitelist your website's domain for your
-                                        Facebook page on Facebook. You can do so{' '}
-                                        <a
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            href={`https://business.facebook.com/${
-                                                integration.getIn(
-                                                    ['meta', 'page_id'],
-                                                    ''
-                                                ) as string
-                                            }/settings/?tab=messenger_platform`}
-                                        >
-                                            here
-                                        </a>
-                                        . In the <b>Whitelisted Domains</b>{' '}
-                                        section, just add the address of you
-                                        website.
-                                        <br />
-                                        <br />
-                                        Then, copy the code below and paste it
-                                        on your website above the{' '}
-                                        <b>{'</body>'}</b> tag:
-                                    </p>
-                                }
-                                code={renderFacebookCodeSnippet(integration)}
-                            />
+                            <Row>
+                                <CustomInstallationCard
+                                    integrationType={integration.get('type')}
+                                    description={
+                                        <p>
+                                            To install the Messenger widget on
+                                            your website manually, you first
+                                            need to whitelist your website's
+                                            domain for your Facebook page on
+                                            Facebook. You can do so{' '}
+                                            <a
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={`https://business.facebook.com/${
+                                                    integration.getIn(
+                                                        ['meta', 'page_id'],
+                                                        ''
+                                                    ) as string
+                                                }/settings/?tab=messenger_platform`}
+                                            >
+                                                here
+                                            </a>
+                                            . In the <b>Whitelisted Domains</b>{' '}
+                                            section, just add the address of you
+                                            website.
+                                            <br />
+                                            <br />
+                                            Then, copy the code below and paste
+                                            it on your website above the{' '}
+                                            <b>{'</body>'}</b> tag:
+                                        </p>
+                                    }
+                                    code={renderFacebookCodeSnippet(
+                                        integration
+                                    )}
+                                />
+                            </Row>
                         </Col>
 
                         <Col md="6">

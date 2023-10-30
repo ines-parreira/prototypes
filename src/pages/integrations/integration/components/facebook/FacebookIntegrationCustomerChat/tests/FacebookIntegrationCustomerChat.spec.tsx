@@ -13,10 +13,6 @@ import {
 
 import FacebookIntegrationCustomerChat from '../FacebookIntegrationCustomerChat'
 
-jest.mock(
-    'pages/integrations/common/components/InstallOnIntegrationsCard/InstallOnIntegrationsCard.tsx',
-    () => () => <div>InstallOnIntegrationsCard</div>
-)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('FacebookIntegrationCustomerChat component', () => {
@@ -46,7 +42,7 @@ describe('FacebookIntegrationCustomerChat component', () => {
         integration: fromJS({}),
     }
 
-    it('should display the list of Shopify stores with the toggle checked or not depending on the installation status', () => {
+    it('should show the warning banner if an integration already setup messenger on shopify', () => {
         const component = mount(
             <Provider store={minStore}>
                 <FacebookIntegrationCustomerChat
