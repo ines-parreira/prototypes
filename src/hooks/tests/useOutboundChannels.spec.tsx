@@ -344,6 +344,37 @@ describe('getLegacyReplySourcesForTicket()', () => {
                 expect(sources).not.toContain(excludedSource)
             })
         })
+
+        it('should return email source for all email integration types', () => {
+            const emailSource = ['email']
+            const emailIntegrations = [{type: 'email'}] as Integration[]
+            const gmailIntegrations = [{type: 'gmail'}] as Integration[]
+            const outlookIntegrations = [{type: 'outlook'}] as Integration[]
+            const ticket = {}
+            expect(
+                getLegacyReplySourcesForTicket(ticket, emailIntegrations)
+            ).toEqual(emailSource)
+            expect(
+                getLegacyReplySourcesForTicket(ticket, gmailIntegrations)
+            ).toEqual(emailSource)
+            expect(
+                getLegacyReplySourcesForTicket(ticket, outlookIntegrations)
+            ).toEqual(emailSource)
+        })
+
+        it('should not return duplicates', () => {
+            const emailSource = ['email']
+            const ticket = {}
+            const integrations = [
+                {type: 'email'},
+                {type: 'gmail'},
+                {type: 'outlook'},
+            ] as Integration[]
+
+            expect(
+                getLegacyReplySourcesForTicket(ticket, integrations)
+            ).toEqual(emailSource)
+        })
     })
 
     describe('if the ticket exists', () => {
@@ -419,9 +450,11 @@ describe('getLegacyReplySourcesForTicket()', () => {
         })
 
         it('should always include email-forward if email is present', () => {
-            const expectedSources = ['email', 'email-forward']
+            const emailSources = ['email', 'email-forward']
 
-            const integrations = [{type: 'email'}] as Integration[]
+            const emailIntegrations = [{type: 'email'}] as Integration[]
+            const gmailIntegrations = [{type: 'gmail'}] as Integration[]
+            const outlookIntegrations = [{type: 'outlook'}] as Integration[]
 
             const ticket = {
                 id: 3,
@@ -429,9 +462,16 @@ describe('getLegacyReplySourcesForTicket()', () => {
                     email: {answerable: true},
                 },
             }
-            const sources = getLegacyReplySourcesForTicket(ticket, integrations)
 
-            expect(sources).toEqual(expectedSources)
+            expect(
+                getLegacyReplySourcesForTicket(ticket, emailIntegrations)
+            ).toEqual(emailSources)
+            expect(
+                getLegacyReplySourcesForTicket(ticket, gmailIntegrations)
+            ).toEqual(emailSources)
+            expect(
+                getLegacyReplySourcesForTicket(ticket, outlookIntegrations)
+            ).toEqual(emailSources)
         })
     })
 })

@@ -1,4 +1,5 @@
 import {useCallback} from 'react'
+import {uniq} from 'lodash'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -31,6 +32,14 @@ const LEGACY_OUTBOUND_SOURCES_BY_INTEGRATION: Partial<
     Record<IntegrationType, TicketMessageSourceType[]>
 > = {
     [IntegrationType.Email]: [
+        TicketMessageSourceType.Email,
+        TicketMessageSourceType.EmailForward,
+    ],
+    [IntegrationType.Gmail]: [
+        TicketMessageSourceType.Email,
+        TicketMessageSourceType.EmailForward,
+    ],
+    [IntegrationType.Outlook]: [
         TicketMessageSourceType.Email,
         TicketMessageSourceType.EmailForward,
     ],
@@ -253,7 +262,7 @@ function getLegacyReplySourcesForTicket(
         return [TicketMessageSourceType.InternalNote, ...sources]
     }
 
-    return sources
+    return uniq(sources)
 }
 
 export const privateFunctions = {
