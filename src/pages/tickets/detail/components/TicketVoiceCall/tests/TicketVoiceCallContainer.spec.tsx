@@ -65,7 +65,11 @@ const renderComponent = (
 describe('TicketVoiceCallContainer', () => {
     it('renders the component with all props', () => {
         const {getByText} = renderComponent({
-            voiceCall: {...voiceCall, has_call_recording: true},
+            voiceCall: {
+                ...voiceCall,
+                has_call_recording: true,
+                has_voicemail: true,
+            },
         })
 
         expect(getByText('Header')).toBeInTheDocument()
@@ -77,13 +81,16 @@ describe('TicketVoiceCallContainer', () => {
         expect(getByText('Duration')).toBeInTheDocument()
         expect(getByText('Call Recording')).toBeInTheDocument()
         expect(getByText('Audio call-recording')).toBeInTheDocument()
+        expect(getByText('Voicemail left')).toBeInTheDocument()
+        expect(getByText('Audio voicemail')).toBeInTheDocument()
     })
 
-    it('renders the component without call recording', () => {
+    it('renders the component without call recording or voicemail', () => {
         const {queryByText} = renderComponent({
             voiceCall: {...voiceCall, has_call_recording: false},
         })
 
         expect(queryByText('Call Recording')).not.toBeInTheDocument()
+        expect(queryByText('Voicemail left')).not.toBeInTheDocument()
     })
 })

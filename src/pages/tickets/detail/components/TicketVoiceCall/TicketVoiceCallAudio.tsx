@@ -26,13 +26,24 @@ export default function TicketVoiceCallAudio({type, voiceCall}: Props) {
     }
 
     if (!audio || error) {
-        return <div>No audio</div>
+        return (
+            <div data-testid="recording-failure">
+                <span className={css.errorStatus}>
+                    <strong>Failed:</strong> Recording is not available.
+                </span>{' '}
+                You can learn more{' '}
+                <a href="" target="_blank" rel="noopener noreferrer">
+                    here
+                </a>
+                .
+            </div>
+        )
     }
 
-    if (!!audio?.deleted_datetime) {
+    if (!!audio.deleted_datetime) {
         return (
             <div className={classNames(css.row, css.deletedRecording)}>
-                {labels[type]} manually deleted
+                {config[type].label} manually deleted
                 {audio.deleted_by_user_id && (
                     <>
                         {' '}
@@ -50,13 +61,19 @@ export default function TicketVoiceCallAudio({type, voiceCall}: Props) {
         <div className={css.audio}>
             <DownloadableDeletableRecording
                 downloadRecordingURL={audio.url}
-                deleteRecordingURL={`/api/integrations/${voiceCall.integration_id}/calls/${voiceCall.external_id}/recordings/${audio.external_id}`}
+                deleteRecordingURL={`/api/integrations/${voiceCall.integration_id}/calls/${voiceCall.external_id}/${config[type].deletePath}/${audio.external_id}`}
             />
         </div>
     )
 }
 
-const labels = {
-    [VoiceCallRecordingType.Recording]: 'Call recording',
-    [VoiceCallRecordingType.Voicemail]: 'Voicemail recording',
+const config = {
+    [VoiceCallRecordingType.Recording]: {
+        label: 'Call recording',
+        deletePath: 'recordings',
+    },
+    [VoiceCallRecordingType.Voicemail]: {
+        label: 'Voicemail recording',
+        deletePath: 'voicemail-recordings',
+    },
 }

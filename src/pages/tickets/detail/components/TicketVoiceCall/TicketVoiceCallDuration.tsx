@@ -35,6 +35,7 @@ export default function TicketVoiceCallDuration({
             VoiceCallStatus.Queued,
             VoiceCallStatus.Ringing,
             VoiceCallStatus.Failed,
+            VoiceCallStatus.Busy,
         ].includes(voiceCall.status)
     ) {
         return null

@@ -19,6 +19,7 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
                         customerId={voiceCall.customer_id}
                         phoneNumber={voiceCall.phone_number_source}
                     />
+                    ...
                 </div>
             )
         case VoiceCallStatus.Failed:
@@ -31,9 +32,10 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
             )
         case VoiceCallStatus.Canceled:
         case VoiceCallStatus.NoAnswer:
+        case VoiceCallStatus.Busy:
             return (
                 <div className={css.statusWrapper}>
-                    <div>Call missed by</div>
+                    <div className={css.errorStatus}>Call missed by</div>
                     <VoiceCallCustomerLabel
                         customerId={voiceCall.customer_id}
                         phoneNumber={voiceCall.phone_number_source}

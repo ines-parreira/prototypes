@@ -63,7 +63,9 @@ describe('TicketVoiceCallAudio', () => {
         )
 
         expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-        expect(screen.queryByText('No audio')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('recording-failure')
+        ).not.toBeInTheDocument()
         expect(DownloadableDeletableRecording).toHaveBeenCalledWith(
             expect.objectContaining({
                 downloadRecordingURL: audio.url,
@@ -83,7 +85,9 @@ describe('TicketVoiceCallAudio', () => {
         renderComponent(voiceCall, VoiceCallRecordingType.Recording)
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
-        expect(screen.queryByText('No audio')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('recording-failure')
+        ).not.toBeInTheDocument()
         expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
     })
 
@@ -97,7 +101,7 @@ describe('TicketVoiceCallAudio', () => {
         renderComponent(voiceCall, VoiceCallRecordingType.Recording)
 
         expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-        expect(screen.getByText('No audio')).toBeInTheDocument()
+        expect(screen.getByTestId('recording-failure')).toBeInTheDocument()
         expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
     })
 
@@ -111,7 +115,7 @@ describe('TicketVoiceCallAudio', () => {
         renderComponent(voiceCall, VoiceCallRecordingType.Recording)
 
         expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-        expect(screen.getByText('No audio')).toBeInTheDocument()
+        expect(screen.getByTestId('recording-failure')).toBeInTheDocument()
         expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
     })
 })

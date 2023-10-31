@@ -287,6 +287,12 @@ describe('ticket selectors', () => {
                     type: phoneEvents.COMPLETED_PHONE_CALL,
                 },
                 {
+                    type: phoneEvents.CALL_RECORDING,
+                },
+                {
+                    type: phoneEvents.VOICEMAIL_RECORDING,
+                },
+                {
                     type: 'some-custom-event',
                 },
             ])
@@ -319,6 +325,12 @@ describe('ticket selectors', () => {
                 },
                 {
                     type: phoneEvents.COMPLETED_PHONE_CALL,
+                },
+                {
+                    type: phoneEvents.CALL_RECORDING,
+                },
+                {
+                    type: phoneEvents.VOICEMAIL_RECORDING,
                 },
                 {
                     type: 'some-custom-event',

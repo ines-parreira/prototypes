@@ -69,6 +69,21 @@ export default function TicketVoiceCallContainer({
                         />
                     </CollapsibleDetails>
                 )}
+                {voiceCall.has_voicemail && (
+                    <CollapsibleDetails
+                        title={
+                            <>
+                                <i className="material-icons">voicemail</i>
+                                <span>Voicemail left</span>
+                            </>
+                        }
+                    >
+                        <TicketVoiceCallAudio
+                            voiceCall={voiceCall}
+                            type={VoiceCallRecordingType.Voicemail}
+                        />
+                    </CollapsibleDetails>
+                )}
             </div>
         </div>
     )
