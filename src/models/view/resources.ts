@@ -1,13 +1,16 @@
 import _omit from 'lodash/omit'
 import {stringify} from 'qs'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import client from 'models/api/resources'
 import {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
+    OldCursorMeta,
 } from 'models/api/types'
-
 import {Ticket} from 'models/ticket/types'
+import {getLDClient} from 'utils/launchDarkly'
+
 import {ListParams, View, ViewDraft} from './types'
 
 type SharedView = View & {
@@ -25,14 +28,20 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
     )
 }
 
-export type UseGetViewItems = Awaited<ReturnType<typeof getViewItems>>
+export const getViewItems = async ({url, viewId, ...params}: ListParams) => {
+    const launchDarklyClient = getLDClient()
+    await launchDarklyClient.waitForInitialization()
+    const enforceTicketsOnES = launchDarklyClient.variation(
+        FeatureFlagKey.EnforceTicketsOnES
+    )
 
-export const getViewItems = async ({viewId, ...params}: ListParams) => {
-    return await client.get<ApiListResponseCursorPagination<Ticket[]>>(
-        `/api/views/${viewId}/items/`,
-        {
-            params,
-        }
+    return await client.get<
+        ApiListResponseCursorPagination<Ticket[], OldCursorMeta>
+    >(
+        url ?? `/api/views/${viewId}/items`,
+        enforceTicketsOnES
+            ? {...params, headers: {'x-gorgias-search-engine': 'ES'}}
+            : {params}
     )
 }
 

@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
+import {Ticket} from 'models/ticket/types'
 import {useGetViewItems} from 'models/view/queries'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 
 import TicketRow from './TicketRow'
@@ -8,7 +10,19 @@ import css from './TicketListView.less'
 import SortingDropdown from './SortingDropdown'
 
 export default function TicketListView({viewId}: {viewId: string}) {
-    const {data, isLoading} = useGetViewItems({viewId: parseInt(viewId)})
+    const {isInitialLoading, data, hasNextPage, fetchNextPage} =
+        useGetViewItems({
+            viewId: parseInt(viewId),
+        })
+
+    const tickets = useMemo(
+        () =>
+            data?.pages.reduce<Ticket[]>(
+                (all, page) => [...all, ...page.data.data],
+                []
+            ) || [],
+        [data]
+    )
 
     return (
         <div className={css.wrapper}>
@@ -16,18 +30,20 @@ export default function TicketListView({viewId}: {viewId: string}) {
                 <div className={css.title}>My tickets</div>
                 <SortingDropdown />
             </div>
-            <div className={css.list}>
-                {isLoading ? (
-                    <SkeletonLoader length={5} className={css.loader} />
-                ) : data?.data.data.length === 0 ? (
-                    <div className={css.empty}>
-                        <div className={css.emptyTitle}>No tickets</div>
-                        <div className={css.description}>
-                            This view is empty.
-                        </div>
-                    </div>
-                ) : (
-                    data?.data.data.map(
+            {isInitialLoading ? (
+                <SkeletonLoader length={5} className={css.skeleton} />
+            ) : tickets.length === 0 ? (
+                <div className={css.empty}>
+                    <div className={css.emptyTitle}>No tickets</div>
+                    <div className={css.description}>This view is empty.</div>
+                </div>
+            ) : (
+                <InfiniteScroll
+                    className={css.list}
+                    onLoad={fetchNextPage}
+                    shouldLoadMore={!isInitialLoading && !!hasNextPage}
+                >
+                    {tickets.map(
                         ({
                             excerpt,
                             channel,
@@ -54,9 +70,9 @@ export default function TicketListView({viewId}: {viewId: string}) {
                                 }
                             />
                         )
-                    )
-                )}
-            </div>
+                    )}
+                </InfiniteScroll>
+            )}
         </div>
     )
 }

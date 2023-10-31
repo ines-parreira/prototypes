@@ -1,6 +1,7 @@
 import {ApiPaginationParams, OrderDirection} from 'models/api/types'
 
 export type ListParams = ApiPaginationParams & {
+    url?: string
     viewId: number
 }
 

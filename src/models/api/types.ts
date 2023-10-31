@@ -33,11 +33,20 @@ export type PaginationMeta = {
     next_page?: string
 }
 
-export type ApiListResponseCursorPagination<T> = ApiListResponse<T, CursorMeta>
+export type ApiListResponseCursorPagination<
+    T,
+    U = CursorMeta
+> = ApiListResponse<T, U>
 
 export type CursorMeta = {
     next_cursor: string | null
     prev_cursor: string | null
+}
+
+export type OldCursorMeta = {
+    current_cursor: string
+    prev_items: string | null
+    next_items: string | null
 }
 
 export type OrderParams<T extends string> = {

@@ -3,18 +3,37 @@
         flex-shrink: 0;
         position: relative;
         z-index: 1;
-        width: 10px;
-        margin: 0 -5px;
-        cursor: grab;
+        width: 6px;
+        margin: 0 -3px;
+        cursor: col-resize;
 
         &::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 5px;
+            left: 3px;
             bottom: 0;
             width: 1px;
-            background: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 1px;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--main-primary-1);
+            opacity: 0;
+            transition-property: opacity;
+            transition-duration: 0.25s;
+            transition-delay: 0ms;
+            pointer-events: none;
+        }
+
+        &:hover::after {
+            opacity: 1;
         }
     }
 }

@@ -13,22 +13,37 @@
         display: flex;
         height: 100%;
         flex-direction: column;
+
+        scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-0);
+        scrollbar-width: thin;
+        margin-right: 3px;
+
+        &::-webkit-scrollbar-thumb {
+            visibility: initial;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: var(--neutral-grey-0);
+        }
     }
 
-    .loader {
+    .skeleton {
         :global(.react-loading-skeleton) {
             --base-color: var(--neutral-grey-2);
             --highlight-color: var(--neutral-grey-1);
+            line-height: normal;
         }
+        padding: 16px;
 
         div {
             padding: 16px 12px;
             height: 40px;
             box-sizing: content-box;
-            width: calc(100% - 16px);
+            width: auto;
+            align-items: flex-start;
 
             &:not(:last-of-type) {
-                margin-bottom: auto;
+                margin-bottom: 8px;
             }
         }
     }

@@ -1,6 +1,6 @@
 import {render} from '@testing-library/react'
 import React from 'react'
-import {UseQueryResult} from '@tanstack/react-query'
+import {UseInfiniteQueryResult} from '@tanstack/react-query'
 import {AxiosResponse} from 'axios'
 
 import {ticket} from 'fixtures/ticket'
@@ -16,8 +16,9 @@ jest.mock('pages/common/components/SkeletonLoader', () => () => {
 })
 
 const response = {
-    data: {data: {data: [ticket]}},
-} as unknown as UseQueryResult<
+    isInitialLoading: false,
+    data: {pages: [{data: {data: [ticket]}}]},
+} as unknown as UseInfiniteQueryResult<
     AxiosResponse<ApiListResponseCursorPagination<Ticket[]>>,
     unknown
 >
@@ -27,26 +28,27 @@ const useGetViewItemsMock = assumeMock(useGetViewItems)
 
 describe('<TicketListView />', () => {
     it('should display a list of tickets', () => {
-        useGetViewItemsMock.mockReturnValueOnce(response)
+        useGetViewItemsMock.mockReturnValue(response)
         const {getByText} = render(<TicketListView viewId="1" />)
 
         expect(getByText(ticket.subject)).toBeInTheDocument()
     })
 
     it('should display a loader', () => {
-        useGetViewItemsMock.mockReturnValueOnce({
+        useGetViewItemsMock.mockReturnValue({
             ...response,
-            isLoading: true,
-        } as UseQueryResult<AxiosResponse<ApiListResponseCursorPagination<Ticket[]>>, unknown>)
+            isInitialLoading: true,
+        } as UseInfiniteQueryResult<AxiosResponse<ApiListResponseCursorPagination<Ticket[]>>, unknown>)
         const {getByText} = render(<TicketListView viewId="1" />)
 
         expect(getByText('Loader')).toBeInTheDocument()
     })
 
     it('should display message when view is empty', () => {
-        useGetViewItemsMock.mockReturnValueOnce({
-            data: {data: {data: []}},
-        } as unknown as UseQueryResult<AxiosResponse<ApiListResponseCursorPagination<Ticket[]>>, unknown>)
+        useGetViewItemsMock.mockReturnValue({
+            ...response,
+            data: {pages: [{data: {data: []}}]},
+        } as unknown as UseInfiniteQueryResult<AxiosResponse<ApiListResponseCursorPagination<Ticket[]>>, unknown>)
         const {getByText} = render(<TicketListView viewId="1" />)
 
         expect(getByText(/this view is empty/i)).toBeInTheDocument()

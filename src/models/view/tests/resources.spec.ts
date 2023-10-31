@@ -3,6 +3,7 @@ import _omit from 'lodash/omit'
 
 import {view} from 'fixtures/views'
 import client from 'models/api/resources'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {
     createView,
@@ -19,9 +20,14 @@ const draftView: ViewDraft = {
     category: null,
 } as any
 
+jest.mock('utils/launchDarkly')
+const variationMock = getLDClient().variation as jest.Mock
+;(getLDClient().waitForInitialization as jest.Mock).mockResolvedValue({})
+
 describe('view resources', () => {
     beforeEach(() => {
         mockedServer.reset()
+        variationMock.mockImplementation(() => false)
     })
 
     describe('fetchViewsPaginated', () => {

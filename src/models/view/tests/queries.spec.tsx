@@ -3,11 +3,16 @@ import MockAdapter from 'axios-mock-adapter'
 import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import client from 'models/api/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useGetViewItems} from 'models/view/queries'
+import {
+    apiListCursorPaginationResponse,
+    axiosSuccessResponse,
+} from 'fixtures/axiosResponse'
 import {ticket} from 'fixtures/ticket'
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import client from 'models/api/resources'
+import {useGetViewItems} from 'models/view/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {getViewItems} from '../resources'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
@@ -15,6 +20,11 @@ const queryClient = mockQueryClient()
 const wrapper: React.FC = ({children}) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
+
+jest.mock('models/view/resources')
+const mockGetViewItems = getViewItems as jest.MockedFunction<
+    typeof getViewItems
+>
 
 beforeEach(() => {
     mockedServer.reset()
@@ -25,9 +35,11 @@ describe('useGetViewItems', () => {
     const viewId = 1
 
     it('should succeed and return proper data', async () => {
-        const response = apiListCursorPaginationResponse([ticket])
+        const response = axiosSuccessResponse(
+            apiListCursorPaginationResponse([ticket])
+        ) as unknown as ReturnType<typeof mockGetViewItems>
+        mockGetViewItems.mockResolvedValue(response)
 
-        mockedServer.onGet(`/api/views/${viewId}/items/`).reply(200, response)
         const {result, waitFor} = renderHook(
             () =>
                 useGetViewItems({
@@ -40,13 +52,11 @@ describe('useGetViewItems', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(result.current.data?.data).toStrictEqual(response)
+        expect(result.current.data?.pages[0]).toStrictEqual(response)
     })
 
     it('should fail and return proper error', async () => {
-        mockedServer
-            .onGet(`/api/views/${viewId}/items/`)
-            .reply(404, {message: 'error'})
+        mockGetViewItems.mockRejectedValue(Error('test error'))
         const {result, waitFor} = renderHook(
             () =>
                 useGetViewItems({
