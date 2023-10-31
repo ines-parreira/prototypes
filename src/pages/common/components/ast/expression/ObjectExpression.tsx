@@ -66,6 +66,6 @@ export default class ObjectExpression extends React.Component<Props> {
             }
         )
 
-        return <div>{propertiesComp}</div>
+        return propertiesComp
     }
 }

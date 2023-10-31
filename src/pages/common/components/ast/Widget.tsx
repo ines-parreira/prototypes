@@ -38,6 +38,8 @@ import TagsSelect from './widget/TagsSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
+import CustomFieldIdInput from './widget/CustomFieldIdInput'
+import CustomFieldSelect from './widget/CustomFieldSelect'
 import MacroSelect from './widget/MacroSelect'
 import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
@@ -657,6 +659,30 @@ export class Widget extends Component<Props, State> {
                         onChange={this._handleChange}
                     />
                 )
+            case 'custom_field-select':
+                return (
+                    <CustomFieldSelect
+                        {...widget}
+                        className={className}
+                        value={widget.value}
+                        onChange={this._handleChange}
+                    />
+                )
+            case 'custom_field-input': {
+                const customFieldId = this.props.properties[0].value.value // A custom field input is always preceded by a custom field select
+                if (!customFieldId) {
+                    return null
+                }
+                return (
+                    <CustomFieldIdInput
+                        {...widget}
+                        customFieldId={customFieldId}
+                        className={className}
+                        value={widget.value}
+                        onChange={this._handleChange}
+                    />
+                )
+            }
             case 'snooze-picker':
                 return this._snoozePicker(value)
             case 'textarea':

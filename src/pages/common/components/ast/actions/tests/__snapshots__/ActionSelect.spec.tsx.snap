@@ -114,7 +114,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Snooze for
+      Set ticket field
     </DropdownItem>
     <DropdownItem
       key="11"
@@ -123,7 +123,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Assign agent
+      Snooze for
     </DropdownItem>
     <DropdownItem
       key="12"
@@ -132,7 +132,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Assign team
+      Assign agent
     </DropdownItem>
     <DropdownItem
       key="13"
@@ -141,7 +141,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Delete ticket
+      Assign team
     </DropdownItem>
     <DropdownItem
       key="14"
@@ -150,7 +150,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Hide Facebook comment
+      Delete ticket
     </DropdownItem>
     <DropdownItem
       key="15"
@@ -159,10 +159,19 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Like Facebook comment
+      Hide Facebook comment
     </DropdownItem>
     <DropdownItem
       key="16"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Like Facebook comment
+    </DropdownItem>
+    <DropdownItem
+      key="17"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -279,7 +288,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Snooze for
+      Set ticket field
     </DropdownItem>
     <DropdownItem
       key="11"
@@ -288,7 +297,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Assign agent
+      Snooze for
     </DropdownItem>
     <DropdownItem
       key="12"
@@ -297,7 +306,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Assign team
+      Assign agent
     </DropdownItem>
     <DropdownItem
       key="13"
@@ -306,7 +315,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Delete ticket
+      Assign team
     </DropdownItem>
     <DropdownItem
       key="14"
@@ -315,7 +324,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Hide Facebook comment
+      Delete ticket
     </DropdownItem>
     <DropdownItem
       key="15"
@@ -324,10 +333,19 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Like Facebook comment
+      Hide Facebook comment
     </DropdownItem>
     <DropdownItem
       key="16"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Like Facebook comment
+    </DropdownItem>
+    <DropdownItem
+      key="17"
       onClick={[Function]}
       tag="button"
       toggle={true}

@@ -1,15 +1,7 @@
-import React, {
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-    useEffect,
-    RefObject,
-} from 'react'
+import React, {useCallback, useMemo, useRef, useState, RefObject} from 'react'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 import {
@@ -17,7 +9,6 @@ import {
     CustomFieldState,
     CustomFieldValue,
 } from 'models/customField/types'
-import {updateCustomFieldError} from 'state/ticket/actions'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -34,6 +25,7 @@ import {useA11yDropdown} from './hooks/useA11yDropdown'
 import {useSearch} from './hooks/useSearch'
 import {useActiveState} from './hooks/useActiveState'
 import {buildTreeOfChoices} from './helpers/buildTreeOfChoices'
+import {isOutdatedValue} from './helpers/isOutdatedValue'
 import {getLabel, getStealthLabel} from './helpers/getLabels'
 import {getFullValueFromCurrentPath} from './helpers/getFullValueFromCurrentPath'
 import {getCurrentPathFromFullValue} from './helpers/getCurrentPathFromFullValue'
@@ -74,8 +66,6 @@ export default function MultiLevelSelect({
     onChange,
     onFocus,
 }: Props) {
-    const dispatch = useAppDispatch()
-
     const containerRef = useRef<HTMLSpanElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
@@ -84,6 +74,9 @@ export default function MultiLevelSelect({
     const displayValue = showFullValue
         ? getLabel(value)
         : getStealthLabel(value)
+
+    const [previousValue, setPreviousValue] =
+        useState<Maybe<CustomFieldValue>>(null)
 
     const [currentPath, setCurrentPath] = useState<string[]>(
         getCurrentPathFromFullValue(value)
@@ -135,7 +128,6 @@ export default function MultiLevelSelect({
     const handleChange = useCallback(
         (newValue: CustomFieldValue) => {
             setActive(false)
-            setCurrentPath(getCurrentPathFromFullValue(newValue))
             onChange(newValue)
         },
         [setActive, onChange]
@@ -148,13 +140,15 @@ export default function MultiLevelSelect({
         setActive(true)
     }, [isActive, setActive, onFocus])
 
-    // outdated value, keep in a use effect to avoid infinite loop
-    useEffect(() => {
-        if (!isValueEmpty && value !== undefined && !choices.includes(value)) {
-            dispatch(updateCustomFieldError(id, true))
+    // Update the currentPath to match the value
+    if (value !== previousValue) {
+        setPreviousValue(value)
+        if (isOutdatedValue(value, choices)) {
             setCurrentPath([])
+        } else {
+            setCurrentPath(getCurrentPathFromFullValue(value))
         }
-    }, [dispatch, id, isValueEmpty, value, choices])
+    }
 
     const isPredictionCorrect =
         prediction?.display === true &&

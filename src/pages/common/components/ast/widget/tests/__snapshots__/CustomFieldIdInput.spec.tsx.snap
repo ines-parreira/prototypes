@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomFieldIdInput/> should render 1`] = `
+<div
+  class="custom-field-input--text"
+>
+  <div
+    class="wrapper"
+  >
+    <input
+      class="input"
+      id="input-text-1"
+      name="input-text-1"
+      placeholder="Some placeholder"
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;

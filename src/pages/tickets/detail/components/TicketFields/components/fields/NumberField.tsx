@@ -56,20 +56,13 @@ export default function NumberField({
 
     const ticketId = useAppSelector(getTicket).id
     const isValueEmpty = isCustomFieldValueEmpty(fieldState?.value)
-    const initialValue: number | undefined = isValueEmpty
+    const stateValue: number | undefined = isValueEmpty
         ? undefined
         : Number(fieldState?.value)
     const hasError = fieldState?.hasError
 
-    const [currentValue, setCurrentValue] = useState(initialValue)
+    const [currentValue, setCurrentValue] = useState(stateValue)
     const [isActive, setActive] = useState(false)
-
-    // Update the value when the initial value changes
-    const [previousValue, setPreviousValue] = useState(initialValue)
-    if (initialValue !== previousValue) {
-        setPreviousValue(initialValue)
-        setCurrentValue(initialValue)
-    }
 
     const handleChange = useCallback(
         (newValue?: number) => {
@@ -81,28 +74,26 @@ export default function NumberField({
         [dispatch, id, hasError]
     )
 
+    // Update the value when the state value changes
+    const [previousStateValue, setPreviousStateValue] = useState(stateValue)
+    if (stateValue !== previousStateValue) {
+        setPreviousStateValue(stateValue)
+        handleChange(stateValue)
+    }
+
     const onError = useCallback(() => {
-        setCurrentValue(initialValue)
+        setCurrentValue(stateValue)
         dispatch(
             updateCustomFieldState({
                 id,
                 hasError:
                     (isRequired && isValueEmpty) ||
-                    (!isValueEmpty && !isInRange(initialValue, min, max)) ||
+                    (!isValueEmpty && !isInRange(stateValue, min, max)) ||
                     hasError,
-                value: initialValue,
+                value: stateValue,
             })
         )
-    }, [
-        hasError,
-        isValueEmpty,
-        initialValue,
-        dispatch,
-        id,
-        isRequired,
-        min,
-        max,
-    ])
+    }, [hasError, isValueEmpty, stateValue, dispatch, id, isRequired, min, max])
     // Only on blur
     const {mutate} = useUpdateOrDeleteTicketFieldValue(
         {onError},
@@ -114,10 +105,10 @@ export default function NumberField({
     // This piece of code ensures the current value is still in range
     // Must be inside an useEffect to avoid concurrency issues with other dispatches
     useEffect(() => {
-        if (!isValueEmpty && !isInRange(initialValue, min, max)) {
+        if (!isValueEmpty && !isInRange(stateValue, min, max)) {
             dispatch(updateCustomFieldError(id, true))
         }
-    }, [initialValue, dispatch, id, isValueEmpty, min, max])
+    }, [stateValue, dispatch, id, isValueEmpty, min, max])
 
     return (
         <Label label={label} isRequired={isRequired}>
@@ -149,7 +140,7 @@ export default function NumberField({
                     setActive(false)
                     setCurrentValue(currentValue)
                     dispatch(updateCustomFieldValue(id, currentValue))
-                    if (currentValue !== initialValue) {
+                    if (currentValue !== stateValue) {
                         mutate([
                             {
                                 fieldType: 'Ticket',

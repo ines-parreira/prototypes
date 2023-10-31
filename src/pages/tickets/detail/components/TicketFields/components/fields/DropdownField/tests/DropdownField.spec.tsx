@@ -168,11 +168,11 @@ describe('<DropdownField />', () => {
         userEvent.click(screen.getByText('c1'))
         expect(store.dispatch).toHaveBeenNthCalledWith(
             1,
-            updateCustomFieldValue(fieldState.id, 's1::ss2::c1')
+            updateCustomFieldError(fieldState.id, false)
         )
         expect(store.dispatch).toHaveBeenNthCalledWith(
             2,
-            updateCustomFieldError(fieldState.id, false)
+            updateCustomFieldValue(fieldState.id, 's1::ss2::c1')
         )
         await waitFor(() => {
             expect(mockedServer.history.put[0].data).toEqual('"s1::ss2::c1"')

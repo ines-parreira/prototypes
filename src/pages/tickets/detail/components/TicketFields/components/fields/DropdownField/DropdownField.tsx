@@ -1,4 +1,4 @@
-import React, {ComponentProps, useCallback} from 'react'
+import React, {ComponentProps, useCallback, useEffect} from 'react'
 
 import {useUpdateOrDeleteTicketFieldValue} from 'hooks/customField/useUpdateOrDeleteTicketFieldValue'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -17,6 +17,7 @@ import {isCustomFieldValueEmpty} from 'utils/customFields'
 
 import MultiLevelSelect from './MultiLevelSelect'
 import {getLabel} from './helpers/getLabels'
+import {isOutdatedValue} from './helpers/isOutdatedValue'
 
 type Props = Omit<
     ComponentProps<typeof MultiLevelSelect>,
@@ -65,12 +66,10 @@ export default function DropdownField(props: Props) {
         {isDisabled: !ticketId}
     )
     const handleChange = useCallback(
-        (newValue: CustomFieldValue) => {
+        (newValue: CustomFieldValue | undefined) => {
             dispatch(updateCustomFieldValue(id, newValue))
-            if (isCustomFieldValueEmpty(newValue && props.isRequired)) {
+            if (isCustomFieldValueEmpty(newValue) && props.isRequired) {
                 dispatch(updateCustomFieldError(id, true))
-            } else {
-                dispatch(updateCustomFieldError(id, false))
             }
             mutate([
                 {
@@ -83,6 +82,14 @@ export default function DropdownField(props: Props) {
         },
         [dispatch, id, mutate, ticketId, props.isRequired]
     )
+
+    useEffect(() => {
+        if (isOutdatedValue(value, props.choices)) {
+            dispatch(updateCustomFieldError(id, true))
+        } else if (!isCustomFieldValueEmpty(value)) {
+            dispatch(updateCustomFieldError(id, false))
+        }
+    }, [value, dispatch, id, props.choices])
 
     return (
         <>

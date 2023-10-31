@@ -198,3 +198,4 @@ export type ActionType =
     | 'facebookHideComment'
     | 'facebookLikeComment'
     | 'excludeFromCSAT'
+    | 'setCustomFieldValue'

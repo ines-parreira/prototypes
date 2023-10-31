@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomFieldSelect/> should render 1`] = `
+<div>
+  <div
+    class="dropdown"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
+      data-toggle="dropdown"
+    >
+      <div
+        class="select dropdown-toggle"
+      >
+        <span
+          class="label placeholder"
+          style="min-width: 10px; opacity: 1;"
+        >
+          Select an option
+        </span>
+        <input
+          autocomplete="chrome-off"
+          class="input"
+          style="min-width: 10px;"
+          type="text"
+          value=""
+        />
+        <i
+          class="material-icons dropdownIcon"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="options dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      
+      <button
+        class="option option--focused dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          Input field
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          Dropdown field
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          Yes/No field
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          Number field
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

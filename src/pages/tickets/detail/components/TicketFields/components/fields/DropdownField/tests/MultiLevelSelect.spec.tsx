@@ -1,14 +1,10 @@
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import MultiLevelSelect from '../MultiLevelSelect'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
-
-const store = configureMockStore()()
 
 describe('<MultiLevelSelect />', () => {
     const initialProps = {
@@ -41,23 +37,15 @@ describe('<MultiLevelSelect />', () => {
                 {foo: 'bar'}, // this should be ignored with no errors as we are not supporting objects
             ],
         }
-        render(
-            <Provider store={store}>
-                {/* @ts-ignore - we are testing an unsupported object */}
-                <MultiLevelSelect {...props} />
-            </Provider>
-        )
+        /* @ts-ignore - we are testing an unsupported object */
+        render(<MultiLevelSelect {...props} />)
 
         userEvent.click(screen.getByRole('textbox'))
         expect(document.body).toMatchSnapshot()
     })
 
     it('should display all the items when focused and allow mouse navigation', () => {
-        render(
-            <Provider store={store}>
-                <MultiLevelSelect {...initialProps} value="" />
-            </Provider>
-        )
+        render(<MultiLevelSelect {...initialProps} value="" />)
 
         userEvent.click(screen.getByRole('textbox'))
         let navItem = screen.getByText('s1')
@@ -72,11 +60,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should call onChange with correct params and dismiss modal when selecting a value', () => {
-        render(
-            <Provider store={store}>
-                <MultiLevelSelect {...initialProps} />
-            </Provider>
-        )
+        render(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
         userEvent.click(screen.getByText('c1'))
@@ -85,11 +69,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should call onChange with correct params and dismiss modal when clearing the value', () => {
-        render(
-            <Provider store={store}>
-                <MultiLevelSelect {...initialProps} />
-            </Provider>
-        )
+        render(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
         userEvent.click(screen.getByText(/Clear/))
@@ -98,22 +78,14 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should not display a search input if not text choices', () => {
-        render(
-            <Provider store={store}>
-                <MultiLevelSelect {...initialProps} choices={[1024, 2048]} />
-            </Provider>
-        )
+        render(<MultiLevelSelect {...initialProps} choices={[1024, 2048]} />)
 
         userEvent.click(screen.getByRole('textbox'))
         expect(screen.queryByPlaceholderText('Search')).toBeNull()
     })
 
     it('should display display results when searching', async () => {
-        const {container} = render(
-            <Provider store={store}>
-                <MultiLevelSelect {...initialProps} />
-            </Provider>
-        )
+        const {container} = render(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
         await userEvent.type(screen.getByPlaceholderText('Search'), 's1')

@@ -36,18 +36,11 @@ export default function TextField({
     const dispatch = useAppDispatch()
 
     const ticketId = useAppSelector(getTicket).id
-    const initialValue = fieldState?.value?.toString() || ''
+    const stateValue = fieldState?.value?.toString() || ''
     const hasError = fieldState?.hasError
 
-    const [currentValue, setCurrentValue] = useState(initialValue)
+    const [currentValue, setCurrentValue] = useState(stateValue)
     const [isActive, setActive] = useState(false)
-
-    // Update the value when the initial value changes
-    const [previousValue, setPreviousValue] = useState(initialValue)
-    if (initialValue !== previousValue) {
-        setPreviousValue(initialValue)
-        setCurrentValue(initialValue)
-    }
 
     const handleChange = useCallback(
         (newValue: string) => {
@@ -59,16 +52,23 @@ export default function TextField({
         [dispatch, id, hasError]
     )
 
+    // Update the value when the state value changes
+    const [previousStateValue, setPreviousStateValue] = useState(stateValue)
+    if (stateValue !== previousStateValue) {
+        setPreviousStateValue(stateValue)
+        handleChange(stateValue)
+    }
+
     const onError = useCallback(() => {
-        setCurrentValue(initialValue)
+        setCurrentValue(stateValue)
         dispatch(
             updateCustomFieldState({
                 id,
-                hasError: Boolean(isRequired && !initialValue),
-                value: initialValue,
+                hasError: Boolean(isRequired && !stateValue),
+                value: stateValue,
             })
         )
-    }, [initialValue, dispatch, id, isRequired])
+    }, [stateValue, dispatch, id, isRequired])
     // Only on blur
     const {mutate} = useUpdateOrDeleteTicketFieldValue(
         {onError},
@@ -106,7 +106,7 @@ export default function TextField({
                     const trimmedCurrentValue = currentValue.trim()
                     setCurrentValue(trimmedCurrentValue)
                     dispatch(updateCustomFieldValue(id, trimmedCurrentValue))
-                    if (trimmedCurrentValue !== initialValue) {
+                    if (trimmedCurrentValue !== stateValue) {
                         mutate([
                             {
                                 fieldType: 'Ticket',

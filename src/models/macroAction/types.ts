@@ -16,6 +16,7 @@ export enum MacroActionName {
     RechargeRefundLastCharge = 'rechargeRefundLastCharge',
     RechargeRefundLastOrder = 'rechargeRefundLastOrder',
     SetAssignee = 'setAssignee',
+    SetCustomFieldValue = 'setCustomFieldValue',
     SetResponseText = 'setResponseText',
     SetStatus = 'setStatus',
     SetSubject = 'setSubject',
@@ -61,6 +62,8 @@ export type MacroAction = {
         cc?: string
         bcc?: string
         from?: string
+        custom_field_id?: number
+        value?: number | string | boolean
     }
     description?: string
     name: MacroActionName

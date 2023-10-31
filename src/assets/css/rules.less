@@ -130,6 +130,13 @@ pre {
         vertical-align: middle;
     }
 }
+.rule-select-mixin {
+    .rule-badge-mixin;
+    text-transform: none;
+    font-weight: 500;
+    background-color: var(--ultraLightPurple);
+    color: var(--violet);
+}
 
 .LogicalOperator {
     .rule-badge-mixin;
@@ -198,10 +205,7 @@ pre {
     .dropdown-toggle,
     input,
     input:focus {
-        .rule-badge-mixin;
-        text-transform: none;
-        font-weight: 500;
-        background-color: var(--ultraLightPurple);
+        .rule-select-mixin;
         color: var(--violet) !important;
     }
 
@@ -289,10 +293,7 @@ pre {
             .dropdown-toggle,  // for displayed label of Dropdowns
             input, input:focus {
                 // for input in labels of Dropdowns, and inputs in MultiSelect field
-                .rule-badge-mixin;
-                text-transform: none;
-                font-weight: 500;
-                background-color: var(--ultraLightPurple);
+                .rule-select-mixin;
                 color: var(--violet) !important;
             }
 
@@ -309,6 +310,36 @@ pre {
                     top: 0;
                     left: 0.5rem;
                 }
+            }
+
+            // Rounded style for custom field value text input
+            &.custom-field-input--text > div {
+                height: 26px;
+                border-radius: 15px;
+
+                & > input {
+                    font-size: 12px;
+                    padding: 3px 8px;
+                }
+            }
+
+            // Rounded style for custom field value number input
+            &.custom-field-input--number {
+                height: 26px;
+                border-radius: 15px 8px 8px 15px;
+
+                & > span {
+                    height: 24px;
+
+                    i {
+                        font-size: 13px;
+                    }
+                }
+            }
+
+            // Rounded style for custom field value dropdown input
+            &.custom-field-input--dropdown > span {
+                .rule-select-mixin;
             }
         }
     }

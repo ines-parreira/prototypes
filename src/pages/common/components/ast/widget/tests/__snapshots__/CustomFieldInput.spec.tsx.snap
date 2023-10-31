@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomFieldInput/> should render a boolean dropdown 1`] = `
+<div>
+  <div
+    class="custom-field-input--dropdown"
+  >
+    <span
+      class="autoWidthInputContainer placeholder"
+      id="rule-custom-field-2"
+      style="width: 82px;"
+    >
+      <span>
+        Select an option
+      </span>
+      <input
+        autocomplete="off"
+        class="baseStyles stealth"
+        id="rule-custom-field-2-input"
+        name="Yes/No field"
+        placeholder="Select an option"
+        style="width: 82px;"
+        type="text"
+        value=""
+      />
+      <span
+        style="visibility: hidden; position: absolute;"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<CustomFieldInput/> should render a number input 1`] = `
+<div>
+  <span
+    class="custom-field-input--number wrapper group horizontal"
+  >
+    <input
+      class="input"
+      max="10"
+      min="1"
+      placeholder="Set value..."
+      step="1"
+      type="number"
+      value=""
+    />
+    <span
+      class="controls group vertical"
+    >
+      <button
+        aria-disabled="false"
+        class="wrapper button wrapper small fill secondary small top"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_up
+        </i>
+      </button>
+      <button
+        aria-disabled="false"
+        class="wrapper button wrapper small fill secondary small bottom"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_down
+        </i>
+      </button>
+    </span>
+  </span>
+</div>
+`;
+
+exports[`<CustomFieldInput/> should render a text dropdown 1`] = `
+<div>
+  <div
+    class="custom-field-input--dropdown"
+  >
+    <span
+      class="autoWidthInputContainer placeholder"
+      id="rule-custom-field-2"
+      style="width: 82px;"
+    >
+      <span>
+        Select an option
+      </span>
+      <input
+        autocomplete="off"
+        class="baseStyles stealth"
+        id="rule-custom-field-2-input"
+        name="Dropdown field"
+        placeholder="Select an option"
+        style="width: 82px;"
+        type="text"
+        value=""
+      />
+      <span
+        style="visibility: hidden; position: absolute;"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<CustomFieldInput/> should render a text input 1`] = `
+<div>
+  <div
+    class="custom-field-input--text"
+  >
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-1"
+        name="input-text-1"
+        placeholder="Some placeholder"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;

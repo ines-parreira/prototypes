@@ -13,6 +13,7 @@ import {templateRegex} from 'pages/common/utils/template'
 import {RuleItemActions} from 'pages/settings/rules/types'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {isEmailList, findProperty} from 'utils'
+import {isCustomFieldValueEmpty} from 'utils/customFields'
 
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'
@@ -68,6 +69,18 @@ export function validateBody(values: Email): string | void {
 export function validateApplyMacro(values: {macro: string}): string | void {
     if (!values.macro) {
         return 'Macro must be selected'
+    }
+}
+
+export function validateSetCustomFieldValue(values: {
+    custom_field_id: number
+    value: number | string | boolean
+}): string | void {
+    if (!values.custom_field_id) {
+        return 'Field must be selected'
+    }
+    if (isCustomFieldValueEmpty(values.value)) {
+        return 'Value must be set'
     }
 }
 
@@ -128,6 +141,7 @@ type ValidateFn =
     | typeof validateSendEmail
     | typeof validateTags
     | typeof validateSubject
+    | typeof validateSetCustomFieldValue
     | typeof validateApplyMacro
     | typeof validateAssignAgent
     | typeof validateAssignTeam
@@ -170,6 +184,12 @@ export type ActionConfig = {
         snooze_timedelta?: {
             widget?: string
             validate?: ValidateFn
+        }
+        custom_field_id?: {
+            widget: string
+        }
+        value?: {
+            widget: string
         }
     }
     validate?: ValidateFn
@@ -297,6 +317,19 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     [MacroActionName.SetStatus]: {
         compact: true,
         name: 'Set status',
+    },
+    [MacroActionName.SetCustomFieldValue]: {
+        compact: true,
+        name: 'Set ticket field',
+        args: {
+            custom_field_id: {
+                widget: 'custom_field-select',
+            },
+            value: {
+                widget: 'custom_field-input',
+            },
+        },
+        validate: validateSetCustomFieldValue,
     },
     [MacroActionName.SnoozeTicket]: {
         compact: true,

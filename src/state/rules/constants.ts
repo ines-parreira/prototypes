@@ -91,6 +91,11 @@ const SNOOZE_ACTION_DEFAULT = {
     snooze_timedelta: '1d',
 }
 
+const SET_CUSTOM_FIELD_VALUE_ACTION_DEFAULT = {
+    custom_field_id: '',
+    value: '',
+}
+
 export const ACTION_DEFAULT_STATE = {
     applyMacro: APPLY_MACRO_ACTION_DEFAULT,
     sendEmail: SEND_EMAIL_ACTION_DEFAULT,
@@ -105,6 +110,7 @@ export const ACTION_DEFAULT_STATE = {
     replyToTicket: REPLY_TO_TICKET_ACTION_DEFAULT,
     addInternalNote: ADD_INTERNAL_NOTE_ACTION_DEFAULT,
     snoozeTicket: SNOOZE_ACTION_DEFAULT,
+    setCustomFieldValue: SET_CUSTOM_FIELD_VALUE_ACTION_DEFAULT,
 }
 
 export const DEFAULT_STATEMENT = {
