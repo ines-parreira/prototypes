@@ -23,7 +23,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             <i
               class="material-icons icon-more"
             >
-              more_vert
+              arrow_drop_down
             </i>
           </div>
         </button>
@@ -451,7 +451,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             <i
               class="material-icons icon-more"
             >
-              more_vert
+              arrow_drop_down
             </i>
           </div>
         </button>
@@ -815,7 +815,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             <i
               class="material-icons icon-more"
             >
-              more_vert
+              arrow_drop_down
             </i>
           </div>
         </button>
@@ -1126,7 +1126,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             <i
               class="material-icons icon-more"
             >
-              more_vert
+              arrow_drop_down
             </i>
           </div>
         </button>
@@ -1554,7 +1554,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             <i
               class="material-icons icon-more"
             >
-              more_vert
+              arrow_drop_down
             </i>
           </div>
         </button>
@@ -1918,7 +1918,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             <i
               class="material-icons icon-more"
             >
-              more_vert
+              arrow_drop_down
             </i>
           </div>
         </button>
@@ -2229,7 +2229,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
             <i
               class="material-icons icon-more"
             >
-              more_vert
+              arrow_drop_down
             </i>
           </div>
         </button>
@@ -2438,7 +2438,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
             <i
               class="material-icons icon-more"
             >
-              more_vert
+              arrow_drop_down
             </i>
           </div>
         </button>

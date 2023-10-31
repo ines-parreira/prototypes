@@ -360,7 +360,7 @@ export class Navbar extends Component<Props, State> {
                                         css['icon-more']
                                     )}
                                 >
-                                    more_vert
+                                    arrow_drop_down
                                 </i>
                             </div>
                         </DropdownToggle>
