@@ -5,9 +5,12 @@ import {IntegrationType} from 'models/integration/types'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {ChannelLike, isLegacyChannel, toChannel} from 'services/channels'
 
+import css from './SourceIcon.less'
+
 type Props = {
     type?: ChannelLike
     className?: string
+    variant?: 'primary' | 'secondary'
     id?: string
 }
 
@@ -126,7 +129,7 @@ const sourceTypeToIcon = (sourceType?: ChannelLike) => {
     return icon
 }
 
-const SourceIcon = ({type, className, ...otherProps}: Props) => {
+const SourceIcon = ({type, className, variant, ...otherProps}: Props) => {
     if (type && !isLegacyChannel(type)) {
         const channel = toChannel(type)
         if (channel && channel.logo_url) {
@@ -134,9 +137,14 @@ const SourceIcon = ({type, className, ...otherProps}: Props) => {
                 <img
                     src={channel.logo_url}
                     alt={channel.name}
-                    width="14px"
-                    height="14px"
-                    className={classnames('icon d-inline-block', className)}
+                    width="13px"
+                    height="13px"
+                    className={classnames(
+                        'icon d-inline-block',
+                        css.newIcon,
+                        {[css.secondary]: variant === 'secondary'},
+                        className
+                    )}
                     {...otherProps}
                 />
             )
@@ -153,6 +161,7 @@ const SourceIcon = ({type, className, ...otherProps}: Props) => {
                 {
                     [`icon-custom icon-${icon.name}`]: icon.custom,
                     ['material-icons']: !icon.custom,
+                    [css.secondary]: variant === 'secondary',
                 },
                 className
             )}

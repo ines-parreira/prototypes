@@ -47,7 +47,7 @@ export default function Source({
                             ? TicketMessageSourceType.EmailForward
                             : sourceChannel
                     }
-                    className="uncolored"
+                    variant="secondary"
                 />
             </span>
             <Tooltip target={id} placement="bottom" autohide={false}>

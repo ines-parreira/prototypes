@@ -206,7 +206,7 @@ exports[`components utils: labels RenderLabel distribution assignee_team label 1
 
 exports[`components utils: labels RenderLabel distribution channel label 1`] = `
 <i
-  class="icon d-inline-block material-icons text-secondary"
+  class="icon d-inline-block material-icons secondary"
 >
   email
 </i>

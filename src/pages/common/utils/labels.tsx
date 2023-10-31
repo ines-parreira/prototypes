@@ -293,7 +293,7 @@ StatusLabel.displayName = 'StatusLabel'
  */
 
 export const ChannelLabel = ({channel}: {channel: SourceType}) => (
-    <SourceIcon type={channel} className="text-secondary" />
+    <SourceIcon type={channel} variant="secondary" />
 )
 
 /**

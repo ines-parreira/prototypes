@@ -110,6 +110,7 @@ export default class TimelineTicket extends Component<Props> {
                         />
                         <SourceIcon
                             type={ticket.get('channel')}
+                            variant="secondary"
                             className={classnames(
                                 css.sourceIcon,
                                 'uncolored',

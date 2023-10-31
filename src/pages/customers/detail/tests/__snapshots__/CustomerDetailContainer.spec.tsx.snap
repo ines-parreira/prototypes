@@ -88,7 +88,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
               2017-07-31T23:07:35.150000+00:00
             </div>
             <i
-              class="icon d-inline-block material-icons sourceIcon uncolored ml-3"
+              class="icon d-inline-block material-icons secondary sourceIcon uncolored ml-3"
             >
               email
             </i>
