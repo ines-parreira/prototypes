@@ -1,6 +1,5 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
-    AnalyticsChannelFilter = 'analytics-channel-filter',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
