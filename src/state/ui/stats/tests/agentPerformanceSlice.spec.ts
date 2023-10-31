@@ -45,23 +45,23 @@ describe('agentPerformanceSlice', () => {
     const metricData = [
         {
             [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '5',
-            [TicketMessagesMeasure.FirstResponseTime]: '25',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '25',
         },
         {
             [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '4',
-            [TicketMessagesMeasure.FirstResponseTime]: '20',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '20',
         },
         {
             [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '3',
-            [TicketMessagesMeasure.FirstResponseTime]: '15',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '15',
         },
         {
             [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
-            [TicketMessagesMeasure.FirstResponseTime]: '10',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
         },
         {
             [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '1',
-            [TicketMessagesMeasure.FirstResponseTime]: '5',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '5',
         },
     ]
 
@@ -94,7 +94,7 @@ describe('agentPerformanceSlice', () => {
             }
             const metricData = [
                 {
-                    [TicketMessagesMeasure.FirstResponseTime]: '123',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '123',
                     [TicketDimension.AssigneeUserId]: '456',
                 },
             ]
@@ -288,7 +288,7 @@ describe('agentPerformanceSlice', () => {
                 ui: {
                     [agentPerformanceSlice.name]: {
                         sorting: {
-                            field: TableColumn.FirstResponseTime,
+                            field: TableColumn.MedianFirstResponseTime,
                             direction: OrderDirection.Desc,
                             isLoading: false,
                             lastSortingMetric: metricData,
@@ -321,7 +321,7 @@ describe('agentPerformanceSlice', () => {
             const metricData = [
                 {
                     [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
-                    [TicketMessagesMeasure.FirstResponseTime]: '10',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
                 },
             ]
 
@@ -352,7 +352,7 @@ describe('agentPerformanceSlice', () => {
             const metricData = [
                 {
                     [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
-                    [TicketMessagesMeasure.FirstResponseTime]: '10',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
                 },
             ]
             const noDataAgent = agents[0]
@@ -390,7 +390,7 @@ describe('agentPerformanceSlice', () => {
             const agents = personNames.map((name, idx) => ({id: idx, name}))
             const lastSortingMetric = agents.map((agent) => ({
                 [TicketMember.AssigneeUserId]: String(agent.id),
-                [TicketMessagesMeasure.FirstResponseTime]: '10',
+                [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
             }))
             const filteredAgents = [1, 4, 5, 10]
             const state = {
@@ -398,7 +398,7 @@ describe('agentPerformanceSlice', () => {
                 ui: {
                     [agentPerformanceSlice.name]: {
                         sorting: {
-                            field: TableColumn.FirstResponseTime,
+                            field: TableColumn.MedianFirstResponseTime,
                             direction: OrderDirection.Asc,
                             isLoading: false,
                             lastSortingMetric,

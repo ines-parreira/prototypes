@@ -3,9 +3,9 @@ import moment from 'moment/moment'
 import {closedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {firstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {resolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 
@@ -15,9 +15,9 @@ import {
     useCustomerSatisfactionMetricPerAgent,
     useCustomFieldsTicketCount,
     useCustomTicketFieldWithBreakdown,
-    useFirstResponseTimeMetricPerAgent,
+    useMedianFirstResponseTimeMetricPerAgent,
     useMessagesSentMetricPerAgent,
-    useResolutionTimeMetricPerAgent,
+    useMedianResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
@@ -53,11 +53,11 @@ describe('metricsPerDimension', () => {
     const agentId = 'someId'
     const customFieldId = '1'
 
-    describe('useFirstResponseTimeMetricPerAgent', () => {
+    describe('useMedianFirstResponseTimeMetricPerAgent', () => {
         it('should pass the query to useMetricPerDimension hook', () => {
             renderHook(
                 () =>
-                    useFirstResponseTimeMetricPerAgent(
+                    useMedianFirstResponseTimeMetricPerAgent(
                         statsFilters,
                         timezone,
                         sorting,
@@ -67,7 +67,7 @@ describe('metricsPerDimension', () => {
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                firstResponseTimeMetricPerAgentQueryFactory(
+                medianFirstResponseTimeMetricPerAgentQueryFactory(
                     statsFilters,
                     timezone,
                     sorting
@@ -149,11 +149,11 @@ describe('metricsPerDimension', () => {
         })
     })
 
-    describe('useResolutionTimeMetricPerAgent', () => {
+    describe('useMedianResolutionTimeMetricPerAgent', () => {
         it('should pass the query to useMetricPerDimension hook', () => {
             renderHook(
                 () =>
-                    useResolutionTimeMetricPerAgent(
+                    useMedianResolutionTimeMetricPerAgent(
                         statsFilters,
                         timezone,
                         sorting,
@@ -163,7 +163,7 @@ describe('metricsPerDimension', () => {
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                resolutionTimeMetricPerAgentQueryFactory(
+                medianResolutionTimeMetricPerAgentQueryFactory(
                     statsFilters,
                     timezone,
                     sorting

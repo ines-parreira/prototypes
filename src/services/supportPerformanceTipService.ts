@@ -28,7 +28,7 @@ export const MetricsBaselinesJSON: Record<MetricName, MetricBaselinePerPlan> = {
         Custom: [4.44, 4.8],
         Free: [4.56, 4.89],
     },
-    firstResponseTime: {
+    medianFirstResponseTime: {
         Advanced: [33852, 1040],
         Basic: [48371, 4184],
         Enterprise: [35208, 449],
@@ -38,7 +38,7 @@ export const MetricsBaselinesJSON: Record<MetricName, MetricBaselinePerPlan> = {
         Custom: [35208, 449],
         Free: [37719, 2766],
     },
-    resolutionTime: {
+    medianResolutionTime: {
         Advanced: [108012, 4636],
         Basic: [387022, 18310],
         Enterprise: [230035, 2335],
@@ -89,7 +89,7 @@ export const tips: Record<MetricName, Record<TipQualifier, string[]>> = {
             'Take advantage of satisfied customers to ask nicely for a review',
         ],
     },
-    [MetricName.FirstResponseTime]: {
+    [MetricName.MedianFirstResponseTime]: {
         [TipQualifier.LightError]: [
             'Use <a href="/app/tickets/new/public" target="_blank">Views</a> to organize tickets, and prioritize customer service and triage tickets.',
             'Use <a href="/app/automation/ticket-assignment" target="_blank">auto-assignment</a> to route tickets to the correct team faster.',
@@ -102,7 +102,7 @@ export const tips: Record<MetricName, Record<TipQualifier, string[]>> = {
             'High FRT is often correlated to a lower <a href="/app/stats/satisfaction" target="_blank">CSAT</a> - make sure yours doesn’t drop.',
         ],
     },
-    [MetricName.ResolutionTime]: {
+    [MetricName.MedianResolutionTime]: {
         [TipQualifier.LightError]: [
             'Create <a href="/app/automation/macros" target="_blank">Macros</a> to answer frequently asked questions, and personalize with variables',
             'Set up automated <a href="/app/automation/rules" target="_blank">Rules</a> to instantly fire a personalized message',
@@ -144,9 +144,9 @@ const getMetricGrader = (metric: MetricName) => {
     switch (metric) {
         case MetricName.CustomerSatisfaction:
             return higherIsBetterGrade
-        case MetricName.FirstResponseTime:
+        case MetricName.MedianFirstResponseTime:
             return lowerIsBetterGrade
-        case MetricName.ResolutionTime:
+        case MetricName.MedianResolutionTime:
             return lowerIsBetterGrade
         case MetricName.MessagesPerTicket:
             return lowerIsBetterGrade
@@ -155,8 +155,8 @@ const getMetricGrader = (metric: MetricName) => {
 
 export const formatMetricValue = (metric: MetricName, value: number) => {
     switch (metric) {
-        case MetricName.FirstResponseTime:
-        case MetricName.ResolutionTime:
+        case MetricName.MedianFirstResponseTime:
+        case MetricName.MedianResolutionTime:
             return formatDuration(value, 2)
         default:
             return String(value)

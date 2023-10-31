@@ -66,7 +66,7 @@ describe('customerSatisfactionMetricPerAgentQueryFactory', () => {
                     values: statsFilters.tags?.map(String),
                 },
             ],
-            measures: [TicketSatisfactionSurveyMeasure.SurveyScore],
+            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             segments: [TicketSatisfactionSurveySegment.SurveyScored],
             timezone: timezone,
         })
@@ -116,9 +116,9 @@ describe('customerSatisfactionMetricPerAgentQueryFactory', () => {
                     values: statsFilters.tags?.map(String),
                 },
             ],
-            measures: [TicketSatisfactionSurveyMeasure.SurveyScore],
+            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             segments: [TicketSatisfactionSurveySegment.SurveyScored],
-            order: [[TicketSatisfactionSurveyMeasure.SurveyScore, sorting]],
+            order: [[TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting]],
             timezone: timezone,
         })
     })

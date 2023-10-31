@@ -8,21 +8,21 @@ import {OrderDirection} from 'models/api/types'
 import {closedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {firstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {resolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {StatsFilters} from 'models/stat/types'
 
-export const useFirstResponseTimeMetricPerAgent = (
+export const useMedianFirstResponseTimeMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ) =>
     useMetricPerDimension(
-        firstResponseTimeMetricPerAgentQueryFactory(
+        medianFirstResponseTimeMetricPerAgentQueryFactory(
             statsFilters,
             timezone,
             sorting
@@ -67,14 +67,14 @@ export const useMessagesSentMetricPerAgent = (
         agentAssigneeId
     )
 
-export const useResolutionTimeMetricPerAgent = (
+export const useMedianResolutionTimeMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ) =>
     useMetricPerDimension(
-        resolutionTimeMetricPerAgentQueryFactory(
+        medianResolutionTimeMetricPerAgentQueryFactory(
             statsFilters,
             timezone,
             sorting

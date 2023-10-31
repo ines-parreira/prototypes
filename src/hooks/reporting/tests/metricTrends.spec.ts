@@ -15,13 +15,13 @@ import {
     useAutomationRateTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
-    useFirstResponseTimeTrend,
+    useMedianFirstResponseTimeTrend,
     useFirstResponseTimeWithAutomationTrend,
     useMessagesPerTicketTrend,
     useMessagesSentTrend,
     useOpenTicketsTrend,
     useOverallTimeSavedWithAutomationTrend,
-    useResolutionTimeTrend,
+    useMedianResolutionTimeTrend,
     useResolutionTimeWithAutomationTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
@@ -36,8 +36,8 @@ describe('metric trends', () => {
     )
     describe.each([
         ['useCustomerSatisfactionTrend', useCustomerSatisfactionTrend],
-        ['useFirstResponseTimeTrend', useFirstResponseTimeTrend],
-        ['useResolutionTimeTrend', useResolutionTimeTrend],
+        ['useMedianFirstResponseTimeTrend', useMedianFirstResponseTimeTrend],
+        ['useMedianResolutionTimeTrend', useMedianResolutionTimeTrend],
         ['useClosedTicketsTrend', useClosedTicketsTrend],
         ['useTicketsCreatedTrend', useTicketsCreatedTrend],
     ])('%s', (_testName, useTrendFn) => {

@@ -3,9 +3,9 @@ import {User} from 'config/types/user'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
-    useFirstResponseTimeMetricPerAgent,
+    useMedianFirstResponseTimeMetricPerAgent,
     useMessagesSentMetricPerAgent,
-    useResolutionTimeMetricPerAgent,
+    useMedianResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
@@ -37,15 +37,16 @@ export function useAgentsMetrics() {
         cleanStatsFilters,
         userTimezone
     )
-    const firstResponseTimeMetric = useFirstResponseTimeMetricPerAgent(
-        cleanStatsFilters,
-        userTimezone
-    )
+    const medianFirstResponseTimeMetric =
+        useMedianFirstResponseTimeMetricPerAgent(
+            cleanStatsFilters,
+            userTimezone
+        )
     const messagesSentMetric = useMessagesSentMetricPerAgent(
         cleanStatsFilters,
         userTimezone
     )
-    const resolutionTimeMetric = useResolutionTimeMetricPerAgent(
+    const medianResolutionTimeMetric = useMedianResolutionTimeMetricPerAgent(
         cleanStatsFilters,
         userTimezone
     )
@@ -63,9 +64,9 @@ export function useAgentsMetrics() {
             customerSatisfactionMetric,
             percentageOfClosedTicketsMetric,
             closedTicketsMetric,
-            firstResponseTimeMetric,
+            medianFirstResponseTimeMetric,
             messagesSentMetric,
-            resolutionTimeMetric,
+            medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
         }).some((metric) => metric.isFetching)
@@ -73,9 +74,9 @@ export function useAgentsMetrics() {
         customerSatisfactionMetric,
         percentageOfClosedTicketsMetric,
         closedTicketsMetric,
-        firstResponseTimeMetric,
+        medianFirstResponseTimeMetric,
         messagesSentMetric,
-        resolutionTimeMetric,
+        medianResolutionTimeMetric,
         ticketsRepliedMetric,
         oneTouchTicketsMetric,
     ])
@@ -86,9 +87,9 @@ export function useAgentsMetrics() {
             customerSatisfactionMetric,
             percentageOfClosedTicketsMetric,
             closedTicketsMetric,
-            firstResponseTimeMetric,
+            medianFirstResponseTimeMetric,
             messagesSentMetric,
-            resolutionTimeMetric,
+            medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
         },

@@ -1,10 +1,10 @@
 import {
     CUSTOMER_SATISFACTION_LABEL,
-    FIRST_RESPONSE_TIME_LABEL,
+    MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MESSAGES_PER_TICKET_LABEL,
     MESSAGES_SENT_LABEL,
     OPEN_TICKETS_LABEL,
-    RESOLUTION_TIME_LABEL,
+    MEDIAN_RESOLUTION_TIME_LABEL,
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
@@ -16,11 +16,11 @@ export const statsHintsTooltipsConfig: Record<string, TooltipData> = {
         title: 'Average CSAT score for tickets assigned to the agent for which a survey was sent within the timeframe; surveys are sent following ticket resolution',
         link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#1customer-satisfaction-csat',
     },
-    [FIRST_RESPONSE_TIME_LABEL]: {
+    [MEDIAN_FIRST_RESPONSE_TIME_LABEL]: {
         title: 'Median time between 1st customer message and 1st agent response, for tickets where the response was sent within the selected timeframe',
         link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#2-first-response-time',
     },
-    [RESOLUTION_TIME_LABEL]: {
+    [MEDIAN_RESOLUTION_TIME_LABEL]: {
         title: 'Median time between 1st customer message and the last time the ticket was closed, for tickets closed within the selected timeframe',
         link: 'https://docs.gorgias.com/en-US/support-performance-overview-update-226700#3-resolution-time',
     },

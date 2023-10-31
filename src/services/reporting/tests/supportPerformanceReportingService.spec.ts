@@ -27,8 +27,8 @@ const buildQuery = <T>(isFetching: boolean, data: T) => ({
 describe('reporting', () => {
     const data: Parameters<typeof saveReport>[0] = {
         customerSatisfactionTrend: buildQuery(false, trendReportData),
-        firstResponseTimeTrend: buildQuery(false, trendReportData),
-        resolutionTimeTrend: buildQuery(false, trendReportData),
+        medianFirstResponseTimeTrend: buildQuery(false, trendReportData),
+        medianResolutionTimeTrend: buildQuery(false, trendReportData),
         messagesPerTicketTrend: buildQuery(false, trendReportData),
         openTicketsTrend: buildQuery(false, trendReportData),
         closedTicketsTrend: buildQuery(false, trendReportData),

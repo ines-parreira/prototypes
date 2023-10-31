@@ -23,7 +23,7 @@ const useCustomerSatisfactionMetricMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<CustomerSatisfactionCellSummary>', () => {
-    const surveyScoreValue = 4
+    const avgSurveyScoreValue = 4
 
     const defaultState = {
         stats: initialState,
@@ -34,7 +34,7 @@ describe('<CustomerSatisfactionCellSummary>', () => {
 
     const useCustomerSatisfactionMetricMockReturnValue = {
         data: {
-            value: surveyScoreValue,
+            value: avgSurveyScoreValue,
         },
         isFetching: false,
         isError: false,
@@ -51,7 +51,7 @@ describe('<CustomerSatisfactionCellSummary>', () => {
             </Provider>
         )
 
-        expect(screen.getByText(surveyScoreValue)).toBeInTheDocument()
+        expect(screen.getByText(avgSurveyScoreValue)).toBeInTheDocument()
     })
 
     it('should render skeleton when fetching', () => {

@@ -2,9 +2,9 @@ import {useMetric} from 'hooks/reporting/useMetric'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {firstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {resolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
@@ -47,24 +47,24 @@ export const useCustomerSatisfactionMetric = (
         )
     )
 
-export const useFirstResponseTimeMetric = (
+export const useMedianFirstResponseTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string
 ): Metric =>
     useMetric(
         withFilter(
-            firstResponseTimeQueryFactory(statsFilters, timezone),
+            medianFirstResponseTimeQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter
         )
     )
 
-export const useResolutionTimeMetric = (
+export const useMedianResolutionTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string
 ): Metric =>
     useMetric(
         withFilter(
-            resolutionTimeQueryFactory(statsFilters, timezone),
+            medianResolutionTimeQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter
         )
     )

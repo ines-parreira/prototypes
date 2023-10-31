@@ -28,7 +28,7 @@ describe('<AgentsHeaderCellContent>', () => {
     })
 
     it('should render trigger sorting action on click', () => {
-        const sortableColumn = TableColumn.FirstResponseTime
+        const sortableColumn = TableColumn.MedianFirstResponseTime
 
         render(<AgentsHeaderCellContent column={sortableColumn} />)
         const cell = screen.getByRole('cell')
@@ -49,7 +49,7 @@ describe('<AgentsHeaderCellContent>', () => {
     })
 
     it('should not render sorting icon on the column currently not sorted', () => {
-        const column = TableColumn.FirstResponseTime
+        const column = TableColumn.MedianFirstResponseTime
 
         render(<AgentsHeaderCellContent column={column} />)
         const sortingIcon = screen.queryByText('arrow_upward')

@@ -150,50 +150,50 @@ describe('SupportPerformanceTipService', () => {
     ]
     const otherMetrics = [
         {
-            metric: MetricName.FirstResponseTime,
+            metric: MetricName.MedianFirstResponseTime,
             value: 1000,
             expectedTip: buildPerformanceTip(
-                MetricName.FirstResponseTime,
+                MetricName.MedianFirstResponseTime,
                 TipQualifier.Success,
-                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianFirstResponseTime][plan][
                     MetricBaselineAvgIndex
                 ],
-                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianFirstResponseTime][plan][
                     MetricBaselineP90Index
                 ]
             ),
         },
 
         {
-            metric: MetricName.FirstResponseTime,
+            metric: MetricName.MedianFirstResponseTime,
             value:
-                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianFirstResponseTime][plan][
                     MetricBaselineAvgIndex + 1
                 ] + 1,
             expectedTip: buildPerformanceTip(
-                MetricName.FirstResponseTime,
+                MetricName.MedianFirstResponseTime,
                 TipQualifier.LightSuccess,
-                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianFirstResponseTime][plan][
                     MetricBaselineAvgIndex
                 ],
-                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianFirstResponseTime][plan][
                     MetricBaselineP90Index
                 ]
             ),
         },
         {
-            metric: MetricName.ResolutionTime,
+            metric: MetricName.MedianResolutionTime,
             value:
-                MetricsBaselinesJSON[MetricName.ResolutionTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianResolutionTime][plan][
                     MetricBaselineAvgIndex
                 ] + 1,
             expectedTip: buildPerformanceTip(
-                MetricName.ResolutionTime,
+                MetricName.MedianResolutionTime,
                 TipQualifier.LightError,
-                MetricsBaselinesJSON[MetricName.ResolutionTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianResolutionTime][plan][
                     MetricBaselineAvgIndex
                 ],
-                MetricsBaselinesJSON[MetricName.ResolutionTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianResolutionTime][plan][
                     MetricBaselineP90Index
                 ]
             ),
@@ -222,16 +222,16 @@ describe('SupportPerformanceTipService', () => {
 
     test.each([
         {
-            metric: MetricName.ResolutionTime,
+            metric: MetricName.MedianResolutionTime,
             topTenValue:
-                MetricsBaselinesJSON[MetricName.ResolutionTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianResolutionTime][plan][
                     MetricBaselineP90Index
                 ],
         },
         {
-            metric: MetricName.FirstResponseTime,
+            metric: MetricName.MedianFirstResponseTime,
             topTenValue:
-                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][
+                MetricsBaselinesJSON[MetricName.MedianFirstResponseTime][plan][
                     MetricBaselineP90Index
                 ],
         },

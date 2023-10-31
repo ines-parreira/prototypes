@@ -51,7 +51,7 @@ describe('useSortingQueries', () => {
     describe('sorting callback', () => {
         it('should change the sorting column', () => {
             const store = mockStore(defaultState)
-            const column = TableColumn.FirstResponseTime
+            const column = TableColumn.MedianFirstResponseTime
 
             const {result} = renderHook(
                 () => useSortingQuery(column, queryHook),
@@ -105,7 +105,7 @@ describe('useSortingQueries', () => {
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMessagesMeasure.FirstResponseTime]: '123'}],
+            allData: [{[TicketMessagesMeasure.MedianFirstResponseTime]: '123'}],
         }
         const store = mockStore({
             ...defaultState,
@@ -143,7 +143,7 @@ describe('useSortingQueries', () => {
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMessagesMeasure.FirstResponseTime]: '123'}],
+            allData: [{[TicketMessagesMeasure.MedianFirstResponseTime]: '123'}],
         }
         const store = mockStore({
             ...defaultState,

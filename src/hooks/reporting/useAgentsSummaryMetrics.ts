@@ -3,8 +3,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
-    useFirstResponseTimeMetric,
-    useResolutionTimeMetric,
+    useMedianFirstResponseTimeMetric,
+    useMedianResolutionTimeMetric,
     useTicketsRepliedMetric,
     useMessagesSentMetric,
     useOneTouchTicketsMetric,
@@ -29,7 +29,7 @@ export function useAgentsSummaryMetrics() {
         cleanStatsFilters,
         userTimezone
     )
-    const firstResponseTimeMetric = useFirstResponseTimeMetric(
+    const medianFirstResponseTimeMetric = useMedianFirstResponseTimeMetric(
         cleanStatsFilters,
         userTimezone
     )
@@ -37,7 +37,7 @@ export function useAgentsSummaryMetrics() {
         cleanStatsFilters,
         userTimezone
     )
-    const resolutionTimeMetric = useResolutionTimeMetric(
+    const medianResolutionTimeMetric = useMedianResolutionTimeMetric(
         cleanStatsFilters,
         userTimezone
     )
@@ -55,9 +55,9 @@ export function useAgentsSummaryMetrics() {
             customerSatisfactionMetric,
             percentageOfClosedTicketsMetric,
             closedTicketsMetric,
-            firstResponseTimeMetric,
+            medianFirstResponseTimeMetric,
             messagesSentMetric,
-            resolutionTimeMetric,
+            medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
         }).some((metric) => metric.isFetching)
@@ -65,9 +65,9 @@ export function useAgentsSummaryMetrics() {
         customerSatisfactionMetric,
         percentageOfClosedTicketsMetric,
         closedTicketsMetric,
-        firstResponseTimeMetric,
+        medianFirstResponseTimeMetric,
         messagesSentMetric,
-        resolutionTimeMetric,
+        medianResolutionTimeMetric,
         ticketsRepliedMetric,
         oneTouchTicketsMetric,
     ])
@@ -77,9 +77,9 @@ export function useAgentsSummaryMetrics() {
             customerSatisfactionMetric,
             percentageOfClosedTicketsMetric,
             closedTicketsMetric,
-            firstResponseTimeMetric,
+            medianFirstResponseTimeMetric,
             messagesSentMetric,
-            resolutionTimeMetric,
+            medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
         },

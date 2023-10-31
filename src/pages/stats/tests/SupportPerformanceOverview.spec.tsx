@@ -24,11 +24,11 @@ import {RootState, StoreDispatch} from 'state/types'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
-    useFirstResponseTimeTrend,
+    useMedianFirstResponseTimeTrend,
     useMessagesPerTicketTrend,
     useMessagesSentTrend,
     useOpenTicketsTrend,
-    useResolutionTimeTrend,
+    useMedianResolutionTimeTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
@@ -67,8 +67,12 @@ jest.mock('hooks/reporting/metricTrends')
 const useCustomerSatisfactionTrendMock = assumeMock(
     useCustomerSatisfactionTrend
 )
-const useFirstResponseTimeTrendMock = assumeMock(useFirstResponseTimeTrend)
-const useResolutionTimeTrendMock = assumeMock(useResolutionTimeTrend)
+const useMedianFirstResponseTimeTrendMock = assumeMock(
+    useMedianFirstResponseTimeTrend
+)
+const useMedianResolutionTimeTrendMock = assumeMock(
+    useMedianResolutionTimeTrend
+)
 const useMessagesPerTicketTrendMock = assumeMock(useMessagesPerTicketTrend)
 const useOpenTicketsTrendMock = assumeMock(useOpenTicketsTrend)
 const useClosedTicketsTrendMock = assumeMock(useClosedTicketsTrend)
@@ -225,7 +229,7 @@ describe('<SupportPerformanceOverview />', () => {
             prevValue: 100,
         },
     }
-    const firstResponseTimeMetricTrend = {
+    const medianFirstResponseTimeMetricTrend = {
         ...defaultMetricTrend,
         data: {
             interpretAs: 'less-is-better',
@@ -233,7 +237,7 @@ describe('<SupportPerformanceOverview />', () => {
             prevValue: 100,
         },
     }
-    const resolutionTimeMetricTrend = {
+    const medianResolutionTimeMetricTrend = {
         ...defaultMetricTrend,
         data: {
             interpretAs: 'less-is-better',
@@ -279,10 +283,12 @@ describe('<SupportPerformanceOverview />', () => {
         useCustomerSatisfactionTrendMock.mockReturnValue(
             customerSatisfactionMetricTrend
         )
-        useFirstResponseTimeTrendMock.mockReturnValue(
-            firstResponseTimeMetricTrend
+        useMedianFirstResponseTimeTrendMock.mockReturnValue(
+            medianFirstResponseTimeMetricTrend
         )
-        useResolutionTimeTrendMock.mockReturnValue(resolutionTimeMetricTrend)
+        useMedianResolutionTimeTrendMock.mockReturnValue(
+            medianResolutionTimeMetricTrend
+        )
         useMessagesPerTicketTrendMock.mockReturnValue(
             messagesPerTicketMetricTrend
         )
@@ -323,8 +329,8 @@ describe('<SupportPerformanceOverview />', () => {
 
     it.each([
         customerSatisfactionMetricTrend,
-        firstResponseTimeMetricTrend,
-        resolutionTimeMetricTrend,
+        medianFirstResponseTimeMetricTrend,
+        medianResolutionTimeMetricTrend,
         messagesPerTicketMetricTrend,
     ])(
         'should render customer experience section with a badge tooltip #$#',

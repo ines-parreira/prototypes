@@ -3,8 +3,8 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
-    useFirstResponseTimeMetricPerAgent,
-    useResolutionTimeMetricPerAgent,
+    useMedianFirstResponseTimeMetricPerAgent,
+    useMedianResolutionTimeMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
@@ -48,21 +48,21 @@ export const shoutoutsConfig: ShoutoutConfig[] = [
         queryOrder: OrderDirection.Desc,
         metricName: TableLabels[TableColumn.CustomerSatisfaction],
         formatValue: formatDecimals,
-        measure: TicketSatisfactionSurveyMeasure.SurveyScore,
+        measure: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
     },
     {
-        useQuery: useFirstResponseTimeMetricPerAgent,
+        useQuery: useMedianFirstResponseTimeMetricPerAgent,
         queryOrder: OrderDirection.Asc,
-        metricName: TableLabels[TableColumn.FirstResponseTime],
+        metricName: TableLabels[TableColumn.MedianFirstResponseTime],
         formatValue: formatDuration,
-        measure: TicketMessagesMeasure.FirstResponseTime,
+        measure: TicketMessagesMeasure.MedianFirstResponseTime,
     },
     {
-        useQuery: useResolutionTimeMetricPerAgent,
+        useQuery: useMedianResolutionTimeMetricPerAgent,
         queryOrder: OrderDirection.Asc,
-        metricName: TableLabels[TableColumn.ResolutionTime],
+        metricName: TableLabels[TableColumn.MedianResolutionTime],
         formatValue: formatDuration,
-        measure: TicketMessagesMeasure.ResolutionTime,
+        measure: TicketMessagesMeasure.MedianResolutionTime,
     },
     {
         useQuery: useClosedTicketsMetricPerAgent,

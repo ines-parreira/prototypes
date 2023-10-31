@@ -21,7 +21,7 @@ describe('useMetric', () => {
     } as UseQueryResult
 
     const defaultQuery: ReportingQuery<TicketMessagesCube> = {
-        measures: [TicketMessagesMeasure.FirstResponseTime],
+        measures: [TicketMessagesMeasure.MedianFirstResponseTime],
         dimensions: [],
         filters: [],
     }
@@ -85,7 +85,7 @@ describe('useMetric', () => {
     })
 
     it('should call usePostReporting with the query', () => {
-        const firstResponseTime = 1000
+        const medianFirstResponseTime = 1000
         usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
             data: 1,
@@ -106,12 +106,12 @@ describe('useMetric', () => {
                 data: {
                     data: [
                         {
-                            [TicketMessagesMeasure.FirstResponseTime]:
-                                firstResponseTime,
+                            [TicketMessagesMeasure.MedianFirstResponseTime]:
+                                medianFirstResponseTime,
                         },
                     ],
                 },
             } as any)
-        ).toEqual(firstResponseTime)
+        ).toEqual(medianFirstResponseTime)
     })
 })

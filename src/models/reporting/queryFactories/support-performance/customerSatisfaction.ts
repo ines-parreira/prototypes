@@ -17,7 +17,7 @@ export const customerSatisfactionQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string
 ) => ({
-    measures: [TicketSatisfactionSurveyMeasure.SurveyScore],
+    measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     dimensions: [],
     timezone,
     segments: [TicketSatisfactionSurveySegment.SurveyScored],
@@ -38,7 +38,9 @@ export const customerSatisfactionMetricPerAgentQueryFactory = (
     dimensions: [TicketDimension.AssigneeUserId],
     ...(sorting
         ? {
-              order: [[TicketSatisfactionSurveyMeasure.SurveyScore, sorting]],
+              order: [
+                  [TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting],
+              ],
           }
         : {}),
 })

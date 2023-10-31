@@ -1,9 +1,9 @@
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
-    useFirstResponseTimeMetricPerAgent,
+    useMedianFirstResponseTimeMetricPerAgent,
     useMessagesSentMetricPerAgent,
-    useResolutionTimeMetricPerAgent,
+    useMedianResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
@@ -21,16 +21,16 @@ export const TableColumnsOrder: TableColumn[] = [
     TableColumn.CustomerSatisfaction,
     TableColumn.RepliedTickets,
     TableColumn.MessagesSent,
-    TableColumn.FirstResponseTime,
-    TableColumn.ResolutionTime,
+    TableColumn.MedianFirstResponseTime,
+    TableColumn.MedianResolutionTime,
     TableColumn.OneTouchTickets,
 ]
 
 export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.AgentName]: 'Agent',
     [TableColumn.CustomerSatisfaction]: 'Customer Satisfaction',
-    [TableColumn.FirstResponseTime]: 'First Response Time',
-    [TableColumn.ResolutionTime]: 'Resolution Time',
+    [TableColumn.MedianFirstResponseTime]: 'First Response Time',
+    [TableColumn.MedianResolutionTime]: 'Resolution Time',
     [TableColumn.ClosedTickets]: 'Closed Tickets',
     [TableColumn.PercentageOfClosedTickets]: '% of Closed Tickets',
     [TableColumn.RepliedTickets]: 'Tickets Replied',
@@ -47,11 +47,11 @@ export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
         title: 'Average CSAT score for tickets assigned to the agent for which a survey was sent within the timeframe; surveys are sent following ticket resolution',
         link: 'https://docs.gorgias.com/en-US/agents-report-292100#1-customer-satisfaction-csat',
     },
-    [TableColumn.FirstResponseTime]: {
+    [TableColumn.MedianFirstResponseTime]: {
         title: 'Median time between 1st customer message and 1st agent response, for tickets where the response was sent within the selected timeframe',
         link: 'https://docs.gorgias.com/en-US/agents-report-292100#2-first-response-time',
     },
-    [TableColumn.ResolutionTime]: {
+    [TableColumn.MedianResolutionTime]: {
         title: 'Median time between 1st customer message and the last time the ticket was closed, for tickets closed within the selected timeframe',
         link: 'https://docs.gorgias.com/en-US/agents-report-292100#3-resolution-time',
     },
@@ -99,8 +99,8 @@ export const getQuery = (
                 isError: false,
                 data: null,
             })
-        case TableColumn.FirstResponseTime:
-            return useFirstResponseTimeMetricPerAgent
+        case TableColumn.MedianFirstResponseTime:
+            return useMedianFirstResponseTimeMetricPerAgent
         case TableColumn.RepliedTickets:
             return useTicketsRepliedMetricPerAgent
         case TableColumn.PercentageOfClosedTickets:
@@ -108,8 +108,8 @@ export const getQuery = (
             return useClosedTicketsMetricPerAgent
         case TableColumn.MessagesSent:
             return useMessagesSentMetricPerAgent
-        case TableColumn.ResolutionTime:
-            return useResolutionTimeMetricPerAgent
+        case TableColumn.MedianResolutionTime:
+            return useMedianResolutionTimeMetricPerAgent
         case TableColumn.CustomerSatisfaction:
             return useCustomerSatisfactionMetricPerAgent
         case TableColumn.OneTouchTickets:

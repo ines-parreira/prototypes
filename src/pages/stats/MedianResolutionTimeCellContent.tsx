@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
-import {useFirstResponseTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useMedianResolutionTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {
@@ -15,7 +15,7 @@ import {
 } from 'state/ui/stats/agentPerformanceSlice'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
-export const FirstResponseTimeCellContent = ({
+export const MedianResolutionTimeCellContent = ({
     agentId,
     bodyCellProps,
 }: {
@@ -26,7 +26,7 @@ export const FirstResponseTimeCellContent = ({
         getCleanStatsFiltersWithTimezone
     )
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
-    const {data, isFetching} = useFirstResponseTimeMetricPerAgent(
+    const {data, isFetching} = useMedianResolutionTimeMetricPerAgent(
         cleanStatsFilters,
         userTimezone,
         undefined,
@@ -49,7 +49,7 @@ export const FirstResponseTimeCellContent = ({
                 isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
             )}
         >
-            {isFetching || isMetricLoading ? (
+            {isLoading ? (
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : (
                 formatMetricValue(

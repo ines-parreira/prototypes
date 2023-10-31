@@ -13,7 +13,7 @@ import {
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {firstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {ReportingQuery} from 'models/reporting/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {assumeMock} from 'utils/testing'
@@ -29,7 +29,7 @@ const usePostReportingMock = assumeMock(usePostReporting)
 
 describe('useMetricPerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
-        firstResponseTimeMetricPerAgentQueryFactory(
+        medianFirstResponseTimeMetricPerAgentQueryFactory(
             {
                 period: {
                     start_datetime: '2020-01-16T03:04:56.789-10:00',
@@ -45,7 +45,9 @@ describe('useMetricPerDimension', () => {
         [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
             agentId + index
         ),
-        [TicketMessagesMeasure.FirstResponseTime]: String(metricValue + index),
+        [TicketMessagesMeasure.MedianFirstResponseTime]: String(
+            metricValue + index
+        ),
     }))
 
     const mockedResponse: UseQueryResult<QueryReturnType<TicketMessagesCube>> =

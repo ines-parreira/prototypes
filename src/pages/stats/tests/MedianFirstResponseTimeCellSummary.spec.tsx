@@ -3,12 +3,12 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {useResolutionTimeMetric} from 'hooks/reporting/metrics'
+import {useMedianFirstResponseTimeMetric} from 'hooks/reporting/metrics'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
+import {MedianFirstResponseTimeCellSummary} from 'pages/stats/MedianFirstResponseTimeCellSummary'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -21,11 +21,13 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 jest.mock('hooks/reporting/metrics')
-const useResolutionTimeMetricMock = assumeMock(useResolutionTimeMetric)
+const useMedianFirstResponseTimeMetricMock = assumeMock(
+    useMedianFirstResponseTimeMetric
+)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('<ResolutionTimeCellSummary>', () => {
-    const resolutionTimeValue = 1234
+describe('<MedianFirstResponseTimeCellContent>', () => {
+    const medianFirstResponseTimeValue = 1234
 
     const defaultState = {
         stats: initialState,
@@ -34,29 +36,29 @@ describe('<ResolutionTimeCellSummary>', () => {
         },
     } as RootState
 
-    const useResolutionTimeMetricReturnValue = {
+    const useMedianFirstResponseTimeMetricReturnValue = {
         data: {
-            value: resolutionTimeValue,
+            value: medianFirstResponseTimeValue,
         },
         isFetching: false,
         isError: false,
     }
 
-    useResolutionTimeMetricMock.mockReturnValue(
-        useResolutionTimeMetricReturnValue
+    useMedianFirstResponseTimeMetricMock.mockReturnValue(
+        useMedianFirstResponseTimeMetricReturnValue
     )
 
     it('should render value as duration', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <ResolutionTimeCellSummary />
+                <MedianFirstResponseTimeCellSummary />
             </Provider>
         )
 
         expect(
             screen.getByText(
                 formatMetricValue(
-                    resolutionTimeValue,
+                    medianFirstResponseTimeValue,
                     'duration',
                     NOT_AVAILABLE_PLACEHOLDER
                 )
@@ -65,13 +67,13 @@ describe('<ResolutionTimeCellSummary>', () => {
     })
 
     it('should render skeleton when fetching', () => {
-        useResolutionTimeMetricMock.mockReturnValue({
-            ...useResolutionTimeMetricReturnValue,
+        useMedianFirstResponseTimeMetricMock.mockReturnValue({
+            ...useMedianFirstResponseTimeMetricReturnValue,
             isFetching: true,
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <ResolutionTimeCellSummary />
+                <MedianFirstResponseTimeCellSummary />
             </Provider>
         )
 

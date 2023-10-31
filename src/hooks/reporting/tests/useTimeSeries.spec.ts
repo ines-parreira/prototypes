@@ -38,8 +38,8 @@ describe('useTimeSeries', () => {
     }
     const defaultQuery: TimeSeriesQuery<TicketCubeWithJoins> = {
         measures: [
-            TicketMessagesMeasure.FirstResponseTime,
-            TicketSatisfactionSurveyMeasure.SurveyScore,
+            TicketMessagesMeasure.MedianFirstResponseTime,
+            TicketSatisfactionSurveyMeasure.AvgSurveyScore,
         ],
         dimensions: [],
         filters: [],
@@ -48,21 +48,21 @@ describe('useTimeSeries', () => {
     const defaultData = [
         {
             [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
-            [TicketMessagesMeasure.FirstResponseTime]: '65',
-            [TicketSatisfactionSurveyMeasure.SurveyScore]: '3.4',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '65',
+            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '3.4',
         },
         {
             [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
-            [TicketMessagesMeasure.FirstResponseTime]: '32',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '32',
         },
         {
             [TicketDimension.CreatedDatetime]: '2022-01-02T02:00:00',
-            [TicketSatisfactionSurveyMeasure.SurveyScore]: '4.1',
+            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '4.1',
         },
         {
             [TicketDimension.CreatedDatetime]: '2022-01-02T04:00:00',
-            [TicketMessagesMeasure.FirstResponseTime]: '139',
-            [TicketSatisfactionSurveyMeasure.SurveyScore]: '1.2',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '139',
+            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '1.2',
         },
     ]
     const defaultResult = {
@@ -102,7 +102,7 @@ describe('useTimeSeries', () => {
         renderHook(() =>
             useTimeSeries({
                 ...defaultQuery,
-                measures: [TicketMessagesMeasure.FirstResponseTime],
+                measures: [TicketMessagesMeasure.MedianFirstResponseTime],
                 timeDimensions: [
                     {
                         ...defaultTimeDimension,
@@ -125,7 +125,7 @@ describe('useTimeSeries', () => {
                         {
                             [TicketDimension.CreatedDatetime]:
                                 '2023-04-17T00:00:00.000',
-                            [TicketMessagesMeasure.FirstResponseTime]: 3,
+                            [TicketMessagesMeasure.MedianFirstResponseTime]: 3,
                         },
                     ],
                 },
@@ -134,7 +134,7 @@ describe('useTimeSeries', () => {
             [
                 {
                     dateTime: '2023-04-17T00:00:00.000',
-                    label: TicketMessagesMeasure.FirstResponseTime,
+                    label: TicketMessagesMeasure.MedianFirstResponseTime,
                     value: 3,
                 },
             ],

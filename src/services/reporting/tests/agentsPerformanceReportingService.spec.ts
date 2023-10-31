@@ -21,10 +21,10 @@ describe('agentsPerformanceReportingService', () => {
     const baseMetrics = {
         closedTicketsMetric: buildQuery(false, reportData),
         customerSatisfactionMetric: buildQuery(false, reportData),
-        firstResponseTimeMetric: buildQuery(false, reportData),
+        medianFirstResponseTimeMetric: buildQuery(false, reportData),
         messagesSentMetric: buildQuery(false, reportData),
         percentageOfClosedTicketsMetric: buildQuery(false, reportData),
-        resolutionTimeMetric: buildQuery(false, reportData),
+        medianResolutionTimeMetric: buildQuery(false, reportData),
         ticketsRepliedMetric: buildQuery(false, reportData),
         oneTouchTicketsMetric: buildQuery(false, reportData),
     }

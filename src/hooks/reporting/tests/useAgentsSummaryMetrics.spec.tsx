@@ -21,10 +21,10 @@ describe('useAgentsSummaryMetrics', () => {
         summaryData: {
             closedTicketsMetric: metricData,
             customerSatisfactionMetric: metricData,
-            firstResponseTimeMetric: metricData,
+            medianFirstResponseTimeMetric: metricData,
             messagesSentMetric: metricData,
             percentageOfClosedTicketsMetric: metricData,
-            resolutionTimeMetric: metricData,
+            medianResolutionTimeMetric: metricData,
             ticketsRepliedMetric: metricData,
             oneTouchTicketsMetric: metricData,
         },

@@ -7,7 +7,7 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {firstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -15,7 +15,7 @@ import {
     NotSpamNorTrashedTicketsFilter,
 } from 'utils/reporting'
 
-describe('firstResponseTimeMetricPerAgent', () => {
+describe('medianFirstResponseTimeMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -32,7 +32,10 @@ describe('firstResponseTimeMetricPerAgent', () => {
 
     it('should build a query', () => {
         expect(
-            firstResponseTimeMetricPerAgentQueryFactory(statsFilters, timezone)
+            medianFirstResponseTimeMetricPerAgentQueryFactory(
+                statsFilters,
+                timezone
+            )
         ).toEqual({
             dimensions: [TicketMessagesMember.FirstHelpdeskMessageUserId],
             filters: [
@@ -71,7 +74,7 @@ describe('firstResponseTimeMetricPerAgent', () => {
                     values: statsFilters.tags?.map(String),
                 },
             ],
-            measures: [TicketMessagesMeasure.FirstResponseTime],
+            measures: [TicketMessagesMeasure.MedianFirstResponseTime],
             segments: [TicketMessagesSegment.ConversationStarted],
             timezone: timezone,
         })
@@ -81,7 +84,7 @@ describe('firstResponseTimeMetricPerAgent', () => {
         const agents = [2]
 
         expect(
-            firstResponseTimeMetricPerAgentQueryFactory(
+            medianFirstResponseTimeMetricPerAgentQueryFactory(
                 {...statsFilters, agents},
                 timezone,
                 sorting
@@ -129,8 +132,8 @@ describe('firstResponseTimeMetricPerAgent', () => {
                     values: statsFilters.tags?.map(String),
                 },
             ],
-            measures: [TicketMessagesMeasure.FirstResponseTime],
-            order: [[TicketMessagesMeasure.FirstResponseTime, sorting]],
+            measures: [TicketMessagesMeasure.MedianFirstResponseTime],
+            order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
             segments: [TicketMessagesSegment.ConversationStarted],
             timezone: timezone,
         })

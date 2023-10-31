@@ -11,14 +11,14 @@ import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
 import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
-import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
-import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
+import {MedianFirstResponseTimeCellContent} from 'pages/stats/MedianFirstResponseTimeCellContent'
+import {MedianFirstResponseTimeCellSummary} from 'pages/stats/MedianFirstResponseTimeCellSummary'
 import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
 import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
-import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
-import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
+import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
+import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeCellSummary'
 import {TableColumnsOrder} from 'pages/stats/TableConfig'
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {TicketsRepliedCellSummary} from 'pages/stats/TicketsRepliedCellSummary'
@@ -47,9 +47,9 @@ jest.mock(
 const getSortedAgentsMock = assumeMock(getSortedAgents)
 const getPaginatedAgentsMock = assumeMock(getPaginatedAgents)
 
-jest.mock('pages/stats/FirstResponseTimeCellContent.tsx')
-const FirstResponseTimeCellContentMock = assumeMock(
-    FirstResponseTimeCellContent
+jest.mock('pages/stats/MedianFirstResponseTimeCellContent.tsx')
+const MedianFirstResponseTimeCellContentMock = assumeMock(
+    MedianFirstResponseTimeCellContent
 )
 jest.mock('pages/stats/TicketsRepliedCellContent.tsx')
 const TicketsRepliedCellContentMock = assumeMock(TicketsRepliedCellContent)
@@ -59,8 +59,10 @@ const ClosedTicketsCellContentMock = assumeMock(ClosedTicketsCellContent)
 
 jest.mock('pages/stats/MessagesSentCellContent.tsx')
 const MessagesSentCellContentMock = assumeMock(MessagesSentCellContent)
-jest.mock('pages/stats/ResolutionTimeCellContent.tsx')
-const ResolutionTimeCellContentMock = assumeMock(ResolutionTimeCellContent)
+jest.mock('pages/stats/MedianResolutionTimeCellContent.tsx')
+const MedianResolutionTimeCellContentMock = assumeMock(
+    MedianResolutionTimeCellContent
+)
 jest.mock('pages/stats/CustomerSatisfactionCellContent.tsx')
 const CustomerSatisfactionCellContentMock = assumeMock(
     CustomerSatisfactionCellContent
@@ -72,9 +74,9 @@ const PercentageOfClosedTicketsCellContentMock = assumeMock(
 jest.mock('pages/stats/OneTouchTicketsCellContent.tsx')
 const OneTouchTicketsCellContentMock = assumeMock(OneTouchTicketsCellContent)
 
-jest.mock('pages/stats/FirstResponseTimeCellSummary.tsx')
-const FirstResponseTimeCellSummaryMock = assumeMock(
-    FirstResponseTimeCellSummary
+jest.mock('pages/stats/MedianFirstResponseTimeCellSummary.tsx')
+const MedianFirstResponseTimeCellSummaryMock = assumeMock(
+    MedianFirstResponseTimeCellSummary
 )
 jest.mock('pages/stats/TicketsRepliedCellSummary.tsx')
 const TicketsRepliedCellSummaryMock = assumeMock(TicketsRepliedCellSummary)
@@ -84,8 +86,10 @@ const ClosedTicketsCellSummaryMock = assumeMock(ClosedTicketsCellSummary)
 
 jest.mock('pages/stats/MessagesSentCellSummary.tsx')
 const MessagesSentCellSummaryMock = assumeMock(MessagesSentCellSummary)
-jest.mock('pages/stats/ResolutionTimeCellSummary.tsx')
-const ResolutionTimeCellSummaryMock = assumeMock(ResolutionTimeCellSummary)
+jest.mock('pages/stats/MedianResolutionTimeCellSummary.tsx')
+const MedianResolutionTimeCellSummaryMock = assumeMock(
+    MedianResolutionTimeCellSummary
+)
 jest.mock('pages/stats/CustomerSatisfactionCellSummary.tsx')
 const CustomerSatisfactionCellSummaryMock = assumeMock(
     CustomerSatisfactionCellSummary
@@ -111,11 +115,11 @@ describe('<AgentTable>', () => {
         perPage: 1,
     })
     const metricCells = [
-        FirstResponseTimeCellContentMock,
+        MedianFirstResponseTimeCellContentMock,
         TicketsRepliedCellContentMock,
         ClosedTicketsCellContentMock,
         MessagesSentCellContentMock,
-        ResolutionTimeCellContentMock,
+        MedianResolutionTimeCellContentMock,
         CustomerSatisfactionCellContentMock,
         PercentageOfClosedTicketsCellContentMock,
         OneTouchTicketsCellContentMock,
@@ -124,11 +128,11 @@ describe('<AgentTable>', () => {
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
 
     const metricSummaryCells = [
-        FirstResponseTimeCellSummaryMock,
+        MedianFirstResponseTimeCellSummaryMock,
         TicketsRepliedCellSummaryMock,
         ClosedTicketsCellSummaryMock,
         MessagesSentCellSummaryMock,
-        ResolutionTimeCellSummaryMock,
+        MedianResolutionTimeCellSummaryMock,
         CustomerSatisfactionCellSummaryMock,
         PercentageOfClosedTicketsCellSummaryMock,
         OneTouchTicketsCellSummaryMock,

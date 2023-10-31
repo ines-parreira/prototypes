@@ -19,14 +19,14 @@ import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
 import {ClosedTicketsCellSummary} from 'pages/stats/ClosedTicketsCellSummary'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {CustomerSatisfactionCellSummary} from 'pages/stats/CustomerSatisfactionCellSummary'
-import {FirstResponseTimeCellContent} from 'pages/stats/FirstResponseTimeCellContent'
-import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
+import {MedianFirstResponseTimeCellContent} from 'pages/stats/MedianFirstResponseTimeCellContent'
+import {MedianFirstResponseTimeCellSummary} from 'pages/stats/MedianFirstResponseTimeCellSummary'
 import {MessagesSentCellContent} from 'pages/stats/MessagesSentCellContent'
 import {MessagesSentCellSummary} from 'pages/stats/MessagesSentCellSummary'
 import {PercentageOfClosedTicketsCellContent} from 'pages/stats/PercentageOfClosedTicketsCellContent'
 import {PercentageOfClosedTicketsCellSummary} from 'pages/stats/PercentageOfClosedTicketsCellSummary'
-import {ResolutionTimeCellContent} from 'pages/stats/ResolutionTimeCellContent'
-import {ResolutionTimeCellSummary} from 'pages/stats/ResolutionTimeCellSummary'
+import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
+import {MedianResolutionTimeCellSummary} from 'pages/stats/MedianResolutionTimeCellSummary'
 import {OneTouchTicketsCellContent} from 'pages/stats/OneTouchTicketsCellContent'
 import {OneTouchTicketsCellSummary} from 'pages/stats/OneTouchTicketsCellSummary'
 import {SummaryCell} from 'pages/stats/SummaryCell'
@@ -60,14 +60,14 @@ const getCell = (
             return PercentageOfClosedTicketsCellContent
         case TableColumn.MessagesSent:
             return MessagesSentCellContent
-        case TableColumn.FirstResponseTime:
-            return FirstResponseTimeCellContent
+        case TableColumn.MedianFirstResponseTime:
+            return MedianFirstResponseTimeCellContent
         case TableColumn.CustomerSatisfaction:
             return CustomerSatisfactionCellContent
         case TableColumn.AgentName:
             return AgentCellContent
-        case TableColumn.ResolutionTime:
-            return ResolutionTimeCellContent
+        case TableColumn.MedianResolutionTime:
+            return MedianResolutionTimeCellContent
         case TableColumn.OneTouchTickets:
             return OneTouchTicketsCellContent
     }
@@ -83,12 +83,12 @@ const getSummaryCell = (column: TableColumn): React.FC => {
             return PercentageOfClosedTicketsCellSummary
         case TableColumn.MessagesSent:
             return MessagesSentCellSummary
-        case TableColumn.FirstResponseTime:
-            return FirstResponseTimeCellSummary
+        case TableColumn.MedianFirstResponseTime:
+            return MedianFirstResponseTimeCellSummary
         case TableColumn.CustomerSatisfaction:
             return CustomerSatisfactionCellSummary
-        case TableColumn.ResolutionTime:
-            return ResolutionTimeCellSummary
+        case TableColumn.MedianResolutionTime:
+            return MedianResolutionTimeCellSummary
         case TableColumn.OneTouchTickets:
             return OneTouchTicketsCellSummary
         case TableColumn.AgentName:

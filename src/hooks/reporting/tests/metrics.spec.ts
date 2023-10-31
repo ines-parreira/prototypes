@@ -2,9 +2,9 @@ import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {firstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {resolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ReportingQuery} from 'models/reporting/types'
@@ -15,9 +15,9 @@ import {
     ignoreNotAssignedTicketsFilter,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
-    useFirstResponseTimeMetric,
+    useMedianFirstResponseTimeMetric,
     useMessagesSentMetric,
-    useResolutionTimeMetric,
+    useMedianResolutionTimeMetric,
     useTicketsRepliedMetric,
     useOneTouchTicketsMetric,
 } from 'hooks/reporting/metrics'
@@ -57,9 +57,9 @@ describe('metrics', () => {
             customerSatisfactionQueryFactory,
         ],
         [
-            'useFirstResponseTimeMetric',
-            useFirstResponseTimeMetric,
-            firstResponseTimeQueryFactory,
+            'useMedianFirstResponseTimeMetric',
+            useMedianFirstResponseTimeMetric,
+            medianFirstResponseTimeQueryFactory,
         ],
         [
             'useMessagesSentMetric',
@@ -67,9 +67,9 @@ describe('metrics', () => {
             messagesSentQueryFactory,
         ],
         [
-            'useResolutionTimeMetric',
-            useResolutionTimeMetric,
-            resolutionTimeQueryFactory,
+            'useMedianResolutionTimeMetric',
+            useMedianResolutionTimeMetric,
+            medianResolutionTimeQueryFactory,
         ],
         [
             'useTicketsRepliedMetric',

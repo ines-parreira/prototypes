@@ -29,8 +29,8 @@ export interface Period {
 export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     agents: User[]
     customerSatisfactionMetric: T
-    firstResponseTimeMetric: T
-    resolutionTimeMetric: T
+    medianFirstResponseTimeMetric: T
+    medianResolutionTimeMetric: T
     percentageOfClosedTicketsMetric: T
     closedTicketsMetric: T
     ticketsRepliedMetric: T
@@ -53,8 +53,8 @@ export const saveReport = async (
     const {
         agents,
         customerSatisfactionMetric,
-        firstResponseTimeMetric,
-        resolutionTimeMetric,
+        medianFirstResponseTimeMetric,
+        medianResolutionTimeMetric,
         closedTicketsMetric,
         percentageOfClosedTicketsMetric,
         ticketsRepliedMetric,
@@ -94,22 +94,22 @@ export const saveReport = async (
             getAgentMetric(
                 agentId,
                 customerSatisfactionMetric,
-                TicketSatisfactionSurveyMeasure.SurveyScore
+                TicketSatisfactionSurveyMeasure.AvgSurveyScore
             )
         )
 
-    const getFirstResponseTimeAgentMetric = (agentId: number) =>
+    const getMedianFirstResponseTimeAgentMetric = (agentId: number) =>
         getAgentMetric(
             agentId,
-            firstResponseTimeMetric,
-            TicketMessagesMeasure.FirstResponseTime
+            medianFirstResponseTimeMetric,
+            TicketMessagesMeasure.MedianFirstResponseTime
         ) || NOT_AVAILABLE_PLACEHOLDER
 
-    const getResolutionTimeAgentMetric = (agentId: number) =>
+    const getMedianResolutionTimeAgentMetric = (agentId: number) =>
         getAgentMetric(
             agentId,
-            resolutionTimeMetric,
-            TicketMessagesMeasure.ResolutionTime
+            medianResolutionTimeMetric,
+            TicketMessagesMeasure.MedianResolutionTime
         ) || NOT_AVAILABLE_PLACEHOLDER
 
     const getClosedTicketsMetricAgentMetric = (agentId: number) =>
@@ -161,8 +161,8 @@ export const saveReport = async (
         [
             TableLabels.agent_name,
             TableLabels.customer_satisfaction,
-            TableLabels.first_response_time,
-            TableLabels.resolution_time,
+            TableLabels.median_first_response_time,
+            TableLabels.median_resolution_time,
             TableLabels.closed_tickets,
             TableLabels.percentage_of_closed_tickets,
             TableLabels.replied_tickets,
@@ -174,8 +174,8 @@ export const saveReport = async (
             formatMetric.decimal(
                 summary.customerSatisfactionMetric.data?.value
             ),
-            summary.firstResponseTimeMetric.data?.value,
-            summary.resolutionTimeMetric.data?.value,
+            summary.medianFirstResponseTimeMetric.data?.value,
+            summary.medianResolutionTimeMetric.data?.value,
             formatMetric.decimal(
                 summary.closedTicketsMetric.data?.value
                     ? summary.closedTicketsMetric.data.value / agents.length
@@ -202,8 +202,8 @@ export const saveReport = async (
             return [
                 agent.name,
                 getCustomerSatisfactionAgentMetric(agent.id),
-                getFirstResponseTimeAgentMetric(agent.id),
-                getResolutionTimeAgentMetric(agent.id),
+                getMedianFirstResponseTimeAgentMetric(agent.id),
+                getMedianResolutionTimeAgentMetric(agent.id),
                 getClosedTicketsMetricAgentMetric(agent.id),
                 getPercentageOfClosedTicketsAgentMetric(agent.id),
                 getTicketsRepliedAgentMetric(agent.id),

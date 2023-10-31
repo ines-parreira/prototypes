@@ -19,7 +19,7 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-export const firstResponseTimeQueryFactory = (
+export const medianFirstResponseTimeQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string
 ) => {
@@ -41,7 +41,7 @@ export const firstResponseTimeQueryFactory = (
     }
 
     return {
-        measures: [TicketMessagesMeasure.FirstResponseTime],
+        measures: [TicketMessagesMeasure.MedianFirstResponseTime],
         dimensions: [],
         timezone,
         segments: [TicketMessagesSegment.ConversationStarted],
@@ -55,16 +55,16 @@ export const firstResponseTimeQueryFactory = (
     }
 }
 
-export const firstResponseTimeMetricPerAgentQueryFactory = (
+export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<TicketCubeWithJoins> => ({
-    ...firstResponseTimeQueryFactory(filters, timezone),
+    ...medianFirstResponseTimeQueryFactory(filters, timezone),
     dimensions: [TicketMessagesDimension.FirstHelpdeskMessageUserId],
     ...(sorting
         ? {
-              order: [[TicketMessagesMeasure.FirstResponseTime, sorting]],
+              order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
           }
         : {}),
 })

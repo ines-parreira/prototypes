@@ -11,7 +11,7 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {resolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -19,7 +19,7 @@ import {
     NotSpamNorTrashedTicketsFilter,
 } from 'utils/reporting'
 
-describe('resolutionTimeMetricPerAgent', () => {
+describe('medianResolutionTimeMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -36,7 +36,10 @@ describe('resolutionTimeMetricPerAgent', () => {
 
     it('should build a query', () => {
         expect(
-            resolutionTimeMetricPerAgentQueryFactory(statsFilters, timezone)
+            medianResolutionTimeMetricPerAgentQueryFactory(
+                statsFilters,
+                timezone
+            )
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -67,7 +70,7 @@ describe('resolutionTimeMetricPerAgent', () => {
                     values: statsFilters.tags?.map(String),
                 },
             ],
-            measures: [TicketMessagesMeasure.ResolutionTime],
+            measures: [TicketMessagesMeasure.MedianResolutionTime],
             segments: [
                 TicketSegment.ClosedTickets,
                 TicketMessagesSegment.ConversationStarted,
@@ -79,7 +82,7 @@ describe('resolutionTimeMetricPerAgent', () => {
         const agents = [2]
 
         expect(
-            resolutionTimeMetricPerAgentQueryFactory(
+            medianResolutionTimeMetricPerAgentQueryFactory(
                 {...statsFilters, agents},
                 timezone,
                 sorting
@@ -119,8 +122,8 @@ describe('resolutionTimeMetricPerAgent', () => {
                     values: statsFilters.tags?.map(String),
                 },
             ],
-            measures: [TicketMessagesMeasure.ResolutionTime],
-            order: [[TicketMessagesMeasure.ResolutionTime, sorting]],
+            measures: [TicketMessagesMeasure.MedianResolutionTime],
+            order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],
             segments: [
                 TicketSegment.ClosedTickets,
                 TicketMessagesSegment.ConversationStarted,

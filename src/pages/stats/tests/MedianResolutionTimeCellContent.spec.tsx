@@ -3,16 +3,19 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {useFirstResponseTimeMetric} from 'hooks/reporting/metrics'
+import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
+import {useMedianResolutionTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {FirstResponseTimeCellSummary} from 'pages/stats/FirstResponseTimeCellSummary'
+import {MedianResolutionTimeCellContent} from 'pages/stats/MedianResolutionTimeCellContent'
 import {initialState} from 'state/stats/reducers'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -20,43 +23,56 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metrics')
-const useFirstResponseTimeMetricMock = assumeMock(useFirstResponseTimeMetric)
+jest.mock('hooks/reporting/metricsPerDimension')
+const useMedianResolutionTimeMetricPerAgentMock = assumeMock(
+    useMedianResolutionTimeMetricPerAgent
+)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('<FirstResponseTimeCellContent>', () => {
-    const firstResponseTimeValue = 1234
+describe('<MedianResolutionTimeCellContent>', () => {
+    const agentId = 123
+    const medianResolutionTimeValue = 1234
 
     const defaultState = {
         stats: initialState,
         ui: {
+            agentPerformance: agentPerformanceInitialState,
             stats: uiStatsInitialState,
         },
     } as RootState
 
-    const useFirstResponseTimeMetricReturnValue = {
+    const useMedianResolutionTimeMetricPerAgentReturnValue = {
         data: {
-            value: firstResponseTimeValue,
+            value: medianResolutionTimeValue,
+            decile: 5,
+            allData: [
+                {
+                    [TicketMessagesMeasure.MedianResolutionTime]: String(
+                        medianResolutionTimeValue
+                    ),
+                    [TicketDimension.AssigneeUserId]: String(agentId),
+                },
+            ],
         },
         isFetching: false,
         isError: false,
     }
 
-    useFirstResponseTimeMetricMock.mockReturnValue(
-        useFirstResponseTimeMetricReturnValue
+    useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(
+        useMedianResolutionTimeMetricPerAgentReturnValue
     )
 
     it('should render value as duration', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <FirstResponseTimeCellSummary />
+                <MedianResolutionTimeCellContent agentId={agentId} />
             </Provider>
         )
 
         expect(
             screen.getByText(
                 formatMetricValue(
-                    firstResponseTimeValue,
+                    medianResolutionTimeValue,
                     'duration',
                     NOT_AVAILABLE_PLACEHOLDER
                 )
@@ -65,13 +81,13 @@ describe('<FirstResponseTimeCellContent>', () => {
     })
 
     it('should render skeleton when fetching', () => {
-        useFirstResponseTimeMetricMock.mockReturnValue({
-            ...useFirstResponseTimeMetricReturnValue,
+        useMedianResolutionTimeMetricPerAgentMock.mockReturnValue({
+            ...useMedianResolutionTimeMetricPerAgentReturnValue,
             isFetching: true,
         })
         render(
             <Provider store={mockStore(defaultState)}>
-                <FirstResponseTimeCellSummary />
+                <MedianResolutionTimeCellContent agentId={agentId} />
             </Provider>
         )
 

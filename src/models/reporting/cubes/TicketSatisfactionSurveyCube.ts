@@ -1,7 +1,7 @@
 import {Cube} from 'models/reporting/types'
 
 export enum TicketSatisfactionSurveyMeasure {
-    SurveyScore = 'TicketSatisfactionSurvey.surveyScore',
+    AvgSurveyScore = 'TicketSatisfactionSurvey.avgSurveyScore',
 }
 
 export enum TicketSatisfactionSurveyDimension {

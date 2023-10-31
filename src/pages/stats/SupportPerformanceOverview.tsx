@@ -25,11 +25,11 @@ import blueStar from 'assets/img/icons/blue-star.svg'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
-    useFirstResponseTimeTrend,
+    useMedianFirstResponseTimeTrend,
     useMessagesPerTicketTrend,
     useMessagesSentTrend,
     useOpenTicketsTrend,
-    useResolutionTimeTrend,
+    useMedianResolutionTimeTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
@@ -44,12 +44,12 @@ import BannerNotification from 'pages/common/components/BannerNotifications/Bann
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
     CUSTOMER_SATISFACTION_LABEL,
-    FIRST_RESPONSE_TIME_LABEL,
+    MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MESSAGES_PER_TICKET_LABEL,
     MESSAGES_SENT_LABEL,
     MetricName,
     OPEN_TICKETS_LABEL,
-    RESOLUTION_TIME_LABEL,
+    MEDIAN_RESOLUTION_TIME_LABEL,
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
@@ -131,11 +131,11 @@ export default function SupportPerformanceOverview() {
         requestStatsFilters,
         userTimezone
     )
-    const firstResponseTimeTrend = useFirstResponseTimeTrend(
+    const medianFirstResponseTimeTrend = useMedianFirstResponseTimeTrend(
         requestStatsFilters,
         userTimezone
     )
-    const resolutionTimeTrend = useResolutionTimeTrend(
+    const medianResolutionTimeTrend = useMedianResolutionTimeTrend(
         requestStatsFilters,
         userTimezone
     )
@@ -200,8 +200,8 @@ export default function SupportPerformanceOverview() {
     const exportableData = useMemo(() => {
         return {
             customerSatisfactionTrend,
-            firstResponseTimeTrend,
-            resolutionTimeTrend,
+            medianFirstResponseTimeTrend,
+            medianResolutionTimeTrend,
             messagesPerTicketTrend,
             openTicketsTrend,
             closedTicketsTrend,
@@ -218,12 +218,12 @@ export default function SupportPerformanceOverview() {
     }, [
         closedTicketsTrend,
         customerSatisfactionTrend,
-        firstResponseTimeTrend,
+        medianFirstResponseTimeTrend,
         messagesPerTicketTrend,
         messagesSentTimeSeries,
         messagesSentTrend,
         openTicketsTrend,
-        resolutionTimeTrend,
+        medianResolutionTimeTrend,
         ticketsClosedTimeSeries,
         ticketsCreatedTimeSeries,
         ticketsCreatedTrend,
@@ -347,42 +347,49 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title={FIRST_RESPONSE_TIME_LABEL}
+                            title={MEDIAN_FIRST_RESPONSE_TIME_LABEL}
                             hint={
                                 statsHintsTooltipsConfig[
-                                    FIRST_RESPONSE_TIME_LABEL
+                                    MEDIAN_FIRST_RESPONSE_TIME_LABEL
                                 ]
                             }
-                            isLoading={firstResponseTimeTrend.isFetching}
+                            isLoading={medianFirstResponseTimeTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
                                     interpretAs="less-is-better"
-                                    isLoading={!firstResponseTimeTrend.data}
+                                    isLoading={
+                                        !medianFirstResponseTimeTrend.data
+                                    }
                                     tooltip={periodComparisonTooltipText}
-                                    value={firstResponseTimeTrend.data?.value}
+                                    value={
+                                        medianFirstResponseTimeTrend.data?.value
+                                    }
                                     prevValue={
-                                        firstResponseTimeTrend.data?.prevValue
+                                        medianFirstResponseTimeTrend.data
+                                            ?.prevValue
                                     }
                                 />
                             }
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
-                                        metric={MetricName.FirstResponseTime}
-                                        data={firstResponseTimeTrend.data}
+                                        metric={
+                                            MetricName.MedianFirstResponseTime
+                                        }
+                                        data={medianFirstResponseTimeTrend.data}
                                     />
                                 )
                             }
                         >
                             <BigNumberMetric
-                                isLoading={!firstResponseTimeTrend.data}
+                                isLoading={!medianFirstResponseTimeTrend.data}
                             >
                                 {formatMetricValue(
-                                    firstResponseTimeTrend.data?.value,
+                                    medianFirstResponseTimeTrend.data?.value,
                                     'duration'
                                 )}
-                                {!firstResponseTimeTrend.data?.value && (
+                                {!medianFirstResponseTimeTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
                             </BigNumberMetric>
@@ -390,40 +397,45 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title={RESOLUTION_TIME_LABEL}
+                            title={MEDIAN_RESOLUTION_TIME_LABEL}
                             hint={
-                                statsHintsTooltipsConfig[RESOLUTION_TIME_LABEL]
+                                statsHintsTooltipsConfig[
+                                    MEDIAN_RESOLUTION_TIME_LABEL
+                                ]
                             }
-                            isLoading={resolutionTimeTrend.isFetching}
+                            isLoading={medianResolutionTimeTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
                                     interpretAs="less-is-better"
-                                    isLoading={!resolutionTimeTrend.data}
+                                    isLoading={!medianResolutionTimeTrend.data}
                                     tooltip={periodComparisonTooltipText}
-                                    value={resolutionTimeTrend.data?.value}
+                                    value={
+                                        medianResolutionTimeTrend.data?.value
+                                    }
                                     prevValue={
-                                        resolutionTimeTrend.data?.prevValue
+                                        medianResolutionTimeTrend.data
+                                            ?.prevValue
                                     }
                                 />
                             }
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
-                                        metric={MetricName.ResolutionTime}
-                                        data={resolutionTimeTrend.data}
+                                        metric={MetricName.MedianResolutionTime}
+                                        data={medianResolutionTimeTrend.data}
                                     />
                                 )
                             }
                         >
                             <BigNumberMetric
-                                isLoading={!resolutionTimeTrend.data}
+                                isLoading={!medianResolutionTimeTrend.data}
                             >
                                 {formatMetricValue(
-                                    resolutionTimeTrend.data?.value,
+                                    medianResolutionTimeTrend.data?.value,
                                     'duration'
                                 )}
-                                {!resolutionTimeTrend.data?.value && (
+                                {!medianResolutionTimeTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
                             </BigNumberMetric>

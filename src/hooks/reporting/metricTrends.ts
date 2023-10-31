@@ -4,12 +4,12 @@ import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories
 import {automationRateQueryFactory} from 'models/reporting/queryFactories/automation/automationRate'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {firstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/firstResponseTime'
+import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {messagesPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
 import {overallTimeSavedWithAutomationQueryFactory} from 'models/reporting/queryFactories/automation/overallTimeSavedWithAutomation'
-import {resolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/resolutionTime'
+import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {resolutionTimeWithAutomationQueryFactory} from 'models/reporting/queryFactories/automation/resolutionTimeWithAutomation'
 import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
@@ -31,13 +31,13 @@ export const useCustomerSatisfactionTrend = (
         )
     )
 
-export const useFirstResponseTimeTrend = (
+export const useMedianFirstResponseTimeTrend = (
     filters: StatsFilters,
     timezone: string
 ) =>
     useMetricTrend(
-        firstResponseTimeQueryFactory(filters, timezone),
-        firstResponseTimeQueryFactory(
+        medianFirstResponseTimeQueryFactory(filters, timezone),
+        medianFirstResponseTimeQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
@@ -61,13 +61,13 @@ export const useMessagesPerTicketTrend = (
         )
     )
 
-export const useResolutionTimeTrend = (
+export const useMedianResolutionTimeTrend = (
     filters: StatsFilters,
     timezone: string
 ) =>
     useMetricTrend(
-        resolutionTimeQueryFactory(filters, timezone),
-        resolutionTimeQueryFactory(
+        medianResolutionTimeQueryFactory(filters, timezone),
+        medianResolutionTimeQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),

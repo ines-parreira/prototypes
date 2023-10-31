@@ -26,8 +26,8 @@ export type FetchStatStartedAction = PayloadActionCreator<
 export enum TableColumn {
     AgentName = 'agent_name',
     CustomerSatisfaction = 'customer_satisfaction',
-    FirstResponseTime = 'first_response_time',
-    ResolutionTime = 'resolution_time',
+    MedianFirstResponseTime = 'median_first_response_time',
+    MedianResolutionTime = 'median_resolution_time',
     MessagesSent = 'messages_sent',
     PercentageOfClosedTickets = 'percentage_of_closed_tickets',
     ClosedTickets = 'closed_tickets',

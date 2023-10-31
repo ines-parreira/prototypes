@@ -2,8 +2,8 @@ import {TicketTimeDimensions} from 'models/reporting/cubes/TicketCube'
 import {Cube} from 'models/reporting/types'
 
 export enum TicketMessagesMeasure {
-    FirstResponseTime = 'TicketMessages.firstResponseTime',
-    ResolutionTime = 'TicketMessages.resolutionTime',
+    MedianFirstResponseTime = 'TicketMessages.medianFirstResponseTime',
+    MedianResolutionTime = 'TicketMessages.medianResolutionTime',
     MessagesAverage = 'TicketMessages.messagesAverage',
 }
 

@@ -23,7 +23,7 @@ describe('useMetricTrend', () => {
     } as UseQueryResult
 
     const defaultQuery: ReportingQuery<HelpdeskMessageCubeWithJoins> = {
-        measures: [TicketMessagesMeasure.FirstResponseTime],
+        measures: [TicketMessagesMeasure.MedianFirstResponseTime],
         dimensions: [],
         filters: [],
     }

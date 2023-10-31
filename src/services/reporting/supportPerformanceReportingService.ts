@@ -7,13 +7,13 @@ import {
     CUSTOMER_SATISFACTION_LABEL,
     DATE_TIME_FORMAT,
     EMPTY_LABEL,
-    FIRST_RESPONSE_TIME_LABEL,
+    MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MESSAGES_PER_TICKET_LABEL,
     MESSAGES_SENT_LABEL,
     NOT_AVAILABLE_LABEL,
     OPEN_TICKETS_LABEL,
     PREVIOUS_PERIOD_LABEL,
-    RESOLUTION_TIME_LABEL,
+    MEDIAN_RESOLUTION_TIME_LABEL,
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
@@ -33,8 +33,8 @@ interface Fetching<T> {
 
 export interface SupportPerformanceReportData {
     customerSatisfactionTrend: MetricTrend
-    firstResponseTimeTrend: MetricTrend
-    resolutionTimeTrend: MetricTrend
+    medianFirstResponseTimeTrend: MetricTrend
+    medianResolutionTimeTrend: MetricTrend
     messagesPerTicketTrend: MetricTrend
     openTicketsTrend: MetricTrend
     closedTicketsTrend: MetricTrend
@@ -55,8 +55,8 @@ export const saveReport = async (
 ) => {
     const {
         customerSatisfactionTrend,
-        firstResponseTimeTrend,
-        resolutionTimeTrend,
+        medianFirstResponseTimeTrend,
+        medianResolutionTimeTrend,
         messagesPerTicketTrend,
         openTicketsTrend,
         closedTicketsTrend,
@@ -79,14 +79,14 @@ export const saveReport = async (
             customerSatisfactionTrend.data?.prevValue,
         ],
         [
-            FIRST_RESPONSE_TIME_LABEL,
-            firstResponseTimeTrend.data?.value,
-            firstResponseTimeTrend.data?.prevValue,
+            MEDIAN_FIRST_RESPONSE_TIME_LABEL,
+            medianFirstResponseTimeTrend.data?.value,
+            medianFirstResponseTimeTrend.data?.prevValue,
         ],
         [
-            RESOLUTION_TIME_LABEL,
-            resolutionTimeTrend.data?.value,
-            resolutionTimeTrend.data?.prevValue,
+            MEDIAN_RESOLUTION_TIME_LABEL,
+            medianResolutionTimeTrend.data?.value,
+            medianResolutionTimeTrend.data?.prevValue,
         ],
         [
             MESSAGES_PER_TICKET_LABEL,

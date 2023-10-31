@@ -13,11 +13,11 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-export const resolutionTimeQueryFactory = (
+export const medianResolutionTimeQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string
 ) => ({
-    measures: [TicketMessagesMeasure.ResolutionTime],
+    measures: [TicketMessagesMeasure.MedianResolutionTime],
     dimensions: [],
     timezone,
     segments: [
@@ -32,16 +32,16 @@ export const resolutionTimeQueryFactory = (
         ),
     ],
 })
-export const resolutionTimeMetricPerAgentQueryFactory = (
+export const medianResolutionTimeMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...resolutionTimeQueryFactory(filters, timezone),
+    ...medianResolutionTimeQueryFactory(filters, timezone),
     dimensions: [TicketDimension.AssigneeUserId],
     ...(sorting
         ? {
-              order: [[TicketMessagesMeasure.ResolutionTime, sorting]],
+              order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],
           }
         : {}),
 })

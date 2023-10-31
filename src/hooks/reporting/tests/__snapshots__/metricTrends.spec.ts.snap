@@ -307,7 +307,7 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
     },
   ],
   "measures": [
-    "TicketSatisfactionSurvey.surveyScore",
+    "TicketSatisfactionSurvey.avgSurveyScore",
   ],
   "segments": [
     "TicketSatisfactionSurvey.surveyScored",
@@ -316,7 +316,7 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
 }
 `;
 
-exports[`metric trends useFirstResponseTimeTrend should create reporting filters 1`] = `
+exports[`metric trends useMedianFirstResponseTimeTrend should create reporting filters 1`] = `
 {
   "dimensions": [],
   "filters": [
@@ -388,7 +388,7 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
     },
   ],
   "measures": [
-    "TicketMessages.firstResponseTime",
+    "TicketMessages.medianFirstResponseTime",
   ],
   "segments": [
     "TicketMessages.conversationStarted",
@@ -397,7 +397,7 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
 }
 `;
 
-exports[`metric trends useResolutionTimeTrend should create reporting filters 1`] = `
+exports[`metric trends useMedianResolutionTimeTrend should create reporting filters 1`] = `
 {
   "dimensions": [],
   "filters": [
@@ -461,7 +461,7 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
     },
   ],
   "measures": [
-    "TicketMessages.resolutionTime",
+    "TicketMessages.medianResolutionTime",
   ],
   "segments": [
     "Ticket.closedTickets",

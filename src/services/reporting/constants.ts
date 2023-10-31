@@ -1,6 +1,6 @@
 export const CUSTOMER_SATISFACTION_LABEL = 'Customer satisfaction'
-export const FIRST_RESPONSE_TIME_LABEL = 'First response time'
-export const RESOLUTION_TIME_LABEL = 'Resolution time'
+export const MEDIAN_FIRST_RESPONSE_TIME_LABEL = 'First response time'
+export const MEDIAN_RESOLUTION_TIME_LABEL = 'Resolution time'
 export const MESSAGES_PER_TICKET_LABEL = 'Messages per ticket'
 export const OPEN_TICKETS_LABEL = 'Open tickets'
 export const TICKETS_CLOSED_LABEL = 'Closed tickets'
@@ -18,7 +18,7 @@ export const PREVIOUS_PERIOD_LABEL = 'previous period'
 
 export enum MetricName {
     CustomerSatisfaction = 'customerSatisfaction',
-    FirstResponseTime = 'firstResponseTime',
-    ResolutionTime = 'resolutionTime',
+    MedianFirstResponseTime = 'medianFirstResponseTime',
+    MedianResolutionTime = 'medianResolutionTime',
     MessagesPerTicket = 'messagesPerTicket',
 }

@@ -11,8 +11,8 @@ import {TableColumn} from 'state/ui/stats/types'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
-    useFirstResponseTimeMetricPerAgent,
-    useResolutionTimeMetricPerAgent,
+    useMedianFirstResponseTimeMetricPerAgent,
+    useMedianResolutionTimeMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {assumeMock, mockStore} from 'utils/testing'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
@@ -23,8 +23,8 @@ import AgentsShoutouts from 'pages/stats/AgentsShoutouts'
 import {TableLabels} from '../../TableConfig'
 
 jest.mock('hooks/reporting/metricsPerDimension')
-const useFirstResponseTimeMetricPerAgentMock = assumeMock(
-    useFirstResponseTimeMetricPerAgent
+const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
+    useMedianFirstResponseTimeMetricPerAgent
 )
 const useClosedTicketsMetricPerAgentMock = assumeMock(
     useClosedTicketsMetricPerAgent
@@ -32,15 +32,15 @@ const useClosedTicketsMetricPerAgentMock = assumeMock(
 const useCustomerSatisfactionMetricPerAgentMock = assumeMock(
     useCustomerSatisfactionMetricPerAgent
 )
-const useResolutionTimeMetricPerAgentMock = assumeMock(
-    useResolutionTimeMetricPerAgent
+const useMedianResolutionTimeMetricPerAgentMock = assumeMock(
+    useMedianResolutionTimeMetricPerAgent
 )
 
 describe('<AgentsShoutouts />', () => {
     const tableLabels = [
         TableLabels[TableColumn.CustomerSatisfaction],
-        TableLabels[TableColumn.FirstResponseTime],
-        TableLabels[TableColumn.ResolutionTime],
+        TableLabels[TableColumn.MedianFirstResponseTime],
+        TableLabels[TableColumn.MedianResolutionTime],
         TableLabels[TableColumn.ClosedTickets],
     ]
 
@@ -62,9 +62,13 @@ describe('<AgentsShoutouts />', () => {
             decile: 5,
             allData: agents.map((agent, idx) => ({
                 [TicketDimension.AssigneeUserId]: String(agent.id),
-                [TicketSatisfactionSurveyMeasure.SurveyScore]: String(10 + idx),
-                [TicketMessagesMeasure.FirstResponseTime]: String(10 + idx),
-                [TicketMessagesMeasure.ResolutionTime]: String(10 + idx),
+                [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: String(
+                    10 + idx
+                ),
+                [TicketMessagesMeasure.MedianFirstResponseTime]: String(
+                    10 + idx
+                ),
+                [TicketMessagesMeasure.MedianResolutionTime]: String(10 + idx),
                 [TicketMeasure.TicketCount]: String(10 + idx),
             })),
         },
@@ -84,10 +88,12 @@ describe('<AgentsShoutouts />', () => {
         useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(
             allDataMockedMetric
         )
-        useFirstResponseTimeMetricPerAgentMock.mockReturnValue(
+        useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
             allDataMockedMetric
         )
-        useResolutionTimeMetricPerAgentMock.mockReturnValue(allDataMockedMetric)
+        useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(
+            allDataMockedMetric
+        )
         useClosedTicketsMetricPerAgentMock.mockReturnValue(allDataMockedMetric)
 
         render(
@@ -115,11 +121,13 @@ describe('<AgentsShoutouts />', () => {
                     /**
                      * have it the same for all agents
                      */
-                    [TicketSatisfactionSurveyMeasure.SurveyScore]: '777',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '777',
                     /**
                      * this will be different for every agent
                      */
-                    [TicketMessagesMeasure.FirstResponseTime]: String(10 + idx),
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: String(
+                        10 + idx
+                    ),
                 })),
             },
         }
@@ -130,9 +138,11 @@ describe('<AgentsShoutouts />', () => {
         }
 
         useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(mockedMetric)
-        useFirstResponseTimeMetricPerAgentMock.mockReturnValue(mockedMetric)
+        useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
+            mockedMetric
+        )
 
-        useResolutionTimeMetricPerAgentMock.mockReturnValue(loadingMetric)
+        useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(loadingMetric)
         useClosedTicketsMetricPerAgentMock.mockReturnValue(loadingMetric)
 
         render(
@@ -143,7 +153,7 @@ describe('<AgentsShoutouts />', () => {
 
         const satisfactionShoutout = within(
             screen.getByTestId(
-                `shoutout-for-${TicketSatisfactionSurveyMeasure.SurveyScore}`
+                `shoutout-for-${TicketSatisfactionSurveyMeasure.AvgSurveyScore}`
             )
         )
 
@@ -159,7 +169,7 @@ describe('<AgentsShoutouts />', () => {
 
         const frtShoutout = within(
             screen.getByTestId(
-                `shoutout-for-${TicketMessagesMeasure.FirstResponseTime}`
+                `shoutout-for-${TicketMessagesMeasure.MedianFirstResponseTime}`
             )
         )
         const shoutoutedAgent = frtShoutout.queryByText(agents[0].name)
@@ -173,10 +183,12 @@ describe('<AgentsShoutouts />', () => {
             noDataMockedMetric
         )
 
-        useFirstResponseTimeMetricPerAgentMock.mockReturnValue(
+        useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
             allDataMockedMetric
         )
-        useResolutionTimeMetricPerAgentMock.mockReturnValue(allDataMockedMetric)
+        useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(
+            allDataMockedMetric
+        )
         useClosedTicketsMetricPerAgentMock.mockReturnValue(allDataMockedMetric)
 
         render(
@@ -187,7 +199,7 @@ describe('<AgentsShoutouts />', () => {
 
         const satisfactionShoutout = within(
             screen.getByTestId(
-                `shoutout-for-${TicketSatisfactionSurveyMeasure.SurveyScore}`
+                `shoutout-for-${TicketSatisfactionSurveyMeasure.AvgSurveyScore}`
             )
         )
         expect(

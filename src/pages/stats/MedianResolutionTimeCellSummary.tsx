@@ -1,15 +1,15 @@
 import React from 'react'
-import {useResolutionTimeMetric} from 'hooks/reporting/metrics'
+import {useMedianResolutionTimeMetric} from 'hooks/reporting/metrics'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/agentPerformanceSlice'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
-export const ResolutionTimeCellSummary = () => {
+export const MedianResolutionTimeCellSummary = () => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const {data, isFetching} = useResolutionTimeMetric(
+    const {data, isFetching} = useMedianResolutionTimeMetric(
         cleanStatsFilters,
         userTimezone
     )
