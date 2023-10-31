@@ -5,11 +5,16 @@ import {
     PaywallTheme,
     UpgradeType,
 } from 'pages/common/components/Paywall/Paywall'
+import Button from 'pages/common/components/button/Button'
 import {AccountFeature} from 'state/currentAccount/types'
 import {
     PAGE_TITLE_AAO,
     PAGE_TITLE_AAO_FEATURES,
 } from 'pages/stats/self-service/constants'
+import {
+    VOICE_LEARN_MORE_URL,
+    VOICE_OVERVIEW_PAGE_TITLE,
+} from 'pages/stats/voice/constants/voiceOverview'
 
 export type PaywallConfig = {
     pageHeader?: ReactNode
@@ -104,5 +109,39 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         ),
         requiredUpgrade: 'Automation',
         upgradeType: UpgradeType.AddOn,
+    },
+    [AccountFeature.PhoneNumber]: {
+        preview: assetsUrl('/img/paywalls/screens/voice_overview.png'),
+        header: 'Voice add-on features',
+        pageHeader: VOICE_OVERVIEW_PAGE_TITLE,
+        description: (
+            <div>
+                Manage and monitor performance, efficiency, and quality of your
+                phone support with our native Voice integration.
+                <br />
+                <a
+                    href={VOICE_LEARN_MORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Learn about the benefits of using Gorgias Voice.
+                </a>
+            </div>
+        ),
+        requiredUpgrade: '',
+        customCta: (
+            <Button
+                onClick={() => {
+                    const windowRef = window.open(
+                        VOICE_LEARN_MORE_URL,
+                        '_blank',
+                        'noopener noreferrer'
+                    )
+                    windowRef?.focus()
+                }}
+            >
+                Learn more
+            </Button>
+        ),
     },
 }

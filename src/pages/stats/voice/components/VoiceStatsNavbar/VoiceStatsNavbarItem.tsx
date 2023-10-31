@@ -1,16 +1,16 @@
 import React, {useRef, useState} from 'react'
 import classNames from 'classnames'
 import useAppSelector from 'hooks/useAppSelector'
-import {hasIntegrationOfTypes} from 'state/integrations/selectors'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
-import {IntegrationType} from 'models/integration/constants'
 import cssNavbar from 'assets/css/navbar.less'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import PaywallPopover from 'pages/settings/new_billing/components/PaywallPopover'
 import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
+import {currentAccountHasFeature} from 'state/currentAccount/selectors'
+import {AccountFeature} from 'state/currentAccount/types'
 import css from './VoiceStatsNavbarItem.less'
 
 type Props = {
@@ -23,8 +23,8 @@ function VoiceStatsNavbarItem({to, title, commonNavLinkProps}: Props) {
     const iconRef = useRef<HTMLElement>(null)
 
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-    const hasVoiceIntegrations = useAppSelector(
-        hasIntegrationOfTypes([IntegrationType.Phone])
+    const hasVoiceFeature = useAppSelector(
+        currentAccountHasFeature(AccountFeature.PhoneNumber)
     )
 
     return (
@@ -36,7 +36,7 @@ function VoiceStatsNavbarItem({to, title, commonNavLinkProps}: Props) {
         >
             <NavbarLink {...commonNavLinkProps} to={to}>
                 {title}
-                {hasVoiceIntegrations ? (
+                {hasVoiceFeature ? (
                     <Badge type={ColorType.Blue} className={cssNavbar.badge}>
                         NEW
                     </Badge>

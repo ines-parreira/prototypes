@@ -133,15 +133,17 @@ const Paywall = ({
                                             </i>
                                         </>
                                     )}
-                                    <Badge
-                                        type={
-                                            PLAN_NAME_TO_BADGE_COLOR[
-                                                paywallTheme
-                                            ] || 'dark-grey'
-                                        }
-                                    >
-                                        {`${requiredUpgrade} ${upgradeType}`}
-                                    </Badge>
+                                    {requiredUpgrade && (
+                                        <Badge
+                                            type={
+                                                PLAN_NAME_TO_BADGE_COLOR[
+                                                    paywallTheme
+                                                ] || 'dark-grey'
+                                            }
+                                        >
+                                            {`${requiredUpgrade} ${upgradeType}`}
+                                        </Badge>
+                                    )}
                                 </div>
                                 <h1 className={css.contentTitle}>{header}</h1>
                                 <div className={css.description}>
