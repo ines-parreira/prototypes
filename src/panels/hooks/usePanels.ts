@@ -32,6 +32,14 @@ export default function usePanels(config: Config): UsePanelsReturn {
         computeDefaultWidths({config, totalWidth: screenWidth})
     )
 
+    useEffect(
+        () =>
+            setPanelWidths(
+                computeDefaultWidths({config, totalWidth: screenWidth})
+            ),
+        [config, screenWidth]
+    )
+
     useEffect(() => {
         if (dragHandle === null) return
         const handle = dragHandle

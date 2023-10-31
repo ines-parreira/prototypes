@@ -1,6 +1,8 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import {MouseEvent as ReactMouseEvent} from 'react'
 
+import {Config} from 'panels/types'
+
 import usePanels from '../usePanels'
 import useScreenSize from '../useScreenSize'
 
@@ -16,6 +18,7 @@ describe('usePanels', () => {
     } as unknown as ReactMouseEvent
 
     let addEventListenerMock: jest.Mock
+    const config = [[200], [Infinity]] as Config
 
     beforeEach(() => {
         jest.restoreAllMocks()
@@ -30,19 +33,19 @@ describe('usePanels', () => {
     })
 
     it('should return computed panel widths', () => {
-        const {result} = renderHook(() => usePanels([[200], [Infinity]]))
+        const {result} = renderHook(() => usePanels(config))
         expect(result.current.panelWidths).toEqual([200, 800])
     })
 
     it('should return a resize start handler for each handle', () => {
-        const {result} = renderHook(() => usePanels([[200], [Infinity]]))
+        const {result} = renderHook(() => usePanels(config))
         expect(result.current.resizeStartHandlers).toEqual([
             expect.any(Function),
         ])
     })
 
     it('should attach mouse handlers when a drag starts', () => {
-        const {result} = renderHook(() => usePanels([[200], [Infinity]]))
+        const {result} = renderHook(() => usePanels(config))
 
         act(() => {
             result.current.resizeStartHandlers[0](event)
@@ -60,7 +63,7 @@ describe('usePanels', () => {
     })
 
     it('should return new panel widths when the mouse is moved', () => {
-        const {result} = renderHook(() => usePanels([[200], [Infinity]]))
+        const {result} = renderHook(() => usePanels(config))
 
         act(() => {
             result.current.resizeStartHandlers[0](event)
@@ -79,7 +82,7 @@ describe('usePanels', () => {
     })
 
     it('should remove event listeners when a drag stops', () => {
-        const {result} = renderHook(() => usePanels([[200], [Infinity]]))
+        const {result} = renderHook(() => usePanels(config))
 
         act(() => {
             result.current.resizeStartHandlers[0](event)
