@@ -23,10 +23,7 @@ import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import {useSelfServiceConfigurationUpdate} from 'pages/automation/common/hooks/useSelfServiceConfigurationUpdate'
 import {supportedLanguages} from '../models/workflowConfiguration.types'
-import {
-    MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD,
-    WORKFLOW_TEMPLATES,
-} from '../constants'
+import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
 import {
     useWorkflowEditorContext,
     withWorkflowEditorContext,
@@ -38,6 +35,7 @@ import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/wo
 import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
 
 import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
+import {WORKFLOW_TEMPLATES} from '../workflowTemplates'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'

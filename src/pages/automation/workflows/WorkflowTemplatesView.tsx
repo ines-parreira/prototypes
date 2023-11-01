@@ -7,7 +7,7 @@ import Button from 'pages/common/components/button/Button'
 
 import CreateCustomWorkflowFooter from './components/CreateCustomWorkflowFooter'
 import WorkflowTemplateCard from './components/WorkflowTemplateCard'
-import {WORKFLOW_TEMPLATES_LIST} from './constants'
+import {WORKFLOW_TEMPLATES_LIST} from './workflowTemplates'
 
 import css from './WorkflowTemplatesView.less'
 

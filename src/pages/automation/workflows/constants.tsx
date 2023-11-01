@@ -3,14 +3,7 @@ import React, {ReactNode} from 'react'
 import colors from 'assets/tokens/colors.json'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 
-import {WorkflowTemplate} from './models/workflowConfiguration.types'
 import {VisualBuilderNode} from './models/visualBuilderGraph.types'
-import {PRODUCT_RECOMMENDATION} from './workflowTemplates/productRecommendation'
-import {SIZE_GUIDE} from './workflowTemplates/sizeGuide'
-import {RETURN_AND_EXCHANGE_POLICY} from './workflowTemplates/returnAndExchangePolicy'
-import {WARRANTY_POLICY} from './workflowTemplates/warrantyPolicy'
-import {SUBSCRIPTION_MANAGEMENT} from './workflowTemplates/subscriptionManagement'
-import {SHIPPING_POLICY} from './workflowTemplates/shippingPolicy'
 
 export const colorByVisualBuilderNodeType: Record<
     Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>,
@@ -65,18 +58,5 @@ export const labelByVisualBuilderNodeType: Record<
 export const WAS_THIS_HELPFUL_WORKFLOW_ID = '01GWPRH2G05DYYFBB1GNVNRB19'
 export const ORDER_SELECTION_WORKFLOW_ID = '01H6XMB9DXNERSDSMPAM84JJ6J'
 export const NO_ORDERS_WORKFLOW_ID = '01H7FR7QJ4YG1QWXTXNJ5WV1EH'
-
-export const WORKFLOW_TEMPLATES: Record<
-    WorkflowTemplate['slug'],
-    WorkflowTemplate
-> = {
-    [PRODUCT_RECOMMENDATION.slug]: PRODUCT_RECOMMENDATION,
-    [SIZE_GUIDE.slug]: SIZE_GUIDE,
-    [RETURN_AND_EXCHANGE_POLICY.slug]: RETURN_AND_EXCHANGE_POLICY,
-    [WARRANTY_POLICY.slug]: WARRANTY_POLICY,
-    [SUBSCRIPTION_MANAGEMENT.slug]: SUBSCRIPTION_MANAGEMENT,
-    [SHIPPING_POLICY.slug]: SHIPPING_POLICY,
-}
-export const WORKFLOW_TEMPLATES_LIST = Object.values(WORKFLOW_TEMPLATES)
 
 export const MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD = 0.75
