@@ -4,9 +4,8 @@ import {MacrosProperties} from 'models/macro/types'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import {getMacroParametersOptions} from 'state/macro/selectors'
-import TemplateTypeFilterDropdown, {
-    TemplateTypeFilterOption,
-} from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+import TemplateTypeFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
 
 type Props = {
     selectedProperties: MacrosProperties

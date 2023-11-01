@@ -1,7 +1,7 @@
 import React from 'react'
 import {useEffectOnce} from 'react-use'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
-import {useWhatsAppEditor} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import WhatsAppMessageTemplateSearch from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateSearch'
 import WhatsAppMessageTemplateNavigator from './WhatsAppMessageTemplateNavigator'
 

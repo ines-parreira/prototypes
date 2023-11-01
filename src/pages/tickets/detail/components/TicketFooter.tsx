@@ -8,7 +8,7 @@ import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFil
 import {getTicket} from 'state/ticket/selectors'
 import {editorFocused} from 'state/ui/editor/actions'
 
-import {WhatsAppEditorProvider} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
+import WhatsAppEditorProvider from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider'
 import {SubmitArgs} from '../TicketDetailContainer'
 import TypingActivity from './TypingActivity'
 

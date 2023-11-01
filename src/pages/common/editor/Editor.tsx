@@ -14,7 +14,7 @@ import MessageSourceFields from 'pages/tickets/detail/components/ReplyArea/Messa
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import {useWhatsAppEditor} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
 import useMacrosSearch from './hooks/useMacrosSearch'

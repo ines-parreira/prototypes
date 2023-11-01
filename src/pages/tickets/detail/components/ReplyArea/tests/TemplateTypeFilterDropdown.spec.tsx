@@ -4,17 +4,18 @@ import React, {ComponentProps} from 'react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {fromJS} from 'immutable'
 import {mockStore} from 'utils/testing'
-import * as WhatsAppEditorContext from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketChannel} from 'business/types/ticket'
-import TemplateTypeFilterDropdown, {
-    TemplateTypeFilterOption,
-} from '../TemplateTypeFilterDropdown'
+import TemplateTypeFilterDropdown from '../TemplateTypeFilterDropdown'
+import {TemplateTypeFilterOption} from '../types'
 
-const useWhatsAppEditorSpy = jest.spyOn(
-    WhatsAppEditorContext,
-    'useWhatsAppEditor'
+jest.mock(
+    'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
+    () => jest.fn()
 )
+
+const useWhatsAppEditorSpy = useWhatsAppEditor as jest.Mock
 
 mockFlags({
     [FeatureFlagKey.WhatsAppMessageTemplates]: true,
@@ -40,6 +41,12 @@ describe('TemplateTypeFilterDropdown', () => {
                 <TemplateTypeFilterDropdown {...props} />
             </Provider>
         )
+
+    beforeEach(() => {
+        useWhatsAppEditorSpy.mockReturnValue({
+            setSelectedTemplateType: jest.fn(),
+        })
+    })
 
     afterEach(cleanup)
 

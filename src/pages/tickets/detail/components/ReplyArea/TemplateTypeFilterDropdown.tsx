@@ -14,14 +14,10 @@ import {
     isNewMessagePublic,
 } from 'state/newMessage/selectors'
 import {TicketChannel} from 'business/types/ticket'
-import {useWhatsAppEditor} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 
+import {TemplateTypeFilterOption} from './types'
 import css from './TemplateTypeFilterDropdown.less'
-
-export enum TemplateTypeFilterOption {
-    Templates = 'templates',
-    Macros = 'macros',
-}
 
 type Props = {
     value: TemplateTypeFilterOption

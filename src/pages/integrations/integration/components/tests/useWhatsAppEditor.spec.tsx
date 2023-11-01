@@ -7,12 +7,10 @@ import {mockStore} from 'utils/testing'
 import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroAction} from 'models/macroAction/types'
-import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
 import * as whatsAppUtils from '../whatsapp/utils'
-import {
-    WhatsAppEditorProvider,
-    useWhatsAppEditor,
-} from '../whatsapp/WhatsAppEditorContext'
+import WhatsAppEditorProvider from '../whatsapp/WhatsAppEditorProvider'
+import useWhatsAppEditor from '../whatsapp/useWhatsAppEditor'
 
 const isWhatsAppWindowOpenSpy = jest.spyOn(
     whatsAppUtils,

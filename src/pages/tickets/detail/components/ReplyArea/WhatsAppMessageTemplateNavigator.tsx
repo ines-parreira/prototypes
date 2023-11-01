@@ -14,7 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {SourceAddress} from 'models/ticket/types'
 import {getNewPhoneNumberByNumber} from 'state/entities/phoneNumbers/selectors'
 import {makeGetNewMessageSourceProperty} from 'state/newMessage/selectors'
-import {useWhatsAppEditor} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {getIntegrations} from 'state/integrations/selectors'
 import {isWhatsAppIntegration} from 'models/integration/types'
 

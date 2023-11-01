@@ -18,16 +18,15 @@ jest.mock('models/whatsAppMessageTemplates/queries', () => ({
 const mockSelectNewTemplate = jest.fn()
 
 jest.mock(
-    'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext',
-    () => ({
-        useWhatsAppEditor: jest.fn(() => ({
+    'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
+    () =>
+        jest.fn(() => ({
             searchFilter: {
                 language: [],
                 name: '',
             },
             selectNewTemplate: mockSelectNewTemplate,
-        })),
-    })
+        }))
 )
 
 describe('WhatsAppMessageTemplateNavigator', () => {

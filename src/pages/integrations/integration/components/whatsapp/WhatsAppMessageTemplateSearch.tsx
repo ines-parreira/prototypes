@@ -3,11 +3,10 @@ import classNames from 'classnames'
 import {useDebounce} from 'react-use'
 import TextInput from 'pages/common/forms/input/TextInput'
 import IconInput from 'pages/common/forms/input/IconInput'
-import TemplateTypeFilterDropdown, {
-    TemplateTypeFilterOption,
-} from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+import TemplateTypeFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
 import TemplateLanguageFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'
-import {useWhatsAppEditor} from './WhatsAppEditorContext'
+import useWhatsAppEditor from './useWhatsAppEditor'
 
 import css from './WhatsAppMessageTemplateSearch.less'
 

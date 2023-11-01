@@ -3,14 +3,17 @@ import {Provider} from 'react-redux'
 import React from 'react'
 import {act} from 'react-dom/test-utils'
 import {mockStore} from 'utils/testing'
-import * as WhatsAppEditorContext from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import WhatsAppMessageTemplateSearch from '../whatsapp/WhatsAppMessageTemplateSearch'
 
-const useWhatsAppEditorSpy = jest.spyOn(
-    WhatsAppEditorContext,
-    'useWhatsAppEditor'
+jest.mock(
+    'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
+    () => jest.fn()
 )
+
+const useWhatsAppEditorSpy = useWhatsAppEditor as jest.Mock
+
 const useWhatsAppEditorMockSetters = {
     setIsTemplateListVisible: jest.fn(),
     setSearchFilter: jest.fn(),
