@@ -1,7 +1,8 @@
 import _find from 'lodash/find'
 
 import {HIDDEN_VARIABLES, PREVIOUS_VARIABLES} from 'tickets/common/config'
-import {getVariablesList} from 'tickets/common/utils'
+
+import getVariablesList from './getVariablesList'
 
 /**
  * Return variable config with passed value
