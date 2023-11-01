@@ -17,7 +17,7 @@ import {
 } from 'draft-js'
 import {Map} from 'immutable'
 
-import {draftjsGorgiasCustomBlockRenderers} from 'pages/common/draftjs/plugins/toolbar'
+import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
 import {
     getQuoteDepth,
     QUOTE_DEPTH_DATA_KEY,

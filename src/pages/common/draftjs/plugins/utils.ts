@@ -10,6 +10,7 @@ import {fromJS, Map, List} from 'immutable'
 import _get from 'lodash/get'
 import {AxiosError} from 'axios'
 
+import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
 import {ConnectedAction} from '../../../../state/types'
 import {notify as notifyAction} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
@@ -25,7 +26,6 @@ import {
 import {getEntitySelectionState, linkify} from '../../../../utils/editor'
 
 import {PluginMethods} from './types'
-import {draftjsGorgiasCustomBlockRenderers} from './toolbar'
 
 const uploadPicture = (file: File) => {
     return uploadFiles([file])

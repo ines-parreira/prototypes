@@ -1,12 +1,12 @@
 import React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
 
+import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
 import {
     DecoratorStrategyCallback,
     DecoratorComponentProps,
     Decorator,
 } from '../../types'
-import {draftjsGorgiasCustomBlockRenderers} from '../index'
 
 const discountCodeLink = (): Decorator => ({
     strategy: (

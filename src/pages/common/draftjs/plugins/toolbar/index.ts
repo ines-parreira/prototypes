@@ -2,6 +2,7 @@ import {ReactNode, ComponentType, KeyboardEvent} from 'react'
 import decorateComponentWithProps from 'decorate-component-with-props'
 import {ContentBlock, EditorState, KeyBindingUtil} from 'draft-js'
 
+import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
 import {Plugin, PluginMethods} from '../types'
 import {removeLink} from '../utils'
 import {
@@ -19,15 +20,6 @@ import discountCodeLink from './decorators/discountCodeLink'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
-
-/**
- * Custom draft.js block renderer types we implemented.
- */
-export enum draftjsGorgiasCustomBlockRenderers {
-    Img = 'img',
-    Video = 'video',
-    DiscountCodeLink = 'discount-code-link',
-}
 
 export const isDisplayedAction = (
     name: ActionName,
