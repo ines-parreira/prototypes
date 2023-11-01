@@ -10,15 +10,15 @@ import React, {
 import {UncontrolledDropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
 import {Map} from 'immutable'
 import {useDebounce} from 'react-use'
-
 import classnames from 'classnames'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import Group from 'pages/common/components/layout/Group'
 import IconButton from 'pages/common/components/button/IconButton'
 import {renderTemplate, Context} from 'pages/common/utils/template'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'
 import {

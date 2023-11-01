@@ -3,8 +3,8 @@ import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import {submitCustomer} from 'state/customers/actions'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {countLines} from 'utils/string'
 
 import css from './CustomerNote.less'

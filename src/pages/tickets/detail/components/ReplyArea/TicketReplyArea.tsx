@@ -5,9 +5,9 @@ import {connect, ConnectedProps} from 'react-redux'
 import {ContentState, EditorState} from 'draft-js'
 
 import {clearMacroBeforeApply} from 'business/macro'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {Macro, MacrosProperties} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {
     getCurrentMacro,

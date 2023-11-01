@@ -21,6 +21,8 @@ import {
     Form,
     Label as ReactStrapLabel,
 } from 'reactstrap'
+
+import {SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     getPrimaryLanguageFromChatConfig,
@@ -90,7 +92,6 @@ import {
 import * as IntegrationsActions from 'state/integrations/actions'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'

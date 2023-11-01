@@ -19,7 +19,7 @@ import {
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {DraftOrderInvoice} from 'constants/integrations/types/shopify'
 import {focusElement} from 'utils/html'
 

@@ -1,12 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
 
+import {identifyUser} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import userActivityManager from 'services/userActivityManager'
 import {handle2FAEnforced} from 'state/currentUser/actions'
 import {fetchVisibleViewsCounts} from 'state/views/actions'
-import {identifyUser} from 'store/middlewares/segmentTracker'
 
 import useSharedLogic from '../useSharedLogic'
 
@@ -18,7 +18,7 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 jest.mock('services/userActivityManager')
 jest.mock('state/currentUser/actions')
 jest.mock('state/views/actions')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 describe('useSharedLogic', () => {
     let dispatch: jest.Mock

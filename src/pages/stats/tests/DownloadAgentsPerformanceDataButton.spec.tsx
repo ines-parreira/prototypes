@@ -2,7 +2,7 @@ import React from 'react'
 import {render, screen, fireEvent, act} from '@testing-library/react'
 
 import {agents} from 'fixtures/agents'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {assumeMock} from 'utils/testing'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {
@@ -18,7 +18,7 @@ jest.mock('services/reporting/agentsPerformanceReportingService')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 const saveReportMock = assumeMock(saveReport)
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 describe('DownloadAgentsPerformanceDataButton', () => {

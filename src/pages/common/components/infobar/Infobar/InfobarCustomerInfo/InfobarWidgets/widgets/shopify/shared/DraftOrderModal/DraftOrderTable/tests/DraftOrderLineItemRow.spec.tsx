@@ -2,19 +2,16 @@ import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
 import {render, fireEvent, screen} from '@testing-library/react'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import {
     shopifyAppliedDiscountFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
-import {
-    SegmentEvent,
-    logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+} from 'fixtures/shopify'
+import {InventoryManagement} from 'constants/integrations/types/shopify'
 import DraftOrderLineItemRow from '../DraftOrderLineItemRow'
 import {ShopifyActionType} from '../../../../types'
-import {InventoryManagement} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 
 jest.mock(
     'lodash/debounce',
@@ -24,9 +21,7 @@ jest.mock(
             setTimeout(() => fn(...args), delay)
 )
 
-jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-)
+jest.mock('common/segment')
 const logEventMock = logEvent as jest.Mock
 
 describe('<DraftOrderLineItemRow/>', () => {

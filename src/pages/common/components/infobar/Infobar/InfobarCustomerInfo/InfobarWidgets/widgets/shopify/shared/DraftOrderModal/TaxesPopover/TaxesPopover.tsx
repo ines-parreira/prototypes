@@ -9,8 +9,8 @@ import React, {
 import classnames from 'classnames'
 import {Button, Form, Popover, PopoverBody} from 'reactstrap'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {focusElement} from 'utils/html'
 import {ShopifyActionType} from '../../../types'
 

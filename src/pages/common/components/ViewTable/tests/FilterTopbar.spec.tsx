@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {view as viewFixture} from 'fixtures/views'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {JobType} from 'models/job/types'
@@ -27,7 +28,6 @@ import {
 } from 'state/views/actions'
 import * as viewSelectors from 'state/views/selectors'
 import * as utils from 'utils'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
 
 import {View} from 'models/view/types'
@@ -38,7 +38,7 @@ const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 jest.spyOn(viewsActions, 'activeViewIdSet')
 jest.mock('state/entities/views/actions')
 jest.mock('state/views/actions')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 const createViewWithFilters = (filters: string) => ({
     ...viewFixture,

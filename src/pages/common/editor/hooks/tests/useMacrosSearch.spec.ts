@@ -1,9 +1,9 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import _noop from 'lodash/noop'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {ticket as defaultTicket} from 'fixtures/ticket'
 import {fetchMacros} from 'models/macro/resources'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {flushPromises} from 'utils/testing'
 
 import useMacrosSearch, {SEARCH_DEBOUNCE_DELAY} from '../useMacrosSearch'
@@ -12,7 +12,7 @@ jest.mock('models/macro/resources', () => ({
     fetchMacros: jest.fn(),
 }))
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 const fetchMacrosMock = fetchMacros as jest.Mock
 const logEventMock = logEvent as jest.Mock

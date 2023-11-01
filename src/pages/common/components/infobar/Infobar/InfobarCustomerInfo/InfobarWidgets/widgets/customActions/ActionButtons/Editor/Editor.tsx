@@ -1,6 +1,7 @@
 import React, {useCallback, useContext, useMemo, useState} from 'react'
 import {Map} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -10,7 +11,6 @@ import {
     updateCustomActions,
 } from 'state/widgets/actions'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'
 import {

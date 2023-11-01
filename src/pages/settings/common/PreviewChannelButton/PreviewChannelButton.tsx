@@ -1,13 +1,11 @@
 import React, {useMemo} from 'react'
+
+import {TicketChannel} from 'business/types/ticket'
+import {logEvent, SegmentEvent} from 'common/segment'
+import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import {SelfServiceChannel} from '../../../automation/common/hooks/useSelfServiceChannels'
-import {TicketChannel} from '../../../../business/types/ticket'
 import styles from './PreviewChannelButton.less'
 
 const DEFAULT_CHANNEL_TYPE = 'unknown'

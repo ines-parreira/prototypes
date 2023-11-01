@@ -5,8 +5,8 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
+import {logEvent, SegmentEvent} from 'common/segment'
 import IconButton from 'pages/common/components/button/IconButton'
-
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
@@ -14,7 +14,6 @@ import {
 import {formatPrice} from 'business/shopify/number'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import MoneyAmount from '../../../../MoneyAmount'
 import {ShopifyActionType} from '../../../types'
 import {ProductStockQuantity} from '../../StockQuantity'

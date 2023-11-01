@@ -1,7 +1,8 @@
 import _debounce from 'lodash/debounce'
 import {Map as ImmutableMap} from 'immutable'
 import _omit from 'lodash/omit'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     addBigCommerceCheckoutBillingAddress,
     addBigCommerceCustomAddressToCustomerAddressBook,

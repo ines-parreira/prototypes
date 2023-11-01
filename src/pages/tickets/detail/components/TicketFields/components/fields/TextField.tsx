@@ -8,7 +8,7 @@ import {
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {useUpdateOrDeleteTicketFieldValue} from 'hooks/customField/useUpdateOrDeleteTicketFieldValue'
 import {getTicket} from 'state/ticket/selectors'

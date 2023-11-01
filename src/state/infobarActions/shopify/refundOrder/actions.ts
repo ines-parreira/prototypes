@@ -5,15 +5,12 @@ import axios from 'axios'
 import {
     initRefundOrderLineItems,
     initRefundOrderPayload,
-} from '../../../../business/shopify/order'
-import {getTotalQuantities} from '../../../../business/shopify/refund'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import type {StoreDispatch, RootState} from '../../../types'
-import GorgiasApi from '../../../../services/gorgiasApi'
-import {onApiError} from '../../../utils'
+} from 'business/shopify/order'
+import {getTotalQuantities} from 'business/shopify/refund'
+import {logEvent, SegmentEvent} from 'common/segment'
+import GorgiasApi from 'services/gorgiasApi'
+import type {StoreDispatch, RootState} from 'state/types'
+import {onApiError} from 'state/utils'
 
 import {
     SET_INITIAL_STATE,

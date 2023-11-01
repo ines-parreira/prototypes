@@ -9,6 +9,7 @@ import React, {
 import {Collapse} from 'reactstrap'
 import {List, Map} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 
@@ -19,7 +20,6 @@ import {
     startWidgetEdition,
     updateCustomActions,
 } from 'state/widgets/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'

@@ -4,8 +4,9 @@ import _uniqWith from 'lodash/uniqWith'
 import classnames from 'classnames'
 import {Container, Row, Col} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
-
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -18,7 +19,6 @@ import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import Loader from 'pages/common/components/Loader/Loader'
 import {DEFAULT_ACTIONS} from 'config'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import shortcutManager from 'services/shortcutManager/index'
 import {createJob as createTicketJob} from 'state/tickets/actions'
 import {

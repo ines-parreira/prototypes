@@ -5,13 +5,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {logEvent} from 'store/middlewares/segmentTracker'
+import {logEvent} from 'common/segment'
 import {user} from 'fixtures/users'
 import {RootState} from 'state/types'
 
 import MacroListContainer from '../MacroList'
 
-jest.mock('store/middlewares/segmentTracker.ts')
+jest.mock('common/segment')
 const logEventMock = logEvent as jest.Mock
 
 const mockStore = configureMockStore([thunk])

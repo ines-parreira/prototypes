@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {useUnmount} from 'react-use'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {SearchEngine} from 'models/search/types'

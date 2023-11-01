@@ -8,8 +8,9 @@ import React, {
 } from 'react'
 
 import classnames from 'classnames'
-
 import {Row} from 'reactstrap'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
@@ -47,7 +48,6 @@ import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import Tooltip from 'pages/common/components/Tooltip'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import OrderTable from './components/order-table/OrderTable'
 import OrderTotals from './OrderTotals'
 import {

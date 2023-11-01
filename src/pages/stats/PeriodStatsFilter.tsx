@@ -3,10 +3,10 @@ import React, {ComponentProps, useCallback} from 'react'
 import {Options as InitialSettings} from 'daterangepicker'
 import {useEffectOnce} from 'react-use'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StatsFilters} from 'models/stat/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import PeriodPicker from './common/PeriodPicker'
 

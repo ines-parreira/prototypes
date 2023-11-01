@@ -2,11 +2,11 @@ import React, {ComponentProps, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
+import {logEvent, SegmentEventToSend} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'
-import {logEvent, SegmentEventToSend} from 'store/middlewares/segmentTracker'
 import css from './UpgradeButton.less'
 
 type Props = {

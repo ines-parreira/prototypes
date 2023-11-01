@@ -9,7 +9,7 @@ import {
 } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {AGENT_ROLE, LITE_AGENT_ROLE} from 'config/user'
 import * as viewsActions from 'state/views/actions'
 import * as ticketsActions from 'state/tickets/actions'
@@ -26,7 +26,7 @@ jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('state/views/actions')
 jest.mock('state/tickets/actions')
 jest.mock('pages/history')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager

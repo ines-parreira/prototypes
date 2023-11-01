@@ -5,6 +5,7 @@ import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from 'pages/common/components/modal/Modal'
@@ -15,7 +16,6 @@ import {
     isCustomerDataPresent,
     isCustomerDataValid,
 } from 'pages/common/components/infobar/utils'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
 import Tooltip from 'pages/common/components/Tooltip'

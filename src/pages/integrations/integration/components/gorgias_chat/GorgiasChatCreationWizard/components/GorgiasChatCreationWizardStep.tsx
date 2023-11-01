@@ -1,7 +1,7 @@
 import React from 'react'
 import {useEffectOnce} from 'react-use'
 
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
+import {SegmentEvent} from 'common/segment'
 
 import {GorgiasChatCreationWizardSteps} from 'models/integration/types/gorgiasChat'
 

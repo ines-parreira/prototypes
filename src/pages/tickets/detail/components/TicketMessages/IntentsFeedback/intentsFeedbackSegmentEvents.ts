@@ -1,7 +1,4 @@
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 
 type BaseIntentFeedbackProps = {
     account_domain: string

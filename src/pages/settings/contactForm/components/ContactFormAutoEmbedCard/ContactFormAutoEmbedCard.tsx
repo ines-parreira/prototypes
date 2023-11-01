@@ -2,6 +2,8 @@ import React from 'react'
 import classnames from 'classnames'
 import {Link, useHistory} from 'react-router-dom'
 import _noop from 'lodash/noop'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
 import Button from 'pages/common/components/button/Button'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -13,7 +15,6 @@ import {
 } from 'pages/settings/contactForm/utils/navigation'
 
 import {ContactFormPageEmbedment} from 'models/contactForm/types'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'

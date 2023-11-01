@@ -3,14 +3,13 @@ import {fireEvent, render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import AddCustomItemPopover from '../AddCustomItemPopover'
 import {ShopifyActionType} from '../../../../types'
 
-jest.mock('store/middlewares/segmentTracker', () => {
-    const segmentTracker: Record<string, unknown> = jest.requireActual(
-        'store/middlewares/segmentTracker'
-    )
+jest.mock('common/segment', () => {
+    const segmentTracker: Record<string, unknown> =
+        jest.requireActual('common/segment')
 
     return {
         ...segmentTracker,

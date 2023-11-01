@@ -6,9 +6,9 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {TicketChannel} from 'business/types/ticket'
+import {logEvent} from 'common/segment'
 import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
-import {logEvent} from 'store/middlewares/segmentTracker'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {reportError} from 'utils/errors'
 import {StatsFilters} from 'models/stat/types'
@@ -21,7 +21,7 @@ const logEventMock = logEvent as jest.Mock
 const reportErrorMock = reportError as jest.Mock
 
 jest.mock('utils/errors')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 jest.mock(
     '../../../../ViewLink',
     () =>

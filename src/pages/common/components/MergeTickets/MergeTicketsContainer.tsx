@@ -2,6 +2,7 @@ import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -9,13 +10,9 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {mergeTickets} from '../../../../state/mergeTickets/actions'
-import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import history from '../../../history'
+import {mergeTickets} from 'state/mergeTickets/actions'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import history from 'pages/history'
 
 import BuildFinalTicket from './BuildFinalTicket'
 import SelectTargetTicket from './SelectTargetTicket'

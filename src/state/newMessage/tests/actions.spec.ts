@@ -4,8 +4,10 @@ import {ContentState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-
 import {omit} from 'lodash'
+
+import * as segmentTracker from 'common/segment'
+import {SegmentEvent} from 'common/segment'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {channels as mockChannels} from 'fixtures/channels'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -60,8 +62,6 @@ import {
     setOpenStatusAction,
     setSubjectAction,
 } from 'fixtures/macro'
-import * as segmentTracker from 'store/middlewares/segmentTracker'
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 
 import {getReplyAreaStateSnapshot} from './testUtils'

@@ -4,9 +4,8 @@ import _getIn from 'lodash/get'
 import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import history from 'pages/history'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-
 import {
     AnyManagedRuleSettings,
     ManagedRule,

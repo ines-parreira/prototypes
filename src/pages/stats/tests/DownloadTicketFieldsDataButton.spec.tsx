@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {UseQueryResult} from '@tanstack/react-query'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {assumeMock} from 'utils/testing'
 import {saveReport} from 'services/reporting/ticketFieldsReportingService'
 import {OrderDirection} from 'models/api/types'
@@ -35,7 +35,7 @@ jest.mock('state/ui/stats/ticketInsightsSlice')
 const getCustomFieldOrderMock = assumeMock(getCustomFieldsOrder)
 
 const saveReportMock = assumeMock(saveReport)
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 const mockStore = configureMockStore([thunk])

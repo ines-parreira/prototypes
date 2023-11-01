@@ -1,13 +1,12 @@
 import React, {ReactNode, useContext} from 'react'
 import {Map} from 'immutable'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import logo from 'assets/img/infobar/bigcommerce.svg'
 
+import logo from 'assets/img/infobar/bigcommerce.svg'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {

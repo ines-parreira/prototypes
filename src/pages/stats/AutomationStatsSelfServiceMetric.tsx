@@ -2,6 +2,7 @@ import React, {ComponentProps, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
 
+import {SegmentEvent} from 'common/segment'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {
     getCurrentProducts,
@@ -9,7 +10,6 @@ import {
     getHasLegacyAutomationAddOnFeatures,
 } from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'

@@ -1,14 +1,10 @@
 import React, {ReactNode, useMemo} from 'react'
 import {List, Map} from 'immutable'
 
+import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 import {ViewField} from 'models/view/types'
-import {
-    logEvent,
-    SegmentEvent,
-    StatViewLinkClickedStat,
-} from 'store/middlewares/segmentTracker'
 import {getAgents} from 'state/agents/selectors'
 import {ViewFilter} from 'state/views/types'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'

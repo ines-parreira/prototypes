@@ -4,6 +4,7 @@ import _sample from 'lodash/sample'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {MacroActionName} from 'models/macroAction/types'
@@ -18,7 +19,6 @@ import {canSend, hasContent} from 'state/newMessage/selectors'
 import {hasContentlessAction} from 'state/ticket/selectors'
 import Tooltip from 'pages/common/components/Tooltip'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import css from './TicketSubmitButtons.less'
 
 /* eslint-disable react/jsx-key */

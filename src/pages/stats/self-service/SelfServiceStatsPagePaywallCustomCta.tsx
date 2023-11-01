@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 
+import {SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentProducts} from 'state/billing/selectors'
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 

@@ -4,6 +4,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useSearchRankScenario, {
     DATABASE_TYPE,
     SearchRankRequest,
@@ -13,10 +14,9 @@ import useSearchRankScenario, {
 import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
 import {SearchEngine} from 'models/search/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('useSearchRankScenario', () => {

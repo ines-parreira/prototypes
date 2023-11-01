@@ -2,18 +2,15 @@ import {List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import axios from 'axios'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     initCancelOrderPayload,
     initRefundOrderLineItems,
-} from '../../../../business/shopify/order'
-import {getTotalQuantities} from '../../../../business/shopify/refund'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import {StoreDispatch, RootState} from '../../../types'
-import GorgiasApi from '../../../../services/gorgiasApi'
-import {onApiError} from '../../../utils'
+} from 'business/shopify/order'
+import {getTotalQuantities} from 'business/shopify/refund'
+import GorgiasApi from 'services/gorgiasApi'
+import {StoreDispatch, RootState} from 'state/types'
+import {onApiError} from 'state/utils'
 
 import {
     SET_INITIAL_STATE,

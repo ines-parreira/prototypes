@@ -6,6 +6,8 @@ import {Provider} from 'react-redux'
 import {screen, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import userEvent from '@testing-library/user-event'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
 import {account as accountFixture} from 'fixtures/account'
@@ -14,7 +16,6 @@ import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixt
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
 import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {user as userFixture} from 'fixtures/users'
 import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
 import {
@@ -23,7 +24,7 @@ import {
 } from 'pages/settings/helpCenter/queries'
 import ManageEmbedments from '../ManageEmbedments'
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

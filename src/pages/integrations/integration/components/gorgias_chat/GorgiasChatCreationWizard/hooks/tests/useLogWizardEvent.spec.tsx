@@ -1,14 +1,11 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
-
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
+import * as SegmentTracker from 'common/segment'
 import {IntegrationType} from 'models/integration/types'
-
-import * as SegmentTracker from 'store/middlewares/segmentTracker'
-
 import {renderWithRouter} from 'utils/testing'
 
 import Wizard from 'pages/common/components/wizard/Wizard'

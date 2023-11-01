@@ -22,6 +22,7 @@ import {
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 import * as Sentry from '@sentry/react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {getConfigByName} from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -71,7 +72,6 @@ import {
     SUBMIT_UPDATE_VIEW_ERROR,
 } from 'state/views/constants'
 import {FetchViewItemsOptions} from 'state/views/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
 

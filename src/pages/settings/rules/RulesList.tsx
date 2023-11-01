@@ -4,6 +4,8 @@ import {useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
 import _debounce from 'lodash/debounce'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Video from 'pages/common/components/Video/Video'
@@ -22,7 +24,6 @@ import {
 import {fetchRules} from 'models/rule/resources'
 
 import {notify} from 'state/notifications/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import settingsCss from 'pages/settings/settings.less'
 import useAppDispatch from 'hooks/useAppDispatch'

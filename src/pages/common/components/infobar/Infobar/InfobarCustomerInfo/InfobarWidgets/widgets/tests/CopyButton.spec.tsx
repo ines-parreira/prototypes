@@ -4,7 +4,7 @@ import copy from 'copy-to-clipboard'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {notify} from 'state/notifications/actions'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {Copy} from '../CopyButton'
@@ -16,7 +16,7 @@ jest.mock('state/notifications/actions')
 jest.mock('copy-to-clipboard', () => jest.fn())
 const copyMock = copy as jest.MockedFunction<typeof copy>
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('<Copy/>', () => {

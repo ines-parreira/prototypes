@@ -1,16 +1,12 @@
 import React, {ReactNode, useMemo} from 'react'
 
+import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
+import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
+import {ViewField} from 'models/view/types'
+import {EqualityOperator} from 'state/rules/types'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
-import {ViewField} from '../../../models/view/types'
-import {ViewFilter} from '../../../state/views/types'
-import {EqualityOperator} from '../../../state/rules/types'
-import {reportError} from '../../../utils/errors'
-import {
-    logEvent,
-    SegmentEvent,
-    StatViewLinkClickedStat,
-} from '../../../store/middlewares/segmentTracker'
+import {ViewFilter} from 'state/views/types'
+import {reportError} from 'utils/errors'
 
 import ViewLink from './ViewLink'
 import {findChannelNameKey, useStatsViewFilters} from './utils'

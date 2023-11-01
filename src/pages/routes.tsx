@@ -8,14 +8,14 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {logPageChange} from 'common/segment'
 import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
-import {logPageChange} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {FeatureFlagKey} from 'config/featureFlags'

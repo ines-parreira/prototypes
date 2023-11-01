@@ -3,39 +3,33 @@ import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import axios, {AxiosResponse} from 'axios'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {fetchIntegrationProducts} from 'state/integrations/helpers'
-import {ShopifyActionType} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {
     addCustomLineItem,
     addVariant,
     initDraftOrderPayload,
-} from '../../../../business/shopify/draftOrder'
-import {getCalculateDraftOrderPayload} from '../../../../business/shopify/calculatedDraftOrder'
+} from 'business/shopify/draftOrder'
+import {getCalculateDraftOrderPayload} from 'business/shopify/calculatedDraftOrder'
 import {
     getDiscountAmount,
     refreshAppliedDiscounts,
-} from '../../../../business/shopify/discount'
-import {getDraftOrderTotalLineItemsPrice} from '../../../../business/shopify/lineItem'
-import {
-    formatPercentage,
-    formatPrice,
-} from '../../../../business/shopify/number'
+} from 'business/shopify/discount'
+import {getDraftOrderTotalLineItemsPrice} from 'business/shopify/lineItem'
+import {formatPercentage, formatPrice} from 'business/shopify/number'
 import {
     AppliedDiscount,
     DiscountType,
     Product,
     Variant,
-} from '../../../../constants/integrations/types/shopify'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import {RootState, StoreDispatch} from '../../../types'
-import GorgiasApi from '../../../../services/gorgiasApi'
-import {executeAction} from '../../../infobar/actions'
-import {notify} from '../../../notifications/actions'
-import {NotificationStatus} from '../../../notifications/types'
-import {onApiError} from '../../../utils'
+} from 'constants/integrations/types/shopify'
+import GorgiasApi from 'services/gorgiasApi'
+import {RootState, StoreDispatch} from 'state/types'
+import {executeAction} from 'state/infobar/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {onApiError} from 'state/utils'
 
 import {getCreateOrderState} from './selectors'
 import {

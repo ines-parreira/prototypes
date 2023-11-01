@@ -9,6 +9,8 @@ import {
     InputGroupAddon,
 } from 'reactstrap'
 import {Route, Switch} from 'react-router-dom'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Label from 'pages/common/forms/Label/Label'
 import useClipboard from 'pages/common/hooks/useClipboard'
@@ -16,7 +18,6 @@ import ContactFormManualEmbedCard from 'pages/settings/contactForm/components/Co
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import settingsCss from 'pages/settings/settings.less'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
 import {
     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,

@@ -6,13 +6,13 @@ import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 
 import Snooze from '../Snooze'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('hooks/useShortcuts', () => jest.fn())
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 jest.mock(
     '../TicketDetails/TicketSnoozePicker',
     () =>

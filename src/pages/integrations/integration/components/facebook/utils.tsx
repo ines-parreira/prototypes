@@ -1,11 +1,11 @@
 import React from 'react'
 import {Map} from 'immutable'
 
+import {SegmentEvent} from 'common/segment'
 import {HelpdeskPrice} from 'models/billing/types'
-import UpgradeButton from '../../../../common/components/UpgradeButton/UpgradeButton'
-import {SegmentEvent} from '../../../../../store/middlewares/segmentTracker'
-import {AccountFeature} from '../../../../../state/currentAccount/types'
-import Tooltip from '../../../../common/components/Tooltip'
+import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
+import Tooltip from 'pages/common/components/Tooltip'
+import {AccountFeature} from 'state/currentAccount/types'
 
 // PERMISSIONS in FB documentation
 // https://developers.facebook.com/docs/pages/overview/permissions-features#permissions

@@ -8,11 +8,11 @@ import {user} from 'fixtures/users'
 import {RootState} from 'state/types'
 import {UserSettingType, UserSetting} from 'config/types/user'
 import {ticket} from 'fixtures/ticket'
-import {logEvent} from 'store/middlewares/segmentTracker'
+import {logEvent} from 'common/segment'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'
 
-jest.mock('store/middlewares/segmentTracker.ts')
+jest.mock('common/segment')
 
 jest.mock('hooks/useAppDispatch.ts', () => {
     return {

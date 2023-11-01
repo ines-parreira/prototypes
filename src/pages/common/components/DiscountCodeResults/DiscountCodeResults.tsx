@@ -5,6 +5,7 @@ import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,
@@ -20,7 +21,6 @@ import {useModalManager} from 'hooks/useModalManager'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import client from 'models/api/resources'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getTicketState} from 'state/ticket/selectors'

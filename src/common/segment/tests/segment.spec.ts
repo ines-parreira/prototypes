@@ -1,7 +1,7 @@
 import {user} from 'fixtures/users'
 import {mockProductionEnvironment} from 'utils/testing'
 
-import {identifyUser} from '../segmentTracker'
+import {identifyUser} from '../segment'
 
 describe('segmentTracker', () => {
     const analytics = globalThis.analytics

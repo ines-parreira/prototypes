@@ -1,11 +1,12 @@
 import copy from 'copy-to-clipboard'
 import React, {MouseEvent, useContext} from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {reportError} from 'utils/errors'
 import IconButton from 'pages/common/components/button/IconButton'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'

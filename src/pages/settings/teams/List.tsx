@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import {useAsyncFn, useEffectOnce} from 'react-use'
 import {AxiosError} from 'axios'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CursorDirection, CursorMeta, OrderDirection} from 'models/api/types'
 import {fetchTeams} from 'models/team/resources'
@@ -24,7 +25,6 @@ import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {FETCH_TEAMS_SUCCESS} from 'state/teams/constants'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import css from './List.less'
 

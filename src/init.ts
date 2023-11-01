@@ -18,12 +18,12 @@ import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
 import './polyfills'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {store} from 'common/store'
 import {EditableUserProfile} from 'config/types/user'
 import {resendVerificationEmail} from 'state/currentAccount/actions'
 import {getBaseEmailIntegration} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {transformSystemMessagesToNotifications} from 'utils'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {getCurrentUser} from 'state/currentUser/selectors'

@@ -4,6 +4,7 @@ import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
 import {useAsyncFn, useList, usePrevious, useUpdateEffect} from 'react-use'
 
 import {TicketChannel} from 'business/types/ticket'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {ISO639English} from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,7 +31,6 @@ import {NotificationStatus} from 'state/notifications/types'
 import {getEmptyRule} from 'state/rules/utils'
 import {getAST} from 'utils'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import css from './RuleCreationModalContent.less'
 
 type Props = {

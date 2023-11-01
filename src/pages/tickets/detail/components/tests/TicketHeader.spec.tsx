@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _omit from 'lodash/omit'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {ticket} from 'fixtures/ticket'
 import * as notificationsActions from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
@@ -14,7 +15,6 @@ import {UserRole} from 'config/types/user'
 import {user} from 'fixtures/users'
 import {NotificationStatus} from 'state/notifications/types'
 import {makeExecuteKeyboardAction} from 'utils/testing'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import shortcutManager from 'services/shortcutManager'
 import useAppDispatch from 'hooks/useAppDispatch'
 import TicketHeader from '../TicketHeader'
@@ -59,7 +59,7 @@ jest.mock('reactstrap', () => {
     }
 })
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 jest.mock('../Snooze', () => () => <div>Snooze</div>)
 

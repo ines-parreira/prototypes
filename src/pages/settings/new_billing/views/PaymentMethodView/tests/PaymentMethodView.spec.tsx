@@ -39,10 +39,9 @@ jest.mock('utils/stripe', () => ({
     createStripeCardToken: jest.fn().mockResolvedValue({id: 'stripeTokenId'}),
 }))
 jest.mock('services/gorgiasApi', () => jest.fn())
-jest.mock('store/middlewares/segmentTracker', () => {
-    const segmentTracker: Record<string, unknown> = jest.requireActual(
-        'store/middlewares/segmentTracker'
-    )
+jest.mock('common/segment', () => {
+    const segmentTracker: Record<string, unknown> =
+        jest.requireActual('common/segment')
 
     return {
         ...segmentTracker,

@@ -18,6 +18,7 @@ import {
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useEffectOnce} from 'react-use'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {LanguageChat} from 'constants/languages'
@@ -29,7 +30,6 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
     getLanguagesFromChatConfig,

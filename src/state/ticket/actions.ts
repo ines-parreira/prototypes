@@ -14,6 +14,7 @@ import {
     TicketChannel,
 } from 'business/types/ticket'
 import {appQueryClient} from 'api/queryClient'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_ACTIONS} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
@@ -30,7 +31,6 @@ import {getSourceTypeCache} from 'state/newMessage/responseUtils'
 import {notify} from 'state/notifications/actions'
 import * as ticketsSelectors from 'state/tickets/selectors'
 import * as viewsSelectors from 'state/views/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isCurrentlyOnTicket, isTabActive} from 'utils'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 

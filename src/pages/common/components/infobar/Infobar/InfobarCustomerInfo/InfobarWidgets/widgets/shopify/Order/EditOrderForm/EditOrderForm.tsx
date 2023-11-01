@@ -3,11 +3,8 @@ import {Col, Container, FormText, Row} from 'reactstrap'
 import {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../store/middlewares/segmentTracker'
 
 import OrderTotals from './OrderTotals/OrderTotals'
 

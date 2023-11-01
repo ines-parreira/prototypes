@@ -2,6 +2,8 @@ import React, {useMemo, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 import moment from 'moment/moment'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {
@@ -60,7 +62,6 @@ import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPreviousPeriod, periodToReportingGranularity} from 'utils/reporting'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {
     formatMetricValue,
     formatTimeSeriesData,

@@ -1,10 +1,10 @@
 import classnames from 'classnames'
-
 import React, {useCallback, useMemo, useState} from 'react'
 import moment, {Moment} from 'moment'
 import {useLocalStorage} from 'react-use'
-
 import {Scale, TooltipItem} from 'chart.js'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {saveReport} from 'services/reporting/automationAddOnReportingService'
 import {
@@ -17,7 +17,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getStatsFilters} from 'state/stats/selectors'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {periodToReportingGranularity} from 'utils/reporting'
 import colors from 'assets/tokens/colors.json'
 import {

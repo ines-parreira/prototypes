@@ -1,9 +1,7 @@
-import {useEffect, useState} from 'react'
 import {Map} from 'immutable'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
+import {useEffect, useState} from 'react'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 
 export type Options = {
     isReady: boolean

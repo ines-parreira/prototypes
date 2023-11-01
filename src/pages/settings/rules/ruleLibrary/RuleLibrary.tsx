@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {ManagedRule, Rule, RuleType} from 'state/rules/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {RuleRecipe} from 'models/ruleRecipe/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'

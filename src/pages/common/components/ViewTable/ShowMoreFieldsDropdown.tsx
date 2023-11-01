@@ -9,11 +9,11 @@ import {
 } from 'reactstrap'
 import {Map, List} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {setFieldVisibility} from 'state/views/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {GorgiasThunkDispatch} from 'types/redux-thunk'
 
 type OwnProps = {

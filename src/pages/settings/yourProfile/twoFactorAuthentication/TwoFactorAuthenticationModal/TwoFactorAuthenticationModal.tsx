@@ -1,6 +1,8 @@
 import React, {useCallback, useState, useEffect, useMemo} from 'react'
 import {AxiosError} from 'axios'
 import {dismissNotification} from 'reapop'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {
     saveTwoFASecret as saveTwoFASecretResource,
@@ -13,7 +15,6 @@ import {
 import Button from 'pages/common/components/button/Button'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {update2FAEnabled} from 'state/currentUser/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     AuthenticatorData,
     RecoveryCode,

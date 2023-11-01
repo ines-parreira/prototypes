@@ -38,7 +38,7 @@ import * as utils from '../utils'
 
 jest.mock('../utils')
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 const defaultState = {
     integrations: fromJS(integrationsState),

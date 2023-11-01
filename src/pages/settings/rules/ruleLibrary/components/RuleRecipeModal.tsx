@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import pluralize from 'pluralize'
 import _flatten from 'lodash/flatten'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 import {RuleRecipe} from 'models/ruleRecipe/types'
@@ -17,7 +18,6 @@ import {
     RuleLimitStatus,
     RuleType,
 } from 'state/rules/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 

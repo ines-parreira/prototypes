@@ -10,8 +10,9 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
-
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import {MacroActionName} from 'models/macroAction/types'
 import client from 'models/api/resources'
 import localForageManager from 'services/localForageManager/localForageManager'
@@ -22,7 +23,6 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     flushPromises,
@@ -85,7 +85,7 @@ jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
     skipExistingTimer: jest.fn(),
 }))
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 jest.mock('state/ticket/actions', () => ({
     ...jest.requireActual<Record<string, unknown>>('state/ticket/actions'),
     triggerTicketFieldsErrors: jest.fn(),

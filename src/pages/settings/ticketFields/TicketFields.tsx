@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import {Container} from 'reactstrap'
-
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {useDebounce} from 'react-use'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import useTitle from 'hooks/useTitle'
 import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'

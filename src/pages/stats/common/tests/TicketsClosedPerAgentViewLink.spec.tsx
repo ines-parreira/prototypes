@@ -6,9 +6,9 @@ import configureMockStore from 'redux-mock-store'
 import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 
+import {logEvent} from 'common/segment'
 import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
-import {logEvent} from 'store/middlewares/segmentTracker'
 import {agents as agentsFixtures} from 'fixtures/agents'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {TicketChannel} from 'business/types/ticket'
@@ -18,7 +18,7 @@ import TicketsClosedPerAgentViewLink from '../TicketsClosedPerAgentViewLink'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 jest.mock('../ViewLink', () => (props: LinkProps) => (
     <div>
         ViewLink Mock

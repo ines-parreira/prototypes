@@ -5,14 +5,12 @@ import {render, fireEvent, screen} from '@testing-library/react'
 import {
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
+} from 'fixtures/shopify'
 import DraftOrderTable from '../DraftOrderTable'
 import {ShopifyActionType} from '../../../../types'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
-jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-)
+jest.mock('common/segment')
 
 describe('<DraftOrderTable/>', () => {
     let handleLineItemUpdate: jest.MockedFunction<any>

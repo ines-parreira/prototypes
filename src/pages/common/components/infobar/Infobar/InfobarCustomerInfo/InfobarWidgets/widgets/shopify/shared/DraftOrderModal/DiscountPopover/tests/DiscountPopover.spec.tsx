@@ -4,30 +4,23 @@ import {Button, Form, InputGroupAddon, Popover} from 'reactstrap'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,
-} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
+} from 'constants/integrations/types/shopify'
 import DiscountPopover from '../DiscountPopover'
 import {ShopifyActionType} from '../../../../types'
 
-jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker',
-    () => {
-        const segmentTracker: Record<string, unknown> = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-        )
+jest.mock('common/segment', () => {
+    const segmentTracker: Record<string, unknown> =
+        jest.requireActual('common/segment')
 
-        return {
-            ...segmentTracker,
-            logEvent: jest.fn(),
-        }
+    return {
+        ...segmentTracker,
+        logEvent: jest.fn(),
     }
-)
+})
 
 describe('<DiscountPopover/>', () => {
     let onChange: jest.MockedFunction<any>

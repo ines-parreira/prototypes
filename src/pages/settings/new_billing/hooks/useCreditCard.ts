@@ -2,6 +2,8 @@ import {useEffect, useMemo, useState} from 'react'
 import {fromJS} from 'immutable'
 import {useHistory} from 'react-router-dom'
 import {AnyAction} from 'redux'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     BillingContact,
@@ -10,7 +12,6 @@ import {
     TicketPurpose,
 } from 'state/billing/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {creditCard, getContact} from 'state/billing/selectors'
 import {

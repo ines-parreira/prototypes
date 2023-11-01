@@ -3,7 +3,7 @@ import {fireEvent, render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {
     shopifyAvailableShippingRate,
     shopifyShippingLineFixture,
@@ -11,10 +11,9 @@ import {
 import {ShopifyActionType} from '../../../../types'
 import ShippingPopover from '../ShippingPopover'
 
-jest.mock('store/middlewares/segmentTracker', () => {
-    const segmentTracker: Record<string, unknown> = jest.requireActual(
-        'store/middlewares/segmentTracker'
-    )
+jest.mock('common/segment', () => {
+    const segmentTracker: Record<string, unknown> =
+        jest.requireActual('common/segment')
     return {
         ...segmentTracker,
         logEvent: jest.fn(),

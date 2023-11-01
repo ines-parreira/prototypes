@@ -1,4 +1,4 @@
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {ShopifyTagSelectionEventData} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 
 export const getLoggerOnTagSelectionEvent = (

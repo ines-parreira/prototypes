@@ -1,13 +1,9 @@
 import React, {ReactNode, useMemo} from 'react'
 import _isEqual from 'lodash/isEqual'
 
+import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 import {ViewField} from 'models/view/types'
-import {
-    logEvent,
-    SegmentEvent,
-    StatViewLinkClickedStat,
-} from 'store/middlewares/segmentTracker'
 import {ViewFilter} from 'state/views/types'
 import {CollectionOperator} from 'state/rules/types'
 

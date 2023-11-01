@@ -7,9 +7,9 @@ import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 import _isUndefined from 'lodash/isUndefined'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {submitSetting} from 'state/currentUser/actions'
 import withRouter from 'pages/common/utils/withRouter'
 

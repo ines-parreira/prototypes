@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react'
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useTitle from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useSearch from 'hooks/useSearch'
 import {
     AppDetail as AppDetailType,

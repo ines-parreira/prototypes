@@ -6,6 +6,8 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
 import {
@@ -21,7 +23,6 @@ import {
 } from 'hooks/reporting/timeSeries'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {usePostReporting} from 'models/reporting/queries'
@@ -80,7 +81,7 @@ jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 // jest.mock('services/performanceTipService')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('pages/stats/TrendBadge')

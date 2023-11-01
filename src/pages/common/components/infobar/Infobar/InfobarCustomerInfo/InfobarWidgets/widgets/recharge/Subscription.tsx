@@ -8,6 +8,7 @@ import React, {
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -18,7 +19,6 @@ import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/recharge'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {renderTemplate} from 'pages/common/utils/template'

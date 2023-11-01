@@ -1,12 +1,12 @@
 import {useCallback, useMemo} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {UserSettingType} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {defaultSound} from 'services/NotificationSounds'
 import {submitSetting} from 'state/currentUser/actions'
 import {getNotificationSettings} from 'state/currentUser/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {Setting} from './useSoundSetting'
 

@@ -6,9 +6,8 @@ import {Link, RouteComponentProps} from 'react-router-dom'
 import {Map, fromJS, List} from 'immutable'
 
 import navbarCss from 'assets/css/navbar.less'
-
+import {logEvent, SegmentEvent} from 'common/segment'
 import {isCurrentlyOnTicket} from 'utils'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {RootState} from 'state/types'
 import {MAX_RECENT_CHATS} from 'config/recentChats'
 import withRouter from 'pages/common/utils/withRouter'

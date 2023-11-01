@@ -35,7 +35,7 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
+import {SegmentEvent} from 'common/segment'
 
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 

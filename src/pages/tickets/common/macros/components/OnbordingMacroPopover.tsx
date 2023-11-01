@@ -9,14 +9,14 @@ import React, {
 import {Link} from 'react-router-dom'
 import {Popover, PopoverBody} from 'reactstrap'
 import classnames from 'classnames'
-import Button from 'pages/common/components/button/Button'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
 import {getPreferences, getCurrentUser} from 'state/currentUser/selectors'
 import {getTicket} from 'state/ticket/selectors'
 import {submitSetting} from 'state/currentUser/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import css from './OnbordingMacroPopover.less'
 
 type Stages = 'info' | 'prompt'

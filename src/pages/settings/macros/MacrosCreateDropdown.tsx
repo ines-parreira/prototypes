@@ -7,7 +7,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {createJob} from 'models/job/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

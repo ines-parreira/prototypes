@@ -5,13 +5,13 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 
+import {logPageChange} from 'common/segment'
 import {user} from 'fixtures/users'
-import {logPageChange} from 'store/middlewares/segmentTracker'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import Routes from '../routes'
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logPageMock = assumeMock(logPageChange)
 
 jest.mock('pages/App', () => () => <div>App</div>)

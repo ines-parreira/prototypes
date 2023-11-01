@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {integrationsState} from 'fixtures/integrations'
 import {tags} from 'fixtures/tag'
 import {createRule} from 'models/rule/resources'
@@ -22,7 +22,7 @@ jest.mock('models/rule/resources', () => ({
 
 jest.mock('state/notifications/actions')
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 const logEventMock = logEvent as jest.Mock
 

@@ -4,6 +4,7 @@ import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {CsvError, parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
 import {
@@ -12,7 +13,6 @@ import {
 } from 'models/customField/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getText, saveFileAsDownloaded} from 'utils/file'
 
 import Loader from 'pages/common/components/Loader/Loader'

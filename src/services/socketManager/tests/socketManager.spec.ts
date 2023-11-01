@@ -4,7 +4,7 @@ import * as reapop from 'reapop'
 import * as socketEvents from 'config/socketEvents'
 import * as actions from 'state/notifications/actions'
 
-import * as segmentTracker from 'store/middlewares/segmentTracker'
+import * as segment from 'common/segment'
 import {
     RELOAD_TAB_DELAY,
     SCOPED_BROADCAST_CHANNEL_NAME,
@@ -19,7 +19,7 @@ import {
 } from '../types'
 import {SocketManager} from '../socketManager'
 
-const logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
+const logEventSpy = jest.spyOn(segment, 'logEvent')
 
 describe('SocketManager', () => {
     const socketManager = new SocketManager()

@@ -19,9 +19,9 @@ import {
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {formatPrice} from 'business/shopify/number'
 import {focusElement} from 'utils/html'
 import {ShopifyActionType} from '../../../types'

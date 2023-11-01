@@ -4,8 +4,9 @@ import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
 import {useAsyncFn, useEffectOnce, useKey, usePrevious} from 'react-use'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import {MacroActionName} from 'models/macroAction/types'
 import {
     TicketChannel,
@@ -63,7 +64,6 @@ import LocalForageManager from 'services/localForageManager/localForageManager'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
 import {Ticket} from 'models/ticket/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     PickedTicket,
     pickedTicketFields,

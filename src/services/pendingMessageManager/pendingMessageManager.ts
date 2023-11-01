@@ -2,6 +2,7 @@ import {dismissNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 import {fromJS} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
@@ -9,7 +10,6 @@ import {
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {applyMacro, messageDeleted} from 'state/ticket/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import history from 'pages/history'
 import {NewMessage, ReplyAreaState} from 'state/newMessage/types'
 import {store as reduxStore} from 'common/store'

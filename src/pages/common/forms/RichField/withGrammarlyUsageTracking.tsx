@@ -1,6 +1,6 @@
 import React, {ComponentType, Component} from 'react'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {tryLocalStorage} from 'services/common/utils'
 
 export type InjectedProps = {

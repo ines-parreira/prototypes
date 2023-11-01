@@ -5,6 +5,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
@@ -44,7 +46,6 @@ import {
 import useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import TrendBadge from 'pages/stats/TrendBadge'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import SupportPerformanceOverview, {
     AGENTS_REPORT_RELEASE_DATE,
@@ -100,7 +101,7 @@ jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 jest.mock('services/supportPerformanceTipService')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('pages/stats/TrendBadge')

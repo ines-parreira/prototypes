@@ -1,13 +1,13 @@
 import React, {useCallback, useContext, useMemo} from 'react'
 import {Map} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUserState} from 'state/currentUser/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {renderTemplate} from 'pages/common/utils/template'
 import {

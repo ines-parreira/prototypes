@@ -6,9 +6,9 @@ import {LinkProps} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import {fireEvent, render} from '@testing-library/react'
 
+import {logEvent} from 'common/segment'
 import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
-import {logEvent} from 'store/middlewares/segmentTracker'
 import {TicketChannel} from 'business/types/ticket'
 import {reportError} from 'utils/errors'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
@@ -19,7 +19,7 @@ import TicketsCreatedPerChannelViewLink from '../TicketsCreatedPerChannelViewLin
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('utils/errors')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 jest.mock('../ViewLink', () => (props: LinkProps) => (
     <div>
         ViewLink Mock

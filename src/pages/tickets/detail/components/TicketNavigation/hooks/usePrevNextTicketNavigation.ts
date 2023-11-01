@@ -1,6 +1,5 @@
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {_goToNextOrPrevTicket, clearTicket} from 'state/ticket/actions'
 
 export default function usePrevNextTicketNavigation(

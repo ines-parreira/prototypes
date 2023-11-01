@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 export default function AddAppSuggestion() {
     return (

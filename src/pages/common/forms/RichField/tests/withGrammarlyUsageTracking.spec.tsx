@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import {mount, shallow} from 'enzyme'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 
 import withGrammarlyUsageTracking, {
     GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
     InjectedProps,
 } from '../withGrammarlyUsageTracking'
 
-jest.mock('../../../../../store/middlewares/segmentTracker')
+jest.mock('common/segment')
 jest.useFakeTimers()
 
 describe('withGrammarlyUsageTracking', () => {

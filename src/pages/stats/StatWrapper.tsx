@@ -11,6 +11,7 @@ import axios, {AxiosError, CancelToken} from 'axios'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Loader from 'pages/common/components/Loader/Loader'
 import {
     SankeyDiagram,
@@ -26,7 +27,6 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 

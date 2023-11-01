@@ -9,7 +9,7 @@
 import io, {Socket} from 'socket.io-client'
 import _noop from 'lodash/noop'
 
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import {SegmentEvent, logEvent} from 'common/segment'
 
 import {WSMessage, BroadcastChannelEvent} from './types'
 import {

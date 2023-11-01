@@ -20,6 +20,7 @@ import {
 } from 'reactstrap'
 import * as Sentry from '@sentry/react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
@@ -38,7 +39,6 @@ import {
 import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
 

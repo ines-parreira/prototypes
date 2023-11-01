@@ -1,6 +1,6 @@
 import React, {ReactNode, useEffect, useState} from 'react'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {SpotlightContext} from 'providers/ui/SpotlightContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 

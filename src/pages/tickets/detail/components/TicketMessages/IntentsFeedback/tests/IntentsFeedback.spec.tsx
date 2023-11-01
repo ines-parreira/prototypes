@@ -3,18 +3,18 @@ import {render, fireEvent, waitFor} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
 
+import {logEvent} from 'common/segment'
+import {message} from 'models/ticket/tests/mocks'
+import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
+import {sendIntentFeedbackSuccess} from 'state/ticket/actions'
+import {TicketMessageIntent} from 'models/ticket/types'
+import client from 'models/api/resources'
 import {IntentsFeedbackContainer} from '../IntentsFeedback'
-import {message} from '../../../../../../../models/ticket/tests/mocks'
-import {account} from '../../../../../../../fixtures/account'
-import {user} from '../../../../../../../fixtures/users'
-import {sendIntentFeedbackSuccess} from '../../../../../../../state/ticket/actions'
-import {TicketMessageIntent} from '../../../../../../../models/ticket/types'
-import {logEvent} from '../../../../../../../store/middlewares/segmentTracker'
-import client from '../../../../../../../models/api/resources'
 
-jest.mock('../../../../../../../state/ticket/actions')
+jest.mock('state/ticket/actions')
 
-jest.mock('../../../../../../../store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 const logEventMock = logEvent as jest.Mock
 

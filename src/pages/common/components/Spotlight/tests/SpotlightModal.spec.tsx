@@ -11,8 +11,8 @@ import {createBrowserHistory} from 'history'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import client from 'models/api/resources'
@@ -56,7 +56,7 @@ jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
     (element) => element as ReactPortal
 )
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock('hooks/useSearchRankScenario')

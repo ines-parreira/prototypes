@@ -2,6 +2,7 @@ import React, {Dispatch, Fragment, ReactNode} from 'react'
 import _debounce from 'lodash/debounce'
 import {List as ImmutableList, Map as ImmutableMap} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     BigCommerceActionType,
     BigCommerceAvailablePaymentOptionsData,
@@ -17,7 +18,6 @@ import {
     GiftWrappingItemRefundData,
     ProductItemRefundData,
 } from 'models/integration/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     getBigCommerceAvailablePaymentOptionsData,
     getBigCommerceOrderRefundData,

@@ -9,9 +9,9 @@ import _omit from 'lodash/omit'
 import _split from 'lodash/split'
 import axios, {AxiosError, CancelToken} from 'axios'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import * as ticketActions from 'state/ticket/actions'
 import {Context, renderTemplate} from 'pages/common/utils/template'
 import {

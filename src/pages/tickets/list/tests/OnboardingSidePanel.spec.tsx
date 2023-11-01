@@ -4,13 +4,13 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
 
 import OnboardingSidePanel from '../OnboardingSidePanel'
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const mockStore = configureMockStore()

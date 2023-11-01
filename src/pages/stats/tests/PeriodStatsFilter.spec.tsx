@@ -6,13 +6,13 @@ import {Provider} from 'react-redux'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment-timezone'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {RootState} from '../../../state/types'
 import PeriodStatsFilter from '../PeriodStatsFilter'
 
 const mockStore = configureMockStore([thunk])
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 describe('PeriodStatsFilter', () => {
     const defaultState = {

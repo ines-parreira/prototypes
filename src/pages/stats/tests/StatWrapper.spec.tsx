@@ -6,12 +6,12 @@ import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 import {fromJS} from 'immutable'
 
+import {logEvent} from 'common/segment'
 import {firstResponseTime} from 'fixtures/stats'
 import {FIRST_RESPONSE_TIME} from 'config/stats'
 import {saveFileAsDownloaded} from 'utils/file'
 import {notify} from 'state/notifications/actions'
 import {downloadStat} from 'models/stat/resources'
-import {logEvent} from 'store/middlewares/segmentTracker'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
@@ -22,7 +22,7 @@ import StatWrapper from '../StatWrapper'
 jest.mock('utils/file')
 jest.mock('state/notifications/actions')
 jest.mock('models/stat/resources')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 jest.mock(
     'pages/common/components/Tooltip',
     () =>

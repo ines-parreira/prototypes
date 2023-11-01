@@ -4,25 +4,17 @@ import {Button, Form, Popover} from 'reactstrap'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 
-import {
-    SegmentEvent,
-    logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+import {SegmentEvent, logEvent} from 'common/segment'
 import EmailInvoicePopover from '../EmailInvoicePopover'
 import {ShopifyActionType} from '../../../../types'
 
-jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker',
-    () => {
-        const SegmentTracker = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-        )
-        return {
-            ...SegmentTracker,
-            logEvent: jest.fn(),
-        } as Record<string, unknown>
-    }
-)
+jest.mock('common/segment', () => {
+    const SegmentTracker = jest.requireActual('common/segment')
+    return {
+        ...SegmentTracker,
+        logEvent: jest.fn(),
+    } as Record<string, unknown>
+})
 
 describe('<EmailInvoicePopover/>', () => {
     const customerEmail = 'foo@bar.xyz'

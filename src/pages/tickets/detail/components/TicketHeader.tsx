@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import {Map} from 'immutable'
 
 import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
+import {logEvent, SegmentEvent} from 'common/segment'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 import EditableTitle from 'pages/common/components/EditableTitle'
@@ -23,7 +24,6 @@ import {
     snoozeTicket,
     ticketPartialUpdate,
 } from 'state/ticket/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {notify} from 'state/notifications/actions'
 import {shouldDisplayAuditLogEvents} from 'state/ticket/selectors'
 import {getTimezone} from 'state/currentUser/selectors'

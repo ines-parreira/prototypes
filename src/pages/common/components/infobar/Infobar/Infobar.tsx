@@ -5,6 +5,7 @@ import {fromJS, List, Map} from 'immutable'
 import {AxiosError, CancelToken} from 'axios'
 import {usePrevious, useUpdateEffect} from 'react-use'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {isAdmin} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
@@ -33,7 +34,6 @@ import useSearchRankScenario, {
 } from 'hooks/useSearchRankScenario'
 import {SearchResponse} from 'models/search/types'
 import {setActiveCustomerAsReceiver} from 'state/newMessage/actions'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import useAppSelector from 'hooks/useAppSelector'
 import InfobarSearchResultsList from './InfobarSearchResultsList'

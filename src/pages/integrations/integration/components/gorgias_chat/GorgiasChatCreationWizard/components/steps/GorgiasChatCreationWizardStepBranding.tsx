@@ -5,7 +5,7 @@ import history from 'pages/history'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
+import {SegmentEvent} from 'common/segment'
 
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 

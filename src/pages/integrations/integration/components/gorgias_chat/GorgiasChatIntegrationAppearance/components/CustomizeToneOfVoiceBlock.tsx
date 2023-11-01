@@ -1,8 +1,9 @@
 import React, {useCallback} from 'react'
 import {Link} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {FeatureFlagKey} from 'config/featureFlags'
 import css from '../GorgiasChatIntegrationAppearance.less'
 

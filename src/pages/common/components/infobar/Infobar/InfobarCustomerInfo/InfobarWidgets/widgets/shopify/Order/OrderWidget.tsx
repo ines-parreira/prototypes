@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     FulfillmentStatus,
@@ -15,7 +16,6 @@ import {
 } from 'constants/integrations/types/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import DraftOrderModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/DraftOrderModal'

@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import history from 'pages/history'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
+import {SegmentEvent} from 'common/segment'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

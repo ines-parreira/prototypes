@@ -2,14 +2,13 @@ import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {ShopifyActionType} from '../../../../types'
 import TaxesPopover from '../TaxesPopover'
 
-jest.mock('store/middlewares/segmentTracker', () => {
-    const segmentTracker: Record<string, unknown> = jest.requireActual(
-        'store/middlewares/segmentTracker'
-    )
+jest.mock('common/segment', () => {
+    const segmentTracker: Record<string, unknown> =
+        jest.requireActual('common/segment')
     return {
         ...segmentTracker,
         logEvent: jest.fn(),

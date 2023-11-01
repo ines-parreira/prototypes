@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     BigCommerceActionType,
     BigCommerceIntegration,
@@ -24,7 +25,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import Button from 'pages/common/components/button/Button'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import GeneralErrorPopupModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal'
 import {
     GroupContext,

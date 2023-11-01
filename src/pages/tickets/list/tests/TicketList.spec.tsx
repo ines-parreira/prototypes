@@ -6,11 +6,11 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {user} from 'fixtures/users'
 import {view as fixtureView} from 'fixtures/views'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import LocalForageManager from 'services/localForageManager/localForageManager'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 import {fetchTags} from 'state/tags/actions'
 
@@ -81,7 +81,7 @@ jest.mock(
         } as Record<string, unknown>)
 )
 
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 const logEventMock = logEvent as jest.Mock
 

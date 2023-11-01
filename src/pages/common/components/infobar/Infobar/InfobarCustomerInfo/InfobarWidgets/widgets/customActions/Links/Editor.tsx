@@ -7,11 +7,11 @@ import React, {
 } from 'react'
 import {Form, Popover, PopoverBody} from 'reactstrap'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'
 import useAppSelector from 'hooks/useAppSelector'
 import {ensureHTTPS} from 'utils/url'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'

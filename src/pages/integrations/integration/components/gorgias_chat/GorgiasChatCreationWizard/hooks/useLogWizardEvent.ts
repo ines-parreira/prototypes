@@ -1,13 +1,11 @@
 import {useCallback, useContext} from 'react'
 import {useParams} from 'react-router-dom'
-
 import {fromJS, List, Map} from 'immutable'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-
 import {WizardContext} from 'pages/common/components/wizard/Wizard'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 
 const useLogWizardEvent = () => {

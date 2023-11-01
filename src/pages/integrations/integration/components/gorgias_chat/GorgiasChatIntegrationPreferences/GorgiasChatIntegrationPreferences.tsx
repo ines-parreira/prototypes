@@ -8,10 +8,10 @@ import _omitBy from 'lodash/omitBy'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
-
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {IntegrationType} from 'models/integration/constants'
 import {

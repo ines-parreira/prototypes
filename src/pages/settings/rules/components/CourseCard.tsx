@@ -2,8 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import academy from 'assets/img/academy.png'
-
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import useAppSelector from 'hooks/useAppSelector'

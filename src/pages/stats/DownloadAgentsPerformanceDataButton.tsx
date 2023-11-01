@@ -1,10 +1,11 @@
 import React from 'react'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 const DOWNLOAD_BUTTON_TITLE = 'Download Agents Performance Data'

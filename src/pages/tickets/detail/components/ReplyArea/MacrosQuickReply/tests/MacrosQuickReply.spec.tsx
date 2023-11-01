@@ -6,8 +6,8 @@ import thunk from 'redux-thunk'
 
 import {fromJS} from 'immutable'
 
-import MacrosQuickReply from '../MacrosQuickReply'
-import {RootState, StoreDispatch} from '../../../../../../../state/types'
+import {logEvent} from 'common/segment'
+import {RootState, StoreDispatch} from 'state/types'
 
 import {
     setTextAction,
@@ -15,14 +15,15 @@ import {
     addTagsAction,
     httpAction,
     macroFixture,
-} from '../../../../../../../fixtures/macro'
-import {logEvent} from '../../../../../../../store/middlewares/segmentTracker'
+} from 'fixtures/macro'
 
-import {ticket} from '../../../../../../../fixtures/ticket'
-import {account} from '../../../../../../../fixtures/account'
-import {user} from '../../../../../../../fixtures/users'
+import {ticket} from 'fixtures/ticket'
+import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
 
-jest.mock('../../../../../../../store/middlewares/segmentTracker')
+import MacrosQuickReply from '../MacrosQuickReply'
+
+jest.mock('common/segment')
 jest.mock('lodash/debounce', () => {
     const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
     return _identity

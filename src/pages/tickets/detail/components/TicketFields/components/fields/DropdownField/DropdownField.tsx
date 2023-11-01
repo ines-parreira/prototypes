@@ -1,5 +1,6 @@
 import React, {ComponentProps, useCallback, useEffect} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useUpdateOrDeleteTicketFieldValue} from 'hooks/customField/useUpdateOrDeleteTicketFieldValue'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,7 +13,6 @@ import {
 import Tooltip from 'pages/common/components/Tooltip'
 import Label from 'pages/tickets/detail/components/TicketFields/components/Label'
 import {getTicket} from 'state/ticket/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 
 import MultiLevelSelect from './MultiLevelSelect'

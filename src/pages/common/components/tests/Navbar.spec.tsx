@@ -4,9 +4,9 @@ import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import {within} from '@testing-library/dom'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_PREFERENCES} from 'config'
 import {user} from 'fixtures/users'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getLDClient} from 'utils/launchDarkly'
 
 import {
@@ -17,7 +17,7 @@ import {
 import {Navbar} from '../Navbar'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 jest.mock('utils/launchDarkly')
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})

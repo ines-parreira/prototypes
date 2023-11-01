@@ -3,6 +3,7 @@ import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import {usePrevious} from 'react-use'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -14,6 +15,8 @@ import {
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {resetArticles} from 'state/entities/helpCenter/articles'
 import {resetCategories} from 'state/entities/helpCenter/categories'
 import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
@@ -21,6 +24,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 import {unreachable} from 'utils'
+
 import {
     ArticleRowActionTypes,
     DRAWER_TRANSITION_DURATION_MS,
@@ -43,12 +47,6 @@ import {ArticleMode, getArticleMode} from '../types/articleMode'
 import {useEditionManager} from '../providers/EditionManagerContext'
 import {useSearchContext} from '../providers/SearchContext'
 
-import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import {getCurrentUser} from '../../../../state/currentUser/selectors'
 import {getGenericMessageFromError} from '../utils'
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseModal} from './articles/CloseModal'

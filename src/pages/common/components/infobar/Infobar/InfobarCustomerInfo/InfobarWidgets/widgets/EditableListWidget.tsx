@@ -1,12 +1,12 @@
 import React, {useContext, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {WidgetContext} from 'providers/infobar/WidgetContext'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import useId from 'hooks/useId'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getActiveCustomerId} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {isEditing} from 'state/widgets/selectors'

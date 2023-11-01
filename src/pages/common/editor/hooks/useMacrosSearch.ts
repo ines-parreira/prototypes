@@ -1,6 +1,7 @@
 import _isEqual from 'lodash/isEqual'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import {OrderDirection} from 'models/api/types'
@@ -11,7 +12,6 @@ import {
     MacrosProperties,
 } from 'models/macro/types'
 import {Ticket} from 'models/ticket/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 export const SEARCH_DEBOUNCE_DELAY = 350
 

@@ -22,6 +22,7 @@ import {
 
 import classnames from 'classnames'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     onInit,
     onReset,
@@ -31,8 +32,6 @@ import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {RootState} from 'state/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {states} from 'fixtures/states'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'

@@ -3,11 +3,11 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import {List, Map} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {Macro} from 'models/macro/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {isMacroDisabled} from '../utils'
 import css from './MacroList.less'

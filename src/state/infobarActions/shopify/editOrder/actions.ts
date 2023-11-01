@@ -3,27 +3,24 @@ import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import axios from 'axios'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {fetchIntegrationProducts} from 'state/integrations/helpers'
-import {ShopifyActionType} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {
     addCustomLineItem,
     addVariant,
     initDraftOrderPayload,
-} from '../../../../business/shopify/draftOrder'
-import {refreshAppliedDiscounts} from '../../../../business/shopify/discount'
-import {calculateEditDiff} from '../../../../business/shopify/calculatedEditOrder'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
+} from 'business/shopify/draftOrder'
+import {refreshAppliedDiscounts} from 'business/shopify/discount'
+import {calculateEditDiff} from 'business/shopify/calculatedEditOrder'
 import {
     Product,
     Variant,
     EditOrderAction,
-} from '../../../../constants/integrations/types/shopify'
-import GorgiasApi from '../../../../services/gorgiasApi'
-import {RootState, StoreDispatch} from '../../../types'
-import {onApiError} from '../../../utils'
+} from 'constants/integrations/types/shopify'
+import GorgiasApi from 'services/gorgiasApi'
+import {RootState, StoreDispatch} from 'state/types'
+import {onApiError} from 'state/utils'
 
 import {getEditOrderState} from './selectors'
 import {

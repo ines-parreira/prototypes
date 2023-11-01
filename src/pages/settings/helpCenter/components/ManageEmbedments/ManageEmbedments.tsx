@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import {useQueryClient} from '@tanstack/react-query'
 import {useHistory, Link} from 'react-router-dom'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import {
     PageEmbedmentPosition,
     EmbeddablePage,
@@ -31,7 +33,6 @@ import {CONTACT_FORM_EMBEDMENTS_LIMIT} from 'pages/settings/contactForm/constant
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'

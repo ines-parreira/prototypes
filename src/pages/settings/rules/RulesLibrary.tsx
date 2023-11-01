@@ -6,6 +6,7 @@ import _debounce from 'lodash/debounce'
 import {Link, useLocation, useHistory} from 'react-router-dom'
 import {parse} from 'qs'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -29,8 +30,6 @@ import {ruleRecipesFetched} from 'state/entities/ruleRecipes/actions'
 import {notify} from 'state/notifications/actions'
 
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import settingsCss from 'pages/settings/settings.less'
 import useAppDispatch from 'hooks/useAppDispatch'

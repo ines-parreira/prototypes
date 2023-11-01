@@ -1,8 +1,8 @@
 import React from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {CustomFieldInput} from 'models/customField/types'
 import history from 'pages/history'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useCreateCustomFieldDefinition} from 'hooks/customField/useCreateCustomFieldDefinition'
 
 import FieldForm from './FieldForm'

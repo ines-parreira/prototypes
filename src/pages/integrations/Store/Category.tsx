@@ -1,7 +1,7 @@
 import React from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
 import {Category as CategoryType} from 'models/integration/types/app'

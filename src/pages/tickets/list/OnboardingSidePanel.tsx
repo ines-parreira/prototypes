@@ -4,23 +4,23 @@ import classnames from 'classnames'
 import moment from 'moment'
 import {Map} from 'immutable'
 
-import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
-import Button from 'pages/common/components/button/Button'
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
+import Video from 'pages/common/components/Video/Video'
+import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
+import {tryLocalStorage} from 'services/common/utils'
+import {getAgents} from 'state/agents/selectors'
 import {is2FAEnforcedSelector} from 'state/currentAccount/selectors'
-import {tryLocalStorage} from '../../../services/common/utils'
-import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
-import {isAdmin} from '../../../utils'
-import InfobarLayout from '../../common/components/infobar/InfobarLayout'
-import Video from '../../common/components/Video/Video'
-import {IntegrationType} from '../../../models/integration/types'
-
-import {getAgents} from '../../../state/agents/selectors'
-import {getCurrentUser} from '../../../state/currentUser/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     getEmailIntegrations,
     makeHasIntegrationOfTypes,
-} from '../../../state/integrations/selectors'
+} from 'state/integrations/selectors'
+import {isAdmin} from 'utils'
+
 import css from './OnboardingSidePanel.less'
 
 const CheckIcon = ({condition}: {condition: boolean}) => (

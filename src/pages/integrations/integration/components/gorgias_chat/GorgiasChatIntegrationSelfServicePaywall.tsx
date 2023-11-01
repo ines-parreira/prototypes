@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 
+import {SegmentEvent} from 'common/segment'
 import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {CurrentAccountState} from 'state/currentAccount/types'
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getIconFromUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'

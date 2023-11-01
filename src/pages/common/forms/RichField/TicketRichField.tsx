@@ -1,6 +1,7 @@
 import React, {ForwardedRef, forwardRef, useMemo} from 'react'
 import {fromJS} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
@@ -16,7 +17,6 @@ import {
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS,
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS,
 } from 'config/integrations/shopify'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {TicketChannel} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

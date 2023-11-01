@@ -15,6 +15,8 @@ import {
     Col,
 } from 'reactstrap'
 import copy from 'copy-to-clipboard'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
@@ -35,7 +37,6 @@ import {
     getRedirectUri,
 } from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isGorgiasSupportAddress, displayRestrictedSymbols} from 'utils'
 import {convertToHTML} from 'utils/editor'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

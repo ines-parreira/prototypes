@@ -4,15 +4,15 @@ import thunk from 'redux-thunk'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 
-import {fetchTicketsByRuleId} from 'models/ticket/resources'
+import {logEvent} from 'common/segment'
 import {ticket as ticketFixture} from 'fixtures/ticket'
-import {logEvent} from 'store/middlewares/segmentTracker'
+import {fetchTicketsByRuleId} from 'models/ticket/resources'
 
 import {RuleTicketList} from '../RuleTicketList'
 
 jest.mock('models/ticket/resources')
 jest.mock('pages/history')
-jest.mock('store/middlewares/segmentTracker')
+jest.mock('common/segment')
 
 describe('<RuleTicketList/>', () => {
     const minProps: ComponentProps<typeof RuleTicketList> = {
