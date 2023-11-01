@@ -259,7 +259,7 @@ function getLegacyReplySourcesForTicket(
     )
 
     if (!!replyOptions[TicketMessageSourceType.InternalNote]) {
-        return [TicketMessageSourceType.InternalNote, ...sources]
+        return uniq([TicketMessageSourceType.InternalNote, ...sources])
     }
 
     return uniq(sources)

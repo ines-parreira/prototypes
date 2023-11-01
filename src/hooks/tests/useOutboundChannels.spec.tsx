@@ -473,6 +473,26 @@ describe('getLegacyReplySourcesForTicket()', () => {
                 getLegacyReplySourcesForTicket(ticket, outlookIntegrations)
             ).toEqual(emailSources)
         })
+
+        it('should not return duplicates', () => {
+            const ticket = {
+                id: 3,
+                reply_options: {
+                    'internal-note': {answerable: true},
+                    email: {answerable: true},
+                },
+            }
+
+            const integrations = [
+                {type: 'email'},
+                {type: 'gmail'},
+                {type: 'outlook'},
+            ] as Integration[]
+
+            expect(
+                getLegacyReplySourcesForTicket(ticket, integrations)
+            ).toEqual(['internal-note', 'email', 'email-forward'])
+        })
     })
 })
 
