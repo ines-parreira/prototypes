@@ -87,14 +87,14 @@ export const getSystemTicketNavbarElementsByCategory = (
                     })
                     .sort((first, second) => {
                         const firstViewDisplayOrder =
-                            viewsOrderingSettings.data[category]?.[
+                            viewsOrderingSettings.data?.[category]?.[
                                 (first.get('id') as number).toString()
                             ]?.display_order ||
                             (SYSTEM_VIEWS.find(
                                 (view) => view.name === first.get('name')
                             )?.displayOrder as number)
                         const secondViewDisplayOrder =
-                            viewsOrderingSettings.data[category]?.[
+                            viewsOrderingSettings.data?.[category]?.[
                                 (second.get('id') as number).toString()
                             ]?.display_order ||
                             (SYSTEM_VIEWS.find(
