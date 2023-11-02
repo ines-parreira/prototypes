@@ -1,5 +1,5 @@
-import {useState} from 'react'
+import {usePersistedState} from 'common/hooks'
 
 export default function useSplitTicketViewContext() {
-    return useState(true)
+    return usePersistedState('split-ticket-view-enabled', true)
 }

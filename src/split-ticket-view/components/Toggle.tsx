@@ -9,8 +9,8 @@ export default function Toggle() {
     const [enabled, setEnabled] = useSplitTicketView()
 
     const handleClick = useCallback(() => {
-        setEnabled((e) => !e)
-    }, [setEnabled])
+        setEnabled(!enabled)
+    }, [enabled, setEnabled])
 
     return (
         <button
