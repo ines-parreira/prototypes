@@ -2,10 +2,10 @@
 
 exports[`Item should render its name with an empty label because it has no value and children 1`] = `
 <div
-  className="mt-1"
+  class="mt-1"
 >
   <b
-    className="mr-1"
+    class="mr-1"
   >
     foo
     :
@@ -18,10 +18,10 @@ exports[`Item should render its name with an empty label because it has no value
 
 exports[`Item should render its name with an empty label because its value equals \`null\` (even with a children) 1`] = `
 <div
-  className="mt-1"
+  class="mt-1"
 >
   <b
-    className="mr-1"
+    class="mr-1"
   >
     foo
     :
@@ -34,10 +34,10 @@ exports[`Item should render its name with an empty label because its value equal
 
 exports[`Item should render its name with an empty label because its value equals \`null\` 1`] = `
 <div
-  className="mt-1"
+  class="mt-1"
 >
   <b
-    className="mr-1"
+    class="mr-1"
   >
     foo
     :
@@ -50,10 +50,10 @@ exports[`Item should render its name with an empty label because its value equal
 
 exports[`Item should render its name with its children 1`] = `
 <div
-  className="mt-1"
+  class="mt-1"
 >
   <b
-    className="mr-1"
+    class="mr-1"
   >
     foo
     :
@@ -66,10 +66,10 @@ exports[`Item should render its name with its children 1`] = `
 
 exports[`Item should render its name with its children instead of displaying its value 1`] = `
 <div
-  className="mt-1"
+  class="mt-1"
 >
   <b
-    className="mr-1"
+    class="mr-1"
   >
     foo
     :

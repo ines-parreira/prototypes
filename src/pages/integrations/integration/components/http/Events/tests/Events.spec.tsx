@@ -1,74 +1,127 @@
 import React from 'react'
-import {fromJS} from 'immutable'
-import {render, waitForElementToBeRemoved} from '@testing-library/react'
+import {QueryClientProvider, UseQueryResult} from '@tanstack/react-query'
+import {render, screen} from '@testing-library/react'
 
-import {getMomentNow} from 'utils/date'
-import {Events} from '../Events'
+import {assumeMock} from 'utils/testing'
+import {HttpMethod} from 'models/api/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {HTTPIntegrationEvent} from 'models/integration/types'
+import {useGetHTTPEvents} from 'models/integration/queries/http'
+import Events from '../Events'
 
-const events = fromJS([
+jest.mock('models/integration/queries/http')
+jest.mock('pages/common/utils/labels', () => ({DatetimeLabel: () => null}))
+
+const mockUseGetHTTPEvents = assumeMock(useGetHTTPEvents)
+
+const queryClient = mockQueryClient()
+
+const INTEGRATION_ID = 1
+
+const mockEvents: HTTPIntegrationEvent[] = [
     {
-        created_datetime: getMomentNow(),
+        id: '1',
+        integration_id: INTEGRATION_ID,
+        created_datetime: '2021-08-01T00:00:00Z',
         request: {
-            method: 'GET',
-            url: 'https://developers.gorgias.com',
-            status: 200,
-            headers: {headersKey1: 'headersValue1'},
-            params: {paramKey1: 'paramValue1'},
-            body: {bodyKey1: 'bodyValue1'},
+            method: HttpMethod.Get,
+            url: 'https://example.com',
         },
+        response: {
+            body: '',
+            headers: {},
+        },
+        status_code: 200,
     },
-])
+    {
+        id: '2',
+        integration_id: INTEGRATION_ID,
+        created_datetime: '2021-08-02T00:00:00Z',
+        request: {
+            method: HttpMethod.Get,
+            url: 'https://example.com',
+        },
+        response: {
+            body: '',
+            headers: {},
+        },
+        status_code: 500,
+    },
+]
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+describe('Events', () => {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
 
-jest.mock('pages/common/utils/labels', () => {
-    return {
-        DatetimeLabel: ({dateTime}: {dateTime: string}) => (
-            <div>{dateTime}</div>
-        ),
-    }
-})
+    it('renders the events', () => {
+        mockUseGetHTTPEvents.mockReturnValue({
+            data: mockEvents,
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
 
-describe('<Events />', () => {
-    describe('component', () => {
-        const fetchEvents = jest.fn(() => Promise.resolve())
-        const integrationId = '1'
-        const commonProps = {
-            fetchEvents,
-            integrationId,
-            events: fromJS([]),
-        }
-        it('should fetch events when the component mounts', async () => {
-            const {getByText} = render(<Events {...commonProps} />)
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID.toString()} />
+            </QueryClientProvider>
+        )
 
-            await waitForElementToBeRemoved(() => getByText('Loader'))
-            expect(fetchEvents).toHaveBeenCalledWith(parseInt(integrationId))
-            expect(fetchEvents).toHaveBeenCalledTimes(1)
-        })
+        expect(mockUseGetHTTPEvents).toHaveBeenCalledWith(
+            INTEGRATION_ID,
+            expect.any(Object)
+        )
 
-        it('should render a loader while the component is fetching events', () => {
-            const {container} = render(
-                <Events {...commonProps} events={events} />
-            )
+        expect(screen.getAllByText('https://example.com'))
+        expect(screen.getByText(/200/))
+        expect(screen.getByText(/500/))
+    })
 
-            expect(container.firstChild).toMatchSnapshot()
-        })
+    it('renders the loading state', () => {
+        mockUseGetHTTPEvents.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            isError: false,
+        } as unknown as UseQueryResult)
 
-        it('should render a loader because the component has no events', () => {
-            const {container} = render(<Events {...commonProps} />)
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID.toString()} />
+            </QueryClientProvider>
+        )
 
-            expect(container.firstChild).toMatchSnapshot()
-        })
+        expect(screen.getByTestId('loader'))
+    })
 
-        it('should render events', async () => {
-            const {container, getByText} = render(
-                <Events {...commonProps} events={events} />
-            )
+    it('renders the error state', () => {
+        mockUseGetHTTPEvents.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: true,
+        } as unknown as UseQueryResult)
 
-            await waitForElementToBeRemoved(() => getByText('Loader'))
-            expect(container.firstChild).toMatchSnapshot()
-        })
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID.toString()} />
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText(/An error occurred/))
+    })
+
+    it('renders the no logs message', () => {
+        mockUseGetHTTPEvents.mockReturnValue({
+            data: [],
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID.toString()} />
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText(/no logs/))
     })
 })

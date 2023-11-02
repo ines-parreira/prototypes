@@ -1,30 +1,15 @@
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Col, Container, Row} from 'reactstrap'
+import React from 'react'
+import classnames from 'classnames'
 
+import {useGetHTTPEvent} from 'models/integration/queries/http'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
 import Loader from 'pages/common/components/Loader/Loader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {DatetimeLabel} from 'pages/common/utils/labels'
-import settingsCss from 'pages/settings/settings.less'
-import {fetchHTTPIntegrationEvent} from 'state/HTTPIntegrationEvents/actions'
-import {getHTTPIntegrationEvent} from 'state/HTTPIntegrationEvents/selectors'
-import {RootState} from 'state/types'
-import {countLines} from 'utils/string'
 
 import HTTPParams from './Params'
 import HTTPItem from './Item'
 import css from './Event.less'
-
-type Props = {
-    eventId: number
-    integrationId: number
-} & ConnectedProps<typeof connector>
-
-type State = {
-    isFetching?: boolean
-}
 
 const DEFAULT_ERROR_MESSAGE =
     'There was an error while making this request. This can happen for multiple reasons:\n' +
@@ -36,215 +21,164 @@ const DEFAULT_ERROR_MESSAGE =
     "Please double check that the request you're trying to make should work, using tools like cURL or " +
     'Postman for example, and if it is the case please reach out to us at "support@gorgias.com". Details:\n\n'
 
-export class Event extends Component<Props, State> {
-    state: State = {}
+type Props = {
+    integrationId: number
+    eventId: number
+}
 
-    _fetchEvent = (integrationId: number, eventId: number) => {
-        if (!integrationId || !eventId) {
-            return
-        }
+export function Event({integrationId, eventId}: Props) {
+    const {
+        data: event,
+        isLoading,
+        isError,
+    } = useGetHTTPEvent(
+        {integrationId, eventId},
+        {select: (data) => data.data, refetchOnWindowFocus: false}
+    )
 
-        this.setState({isFetching: true})
-
-        this.props
-            .fetchHTTPIntegrationEvent(integrationId, eventId)
-            .then(() => {
-                this.setState({isFetching: false})
-            })
-            .catch(() => {
-                this.setState({isFetching: false})
-            })
+    if (isLoading) {
+        return <Loader data-testid="loader" />
     }
 
-    componentWillMount() {
-        const {integrationId, eventId} = this.props
-        this._fetchEvent(integrationId, eventId)
+    if (isError || !event) {
+        return (
+            <div className={css.wrapper}>
+                <h2 className="mb-4">
+                    An error occurred while fetching the event
+                </h2>
+            </div>
+        )
     }
 
-    render() {
-        const {event} = this.props
-        const {isFetching} = this.state
+    const request = event.request
+    const response = event.response
+    let responseError = response.error
 
-        if (!event || event.isEmpty() || isFetching) {
-            return <Loader />
-        }
+    if (!request) {
+        return (
+            <div className={css.wrapper}>
+                <h2 className="mb-4">Error</h2>
+                <p>
+                    The following error occurred before we could send the
+                    request:
+                </p>
+                <pre>{responseError}</pre>
+            </div>
+        )
+    }
 
-        const request: Map<any, any> = event.get('request')
-        const response: Map<any, any> = event.get('response')
-        let responseError: string | undefined = response.get('error')
-
-        if (!request) {
-            return (
-                <Container fluid className={settingsCss.pageContainer}>
-                    <Row>
-                        <Col className="mb-4">
-                            <h2 className="mb-4">Error</h2>
-                            <p>
-                                The following error occurred before we could
-                                send the request:
-                            </p>
-                            <pre>{responseError}</pre>
-                        </Col>
-                    </Row>
-                </Container>
+    const requestParams = request.params || null
+    let requestJSONParams = null
+    let requestFormParams = null
+    if (typeof requestParams === 'string') {
+        try {
+            requestJSONParams = JSON.stringify(
+                JSON.parse(requestParams),
+                undefined,
+                4
             )
-        }
+        } catch (err) {}
+    } else {
+        requestFormParams = requestParams
+    }
 
-        const requestHeaders = request.get('headers')
-        const responseHeaders = response.get('headers')
-        const requestParams = request.get('params') || null
-        const requestBody = request.get('body')
-        const requestMethod: string = request.get('method')
-        let responseBody = response.get('body') || null
-        let requestJSONBody = null
-        let requestFormBody = null
-        let requestJSONParams = null
-        let requestFormParams = null
-
+    const requestBody = request.body
+    let requestJSONBody = null
+    let requestFormBody = null
+    if (typeof requestBody === 'string') {
         try {
             requestJSONBody = JSON.stringify(
                 JSON.parse(requestBody),
                 undefined,
                 4
             )
-        } catch (err) {
-            requestFormBody = requestBody
-        }
-
-        try {
-            if (requestParams) {
-                requestJSONParams = JSON.stringify(
-                    JSON.parse(requestParams),
-                    undefined,
-                    4
-                )
-            }
-        } catch (err) {
-            requestFormParams = requestParams
-        }
-
-        if (responseBody) {
-            try {
-                responseBody = JSON.stringify(
-                    JSON.parse(responseBody),
-                    undefined,
-                    4
-                )
-            } catch (err) {
-                // ignore parsing error
-            }
-        }
-
-        if (!!responseError && !event.get('status_code')) {
-            // Previously, a similar default message (not exactly the same) was stored in database, along with the error
-            if (
-                !responseError.startsWith(
-                    'There was an error while making this request.'
-                )
-            ) {
-                responseError = DEFAULT_ERROR_MESSAGE + responseError
-            }
-        }
-
-        return (
-            <Container fluid className={settingsCss.pageContainer}>
-                <Row>
-                    <Col md="12" lg="6" className={`${css.request} mb-4`}>
-                        <Container fluid>
-                            <h2 className="mb-4">Request</h2>
-                            <HTTPItem name="Method" value={requestMethod} />
-                            <HTTPItem name="URL" value={request.get('url')} />
-                            <HTTPItem name="Sent">
-                                <DatetimeLabel
-                                    dateTime={event.get('created_datetime')}
-                                />
-                            </HTTPItem>
-                            <HTTPItem name="Headers" value={requestHeaders}>
-                                <HTTPParams params={requestHeaders} />
-                            </HTTPItem>
-                            <HTTPItem
-                                name="Params"
-                                value={requestFormParams || requestJSONParams}
-                            >
-                                {requestFormParams ? (
-                                    <HTTPParams params={requestFormParams} />
-                                ) : null}
-                                {requestJSONParams ? (
-                                    <>
-                                        {requestMethod.toLowerCase() ===
-                                        'get' ? (
-                                            <Badge type={ColorType.Warning}>
-                                                JSON Params are not compatible
-                                                with the GET HTTP Method.
-                                            </Badge>
-                                        ) : null}
-                                        <DEPRECATED_InputField
-                                            type="textarea"
-                                            value={requestJSONParams}
-                                            rows={countLines(requestJSONParams)}
-                                            style={{maxHeight: '200px'}}
-                                            readOnly
-                                        />
-                                    </>
-                                ) : null}
-                            </HTTPItem>
-                            <HTTPItem
-                                name="Body"
-                                value={requestFormBody || requestJSONBody}
-                            >
-                                {requestFormBody ? (
-                                    <HTTPParams params={requestFormBody} />
-                                ) : null}
-                                {requestJSONBody ? (
-                                    <DEPRECATED_InputField
-                                        type="textarea"
-                                        value={requestJSONBody}
-                                        rows={countLines(requestJSONBody)}
-                                        readOnly
-                                    />
-                                ) : null}
-                            </HTTPItem>
-                        </Container>
-                    </Col>
-                    <Col md="12" lg="6" className={css.response}>
-                        <Container fluid>
-                            <h2 className="mb-4">Response</h2>
-                            <HTTPItem name="Status code">
-                                <HTTPStatusLabel
-                                    statusCode={event.get('status_code')}
-                                />
-                            </HTTPItem>
-                            <HTTPItem name="Headers">
-                                <HTTPParams params={responseHeaders} />
-                            </HTTPItem>
-                            <HTTPItem name="Body" value={responseBody}>
-                                {responseBody ? (
-                                    <DEPRECATED_InputField
-                                        type="textarea"
-                                        value={responseBody}
-                                        rows={countLines(responseBody)}
-                                        readOnly
-                                    />
-                                ) : null}
-                            </HTTPItem>
-                            {responseError ? (
-                                <HTTPItem name="Error">
-                                    <pre>{responseError}</pre>
-                                </HTTPItem>
-                            ) : null}
-                        </Container>
-                    </Col>
-                </Row>
-            </Container>
-        )
+        } catch (err) {}
+    } else {
+        requestFormBody = requestBody
     }
+
+    let responseBody = response.body
+    if (responseBody) {
+        try {
+            responseBody = JSON.stringify(
+                JSON.parse(responseBody),
+                undefined,
+                4
+            )
+        } catch (err) {}
+    }
+
+    if (responseError && !event.status_code) {
+        // Previously, a similar default message (not exactly the same) was stored in database, along with the error
+        if (
+            !responseError.startsWith(
+                'There was an error while making this request.'
+            )
+        ) {
+            responseError = DEFAULT_ERROR_MESSAGE + responseError
+        }
+    }
+
+    return (
+        <div className={classnames(css.wrapper, css.responsiveFlex)}>
+            <div className={css.request}>
+                <h2 className="mb-4">Request</h2>
+                <HTTPItem name="Method" value={request.method} />
+                <HTTPItem name="URL" value={request.url} />
+                <HTTPItem name="Sent">
+                    <DatetimeLabel dateTime={event.created_datetime} />
+                </HTTPItem>
+                <HTTPItem name="Headers">
+                    <HTTPParams params={request.headers} />
+                </HTTPItem>
+                {requestParams && (
+                    <HTTPItem name="Params">
+                        {requestFormParams && (
+                            <HTTPParams params={requestFormParams} />
+                        )}
+                        {requestJSONParams && (
+                            <>
+                                {request.method.toLowerCase() === 'get' && (
+                                    <Badge type={ColorType.Warning}>
+                                        JSON Params are not compatible with the
+                                        GET HTTP Method.
+                                    </Badge>
+                                )}
+                                <pre style={{maxHeight: '200px'}}>
+                                    {requestJSONParams}
+                                </pre>
+                            </>
+                        )}
+                    </HTTPItem>
+                )}
+                {requestBody && (
+                    <HTTPItem name="Body">
+                        {requestFormBody && (
+                            <HTTPParams params={requestFormBody} />
+                        )}
+                        {requestJSONBody && <pre>{requestJSONBody}</pre>}
+                    </HTTPItem>
+                )}
+            </div>
+            <div className={css.response}>
+                <h2 className="mb-4">Response</h2>
+                <HTTPItem name="Status code">
+                    <HTTPStatusLabel statusCode={event.status_code} />
+                </HTTPItem>
+                <HTTPItem name="Headers">
+                    <HTTPParams params={response.headers} />
+                </HTTPItem>
+                <HTTPItem name="Body">
+                    {responseBody && <pre>{responseBody}</pre>}
+                </HTTPItem>
+                {responseError && (
+                    <HTTPItem name="Error">
+                        <pre>{responseError}</pre>
+                    </HTTPItem>
+                )}
+            </div>
+        </div>
+    )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        event: getHTTPIntegrationEvent(state),
-    }),
-    {fetchHTTPIntegrationEvent}
-)
-
-export default connector(Event)
+export default Event

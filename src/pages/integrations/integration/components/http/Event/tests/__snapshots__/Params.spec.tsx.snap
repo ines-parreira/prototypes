@@ -1,47 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Params should not render the component because it has no params 1`] = `""`;
-
 exports[`Params should render the given params 1`] = `
-<ul>
-  <li
-    key="params1"
-  >
-    <b
-      className="mr-1"
-    >
-      params1
-      :
-    </b>
-    <span>
-      value1
-    </span>
-  </li>
-  <li
-    key="params2"
-  >
-    <b
-      className="mr-1"
-    >
-      params2
-      :
-    </b>
-    <span>
-      value2
-    </span>
-  </li>
-  <li
-    key="params3"
-  >
-    <b
-      className="mr-1"
-    >
-      params3
-      :
-    </b>
-    <span>
-      value3
-    </span>
-  </li>
-</ul>
+<div>
+  <ul>
+    <li>
+      <b
+        class="mr-1"
+      >
+        params1
+        :
+      </b>
+      <span>
+        value1
+      </span>
+    </li>
+    <li>
+      <b
+        class="mr-1"
+      >
+        params2
+        :
+      </b>
+      <span>
+        value2
+      </span>
+    </li>
+  </ul>
+</div>
 `;

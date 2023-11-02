@@ -14,6 +14,7 @@ import {
 } from 'models/integration/types'
 import {PaginationMeta, OrderDirection} from 'models/api/types'
 import {Tag} from 'models/tag/types'
+import {TicketEvent} from 'models/ticket/types'
 import {Customer} from 'models/customer/types'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
@@ -27,7 +28,6 @@ import {EntitiesState} from './entities/reducers'
 import {InfobarActionsState} from './infobarActions/types'
 import {Message} from './newMessage/types'
 import rootReducer from './reducers'
-import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
 import {Rule, RulePriority, RuleOperation} from './rules/types'
 import {UIState} from './ui/reducers'
 import {Widget, WidgetContextType, WidgetType} from './widgets/types'
@@ -45,7 +45,6 @@ export type StoreState = {
     customers: Map<any, any>
     entities: EntitiesState
     facebookAds: Map<any, any>
-    HTTPIntegrationEvents: Map<any, any>
     infobar: Map<any, any>
     infobarActions: InfobarActionsState
     integrations: Map<any, any>
@@ -81,6 +80,7 @@ export type GorgiasAction = {
     ticket?: Map<any, any>
     ticketId?: number | string
     ticketVia?: TicketVia
+    events?: TicketEvent[] | List<TicketEvent>
     userId?: number
     subscription?: Record<string, unknown>
     setting?: AccountSetting
@@ -91,8 +91,6 @@ export type GorgiasAction = {
     customerId?: number
     shouldDisplayHistoryOnNextPage?: boolean
     ids?: number[]
-    events?: HTTPIntegrationEvent[]
-    event?: HTTPIntegrationEvent
     callback?: (arg: unknown) => void
     loading?: boolean
     message?: string | null

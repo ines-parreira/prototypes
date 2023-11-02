@@ -1,30 +1,22 @@
-import React, {Component} from 'react'
-import {Map} from 'immutable'
+import React from 'react'
 
 type Props = {
-    params?: Map<any, any>
+    params?: Record<string, string>
 }
 
-export default class Params extends Component<Props> {
-    render() {
-        const {params} = this.props
-
-        if (!params) {
-            return null
-        }
-
-        return (
-            <ul>
-                {params
-                    .map((value, key) => (
-                        <li key={key}>
-                            <b className="mr-1">{key}:</b>
-                            <span>{value}</span>
-                        </li>
-                    ))
-                    .valueSeq()
-                    .toJS()}
-            </ul>
-        )
+export default function Params({params}: Props) {
+    if (!params) {
+        return null
     }
+
+    return (
+        <ul>
+            {Object.entries(params).map(([key, value]) => (
+                <li key={key}>
+                    <b className="mr-1">{key}:</b>
+                    <span>{value}</span>
+                </li>
+            ))}
+        </ul>
+    )
 }

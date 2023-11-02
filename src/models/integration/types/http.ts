@@ -33,3 +33,33 @@ export type HTTPForm = string | null | Record<string, unknown> | Field[]
 export const isHttpIntegration = (
     integration: Maybe<Integration>
 ): integration is HttpIntegration => integration?.type === IntegrationType.Http
+
+export type HTTPIntegrationEvent = {
+    created_datetime: string
+    id: string
+    integration_id: number
+    request?: {
+        headers?: {
+            'Content-Type'?: ContentType
+            'content-type'?: ContentType
+        }
+        method: HttpMethod
+        url: string
+        params?: Record<string, string> | string
+        body?: Record<string, string> | string
+    }
+    status_code: number
+    response: {
+        body: string
+        headers: {
+            'Access-Control-Allow-Credentials'?: string
+            'Access-Control-Allow-Origin'?: string
+            Connection?: string
+            'Content-Length'?: string
+            'Content-Type'?: ContentType
+            Date?: string
+            Server?: string
+        }
+        error?: string
+    }
+}

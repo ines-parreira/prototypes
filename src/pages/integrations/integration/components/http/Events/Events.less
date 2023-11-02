@@ -1,0 +1,38 @@
+@import '~css/new/layout';
+@import '~css/new/mixins';
+@import '~css/typography';
+
+:local {
+    .wrapper {
+        padding: @layout-spacing-m;
+    }
+
+    .list {
+        list-style-type: none;
+        padding: 0;
+        padding-bottom: @layout-spacing-xl;
+    }
+
+    .inlineGrid {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr 2fr 50px;
+        grid-template-rows: 1fr;
+        & > span {
+            padding: @layout-spacing-s;
+        }
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .columnTitles {
+        .caption-allcaps();
+        color: var(--neutral-grey-4);
+    }
+
+    .link {
+        color: var(--neutral-grey-6);
+        &:hover {
+            color: var(--neutral-grey-6);
+            background-color: var(--neutral-grey-1);
+        }
+    }
+}

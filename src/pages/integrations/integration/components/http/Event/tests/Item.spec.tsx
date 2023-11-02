@@ -1,43 +1,43 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import Item from '../Item'
 
 describe('Item', () => {
     it('should render its name with an empty label because it has no value and children', () => {
-        const component = shallow(<Item name="foo" />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<Item name="foo" />)
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render its name with an empty label because its value equals `null`', () => {
-        const component = shallow(<Item name="foo" value={null} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<Item name="foo" value={null} />)
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render its name with an empty label because its value equals `null` (even with a children)', () => {
-        const component = shallow(
+        const {container} = render(
             <Item name="foo" value={null}>
                 <span>bar</span>
             </Item>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render its name with its children', () => {
-        const component = shallow(
+        const {container} = render(
             <Item name="foo">
                 <span>bar</span>
             </Item>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render its name with its children instead of displaying its value', () => {
-        const component = shallow(
+        const {container} = render(
             <Item name="foo" value="bar">
                 <span>bar</span>
             </Item>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

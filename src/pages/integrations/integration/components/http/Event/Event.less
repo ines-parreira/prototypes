@@ -1,11 +1,39 @@
+@import '~css/new/layout';
+@import '~css/new/mixins';
+
 :local {
-    .request {
-        @media (min-width: 992px) {
-            border-right: 1px solid var(--neutral-grey-3);
+    .wrapper {
+        padding: @layout-spacing-m;
+    }
+
+    .responsiveFlex {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+        @media @desktops {
+            flex-direction: row;
         }
     }
+
+    .request {
+        border-bottom: 1px solid var(--neutral-grey-3);
+        @media @desktops {
+            border-bottom: none;
+            border-right: 1px solid var(--neutral-grey-3);
+            padding-right: @layout-spacing-m;
+        }
+    }
+
     .request,
     .response {
+        flex: 1;
         word-break: break-word;
+        & pre {
+            margin-top: @layout-spacing-xxs;
+            padding: @layout-spacing-xxs @layout-spacing-xs;
+            background-color: var(--neutral-grey-1);
+            border: 1px solid var(--neutral-grey-3);
+            border-radius: 4px;
+        }
     }
 }

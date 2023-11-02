@@ -10,7 +10,6 @@ import currentUserReducer from './currentUser/reducers'
 import customersReducer from './customers/reducers'
 import entities from './entities/reducers'
 import facebookAdsReducer from './facebookAds/reducers'
-import HTTPIntegrationEventsReducer from './HTTPIntegrationEvents/reducers'
 import infobarActionsReducer from './infobarActions/reducers'
 import infobarReducer from './infobar/reducers'
 import integrationsReducer from './integrations/reducers'
@@ -40,7 +39,6 @@ const rootReducer = combineReducers<StoreState>({
     customers: customersReducer,
     entities,
     facebookAds: facebookAdsReducer,
-    HTTPIntegrationEvents: HTTPIntegrationEventsReducer,
     infobar: infobarReducer,
     infobarActions: infobarActionsReducer,
     integrations: integrationsReducer,

@@ -1,0 +1,114 @@
+import MockAdapter from 'axios-mock-adapter'
+import {renderHook} from '@testing-library/react-hooks'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {Provider} from 'react-redux'
+import React from 'react'
+
+import client from 'models/api/resources'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {
+    useGetHTTPEvent,
+    useGetHTTPEvents,
+} from 'models/integration/queries/http'
+import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+
+const mockedServer = new MockAdapter(client)
+const queryClient = mockQueryClient()
+
+describe('queries.spec.tsx', () => {
+    beforeEach(() => {
+        mockedServer.reset()
+        queryClient.clear()
+    })
+
+    describe('useGetHTTPEvents', () => {
+        const response = apiListCursorPaginationResponse([{id: 1}, {id: 2}])
+
+        it('should succeed and return proper data', async () => {
+            const mockStore = configureMockStore([thunk])()
+            mockedServer
+                .onGet('/api/integrations/1/events/')
+                .reply(200, response)
+            const {result, waitFor} = renderHook(() => useGetHTTPEvents(1), {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            })
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data?.data).toStrictEqual(response)
+        })
+
+        it('should fail and return proper error', async () => {
+            const mockStore = configureMockStore([thunk])()
+            mockedServer
+                .onGet('/api/custom-fields')
+                .reply(404, {message: 'error'})
+            const {result, waitFor} = renderHook(() => useGetHTTPEvents(1), {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            })
+
+            await waitFor(() => {
+                expect(result.current.isError).toBe(true)
+                expect(result.current.error).toBeDefined()
+            })
+        })
+    })
+
+    describe('useGetHTTPEvent', () => {
+        const response = {id: 1}
+
+        it('should succeed and return proper data', async () => {
+            const mockStore = configureMockStore([thunk])()
+            mockedServer
+                .onGet('/api/integrations/1/events/1')
+                .reply(200, response)
+            const {result, waitFor} = renderHook(
+                () => useGetHTTPEvent({integrationId: 1, eventId: 1}),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data?.data).toStrictEqual(response)
+        })
+
+        it('should fail and return proper error', async () => {
+            const mockStore = configureMockStore([thunk])()
+            mockedServer
+                .onGet('/api/integrations/1/events/1')
+                .reply(404, {message: 'error'})
+
+            const {result, waitFor} = renderHook(
+                () => useGetHTTPEvent({integrationId: 1, eventId: 1}),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            await waitFor(() => {
+                expect(result.current.isError).toBe(true)
+                expect(result.current.error).toBeDefined()
+            })
+        })
+    })
+})

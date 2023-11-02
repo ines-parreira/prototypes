@@ -1,276 +1,221 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
-import {shallow} from 'enzyme'
+import React from 'react'
+import {QueryClientProvider, UseQueryResult} from '@tanstack/react-query'
+import {render, screen} from '@testing-library/react'
 
-import {getMomentNow} from 'utils/date'
+import {assumeMock} from 'utils/testing'
+import {ContentType, HttpMethod} from 'models/api/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {HTTPIntegrationEvent} from 'models/integration/types'
+import {useGetHTTPEvent} from 'models/integration/queries/http'
+import Events from '../Event'
 
-import {Event} from '../Event'
+jest.mock('models/integration/queries/http')
+jest.mock('pages/common/utils/labels', () => ({DatetimeLabel: () => null}))
 
-const HTTPEventWithHTMLResp: Map<any, any> = fromJS({
-    created_datetime: getMomentNow(),
-    status: 200,
+const mockUseGetHTTPEvent = assumeMock(useGetHTTPEvent)
+
+const queryClient = mockQueryClient()
+
+const INTEGRATION_ID = 1
+const EVENT_ID = 1
+
+const mockEvent: HTTPIntegrationEvent = {
+    id: EVENT_ID.toString(),
+    integration_id: INTEGRATION_ID,
+    created_datetime: '2021-08-01T00:00:00Z',
     request: {
-        method: 'GET',
-        url: 'https://developers.gorgias.com',
-        status: 200,
-        headers: {headersKey1: 'headersValue1'},
-        params: {paramKey1: 'paramValue1'},
-        body: {bodyKey1: 'bodyValue1'},
+        method: HttpMethod.Get,
+        url: 'https://example.com',
     },
     response: {
-        headers: {headersKey1: 'headersValue1'},
-        body: '<html><body>Hello world!</body></html>',
+        body: '{"baz": "qux"}',
+        headers: {
+            'Content-Type': ContentType.Json,
+        },
     },
-})
-
-const HTTPEventWithJSONResp: Map<any, any> = fromJS({
-    created_datetime: getMomentNow(),
-    status: 200,
-    request: {
-        method: 'GET',
-        url: 'https://developers.gorgias.com',
-        status: 200,
-        headers: {headersKey1: 'headersValue1'},
-        params: {paramKey1: 'paramValue1'},
-        body: JSON.stringify({bodyKey1: 'bodyValue1'}),
-    },
-    response: {
-        headers: {headersKey1: 'headersValue1'},
-        body: JSON.stringify({bodyKey1: 'bodyValue1'}),
-    },
-})
-
-const HTTPEventWithEmptyBodies: Map<any, any> = fromJS({
-    created_datetime: getMomentNow(),
-    status: 200,
-    request: {
-        method: 'GET',
-        url: 'https://developers.gorgias.com',
-        status: 200,
-        headers: {headersKey1: 'headersValue1'},
-    },
-    response: {
-        headers: {headersKey1: 'headersValue1'},
-    },
-})
-
-const HTTPEventWithErrorInResponse: Map<any, any> = fromJS({
-    created_datetime: getMomentNow(),
-    status: null,
-    request: {
-        method: 'GET',
-        url: 'https://developers.gorgias.com',
-        status: null,
-        headers: {headersKey1: 'headersValue1'},
-    },
-    response: {
-        headers: {headersKey1: 'headersValue1'},
-        error: 'There is an error',
-    },
-})
-
-const httpEventWithoutRequest: Map<any, any> = fromJS({
-    created_datetime: getMomentNow(),
-    status: null,
-    request: null,
-    response: {
-        error: 'Only HTTPS scheme is allowed',
-    },
-})
-
-const HTTPEventWithJSONParamsAndGETMethod: Map<string, any> = fromJS({
-    created_datetime: getMomentNow(),
-    status: 200,
-    request: {
-        method: 'GET',
-        url: 'https://developers.gorgias.com',
-        status: 200,
-        headers: {headersKey1: 'headersValue1'},
-        params: `"{\"paramKey1\": \"paramValue1\"}"`,
-        body: JSON.stringify({bodyKey1: 'bodyValue1'}),
-    },
-    response: {
-        headers: {headersKey1: 'headersValue1'},
-        body: JSON.stringify({bodyKey1: 'bodyValue1'}),
-    },
-})
-
-const minProps: ComponentProps<typeof Event> = {
-    eventId: 1,
-    integrationId: 1,
-    event: fromJS({}),
-    fetchHTTPIntegrationEvent: jest.fn(() => Promise.resolve()),
+    status_code: 200,
 }
 
-describe('<HTTPIntegrationEvent />', () => {
-    describe('component', () => {
-        it('should fetch an event when the component will mount', (done) => {
-            const fetchHTTPIntegrationEventContainer = jest.fn(() =>
-                Promise.resolve()
-            )
-            const integrationId = 1
-            const eventId = 2
-            const component = shallow<Event>(
-                <Event
-                    {...minProps}
-                    integrationId={integrationId}
-                    eventId={eventId}
-                    fetchHTTPIntegrationEvent={
-                        fetchHTTPIntegrationEventContainer
-                    }
-                />
-            )
-            fetchHTTPIntegrationEventContainer.mockClear()
-            component.instance().componentWillMount()
+describe('Event', () => {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
 
-            setTimeout(() => {
-                expect(fetchHTTPIntegrationEventContainer).toHaveBeenCalledWith(
-                    integrationId,
-                    eventId
-                )
-                expect(
-                    fetchHTTPIntegrationEventContainer
-                ).toHaveBeenCalledTimes(1)
-                component.update()
-                expect(component.state()).toEqual({isFetching: false})
-                done()
-            }, 1)
-        })
+    it('should render', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            data: mockEvent,
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
 
-        it('should render a loader while the component is fetching an event', () => {
-            const component = shallow(
-                <Event
-                    {...minProps}
-                    eventId={2}
-                    event={HTTPEventWithHTMLResp}
-                />
-            )
-            component.setState({isFetching: true})
+        const {container} = render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+        expect(mockUseGetHTTPEvent).toHaveBeenCalledWith(
+            {eventId: EVENT_ID, integrationId: INTEGRATION_ID},
+            expect.any(Object)
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
-            expect(component).toMatchSnapshot()
-        })
+    it('should render a loader', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            isLoading: true,
+            isError: false,
+        } as unknown as UseQueryResult)
 
-        it('should render a loader because the component has no event', () => {
-            const component = shallow(<Event {...minProps} eventId={2} />)
-            component.setState({isFetching: false})
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render a loader because the component has an empty event', () => {
-            const component = shallow(<Event {...minProps} eventId={2} />)
-            component.setState({isFetching: false})
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render the data of a HTTP request (html response)', (done) => {
-            const component = shallow(
-                <Event
-                    {...minProps}
-                    eventId={2}
-                    event={HTTPEventWithHTMLResp}
-                />
-            )
-            setImmediate(() => {
-                expect(component).toMatchSnapshot()
-                done()
-            })
-        })
-
-        it('should render the data of HTTP request (JSON bodies)', (done) => {
-            const component = shallow(
-                <Event
-                    {...minProps}
-                    eventId={2}
-                    event={HTTPEventWithJSONResp}
-                />
-            )
-            setImmediate(() => {
-                expect(component).toMatchSnapshot()
-                done()
-            })
-        })
-
-        it('should render the data of HTTP request (Empty bodies)', (done) => {
-            const component = shallow(
-                <Event
-                    {...minProps}
-                    eventId={2}
-                    event={HTTPEventWithEmptyBodies}
-                />
-            )
-            setImmediate(() => {
-                expect(component).toMatchSnapshot()
-                done()
-            })
-        })
-
-        it('should render the data of the HTTP request when there was an error making the request', (done) => {
-            const component = shallow(
-                <Event
-                    {...minProps}
-                    eventId={2}
-                    event={HTTPEventWithErrorInResponse}
-                />
-            )
-            setImmediate(() => {
-                expect(component).toMatchSnapshot()
-                done()
-            })
-        })
-
-        it('should render the data of the HTTP request with GET method and JSON Params, with a warning', (done) => {
-            const component = shallow(
-                <Event
-                    {...minProps}
-                    eventId={2}
-                    event={HTTPEventWithJSONParamsAndGETMethod}
-                />
-            )
-            setImmediate(() => {
-                expect(component).toMatchSnapshot()
-                done()
-            })
-        })
-
-        it(
-            'should render the data of the HTTP request when there was an error making the request and the default ' +
-                'message is already in the event',
-            (done) => {
-                const error =
-                    'There was an error while making this request. Foo bar. There is an error.'
-
-                const component = shallow(
-                    <Event
-                        {...minProps}
-                        eventId={2}
-                        event={HTTPEventWithErrorInResponse.setIn(
-                            ['response', 'error'],
-                            error
-                        )}
-                    />
-                )
-                setImmediate(() => {
-                    expect(component).toMatchSnapshot()
-                    done()
-                })
-            }
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
         )
 
-        it('should render the error that occurred before we could send the request', (done) => {
-            const component = shallow(
-                <Event
-                    {...minProps}
-                    eventId={2}
-                    event={httpEventWithoutRequest}
-                />
-            )
+        expect(screen.getByTestId('loader'))
+    })
 
-            setImmediate(() => {
-                expect(component).toMatchSnapshot()
-                done()
-            })
-        })
+    it('should render an error if fetching event failed', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            isLoading: false,
+            isError: true,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText(/An error occurred/))
+    })
+
+    it('should render an error if there is no request in the event', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            data: {...mockEvent, request: undefined},
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText(/error occurred before/))
+    })
+
+    it('should display a specific error if no status code is returned', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            data: {
+                ...mockEvent,
+                response: {error: 'welp'},
+                status_code: undefined,
+            },
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText(/There was an error while/))
+        expect(screen.getByText(/welp/))
+    })
+
+    it('should render a parsed object if request param is a string => JSON Params', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            data: {
+                ...mockEvent,
+                request: {...mockEvent.request, params: '{"foo": "bar"}'},
+            },
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+        expect(screen.getByText(/Params are not compatible/))
+        expect(screen.getByText(/"foo":/))
+    })
+
+    it('should render a param list if param is an object => Form Params', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            data: {
+                ...mockEvent,
+                request: {...mockEvent.request, params: {foo: 'bar'}},
+            },
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+        expect(screen.getByText(/Params/))
+        expect(screen.getByText(/foo:/))
+    })
+
+    it('should render a parsed object if request body is a string => JSON Body', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            data: {
+                ...mockEvent,
+                request: {...mockEvent.request, body: '{"foo": "bar"}'},
+            },
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+        expect(screen.getByText(/"foo":/))
+    })
+
+    it('should render a body list if body is an object => Form Body', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            data: {
+                ...mockEvent,
+                request: {...mockEvent.request, body: {foo: 'bar'}},
+            },
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+        expect(screen.getByText(/foo:/))
+    })
+
+    it('should says response body is empty', () => {
+        mockUseGetHTTPEvent.mockReturnValue({
+            data: {
+                ...mockEvent,
+                response: {...mockEvent.response, body: ''},
+            },
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult)
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
+            </QueryClientProvider>
+        )
+        expect(screen.getByText(/empty/))
     })
 })
