@@ -28,6 +28,7 @@ const jsBundleFile = __PRODUCTION__
 const styleBundleFile = __PRODUCTION__
     ? `helpdesk.app.${HASH}.css`
     : 'helpdesk.app.css'
+const fontsBundleFile = 'font.css'
 const vendorsBundleFile = __PRODUCTION__
     ? `helpdesk.vendors.${HASH}.js`
     : 'helpdesk.vendors.js'
@@ -167,6 +168,7 @@ module.exports = (env = {}) => {
         devtool,
         entry: {
             build: `${srcDir}/core/init`,
+            ...(__PRODUCTION__ && {font: `${srcDir}/assets/css/font.less`}),
         },
         output: {
             ...outputOptions,
@@ -265,7 +267,11 @@ module.exports = (env = {}) => {
                 },
             }),
             new MiniCssExtractPlugin({
-                filename: styleBundleFile,
+                filename: ({chunk}, assetInfo) => {
+                    return chunk.name === 'font'
+                        ? fontsBundleFile
+                        : styleBundleFile
+                },
             }),
             new webpack.DllReferencePlugin({
                 manifest: require(`${buildDir}/vendors.${mode}.manifest.json`),
