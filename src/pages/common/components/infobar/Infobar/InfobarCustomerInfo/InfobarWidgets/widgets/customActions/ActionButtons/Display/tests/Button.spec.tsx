@@ -8,7 +8,7 @@ import {createStore, applyMiddleware, Reducer} from 'redux'
 
 import * as infobarActions from 'state/infobar/actions'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {WidgetListContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/List'
+import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
 
 const mockedActionId = 'someActionId'
 jest.mock('state/infobar/actions', () => ({

@@ -11,7 +11,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {ContentType} from 'models/api/types'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {AppContext} from 'providers/infobar/AppContext'
-import {WidgetListContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/List'
+import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import BaseButton from 'pages/common/components/button/Button'

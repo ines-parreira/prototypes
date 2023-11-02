@@ -1,4 +1,4 @@
-import React, {Component, createContext} from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 import {Map, List} from 'immutable'
 
@@ -6,15 +6,9 @@ import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustom
 
 import {compare} from 'utils'
 
+import WidgetListContext from './WidgetListContext'
+
 import css from './List.less'
-
-type WidgetListContextType = {
-    currentListIndex: number | null
-}
-
-export const WidgetListContext = createContext<WidgetListContextType>({
-    currentListIndex: null,
-})
 
 const DEFAULT_LIST_LIMIT = 3
 
