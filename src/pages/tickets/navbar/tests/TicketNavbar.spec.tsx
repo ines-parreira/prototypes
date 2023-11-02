@@ -14,7 +14,7 @@ import {section} from 'fixtures/section'
 import {user} from 'fixtures/users'
 import {view} from 'fixtures/views'
 import client from 'models/api/resources'
-import {ViewType, ViewVisibility} from 'models/view/types'
+import {View, ViewType, ViewVisibility} from 'models/view/types'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import {NotificationStatus} from 'state/notifications/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
@@ -58,6 +58,9 @@ jest.mock(
                 </div>
             )
 )
+jest.mock('../TicketNavbarViewLink', () => ({view}: {view: View}) => (
+    <span>{view.name}</span>
+))
 jest.mock(
     '../SectionFormModal',
     () =>

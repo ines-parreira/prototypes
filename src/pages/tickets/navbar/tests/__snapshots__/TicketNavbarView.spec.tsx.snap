@@ -4,34 +4,8 @@ exports[`<TicketNavbarView/> should render 1`] = `
 <div
   class="wrapper view"
 >
-  <div
-    class="link-wrapper"
-    draggable="true"
-    id="ticket-navbar-view-7"
-  >
-    <a
-      class="link"
-      to="/app/tickets/7/new-%26-open-tickets"
-    >
-      <span
-        class="item-name link"
-      >
-        <div
-          data-testid="ViewName"
-        >
-          New & Open Tickets
-        </div>
-      </span>
-      <span
-        class="item-count"
-      >
-        <div
-          data-testid="ViewCount"
-        >
-          5000
-        </div>
-      </span>
-    </a>
-  </div>
+  <span>
+    New & Open Tickets
+  </span>
 </div>
 `;

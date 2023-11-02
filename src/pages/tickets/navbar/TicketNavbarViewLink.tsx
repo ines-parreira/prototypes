@@ -1,14 +1,17 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ForwardedRef, forwardRef} from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {View} from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import {activeViewIdSet} from 'state/ui/views/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {useSplitTicketView} from 'split-ticket-view'
 import {getActiveView} from 'state/views/selectors'
 
 import css from './TicketNavbarViewLink.less'
@@ -24,6 +27,11 @@ const TicketNavbarViewLink = (
     {className, icon, view, viewCount}: Props,
     ref: ForwardedRef<HTMLDivElement>
 ) => {
+    const hasSplitTicketView: boolean | undefined =
+        useFlags()[FeatureFlagKey.SplitTicketView]
+
+    const [splitTicketViewEnabled] = useSplitTicketView()
+
     const activeView = useAppSelector(getActiveView)
 
     const dispatch = useAppDispatch()
@@ -46,7 +54,13 @@ const TicketNavbarViewLink = (
                     },
                     className
                 )}
-                to={`/app/tickets/${view.id}/${encodeURIComponent(view.slug)}`}
+                to={
+                    hasSplitTicketView && splitTicketViewEnabled
+                        ? `/app/views/${view.id}`
+                        : `/app/tickets/${view.id}/${encodeURIComponent(
+                              view.slug
+                          )}`
+                }
                 onClick={() => dispatch(activeViewIdSet(view.id))}
             >
                 <span className={classnames(navbarCss['item-name'], css.link)}>
