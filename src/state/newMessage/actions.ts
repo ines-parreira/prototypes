@@ -10,6 +10,8 @@ import _split from 'lodash/split'
 import axios, {AxiosError, CancelToken} from 'axios'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {Attachment} from 'common/types'
+import {uploadFiles} from 'common/utils'
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
@@ -19,7 +21,6 @@ import {
     getActionTemplate,
     isImmutable,
     toJS,
-    uploadFiles,
 } from 'utils'
 import {ActionTemplateExecution} from 'config'
 import {Macro} from 'models/macro/types'
@@ -39,7 +40,6 @@ import * as ticketSelectors from 'state/ticket/selectors'
 import * as agentSelectors from 'state/agents/selectors'
 import socketManager from 'services/socketManager/socketManager'
 import {triggerTicketFieldsRefreshAndInvalidation} from 'state/ticket/actions'
-import {Attachment} from 'types'
 import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
 import {getMomentNow} from 'utils/date'
 import {convertToHTML} from 'utils/editor'

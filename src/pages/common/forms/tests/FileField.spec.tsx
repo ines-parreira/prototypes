@@ -4,12 +4,12 @@ import _noop from 'lodash/noop'
 import {Input} from 'reactstrap'
 import {fireEvent, render} from '@testing-library/react'
 
-import {uploadFiles} from 'utils'
+import {uploadFiles} from 'common/utils'
 
 import {FileFieldContainer} from '../FileField'
 
-jest.mock('utils', () => {
-    const mockedUtils = jest.requireActual('utils')
+jest.mock('common/utils', () => {
+    const mockedUtils = jest.requireActual('common/utils')
     return {
         ...mockedUtils,
         uploadFiles: jest.fn(() => Promise.resolve([{url: 'file1'}])),

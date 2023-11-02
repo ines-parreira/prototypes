@@ -1,7 +1,7 @@
 import {act} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
 
-import * as utils from '../../../../../utils'
+import * as utils from 'common/utils'
 
 import {useFileUpload} from '../useFileUpload'
 

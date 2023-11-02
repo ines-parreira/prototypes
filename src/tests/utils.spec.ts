@@ -1,6 +1,5 @@
 import moment from 'moment'
 import {fromJS, Map, List} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
 import randomstring from 'randomstring'
 
 import * as esprima from 'esprima'
@@ -14,7 +13,6 @@ import {
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
 } from 'config/user'
-import client from 'models/api/resources'
 import {getCode} from 'utils'
 
 jest.mock('utils/environment')
@@ -713,42 +711,6 @@ describe('global utils', () => {
 
         it('should round to T with 2 digits', () => {
             expect(utils.compactInteger(1150000000000, 2)).toEqual('1.15T')
-        })
-    })
-
-    describe('uploadFiles()', () => {
-        let mockServer: MockAdapter
-
-        beforeEach(() => {
-            mockServer = new MockAdapter(client)
-        })
-
-        it('should post files to the upload API', () => {
-            const name = 'foo.jpg'
-            const uploadedFileData = {data: [{name, foo: 'bar'}]}
-
-            mockServer.onPost('/api/upload/').reply(200, uploadedFileData)
-
-            const file = new File([''], name)
-            return utils.uploadFiles([file]).then((data) => {
-                expect(data).toEqual(uploadedFileData)
-            })
-        })
-
-        it('should post files to the upload API and pass the passed params', () => {
-            const name = 'foo.jpg'
-            const uploadedFileData = {data: [{name, foo: 'bar'}]}
-            const passedParams = {type: 'profile_picture', foo: 'bar'}
-
-            mockServer.onPost('/api/upload/').reply(({params}) => {
-                expect(params).toEqual(passedParams)
-                return [200, uploadedFileData]
-            })
-
-            const file = new File([''], name)
-            return utils.uploadFiles([file], passedParams).then((data) => {
-                expect(data).toEqual(uploadedFileData)
-            })
         })
     })
 

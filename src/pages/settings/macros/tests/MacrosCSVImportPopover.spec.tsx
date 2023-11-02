@@ -5,16 +5,16 @@ import {fireEvent, render, waitFor, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
 
+import {uploadFiles} from 'common/utils'
 import {createJob} from 'models/job/resources'
 import client from 'models/api/resources'
 import {saveFileAsDownloaded} from 'utils/file'
-import {uploadFiles} from 'utils'
 import {MacrosCSVImportPopover} from '../MacrosCSVImportPopover'
 
 jest.mock('utils/file')
 
-jest.mock('utils', () => {
-    const original: Record<string, unknown> = jest.requireActual('utils')
+jest.mock('common/utils', () => {
+    const original: Record<string, unknown> = jest.requireActual('common/utils')
     return {
         ...original,
         uploadFiles: jest.fn(() =>

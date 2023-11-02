@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom'
 import {AxiosError} from 'axios'
 import {fromJS, Map} from 'immutable'
 
+import {uploadFiles} from 'common/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import Button from 'pages/common/components/button/Button'
@@ -13,9 +14,6 @@ import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-
-import {uploadFiles} from 'utils'
-
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'

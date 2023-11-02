@@ -18,14 +18,6 @@ import {BillingProducts} from 'state/billing/types'
 import {Application} from 'services/applications'
 import {Channel} from 'services/channels'
 
-export type Attachment = {
-    content_type: string
-    name: string
-    size: number
-    url: string
-    type: string
-}
-
 export type Schemas = Map<any, any>
 
 export type GorgiasInitialStateRecentChatTicket = Omit<

@@ -9,8 +9,8 @@ import ImageField, {ImageFieldVariant} from '../ImageField'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
-jest.mock('utils', () => {
-    const mockedUtils = jest.requireActual('utils')
+jest.mock('common/utils', () => {
+    const mockedUtils = jest.requireActual('common/utils')
     return {
         ...mockedUtils,
         uploadFiles: jest.fn(() => Promise.resolve([{url: 'testUrl'}])),

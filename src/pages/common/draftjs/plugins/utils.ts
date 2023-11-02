@@ -11,10 +11,10 @@ import _get from 'lodash/get'
 import {AxiosError} from 'axios'
 
 import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
+import {uploadFiles} from 'common/utils'
 import {ConnectedAction} from '../../../../state/types'
 import {notify as notifyAction} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import {uploadFiles} from '../../../../utils'
 import {
     getFileTooLargeError,
     getMaxAttachmentSize,

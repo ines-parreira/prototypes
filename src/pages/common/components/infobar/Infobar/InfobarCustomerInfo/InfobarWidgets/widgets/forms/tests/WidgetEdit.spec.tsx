@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
-import * as utils from 'utils'
+import * as utils from 'common/utils'
 import {IntegrationType} from 'models/integration/constants'
 import * as actions from 'state/widgets/actions'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
@@ -22,8 +22,8 @@ jest.spyOn(actions, 'stopWidgetEdition')
 const updateEditedWidget = actions.updateEditedWidget as jest.Mock
 const stopWidgetEdition = actions.stopWidgetEdition as jest.Mock
 
-jest.mock('utils', () => {
-    const mockedUtils = jest.requireActual('utils')
+jest.mock('common/utils', () => {
+    const mockedUtils = jest.requireActual('common/utils')
 
     const result: typeof utils = {
         ...mockedUtils,

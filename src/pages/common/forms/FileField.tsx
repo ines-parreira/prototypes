@@ -8,7 +8,7 @@ import {AxiosError} from 'axios'
 import {InputType} from 'reactstrap/lib/Input'
 import _omit from 'lodash/omit'
 
-import {uploadFiles} from 'utils'
+import {uploadFiles} from 'common/utils'
 import {getFileTooLargeError} from 'utils/file'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'

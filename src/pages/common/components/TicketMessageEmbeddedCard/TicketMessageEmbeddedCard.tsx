@@ -6,6 +6,7 @@ import classnames from 'classnames'
 
 import {fromJS, List} from 'immutable'
 
+import {Attachment} from 'common/types'
 import Avatar from '../../components/Avatar/Avatar'
 
 import {Actor, Meta, Source} from '../../../../models/ticket/types'
@@ -15,7 +16,6 @@ import {DatetimeLabel} from '../../utils/labels'
 
 import GenericCard from '../GenericCard/GenericCard'
 import SourceIcon from '../SourceIcon'
-import {Attachment} from '../../../../types'
 import TicketAttachments from '../../../tickets/detail/components/ReplyArea/TicketAttachments'
 
 import css from './TicketMessageEmbeddedCard.less'

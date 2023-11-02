@@ -39,14 +39,13 @@ import {ACTION_TEMPLATES} from './config'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 import {Notification, NotificationStatus} from './state/notifications/types'
 import {ViewsState} from './state/views/types'
-import {Attachment, NonEmptyArray, Schemas} from './types'
+import {NonEmptyArray, Schemas} from './types'
 import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
 import {envVars, isProduction} from './utils/environment'
 import {linkify} from './utils/editor'
-import client from './models/api/resources'
 import {GorgiasApiResponseDataError} from './models/api/types'
 
 export type Message = {
@@ -740,25 +739,6 @@ export function loadScript(url: string, callback: () => void) {
     }
 
     script.parentNode?.insertBefore(elem, script)
-}
-
-/**
- * Upload file action meant to be used by another action
- */
-export const uploadFiles = (
-    files: FileList | Array<Attachment> | File[],
-    params: Maybe<Record<string, unknown>> = null
-): Promise<Attachment[]> => {
-    const formData = new window.FormData()
-
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        formData.append(file.name, file as any)
-    }
-
-    return client
-        .post<Attachment[]>('/api/upload/', formData, {params: params || {}})
-        .then((json) => json?.data)
 }
 
 /**

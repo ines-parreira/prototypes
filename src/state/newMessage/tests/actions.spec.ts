@@ -18,6 +18,7 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
+import * as commonUtils from 'common/utils'
 import * as utils from 'utils'
 import * as actions from 'state/newMessage/actions'
 import * as types from 'state/newMessage/constants'
@@ -81,7 +82,7 @@ const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
-const mockedUploadFiles = jest.spyOn(utils, 'uploadFiles')
+const mockedUploadFiles = jest.spyOn(commonUtils, 'uploadFiles')
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({

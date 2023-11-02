@@ -4,13 +4,13 @@
 import React, {useCallback, useEffect, useRef} from 'react'
 import FroalaEditorComponentType from 'react-froala-wysiwyg'
 import bytes from 'bytes'
-
 import {zip} from 'lodash'
+
+import {uploadFiles} from 'common/utils'
 import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import {notify} from '../../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../../state/notifications/types'
-import {uploadFiles} from '../../../../../../utils'
 
 import {useEditionManager} from '../../../providers/EditionManagerContext'
 import FroalaEditorComponent from './FroalaEditorComponent.js'

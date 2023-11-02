@@ -1,7 +1,7 @@
 import {useState} from 'react'
 
-import {uploadFiles} from '../../../../utils'
-import {Attachment} from '../../../../types'
+import {Attachment} from 'common/types'
+import {uploadFiles} from 'common/utils'
 
 export type FileUpload = {
     isTouched: boolean

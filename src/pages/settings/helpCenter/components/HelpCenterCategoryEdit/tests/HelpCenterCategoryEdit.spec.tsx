@@ -43,8 +43,8 @@ const store = mockStore(defaultState)
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
-jest.mock('utils', () => {
-    const mockedUtils = jest.requireActual('utils')
+jest.mock('common/utils', () => {
+    const mockedUtils = jest.requireActual('common/utils')
     return {
         ...mockedUtils,
         uploadFiles: jest.fn(
