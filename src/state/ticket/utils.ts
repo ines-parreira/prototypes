@@ -1,14 +1,8 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
-import _capitalize from 'lodash/capitalize'
 import _isArray from 'lodash/isArray'
 import _isEqual from 'lodash/isEqual'
 import _pick from 'lodash/pick'
-import _first from 'lodash/first'
-import _last from 'lodash/last'
-import _set from 'lodash/set'
-import _get from 'lodash/get'
-import parsePhoneNumber from 'libphonenumber-js'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 
 import {
@@ -16,25 +10,19 @@ import {
     TicketMessageSourceType,
     TicketChannel,
 } from 'business/types/ticket'
-import {SOURCE_VALUE_PROP} from 'config'
-import {INTEGRATION_TYPE_WITH_VARIABLES} from 'config/integrations'
 import {PHONE_EVENTS} from 'constants/event'
 import {MacroActionName} from 'models/macroAction/types'
 import {TicketEvent, TicketMessage} from 'models/ticket/types'
-import {renderTemplate} from 'pages/common/utils/template'
-import {
-    getPersonLabelFromSource,
-    isPhoneBasedSource,
-} from 'pages/tickets/common/utils'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {tryLocalStorage} from 'services/common/utils'
 import * as responseUtils from 'state/newMessage/responseUtils'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
 import {
-    getVariableWithValue,
+    getValuePropFromSourceType,
     isForwardedMessage,
+    isPhoneBasedSource,
     isSystemType,
+    normalizeAddress,
     orderedMessages,
     responseSourceType,
     sourceTypeToChannel,
@@ -45,7 +33,6 @@ import {
     isImmutable,
     toImmutable,
 } from 'utils'
-import {unescapeQuoteEntities} from 'utils/html'
 
 import {ChannelLike} from 'services/channels'
 import {EventType} from 'models/event/types'
@@ -211,17 +198,6 @@ export function getSourceTypeOfResponse(
     return responseSourceType(immutableMessages.toJS(), via, jsEvents)
 }
 
-/**
- * Map a source type to a channel.
- * Returns undefined for internal note as we dont have enough information to guess the channel.
- */
-export function getChannelFromSourceType(
-    sourceType: TicketMessageSourceType,
-    messages: List<any> | any[]
-) {
-    return sourceTypeToChannel(sourceType, toImmutable(messages))
-}
-
 export function isSupportAddress(
     addressToTest: string,
     supportAddresses: string[] = [],
@@ -252,17 +228,6 @@ export function isSupportAddress(
     }
 
     return false
-}
-
-/**
- * Return value prop from sender/receiver that is used to identify a person depending on the source type
- */
-export function getValuePropFromSourceType(sourceType: ChannelLike) {
-    if (isTicketMessageSourceType(sourceType)) {
-        return SOURCE_VALUE_PROP[sourceType]
-    }
-
-    return 'address'
 }
 
 export function cleanReceivers(
@@ -881,162 +846,6 @@ export function getPendingMessageIndex(
     return index
 }
 
-export const renderObject = (
-    argument: string | Map<any, any>,
-    context: Record<string, string>
-) => {
-    let ret = argument
-
-    if (typeof argument === 'string') {
-        ret = renderTemplate(argument, context)
-    } else if (typeof argument === 'object') {
-        ret = argument.map((v) => renderObject(v, context)) as Map<any, any>
-    }
-
-    return ret
-}
-
-export const replaceIntegrationVariables = (
-    integrationType: string,
-    ticketState: Map<any, any>,
-    variable: string,
-    newArgument: string,
-    notify?: typeof notifyAction
-) => {
-    let integrations = (
-        ticketState.getIn(['customer', 'integrations'], fromJS([])) as List<any>
-    ).filter((integration: Map<any, any>) => {
-        return integration.get('__integration_type__') === integrationType
-    })
-
-    // if we have updated_at in customer, sort integrations by the update date so we use the most recent updates
-    if (
-        !integrations.isEmpty() &&
-        (integrations.first() as Map<any, any>).getIn([
-            'customer',
-            'updated_at',
-        ])
-    ) {
-        integrations = integrations
-            .sortBy(
-                (integration: Map<any, any>) =>
-                    integration.getIn(['customer', 'updated_at']) as string
-            )
-            .reverse()
-    }
-
-    const integrationIds = integrations
-        .map((_, integrationId) => integrationId)
-        .toList()
-
-    const integrationId = integrationIds.first()
-
-    if (!integrationId && notify) {
-        notify({
-            type: NotificationStatus.Warning,
-            title: `This customer does not have any ${_capitalize(
-                integrationType
-            )} information`,
-        })
-        return newArgument.replace(variable, '')
-    }
-
-    const variableConfig = getVariableWithValue(variable)
-    let newVariable = variable.replace(
-        `integrations.${integrationType}`,
-        `integrations[${integrationId!}]`
-    )
-
-    if (variableConfig && variableConfig.replace != null) {
-        newVariable = variableConfig.replace(
-            fromJS({ticket: ticketState}),
-            integrationId
-        )
-    }
-
-    return newArgument.replace(variable, newVariable)
-}
-
-export const replaceVariables = (
-    argument: string,
-    ticket: Map<any, any> | null,
-    currentUser: Map<any, any> | null,
-    notify?: typeof notifyAction
-) => {
-    // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
-    // Else, it would be `ticket.customer.integrations[XXX]`.
-    let newArgument = unescapeQuoteEntities(argument)
-    const variables = newArgument.match(
-        /{{ticket\.customer\.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g
-    )
-
-    if (variables) {
-        // If a variable is a dynamic variable, we try to replace `integrations.{type}` with
-        // `integrations[correct-integration-id]`.
-        variables.forEach((variable) => {
-            INTEGRATION_TYPE_WITH_VARIABLES.forEach((integrationType) => {
-                if (variable.includes('integrations.' + integrationType)) {
-                    newArgument = replaceIntegrationVariables(
-                        integrationType,
-                        ticket!,
-                        variable,
-                        newArgument,
-                        notify
-                    )
-                }
-            })
-        })
-    }
-
-    const context = {
-        ticket: ticket ? ticket.toJS() : ticket,
-        current_user: currentUser ? currentUser.toJS() : currentUser,
-    }
-    _set(
-        context,
-        ['ticket', 'first_message'],
-        _first(_get(context, ['ticket', 'messages']))
-    )
-    _set(
-        context,
-        ['ticket', 'last_message'],
-        _last(_get(context, ['ticket', 'messages']))
-    )
-
-    return renderObject(newArgument, context)
-}
-
-export const nestedReplace = (
-    obj: unknown,
-    ticketState: Map<any, any>,
-    currentUserState: Map<any, any>,
-    notify?: typeof notifyAction
-): unknown => {
-    if (typeof obj === 'string') {
-        return replaceVariables(obj, ticketState, currentUserState, notify)
-    }
-
-    // since typeof null === 'object', we also need to verify obj is not null
-    if (typeof obj === 'object' && obj !== null) {
-        return (obj as Map<any, any>).map((item) =>
-            nestedReplace(item, ticketState, currentUserState, notify)
-        ) as Map<any, any>
-    }
-
-    return obj
-}
-
-export const parseTimedelta = (timedelta: string) => {
-    const timedeltaRegex = /^(?<value>\d+)(?<unit>[mhd])$/
-    // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
-    const groups = timedelta.match(timedeltaRegex)?.groups
-    if (groups) {
-        const {value, unit} = groups
-        return moment.duration(Number(value), unit as any)
-    }
-    throw new Error(`${timedelta} is not a properly formatted timedelta`)
-}
-
 export const mergeTagActions = (
     oldAction: Map<any, any>,
     newAction: Map<any, any>
@@ -1141,21 +950,6 @@ export function isReceiver(receiver: unknown): receiver is Receiver {
         'address' in receiver &&
         typeof (receiver as Receiver).address === 'string'
     )
-}
-
-export function normalizeAddress(
-    address: string,
-    sourceType:
-        | TicketMessageSourceType
-        | TicketChannel = TicketMessageSourceType.Email
-): string {
-    if (isPhoneBasedSource(sourceType)) {
-        const parsedNumber = parsePhoneNumber(address)
-        if (parsedNumber) {
-            return parsedNumber.format('E.164')
-        }
-    }
-    return address.toLowerCase()
 }
 
 export function humanizeAddress(

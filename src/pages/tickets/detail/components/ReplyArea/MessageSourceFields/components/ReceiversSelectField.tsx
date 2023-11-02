@@ -10,7 +10,6 @@ import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import {
-    getValuePropFromSourceType,
     receiversValueFromState,
     receiversStateFromValue,
     Receiver,
@@ -21,7 +20,10 @@ import {updatePotentialCustomers} from 'state/newMessage/actions'
 import {isEmail} from 'utils'
 import {SearchResponse, SearchType} from 'models/search/types'
 
-import {isPhoneBasedSource} from 'pages/tickets/common/utils'
+import {
+    getValuePropFromSourceType,
+    isPhoneBasedSource,
+} from 'tickets/common/utils'
 import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
 
 type Props = {

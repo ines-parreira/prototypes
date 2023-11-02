@@ -2,8 +2,8 @@ import {Map} from 'immutable'
 import _trim from 'lodash/trim'
 
 import {CustomerChannel} from 'models/customerChannel/types'
+import {normalizeAddress} from 'tickets/common/utils'
 import {isImmutable, toImmutable} from 'utils'
-import {normalizeAddress} from 'state/ticket/utils'
 
 /**
  * Return name of customer

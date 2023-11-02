@@ -2,7 +2,7 @@ import React, {ChangeEventHandler} from 'react'
 import classnames from 'classnames'
 import {List} from 'immutable'
 
-import {isPhoneBasedSource} from 'pages/tickets/common/utils'
+import {isPhoneBasedSource} from 'tickets/common/utils'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import css from './SenderSelectField.less'

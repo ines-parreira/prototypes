@@ -16,11 +16,11 @@ import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,
 } from 'state/widgets/constants'
+import {parseTimeDelta} from 'tickets/common/utils'
 import {
     getPendingMessageIndex,
     injectAISuggestionEvents,
     mergeActions,
-    parseTimedelta,
 } from './utils'
 import * as types from './constants'
 import {
@@ -296,7 +296,7 @@ export default function reducer(
                 return state
                     .set(
                         'snooze_datetime',
-                        moment().add(parseTimedelta(snoozeDuration)).format()
+                        moment().add(parseTimeDelta(snoozeDuration)).format()
                     )
                     .set('status', 'closed')
             }

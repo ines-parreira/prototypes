@@ -1,11 +1,14 @@
 import {fromJS, List, Map} from 'immutable'
 
-import {getValuePropFromSourceType} from 'state/ticket/utils'
 import {getActionTemplate} from 'utils'
 import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {ActionTemplate} from 'config'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
+import {
+    getValuePropFromSourceType,
+    isPhoneBasedSource,
+} from 'tickets/common/utils'
 
 /**
  * Return the label of the given person
@@ -103,17 +106,3 @@ export const getSortedIntegrationActions = (
             return {...sorted, [type]: [...(sorted![type] || []), action]}
         }, {} as {[key: string]: any[]})
     ) as Map<string, any>
-
-export const isPhoneBasedSource = (
-    sourceType: TicketMessageSourceType | TicketChannel
-): boolean => {
-    return [
-        TicketMessageSourceType.Phone,
-        TicketMessageSourceType.Sms,
-        TicketMessageSourceType.WhatsAppMessage,
-        TicketChannel.Aircall,
-        TicketChannel.Phone,
-        TicketChannel.Sms,
-        TicketChannel.WhatsApp,
-    ].includes(sourceType)
-}

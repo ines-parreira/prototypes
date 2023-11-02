@@ -26,10 +26,10 @@ import {
     getTopRankMacroState,
     getInTicketSuggestionState,
 } from 'state/ticket/selectors'
-import {nestedReplace} from 'state/ticket/utils'
 import {RootState} from 'state/types'
 
 import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
+import {nestedReplace} from 'tickets/common/utils'
 
 import TicketMacros from './TicketMacros'
 import TicketReply from './TicketReply'

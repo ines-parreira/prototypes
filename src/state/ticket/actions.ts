@@ -68,10 +68,10 @@ import {getCustomFields} from 'models/customField/resources'
 import {getInvalidTicketFieldIds} from 'utils/customFields'
 
 import {CustomerExternalData} from 'models/customerExternalData/types'
+import {nestedReplace} from 'tickets/common/utils'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
-    nestedReplace,
     guessReceiversFromTicket,
 } from './utils'
 import * as types from './constants'

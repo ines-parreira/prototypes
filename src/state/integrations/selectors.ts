@@ -20,7 +20,6 @@ import {compare} from 'utils'
 import {RootState} from 'state/types'
 import {getCurrentUserState} from 'state/currentUser/selectors'
 import {getNewPhoneNumbers as getNewPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
-import {nestedReplace} from 'state/ticket/utils'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
 import {ChannelLike} from 'services/channels'
 import {SourceAddress} from 'models/ticket/types'
@@ -30,6 +29,7 @@ import {
     isTicketChannel,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
+import {nestedReplace} from 'tickets/common/utils'
 
 import {IntegrationListItem, IntegrationsState} from './types'
 

@@ -23,8 +23,8 @@ import {getAgents} from 'state/agents/selectors'
 import * as currentUserSelectors from 'state/currentUser/selectors'
 import * as customersHelpers from 'state/customers/helpers'
 import {getTeams} from 'state/teams/selectors'
-import {parseTimedelta} from 'state/ticket/utils'
 import {RootState} from 'state/types'
+import {parseTimeDelta} from 'tickets/common/utils'
 import {formatDatetime, humanizeString, isImmutable} from 'utils'
 
 import css from './labels.less'
@@ -236,7 +236,7 @@ export const TimedeltaLabel = ({
     duration,
     className,
 }: TimedeltaLabelParamType) => {
-    const durationMoment = parseTimedelta(duration)
+    const durationMoment = parseTimeDelta(duration)
     const durationArray = []
     durationMoment.days()
         ? durationArray.push(`${durationMoment.days()} day(s)`)

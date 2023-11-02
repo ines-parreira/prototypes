@@ -28,14 +28,3 @@ foo",
   "body_html": "bar<br/>foo",
 }
 `;
-
-exports[`ticket utils replaceIntegrationVariables() should return an empty value and log a notification because there is no matching integration 1`] = `
-[
-  [
-    {
-      "title": "This customer does not have any Shopify information",
-      "type": "warning",
-    },
-  ],
-]
-`;

@@ -13,12 +13,9 @@ import {
     TicketVia,
 } from 'business/types/ticket'
 import * as ticketTypes from 'state/ticket/constants'
-import {
-    getSourceTypeOfResponse,
-    getChannelFromSourceType,
-} from 'state/ticket/utils'
+import {getSourceTypeOfResponse} from 'state/ticket/utils'
 import {GorgiasAction} from 'state/types'
-import {isPublic} from 'tickets/common/utils'
+import {getChannelFromSourceType, isPublic} from 'tickets/common/utils'
 
 import {MacroAction} from 'models/macroAction/types'
 import {addEmailExtra} from './actions'
