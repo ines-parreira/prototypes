@@ -80,6 +80,7 @@ export function DraftOrderModalContainer({
     onSubmit,
     onReset,
     title,
+    totalDraftOrderPrice,
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
@@ -397,7 +398,11 @@ export function DraftOrderModalContainer({
                     </Button>
                     <Button
                         color="primary"
-                        disabled={loading || isEmpty}
+                        disabled={
+                            loading ||
+                            isEmpty ||
+                            Number(totalDraftOrderPrice) === 0
+                        }
                         tabIndex={0}
                         className={css.focusable}
                         onClick={handlePaymentSubmit(true)}
@@ -422,6 +427,10 @@ const connector = connect(
             any
         > | null,
         products: getCreateOrderState(state).get('products'),
+        totalDraftOrderPrice: getCreateOrderState(state).getIn([
+            'calculatedDraftOrder',
+            'totalPrice',
+        ]),
     }),
     {
         addCustomRow,

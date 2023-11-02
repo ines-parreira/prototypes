@@ -229,6 +229,7 @@ const minProps = {
     onCreateDraftOrder: jest.fn().mockResolvedValue(draftOrder.set('id', 1)),
     onReset: jest.fn(),
     currentAccount: fromJS({}),
+    totalDraftOrderPrice: 100,
 }
 
 describe('<DraftOrderModal/>', () => {
