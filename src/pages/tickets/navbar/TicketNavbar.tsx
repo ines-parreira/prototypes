@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
@@ -7,6 +8,7 @@ import {DropTargetMonitor} from 'react-dnd'
 
 import navbarCss from 'assets/css/navbar.less'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     UserRole,
     UserSetting,
@@ -68,6 +70,8 @@ import {
     getBottomSystemTicketNavbarElements,
 } from 'state/views/selectors'
 
+import {SplitTicketViewProvider, SplitTicketViewToggle} from 'split-ticket-view'
+
 import {hasRole} from 'utils'
 import {systemViewIcons} from 'utils/views'
 
@@ -116,6 +120,8 @@ export function TicketNavbarContainer({
     submitSettingSuccess,
     disableResize = false,
 }: Props) {
+    const hasSplitTicketView: boolean | undefined =
+        useFlags()[FeatureFlagKey.SplitTicketView]
     const history = useHistory()
     const params = useParams<{viewId?: string}>()
     const {viewId} = useSearch<{viewId?: string}>()
@@ -439,122 +445,127 @@ export function TicketNavbarContainer({
     const {scrollableAreaRef} = useAutoScrollOnDragging()
 
     return (
-        <Navbar
-            activeContent="tickets"
-            disableResize={disableResize}
-            navbarContentRef={scrollableAreaRef}
-        >
-            <RecentChats />
-            {!!systemTopElements.length && (
-                <div className={navbarCss.category}>
-                    {systemTopElements.map((element) => (
-                        <TicketNavbarViewLink
-                            key={`view-${element.data.id}`}
-                            icon={
-                                systemViewIcons[
-                                    (element.data as View)
-                                        .slug as keyof typeof systemViewIcons
-                                ]
-                            }
-                            view={element.data as View}
-                            viewCount={viewsCount[element.data.id]}
-                        />
-                    ))}
-                </div>
-            )}
-            {categories.map((category) => (
-                <TicketNavbarDropTarget
-                    type={TicketNavbarElementType.Category}
-                    key={category}
-                    accept={TicketNavbarElementType.Category}
-                    canDrop={(item) =>
-                        item.type === TicketNavbarElementType.Category
-                    }
-                    onDrop={handleCategoryDrop}
-                >
-                    <NavbarBlock
-                        actions={
-                            (category === 'public' && isAgent) ||
-                            category === 'private'
-                                ? [
-                                      {
-                                          label: 'Create view',
-                                          onClick: () =>
-                                              history.push(
-                                                  `/app/tickets/new/${category}`
-                                              ),
-                                      },
-                                      {
-                                          label: 'Create section',
-                                          onClick: () =>
-                                              handleCreateSectionClick(
-                                                  category === 'private'
-                                              ),
-                                      },
-                                  ]
-                                : undefined
+        <SplitTicketViewProvider>
+            <Navbar
+                activeContent="tickets"
+                disableResize={disableResize}
+                navbarContentRef={scrollableAreaRef}
+                splitTicketViewToggle={
+                    hasSplitTicketView ? <SplitTicketViewToggle /> : undefined
+                }
+            >
+                <RecentChats />
+                {!!systemTopElements.length && (
+                    <div className={navbarCss.category}>
+                        {systemTopElements.map((element) => (
+                            <TicketNavbarViewLink
+                                key={`view-${element.data.id}`}
+                                icon={
+                                    systemViewIcons[
+                                        (element.data as View)
+                                            .slug as keyof typeof systemViewIcons
+                                    ]
+                                }
+                                view={element.data as View}
+                                viewCount={viewsCount[element.data.id]}
+                            />
+                        ))}
+                    </div>
+                )}
+                {categories.map((category) => (
+                    <TicketNavbarDropTarget
+                        type={TicketNavbarElementType.Category}
+                        key={category}
+                        accept={TicketNavbarElementType.Category}
+                        canDrop={(item) =>
+                            item.type === TicketNavbarElementType.Category
                         }
-                        title={viewCategories[category]}
-                        value={category}
-                        className={css.navbarBlock}
+                        onDrop={handleCategoryDrop}
                     >
-                        <TicketNavbarContent
-                            {...((category === 'public' && isAgent) ||
-                            category === 'private'
-                                ? {
-                                      onSectionDeleteClick:
-                                          handleSectionDeleteClick,
-                                      onSectionRenameClick:
-                                          handleSectionRenameClick,
-                                  }
-                                : {})}
-                            elements={
-                                category === 'public'
-                                    ? sharedElements
-                                    : privateElements
+                        <NavbarBlock
+                            actions={
+                                (category === 'public' && isAgent) ||
+                                category === 'private'
+                                    ? [
+                                          {
+                                              label: 'Create view',
+                                              onClick: () =>
+                                                  history.push(
+                                                      `/app/tickets/new/${category}`
+                                                  ),
+                                          },
+                                          {
+                                              label: 'Create section',
+                                              onClick: () =>
+                                                  handleCreateSectionClick(
+                                                      category === 'private'
+                                                  ),
+                                          },
+                                      ]
+                                    : undefined
                             }
-                            isMovingItem={isMovingItem}
-                            onSubmitMoveItem={handleSubmitMoveItem}
-                            isPrivate={category === 'private'}
-                        />
-                    </NavbarBlock>
-                </TicketNavbarDropTarget>
-            ))}
-            {!!systemBottomElements.length && (
-                <div className={navbarCss.category}>
-                    {systemBottomElements.map((element) => (
-                        <TicketNavbarViewLink
-                            key={`view-${element.data.id}`}
-                            icon={
-                                systemViewIcons[
-                                    (element.data as View)
-                                        .slug as keyof typeof systemViewIcons
-                                ]
-                            }
-                            view={element.data as View}
-                            viewCount={viewsCount[element.data.id]}
-                        />
-                    ))}
-                </div>
-            )}
-            <SectionFormModal
-                isNewSection={isNewSection}
-                isOpen={isSectionFormModalOpened}
-                isSubmitting={isSubmitting}
-                onChange={handleSectionDraftChange}
-                onClose={handleSectionModalClose}
-                onSubmit={handleSectionDraftSubmit}
-                sectionForm={sectionForm}
-            />
+                            title={viewCategories[category]}
+                            value={category}
+                            className={css.navbarBlock}
+                        >
+                            <TicketNavbarContent
+                                {...((category === 'public' && isAgent) ||
+                                category === 'private'
+                                    ? {
+                                          onSectionDeleteClick:
+                                              handleSectionDeleteClick,
+                                          onSectionRenameClick:
+                                              handleSectionRenameClick,
+                                      }
+                                    : {})}
+                                elements={
+                                    category === 'public'
+                                        ? sharedElements
+                                        : privateElements
+                                }
+                                isMovingItem={isMovingItem}
+                                onSubmitMoveItem={handleSubmitMoveItem}
+                                isPrivate={category === 'private'}
+                            />
+                        </NavbarBlock>
+                    </TicketNavbarDropTarget>
+                ))}
+                {!!systemBottomElements.length && (
+                    <div className={navbarCss.category}>
+                        {systemBottomElements.map((element) => (
+                            <TicketNavbarViewLink
+                                key={`view-${element.data.id}`}
+                                icon={
+                                    systemViewIcons[
+                                        (element.data as View)
+                                            .slug as keyof typeof systemViewIcons
+                                    ]
+                                }
+                                view={element.data as View}
+                                viewCount={viewsCount[element.data.id]}
+                            />
+                        ))}
+                    </div>
+                )}
+                <SectionFormModal
+                    isNewSection={isNewSection}
+                    isOpen={isSectionFormModalOpened}
+                    isSubmitting={isSubmitting}
+                    onChange={handleSectionDraftChange}
+                    onClose={handleSectionModalClose}
+                    onSubmit={handleSectionDraftSubmit}
+                    sectionForm={sectionForm}
+                />
 
-            <DeleteSectionModal
-                isOpen={isDeleteSectionModalOpened}
-                isSubmitting={isDeleting}
-                onClose={handleDeleteSectionModalClose}
-                onSubmit={handleSectionDelete}
-                section={sectionForm as Maybe<Section>}
-            />
-        </Navbar>
+                <DeleteSectionModal
+                    isOpen={isDeleteSectionModalOpened}
+                    isSubmitting={isDeleting}
+                    onClose={handleDeleteSectionModalClose}
+                    onSubmit={handleSectionDelete}
+                    section={sectionForm as Maybe<Section>}
+                />
+            </Navbar>
+        </SplitTicketViewProvider>
     )
 }
 

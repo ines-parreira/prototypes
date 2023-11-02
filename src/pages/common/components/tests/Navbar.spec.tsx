@@ -58,6 +58,16 @@ describe('<Navbar />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render the split ticket view toggle', () => {
+        const {container} = render(
+            <Navbar
+                splitTicketViewToggle={<button>Split ticket view</button>}
+                {...minProps}
+            />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it('should render the title', () => {
         const {getAllByText} = render(
             <Navbar {...minProps} activeContent="tickets" />

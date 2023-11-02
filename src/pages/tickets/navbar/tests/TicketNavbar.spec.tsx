@@ -1,12 +1,14 @@
 import {fireEvent} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, ReactNode} from 'react'
 import {createBrowserHistory} from 'history'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import {section} from 'fixtures/section'
 import {user} from 'fixtures/users'
@@ -22,6 +24,10 @@ import DeleteSectionModal from '../DeleteSectionModal'
 import SectionFormModal from '../SectionFormModal'
 import {TicketNavbarContainer} from '../TicketNavbar'
 import TicketNavbarContent from '../TicketNavbarContent'
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlags: jest.fn(),
+}))
 
 jest.mock(
     'pages/common/components/Navbar',
@@ -137,6 +143,8 @@ jest.mock(
 )
 const mockedServer = new MockAdapter(client)
 
+const useFlagsMock = useFlags as jest.Mock
+
 describe('<TicketNavbar/>', () => {
     const minProps = {
         activeViewId: 4,
@@ -208,6 +216,8 @@ describe('<TicketNavbar/>', () => {
         mockedServer.onPost('/api/view-sections/').reply(200, section)
         mockedServer.onPut(/\/api\/view-sections\/\d+\//).reply(200, section)
         mockedServer.onDelete(/\/api\/view-sections\/\d+\//).reply(200)
+
+        useFlagsMock.mockReturnValue({[FeatureFlagKey.SplitTicketView]: true})
     })
 
     it('should render', () => {

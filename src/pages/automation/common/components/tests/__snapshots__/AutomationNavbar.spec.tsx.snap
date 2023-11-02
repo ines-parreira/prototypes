@@ -10,94 +10,98 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
       class="nav-primary hidden-panel"
     >
       <div
-        class="nav-dropdown dropdown"
+        class="nav-dropdown-wrapper"
       >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-transparent"
-          type="button"
-        >
-          <div>
-            Automation
-            <i
-              class="material-icons icon-more"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </button>
         <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu"
-          role="menu"
-          tabindex="-1"
+          class="nav-dropdown dropdown"
         >
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/tickets"
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
           >
-            <i
-              class="material-icons mr-2 icon"
-            >
-              question_answer
-            </i>
-            Tickets
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/automation/macros"
+            <div>
+              Automation
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
           >
-            <i
-              class="material-icons mr-2 icon"
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
             >
-              bolt
-            </i>
-            Automation
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/customers"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation/macros"
             >
-              people
-            </i>
-            Customers
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/stats"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automation
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
             >
-              bar_chart
-            </i>
-            Statistics
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/settings"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
             >
-              settings
-            </i>
-            Settings
-          </a>
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -438,94 +442,98 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
       class="nav-primary hidden-panel"
     >
       <div
-        class="nav-dropdown dropdown"
+        class="nav-dropdown-wrapper"
       >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-transparent"
-          type="button"
-        >
-          <div>
-            Automation
-            <i
-              class="material-icons icon-more"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </button>
         <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu"
-          role="menu"
-          tabindex="-1"
+          class="nav-dropdown dropdown"
         >
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/tickets"
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
           >
-            <i
-              class="material-icons mr-2 icon"
-            >
-              question_answer
-            </i>
-            Tickets
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/automation/macros"
+            <div>
+              Automation
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
           >
-            <i
-              class="material-icons mr-2 icon"
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
             >
-              bolt
-            </i>
-            Automation
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/customers"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation/macros"
             >
-              people
-            </i>
-            Customers
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/stats"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automation
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
             >
-              bar_chart
-            </i>
-            Statistics
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/settings"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
             >
-              settings
-            </i>
-            Settings
-          </a>
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -802,94 +810,98 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
       class="nav-primary hidden-panel"
     >
       <div
-        class="nav-dropdown dropdown"
+        class="nav-dropdown-wrapper"
       >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-transparent"
-          type="button"
-        >
-          <div>
-            Automation
-            <i
-              class="material-icons icon-more"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </button>
         <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu"
-          role="menu"
-          tabindex="-1"
+          class="nav-dropdown dropdown"
         >
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/tickets"
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
           >
-            <i
-              class="material-icons mr-2 icon"
-            >
-              question_answer
-            </i>
-            Tickets
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/automation/macros"
+            <div>
+              Automation
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
           >
-            <i
-              class="material-icons mr-2 icon"
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
             >
-              bolt
-            </i>
-            Automation
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/customers"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation/macros"
             >
-              people
-            </i>
-            Customers
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/stats"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automation
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
             >
-              bar_chart
-            </i>
-            Statistics
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/settings"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
             >
-              settings
-            </i>
-            Settings
-          </a>
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -1113,94 +1125,98 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
       class="nav-primary hidden-panel"
     >
       <div
-        class="nav-dropdown dropdown"
+        class="nav-dropdown-wrapper"
       >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-transparent"
-          type="button"
-        >
-          <div>
-            Automation
-            <i
-              class="material-icons icon-more"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </button>
         <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu"
-          role="menu"
-          tabindex="-1"
+          class="nav-dropdown dropdown"
         >
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/tickets"
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
           >
-            <i
-              class="material-icons mr-2 icon"
-            >
-              question_answer
-            </i>
-            Tickets
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/automation/macros"
+            <div>
+              Automation
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
           >
-            <i
-              class="material-icons mr-2 icon"
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
             >
-              bolt
-            </i>
-            Automation
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/customers"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation/macros"
             >
-              people
-            </i>
-            Customers
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/stats"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automation
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
             >
-              bar_chart
-            </i>
-            Statistics
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/settings"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
             >
-              settings
-            </i>
-            Settings
-          </a>
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -1541,94 +1557,98 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
       class="nav-primary hidden-panel"
     >
       <div
-        class="nav-dropdown dropdown"
+        class="nav-dropdown-wrapper"
       >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-transparent"
-          type="button"
-        >
-          <div>
-            Automation
-            <i
-              class="material-icons icon-more"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </button>
         <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu"
-          role="menu"
-          tabindex="-1"
+          class="nav-dropdown dropdown"
         >
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/tickets"
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
           >
-            <i
-              class="material-icons mr-2 icon"
-            >
-              question_answer
-            </i>
-            Tickets
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/automation/macros"
+            <div>
+              Automation
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
           >
-            <i
-              class="material-icons mr-2 icon"
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
             >
-              bolt
-            </i>
-            Automation
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/customers"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation/macros"
             >
-              people
-            </i>
-            Customers
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/stats"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automation
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
             >
-              bar_chart
-            </i>
-            Statistics
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/settings"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
             >
-              settings
-            </i>
-            Settings
-          </a>
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -1905,94 +1925,98 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
       class="nav-primary hidden-panel"
     >
       <div
-        class="nav-dropdown dropdown"
+        class="nav-dropdown-wrapper"
       >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-transparent"
-          type="button"
-        >
-          <div>
-            Automation
-            <i
-              class="material-icons icon-more"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </button>
         <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu"
-          role="menu"
-          tabindex="-1"
+          class="nav-dropdown dropdown"
         >
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/tickets"
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
           >
-            <i
-              class="material-icons mr-2 icon"
-            >
-              question_answer
-            </i>
-            Tickets
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/automation/macros"
+            <div>
+              Automation
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
           >
-            <i
-              class="material-icons mr-2 icon"
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
             >
-              bolt
-            </i>
-            Automation
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/customers"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation/macros"
             >
-              people
-            </i>
-            Customers
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/stats"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automation
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
             >
-              bar_chart
-            </i>
-            Statistics
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/settings"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
             >
-              settings
-            </i>
-            Settings
-          </a>
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -2216,94 +2240,98 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
       class="nav-primary hidden-panel"
     >
       <div
-        class="nav-dropdown dropdown"
+        class="nav-dropdown-wrapper"
       >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-transparent"
-          type="button"
-        >
-          <div>
-            Automation
-            <i
-              class="material-icons icon-more"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </button>
         <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu"
-          role="menu"
-          tabindex="-1"
+          class="nav-dropdown dropdown"
         >
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/tickets"
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
           >
-            <i
-              class="material-icons mr-2 icon"
-            >
-              question_answer
-            </i>
-            Tickets
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/automation/macros"
+            <div>
+              Automation
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
           >
-            <i
-              class="material-icons mr-2 icon"
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
             >
-              bolt
-            </i>
-            Automation
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/customers"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation/macros"
             >
-              people
-            </i>
-            Customers
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/stats"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automation
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
             >
-              bar_chart
-            </i>
-            Statistics
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/settings"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
             >
-              settings
-            </i>
-            Settings
-          </a>
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -2425,94 +2453,98 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
       class="nav-primary hidden-panel"
     >
       <div
-        class="nav-dropdown dropdown"
+        class="nav-dropdown-wrapper"
       >
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-transparent"
-          type="button"
-        >
-          <div>
-            Automation
-            <i
-              class="material-icons icon-more"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </button>
         <div
-          aria-hidden="true"
-          class="dropdown-menu dropdown-menu"
-          role="menu"
-          tabindex="-1"
+          class="nav-dropdown dropdown"
         >
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/tickets"
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
           >
-            <i
-              class="material-icons mr-2 icon"
-            >
-              question_answer
-            </i>
-            Tickets
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/automation/macros"
+            <div>
+              Automation
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
           >
-            <i
-              class="material-icons mr-2 icon"
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
             >
-              bolt
-            </i>
-            Automation
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/customers"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation/macros"
             >
-              people
-            </i>
-            Customers
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/stats"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automation
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
             >
-              bar_chart
-            </i>
-            Statistics
-          </a>
-          <a
-            class="dropdown-item dropdown-item menu-item"
-            role="menuitem"
-            tabindex="0"
-            to="/app/settings"
-          >
-            <i
-              class="material-icons mr-2 icon"
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
             >
-              settings
-            </i>
-            Settings
-          </a>
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
         </div>
       </div>
       <div

@@ -132,6 +132,7 @@ type OwnProps = {
     children: ReactNode
     disableResize?: boolean
     navbarContentRef?: RefObject<HTMLDivElement>
+    splitTicketViewToggle?: ReactNode
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -327,6 +328,7 @@ export class Navbar extends Component<Props, State> {
             isTrialing,
             isPreferencesLoading,
             navbarContentRef,
+            splitTicketViewToggle,
         } = this.props
         const {isResizing} = this.state
         const isBasicOrPro = ['pro', 'basic'].some((priceType) =>
@@ -347,55 +349,60 @@ export class Navbar extends Component<Props, State> {
                         [css['hidden-panel']]: !this.props.isOpenedPanel,
                     })}
                 >
-                    <UncontrolledDropdown className={css['nav-dropdown']}>
-                        <DropdownToggle
-                            color="transparent"
-                            className={css['dropdown-toggle']}
-                        >
-                            <div>
-                                {this.state.title || ''}
-                                <i
-                                    className={classnames(
-                                        'material-icons',
-                                        css['icon-more']
-                                    )}
-                                >
-                                    arrow_drop_down
-                                </i>
-                            </div>
-                        </DropdownToggle>
-
-                        <DropdownMenu className={css['dropdown-menu']}>
-                            {mainMenu.map((item) => {
-                                return (
-                                    <DropdownItem
-                                        key={item.label}
-                                        tag={NavLink}
-                                        to={item.url}
-                                        onClick={() => {
-                                            this.setState({title: item.label})
-                                            logEvent(
-                                                SegmentEvent.MenuMainLinkClicked,
-                                                item.segmentProp
-                                            )
-                                            this._closePanel()
-                                        }}
-                                        className={css['dropdown-item']}
+                    <div className={css['nav-dropdown-wrapper']}>
+                        <UncontrolledDropdown className={css['nav-dropdown']}>
+                            <DropdownToggle
+                                color="transparent"
+                                className={css['dropdown-toggle']}
+                            >
+                                <div>
+                                    {this.state.title || ''}
+                                    <i
+                                        className={classnames(
+                                            'material-icons',
+                                            css['icon-more']
+                                        )}
                                     >
-                                        <i
-                                            className={classnames(
-                                                'material-icons mr-2',
-                                                css.icon
-                                            )}
+                                        arrow_drop_down
+                                    </i>
+                                </div>
+                            </DropdownToggle>
+
+                            <DropdownMenu className={css['dropdown-menu']}>
+                                {mainMenu.map((item) => {
+                                    return (
+                                        <DropdownItem
+                                            key={item.label}
+                                            tag={NavLink}
+                                            to={item.url}
+                                            onClick={() => {
+                                                this.setState({
+                                                    title: item.label,
+                                                })
+                                                logEvent(
+                                                    SegmentEvent.MenuMainLinkClicked,
+                                                    item.segmentProp
+                                                )
+                                                this._closePanel()
+                                            }}
+                                            className={css['dropdown-item']}
                                         >
-                                            {item.icon}
-                                        </i>
-                                        {item.content ?? item.label}
-                                    </DropdownItem>
-                                )
-                            })}
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
+                                            <i
+                                                className={classnames(
+                                                    'material-icons mr-2',
+                                                    css.icon
+                                                )}
+                                            >
+                                                {item.icon}
+                                            </i>
+                                            {item.content ?? item.label}
+                                        </DropdownItem>
+                                    )
+                                })}
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                        {splitTicketViewToggle}
+                    </div>
 
                     <div className={css['navbar-cta-group']}>
                         <HomePageLink />
