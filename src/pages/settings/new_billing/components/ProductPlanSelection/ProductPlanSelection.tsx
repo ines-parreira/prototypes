@@ -11,11 +11,7 @@ import {
 } from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {
-    isStarterTierPrice,
-    isTrialPrice,
-    isAAOLegacyPrice,
-} from 'models/billing/utils'
+import {isStarterTierPrice, getProductLabel} from 'models/billing/utils'
 import Tooltip from 'pages/common/components/Tooltip'
 import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages} from 'state/billing/types'
@@ -108,16 +104,9 @@ const ProductPlanSelection = ({
                 | SMSOrVoicePrice
                 | ConvertPrice
         ) => {
-            if (isTrialPrice(price, type) && type === ProductType.Convert) {
-                return 'Pay as you go'
-            }
-
-            if (isTrialPrice(price, type)) {
-                return 'Trial'
-            }
-
-            if (isAAOLegacyPrice(price, type)) {
-                return 'Legacy'
+            const label = getProductLabel(price, type)
+            if (label) {
+                return label
             }
 
             return formatNumTickets(price.num_quota_tickets ?? 0)

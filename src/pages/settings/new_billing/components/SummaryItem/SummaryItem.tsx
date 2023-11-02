@@ -9,7 +9,7 @@ import {
     ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
-import {isAAOLegacyPrice, isTrialPrice} from 'models/billing/utils'
+import {getProductLabel, isTrialPrice} from 'models/billing/utils'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {PRODUCT_INFO} from '../../constants'
 import {formatAmount} from '../../utils/formatAmount'
@@ -74,12 +74,11 @@ const SummaryItem = ({
     }, [prices, product, selectedPlan])
 
     const description = useMemo(() => {
-        if (selectedPlan.plan && isTrialPrice(selectedPlan.plan, type)) {
-            return <div>Trial</div>
-        }
-
-        if (selectedPlan.plan && isAAOLegacyPrice(selectedPlan.plan, type)) {
-            return <>Legacy</>
+        if (selectedPlan.plan) {
+            const label = getProductLabel(selectedPlan.plan, type)
+            if (label) {
+                return <div>{label}</div>
+            }
         }
 
         return (

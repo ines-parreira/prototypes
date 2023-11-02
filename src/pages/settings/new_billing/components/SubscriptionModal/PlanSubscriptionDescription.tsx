@@ -19,7 +19,7 @@ import {fetchCreditCard} from 'state/billing/actions'
 import SummaryPaymentSection from 'pages/settings/new_billing/components/SummaryPaymentSection/SummaryPaymentSection'
 
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
-import {isTrialPrice} from 'models/billing/utils'
+import {getProductLabel} from 'models/billing/utils'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
 import CounterText from 'pages/settings/new_billing/components/CounterText'
 import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
@@ -67,12 +67,9 @@ const PlanSubscriptionDescription = ({
 
     const formatOptionLabel = useCallback(
         (price: Price) => {
-            if (isTrialPrice(price, productType)) {
-                if (productType === ProductType.Convert) {
-                    return 'Pay as you go'
-                }
-
-                return 'Trial'
+            const label = getProductLabel(price, productType)
+            if (label) {
+                return label
             }
 
             return formatNumTickets(price.num_quota_tickets ?? 0)

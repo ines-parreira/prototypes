@@ -4,16 +4,21 @@ import {
     smsProduct,
     starterHelpdeskPrice,
     basicYearlyHelpdeskPrice,
+    convertPrice0,
+    voicePrice0,
+    legacyBasicAutomationPrice,
 } from 'fixtures/productPrices'
 
 import {
     getCheapestPrice,
     getFormattedAmount,
     getFullPrice,
+    getProductLabel,
     isAutomationPrice,
     isHelpdeskPrice,
     isStarterTierPrice,
 } from '../utils'
+import {ProductType} from '../types'
 
 describe('getFullPrice', () => {
     it('should return the full price from discounted price and the percentage of discount presented in decimal', () => {
@@ -82,4 +87,18 @@ describe('getCheapestPrice', () => {
             getCheapestPrice(smsProduct.prices, smsProduct.prices[0].interval)
         ).toEqual(smsProduct.prices[0])
     })
+})
+
+describe('getProductLabel', () => {
+    it.each([
+        [basicMonthlyHelpdeskPrice, ProductType.Helpdesk, undefined],
+        [voicePrice0, ProductType.Voice, 'Trial'],
+        [legacyBasicAutomationPrice, ProductType.Automation, 'Legacy'],
+        [convertPrice0, ProductType.Convert, 'Pay as you go'],
+    ])(
+        'should return the product label for the given price and type',
+        (price, type, expectedResult) => {
+            expect(getProductLabel(price, type)).toBe(expectedResult)
+        }
+    )
 })

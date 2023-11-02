@@ -6,6 +6,7 @@ import {
     ConvertPrice,
     HelpdeskPrice,
     PlanInterval,
+    Price,
     ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
@@ -85,3 +86,20 @@ export const getCheapestPrice = (
               (price) => price.amount
           )
         : undefined
+
+export function getProductLabel(
+    price: Price,
+    type: ProductType
+): string | undefined {
+    if (isTrialPrice(price, type)) {
+        if (type === ProductType.Convert) {
+            return 'Pay as you go'
+        }
+
+        return 'Trial'
+    }
+
+    if (isAAOLegacyPrice(price, type)) {
+        return 'Legacy'
+    }
+}
