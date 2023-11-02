@@ -12,15 +12,13 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import closeIcon from 'assets/img/icons/close.svg'
 
 import {useIsHiddenByLegacyFlag} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsHiddenByLegacyFlag'
+import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from './constants'
 import css from './CampaignGenerator.less'
 
 type Props = {
     integration: Map<any, any>
     currentUser: Map<any, any>
 }
-
-export const CAMPAIGN_INFO_BOX_STORAGE_KEY =
-    'gorgias:hideRevenueCampaignsInfoBox'
 
 export const CampaignGenerator = ({
     integration,

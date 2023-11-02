@@ -10,7 +10,7 @@ import {billingState} from 'fixtures/billing'
 import * as actions from 'state/integrations/actions'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useSearch from 'hooks/useSearch'
-import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator'
+import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/constants'
 
 import GorgiasChatIntegrationCampaigns, {
     GorgiasChatIntegrationCampaignsComponent,

@@ -1,7 +1,7 @@
 import {useLocalStorage} from 'react-use'
 import {useMemo} from 'react'
 import moment from 'moment'
-import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator'
+import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/constants'
 
 export const CUTOFF_DATETIME = moment('2023-08-15T00:00:00.000Z')
 
