@@ -1,6 +1,7 @@
 import {Map} from 'immutable'
+
+import {getTrackingLink} from 'common/tracking'
 import {IntegrationType} from '../../models/integration/types'
-import {getTrackingLink} from '../../pages/common/components/infobar/utils'
 
 function getLastOrderTrackingURL(
     context: Map<any, any>,

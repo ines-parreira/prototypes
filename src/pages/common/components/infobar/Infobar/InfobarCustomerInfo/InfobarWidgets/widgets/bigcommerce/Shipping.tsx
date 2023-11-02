@@ -1,8 +1,8 @@
 import React, {useContext} from 'react'
 import {Map} from 'immutable'
 
+import {getTrackingLink} from 'common/tracking'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getTrackingLink} from 'pages/common/components/infobar/utils'
 import {StaticField} from '../StaticField'
 export default function Shipping() {
     return {
