@@ -9,7 +9,7 @@ import {
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
 import {ManualAmountRefundOrderModal} from '../ManualAmountRefundOrderModal'
-import {BigCommerceRefundActionType} from '../../reducer'
+import {BigCommerceRefundActionType} from '../../types'
 
 type Props = ComponentProps<typeof ManualAmountRefundOrderModal>
 

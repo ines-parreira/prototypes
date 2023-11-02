@@ -7,7 +7,7 @@ import {
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
 import {EntireOrderRefundOrderModal} from '../EntireOrderRefundOrderModal'
-import {BigCommerceRefundActionType} from '../../reducer'
+import {BigCommerceRefundActionType} from '../../types'
 
 type Props = ComponentProps<typeof EntireOrderRefundOrderModal>
 

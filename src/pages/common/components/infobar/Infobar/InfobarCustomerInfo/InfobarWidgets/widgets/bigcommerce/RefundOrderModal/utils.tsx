@@ -29,7 +29,7 @@ import {fetchIntegrationProducts} from 'state/integrations/helpers'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
-} from './reducer'
+} from './types'
 
 export const onReset = _debounce(
     ({

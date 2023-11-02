@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
 import {act} from '@testing-library/react-hooks'
 import {RefundOrderFooter} from '../RefundOrderFooter'
-import {BigCommerceRefundActionType} from '../../reducer'
+import {BigCommerceRefundActionType} from '../../types'
 
 type Props = ComponentProps<typeof RefundOrderFooter>
 

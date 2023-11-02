@@ -29,7 +29,7 @@ import {
     calculateOrderSubtotal,
     calculateOrderTotal,
 } from '../utils'
-import {BigCommerceRefundActionType} from '../reducer'
+import {BigCommerceRefundActionType} from '../types'
 
 const refundItemsPayload = {
     items: [

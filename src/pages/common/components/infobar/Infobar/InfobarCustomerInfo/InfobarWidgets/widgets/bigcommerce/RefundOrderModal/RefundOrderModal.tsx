@@ -46,8 +46,8 @@ import {
 import {
     initialBigCommerceRefundOrderState,
     bigcommerceRefundOrderReducer,
-    BigCommerceRefundActionType,
 } from './reducer'
+import {BigCommerceRefundActionType} from './types'
 
 type Props = {
     integration: BigCommerceIntegration

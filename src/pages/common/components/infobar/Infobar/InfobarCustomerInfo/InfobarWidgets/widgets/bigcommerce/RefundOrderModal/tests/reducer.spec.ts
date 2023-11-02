@@ -11,10 +11,10 @@ import {
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
 import {
-    BigCommerceRefundActionType,
     bigcommerceRefundOrderReducer,
     initialBigCommerceRefundOrderState,
 } from '../reducer'
+import {BigCommerceRefundActionType} from '../types'
 
 const availablePaymentOptions: BigCommerceAvailablePaymentOptionsData = {
     total_refund_amount: 12345678.9,

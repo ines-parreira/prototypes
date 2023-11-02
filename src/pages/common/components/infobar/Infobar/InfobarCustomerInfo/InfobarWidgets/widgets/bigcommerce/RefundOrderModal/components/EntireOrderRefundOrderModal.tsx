@@ -10,7 +10,7 @@ import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
-} from '../reducer'
+} from '../types'
 import OrderTable from './order-table/OrderTable'
 import css from './EntireOrderRefundOrderModal.less'
 

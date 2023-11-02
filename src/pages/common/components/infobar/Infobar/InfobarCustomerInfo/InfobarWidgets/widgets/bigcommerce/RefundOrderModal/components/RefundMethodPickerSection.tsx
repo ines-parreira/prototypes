@@ -12,7 +12,7 @@ import {buildPaymentOptionLabel} from '../utils'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
-} from '../reducer'
+} from '../types'
 
 type Props = {
     availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>

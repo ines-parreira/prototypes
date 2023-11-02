@@ -12,7 +12,7 @@ import NumberInput from 'pages/common/forms/input/NumberInput'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
-} from '../reducer'
+} from '../types'
 import {formatAmount} from '../utils'
 import cssRefundOrderModal from '../RefundOrderModal.less'
 import css from './ManualAmountRefundOrderModal.less'

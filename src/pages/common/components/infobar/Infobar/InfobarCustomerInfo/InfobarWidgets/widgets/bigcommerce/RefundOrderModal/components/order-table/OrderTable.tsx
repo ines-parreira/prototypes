@@ -11,7 +11,7 @@ import {
     ProductItemRefundData,
     ShippingItemRefundData,
 } from 'models/integration/types'
-import {BIGCOMMERCE_REFUND_ACTION_TYPE} from '../../reducer'
+import {BIGCOMMERCE_REFUND_ACTION_TYPE} from '../../types'
 import {OrderLineItemRow} from './OrderLineItemRow'
 import {TotalsSummaryComponent} from './TotalsSummaryComponent'
 import bigcommerceTableCss from './OrderTable.less'

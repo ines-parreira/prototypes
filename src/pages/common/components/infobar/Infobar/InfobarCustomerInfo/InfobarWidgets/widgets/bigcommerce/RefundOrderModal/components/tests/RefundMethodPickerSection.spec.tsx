@@ -5,7 +5,7 @@ import {BigCommerceRefundType} from 'models/integration/types'
 import {bigCommerceAvailablePaymentOptionsDataResponseFixture} from 'fixtures/bigcommerce'
 import {RefundMethodPickerSection} from '../RefundMethodPickerSection'
 import {defaultBigCommerceRefundType} from '../../consts'
-import {BigCommerceRefundActionType} from '../../reducer'
+import {BigCommerceRefundActionType} from '../../types'
 
 type Props = ComponentProps<typeof RefundMethodPickerSection>
 

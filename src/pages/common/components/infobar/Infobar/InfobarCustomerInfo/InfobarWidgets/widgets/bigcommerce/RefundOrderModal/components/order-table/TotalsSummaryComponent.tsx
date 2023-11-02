@@ -20,7 +20,7 @@ import {
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
-} from '../../reducer'
+} from '../../types'
 import bigcommerceTableCss from './OrderTable.less'
 import {RefundableAmountComponent} from './RefundableAmountComponent'
 

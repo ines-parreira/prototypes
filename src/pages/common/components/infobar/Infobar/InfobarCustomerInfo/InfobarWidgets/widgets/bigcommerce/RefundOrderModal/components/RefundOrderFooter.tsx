@@ -16,7 +16,7 @@ import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
-} from '../reducer'
+} from '../types'
 import css from './RefundOrderFooter.less'
 
 type Props = {
