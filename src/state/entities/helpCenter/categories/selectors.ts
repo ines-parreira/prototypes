@@ -8,7 +8,7 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import {getArticles} from '../articles/selectors'
 import {getHelpCenterStore} from '../selectors'
-import {isNonRootCategory} from '.'
+import {isNonRootCategory} from './types'
 
 export const helpCenterCategoriesStore = createSelector(
     getHelpCenterStore,
