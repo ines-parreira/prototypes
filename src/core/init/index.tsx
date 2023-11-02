@@ -1,4 +1,5 @@
 import './initQueryClient'
+import './initSocketManager'
 
 import React from 'react'
 import {render} from 'react-dom'

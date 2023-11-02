@@ -1,7 +1,6 @@
-import _find from 'lodash/find'
+import _noop from 'lodash/noop'
 import * as reapop from 'reapop'
 
-import * as socketEvents from 'config/socketEvents'
 import * as actions from 'state/notifications/actions'
 
 import * as segment from 'common/segment'
@@ -14,7 +13,9 @@ import {
     BroadcastChannelEvent,
     MessagePortEvent,
     JoinEventType,
+    ReceivedEvent,
     SocketEventType,
+    SendEvent,
     ServerMessage,
 } from '../types'
 import {SocketManager} from '../socketManager'
@@ -144,15 +145,21 @@ describe('SocketManager', () => {
         )
 
         it('should call `onReceive` of matching configuration', () => {
+            const event: ReceivedEvent = {
+                name: 'customer-updated',
+                onReceive: _noop,
+            }
+
+            socketManager.registerReceivedEvents([event])
+
             const eventType = 'customer-updated'
             const serverMessage = {event: {type: eventType}}
 
-            const config = _find(socketEvents.receivedEvents, {name: eventType})
-            config!.onReceive.call = jest.fn()
+            event.onReceive.call = jest.fn()
 
             socketManager.onServerMessage(serverMessage as Maybe<ServerMessage>)
 
-            expect(config!.onReceive.call).toHaveBeenCalledWith(
+            expect(event.onReceive.call).toHaveBeenCalledWith(
                 socketManager,
                 serverMessage
             )
@@ -186,40 +193,78 @@ describe('SocketManager', () => {
 
     describe('send()', () => {
         it('should call `_sendDataToServer` using the data formatted using the config matching passed `configName`', () => {
-            const configName = SocketEventType.TicketViewed
-            const config = _find(socketEvents.sendEvents, {name: configName})
+            const event: SendEvent = {
+                name: SocketEventType.TicketViewed,
+                dataToSend: function (id) {
+                    return {
+                        clientId: window.CLIENT_ID,
+                        event: SocketEventType.TicketViewed,
+                        dataType: 'Ticket',
+                        data: parseInt(id as string),
+                    }
+                },
+            }
+
+            socketManager.registerSendEvents([event])
+
             const id = '1'
-
-            socketManager.send(configName, id)
-
-            expect(sendToServerSpy).toHaveBeenCalledWith(config!.dataToSend(id))
+            socketManager.send(SocketEventType.TicketViewed, id)
+            expect(sendToServerSpy).toHaveBeenCalledWith(event.dataToSend(id))
         })
     })
 
     describe('join()', () => {
         it('should call `_sendDataToServer` using the data formatted using the config matching passed `configName`', () => {
-            const configName = JoinEventType.Ticket
-            const config = _find(socketEvents.joinEvents, {name: configName})
+            const event: SendEvent = {
+                name: JoinEventType.Ticket,
+                dataToSend: function (id) {
+                    return {
+                        clientId: window.CLIENT_ID,
+                        dataType: 'Ticket',
+                        data: parseInt(id as string),
+                    }
+                },
+                onLeave: function (id) {
+                    return (this as unknown as SocketManager).send(
+                        SocketEventType.AgentTypingStopped,
+                        id
+                    )
+                },
+            }
+
+            socketManager.registerJoinEvents([event])
+
             const id = '1'
-
-            socketManager.join(configName, id)
-
-            expect(joinRoomSpy).toHaveBeenCalledWith(config!.dataToSend(id))
+            socketManager.join(JoinEventType.Ticket, id)
+            expect(joinRoomSpy).toHaveBeenCalledWith(event.dataToSend(id))
         })
     })
 
     describe('leave()', () => {
         it('should call `_sendDataToServer` using the data formatted using the config matching passed `configName`', () => {
-            const configName = JoinEventType.Ticket
-            const config = _find(socketEvents.joinEvents, {name: configName})
+            const event: SendEvent = {
+                name: JoinEventType.Ticket,
+                dataToSend: function (id) {
+                    return {
+                        clientId: window.CLIENT_ID,
+                        dataType: 'Ticket',
+                        data: parseInt(id as string),
+                    }
+                },
+                onLeave: function (id) {
+                    return (this as unknown as SocketManager).send(
+                        SocketEventType.AgentTypingStopped,
+                        id
+                    )
+                },
+            }
+
+            socketManager.registerJoinEvents([event])
+
             const id = '1'
-
-            socketManager.leave(configName, id)
-
+            socketManager.leave(JoinEventType.Ticket, id)
             expect(leaveRoomSpy).toHaveBeenCalledTimes(1)
-            expect(leaveRoomSpy.mock.calls[0][0]).toEqual(
-                config!.dataToSend(id)
-            )
+            expect(leaveRoomSpy.mock.calls[0][0]).toEqual(event.dataToSend(id))
         })
     })
 

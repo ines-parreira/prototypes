@@ -7,7 +7,6 @@ import refreshIcon from 'assets/img/icons/refresh.svg'
 
 import {store} from 'common/store'
 import {devLog} from 'utils'
-import * as socketEvents from 'config/socketEvents'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
@@ -25,6 +24,9 @@ import {
     BroadcastChannelEvent,
     JoinEventType,
     MessagePortEvent,
+    ReceivedEvent,
+    SendData,
+    SendEvent,
     ServerMessage,
     SocketEventType,
     WSMessage,
@@ -39,13 +41,17 @@ const currentBrowserSupportsSharedWorker =
  * Manage the connection with the shared worker that handles the websocket connection with the back-end.
  */
 export class SocketManager {
+    private joinEvents: SendEvent[] = []
+    private receivedEvents: ReceivedEvent[] = []
+    private sendEvents: SendEvent[] = []
+
     scopedBroadcastChannel = currentBrowserSupportsSharedWorker
         ? new window.BroadcastChannel(SCOPED_BROADCAST_CHANNEL_NAME)
         : fallbackBroadcastChannelAdapter
     isConnected = false
     disconnectedNotificationId = '696480246'
     outdatedNotificationId = 'outdated-shared-worker'
-    rooms: socketEvents.SendData[] = [] // rooms currently joined
+    rooms: SendData[] = [] // rooms currently joined
     worker = currentBrowserSupportsSharedWorker
         ? new window.SharedWorker(
               window.SHARED_WORKER_BUILD_URL,
@@ -81,6 +87,18 @@ export class SocketManager {
         })
     }
 
+    registerJoinEvents(events: SendEvent[]) {
+        events.forEach((event) => this.joinEvents.push(event))
+    }
+
+    registerReceivedEvents(events: ReceivedEvent[]) {
+        events.forEach((event) => this.receivedEvents.push(event))
+    }
+
+    registerSendEvents(events: SendEvent[]) {
+        events.forEach((event) => this.sendEvents.push(event))
+    }
+
     onMessage = (message: WSMessage) => {
         switch (message.type) {
             case BroadcastChannelEvent.WsConnected:
@@ -114,7 +132,7 @@ export class SocketManager {
         }
 
         // find config of received event
-        const config = _find(socketEvents.receivedEvents, {
+        const config = _find(this.receivedEvents, {
             name: json.event.type,
         })
         if (!config) {
@@ -168,7 +186,7 @@ export class SocketManager {
      * socketManagerInstance.send('ticket-viewed', 12
      */
     send = (configName: SocketEventType, ...args: Array<any>) => {
-        const config = _find(socketEvents.sendEvents, {name: configName})
+        const config = _find(this.sendEvents, {name: configName})
 
         if (!config) {
             return
@@ -185,7 +203,7 @@ export class SocketManager {
      * socketManagerInstance.join('ticket', 12
      */
     join = (configName: JoinEventType, ...args: Array<any>) => {
-        const config = _find(socketEvents.joinEvents, {name: configName})
+        const config = _find(this.joinEvents, {name: configName})
 
         if (!config) {
             return
@@ -200,7 +218,7 @@ export class SocketManager {
      * socketManagerInstance.leave('ticket', 12)
      */
     leave = (configName: JoinEventType, ...args: Array<any>) => {
-        const config = _find(socketEvents.joinEvents, {name: configName})
+        const config = _find(this.joinEvents, {name: configName})
 
         if (!config) {
             return
@@ -227,7 +245,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._sendToServer({event: 'ticket-viewed', ticketId: 12})
      */
-    _sendToServer = (data: socketEvents.SendData, callback?: () => void) => {
+    _sendToServer = (data: SendData, callback?: () => void) => {
         this.worker.port.postMessage(data)
 
         if (callback) {
@@ -241,7 +259,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._joinRoom({dataType: 'Ticket', data: 12})
      */
-    _joinRoom = (data: socketEvents.SendData, callback: () => void = _noop) => {
+    _joinRoom = (data: SendData, callback: () => void = _noop) => {
         // if no object id or object type, we don't join anything
         if (!data.data || !data.dataType) {
             return
@@ -271,7 +289,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._saveJoinRoom({event: 'join-room', dataType: 'Ticket', data: 12})
      */
-    _saveJoinRoom = (data: socketEvents.SendData) => {
+    _saveJoinRoom = (data: SendData) => {
         // leave other rooms of same dataType
         this._saveLeaveRoom(data)
         // add this room to current rooms
@@ -284,10 +302,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._leaveRoom({dataType: 'Ticket', data: 12})
      */
-    _leaveRoom = (
-        data: socketEvents.SendData,
-        callback: () => void = _noop
-    ) => {
+    _leaveRoom = (data: SendData, callback: () => void = _noop) => {
         // if no object id or object type, we don't leave anything
         if (!data.data || !data.dataType) {
             return
@@ -317,7 +332,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._saveJoinRoom({event: 'leave-room', dataType: 'Ticket', data: 12})
      */
-    _saveLeaveRoom = (data: socketEvents.SendData) => {
+    _saveLeaveRoom = (data: SendData) => {
         // remove all rooms of same dataType as passed data
         this.rooms = this.rooms.filter(
             (roomData: Record<string, unknown>): boolean =>

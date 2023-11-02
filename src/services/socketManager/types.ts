@@ -10,6 +10,26 @@ import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'
 import {ActionData} from 'state/infobar/utils'
 
+export type SendData = {
+    clientId?: string
+    event?: SocketEventType
+    dataType?: string
+    data?: any
+}
+
+export type SendEvent = {
+    name: string
+    dataToSend: (
+        value?: string | number[] | Record<string, unknown>
+    ) => SendData
+    onLeave?: (value?: string) => void
+}
+
+export type ReceivedEvent = {
+    name: string
+    onReceive: (event: ServerMessage) => void
+}
+
 export enum BroadcastChannelEvent {
     ServerMessage = 'SERVER_MESSAGE',
     WsConnected = 'WS_CONNECTED',

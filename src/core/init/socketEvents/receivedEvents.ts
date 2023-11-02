@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {store as reduxStore} from 'common/store'
+import {MAX_RECENT_CHATS} from 'config/recentChats'
 import {appQueryClient} from 'api/queryClient'
 import browserNotification from 'services/browserNotification'
 import {setIsAvailable} from 'state/currentUser/actions'
@@ -14,28 +15,28 @@ import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
 import {getEmailMigrations} from 'state/integrations/selectors'
 import {customFieldDefinitionKeys} from 'models/customField/queries'
 
-import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
+import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
 
-import * as agentsActions from '../state/agents/actions'
-import * as chatsActions from '../state/chats/actions'
-import {viewsCountFetched} from '../state/entities/viewsCount/actions'
-import * as infobarActions from '../state/infobar/actions'
-import * as integrationsActions from '../state/integrations/actions'
-import * as notificationsActions from '../state/notifications/actions'
-import * as ticketActions from '../state/ticket/actions'
-import * as viewsActions from '../state/views/actions'
+import * as agentsActions from 'state/agents/actions'
+import * as chatsActions from 'state/chats/actions'
+import {viewsCountFetched} from 'state/entities/viewsCount/actions'
+import * as infobarActions from 'state/infobar/actions'
+import * as integrationsActions from 'state/integrations/actions'
+import * as notificationsActions from 'state/notifications/actions'
+import * as ticketActions from 'state/ticket/actions'
+import * as viewsActions from 'state/views/actions'
 
-import * as viewsConstants from '../state/views/constants'
-import * as currentAccountConstants from '../state/currentAccount/constants'
+import * as viewsConstants from 'state/views/constants'
+import * as currentAccountConstants from 'state/currentAccount/constants'
 
-import * as currentAccountSelectors from '../state/currentAccount/selectors'
-import * as currentBillingSelectors from '../state/billing/selectors'
-import * as currentUserSelectors from '../state/currentUser/selectors'
-import {getTeams} from '../state/teams/selectors'
+import * as currentAccountSelectors from 'state/currentAccount/selectors'
+import * as currentBillingSelectors from 'state/billing/selectors'
+import * as currentUserSelectors from 'state/currentUser/selectors'
+import {getTeams} from 'state/teams/selectors'
 
-import {isCurrentlyOnTicket} from '../utils'
-import {isViewSharedWithUser} from '../state/views/utils'
-import {SocketManager} from '../services/socketManager/socketManager'
+import {isCurrentlyOnTicket} from 'utils'
+import {isViewSharedWithUser} from 'state/views/utils'
+import {SocketManager} from 'services/socketManager/socketManager'
 import {
     AccountUpdatedEvent,
     ActionExecutedEvent,
@@ -46,7 +47,7 @@ import {
     FacebookIntegrationsReconnected,
     MacroParamsUpdatedEvent,
     OutboundPhoneCallInitiated,
-    ServerMessage,
+    ReceivedEvent,
     SocketEventType,
     TicketAssignedEvent,
     TicketChatUpdatedEvent,
@@ -69,189 +70,28 @@ import {
     ViewUpdatedEvent,
     WhatsAppOnboardingFailedEvent,
     WhatsAppOnboardingSucceededEvent,
-} from '../services/socketManager/types'
-import {NotificationStatus} from '../state/notifications/types'
-import {RootState} from '../state/types'
+} from 'services/socketManager/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
 import {
     sectionCreated,
     sectionDeleted,
     sectionUpdated,
-} from '../state/entities/sections/actions'
+} from 'state/entities/sections/actions'
 import {
     viewCreated,
     viewDeleted,
     viewUpdated,
-} from '../state/entities/views/actions'
-import history from '../pages/history'
-import {fetchSelfServiceConfigurations} from '../models/selfServiceConfiguration/resources'
-import {selfServiceConfigurationsFetched} from '../state/entities/selfServiceConfigurations/actions'
-import {setLoading} from '../state/ui/selfServiceConfigurations/actions'
-
-import {MAX_RECENT_CHATS} from './recentChats'
-
-export type SendData = {
-    clientId?: string
-    event?: SocketEventType
-    dataType?: string
-    data?: any
-}
-
-type SendEvent = {
-    name: string
-    dataToSend: (
-        value?: string | number[] | Record<string, unknown>
-    ) => SendData
-    onLeave?: (value?: string) => void
-}
-
-export type ReceivedEvent = {
-    name: string
-    onReceive: (event: ServerMessage) => void
-}
-
-/**
- * Events that can be sent to server via socket
- */
-export const sendEvents: SendEvent[] = [
-    {
-        name: SocketEventType.TicketViewed,
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.TicketViewed,
-                dataType: 'Ticket',
-                data: parseInt(id as string),
-            }
-        },
-    },
-    {
-        name: SocketEventType.AgentTypingStarted,
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.AgentTypingStarted,
-                dataType: 'Ticket',
-                data: parseInt(id as string),
-            }
-        },
-    },
-    {
-        name: SocketEventType.AgentTypingStopped,
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.AgentTypingStopped,
-                dataType: 'Ticket',
-                data: parseInt(id as string),
-            }
-        },
-    },
-    {
-        name: SocketEventType.ViewsCountExpired,
-        dataToSend: function (viewIds) {
-            return {
-                event: SocketEventType.ViewsCountExpired,
-                dataType: 'View',
-                data: viewIds,
-            }
-        },
-    },
-    {
-        name: SocketEventType.AgentActive,
-        dataToSend: function () {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.AgentActive,
-                clientType: 'web',
-            }
-        },
-    },
-    {
-        name: SocketEventType.AgentInactive,
-        dataToSend: function () {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.AgentInactive,
-            }
-        },
-    },
-    {
-        name: SocketEventType.SidUpdated,
-        dataToSend: function () {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.SidUpdated,
-            }
-        },
-    },
-    {
-        name: SocketEventType.TwilioEventTriggered,
-        dataToSend: function (payload) {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.TwilioEventTriggered,
-                data: payload,
-            }
-        },
-    },
-]
-
-/**
- * Events describing a room to join on server via socket
- */
-export const joinEvents: SendEvent[] = [
-    {
-        name: 'ticket',
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                dataType: 'Ticket',
-                data: parseInt(id as string),
-            }
-        },
-        onLeave: function (id) {
-            return (this as unknown as SocketManager).send(
-                SocketEventType.AgentTypingStopped,
-                id
-            )
-        },
-    },
-    {
-        name: 'customer',
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                dataType: 'Customer',
-                data: parseInt(id as string),
-            }
-        },
-    },
-    {
-        name: 'view',
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                dataType: 'View',
-                data: parseInt(id as string),
-            }
-        },
-    },
-    {
-        name: 'integration',
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                dataType: 'Integration',
-                data: parseInt(id as string),
-            }
-        },
-    },
-]
+} from 'state/entities/views/actions'
+import history from 'pages/history'
+import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
+import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
+import {setLoading} from 'state/ui/selfServiceConfigurations/actions'
 
 /**
  * Events that can be received from server via socket
  */
-export const receivedEvents: ReceivedEvent[] = [
+const receivedEvents: ReceivedEvent[] = [
     {
         name: 'customer-updated',
         onReceive: function (json) {
@@ -891,3 +731,5 @@ export const receivedEvents: ReceivedEvent[] = [
         },
     },
 ]
+
+export default receivedEvents
