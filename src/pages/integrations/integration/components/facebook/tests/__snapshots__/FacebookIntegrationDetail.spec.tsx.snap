@@ -468,7 +468,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_messages,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_messages,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -852,7 +852,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_messages,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_messages,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -1249,7 +1249,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_messages,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_messages,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -1686,7 +1686,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_messages,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_messages,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -2083,7 +2083,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -2502,7 +2502,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -2926,7 +2926,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -3350,7 +3350,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -3774,7 +3774,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -4198,7 +4198,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -4617,7 +4617,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -5036,7 +5036,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -5455,7 +5455,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -5879,7 +5879,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -6294,7 +6294,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,ads_read,ads_management",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,ads_read,ads_management",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -6718,7 +6718,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -7142,7 +7142,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -7566,7 +7566,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_messaging,pages_manage_metadata,pages_show_list,read_page_mailboxes",
+            "scope": "pages_messaging,pages_manage_metadata,pages_show_list",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -7990,7 +7990,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_messaging,pages_manage_metadata,pages_show_list",
+            "scope": "pages_messaging,pages_manage_metadata",
           },
           "preferences": Immutable.Map {},
           "language": "da",
@@ -14377,7 +14377,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           },
           "shopify_integration_ids": Immutable.List [],
           "oauth": Immutable.Map {
-            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,read_page_mailboxes,pages_messaging,instagram_basic,instagram_manage_comments",
+            "scope": "pages_manage_ads,pages_manage_metadata,pages_read_engagement,pages_read_user_content,pages_manage_posts,pages_manage_engagement,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_comments",
           },
           "preferences": Immutable.Map {},
           "language": "da",

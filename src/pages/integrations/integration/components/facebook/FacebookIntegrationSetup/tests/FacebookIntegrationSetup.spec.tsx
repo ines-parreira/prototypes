@@ -24,7 +24,6 @@ import {
     PAGES_READ_USER_CONTENT,
     PAGES_SHOW_LIST,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
-    READ_PAGE_MAILBOXES,
 } from '../../utils'
 
 const allPermissions = [
@@ -36,7 +35,6 @@ const allPermissions = [
     PAGES_MANAGE_ENGAGEMENT,
     BUSINESS_MANAGEMENT,
     PAGES_SHOW_LIST,
-    READ_PAGE_MAILBOXES,
     PAGES_MESSAGING,
     INSTAGRAM_BASIC,
     INSTAGRAM_MANAGE_COMMENTS,
@@ -174,7 +172,6 @@ describe('FacebookIntegrationSetup', () => {
                     PAGES_MANAGE_ENGAGEMENT,
                     BUSINESS_MANAGEMENT,
                     PAGES_SHOW_LIST,
-                    READ_PAGE_MAILBOXES,
                     PAGES_MESSAGING,
                     INSTAGRAM_BASIC,
                     INSTAGRAM_MANAGE_COMMENTS,
@@ -225,7 +222,6 @@ describe('FacebookIntegrationSetup', () => {
                     PAGES_MANAGE_ENGAGEMENT,
                     BUSINESS_MANAGEMENT,
                     PAGES_SHOW_LIST,
-                    READ_PAGE_MAILBOXES,
                     PAGES_MESSAGING,
                     INSTAGRAM_BASIC,
                     INSTAGRAM_MANAGE_COMMENTS,
