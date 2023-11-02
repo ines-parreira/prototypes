@@ -37,7 +37,6 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TicketChannel} from 'business/types/ticket'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBillingEventCube'
 import {
     MetricTrendFormat,
     SHORT_FORMAT,
@@ -71,34 +70,10 @@ import SelfServiceStatsPagePaywallCustomCta from './self-service/SelfServiceStat
 import PerformanceTip from './PerformanceTip'
 import TipsToggle from './TipsToggle'
 import withEcommerceIntegration from './withEcommerceIntegrations'
+import {FEATURE_LABELS} from './constants'
+import {AutomatedInteractionByFeatures} from './types'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
-
-export type AutomatedInteractionByFeatures = Exclude<
-    AutomationBillingEventMeasure,
-    | AutomationBillingEventMeasure.FirstResponseTimeWithAutomation
-    | AutomationBillingEventMeasure.ResolutionTimeWithAutomation
-    | AutomationBillingEventMeasure.OverallTimeSaved
-    | AutomationBillingEventMeasure.AutomationRate
-    | AutomationBillingEventMeasure.AutomatedInteractions
->
-
-export const FEATURE_LABELS: Record<AutomatedInteractionByFeatures, string> = {
-    [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows]:
-        'Flows',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse]:
-        'Quick response flows',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation]:
-        'Article recommendation',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder]:
-        'Track order',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns]:
-        'Return order',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse]:
-        'Report order issue',
-    [AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders]:
-        'Autoresponders',
-}
 
 // Below values are from https://app.periscopedata.com/app/gorgias/1123203/[Cross]-Automation-Add-on-Performance?widget=17138886&udv=0
 export const automationRate = {

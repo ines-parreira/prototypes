@@ -16,10 +16,8 @@ import {
     TIME_SAVED_ON_FIRST_RESPONSE,
 } from 'pages/stats/self-service/constants'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {
-    AutomatedInteractionByFeatures,
-    FEATURE_LABELS,
-} from 'pages/stats/AutomationAddonOverview'
+import {FEATURE_LABELS} from 'pages/stats/constants'
+import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 
 export interface Period {
     end_datetime: string
