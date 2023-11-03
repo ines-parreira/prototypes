@@ -18,6 +18,7 @@ export const performanceByArticleQueryFactory = (
 ): ReportingQuery<HelpCenterTrackingEventCube> => ({
     measures: [HelpCenterTrackingEventMeasures.ArticleView],
     dimensions: [
+        HelpCenterTrackingEventDimensions.ArticleId,
         HelpCenterTrackingEventDimensions.ArticleTitle,
         HelpCenterTrackingEventDimensions.ArticleSlug,
         HelpCenterTrackingEventDimensions.LocaleCode,

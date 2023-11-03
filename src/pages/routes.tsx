@@ -708,12 +708,7 @@ export function StatsRoutes() {
                 <Route
                     exact
                     path={`${path}/help-center`}
-                    render={() => (
-                        <App
-                            content={HelpCenterStats}
-                            navbar={StatsNavbarContainer}
-                        />
-                    )}
+                    render={HelpCenterStatsRoutes}
                 />
                 {displayVoiceAnalytics && (
                     <Route
@@ -1003,6 +998,25 @@ export function ChannelsSettingsRoutes({match: {path}}: RouteComponentProps) {
                                 PageSection.Channels
                             )}
                             navbar={SettingsNavbar}
+                        />
+                    )}
+                />
+            </Switch>
+        </HelpCenterApiClientProvider>
+    )
+}
+
+export function HelpCenterStatsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route
+                    path={`${path}`}
+                    exact
+                    render={() => (
+                        <App
+                            content={HelpCenterStats}
+                            navbar={StatsNavbarContainer}
                         />
                     )}
                 />

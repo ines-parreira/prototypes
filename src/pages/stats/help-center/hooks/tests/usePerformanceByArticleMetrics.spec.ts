@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {UseQueryResult} from '@tanstack/react-query'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {
@@ -7,6 +8,8 @@ import {
     HelpCenterTrackingEventMember,
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import {Components} from 'rest_api/help_center_api/client.generated'
 import {usePerformanceByArticleMetrics} from '../usePerformanceByArticleMetrics'
 
 jest.mock('hooks/reporting/useMetric', () => ({
@@ -15,9 +18,13 @@ jest.mock('hooks/reporting/useMetric', () => ({
 jest.mock('hooks/reporting/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(),
 }))
+jest.mock('models/helpCenter/queries', () => ({
+    useGetHelpCenterArticleList: jest.fn(),
+}))
 
 const mockUseMetric = jest.mocked(useMetric)
 const mockUseMetricPerDimension = jest.mocked(useMetricPerDimension)
+const mockUseGetHelpCenterArticleList = jest.mocked(useGetHelpCenterArticleList)
 
 const statsFilters = {
     period: {
@@ -27,6 +34,7 @@ const statsFilters = {
 }
 const timezone = 'UTC'
 const helpCenterDomain = 'acme'
+const helpCenterId = 1
 const itemPerPage = 10
 const currentPage = 1
 
@@ -42,6 +50,10 @@ describe('usePerformanceByArticleMetrics', () => {
                 decile: null,
             },
         })
+        mockUseGetHelpCenterArticleList.mockReturnValue({
+            data: null,
+            isLoading: false,
+        } as unknown as UseQueryResult<null>)
     })
 
     it('should call metric hook with correct params', () => {
@@ -52,6 +64,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 helpCenterDomain,
                 itemPerPage,
                 currentPage,
+                helpCenterId,
             })
         )
 
@@ -88,6 +101,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 helpCenterDomain,
                 itemPerPage,
                 currentPage,
+                helpCenterId,
             })
         )
 
@@ -99,6 +113,19 @@ describe('usePerformanceByArticleMetrics', () => {
     })
 
     it('should return formatted data', () => {
+        mockUseGetHelpCenterArticleList.mockReturnValue({
+            data: {
+                data: [
+                    {
+                        id: 1,
+                        name: 'Set up Voice (Phone)',
+                        rating: {up: 3, down: 1},
+                        updated_datetime: '1970-01-19T20:48:32.000',
+                    },
+                ],
+            },
+            isLoading: false,
+        } as unknown as UseQueryResult<Components.Schemas.ArticlesListPageDto>)
         mockUseMetricPerDimension.mockReturnValue({
             isFetching: false,
             isError: false,
@@ -108,8 +135,6 @@ describe('usePerformanceByArticleMetrics', () => {
                     {
                         [HelpCenterTrackingEventDimensions.ArticleTitle]:
                             'Set up Voice (Phone)',
-                        [HelpCenterTrackingEventDimensions.ArticleLastUpdated]:
-                            '1970-01-19T20:48:32.000',
                         [HelpCenterTrackingEventDimensions.ArticleSlug]:
                             'set-up-voice-(phone)',
                         [HelpCenterTrackingEventDimensions.ArticleId]: '1',
@@ -127,6 +152,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 helpCenterDomain,
                 itemPerPage,
                 currentPage,
+                helpCenterId,
             })
         )
 
@@ -146,11 +172,11 @@ describe('usePerformanceByArticleMetrics', () => {
                     },
                     {
                         type: 'percent',
-                        value: null,
+                        value: 75,
                     },
                     {
                         type: 'string',
-                        value: null,
+                        value: '3 | 1',
                     },
                     {
                         type: 'date',
@@ -178,6 +204,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 helpCenterDomain,
                 itemPerPage,
                 currentPage,
+                helpCenterId,
             })
         )
 

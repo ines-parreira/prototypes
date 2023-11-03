@@ -24,6 +24,7 @@ const renderComponent = (
                     end_datetime: '2021-06-04T23:59:59+02:00',
                 },
             }}
+            helpCenterId={1}
             timezone="US"
             helpCenterDomain="acme"
             {...props}

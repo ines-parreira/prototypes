@@ -11,6 +11,8 @@ import {
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {StatsFilters} from 'models/stat/types'
+import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import {notEmpty} from 'utils'
 import {
     HelpCenterTableCell,
     TableCellType,
@@ -23,12 +25,14 @@ export const usePerformanceByArticleMetrics = ({
     statsFilters,
     timezone,
     helpCenterDomain,
+    helpCenterId,
 }: {
     itemPerPage: number
     currentPage: number
     statsFilters: StatsFilters
     timezone: string
     helpCenterDomain: string
+    helpCenterId: number
 }) => {
     const articleViewData = useMetricPerDimension({
         ...performanceByArticleQueryFactory(statsFilters, timezone),
@@ -40,6 +44,29 @@ export const usePerformanceByArticleMetrics = ({
     )
 
     const total = articleCountMetric.data?.value ?? 0
+
+    const articleIds = articleViewData.data?.allData
+        .map((data) => {
+            const id = Number(data[HelpCenterTrackingEventDimensions.ArticleId])
+
+            return isNaN(id) ? null : id
+        })
+        .filter(notEmpty)
+
+    const {data: helpCenterArticlesData} = useGetHelpCenterArticleList(
+        helpCenterId,
+        {
+            version_status: 'latest_draft',
+            page: currentPage,
+            per_page: itemPerPage,
+            ids: articleIds,
+        },
+        {
+            enabled: articleIds !== undefined,
+        }
+    )
+
+    const helpCenterArticles = helpCenterArticlesData?.data
 
     const data: HelpCenterTableCell[][] = useMemo(
         () =>
@@ -71,10 +98,22 @@ export const usePerformanceByArticleMetrics = ({
                 const articleViewCount = Number(
                     value[HelpCenterTrackingEventMeasures.ArticleView]
                 )
+
+                const helpCenterArticle = helpCenterArticles?.find(
+                    (article) => article.id === articleId
+                )
+                const ratingRate = helpCenterArticle
+                    ? (helpCenterArticle.rating.up /
+                          (helpCenterArticle.rating.up +
+                              helpCenterArticle.rating.down)) *
+                      100
+                    : null
+                const rating = helpCenterArticle
+                    ? `${helpCenterArticle.rating.up} | ${helpCenterArticle.rating.down}`
+                    : null
+
                 const articleLastUpdated =
-                    value[
-                        HelpCenterTrackingEventDimensions.ArticleLastUpdated
-                    ] ?? null
+                    helpCenterArticle?.updated_datetime ?? null
 
                 return [
                     {
@@ -90,11 +129,11 @@ export const usePerformanceByArticleMetrics = ({
                     },
                     {
                         type: TableCellType.Percent,
-                        value: null,
+                        value: ratingRate,
                     },
                     {
                         type: TableCellType.String,
-                        value: null,
+                        value: rating,
                     },
                     {
                         type: TableCellType.Date,
@@ -102,7 +141,7 @@ export const usePerformanceByArticleMetrics = ({
                     },
                 ]
             }) ?? [[]],
-        [articleViewData.data?.allData, helpCenterDomain]
+        [articleViewData.data?.allData, helpCenterArticles, helpCenterDomain]
     )
 
     return useMemo(

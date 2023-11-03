@@ -20,6 +20,7 @@ const PAGE_TITLE_HELP_CENTER = 'Help Center'
 const START_DATE = new Date().toString()
 const END_DATE = new Date('01/08/2023').toString()
 const HELP_CENTER_DOMAIN = 'acme'
+const HELP_CENTER_ID = 1
 
 const HelpCenterStats = () => {
     const timezone = useAppSelector(
@@ -133,6 +134,7 @@ const HelpCenterStats = () => {
                             statsFilters={statsFilters}
                             timezone={timezone}
                             helpCenterDomain={HELP_CENTER_DOMAIN}
+                            helpCenterId={HELP_CENTER_ID}
                         />
                     </DashboardGridCell>
                 </DashboardSection>

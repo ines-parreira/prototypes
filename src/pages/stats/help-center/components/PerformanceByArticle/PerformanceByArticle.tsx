@@ -49,12 +49,14 @@ type PerformanceByArticleProps = {
     statsFilters: StatsFilters
     timezone: string
     helpCenterDomain: string
+    helpCenterId: number
 }
 
 export const PerformanceByArticle = ({
     statsFilters,
     timezone,
     helpCenterDomain,
+    helpCenterId,
 }: PerformanceByArticleProps) => {
     const [currentPage, setCurrentPage] = React.useState(1)
 
@@ -70,6 +72,7 @@ export const PerformanceByArticle = ({
         currentPage,
         statsFilters,
         helpCenterDomain,
+        helpCenterId,
     })
 
     const count = Math.ceil(total / ITEMS_PER_PAGE)
