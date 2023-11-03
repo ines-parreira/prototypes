@@ -213,11 +213,6 @@ Publish Chromatic:
   dependencies: [Install dependencies]
   needs: [Install dependencies]
   allow_failure: true
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      when: always
-    - if: $CI_COMMIT_BRANCH != "main"
-      when: manual
   script:
     - yarn chromatic --zip --project-token=${CHROMATIC_PROJECT_TOKEN}
 
