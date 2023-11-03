@@ -301,6 +301,10 @@ export default function StatsNavbarView() {
                                     onSubscribeToAutomationAddOnClick={() => {
                                         setIsAutomationSubscriptionModal(true)
                                     }}
+                                    className={classNames(
+                                        cssNavbar['link-wrapper'],
+                                        cssNavbar.isNested
+                                    )}
                                 >
                                     {aao.label}
                                 </AutomationNavbarAddOnPaywallNavbarLink>
