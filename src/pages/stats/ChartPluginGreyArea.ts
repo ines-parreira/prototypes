@@ -7,17 +7,17 @@ export type GreyArea = {
 const GreyArea = {
     id: 'greyArea',
     beforeDraw(chart: Chart) {
-        const {
-            ctx,
-            chartArea: {top, bottom, right, left},
-        } = chart
-        const xScale = chart.scales['x']
         if (
             !chart.data.labels ||
             !chart.config.options?.plugins?.greyArea?.start ||
             !chart.config.options.plugins.greyArea?.end
         )
             return
+        const {
+            ctx,
+            chartArea: {top, bottom, right, left},
+        } = chart
+        const xScale = chart.scales['x']
         let startX = left
         let endX = right
         if (
