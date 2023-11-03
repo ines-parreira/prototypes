@@ -21,6 +21,7 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
 
+import CheckIcon from './CheckIcon'
 import {useA11yDropdown} from './hooks/useA11yDropdown'
 import {useSearch} from './hooks/useSearch'
 import {useActiveState} from './hooks/useActiveState'
@@ -345,10 +346,6 @@ export default function MultiLevelSelect({
             </Dropdown>
         </>
     )
-}
-
-export function CheckIcon() {
-    return <span className={`material-icons ${css.checkIcon}`}>check</span>
 }
 
 type EmptyHelperProps = {

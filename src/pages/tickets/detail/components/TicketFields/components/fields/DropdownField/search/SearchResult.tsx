@@ -2,7 +2,7 @@ import React from 'react'
 
 import {CustomFieldValue} from 'models/customField/types'
 
-import {CheckIcon} from '../MultiLevelSelect'
+import CheckIcon from '../CheckIcon'
 import dropdownCss from '../MultiLevelSelect.less'
 import searchCss from './search.less'
 
