@@ -31,7 +31,7 @@ describe('useHelpCenterTrend', () => {
         useHelpCenterTrend({
             statsFilters,
             timezone,
-            metric: HelpCenterTrackingEventMeasures.Search,
+            metric: HelpCenterTrackingEventMeasures.SearchRequestedCount,
         })
 
         expect(mockUseMetricTrend).toHaveBeenCalledWith(
@@ -49,7 +49,9 @@ describe('useHelpCenterTrend', () => {
                         values: ['2023-11-06T00:00:00.000'],
                     },
                 ],
-                measures: [HelpCenterTrackingEventMeasures.Search],
+                measures: [
+                    HelpCenterTrackingEventMeasures.SearchRequestedCount,
+                ],
                 timezone: timezone,
             },
             {
@@ -66,7 +68,9 @@ describe('useHelpCenterTrend', () => {
                         values: ['2023-11-12T23:59:59.000'],
                     },
                 ],
-                measures: [HelpCenterTrackingEventMeasures.Search],
+                measures: [
+                    HelpCenterTrackingEventMeasures.SearchRequestedCount,
+                ],
                 timezone: timezone,
             }
         )

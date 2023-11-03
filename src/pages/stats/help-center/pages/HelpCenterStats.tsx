@@ -19,6 +19,7 @@ const PAGE_TITLE_HELP_CENTER = 'Help Center'
 // This is temp data before we implement filters
 const START_DATE = new Date().toString()
 const END_DATE = new Date('01/08/2023').toString()
+const HELP_CENTER_DOMAIN = 'acme'
 
 const HelpCenterStats = () => {
     const timezone = useAppSelector(
@@ -38,7 +39,7 @@ const HelpCenterStats = () => {
     const searchesMetricTrend = useHelpCenterTrend({
         statsFilters,
         timezone,
-        metric: HelpCenterTrackingEventMeasures.Search,
+        metric: HelpCenterTrackingEventMeasures.SearchRequestedCount,
     })
     const [isTipVisible, setIsTipsVisible] = useState(true)
 
@@ -128,7 +129,11 @@ const HelpCenterStats = () => {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
-                        <PerformanceByArticle />
+                        <PerformanceByArticle
+                            statsFilters={statsFilters}
+                            timezone={timezone}
+                            helpCenterDomain={HELP_CENTER_DOMAIN}
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Help Center searches">

@@ -80,6 +80,7 @@ export type ReportingQuery<TCube extends Cube = Cube> = {
     segments?: TCube['segments'][]
     order?: ReportingOrder<TCube['dimensions'] | TCube['measures']>[]
     limit?: number
+    offset?: number
     timeDimensions?: ReportingTimeDimension<TCube['timeDimensions']>[]
     timezone?: string
 }

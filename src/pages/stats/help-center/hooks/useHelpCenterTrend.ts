@@ -1,26 +1,8 @@
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {
-    getPreviousPeriod,
-    HelpCenterStatsFiltersMembers,
-    statsFiltersToReportingFilters,
-} from 'utils/reporting'
+import {getPreviousPeriod} from 'utils/reporting'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
-
-const helpCenterTrendQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    metric: HelpCenterTrackingEventMeasures
-) => ({
-    measures: [metric],
-    dimensions: [],
-    filters: statsFiltersToReportingFilters(
-        HelpCenterStatsFiltersMembers,
-        statsFilters
-    ),
-    timezone,
-})
-
+import {helpCenterTrendQueryFactory} from 'models/reporting/queryFactories/help-center/trend'
 export const useHelpCenterTrend = ({
     statsFilters,
     timezone,

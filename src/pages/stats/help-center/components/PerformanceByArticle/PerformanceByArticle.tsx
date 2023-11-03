@@ -1,9 +1,10 @@
 import React from 'react'
 import ChartCard from 'pages/stats/ChartCard'
+import {StatsFilters} from 'models/stat/types'
 import HelpCenterStatsTable, {
-    HelpCenterTableCell,
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
+import {usePerformanceByArticleMetrics} from '../../hooks/usePerformanceByArticleMetrics'
 
 const columns = [
     {
@@ -35,89 +36,26 @@ const columns = [
     {
         type: TableCellType.Date,
         name: 'last updated',
-        width: 150,
+        width: 160,
         tooltip: {
             title: 'The most recent date the article was edited',
         },
     },
 ]
 
-const data: HelpCenterTableCell[][] = [
-    [
-        {
-            type: TableCellType.String,
-            value: 'What are AfterPay, Klarna and ShopPay Installments?',
-            link: 'http://acme.gorgias.docker/app/stats/help-center',
-        },
-        {
-            type: TableCellType.Number,
-            value: 20000,
-        },
-        {
-            type: TableCellType.Percent,
-            value: 70,
-        },
-        {
-            type: TableCellType.String,
-            value: '10 | 3',
-        },
-        {
-            type: TableCellType.Date,
-            value: '2022-05-01T15:56:36+00:00',
-        },
-    ],
-    [
-        {
-            type: TableCellType.String,
-            value: 'What forms of payment are accepted for online purchases, and when will I know w What forms of payment are accepted for online purchases, and when will I know w... What forms of payment are accepted for online purchases, and when will I know',
-            link: 'http://acme.gorgias.docker/app/stats/help-center',
-        },
-        {
-            type: TableCellType.Number,
-            value: 15202,
-        },
-        {
-            type: TableCellType.Percent,
-            value: 65,
-        },
-        {
-            type: TableCellType.String,
-            value: '11 | 6',
-        },
-        {
-            type: TableCellType.Date,
-            value: '2021-12-01T15:56:36+00:00',
-        },
-    ],
-    [
-        {
-            type: TableCellType.String,
-            value: 'What forms of payment are accepted for online purchases, and when will I know w What forms of payment are accepted for online purchases, and when will I know w... What forms of payment are accepted for online purchases, and when will I know',
-            link: 'http://acme.gorgias.docker/app/stats/help-center',
-        },
-        {
-            type: TableCellType.Number,
-            value: 15202,
-        },
-        {
-            type: TableCellType.Percent,
-            value: 65,
-        },
-        {
-            type: TableCellType.String,
-            value: '11 | 6',
-        },
-        {
-            type: TableCellType.Date,
-            value: '2021-12-01T15:56:36+00:00',
-        },
-    ],
-]
-
-const PAGES_COUNT = 10
 const ITEMS_PER_PAGE = 20
 
-export const PerformanceByArticle = () => {
+type PerformanceByArticleProps = {
+    statsFilters: StatsFilters
+    timezone: string
+    helpCenterDomain: string
+}
+
+export const PerformanceByArticle = ({
+    statsFilters,
+    timezone,
+    helpCenterDomain,
+}: PerformanceByArticleProps) => {
     const [currentPage, setCurrentPage] = React.useState(1)
 
     const onPageChange = (page: number) => {
@@ -126,12 +64,23 @@ export const PerformanceByArticle = () => {
         }
     }
 
+    const {data, total, isLoading} = usePerformanceByArticleMetrics({
+        itemPerPage: ITEMS_PER_PAGE,
+        timezone,
+        currentPage,
+        statsFilters,
+        helpCenterDomain,
+    })
+
+    const count = Math.ceil(total / ITEMS_PER_PAGE)
+
     return (
         <ChartCard title="Performance by articles" noPadding>
             <HelpCenterStatsTable
                 onPageChange={onPageChange}
+                isLoading={isLoading}
                 currentPage={currentPage}
-                count={PAGES_COUNT}
+                count={count}
                 pageSize={ITEMS_PER_PAGE}
                 columns={columns}
                 data={data}

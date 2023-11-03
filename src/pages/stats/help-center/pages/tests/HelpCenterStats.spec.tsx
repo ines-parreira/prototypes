@@ -20,6 +20,10 @@ jest.mock('../../hooks/useArticleViewTimeSeries', () => ({
     useArticleViewTimeSeries: () => ({data: undefined, isFetching: false}),
 }))
 
+jest.mock('../../hooks/usePerformanceByArticleMetrics', () => ({
+    usePerformanceByArticleMetrics: () => ({data: [], isFetching: false}),
+}))
+
 const mockStore = configureMockStore([thunk])
 
 const renderComponent = () => {

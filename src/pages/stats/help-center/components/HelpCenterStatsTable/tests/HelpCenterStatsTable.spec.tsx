@@ -176,4 +176,28 @@ describe('HelpCenterStatsTable', () => {
             screen.queryByTestId('help-center-table-pagination')
         ).not.toBeInTheDocument()
     })
+
+    it('should show default placeholder when no value in cell', () => {
+        const mockOnClick = jest.fn()
+
+        renderComponent({
+            columns: [
+                {
+                    name: 'Article',
+                    type: TableCellType.String,
+                },
+            ],
+            data: [
+                [
+                    {
+                        type: TableCellType.String,
+                        value: null,
+                        onClick: mockOnClick,
+                    },
+                ],
+            ],
+        })
+
+        expect(screen.getByText('-')).toBeInTheDocument()
+    })
 })

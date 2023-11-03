@@ -30,26 +30,33 @@ export type HelpCenterTableColumn = {
     tooltip?: TooltipData
 }
 
-export type HelpCenterTableCell = {link?: string; onClick?: () => void} & (
+export type HelpCenterTableCell = {
+    link?: string | null
+    onClick?: () => void
+} & (
     | {
           type: TableCellType.String
-          value: string
+          value: string | null
       }
     | {
           type: TableCellType.Number
-          value: number
+          value: number | null
       }
     | {
           type: TableCellType.Percent
-          value: number
+          value: number | null
       }
     | {
           type: TableCellType.Date
-          value: Date | string
+          value: Date | string | null
       }
 )
 
+const NO_VALUE_PLACEHOLDER = '-'
+
 const getCellFormatter = (cell: HelpCenterTableCell) => {
+    if (cell.value === null) return NO_VALUE_PLACEHOLDER
+
     switch (cell.type) {
         case TableCellType.String:
             return cell.value
@@ -140,7 +147,7 @@ const HelpCenterStatsTable = ({
                                                   }
                                               >
                                                   <div className={css.loader}>
-                                                      <Skeleton />
+                                                      <Skeleton height={17} />
                                                   </div>
                                               </BodyCell>
                                           ))}
@@ -150,7 +157,14 @@ const HelpCenterStatsTable = ({
                                   <TableBodyRow key={index}>
                                       {line.map((cell, lineIndex) => (
                                           <BodyCell
-                                              key={cell.value.toString()}
+                                              key={`${
+                                                  columns[lineIndex]?.name ??
+                                                  lineIndex
+                                              }-${
+                                                  cell.value
+                                                      ? cell.value.toString()
+                                                      : lineIndex
+                                              }`}
                                               className={classNames({
                                                   [css.withShadow]:
                                                       isTableScrolled &&
@@ -198,7 +212,7 @@ const HelpCenterStatsTable = ({
                 </TableWrapper>
             </div>
 
-            {count >= data.length && (
+            {count > 1 && (
                 <div data-testid="help-center-table-pagination">
                     <NumberedPagination
                         count={count}
