@@ -18,9 +18,9 @@ type CommonMetrics = {
 
 type PerformanceOverviewMetrics = {
     metricName:
-        | TicketSatisfactionSurveyMeasure.SurveyScore
-        | TicketMessagesMeasure.FirstResponseTime
-        | TicketMessagesMeasure.ResolutionTime
+        | TicketSatisfactionSurveyMeasure.AvgSurveyScore
+        | TicketMessagesMeasure.MedianFirstResponseTime
+        | TicketMessagesMeasure.MedianResolutionTime
         | TicketMessagesMeasure.MessagesAverage
         | TicketMeasure.TicketCount
         | HelpdeskMessageMeasure.TicketCount
@@ -95,7 +95,7 @@ export const getDrillDownMetricShow = (state: RootState) => {
 export const getDrillDownMetricOrder = (state: RootState) => {
     const metricName = state.ui[drillDownSlice.name].metricData?.metricName
 
-    return metricName === TicketSatisfactionSurveyMeasure.SurveyScore ||
+    return metricName === TicketSatisfactionSurveyMeasure.AvgSurveyScore ||
         metricName === TableColumn.CustomerSatisfaction
         ? OrderDirection.Asc
         : OrderDirection.Desc
