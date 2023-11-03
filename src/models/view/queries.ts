@@ -34,7 +34,7 @@ export const useGetViewItems = <
     >
 ) =>
     useInfiniteQuery({
-        queryKey: viewItemsDefinitionKeys.lists(),
+        queryKey: viewItemsDefinitionKeys.detail(viewId),
         queryFn: (context: QueryFunctionContext) =>
             getViewItems({viewId, url: context.pageParam, ...params}),
         getNextPageParam: (lastPage) => lastPage.data.meta.next_items,
