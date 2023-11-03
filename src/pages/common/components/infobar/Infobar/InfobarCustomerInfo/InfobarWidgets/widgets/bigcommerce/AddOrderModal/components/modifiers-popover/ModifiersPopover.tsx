@@ -14,7 +14,8 @@ import {ModifierSwatch} from './fields/ModifierSwatch'
 import {ModifierCheckbox} from './fields/ModifierCheckbox'
 
 import css from './ModifiersPopoverComponent.less'
-import {ModifierErrors, ModifierValues, useModifierValues} from './hooks'
+import {useModifierValues} from './hooks'
+import {ModifierErrors, ModifierValues} from './types'
 
 export type ModifierPopoverBodyProps = {
     product: BigCommerceProduct

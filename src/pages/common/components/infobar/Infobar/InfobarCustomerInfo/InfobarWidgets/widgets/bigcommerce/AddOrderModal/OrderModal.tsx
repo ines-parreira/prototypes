@@ -68,7 +68,7 @@ import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
 
 import css from './OrderModal.less'
 import {ProductSearch} from './ProductSearch'
-import {useAddModifiersPopover} from './components/modifiers-popover/hooks'
+import useAddModifiersPopover from './components/modifiers-popover/useAddModifiersPopover'
 import {modifierValuesToOptionSelections} from './components/modifiers-popover/utils'
 import GeneralErrorPopupModal from './GeneralErrorPopupModal'
 import {

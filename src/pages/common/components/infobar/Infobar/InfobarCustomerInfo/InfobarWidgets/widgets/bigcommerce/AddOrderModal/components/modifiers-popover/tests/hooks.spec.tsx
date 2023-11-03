@@ -6,7 +6,8 @@ import {
     bigCommerceProductFixture,
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
-import {useAddModifiersPopover, useEditModifiersPopover} from '../hooks'
+import useAddModifiersPopover from '../useAddModifiersPopover'
+import useEditModifiersPopover from '../useEditModifiersPopover'
 
 jest.mock('../../../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../../utils'),

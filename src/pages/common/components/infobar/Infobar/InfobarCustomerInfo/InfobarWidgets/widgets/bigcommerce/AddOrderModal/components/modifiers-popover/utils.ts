@@ -8,7 +8,7 @@ import {
     bigCommerceProductSwatchModifierTypes,
 } from 'models/integration/types'
 import {OptionSelection} from 'models/integration/resources/bigcommerce'
-import {ModifierValues} from './hooks'
+import {ModifierValues} from './types'
 
 export const isSelectModifier = (
     modifier: BigCommerceProductModifiers

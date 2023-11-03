@@ -10,7 +10,7 @@ import {
 
 import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import {isBigCommerceCartLineItem, isBigCommerceProduct} from '../../utils'
-import {useEditModifiersPopover} from '../modifiers-popover/hooks'
+import useEditModifiersPopover from '../modifiers-popover/useEditModifiersPopover'
 import {modifierValuesToOptionSelections} from '../modifiers-popover/utils'
 import ProductComponent from './ProductComponent'
 import {TotalPriceComponent} from './TotalPriceComponent'
