@@ -4,15 +4,14 @@ export enum HelpCenterTrackingEventDimensions {
     Timestamp = 'HelpCenterTrackingEvent.timestamp',
     EventType = 'HelpCenterTrackingEvent.eventType',
     LocaleCode = 'HelpCenterTrackingEvent.localeCode',
-    CreatedDate = 'HelpCenterTrackingEvent.createdDate',
     ArticleId = 'HelpCenterTrackingEvent.articleId',
     ArticleTitle = 'HelpCenterTrackingEvent.articleTitle',
     ArticleSlug = 'HelpCenterTrackingEvent.articleSlug',
     ArticleLastUpdated = 'HelpCenterTrackingEvent.articleLastUpdated',
-    ArticleParentCategoryIds = 'HelpCenterTrackingEvent.articleParentCategoryIds',
     CategorySlug = 'HelpCenterTrackingEvent.categorySlug',
-    CategoryId = 'HelpCenterTrackingEvent.categoryId',
-    CategoryTitle = 'HelpCenterTrackingEvent.categoryTitle',
+    SearchResultRange = 'HelpCenterTrackingEvent.searchResultRange',
+    SearchQuery = 'HelpCenterTrackingEvent.searchQuery',
+    SearchResultCount = 'HelpCenterTrackingEvent.searchResultCount',
 }
 
 export enum HelpCenterTrackingEventMember {
@@ -22,12 +21,16 @@ export enum HelpCenterTrackingEventMember {
 
 export enum HelpCenterTrackingEventMeasures {
     ArticleCount = 'HelpCenterTrackingEvent.articleCount',
-    ArticleView = 'HelpCenterTrackingEvent.articleViewCount',
     SearchRequestedCount = 'HelpCenterTrackingEvent.searchRequestedCount',
+    ArticleView = 'HelpCenterTrackingEvent.articleViewCount',
+    SearchRequestedQueryCount = 'HelpCenterTrackingEvent.searchRequestedQueryCount',
+    SearchArticlesClickedCount = 'HelpCenterTrackingEvent.searchArticlesClickedCount',
+    UniqueSearchQueryCount = 'HelpCenterTrackingEvent.uniqueSearchQueryCount',
 }
 
 export enum HelpCenterTrackingEventSegment {
     ArticleViewOnly = 'HelpCenterTrackingEvent.articleViewOnly',
+    SearchRequestedOnly = 'HelpCenterTrackingEvent.searchRequestedOnly',
 }
 
 export type HelpCenterTrackingEventCube = Cube<

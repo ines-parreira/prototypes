@@ -13,6 +13,7 @@ import TipsToggle from '../../TipsToggle'
 
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
+import SearchTermsTable from '../components/SearchTermsTable/SearchTermsTable'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -139,9 +140,13 @@ const HelpCenterStats = () => {
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Help Center searches">
-                    Content
+                    <DashboardGridCell size={7}>
+                        <SearchTermsTable
+                            statsFilters={statsFilters}
+                            timezone={timezone}
+                        />
+                    </DashboardGridCell>
                 </DashboardSection>
-
                 <AnalyticsFooter />
             </StatsPage>
         </div>

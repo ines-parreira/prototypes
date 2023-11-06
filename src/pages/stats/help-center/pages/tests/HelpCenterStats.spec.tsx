@@ -5,9 +5,9 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import userEvent from '@testing-library/user-event'
+import {RootState} from 'state/types'
+import {account} from 'fixtures/account'
 import HelpCenterStats from '../HelpCenterStats'
-import {RootState} from '../../../../../state/types'
-import {account} from '../../../../../fixtures/account'
 
 const defaultState = {
     currentAccount: fromJS(account),
@@ -18,6 +18,9 @@ jest.mock('../../hooks/useHelpCenterTrend', () => ({
 }))
 jest.mock('../../hooks/useArticleViewTimeSeries', () => ({
     useArticleViewTimeSeries: () => ({data: undefined, isFetching: false}),
+}))
+jest.mock('../../hooks/useSearchTermsMetrics', () => ({
+    useSearchTermsMetrics: () => ({data: [], isFetching: false}),
 }))
 
 jest.mock('../../hooks/usePerformanceByArticleMetrics', () => ({
