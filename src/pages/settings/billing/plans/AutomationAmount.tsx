@@ -85,8 +85,8 @@ const AutomationAmount = ({
                         autohide={false}
                     >
                         Automate up to 20% of all interactions with quick
-                        response flows, order management flows, article
-                        recommendation, and advanced statistics.
+                        responses, order management, article recommendation, and
+                        advanced statistics.
                     </Tooltip>
                 </div>
             ) : (

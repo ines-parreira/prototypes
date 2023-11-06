@@ -13,20 +13,25 @@ import {assetsUrl} from 'utils'
 
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
 import css from './AutomationNavbarAddOnSectionBlock.less'
+import {
+    ARTICLE_RECOMMENDATION,
+    CHANNELS,
+    FLOWS,
+    ORDER_MANAGEMENT,
+    QUICK_RESPONSES,
+} from './constants'
 
 type Props = {
     shopType: ShopType
     shopName: string
     onToggle: () => void
-    onSubscribeToAutomationAddOnClick: () => void
     name: string
     isExpanded: boolean
 }
-
+const FROM_LOCATION = 'automate-left-menu'
 const AutomationNavbarAddOnSectionBlock = ({
     shopType,
     shopName,
-    onSubscribeToAutomationAddOnClick,
     ...props
 }: Props) => {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
@@ -61,10 +66,13 @@ const AutomationNavbarAddOnSectionBlock = ({
                         )}
                     >
                         <NavbarLink
-                            to={`/app/automation/${shopType}/${shopName}/flows`}
+                            to={{
+                                pathname: `/app/automation/${shopType}/${shopName}/flows`,
+                                state: {from: FROM_LOCATION},
+                            }}
                         >
                             <span className={cssNavbar['item-name']}>
-                                Flow builder
+                                {FLOWS}
                             </span>
                         </NavbarLink>
                     </div>
@@ -75,10 +83,13 @@ const AutomationNavbarAddOnSectionBlock = ({
                         )}
                     >
                         <NavbarLink
-                            to={`/app/automation/${shopType}/${shopName}/quick-responses`}
+                            to={{
+                                pathname: `/app/automation/${shopType}/${shopName}/quick-responses`,
+                                state: {from: FROM_LOCATION},
+                            }}
                         >
                             <span className={cssNavbar['item-name']}>
-                                Quick response flows
+                                {QUICK_RESPONSES}
                             </span>
                         </NavbarLink>
                     </div>
@@ -87,24 +98,16 @@ const AutomationNavbarAddOnSectionBlock = ({
                 <>
                     <AutomationNavbarAddOnPaywallNavbarLink
                         to="/app/automation/flows"
-                        onSubscribeToAutomationAddOnClick={
-                            onSubscribeToAutomationAddOnClick
-                        }
                         isNested
                     >
-                        <span className={cssNavbar['item-name']}>
-                            Flow builder
-                        </span>
+                        <span className={cssNavbar['item-name']}>{FLOWS}</span>
                     </AutomationNavbarAddOnPaywallNavbarLink>
                     <AutomationNavbarAddOnPaywallNavbarLink
                         to="/app/automation/quick-responses"
-                        onSubscribeToAutomationAddOnClick={
-                            onSubscribeToAutomationAddOnClick
-                        }
                         isNested
                     >
                         <span className={cssNavbar['item-name']}>
-                            Quick response flows
+                            {QUICK_RESPONSES}
                         </span>
                     </AutomationNavbarAddOnPaywallNavbarLink>
                 </>
@@ -117,10 +120,13 @@ const AutomationNavbarAddOnSectionBlock = ({
                     )}
                 >
                     <NavbarLink
-                        to={`/app/automation/shopify/${shopName}/order-management`}
+                        to={{
+                            pathname: `/app/automation/shopify/${shopName}/order-management`,
+                            state: {from: FROM_LOCATION},
+                        }}
                     >
                         <span className={cssNavbar['item-name']}>
-                            Order management flows
+                            {ORDER_MANAGEMENT}
                         </span>
                     </NavbarLink>
                 </div>
@@ -133,23 +139,23 @@ const AutomationNavbarAddOnSectionBlock = ({
                     )}
                 >
                     <NavbarLink
-                        to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                        to={{
+                            pathname: `/app/automation/${shopType}/${shopName}/article-recommendation`,
+                            state: {from: FROM_LOCATION},
+                        }}
                     >
                         <span className={cssNavbar['item-name']}>
-                            Article recommendation
+                            {ARTICLE_RECOMMENDATION}
                         </span>
                     </NavbarLink>
                 </div>
             ) : (
                 <AutomationNavbarAddOnPaywallNavbarLink
                     to="/app/automation/article-recommendation"
-                    onSubscribeToAutomationAddOnClick={
-                        onSubscribeToAutomationAddOnClick
-                    }
                     isNested
                 >
                     <span className={cssNavbar['item-name']}>
-                        Article recommendation
+                        {ARTICLE_RECOMMENDATION}
                     </span>
                 </AutomationNavbarAddOnPaywallNavbarLink>
             )}
@@ -160,11 +166,12 @@ const AutomationNavbarAddOnSectionBlock = ({
                 )}
             >
                 <NavbarLink
-                    to={`/app/automation/${shopType}/${shopName}/connected-channels`}
+                    to={{
+                        pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
+                        state: {from: FROM_LOCATION},
+                    }}
                 >
-                    <span className={cssNavbar['item-name']}>
-                        Connected channels
-                    </span>
+                    <span className={cssNavbar['item-name']}>{CHANNELS}</span>
                 </NavbarLink>
             </div>
         </NavbarSectionBlock>

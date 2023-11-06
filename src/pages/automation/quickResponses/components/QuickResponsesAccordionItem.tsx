@@ -11,7 +11,11 @@ import {useAccordionItemContext} from 'pages/common/components/accordion/Accordi
 import EmptyResponseMessageContentError from 'pages/automation/common/components/EmptyResponseMessageContentError'
 
 import {useQuickResponsesViewContext} from '../QuickResponsesViewContext'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
+import {
+    FLOWS,
+    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+    QUICK_RESPONSES,
+} from '../../common/components/constants'
 import QuickResponseResponseMessageContent from './QuickResponseResponseMessageContent'
 import QuickResponseTitle from './QuickResponseTitle'
 
@@ -92,7 +96,7 @@ const QuickResponsesAccordionItem = ({
                         trigger={['hover']}
                     >
                         There are already {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}{' '}
-                        active quick response flows and/or flows. Disable one of
+                        active {QUICK_RESPONSES} and/or {FLOWS}. Disable one of
                         them to activate this one.
                     </Tooltip>
                 )}

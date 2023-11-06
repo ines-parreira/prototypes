@@ -502,13 +502,10 @@ export const useBillingPlans = ({
                 selectedPlans[ProductType.Automation].isSelected === false
             ) {
                 notifications.push({
-                    message:
-                        'You have removed Automation from your subscription',
+                    message: 'You have removed Automate from your subscription',
                     status: NotificationStatus.Success,
                     style: NotificationStyle.Alert,
                     showIcon: true,
-                    showDismissButton: true,
-                    noAutoDismiss: true,
                 })
             }
             try {

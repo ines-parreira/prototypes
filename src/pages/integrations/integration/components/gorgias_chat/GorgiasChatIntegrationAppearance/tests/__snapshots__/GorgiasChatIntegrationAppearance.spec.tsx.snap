@@ -129,7 +129,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div
                   class="connectStoreDescription"
                 >
-                  Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.
+                  Connect a store to use Automate features in chat and to enable 1-click install for Shopify.
                 </div>
                 <div
                   class="wrapper"
@@ -8244,7 +8244,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 <div
                   class="connectStoreDescription"
                 >
-                  Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.
+                  Connect a store to use Automate features in chat and to enable 1-click install for Shopify.
                 </div>
                 <div
                   class="wrapper"
@@ -12271,7 +12271,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <div
                   class="connectStoreDescription"
                 >
-                  Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.
+                  Connect a store to use Automate features in chat and to enable 1-click install for Shopify.
                 </div>
                 <div
                   class="wrapper"

@@ -117,14 +117,13 @@ export function RuleLibrary({
                     </h1>
                     <p>
                         Install autoresponders to leverage AI to resolve
-                        tickets. Available only to Automation Add-on
-                        subscribers.
+                        tickets. Available only to Automate subscribers.
                     </p>
                 </div>
                 {!hasAutomationAddOn && (
                     <div>
                         <AutomationSubscriptionButton
-                            label="Get Automation Features"
+                            label="Get Automate Features"
                             onClick={() => {
                                 logEvent(
                                     SegmentEvent.RuleAutomationAddOnUpsell,

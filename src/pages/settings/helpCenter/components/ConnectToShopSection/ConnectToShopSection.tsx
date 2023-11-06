@@ -54,8 +54,8 @@ export const ConnectToShopSection = ({
             <h3 className={css.title}>Connect store</h3>
 
             <p className={css.connectDescription}>
-                A store connection is required to use Automation Add-on features
-                and enable auto-embedding for Shopify stores.
+                A store connection is required to use Automate features and
+                enable auto-embedding for Shopify stores.
             </p>
 
             {shopName ? (
@@ -178,8 +178,8 @@ export const ConnectToShopSection = ({
             >
                 <>
                     <div className={css.selectStoreLabel}>
-                        A store connection is required to use Automation Add-on
-                        features and enable auto-embedding for Shopify stores.
+                        A store connection is required to use Automate features
+                        and enable auto-embedding for Shopify stores.
                     </div>
                     {shopName && selectedShop !== shopName && showWarning && (
                         <Alert

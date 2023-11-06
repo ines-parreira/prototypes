@@ -71,7 +71,7 @@ export const useCustomFieldsTicketCountTimeSeries = (
     )
 }
 
-// Automation add-on
+// Automate
 export function useAutomationRateTimeSeries(
     filters: StatsFilters,
     timezone: string,

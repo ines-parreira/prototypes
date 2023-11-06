@@ -112,8 +112,8 @@ const CancelAAOModal = ({
                 onClose={handleOnClose}
                 classNameDialog={css.container}
             >
-                <ModalHeader title="Are you sure you want to remove Automation?" />
-                <ModalBody className={css.modalBody}>
+                <ModalHeader title="Are you sure you want to unsubscribe from Automate?" />
+                <ModalBody>
                     {automatedInteractions >= 50 && (
                         <div className={css.warningInteractions}>
                             Your team has benefited by automating{' '}
@@ -122,18 +122,20 @@ const CancelAAOModal = ({
                         </div>
                     )}
                     <div>
-                        You will lose access to advanced features including:
+                        You'll lose access to automation and AI features like:
                     </div>
                     <div className={css.features}>
                         {AUTOMATION_FEATURES.map((feature) => (
                             <div className={css.feature} key={feature.title}>
-                                {feature.icon ? (
-                                    <i className="material-icons">
-                                        {feature.icon}
-                                    </i>
-                                ) : (
-                                    <img src={feature.iconUrl} alt="" />
-                                )}
+                                <div className={css.icon}>
+                                    {feature.icon ? (
+                                        <i className="material-icons">
+                                            {feature.icon}
+                                        </i>
+                                    ) : (
+                                        <img src={feature.iconUrl} alt="" />
+                                    )}
+                                </div>
                                 <div>
                                     <div className={css.featureName}>
                                         {feature.title}
@@ -148,7 +150,7 @@ const CancelAAOModal = ({
                 </ModalBody>
                 <ModalActionsFooter>
                     <Button intent="secondary" onClick={handleOnClose}>
-                        Cancel
+                        Keep using automate
                     </Button>
                     <Button onClick={handleOpenSecondModal}>Continue</Button>
                 </ModalActionsFooter>

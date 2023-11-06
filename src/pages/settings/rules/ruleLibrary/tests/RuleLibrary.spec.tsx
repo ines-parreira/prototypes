@@ -64,7 +64,7 @@ describe('<RuleLibrary/>', () => {
                     <RuleLibrary {...minProps} />
                 </Provider>
             )
-            expect(screen.queryByText(/Get Automation Features/)).toBeTruthy()
+            expect(screen.queryByText(/Get Automate Features/)).toBeTruthy()
         })
     })
 })

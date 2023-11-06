@@ -110,7 +110,7 @@ describe('<ContactFormPreferences />', () => {
 
     describe('when change store', () => {
         const shopName = 'gorgiastest'
-        it('should render store selection dropdown when automation add-on enabled', () => {
+        it('should render store selection dropdown when Automate enabled', () => {
             renderView({path: CONTACT_FORM_PREFERENCES_PATH})
 
             expect(screen.getByLabelText('Connect a store')).toBeInTheDocument()

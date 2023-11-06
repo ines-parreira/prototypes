@@ -110,10 +110,10 @@ exports[`BillingStartView should render a BillingStartView component and load th
                 <i
                   class="material-icons"
                 >
-                  auto_awesome
+                  bolt
                 </i>
                 <div>
-                  Automation
+                  Automate
                 </div>
               </div>
               <div>

@@ -206,9 +206,8 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                                 Connect store
                             </div>
                             <p className={css.sectionHeadingLabel}>
-                                Connect a store to use Automation Add-on
-                                features in chat and to enable 1-click install
-                                for Shopify.
+                                Connect a store to use Automate features in chat
+                                and to enable 1-click install for Shopify.
                             </p>
                             <GorgiasChatIntegrationConnectStore
                                 integration={integration}

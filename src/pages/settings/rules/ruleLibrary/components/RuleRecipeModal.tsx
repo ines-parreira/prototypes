@@ -23,6 +23,7 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 
 import Tooltip from 'pages/common/components/Tooltip'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import {RuleItemActions} from '../../types'
 
 import {
@@ -58,6 +59,7 @@ export const RuleRecipeModal = ({
     shouldHandleError,
 }: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const {rulesUrl} = useIsAutomateRebranding()
     const {rule, slug, triggered_count, views_per_section} = recipe
     const [shouldCreateviews, setShouldCreateViews] = useState(true)
     const [showAutomationModal, setShowAutomationModal] = useState(false)
@@ -85,7 +87,7 @@ export const RuleRecipeModal = ({
                 setIsSubscribing(false)
             })
         } else {
-            history.push(`/app/automation/rules/${managedRuleId}`)
+            history.push(`${rulesUrl}/${managedRuleId}`)
         }
     }
 

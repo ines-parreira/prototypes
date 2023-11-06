@@ -43,6 +43,7 @@ import {
 
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import Tooltip from 'pages/common/components/Tooltip'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import css from './RuleRow.less'
 import {getRuleActions} from './ruleEditors/utils'
 
@@ -71,7 +72,7 @@ export function RuleRow({
     const hasAgentPrivileges = useHasAgentPrivileges()
 
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
-
+    const {rulesUrl} = useIsAutomateRebranding()
     useEffect(() => {
         if (rule.type === RuleType.Managed && shouldDisplayError) {
             const settings = (rule as ManagedRule).settings
@@ -104,7 +105,7 @@ export function RuleRow({
                     deactivated_datetime: null,
                 })
                 void dispatch(ruleCreated(newRule))
-                history.push(`/app/automation/rules/${newRule.id}`)
+                history.push(`${rulesUrl}/${newRule.id}`)
                 void dispatch(
                     notify({
                         message: 'Rule duplicated successfully',
@@ -183,7 +184,7 @@ export function RuleRow({
         [rule]
     )
 
-    const link = useMemo(() => `/app/automation/rules/${rule.id}`, [rule])
+    const link = useMemo(() => `${rulesUrl}/${rule.id}`, [rule, rulesUrl])
 
     const handleToggleClick = useCallback(
         (onDisplayConfirmation: (event: MouseEvent) => void) =>

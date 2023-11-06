@@ -20,6 +20,8 @@ import {
 } from 'reactstrap'
 import * as Sentry from '@sentry/react'
 
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {logEvent, SegmentEvent} from 'common/segment'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
@@ -39,9 +41,12 @@ import {
 import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
-import {isTouchEvent} from 'utils'
+import {hasRole, isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {AGENT_ROLE} from 'config/user'
+import {UserRole} from 'config/types/user'
 import Avatar from './Avatar/Avatar'
 import DropdownBody from './dropdown/DropdownBody'
 import DropdownHeader from './dropdown/DropdownHeader'
@@ -91,6 +96,8 @@ type MenuItem = {
     icon: string
     segmentProp: {link: string}
     content?: ReactNode
+    requiredRole?: UserRole
+    requiredFeatureFlag?: FeatureFlagKey
 }
 
 const mainMenu: MenuItem[] = [
@@ -101,10 +108,12 @@ const mainMenu: MenuItem[] = [
         segmentProp: {link: 'tickets'},
     },
     {
-        url: '/app/automation/macros',
-        label: 'Automation',
+        url: '/app/automation',
+        label: 'Automate',
         icon: 'bolt',
         segmentProp: {link: 'automation'},
+        requiredRole: AGENT_ROLE,
+        requiredFeatureFlag: FeatureFlagKey.AutomateRebranding,
     },
     {
         url: '/app/customers',
@@ -133,6 +142,7 @@ type OwnProps = {
     disableResize?: boolean
     navbarContentRef?: RefObject<HTMLDivElement>
     splitTicketViewToggle?: ReactNode
+    flags?: LDFlagSet
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -328,6 +338,7 @@ export class Navbar extends Component<Props, State> {
             isTrialing,
             isPreferencesLoading,
             navbarContentRef,
+            flags,
             splitTicketViewToggle,
         } = this.props
         const {isResizing} = this.state
@@ -370,6 +381,25 @@ export class Navbar extends Component<Props, State> {
 
                             <DropdownMenu className={css['dropdown-menu']}>
                                 {mainMenu.map((item) => {
+                                    const shouldHideAutomate =
+                                        item.requiredFeatureFlag &&
+                                        flags?.[item.requiredFeatureFlag] &&
+                                        item.requiredRole &&
+                                        !hasRole(currentUser, item.requiredRole)
+                                    const shouldHideItem =
+                                        item.requiredFeatureFlag &&
+                                        !flags?.[item.requiredFeatureFlag] &&
+                                        item.requiredRole &&
+                                        !hasRole(currentUser, item.requiredRole)
+
+                                    if (
+                                        item.label === 'Automate'
+                                            ? shouldHideAutomate
+                                            : shouldHideItem
+                                    ) {
+                                        return null
+                                    }
+
                                     return (
                                         <DropdownItem
                                             key={item.label}
@@ -403,7 +433,6 @@ export class Navbar extends Component<Props, State> {
                         </UncontrolledDropdown>
                         {splitTicketViewToggle}
                     </div>
-
                     <div className={css['navbar-cta-group']}>
                         <HomePageLink />
 
@@ -953,4 +982,4 @@ const connector = connect(
     }
 )
 
-export default connector(Navbar)
+export default connector(withLDConsumer()(Navbar))

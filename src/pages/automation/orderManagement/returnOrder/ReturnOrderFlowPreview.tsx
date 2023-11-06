@@ -38,7 +38,7 @@ const ReturnOrderFlowPreview = ({returnAction}: Props) => {
             onChange={onChannelChange}
             alert={{
                 message:
-                    'Connect a chat or help center to your store to use this feature.',
+                    'Connect a Chat or Help center to your store to use this feature.',
             }}
         >
             {(channel) => (

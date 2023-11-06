@@ -303,9 +303,7 @@ describe('<QuickResponsesView />', () => {
             </Provider>
         )
 
-        const addQuickResponseButton = screen.getByText(
-            'Add quick response flow'
-        )
+        const addQuickResponseButton = screen.getByText('Add Quick Response')
 
         act(() => {
             fireEvent.click(addQuickResponseButton)

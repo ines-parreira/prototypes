@@ -91,7 +91,7 @@ export const PreviewChannelButton = ({
                     disableMessage
                 ) : (
                     <div className={styles.tooltipContainer}>
-                        Test your flows without generating tickets.{' '}
+                        Test your Flows without generating tickets.{' '}
                         <a
                             href="https://docs.gorgias.com/en-US/286870-86c09fc4f4444b289d1a486eb0beba16"
                             target="_blank"

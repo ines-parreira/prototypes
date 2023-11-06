@@ -789,10 +789,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             }
                                         />
                                         <p className="mb-3">
-                                            Automation Add-on features are
-                                            always available, if enabled. When
-                                            live chat is unavailable, customers
-                                            can message your team with{' '}
+                                            Automate features are always
+                                            available, if enabled. When live
+                                            chat is unavailable, customers can
+                                            message your team with{' '}
                                             <a
                                                 target="_blank"
                                                 rel="noopener noreferrer"
@@ -1042,7 +1042,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     />
                                 </div>
 
-                                {SHOW_CHAT_CONVERSATIONS_SECTION && (
+                                {!SHOW_CHAT_CONVERSATIONS_SECTION && (
                                     <div className={css.formSection}>
                                         <h4 className={css.title}>
                                             Chat conversations
@@ -1074,9 +1074,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                     Let customers start live
                                                     conversations with agents.
                                                     When disabled, customers can
-                                                    interact with quick response
-                                                    flows and order management
-                                                    flows and{' '}
+                                                    interact with Quick
+                                                    responses and Order
+                                                    management and{' '}
                                                     {renameContactFormEnabled
                                                         ? 'leave a message through offline capture'
                                                         : 'fill the contact form'}

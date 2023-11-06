@@ -185,7 +185,7 @@ export const ManagedRuleEditor = (
             void dispatch(
                 notify({
                     message:
-                        'Please upgrade to an automation add-on plan to edit this rule',
+                        'Please upgrade to an Automate plan to edit this rule',
                     status: NotificationStatus.Error,
                 })
             )

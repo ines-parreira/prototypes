@@ -1,40 +1,34 @@
-import React, {useState} from 'react'
+import React from 'react'
 
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
-
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
+import {
+    ARTICLE_RECOMMENDATION,
+    FLOWS,
+    ORDER_MANAGEMENT,
+    QUICK_RESPONSES,
+} from './constants'
 
 const PAYWALL_ITEMS = [
-    {name: 'Flow builder', slug: 'flows'},
-    {name: 'Quick response flows', slug: 'quick-responses'},
-    {name: 'Order management flows', slug: 'order-management'},
-    {name: 'Article recommendation', slug: 'article-recommendation'},
+    {name: FLOWS, slug: 'flows'},
+    {name: QUICK_RESPONSES, slug: 'quick-responses'},
+    {name: ORDER_MANAGEMENT, slug: 'order-management'},
+    {name: ARTICLE_RECOMMENDATION, slug: 'article-recommendation'},
 ] as const
 
 const AutomationNavbarAddOnPaywallView = () => {
-    const [
-        isAutomationSubscriptionModalOpen,
-        setIsAutomationSubscriptionModalOpen,
-    ] = useState(false)
-
+    const {isAutomateRebranding} = useIsAutomateRebranding()
     return (
         <>
-            {PAYWALL_ITEMS.map((paywallItem) => (
-                <AutomationNavbarAddOnPaywallNavbarLink
-                    key={paywallItem.name}
-                    to={`/app/automation/${paywallItem.slug}`}
-                    onSubscribeToAutomationAddOnClick={() => {
-                        setIsAutomationSubscriptionModalOpen(true)
-                    }}
-                >
-                    {paywallItem.name}
-                </AutomationNavbarAddOnPaywallNavbarLink>
-            ))}
-            <AutomationSubscriptionModal
-                confirmLabel="Subscribe"
-                isOpen={isAutomationSubscriptionModalOpen}
-                onClose={() => setIsAutomationSubscriptionModalOpen(false)}
-            />
+            {!isAutomateRebranding &&
+                PAYWALL_ITEMS.map((paywallItem) => (
+                    <AutomationNavbarAddOnPaywallNavbarLink
+                        key={paywallItem.name}
+                        to={`/app/automation/${paywallItem.slug}`}
+                    >
+                        {paywallItem.name}
+                    </AutomationNavbarAddOnPaywallNavbarLink>
+                ))}
         </>
     )
 }

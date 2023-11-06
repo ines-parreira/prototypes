@@ -588,8 +588,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             Connect a store
                         </Label>
                         <div className={css.connectStoreDescription}>
-                            Connect a store to use Automation Add-on features in
-                            chat and to enable 1-click install for Shopify.
+                            Connect a store to use Automate features in chat and
+                            to enable 1-click install for Shopify.
                         </div>
                         <StoreNameDropdown
                             storeIntegrationId={

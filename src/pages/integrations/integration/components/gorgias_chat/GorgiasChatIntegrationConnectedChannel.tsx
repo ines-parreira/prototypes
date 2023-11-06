@@ -31,13 +31,11 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
                 <AutomationSubscriptionButton
                     className={css.automationSubscriptionButton}
                     fillStyle="ghost"
-                    label="Get Automation Add-on Features"
-                    onClick={() => {
-                        setIsAutomationModalOpened(true)
-                    }}
+                    label="Upgrade your chat with automate"
+                    onClick={() => setIsAutomationModalOpened(true)}
                 />
                 <AutomationSubscriptionModal
-                    confirmLabel="Confirm"
+                    confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}
                 />
@@ -60,7 +58,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
                     icon="warning"
                     className={css.connectStoreWarning}
                 >
-                    Connect store to enable automation
+                    Connect store to enable Automate
                 </ButtonIconLabel>
             </Button>
         )
@@ -72,12 +70,13 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
             intent="primary"
             onClick={() => {
                 history.push(
-                    `/app/automation/${shopType}/${shopName}/connected-channels?type=${TicketChannel.Chat}&id=${integrationId}`
+                    `/app/automation/${shopType}/${shopName}/connected-channels?type=${TicketChannel.Chat}&id=${integrationId}`,
+                    {from: 'chat-integration'}
                 )
             }}
         >
             <ButtonIconLabel icon="bolt">
-                Edit automation settings
+                Go to automate settings
             </ButtonIconLabel>
         </Button>
     )

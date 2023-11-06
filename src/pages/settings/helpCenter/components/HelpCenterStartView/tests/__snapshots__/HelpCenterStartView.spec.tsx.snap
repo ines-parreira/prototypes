@@ -93,14 +93,14 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
             <p />
             <p />
             <h2>
-              For Automation Add-on subscribers only:
+              For Automate subscribers only:
             </h2>
             <ul>
               <li>
-                Self-Service flows available in the Help Center to deflect even more tickets;
+                Self-Service Flows available in the Help Center to deflect even more tickets;
               </li>
               <li>
-                Articles recommendations in chat.
+                Articles Recommendations in chat.
               </li>
             </ul>
             <p />

@@ -20,9 +20,9 @@ export default function SupportedChannelsWarning({
         <>
             {unsupportedChannels.length > 0 && (
                 <Alert type={AlertType.Warning} icon={AlertType.Warning}>
-                    This step is currently only supported for flows in{' '}
+                    This step is currently only supported for Flows in{' '}
                     {supportedChannels.join(' and ')}. Using this step will
-                    prevent this flow from being enabled in{' '}
+                    prevent this Flow from being enabled in{' '}
                     {unsupportedChannels.join(' and ')}.
                 </Alert>
             )}

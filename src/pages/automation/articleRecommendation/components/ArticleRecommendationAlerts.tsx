@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import {ARTICLE_RECOMMENDATION} from 'pages/automation/common/components/constants'
 import {CLOSED_MANY_HELP_CENTERS_ALERT_KEY} from '../constants'
 
 import css from './ArticleRecommendationAlerts.less'
@@ -78,9 +79,16 @@ export const ConnectedChannelsInfoAlert = ({
     shopType: string
 }) => (
     <Alert className={css.alert} icon>
-        Control where customers receive article recommendations in{' '}
-        <Link to={`/app/automation/${shopType}/${shopName}/connected-channels`}>
-            connected channels
+        Enable {ARTICLE_RECOMMENDATION} in{' '}
+        <Link
+            to={{
+                pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
+                state: {
+                    from: 'article-recommendation',
+                },
+            }}
+        >
+            channels
         </Link>
         .
     </Alert>

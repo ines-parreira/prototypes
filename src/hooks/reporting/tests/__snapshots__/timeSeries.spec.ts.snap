@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`time series Automation add-on OverallTimeSaved should render expected query snapshot 1`] = `
+exports[`time series Automate OverallTimeSaved should render expected query snapshot 1`] = `
 [
   {
     "dimensions": [],
@@ -59,7 +59,7 @@ exports[`time series Automation add-on OverallTimeSaved should render expected q
 ]
 `;
 
-exports[`time series Automation add-on useAutomatedInteractionTimeSeries should render expected query snapshot 1`] = `
+exports[`time series Automate useAutomatedInteractionTimeSeries should render expected query snapshot 1`] = `
 [
   {
     "dimensions": [],
@@ -112,7 +112,7 @@ exports[`time series Automation add-on useAutomatedInteractionTimeSeries should 
 ]
 `;
 
-exports[`time series Automation add-on useAutomationRateTimeSeries should render expected query snapshot 1`] = `
+exports[`time series Automate useAutomationRateTimeSeries should render expected query snapshot 1`] = `
 [
   {
     "dimensions": [],

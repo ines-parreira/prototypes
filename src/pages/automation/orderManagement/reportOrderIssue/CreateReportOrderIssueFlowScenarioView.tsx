@@ -10,6 +10,7 @@ import {
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
+import {ORDER_MANAGEMENT} from 'pages/automation/common/components/constants'
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
 import ReportOrderIssueScenarioFormContext, {
@@ -84,7 +85,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                         <Link
                             to={`/app/automation/shopify/${shopName}/order-management`}
                         >
-                            Order management flows
+                            {ORDER_MANAGEMENT}
                         </Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem>

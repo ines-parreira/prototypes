@@ -30,6 +30,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import List from './accountRules/RulesList'
 import CourseCard from './components/CourseCard'
 import CreateRuleFooter from './components/CreateRuleFooter'
@@ -44,6 +45,8 @@ const customRuleBreakpoint = 3
 export function RulesList() {
     const history = useHistory()
     const currentAccount = useAppSelector(getCurrentAccountState)
+
+    const {rulesUrl} = useIsAutomateRebranding()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const logSearch = useCallback(
@@ -89,10 +92,7 @@ export function RulesList() {
 
         if (hash.includes('#rule-library')) {
             history.replace(
-                `/app/automation/rules/library${hash.replace(
-                    '#rule-library',
-                    ''
-                )}`
+                `${rulesUrl}/library${hash.replace('#rule-library', '')}`
             )
         }
 

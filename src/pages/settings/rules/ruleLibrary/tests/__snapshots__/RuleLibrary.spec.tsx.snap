@@ -17,7 +17,7 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
         Autoresponders
       </h1>
       <p>
-        Install autoresponders to leverage AI to resolve tickets. Available only to Automation Add-on subscribers.
+        Install autoresponders to leverage AI to resolve tickets. Available only to Automate subscribers.
       </p>
     </div>
     <div>
@@ -36,9 +36,9 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
               <i
                 class="material-icons icon isLeft medium"
               >
-                auto_awesome
+                bolt
               </i>
-              Get Automation Features
+              Get Automate Features
             </span>
           </button>
         </div>
@@ -124,7 +124,7 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
         Autoresponders
       </h1>
       <p>
-        Install autoresponders to leverage AI to resolve tickets. Available only to Automation Add-on subscribers.
+        Install autoresponders to leverage AI to resolve tickets. Available only to Automate subscribers.
       </p>
     </div>
     <div>
@@ -143,9 +143,9 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
               <i
                 class="material-icons icon isLeft medium"
               >
-                auto_awesome
+                bolt
               </i>
-              Get Automation Features
+              Get Automate Features
             </span>
           </button>
         </div>

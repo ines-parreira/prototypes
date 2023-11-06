@@ -1,10 +1,6 @@
 :local {
     .container {
-        max-width: 860px;
-    }
-
-    .modalBody {
-        margin: 8px 16px;
+        max-width: 800px;
     }
 
     .warningInteractions {
@@ -24,19 +20,25 @@
         gap: 16px;
         align-items: center;
 
-        i,
-        img {
+        .icon {
             font-size: 20px;
             background: var(--neutral-grey-2);
             padding: 8px;
             border-radius: 20px;
-            color: var(--main-secondary);
+            color: var(--neutral-grey-5);
+            height: 36px;
+            width: 36px;
+            display: flex;
+            justify-content: center;
         }
     }
 
     .featureName {
         font-weight: 600;
         margin-bottom: 4px;
+    }
+    .featureDescription {
+        color: var(--neutral-grey-5);
     }
 
     .ctaSelect {

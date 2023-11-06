@@ -12,6 +12,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
+import {ORDER_MANAGEMENT} from 'pages/automation/common/components/constants'
 import useReturnOrderFlow from './hooks/useReturnOrderFlow'
 import ReturnOrderEligibility from './components/ReturnOrderEligibility'
 import ReturnOrderAction from './components/ReturnOrderAction'
@@ -109,7 +110,7 @@ const ReturnOrderFlowView = () => {
                         <Link
                             to={`/app/automation/shopify/${shopName}/order-management`}
                         >
-                            Order management flows
+                            {ORDER_MANAGEMENT}
                         </Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>Return order</BreadcrumbItem>

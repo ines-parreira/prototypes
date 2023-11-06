@@ -1,3 +1,5 @@
+@import (reference) '~css/typography';
+
 :local {
     .item {
         justify-content: space-between;
@@ -10,8 +12,12 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
-
-    .icon {
-        color: var(--main-secondary-2);
+    .btn {
+        width: 100%;
+        margin-top: 16px;
+    }
+    .container {
+        .body-regular();
+        padding: 16px;
     }
 }

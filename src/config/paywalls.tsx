@@ -8,8 +8,8 @@ import {
 import Button from 'pages/common/components/button/Button'
 import {AccountFeature} from 'state/currentAccount/types'
 import {
-    PAGE_TITLE_AAO,
-    PAGE_TITLE_AAO_FEATURES,
+    GORGIAS_AUTOMATE_BADGE,
+    PAGE_TITLE_AUTOMATE_PAYWALL,
 } from 'pages/stats/self-service/constants'
 import {
     VOICE_LEARN_MORE_URL,
@@ -80,35 +80,19 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
             'Track your agents in real-time. See how long they have been online, how many tickets have been assigned to them and the work they have accomplished over a given day.',
         preview: assetsUrl('/img/paywalls/screens/live-agents-statistic.png'),
     },
-    [AccountFeature.AutomationSelfServiceStatistics]: {
-        paywallTheme: PaywallTheme.Default,
-        header: PAGE_TITLE_AAO_FEATURES,
-        description: (
-            <div>
-                Monitor performance by feature for flows, quick response flows,
-                order management flows, and article recommendation.
-            </div>
-        ),
-        preview: assetsUrl(
-            '/img/paywalls/screens/automation-add-on-statistics.png'
-        ),
-        requiredUpgrade: 'Automation',
-        upgradeType: UpgradeType.AddOn,
-    },
+
     [AccountFeature.AutomationAddonOverview]: {
         paywallTheme: PaywallTheme.Default,
-        header: PAGE_TITLE_AAO,
+        header: PAGE_TITLE_AUTOMATE_PAYWALL,
         description: (
             <div>
-                Monitor your automation rate, fully automated interactions and
-                Automation add-on performance.
+                With Gorgias Automate, you can track your automation performance
+                and leverage insights to improve.
             </div>
         ),
-        preview: assetsUrl(
-            '/img/paywalls/screens/automation-addon-overview.png'
-        ),
-        requiredUpgrade: 'Automation',
-        upgradeType: UpgradeType.AddOn,
+        preview: assetsUrl('/img/paywalls/screens/automate-overview.png'),
+        requiredUpgrade: GORGIAS_AUTOMATE_BADGE,
+        upgradeType: UpgradeType.None,
     },
     [AccountFeature.PhoneNumber]: {
         preview: assetsUrl('/img/paywalls/screens/voice_overview.png'),

@@ -13,6 +13,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
+import {ORDER_MANAGEMENT} from 'pages/automation/common/components/constants'
 import useCancelOrderFlow from './hooks/useCancelOrderFlow'
 import CancelOrderEligibility from './components/CancelOrderEligibility'
 import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
@@ -116,7 +117,7 @@ const CancelOrderFlowView = () => {
                         <Link
                             to={`/app/automation/shopify/${shopName}/order-management`}
                         >
-                            Order management flows
+                            {ORDER_MANAGEMENT}
                         </Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>Cancel order</BreadcrumbItem>

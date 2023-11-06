@@ -28,9 +28,9 @@ exports[`<AutomationStatsSelfServiceMetric /> should render legacy 1`] = `
               <i
                 class="material-icons icon isLeft medium"
               >
-                auto_awesome
+                bolt
               </i>
-              Get Automation Features
+              Get Automate Features
             </span>
           </button>
         </div>
@@ -68,9 +68,9 @@ exports[`<AutomationStatsSelfServiceMetric /> should render paywall 1`] = `
               <i
                 class="material-icons icon isLeft medium"
               >
-                auto_awesome
+                bolt
               </i>
-              Get Automation Features
+              Get Automate Features
             </span>
           </button>
         </div>

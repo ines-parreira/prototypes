@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automation add-on is not subscribed 1`] = `
+exports[`<AutoCloseSpamModal/> should render the autoclose spam body when Automate is not subscribed 1`] = `
 <div
   class="managedRule autoCloseSpam"
 >
@@ -134,7 +134,7 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automa
 </div>
 `;
 
-exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automation add-on is subscribed 1`] = `
+exports[`<AutoCloseSpamModal/> should render the autoclose spam body when Automate is subscribed 1`] = `
 <div
   class="managedRule autoCloseSpam"
 >

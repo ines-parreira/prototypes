@@ -1,7 +1,7 @@
 import moment from 'moment'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {saveReport} from 'services/reporting/automationAddOnReportingService'
+import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
 jest.mock('utils/file')
 

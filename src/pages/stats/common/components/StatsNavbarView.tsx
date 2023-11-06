@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from 'react'
+import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
 
@@ -6,41 +6,20 @@ import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import AutomationNavbarAddOnPaywallNavbarLink from 'pages/automation/common/components/AutomationNavbarAddOnPaywallNavbarLink'
-import {
-    AUTOMATION_ADD_ON_FEATURES_PATH,
-    AUTOMATION_ADD_ON_PATH,
-    PAGE_TITLE_AAO,
-    PAGE_TITLE_AAO_FEATURES,
-} from 'pages/stats/self-service/constants'
-import {
-    getIntegrationsList,
-    hasIntegrationOfTypes,
-} from 'state/integrations/selectors'
-import {Category} from 'models/integration/types/app'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import {useIsRevenueBillingEnabled} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBillingEnabled'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
+import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
 }
 
 export default function StatsNavbarView() {
-    const [
-        isAutomationSubscriptionModalOpen,
-        setIsAutomationSubscriptionModal,
-    ] = useState(false)
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const isNewAutomationAddonEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewAutomationAddon]
     const isHelpCenterAnalyticsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isVoiceAnalyticsEnabled: boolean | undefined =
@@ -48,44 +27,7 @@ export default function StatsNavbarView() {
 
     const isConvertSubscriber = useIsConvertSubscriber()
     const isConvertBillingEnabled = useIsRevenueBillingEnabled()
-    const integrationsList = useAppSelector(getIntegrationsList)
-    const hasEcommerceIntegerations = useAppSelector(
-        hasIntegrationOfTypes(
-            integrationsList
-                .filter((integration) =>
-                    integration.categories.includes(Category.ECOMMERCE)
-                )
-                .map((integration) => integration.type)
-        )
-    )
-    const automationAddon: {
-        label: ReactNode
-        to: string
-    }[] = [
-        {
-            label: isNewAutomationAddonEnabled
-                ? PAGE_TITLE_AAO_FEATURES
-                : PAGE_TITLE_AAO,
-            to: AUTOMATION_ADD_ON_FEATURES_PATH,
-        },
-    ]
-    isNewAutomationAddonEnabled &&
-        automationAddon.unshift({
-            label: (
-                <>
-                    {PAGE_TITLE_AAO}
-                    {hasAutomationAddOn && hasEcommerceIntegerations && (
-                        <Badge
-                            type={ColorType.Blue}
-                            className={cssNavbar.badge}
-                        >
-                            NEW
-                        </Badge>
-                    )}
-                </>
-            ),
-            to: AUTOMATION_ADD_ON_PATH,
-        })
+
     return (
         <>
             <NavbarBlock icon="adjust" title="Live">
@@ -280,64 +222,10 @@ export default function StatsNavbarView() {
                     </div>
                 </div>
             </NavbarBlock>
-            <NavbarBlock icon="bolt" title="Automation">
-                <div className={cssNavbar.menu}>
-                    {
-                        // TMP: This link will come back when the page will be reworked
-                        // <NavbarLink
-                        //     {...COMMON_NAV_LINK_PROPS}
-                        //     to="/app/stats/automation"
-                        // >
-                        //     Overview
-                        // </NavbarLink>
-                    }
-                    {!hasAutomationAddOn ? (
-                        <>
-                            {automationAddon.map((aao) => (
-                                <AutomationNavbarAddOnPaywallNavbarLink
-                                    to={'/app/stats/' + aao.to}
-                                    key={aao.to}
-                                    exact
-                                    onSubscribeToAutomationAddOnClick={() => {
-                                        setIsAutomationSubscriptionModal(true)
-                                    }}
-                                    className={classNames(
-                                        cssNavbar['link-wrapper'],
-                                        cssNavbar.isNested
-                                    )}
-                                >
-                                    {aao.label}
-                                </AutomationNavbarAddOnPaywallNavbarLink>
-                            ))}
-                            <AutomationSubscriptionModal
-                                confirmLabel="Subscribe"
-                                isOpen={isAutomationSubscriptionModalOpen}
-                                onClose={() =>
-                                    setIsAutomationSubscriptionModal(false)
-                                }
-                            />
-                        </>
-                    ) : (
-                        <>
-                            {automationAddon.map((aao) => (
-                                <div
-                                    key={aao.to}
-                                    className={classNames(
-                                        cssNavbar['link-wrapper'],
-                                        cssNavbar.isNested
-                                    )}
-                                >
-                                    <NavbarLink
-                                        {...COMMON_NAV_LINK_PROPS}
-                                        to={'/app/stats/' + aao.to}
-                                    >
-                                        {aao.label}
-                                    </NavbarLink>
-                                </div>
-                            ))}
-                        </>
-                    )}
-                </div>
+            <NavbarBlock icon="bolt" title="Automate">
+                <AutomateStatsNavbar
+                    commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                />
             </NavbarBlock>
             {(isConvertBillingEnabled || isConvertSubscriber) && (
                 <NavbarBlock icon="attach_money" title="Convert">

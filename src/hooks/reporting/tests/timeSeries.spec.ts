@@ -167,7 +167,7 @@ describe('time series', () => {
         })
     })
 
-    describe('Automation add-on', () => {
+    describe('Automate', () => {
         const aaoTimeSeriesIterator = describe.each([
             [
                 'useAutomationRateTimeSeries',

@@ -479,7 +479,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                                     // this type cast is safe as all values are string
                                     handleChangeShopifyStore(value as string)
                                 }}
-                                caption="Connect this Help Center to a Shopify store to enable Automation Add-on features."
+                                caption="Connect this Help Center to a Shopify store to enable Automate features."
                             />
                         )}
                     </section>

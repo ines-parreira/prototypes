@@ -14,7 +14,10 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {TicketChannel} from 'business/types/ticket'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
+import {
+    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+    ORDER_MANAGEMENT,
+} from '../../common/components/constants'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomationSubscriptionAction from './AutomationSubscriptionAction'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
@@ -103,7 +106,7 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                 channelLanguages={channel.value.supported_locales}
                 maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
                 entrypoints={workflowsEntrypoints}
-                limitTooltipMessage="You have reached the maximum number of enabled flows in this channel. Disable another flow in order to enable this flow."
+                limitTooltipMessage="You have reached the maximum number of enabled Flows in this channel. Disable another Flow in order to enable this Flow."
                 onChange={(nextEntrypoints) => {
                     void handleHelpCenterAutomationSettingsUpdate({
                         workflows: nextEntrypoints.map(
@@ -117,7 +120,7 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
             />
 
             <ConnectedChannelFeatureToggle
-                name="Order management flows"
+                name={ORDER_MANAGEMENT}
                 value={channel.value.self_service_deactivated_datetime === null}
                 disabled={updatingHelpCenter || !hasAutomationAddOn}
                 onChange={updateHelpCenter}

@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 
+import {FLOWS} from '../common/components/constants'
 import CreateCustomWorkflowFooter from './components/CreateCustomWorkflowFooter'
 import WorkflowTemplateCard from './components/WorkflowTemplateCard'
 import {WORKFLOW_TEMPLATES_LIST} from './workflowTemplates'
@@ -29,7 +30,7 @@ const WorkflowTemplatesView = ({
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to={workflowsUrl}>Flow builder</Link>
+                                <Link to={workflowsUrl}>{FLOWS}</Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 Flow Templates

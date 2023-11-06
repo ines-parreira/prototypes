@@ -12,8 +12,9 @@ import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {assumeMock} from 'utils/testing'
+import {SegmentEvent, logEvent} from 'common/segment'
 import AutomationSubscriptionModal from '../AutomationSubscriptionModal'
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     currentUser: fromJS({
@@ -34,6 +35,8 @@ const minProps: ComponentProps<typeof AutomationSubscriptionModal> = {
     isOpen: false,
     onClose: jest.fn(),
 }
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 describe('<AutomationSubscriptionModal />', () => {
     beforeEach(() => {
         jest.spyOn(LD, 'useFlags').mockReturnValue({
@@ -46,6 +49,7 @@ describe('<AutomationSubscriptionModal />', () => {
                 <AutomationSubscriptionModal {...minProps} />
             </Provider>
         )
+        expect(logEventMock).not.toHaveBeenCalled()
         expect(baseElement).toMatchSnapshot()
     })
 
@@ -54,6 +58,10 @@ describe('<AutomationSubscriptionModal />', () => {
             <Provider store={mockStore(defaultState)}>
                 <AutomationSubscriptionModal {...minProps} isOpen />
             </Provider>
+        )
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AutomatePaywallModalUpsell,
+            {location: undefined}
         )
         expect(baseElement).toMatchSnapshot()
     })
@@ -66,6 +74,10 @@ describe('<AutomationSubscriptionModal />', () => {
             </Provider>
         )
         const button = await findByText(/I am sure/)
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AutomatePaywallModalUpsell,
+            {location: undefined}
+        )
         fireEvent.click(button)
         expect(button).toMatchSnapshot()
     })
@@ -87,7 +99,10 @@ describe('<AutomationSubscriptionModal />', () => {
                 <AutomationSubscriptionModal {...minProps} isOpen />
             </Provider>
         )
-
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AutomatePaywallModalUpsell,
+            {location: undefined}
+        )
         await findByText(/Cancel subscription/i)
         expect(baseElement).toMatchSnapshot()
     })
@@ -103,6 +118,10 @@ describe('<AutomationSubscriptionModal />', () => {
                 />
             </Provider>
         )
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AutomatePaywallModalUpsell,
+            {location: undefined}
+        )
         const img = await findByAltText(/features/)
         expect(img).toMatchSnapshot()
     })
@@ -113,7 +132,10 @@ describe('<AutomationSubscriptionModal />', () => {
                 <AutomationSubscriptionModal {...minProps} isOpen />
             </Provider>
         )
-
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.AutomatePaywallModalUpsell,
+            {location: undefined}
+        )
         expect(getByTestId('automationModalDescription')).toBeInTheDocument()
     })
 })

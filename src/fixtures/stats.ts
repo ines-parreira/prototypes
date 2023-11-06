@@ -9,6 +9,10 @@ import {
     TwoDimensionalChart,
     StatsFilters,
 } from 'models/stat/types'
+import {
+    ARTICLE_RECOMMENDATION,
+    QUICK_RESPONSES,
+} from 'pages/automation/common/components/constants'
 
 export const statsFilters: StatsFilters = {
     period: {
@@ -1893,7 +1897,7 @@ export const selfServiceVolumePerFlowNoData: Stat<TwoDimensionalChart> = {
 
 export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
     data: {
-        label: 'Quick response flows performance',
+        label: `${QUICK_RESPONSES} performance`,
         data: {
             axes: {
                 x: [
@@ -1945,7 +1949,7 @@ export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
 export const selfServiceQuickResponsePerformanceNoData: Stat<TwoDimensionalChart> =
     {
         data: {
-            label: 'Quick response flows performance',
+            label: `${QUICK_RESPONSES} performance`,
             data: {
                 axes: {
                     x: [
@@ -1978,7 +1982,7 @@ export const selfServiceQuickResponsePerformanceNoData: Stat<TwoDimensionalChart
 export const selfServiceArticleRecommendationPerformance: Stat<TwoDimensionalChart> =
     {
         data: {
-            label: 'Article recommendation performance',
+            label: `${ARTICLE_RECOMMENDATION} performance`,
             data: {
                 axes: {
                     x: [
@@ -2036,7 +2040,7 @@ export const selfServiceArticleRecommendationPerformance: Stat<TwoDimensionalCha
 export const selfServiceArticleRecommendationPerformanceNoData: Stat<TwoDimensionalChart> =
     {
         data: {
-            label: 'Article recommendation performance',
+            label: `${ARTICLE_RECOMMENDATION} performance`,
             data: {
                 axes: {
                     x: [

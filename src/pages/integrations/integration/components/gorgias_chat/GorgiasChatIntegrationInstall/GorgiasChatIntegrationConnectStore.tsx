@@ -175,8 +175,8 @@ const GorgiasChatIntegrationConnectStore = ({
                 <ModalBody className={css.modalBody}>
                     <div>
                         {storeIntegration
-                            ? 'A store connection is required to use Automation Add-on features and enable auto-embedding for Shopify stores.'
-                            : 'Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.'}
+                            ? 'A store connection is required to use Automate features and enable auto-embedding for Shopify stores.'
+                            : 'Connect a store to use Automate features in chat and to enable 1-click install for Shopify.'}
                     </div>
                     <StoreNameDropdown
                         gorgiasChatIntegrations={fromJS(

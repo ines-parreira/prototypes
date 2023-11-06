@@ -140,12 +140,13 @@ const ContactFormSettingsView = (): JSX.Element => {
                                             contactForm.shop_name as string
                                         }/connected-channels?type=${
                                             TicketChannel.ContactForm
-                                        }&id=${contactForm.id}`
+                                        }&id=${contactForm.id}`,
+                                        {from: 'contact-form-settings'}
                                     )
                                 }}
                             >
                                 <ButtonIconLabel icon="bolt">
-                                    Edit automation settings
+                                    Go to automate settings
                                 </ButtonIconLabel>
                             </Button>
                         ) : (
@@ -162,7 +163,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                                     icon="warning"
                                     className={css.connectStoreWarning}
                                 >
-                                    Connect store to enable automation
+                                    Connect store to enable Automate
                                 </ButtonIconLabel>
                             </Button>
                         )
@@ -170,13 +171,11 @@ const ContactFormSettingsView = (): JSX.Element => {
                         <>
                             <AutomationSubscriptionButton
                                 fillStyle="ghost"
-                                label="Get Automation Add-on Features"
-                                onClick={() => {
-                                    setIsAutomationModalOpened(true)
-                                }}
+                                label="Upgrade your contact form with automate"
+                                onClick={() => setIsAutomationModalOpened(true)}
                             />
                             <AutomationSubscriptionModal
-                                confirmLabel="Confirm"
+                                confirmLabel="Subscribe"
                                 isOpen={isAutomationModalOpened}
                                 onClose={() =>
                                     setIsAutomationModalOpened(false)

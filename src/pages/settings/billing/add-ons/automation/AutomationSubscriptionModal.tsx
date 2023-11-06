@@ -1,4 +1,4 @@
-import React, {ElementType, useMemo, useRef, useState} from 'react'
+import React, {ElementType, useEffect, useMemo, useRef, useState} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
@@ -36,6 +36,10 @@ import {
     isTrialing,
 } from 'state/currentAccount/selectors'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import {AutomationPrice, Price, ProductType} from 'models/billing/types'
+import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
+import {SegmentEvent, logEvent} from 'common/segment'
 import AutomationPlanSubscriptionDescription from './AutomationPlanSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'
 
@@ -117,7 +121,7 @@ const AutomationSubscriptionModal = ({
     const domain: string = currentAccount.get('domain')
 
     const currentPriceIds: string[] = useCurrentPriceIds()
-
+    const {isAutomateRebranding} = useIsAutomateRebranding()
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
         useAsyncFn(async (prices: string[]) => {
             try {
@@ -135,8 +139,8 @@ const AutomationSubscriptionModal = ({
     const header = headerDescription
         ? headerDescription
         : hasAutomationAddOn
-        ? 'Manage Automation Add-on'
-        : 'Subscribe to Automation'
+        ? 'Manage Automate'
+        : 'Subscribe to Automate'
 
     const onConfirm = () => {
         selectedPrice?.price_id &&
@@ -164,7 +168,7 @@ const AutomationSubscriptionModal = ({
     )
 
     const aaoPreselectedOption = Math.min(5, helpdeskOptionIndex)
-    const [selectedPrice, setSelectedPrice] = useState(
+    const [selectedPrice, setSelectedPrice] = useState<Price | undefined>(
         automationPrices?.[aaoPreselectedOption]
     )
 
@@ -186,13 +190,21 @@ const AutomationSubscriptionModal = ({
         setShowContactSupportModal(false)
     }
 
+    useEffect(() => {
+        if (isOpen) {
+            logEvent(SegmentEvent.AutomatePaywallModalUpsell, {
+                location: history?.location.pathname,
+            })
+        }
+    }, [isOpen, history])
+
     return (
         <>
             <Modal
                 isOpen={isOpen}
                 toggle={onClose}
                 className={classnames(css.modal, {
-                    [css.wide]: true,
+                    [css.wide]: false,
                 })}
                 fade={fade}
                 centered
@@ -206,16 +218,31 @@ const AutomationSubscriptionModal = ({
                             : 'manage-automation-addon-modal-body'
                     }
                 >
-                    <AutomationPlanSubscriptionDescription
-                        isStarterPlan={isStarterPlan}
-                        isTrialing={isTrialingSubscription}
-                        isEnterprisePlan={isEnterprisePlan}
-                        automationPrices={automationPrices}
-                        interval={interval}
-                        selectedPrice={selectedPrice}
-                        setSelectedPrice={setSelectedPrice}
-                        setIsSubscriptionEnabled={setIsSubscriptionEnabled}
-                    />
+                    {isAutomateRebranding ? (
+                        <PlanSubscriptionDescription
+                            productType={ProductType.Automation}
+                            prices={automationPrices}
+                            isStarterPlan={isStarterPlan}
+                            isTrialing={isTrialingSubscription}
+                            isEnterprisePlan={isEnterprisePlan}
+                            interval={interval}
+                            selectedPrice={selectedPrice}
+                            setSelectedPrice={setSelectedPrice}
+                            setIsSubscriptionEnabled={setIsSubscriptionEnabled}
+                        />
+                    ) : (
+                        <AutomationPlanSubscriptionDescription
+                            isStarterPlan={isStarterPlan}
+                            isTrialing={isTrialingSubscription}
+                            isEnterprisePlan={isEnterprisePlan}
+                            automationPrices={automationPrices}
+                            interval={interval}
+                            selectedPrice={selectedPrice as AutomationPrice}
+                            setSelectedPrice={setSelectedPrice as any}
+                            setIsSubscriptionEnabled={setIsSubscriptionEnabled}
+                        />
+                    )}
+
                     {!!image && (
                         <img
                             alt="automation features"

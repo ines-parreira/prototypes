@@ -42,7 +42,7 @@ describe('<AutoReplyFAQModal/>', () => {
         })
         return store
     }
-    it('should render the autoclose spam body when automation add-on is subscribed', () => {
+    it('should render the autoclose spam body when Automate is subscribed', () => {
         const store = createStoreWithHelpCenter({'1': {id: 1} as HelpCenter})
         const {container} = render(
             <Provider store={store}>
@@ -54,7 +54,7 @@ describe('<AutoReplyFAQModal/>', () => {
             help_center_id: 1,
         })
     })
-    it('should render the autoclose spam body when automation add-on is subscribed', () => {
+    it('should render the autoclose spam body when Automate is subscribed', () => {
         const store = createStoreWithHelpCenter({'1': {} as HelpCenter})
         const {container} = render(
             <Provider store={store}>

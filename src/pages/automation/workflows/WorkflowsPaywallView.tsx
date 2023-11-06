@@ -5,8 +5,7 @@ import {withCanduPaywall} from 'pages/common/components/Paywall/CanduPaywall'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {assetsUrl} from 'utils'
-
-const TITLE = 'Flow builder'
+import {FLOWS} from '../common/components/constants'
 
 const WorkflowsPaywallView = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -14,7 +13,7 @@ const WorkflowsPaywallView = () => {
 
     return (
         <Paywall
-            pageHeader={TITLE}
+            pageHeader={FLOWS}
             header="Automate multi-step interactions with flows"
             description="Help customers select products, answer support questions, and more with flows!"
             previewImage={assetsUrl('/img/paywalls/screens/workflows.png')}
@@ -27,12 +26,12 @@ const WorkflowsPaywallView = () => {
                     onClick={() => {
                         setIsAutomationModalOpened(true)
                     }}
-                    label="Get Automation Add-on"
+                    label="Get Automate Features"
                 />
             }
             modal={
                 <AutomationSubscriptionModal
-                    confirmLabel="Confirm"
+                    confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}
                 />
@@ -42,6 +41,6 @@ const WorkflowsPaywallView = () => {
 }
 
 export default withCanduPaywall({
-    title: TITLE,
+    title: FLOWS,
     canduId: 'flows-paywall',
 })(WorkflowsPaywallView)

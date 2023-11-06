@@ -3,14 +3,17 @@ export const AUTOMATION_SELF_SERVICE_STAT_NAME = 'automation-self-service'
 export const HELP_URL =
     'https://docs.gorgias.com/statistics/self-service-statistics'
 
-export const PAGE_TITLE_AAO_FEATURES = 'Automation add-on features'
-export const PAGE_TITLE_AAO = 'Automation add-on'
+export const PAGE_TITLE_PERFORMANCE_BY_FEATURES = 'Performance by feature'
+export const PAGE_TITLE_OVERVIEW = 'Overview'
+export const PAGE_TITLE_AUTOMATE_PAYWALL = 'Automate overview'
+export const GORGIAS_AUTOMATE_BADGE = 'GORGIAS AUTOMATE'
 
-export const AUTOMATION_ADD_ON_FEATURES_PATH = 'automation-add-on-features'
-export const AUTOMATION_ADD_ON_PATH = 'new-automation-analytics'
+export const ROUTE_AUTOMATION_ADD_ON_FEATURES = 'automation-add-on-features'
+export const ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES = 'performance-by-features'
+export const ROUTE_AUTOMATE_OVERVIEW = 'automate-overview'
 
 export const PAGE_DESCRIPTION =
-    'This page provides an overview of the performance of features included in the Automation Add-on. This view shows data from chat and help center channels combined.'
+    'This page provides an overview of the performance of features included in the Automate. This view shows data from chat and help center channels combined.'
 
 export const FIRST_RESPONSE_TIME_LABEL = 'First response time'
 export const RESOLUTION_TIME_LABEL = 'Resolution time'

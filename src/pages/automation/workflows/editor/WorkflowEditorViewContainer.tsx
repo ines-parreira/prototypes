@@ -33,7 +33,8 @@ export default function WorkflowEditorViewContainer() {
     }, [history, shopName, shopType])
     const goToConnectedChannelsPage = useCallback(() => {
         history.push(
-            `/app/automation/${shopType}/${shopName}/connected-channels`
+            `/app/automation/${shopType}/${shopName}/connected-channels`,
+            {from: 'workflow-editor'}
         )
     }, [history, shopName, shopType])
 

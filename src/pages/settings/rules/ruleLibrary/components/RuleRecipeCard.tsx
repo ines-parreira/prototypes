@@ -48,6 +48,7 @@ import successIcon from 'assets/img/icons/success.svg'
 
 import {RuleDraft} from 'models/rule/types'
 import {fromAST} from 'utils'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import {CodeASTType} from '../../types'
 
 import {tagColors} from '../constants'
@@ -72,7 +73,7 @@ function RuleRecipeCard({
     autoInstall,
 }: Props) {
     const dispatch = useAppDispatch()
-
+    const {rulesUrl} = useIsAutomateRebranding()
     const existingViews = useAppSelector(getTicketViews)
     const existingSections = useAppSelector(getSectionIdByName)
     const limitStatus = useAppSelector(getRulesLimitStatus)
@@ -286,7 +287,7 @@ function RuleRecipeCard({
                 ...segmentEventProps,
                 views_installed: shouldCreateViews,
             })
-            history.push(`/app/automation/rules/${newRule.id}`)
+            history.push(`${rulesUrl}/${newRule.id}`)
         } catch (error) {
             void dispatch(
                 notify({
@@ -313,7 +314,7 @@ function RuleRecipeCard({
 
     const handleClick = () => {
         if (managedRuleId) {
-            history.push(`/app/automation/rules/${managedRuleId}`)
+            history.push(`${rulesUrl}/${managedRuleId}`)
         } else {
             setModalOpen(true)
         }

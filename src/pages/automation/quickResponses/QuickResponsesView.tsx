@@ -13,7 +13,12 @@ import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
 import useSearch from 'hooks/useSearch'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../common/components/constants'
+import {SegmentEvent} from 'common/segment'
+import {
+    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+    QUICK_RESPONSES,
+} from '../common/components/constants'
+import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import QuickResponsesAccordionCaption from './components/QuickResponsesAccordionCaption'
 import QuickResponsesAccordion from './components/QuickResponsesAccordion'
 import useQuickResponses from './hooks/useQuickResponses'
@@ -26,6 +31,7 @@ import {NEW_QUICK_RESPONSE_SYMBOL} from './constants'
 import css from './QuickResponsesView.less'
 
 const QuickResponsesView = () => {
+    useHistoryTracking(SegmentEvent.AutomateQuickResponseVisited)
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -193,11 +199,11 @@ const QuickResponsesView = () => {
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
 
     return (
-        <AutomationView title="Quick response flows" isLoading={isLoading}>
+        <AutomationView title={QUICK_RESPONSES} isLoading={isLoading}>
             <AutomationViewContent
-                description={`Display up to ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} buttons in your chat widget with common questions that customers can click for an instant response. If a customer needs more help, a ticket is created for an agent to handle.`}
+                description={`Display up to ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} buttons in your Chat with common questions that customers can click for an instant response. If a customer needs more help, a ticket is created for an agent to handle.`}
                 helpUrl="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
-                helpTitle="How To Set Up Quick Response Flows"
+                helpTitle={`How To Set Up ${QUICK_RESPONSES}`}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
                 isSubmittable={
@@ -228,7 +234,7 @@ const QuickResponsesView = () => {
                     isDisabled={hasError}
                 >
                     <i className="material-icons md-2 mr-2">add</i>
-                    Add quick response flow
+                    Add Quick Response
                 </Button>
             </AutomationViewContent>
             <QuickResponsesPreview

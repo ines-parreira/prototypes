@@ -5,8 +5,7 @@ import {withCanduPaywall} from 'pages/common/components/Paywall/CanduPaywall'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {assetsUrl} from 'utils'
-
-const TITLE = 'Order management flows'
+import {ORDER_MANAGEMENT} from '../common/components/constants'
 
 const OrderManagementPaywallView = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -14,7 +13,7 @@ const OrderManagementPaywallView = () => {
 
     return (
         <Paywall
-            pageHeader={TITLE}
+            pageHeader={ORDER_MANAGEMENT}
             header="Automate up to 25% of interactions with advanced automation features"
             description="Allow customers to manage their orders from your chat widget and Help Center with order management flows."
             previewImage={assetsUrl(
@@ -29,12 +28,12 @@ const OrderManagementPaywallView = () => {
                     onClick={() => {
                         setIsAutomationModalOpened(true)
                     }}
-                    label="Get Automation Add-on"
+                    label="Get Automate Features"
                 />
             }
             modal={
                 <AutomationSubscriptionModal
-                    confirmLabel="Confirm"
+                    confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}
                 />
@@ -44,6 +43,6 @@ const OrderManagementPaywallView = () => {
 }
 
 export default withCanduPaywall({
-    title: TITLE,
+    title: ORDER_MANAGEMENT,
     canduId: 'order-management-paywall',
 })(OrderManagementPaywallView)

@@ -12,6 +12,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import history from 'pages/history'
 
 import {RootState} from 'state/types'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import {RuleFormEditor} from './components/RuleFormEditor'
 
 export function RuleDetailForm({
@@ -20,6 +21,7 @@ export function RuleDetailForm({
     notify,
 }: ConnectedProps<typeof connector>) {
     const {ruleId} = useParams<{ruleId?: string}>()
+    const {rulesUrl} = useIsAutomateRebranding()
     const [{loading: isFetchPending}, handleFetchRule] = useAsyncFn(
         async (ruleId: number) => {
             try {
@@ -30,7 +32,7 @@ export function RuleDetailForm({
                     message: `Could not find rule with id: ${ruleId}`,
                     status: NotificationStatus.Error,
                 })
-                history.push('/app/automation/rules')
+                history.push(rulesUrl)
             }
         },
         []

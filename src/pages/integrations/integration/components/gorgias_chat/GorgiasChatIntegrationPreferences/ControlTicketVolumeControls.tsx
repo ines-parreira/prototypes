@@ -13,6 +13,7 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import {TicketChannel} from 'business/types/ticket'
 
+import {ARTICLE_RECOMMENDATION} from 'pages/automation/common/components/constants'
 import css from './GorgiasChatIntegrationPreferences.less'
 
 type Props = {
@@ -82,9 +83,12 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
                     <Tooltip target={toggleInputRef} autohide={false}>
                         Disable{' '}
                         <Link
-                            to={`/app/automation/${shopType}/${shopName}/connected-channels?type=${TicketChannel.Chat}&id=${integrationId}`}
+                            to={{
+                                pathname: `/app/automation/${shopType}/${shopName}/connected-channels?type=${TicketChannel.Chat}&id=${integrationId}`,
+                                state: {from: 'chat-control-ticket-valume'},
+                            }}
                         >
-                            Article Recommendation
+                            {ARTICLE_RECOMMENDATION}
                         </Link>{' '}
                         to remove “Send us a message” button.
                     </Tooltip>

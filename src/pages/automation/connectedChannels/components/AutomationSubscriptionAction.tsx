@@ -12,7 +12,7 @@ const AutomationSubscriptionAction = () => {
     return (
         <>
             <AutomationSubscriptionButton
-                label="Get Automation Add-on"
+                label="Get Automate Features"
                 size="small"
                 onClick={() => {
                     setIsAutomationSubscriptionModalOpen(true)

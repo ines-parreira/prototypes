@@ -7,6 +7,10 @@ import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert from 'pages/common/components/Alert/Alert'
 import Video from 'pages/common/components/Video/Video'
+
+import {SegmentEvent} from 'common/segment'
+import {FLOWS} from '../common/components/constants'
+import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import CreateWorkflowFooter from './components/CreateWorkflowFooter'
 import WorkflowsList from './components/WorkflowsList'
 
@@ -32,6 +36,7 @@ export default function WorkflowsView({
     notifyMerchant,
     connectedChannelsUrl,
 }: WorkflowsViewProps) {
+    useHistoryTracking(SegmentEvent.AutomateFlowsVisited)
     const {
         isUpdatePending,
         duplicateWorkflow,
@@ -58,7 +63,7 @@ export default function WorkflowsView({
     return (
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
-                <PageHeader title="Flow builder">
+                <PageHeader title={FLOWS}>
                     {hasStoreWorkflows && (
                         <div className={css.headerContainer}>
                             <Button
@@ -80,8 +85,9 @@ export default function WorkflowsView({
                         <div className={css.descriptionContainer}>
                             <div className={css.description}>
                                 <div className={css.descriptionText}>
-                                    Create and edit flows to automate multi-step
-                                    interactions.
+                                    Create and edit Flows to automate multi-step
+                                    interactions in Chat, Help Center, and
+                                    Contact Form.
                                 </div>
                                 <a
                                     href="https://docs.gorgias.com/en-US/flows-101-252069"
@@ -106,16 +112,21 @@ export default function WorkflowsView({
                                     How To Create A Flow
                                 </a>
                                 <Alert icon className={css.alert}>
-                                    Control where customers see flows in{' '}
-                                    <Link to={connectedChannelsUrl}>
-                                        connected channels
+                                    Control where customers see Flows in{' '}
+                                    <Link
+                                        to={{
+                                            pathname: connectedChannelsUrl,
+                                            state: {from: 'workflow-alert'},
+                                        }}
+                                    >
+                                        channels
                                     </Link>
                                     .
                                 </Alert>
                             </div>
                             <Video
                                 youtubeId="yQ9Rj0k9UiM"
-                                legend="Working with flows"
+                                legend="Working with Flows"
                             />
                         </div>
                     </div>

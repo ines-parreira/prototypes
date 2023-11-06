@@ -31,6 +31,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
 import {errorToChildren} from 'utils'
 
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import css from './MacrosSettingsTable.less'
 
 type OwnProps = {
@@ -61,7 +62,7 @@ export function MacrosSettingsTableContainer({
         () => options.orderBy?.split(':')[1] as OrderDirection,
         [options.orderBy]
     )
-
+    const {macrosUrl} = useIsAutomateRebranding()
     const hasAgentPrivileges = useHasAgentPrivileges()
 
     const handleMacroDelete = async (macroId: number) => {
@@ -95,7 +96,7 @@ export function MacrosSettingsTableContainer({
                 language,
             })
             macroCreated(res)
-            history.push(`/app/automation/macros/${res.id}`)
+            history.push(`${macrosUrl}/${res.id}`)
         } catch (error) {
             void notify({
                 message: 'Failed to duplicate macro',
@@ -182,7 +183,7 @@ export function MacrosSettingsTableContainer({
                         }
 
                         const {name, language, updated_datetime, usage} = macro
-                        const to = `/app/automation/macros/${macroId}`
+                        const to = `${macrosUrl}/${macroId}`
 
                         const tags = macro.actions
                             .filter(

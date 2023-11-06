@@ -10,7 +10,7 @@ import useScheduledDowngrades from './hooks/useScheduledDowngrades'
 import css from './BillingScheduledDowngrades.less'
 
 const productNames: Record<ProductType, string> = {
-    [ProductType.Automation]: 'Automation Add-On',
+    [ProductType.Automation]: 'Automate',
     [ProductType.Helpdesk]: 'Helpdesk',
     [ProductType.SMS]: 'SMS Add-On',
     [ProductType.Voice]: 'Voice Add-On',

@@ -54,7 +54,7 @@ describe('CampaignsStats', () => {
             const {getByText} = renderWithStore(mockedState)
 
             expect(
-                getByText('Level up your chat campaign conversions')
+                getByText('Level up your Chat campaign conversions')
             ).toBeInTheDocument()
             expect(getByText('Upgrade to Convert')).toBeInTheDocument()
         })

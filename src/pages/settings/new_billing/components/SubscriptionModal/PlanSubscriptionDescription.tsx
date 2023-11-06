@@ -27,7 +27,7 @@ import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
     prices: Price[]
-    tagline: string
+    tagline?: string
     isStarterPlan: boolean
     isTrialing: boolean
     isEnterprisePlan: boolean

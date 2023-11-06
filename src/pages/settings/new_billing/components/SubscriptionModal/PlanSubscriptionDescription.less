@@ -1,3 +1,4 @@
+@import (reference) '~css/typography.less';
 @import '~css/new/mixins';
 
 :local {
@@ -103,10 +104,11 @@
     }
 
     .link {
+        .component-button-small();
         color: var(--main-primary);
+
         i {
             margin-left: 4px;
-            font-size: 16px;
         }
     }
 }

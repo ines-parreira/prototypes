@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`withEcommerceIntegrations should not render the passed component when the integeration is not available 1`] = `
+exports[`withStoreIntegrations should not render the passed component when the integeration is not available 1`] = `
 <div>
   <div
     class="layout"
@@ -9,11 +9,9 @@ exports[`withEcommerceIntegrations should not render the passed component when t
       class="page-header pageHeader"
     >
       <h1
-        class="align-items-center"
+        class="d-flex align-items-center"
       >
-        <span>
-          Hello
-        </span>
+        Hello
       </h1>
     </div>
     <div
@@ -32,11 +30,11 @@ exports[`withEcommerceIntegrations should not render the passed component when t
       <div
         class="description"
       >
-        Connect Shopify, Magento or BigCommerce stores to start using Automation add-on features!
+        Connect Shopify, Magento or BigCommerce stores to start using Automate!
       </div>
       <a
         class="wrapper fill primary medium"
-        href="/app/settings/integrations?category=Ecommerce"
+        href="/app/settings/integrations?category=store"
         rel="noopener noreferrer"
         target=""
       >
@@ -47,7 +45,7 @@ exports[`withEcommerceIntegrations should not render the passed component when t
 </div>
 `;
 
-exports[`withEcommerceIntegrations should render the passed component when the integeration is available 1`] = `
+exports[`withStoreIntegrations should render the passed component when the integeration is available 1`] = `
 <div>
   <div
     data-testid="aao-component"

@@ -14,6 +14,8 @@ import {
     proMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import * as utils from 'utils'
 import {Navbar} from '../Navbar'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
@@ -40,6 +42,9 @@ describe('<Navbar />', () => {
         isTrialing: false,
         submitSetting: jest.fn(),
         isPreferencesLoading: false,
+        flags: {
+            [FeatureFlagKey.AutomateRebranding]: false,
+        },
     }
 
     window.noticeable = {
@@ -205,5 +210,46 @@ describe('<Navbar />', () => {
         userEvent.click(getByText(user.name))
 
         expect(getByText(/your profile/i)).toBeTruthy()
+    })
+
+    it.each([
+        [{hasAgentPrevillage: true, isAutomateRebranding: true}],
+        [{hasAgentPrevillage: false, isAutomateRebranding: false}],
+        [{hasAgentPrevillage: true, isAutomateRebranding: false}],
+    ])(
+        'Should render Automate %s',
+        ({hasAgentPrevillage, isAutomateRebranding}) => {
+            jest.spyOn(utils, 'hasRole').mockReturnValue(hasAgentPrevillage)
+
+            const {getByText} = render(
+                <Navbar
+                    {...{
+                        ...minProps,
+                        flags: {
+                            [FeatureFlagKey.AutomateRebranding]:
+                                isAutomateRebranding,
+                        },
+                    }}
+                />
+            )
+
+            expect(getByText('Automate')).toBeInTheDocument()
+        }
+    )
+
+    it('should not render Automate if not have Agent Previllage', () => {
+        jest.spyOn(utils, 'hasRole').mockReturnValue(false)
+        const {queryByText} = render(
+            <Navbar
+                {...{
+                    ...minProps,
+                    flags: {
+                        [FeatureFlagKey.AutomateRebranding]: true,
+                    },
+                }}
+            />
+        )
+
+        expect(queryByText('Automate')).not.toBeInTheDocument()
     })
 })

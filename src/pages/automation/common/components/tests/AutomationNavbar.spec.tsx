@@ -58,7 +58,7 @@ describe('<AutomationNavbar />', () => {
     )
 
     describe('render()', () => {
-        it('should render automation navbar for non-agent user without automation add-on', () => {
+        it('should not render automation navbar for non-agent user without Automate', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -78,7 +78,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for non-agent user with automation add-on', () => {
+        it('should not render automation navbar for non-agent user with Automate', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -106,7 +106,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for agent without automation add-on and without legacy automation features', () => {
+        it('should render automation navbar for agent without Automate and without legacy automation features', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -179,7 +179,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for agent with automation add-on', () => {
+        it('should render automation navbar for agent with Automate', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -207,7 +207,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for admin without automation add-on and without legacy automation features', () => {
+        it('should render automation navbar for admin without Automate and without legacy automation features', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -272,7 +272,7 @@ describe('<AutomationNavbar />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render automation navbar for admin with automation add-on', () => {
+        it('should render automation navbar for admin with Automate', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({

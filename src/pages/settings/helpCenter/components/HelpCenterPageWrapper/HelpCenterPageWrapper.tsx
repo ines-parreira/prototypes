@@ -124,12 +124,13 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                                             helpCenter.shop_name as string
                                         }/connected-channels?type=${
                                             TicketChannel.HelpCenter
-                                        }&id=${helpCenter.id}`
+                                        }&id=${helpCenter.id}`,
+                                        {from: 'help-center-settings'}
                                     )
                                 }}
                             >
                                 <ButtonIconLabel icon="bolt">
-                                    Edit automation settings
+                                    Go to automate settings
                                 </ButtonIconLabel>
                             </Button>
                         ) : (
@@ -148,7 +149,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                                     icon="warning"
                                     className={css.connectStoreWarning}
                                 >
-                                    Connect store to enable automation
+                                    Connect store to enable Automate
                                 </ButtonIconLabel>
                             </Button>
                         )
@@ -156,13 +157,11 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                         <>
                             <AutomationSubscriptionButton
                                 fillStyle="ghost"
-                                label="Get Automation Add-on Features"
-                                onClick={() => {
-                                    setIsAutomationModalOpened(true)
-                                }}
+                                label="Upgrade your help center with automate"
+                                onClick={() => setIsAutomationModalOpened(true)}
                             />
                             <AutomationSubscriptionModal
-                                confirmLabel="Confirm"
+                                confirmLabel="Subscribe"
                                 isOpen={isAutomationModalOpened}
                                 onClose={() =>
                                     setIsAutomationModalOpened(false)

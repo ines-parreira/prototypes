@@ -1,3 +1,8 @@
+import React from 'react'
+import {
+    ORDER_MANAGEMENT,
+    QUICK_RESPONSES,
+} from 'pages/automation/common/components/constants'
 import {
     IdentifierCategoryKey,
     IdentifierCategoryValue,
@@ -101,7 +106,12 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
         },
         {
             label: 'Intents',
-            text: 'message intents',
+            text: (
+                <>
+                    <i className="material-icons">auto_awesome</i> message
+                    intents
+                </>
+            ),
             value: 'message.intents.name',
         },
         {
@@ -116,7 +126,12 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
         },
         {
             label: 'Sentiments',
-            text: 'message sentiments',
+            text: (
+                <>
+                    <i className="material-icons">auto_awesome</i> message
+                    sentiments
+                </>
+            ),
             value: 'message.sentiments.name',
         },
         {
@@ -479,13 +494,13 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
     ],
     [IdentifierCategoryKey.SelfServiceFlow]: [
         {
-            label: 'Order management flow',
-            text: 'order management flow',
+            label: ORDER_MANAGEMENT,
+            text: ORDER_MANAGEMENT.toLowerCase(),
             value: 'message.self_service_flow.order_management_flow',
         },
         {
-            label: 'Quick response flow',
-            text: 'quick response flow',
+            label: QUICK_RESPONSES,
+            text: QUICK_RESPONSES.toLowerCase(),
             value: 'message.self_service_flow.quick_response_flow',
         },
         {

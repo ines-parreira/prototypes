@@ -55,7 +55,7 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
             }
             modal={
                 <AutomationSubscriptionModal
-                    confirmLabel="Confirm"
+                    confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}
                 />

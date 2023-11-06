@@ -22,7 +22,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                 class="align-items-center"
               >
                 <span>
-                  Automation add-on
+                  Automate overview
                 </span>
               </h1>
               <div>
@@ -220,7 +220,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                 class="wrapper"
               >
                 <div
-                  class="alert info"
+                  class="alert info closable"
                 >
                   <div
                     class="iconContainer"
@@ -238,6 +238,16 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                     >
                       Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
                     </span>
+                  </div>
+                  <div
+                    aria-label="Close Icon"
+                    class="close"
+                  >
+                    <img
+                      alt="close-icon"
+                      class="closeIcon"
+                      src="test-file-stub"
+                    />
                   </div>
                 </div>
               </div>
@@ -356,18 +366,16 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                               Room for improvement
                             </span>
                           </div>
-                          You’re in the 
-                          bottom 30%
-                           of merchants. Set up all
+                          Set up all
                            
                           <a
                             href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
                             target="blank"
                           >
-                            Automation Add-on features
+                            Automate features
                           </a>
                            
-                          to capture more traffic and increase your automation rate.
+                          to improve your automation rate across all of your channels.
                         </div>
                       </div>
                     </div>
@@ -434,7 +442,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                             Automation Playbook
                           </a>
                            
-                          for tactical tips on how to use Automation Add-on features to their full potential. Visit
+                          for tactical tips on how to use Automate to its full potential. Visit
                           <a
                             href="/app/settings/billing"
                             target="blank"
@@ -443,7 +451,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                             billing
                           </a>
                            
-                          to make sure your automation plan is the right size for you.
+                          to make sure your Automate plan is the right size for you.
                         </div>
                       </div>
                     </div>
@@ -673,7 +681,9 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
               <div
                 class="pageFooter caption-regular"
               >
-                Analytics are using UTC timezone
+                Analytics are using 
+                UTC
+                 timezone
               </div>
             </div>
           </div>
@@ -777,7 +787,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
               class="align-items-center"
             >
               <span>
-                Automation add-on
+                Automate overview
               </span>
             </h1>
             <div>
@@ -975,7 +985,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
               class="wrapper"
             >
               <div
-                class="alert info"
+                class="alert info closable"
               >
                 <div
                   class="iconContainer"
@@ -993,6 +1003,16 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                   >
                     Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
                   </span>
+                </div>
+                <div
+                  aria-label="Close Icon"
+                  class="close"
+                >
+                  <img
+                    alt="close-icon"
+                    class="closeIcon"
+                    src="test-file-stub"
+                  />
                 </div>
               </div>
             </div>
@@ -1111,18 +1131,16 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                             Room for improvement
                           </span>
                         </div>
-                        You’re in the 
-                        bottom 30%
-                         of merchants. Set up all
+                        Set up all
                          
                         <a
                           href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
                           target="blank"
                         >
-                          Automation Add-on features
+                          Automate features
                         </a>
                          
-                        to capture more traffic and increase your automation rate.
+                        to improve your automation rate across all of your channels.
                       </div>
                     </div>
                   </div>
@@ -1189,7 +1207,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                           Automation Playbook
                         </a>
                          
-                        for tactical tips on how to use Automation Add-on features to their full potential. Visit
+                        for tactical tips on how to use Automate to its full potential. Visit
                         <a
                           href="/app/settings/billing"
                           target="blank"
@@ -1198,7 +1216,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
                           billing
                         </a>
                          
-                        to make sure your automation plan is the right size for you.
+                        to make sure your Automate plan is the right size for you.
                       </div>
                     </div>
                   </div>
@@ -1428,7 +1446,9 @@ exports[`<AutomationAddonOverview /> Performance Tips light-error should show ti
             <div
               class="pageFooter caption-regular"
             >
-              Analytics are using UTC timezone
+              Analytics are using 
+              UTC
+               timezone
             </div>
           </div>
         </div>
@@ -1511,7 +1531,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                 class="align-items-center"
               >
                 <span>
-                  Automation add-on
+                  Automate overview
                 </span>
               </h1>
               <div>
@@ -1709,7 +1729,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                 class="wrapper"
               >
                 <div
-                  class="alert info"
+                  class="alert info closable"
                 >
                   <div
                     class="iconContainer"
@@ -1727,6 +1747,16 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                     >
                       Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
                     </span>
+                  </div>
+                  <div
+                    aria-label="Close Icon"
+                    class="close"
+                  >
+                    <img
+                      alt="close-icon"
+                      class="closeIcon"
+                      src="test-file-stub"
+                    />
                   </div>
                 </div>
               </div>
@@ -1845,18 +1875,16 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                               You’re doing good
                             </span>
                           </div>
-                          You’re in the 
-                          top 30%
-                           of merchants. Set up all
+                          Set up all
                            
                           <a
                             href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
                             target="blank"
                           >
-                            Automation Add-on features
+                            Automate features
                           </a>
                            
-                          to capture more traffic and increase your automation rate.
+                          to improve your automation rate across all of your channels.
                         </div>
                       </div>
                     </div>
@@ -1923,7 +1951,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                             Automation Playbook
                           </a>
                            
-                          for tactical tips on how to use Automation Add-on features to their full potential. Visit
+                          for tactical tips on how to use Automate to its full potential. Visit
                           <a
                             href="/app/settings/billing"
                             target="blank"
@@ -1932,7 +1960,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                             billing
                           </a>
                            
-                          to make sure your automation plan is the right size for you.
+                          to make sure your Automate plan is the right size for you.
                         </div>
                       </div>
                     </div>
@@ -2162,7 +2190,9 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
               <div
                 class="pageFooter caption-regular"
               >
-                Analytics are using UTC timezone
+                Analytics are using 
+                UTC
+                 timezone
               </div>
             </div>
           </div>
@@ -2266,7 +2296,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
               class="align-items-center"
             >
               <span>
-                Automation add-on
+                Automate overview
               </span>
             </h1>
             <div>
@@ -2464,7 +2494,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
               class="wrapper"
             >
               <div
-                class="alert info"
+                class="alert info closable"
               >
                 <div
                   class="iconContainer"
@@ -2482,6 +2512,16 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                   >
                     Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
                   </span>
+                </div>
+                <div
+                  aria-label="Close Icon"
+                  class="close"
+                >
+                  <img
+                    alt="close-icon"
+                    class="closeIcon"
+                    src="test-file-stub"
+                  />
                 </div>
               </div>
             </div>
@@ -2600,18 +2640,16 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                             You’re doing good
                           </span>
                         </div>
-                        You’re in the 
-                        top 30%
-                         of merchants. Set up all
+                        Set up all
                          
                         <a
                           href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
                           target="blank"
                         >
-                          Automation Add-on features
+                          Automate features
                         </a>
                          
-                        to capture more traffic and increase your automation rate.
+                        to improve your automation rate across all of your channels.
                       </div>
                     </div>
                   </div>
@@ -2678,7 +2716,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                           Automation Playbook
                         </a>
                          
-                        for tactical tips on how to use Automation Add-on features to their full potential. Visit
+                        for tactical tips on how to use Automate to its full potential. Visit
                         <a
                           href="/app/settings/billing"
                           target="blank"
@@ -2687,7 +2725,7 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
                           billing
                         </a>
                          
-                        to make sure your automation plan is the right size for you.
+                        to make sure your Automate plan is the right size for you.
                       </div>
                     </div>
                   </div>
@@ -2917,7 +2955,9 @@ exports[`<AutomationAddonOverview /> Performance Tips light-success should show 
             <div
               class="pageFooter caption-regular"
             >
-              Analytics are using UTC timezone
+              Analytics are using 
+              UTC
+               timezone
             </div>
           </div>
         </div>
@@ -3000,7 +3040,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                 class="align-items-center"
               >
                 <span>
-                  Automation add-on
+                  Automate overview
                 </span>
               </h1>
               <div>
@@ -3198,7 +3238,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                 class="wrapper"
               >
                 <div
-                  class="alert info"
+                  class="alert info closable"
                 >
                   <div
                     class="iconContainer"
@@ -3216,6 +3256,16 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                     >
                       Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
                     </span>
+                  </div>
+                  <div
+                    aria-label="Close Icon"
+                    class="close"
+                  >
+                    <img
+                      alt="close-icon"
+                      class="closeIcon"
+                      src="test-file-stub"
+                    />
                   </div>
                 </div>
               </div>
@@ -3334,18 +3384,16 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                               You’re doing great
                             </span>
                           </div>
-                          You’re in the 
-                          top 10%
-                           of merchants. Set up all
+                          Set up all
                            
                           <a
                             href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
                             target="blank"
                           >
-                            Automation Add-on features
+                            Automate features
                           </a>
                            
-                          to capture more traffic and increase your automation rate.
+                          to improve your automation rate across all of your channels.
                         </div>
                       </div>
                     </div>
@@ -3412,7 +3460,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                             Automation Playbook
                           </a>
                            
-                          for tactical tips on how to use Automation Add-on features to their full potential. Visit
+                          for tactical tips on how to use Automate to its full potential. Visit
                           <a
                             href="/app/settings/billing"
                             target="blank"
@@ -3421,7 +3469,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                             billing
                           </a>
                            
-                          to make sure your automation plan is the right size for you.
+                          to make sure your Automate plan is the right size for you.
                         </div>
                       </div>
                     </div>
@@ -3651,7 +3699,9 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
               <div
                 class="pageFooter caption-regular"
               >
-                Analytics are using UTC timezone
+                Analytics are using 
+                UTC
+                 timezone
               </div>
             </div>
           </div>
@@ -3755,7 +3805,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
               class="align-items-center"
             >
               <span>
-                Automation add-on
+                Automate overview
               </span>
             </h1>
             <div>
@@ -3953,7 +4003,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
               class="wrapper"
             >
               <div
-                class="alert info"
+                class="alert info closable"
               >
                 <div
                   class="iconContainer"
@@ -3971,6 +4021,16 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                   >
                     Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
                   </span>
+                </div>
+                <div
+                  aria-label="Close Icon"
+                  class="close"
+                >
+                  <img
+                    alt="close-icon"
+                    class="closeIcon"
+                    src="test-file-stub"
+                  />
                 </div>
               </div>
             </div>
@@ -4089,18 +4149,16 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                             You’re doing great
                           </span>
                         </div>
-                        You’re in the 
-                        top 10%
-                         of merchants. Set up all
+                        Set up all
                          
                         <a
                           href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
                           target="blank"
                         >
-                          Automation Add-on features
+                          Automate features
                         </a>
                          
-                        to capture more traffic and increase your automation rate.
+                        to improve your automation rate across all of your channels.
                       </div>
                     </div>
                   </div>
@@ -4167,7 +4225,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                           Automation Playbook
                         </a>
                          
-                        for tactical tips on how to use Automation Add-on features to their full potential. Visit
+                        for tactical tips on how to use Automate to its full potential. Visit
                         <a
                           href="/app/settings/billing"
                           target="blank"
@@ -4176,7 +4234,7 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
                           billing
                         </a>
                          
-                        to make sure your automation plan is the right size for you.
+                        to make sure your Automate plan is the right size for you.
                       </div>
                     </div>
                   </div>
@@ -4406,7 +4464,9 @@ exports[`<AutomationAddonOverview /> Performance Tips success should show tips w
             <div
               class="pageFooter caption-regular"
             >
-              Analytics are using UTC timezone
+              Analytics are using 
+              UTC
+               timezone
             </div>
           </div>
         </div>
@@ -4485,7 +4545,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
           class="align-items-center"
         >
           <span>
-            Automation add-on
+            Automate overview
           </span>
         </h1>
         <div>
@@ -4683,7 +4743,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
           class="wrapper"
         >
           <div
-            class="alert info"
+            class="alert info closable"
           >
             <div
               class="iconContainer"
@@ -4701,6 +4761,16 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
               >
                 Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
               </span>
+            </div>
+            <div
+              aria-label="Close Icon"
+              class="close"
+            >
+              <img
+                alt="close-icon"
+                class="closeIcon"
+                src="test-file-stub"
+              />
             </div>
           </div>
         </div>
@@ -4819,18 +4889,16 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                         You’re doing great
                       </span>
                     </div>
-                    You’re in the 
-                    top 10%
-                     of merchants. Set up all
+                    Set up all
                      
                     <a
                       href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
                       target="blank"
                     >
-                      Automation Add-on features
+                      Automate features
                     </a>
                      
-                    to capture more traffic and increase your automation rate.
+                    to improve your automation rate across all of your channels.
                   </div>
                 </div>
               </div>
@@ -4897,7 +4965,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                       Automation Playbook
                     </a>
                      
-                    for tactical tips on how to use Automation Add-on features to their full potential. Visit
+                    for tactical tips on how to use Automate to its full potential. Visit
                     <a
                       href="/app/settings/billing"
                       target="blank"
@@ -4906,7 +4974,7 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
                       billing
                     </a>
                      
-                    to make sure your automation plan is the right size for you.
+                    to make sure your Automate plan is the right size for you.
                   </div>
                 </div>
               </div>
@@ -5136,7 +5204,9 @@ exports[`<AutomationAddonOverview /> should display AAO 1`] = `
         <div
           class="pageFooter caption-regular"
         >
-          Analytics are using UTC timezone
+          Analytics are using 
+          UTC
+           timezone
         </div>
       </div>
     </div>
@@ -5155,7 +5225,7 @@ exports[`<AutomationAddonOverview /> should display paywall 1`] = `
       class="align-items-center"
     >
       <span>
-        Automation add-on
+        Automate overview
       </span>
     </h1>
   </div>
@@ -5188,7 +5258,7 @@ exports[`<AutomationAddonOverview /> should display paywall 1`] = `
             <img
               alt="Feature preview"
               class="img-fluid"
-              src="/assets/img/paywalls/screens/automation-addon-overview.png"
+              src="/assets/img/paywalls/screens/automate-overview.png"
             />
           </div>
         </div>
@@ -5204,20 +5274,20 @@ exports[`<AutomationAddonOverview /> should display paywall 1`] = `
               <div
                 class="badge"
               >
-                Automation Add-on
+                GORGIAS AUTOMATE 
               </div>
             </div>
             <h1
               class="contentTitle"
             >
-              Automation add-on
+              Automate overview
             </h1>
             <div
               class="description"
             >
               <p>
                 <div>
-                  Monitor your automation rate, fully automated interactions and Automation add-on performance.
+                  With Gorgias Automate, you can track your automation performance and leverage insights to improve.
                 </div>
               </p>
             </div>
@@ -5233,16 +5303,7 @@ exports[`<AutomationAddonOverview /> should display paywall 1`] = `
                     class="wrapper fill primary medium"
                     type="button"
                   >
-                    <span
-                      class="wrapper"
-                    >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        auto_awesome
-                      </i>
-                      Get Automation Add-on
-                    </span>
+                    Learn More
                   </button>
                 </div>
               </div>

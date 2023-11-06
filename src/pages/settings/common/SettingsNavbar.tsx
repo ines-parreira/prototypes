@@ -100,8 +100,8 @@ const CATEGORIES: Category[] = [
         ],
     },
     {
-        name: 'Data',
-        icon: 'hub',
+        name: 'Productivity',
+        icon: 'speed',
         links: [
             {
                 requiredRole: ADMIN_ROLE,
@@ -114,9 +114,14 @@ const CATEGORIES: Category[] = [
                 text: 'Tags',
             },
             {
-                requiredRole: ADMIN_ROLE,
-                to: 'import-data',
-                text: 'Import data',
+                to: 'rules',
+                text: 'Rules',
+                requiredFeatureFlags: [FeatureFlagKey.AutomateRebranding],
+            },
+            {
+                to: 'macros',
+                text: 'Macros',
+                requiredFeatureFlags: [FeatureFlagKey.AutomateRebranding],
             },
         ],
     },
@@ -149,6 +154,11 @@ const CATEGORIES: Category[] = [
                 to: 'access',
                 text: 'Access management',
             },
+            {
+                to: 'ticket-assignment',
+                text: 'Ticket assignment',
+                requiredFeatureFlags: [FeatureFlagKey.AutomateRebranding],
+            },
         ],
     },
     {
@@ -179,7 +189,12 @@ const CATEGORIES: Category[] = [
             {
                 requiredRole: ADMIN_ROLE,
                 to: 'billing',
-                text: 'Billing & Usage',
+                text: 'Billing & usage',
+            },
+            {
+                requiredRole: ADMIN_ROLE,
+                to: 'import-data',
+                text: 'Import data',
             },
         ],
     },

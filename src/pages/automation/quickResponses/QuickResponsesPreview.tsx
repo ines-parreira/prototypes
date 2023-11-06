@@ -49,7 +49,7 @@ const QuickResponsesPreview = ({
         <UncontrolledSelfServicePreviewContainer
             channels={channels}
             alert={{
-                message: 'Connect a chat to your store to use this feature.',
+                message: 'Connect a Chat to your store to use this feature.',
                 action: {
                     message: 'Go to chat settings',
                     href: '/app/settings/channels/gorgias_chat',

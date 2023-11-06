@@ -99,7 +99,10 @@ export const AutoReplyWismoEditor = ({
                     <Alert type={AlertType.Warning} icon={true}>
                         Add a response for customers tracking unfulfilled orders{' '}
                         <Link
-                            to={`/app/automation/shopify/${configurationWithoutUnfulffiledMessage.shop_name}/order-management/track`}
+                            to={{
+                                pathname: `/app/automation/shopify/${configurationWithoutUnfulffiledMessage.shop_name}/order-management/track`,
+                                state: {from: 'rules-auto-reply-wismo'},
+                            }}
                         >
                             here
                         </Link>

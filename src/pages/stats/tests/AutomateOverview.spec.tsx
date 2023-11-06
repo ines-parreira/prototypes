@@ -6,6 +6,7 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import LD from 'launchdarkly-react-client-sdk'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {TicketChannel} from 'business/types/ticket'
@@ -27,18 +28,18 @@ import TrendBadge from 'pages/stats/TrendBadge'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {usePostReporting} from 'models/reporting/queries'
 import useTimeSeries from 'hooks/reporting/useTimeSeries'
-import {saveReport} from 'services/reporting/automationAddOnReportingService'
+import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
 import AutomationAddonOverview, {
     AAO_TIPS_VISIBILITY_KEY,
     automationRate,
-} from '../AutomationAddonOverview'
+} from '../AutomateOverview'
 import TagsStatsFilter from '../TagsStatsFilter'
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('hooks/useId', () => () => 'abc')
@@ -87,7 +88,7 @@ const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 jest.mock('pages/stats/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
 
-jest.mock('services/reporting/automationAddOnReportingService')
+jest.mock('services/reporting/automateOverviewReportingService')
 const saveReportMock = assumeMock(saveReport)
 
 describe('<AutomationAddonOverview />', () => {
@@ -230,6 +231,9 @@ describe('<AutomationAddonOverview />', () => {
     })
 
     it('should display paywall', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AutomateRebranding]: false,
+        }))
         const defaultState = {
             billing: fromJS(billingState),
             currentAccount: fromJS({

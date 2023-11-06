@@ -16,7 +16,7 @@ const ConnectedChannelsViewContainer = () => {
     )
 
     if (!hasAutomationAddOn && !hasLegacyAutomationAddOnFeatures) {
-        return <Redirect to="/app/automation/order-management" />
+        return <Redirect to="/app/automation/connected-channels" />
     }
 
     return <ConnectedChannelsView />

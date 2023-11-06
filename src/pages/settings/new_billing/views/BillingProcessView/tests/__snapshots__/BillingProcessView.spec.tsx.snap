@@ -202,10 +202,10 @@ exports[`UsageAndPlansView should render 1`] = `
                   <i
                     class="material-icons"
                   >
-                    auto_awesome
+                    bolt
                   </i>
                   <div>
-                    Automation
+                    Automate
                   </div>
                 </div>
                 <div

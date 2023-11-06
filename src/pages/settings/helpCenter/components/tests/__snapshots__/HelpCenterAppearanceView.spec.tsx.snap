@@ -51,9 +51,9 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   <i
                     class="material-icons icon isLeft medium"
                   >
-                    auto_awesome
+                    bolt
                   </i>
-                  Get Automation Add-on Features
+                  Upgrade your help center with automate
                 </span>
               </button>
             </div>

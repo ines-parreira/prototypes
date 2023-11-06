@@ -12,6 +12,9 @@ import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfSer
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
+import {SegmentEvent} from 'common/segment'
+import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
+import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import ArticleRecommendationHelpCenter from './components/ArticleRecommendationHelpCenter'
 import {
     ConnectedChannelsInfoAlert,
@@ -24,6 +27,7 @@ import ArticleRecommendationPreview from './ArticleRecommendationPreview'
 import css from './ArticleRecommendationView.less'
 
 const ArticleRecommendationView = () => {
+    useHistoryTracking(SegmentEvent.AutomateArticleRecommendationVisited)
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -74,11 +78,11 @@ const ArticleRecommendationView = () => {
     const isLoading = !selfServiceConfiguration || isLoadingHelpCenters
 
     return (
-        <AutomationView title="Article recommendation" isLoading={isLoading}>
+        <AutomationView title={ARTICLE_RECOMMENDATION} isLoading={isLoading}>
             <AutomationViewContent
-                description="Automatically send a Help Center article in response customer questions in chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
+                description="Automatically send a Help Center article in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
                 helpUrl="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
-                helpTitle="Learn About Article Recommendation In Chat"
+                helpTitle={`Learn About ${ARTICLE_RECOMMENDATION} In Chat`}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
                 isSubmittable={isHelpCenterDirty && !isUpdatePending}

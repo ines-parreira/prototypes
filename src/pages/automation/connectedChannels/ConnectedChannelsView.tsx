@@ -19,10 +19,13 @@ import useWorkflowConfigurations from 'pages/automation/common/hooks/useWorkflow
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
+import {SegmentEvent} from 'common/segment'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../workflows/hooks/useWorkflowChannelSupport'
 import {FeatureFlagKey} from '../../../config/featureFlags'
+import {CHANNELS} from '../common/components/constants'
+import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
 import ConnectedChannelsViewContext, {
@@ -32,6 +35,7 @@ import ConnectedChannelsViewContext, {
 import css from './ConnectedChannelsView.less'
 
 const ConnectedChannelsView = () => {
+    useHistoryTracking(SegmentEvent.AutomateChannelsVisited)
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -149,8 +153,8 @@ const ConnectedChannelsView = () => {
         contactFormOrderManagementEnabled
 
     return (
-        <AutomationView title="Connected channels" isLoading={isLoading}>
-            <AutomationViewContent description="Manage features enabled per channel connected to this store.">
+        <AutomationView title={CHANNELS} isLoading={isLoading}>
+            <AutomationViewContent description="Manage your Automate features per channel.">
                 {hasChannels && (
                     <div
                         className={css.channelsContainer}
@@ -203,8 +207,8 @@ const ConnectedChannelsView = () => {
                                 </Link>
                             }
                         >
-                            Connect a chat widget to this store to use
-                            Automation Add-on features.
+                            Connect a Chat to this store to use Automate
+                            features.
                         </Alert>
                     )}
                     {!hasHelpCenterChannel &&
@@ -221,8 +225,8 @@ const ConnectedChannelsView = () => {
                                 }
                             >
                                 Connect a Help Center to this store to use
-                                Automation Add-on features. Currently only
-                                available for Shopify stores.
+                                Automate features. Currently only available for
+                                Shopify stores.
                             </Alert>
                         )}
                 </div>

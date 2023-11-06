@@ -41,6 +41,7 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import {fromAST} from 'utils'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import {CodeASTType} from '../../../types'
 import RuleItemButtons from '../../../components/RuleItemButtons'
 import RuleEditor from '../../../components/RuleEditor'
@@ -63,7 +64,7 @@ const DefaultRuleEditor = (
     ref: ForwardedRef<EditorHandle>
 ) => {
     const {errors} = useContext(ErrorsContext)
-
+    const {rulesUrl} = useIsAutomateRebranding()
     const [ruleDraft, setRuleDraft] = useState<RuleDraft>(getEmptyRule())
     const eventTypes = useMemo(() => getEventTypes(ruleDraft), [ruleDraft])
     const dispatch = useAppDispatch()
@@ -110,7 +111,7 @@ const DefaultRuleEditor = (
                         status: NotificationStatus.Success,
                     })
                 )
-                history.push(`/app/automation/rules/${newRule.id}`)
+                history.push(`${rulesUrl}/${newRule.id}`)
             } catch (error) {
                 void notify({
                     message: `Failed to duplicate rule.`,
@@ -185,9 +186,9 @@ const DefaultRuleEditor = (
                 message: 'Cannot create a new rule: Rule limit reached',
                 status: NotificationStatus.Warning,
             })
-            history.push('/app/automation/rules/')
+            history.push(rulesUrl)
         }
-    }, [rule, limitStatus])
+    }, [rule, limitStatus, rulesUrl])
 
     useEffect(() => {
         if (rule) {

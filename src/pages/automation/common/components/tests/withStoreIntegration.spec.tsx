@@ -8,7 +8,8 @@ import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {IntegrationType} from 'models/integration/constants'
-import withEcommerceIntegrations from '../withEcommerceIntegrations'
+import {billingState} from 'fixtures/billing'
+import withStoreIntegrations from '../../utils/withStoreIntegrations'
 
 const AnyComponent = () => (
     <div data-testid="aao-component">Just a component...</div>
@@ -16,7 +17,7 @@ const AnyComponent = () => (
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('withEcommerceIntegrations', () => {
+describe('withStoreIntegrations', () => {
     function getIntegration(id: number, type: IntegrationType) {
         return {
             id,
@@ -30,10 +31,12 @@ describe('withEcommerceIntegrations', () => {
     }
 
     it('should not render the passed component when the integeration is not available', () => {
-        const AaoComponent = withEcommerceIntegrations('Hello', AnyComponent)
+        const AaoComponent = withStoreIntegrations('Hello', AnyComponent)
         const {container, queryByTestId, getByText} = render(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
+
                     integrations: fromJS({
                         integrations: [
                             getIntegration(1, IntegrationType.Sms),
@@ -50,10 +53,11 @@ describe('withEcommerceIntegrations', () => {
         expect(container).toMatchSnapshot()
     })
     it('should render the passed component when the integeration is available', () => {
-        const AaoComponent = withEcommerceIntegrations('Hello', AnyComponent)
+        const AaoComponent = withStoreIntegrations('Hello', AnyComponent)
         const {container, getByTestId} = render(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [
                             getIntegration(1, IntegrationType.Shopify),

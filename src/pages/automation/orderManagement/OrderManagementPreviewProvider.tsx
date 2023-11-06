@@ -7,6 +7,8 @@ import useSelfServiceChannels, {
 } from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {IntegrationType} from 'models/integration/constants'
 
+import {SegmentEvent} from 'common/segment'
+import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import OrderManagementPreviewContext, {
     OrderManagementPreviewContextType,
 } from './OrderManagementPreviewContext'
@@ -16,6 +18,7 @@ type Props = {
 }
 
 const OrderManagementPreviewProvider = ({children}: Props) => {
+    useHistoryTracking(SegmentEvent.AutomateOrderManagementVisited)
     const {shopName} = useParams<{shopName: string}>()
     const allChannels = useSelfServiceChannels(
         IntegrationType.Shopify,

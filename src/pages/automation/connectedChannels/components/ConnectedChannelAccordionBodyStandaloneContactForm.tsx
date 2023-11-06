@@ -7,7 +7,10 @@ import useContactFormsAutomationSettings from 'pages/automation/common/hooks/use
 import {TicketChannel} from 'business/types/ticket'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
+import {
+    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+    ORDER_MANAGEMENT,
+} from '../../common/components/constants'
 import useAppSelector from '../../../../hooks/useAppSelector'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
 import {FeatureFlagKey} from '../../../../config/featureFlags'
@@ -64,7 +67,7 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
                 channelLanguages={[channel.value.default_locale]}
                 entrypoints={workflowsEntrypoints}
                 maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
-                limitTooltipMessage="You have reached the maximum number of enabled flows in this channel. Disable another flow in order to enable this flow."
+                limitTooltipMessage="You have reached the maximum number of enabled Flows in this channel. Disable another Flow in order to enable this Flow."
                 onChange={(nextEntrypoints) => {
                     void handleContactFormAutomationSettingsUpdate({
                         workflows: nextEntrypoints.map(
@@ -82,7 +85,7 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
                     value={
                         automationSettings?.order_management?.enabled ?? false
                     }
-                    name="Order management flows"
+                    name={ORDER_MANAGEMENT}
                     disabled={!hasAutomationAddOn}
                     onChange={(enabled) => {
                         void handleContactFormAutomationSettingsUpdate({

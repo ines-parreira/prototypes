@@ -30,6 +30,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import TrackedRuleLibraryLink, {
     Source,
 } from '../../components/TrackedRuleLibraryLink'
@@ -97,7 +98,7 @@ const RuleNavbar = ({activeTab, handleTabChange}: NavbarProps) => (
 
 export const RuleFormEditor = ({rule}: Props) => {
     const editor = useRef<EditorHandle>(null)
-
+    const {rulesUrl} = useIsAutomateRebranding()
     const dispatch = useAppDispatch()
     const [activeTab, setActiveTab] = useState('settings')
     const hasAgentPrivileges = useHasAgentPrivileges()
@@ -128,7 +129,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                             message: 'Successfully updated rule',
                         })
                     )
-                    history.push('/app/automation/rules')
+                    history.push(rulesUrl)
                 } catch (error) {
                     void dispatch(
                         notify({
@@ -147,7 +148,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                             message: 'Successfully created rule',
                         })
                     )
-                    history.push('/app/automation/rules')
+                    history.push(rulesUrl)
                 } catch (error) {
                     void dispatch(
                         notify({
@@ -168,7 +169,7 @@ export const RuleFormEditor = ({rule}: Props) => {
         }
         try {
             await deleteRule(rule.id)
-            history.push('/app/automation/rules')
+            history.push(rulesUrl)
             dispatch(ruleDeleted(rule.id))
             void dispatch(
                 notify({
@@ -237,7 +238,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/automation/rules">Rules</Link>
+                            <Link to={rulesUrl}>Rules</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>{title}</BreadcrumbItem>
                     </Breadcrumb>

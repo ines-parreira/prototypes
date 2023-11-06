@@ -135,7 +135,7 @@ describe('metric trends', () => {
         })
     })
 
-    describe('Automation add-on', () => {
+    describe('Automate', () => {
         describe.each([
             [
                 'useFirstResponseTimeWithAutomationTrend',

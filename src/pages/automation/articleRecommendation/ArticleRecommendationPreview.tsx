@@ -50,7 +50,7 @@ const ArticleRecommendationPreview = ({
                 isHelpCenterSelected
                     ? {
                           message:
-                              'Connect a chat to your store to use this feature.',
+                              'Connect a Chat to your store to use this feature.',
                           action: {
                               message: 'Go To Chat Settings',
                               href: '/app/settings/channels/gorgias_chat',

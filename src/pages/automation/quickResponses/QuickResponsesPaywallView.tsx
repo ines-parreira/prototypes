@@ -5,8 +5,7 @@ import {withCanduPaywall} from 'pages/common/components/Paywall/CanduPaywall'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {assetsUrl} from 'utils'
-
-const TITLE = 'Quick response flows'
+import {QUICK_RESPONSES} from '../common/components/constants'
 
 const QuickResponsesPaywallView = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -14,7 +13,7 @@ const QuickResponsesPaywallView = () => {
 
     return (
         <Paywall
-            pageHeader={TITLE}
+            pageHeader={QUICK_RESPONSES}
             header="Automate up to 25% of interactions with advanced automation features"
             description="Provide customers with automated responses to common questions with quick response flows."
             previewImage={assetsUrl(
@@ -29,12 +28,12 @@ const QuickResponsesPaywallView = () => {
                     onClick={() => {
                         setIsAutomationModalOpened(true)
                     }}
-                    label="Get Automation Add-on"
+                    label="Get Automate Features"
                 />
             }
             modal={
                 <AutomationSubscriptionModal
-                    confirmLabel="Confirm"
+                    confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}
                 />
@@ -44,6 +43,6 @@ const QuickResponsesPaywallView = () => {
 }
 
 export default withCanduPaywall({
-    title: TITLE,
+    title: QUICK_RESPONSES,
     canduId: 'quick-responses-paywall',
 })(QuickResponsesPaywallView)

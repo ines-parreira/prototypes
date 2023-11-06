@@ -1,15 +1,15 @@
-import React, {useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 import {useEffectOnce, useLocalStorage} from 'react-use'
 import {useRouteMatch} from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {IntegrationType, StoreIntegration} from 'models/integration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {compare} from 'utils'
-
+import navbarCss from 'assets/css/navbar.less'
+import {useIsAutomateRebranding} from '../hooks/useIsAutomateRebranding'
 import AutomationNavbarAddOnSectionBlock from './AutomationNavbarAddOnSectionBlock'
 
 import {
@@ -26,11 +26,6 @@ const getSectionKeyFromStoreIntegration = (
 }
 
 const AutomationNavbarAddOnView = () => {
-    const [
-        isAutomationSubscriptionModalOpen,
-        setIsAutomationSubscriptionModal,
-    ] = useState(false)
-
     const match = useRouteMatch<{shopType?: string; shopName: string}>({
         path: [
             '/app/automation/:shopType/:shopName/flows',
@@ -57,6 +52,8 @@ const AutomationNavbarAddOnView = () => {
         AUTOMATION_NAVBAR_COLLAPSED_AAO_SECTIONS_KEY,
         initialCollapsedSections
     )
+
+    const {isAutomateRebranding} = useIsAutomateRebranding()
 
     useEffectOnce(() => {
         if (!collapsedSections || !match) {
@@ -96,7 +93,7 @@ const AutomationNavbarAddOnView = () => {
 
     return (
         <>
-            <>
+            <div className={navbarCss.category}>
                 {sortedStoreIntegrations.map((storeIntegration) => {
                     const shopType = storeIntegration.type
                     const shopName =
@@ -112,9 +109,6 @@ const AutomationNavbarAddOnView = () => {
                             onToggle={() => {
                                 handleToggle(key)
                             }}
-                            onSubscribeToAutomationAddOnClick={() => {
-                                setIsAutomationSubscriptionModal(true)
-                            }}
                             isExpanded={
                                 !!collapsedSections &&
                                 !collapsedSections.includes(key)
@@ -122,21 +116,16 @@ const AutomationNavbarAddOnView = () => {
                         />
                     )
                 })}
-                {!storeIntegrations.length && (
-                    <Alert
-                        className="mx-3 py-3 px-2 mt-4"
-                        type={AlertType.Error}
-                        icon
-                    >
-                        Add a store integration to start using add-on features
-                    </Alert>
-                )}
-            </>
-            <AutomationSubscriptionModal
-                confirmLabel="Subscribe"
-                isOpen={isAutomationSubscriptionModalOpen}
-                onClose={() => setIsAutomationSubscriptionModal(false)}
-            />
+            </div>
+            {!isAutomateRebranding && !storeIntegrations.length && (
+                <Alert
+                    className="mx-3 py-3 px-2 mt-4"
+                    type={AlertType.Error}
+                    icon
+                >
+                    Add a store integration to start using add-on features
+                </Alert>
+            )}
         </>
     )
 }

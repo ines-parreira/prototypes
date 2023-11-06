@@ -4,6 +4,7 @@ import {MetricName} from 'services/reporting/constants'
 import {getPerformanceTip, Tip} from 'services/supportPerformanceTipService'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 
 export const usePerformanceTips = (
     metric: MetricName,
@@ -13,9 +14,15 @@ export const usePerformanceTips = (
     const currentPlanName = helpdeskPrice
         ? convertLegacyPlanNameToPublicPlanName(helpdeskPrice.name)
         : null
-
+    const {baseUrl: macrosAndRulesBaseUrl} = useIsAutomateRebranding()
     return useMemo(
-        () => getPerformanceTip(metric, value, currentPlanName),
-        [currentPlanName, metric, value]
+        () =>
+            getPerformanceTip(
+                metric,
+                value,
+                currentPlanName,
+                macrosAndRulesBaseUrl
+            ),
+        [currentPlanName, metric, value, macrosAndRulesBaseUrl]
     )
 }

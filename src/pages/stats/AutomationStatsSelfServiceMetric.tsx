@@ -95,7 +95,7 @@ export const AutomationStatsSelfServiceMetric = ({
         return (
             <>
                 <AutomationSubscriptionModal
-                    confirmLabel="Confirm"
+                    confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}
                 />
@@ -105,7 +105,7 @@ export const AutomationStatsSelfServiceMetric = ({
                 >
                     <div className={classnames('mt-3', css.button)}>
                         <AutomationSubscriptionButton
-                            label="Get Automation Features"
+                            label="Get Automate Features"
                             onClick={() => {
                                 setIsAutomationModalOpened(true)
                             }}

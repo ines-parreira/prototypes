@@ -444,7 +444,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               <p
                 className="mb-3"
               >
-                Automation Add-on features are always available, if enabled. When live chat is unavailable, customers can message your team with
+                Automate features are always available, if enabled. When live chat is unavailable, customers can message your team with
                  
                 <a
                   href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
@@ -635,6 +635,38 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               }
               selectedValue="optional"
             />
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title"
+            >
+              Chat conversations
+            </h4>
+            <div
+              className="formGroup d-flex"
+            >
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
+              />
+              <div
+                className="ml-2"
+              >
+                <b>
+                  Live chat
+                </b>
+                <div
+                  className="form-text text-muted"
+                >
+                  Let customers start live conversations with agents. When disabled, customers can interact with Quick responses and Order management and
+                   
+                  fill the contact form
+                  .
+                </div>
+              </div>
+            </div>
           </div>
           <div
             className="formSection"
@@ -974,7 +1006,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               <p
                 className="mb-3"
               >
-                Automation Add-on features are always available, if enabled. When live chat is unavailable, customers can message your team with
+                Automate features are always available, if enabled. When live chat is unavailable, customers can message your team with
                  
                 <a
                   href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
@@ -1165,6 +1197,38 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               }
               selectedValue="optional"
             />
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title"
+            >
+              Chat conversations
+            </h4>
+            <div
+              className="formGroup d-flex"
+            >
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
+              />
+              <div
+                className="ml-2"
+              >
+                <b>
+                  Live chat
+                </b>
+                <div
+                  className="form-text text-muted"
+                >
+                  Let customers start live conversations with agents. When disabled, customers can interact with Quick responses and Order management and
+                   
+                  fill the contact form
+                  .
+                </div>
+              </div>
+            </div>
           </div>
           <div
             className="formSection"

@@ -3,10 +3,10 @@ import React, {useCallback, useMemo, useState} from 'react'
 import moment, {Moment} from 'moment'
 import {useLocalStorage} from 'react-use'
 import {Scale, TooltipItem} from 'chart.js'
+import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {saveReport} from 'services/reporting/automationAddOnReportingService'
+
 import {
     useAutomatedInteractionByEventTypesTimeSeries,
     useAutomatedInteractionTimeSeries,
@@ -37,6 +37,8 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TicketChannel} from 'business/types/ticket'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+
+import withStoreIntegration from 'pages/automation/common/utils/withStoreIntegrations'
 import {
     MetricTrendFormat,
     SHORT_FORMAT,
@@ -54,7 +56,7 @@ import LineChart from './LineChart'
 import MetricCard from './MetricCard'
 import PeriodStatsFilter from './PeriodStatsFilter'
 import StatsPage from './StatsPage'
-import css from './AutomationAddonOverview.less'
+import css from './AutomateOverview.less'
 import TrendBadge from './TrendBadge'
 import {DEFAULT_TIMEZONE} from './revenue/constants/components'
 import {
@@ -62,17 +64,17 @@ import {
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
     OVERALL_TIME_SAVED_BY_YOUR_TEAM,
-    PAGE_TITLE_AAO,
+    PAGE_TITLE_AUTOMATE_PAYWALL,
+    PAGE_TITLE_OVERVIEW,
     TIME_SAVED_ON_FIRST_RESPONSE,
 } from './self-service/constants'
 import {GreyArea} from './ChartPluginGreyArea'
 import SelfServiceStatsPagePaywallCustomCta from './self-service/SelfServiceStatsPagePaywallCustomCta'
 import PerformanceTip from './PerformanceTip'
 import TipsToggle from './TipsToggle'
-import withEcommerceIntegration from './withEcommerceIntegrations'
+
 import {FEATURE_LABELS} from './constants'
 import {AutomatedInteractionByFeatures} from './types'
-
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
 // Below values are from https://app.periscopedata.com/app/gorgias/1123203/[Cross]-Automation-Add-on-Performance?widget=17138886&udv=0
@@ -80,20 +82,12 @@ export const automationRate = {
     top10P: 0.31,
     avg: 0.12,
 }
-// Value to percentile
-const brackets: {value: number; result: string}[] = [
-    {value: automationRate.top10P, result: 'top 10%'}, // 90th Percentile
-    {value: 0.2165, result: 'top 20%'}, // 80th Percentile and so on..
-    {value: 0.1562, result: 'top 30%'},
-    {value: 0.1081, result: 'top 40%'},
-    {value: 0.0674, result: 'top 50%'},
-    {value: 0.0292, result: 'bottom 40%'},
-    {value: 0.0054, result: 'bottom 30%'},
-]
+
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
-export function AutomationAddOnOverview() {
-    const [showNoActivityAlert, setShowActivityAlert] = useState(true)
+export function AutomateOverview() {
+    const [noActivityAlert, setNoActivityAlert] = useState(true)
+    const [hide72HourAlert, set72HoursAlert] = useState(false)
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         AAO_TIPS_VISIBILITY_KEY,
@@ -340,13 +334,6 @@ export function AutomationAddOnOverview() {
             percentLabel(value as number),
     }
 
-    const topOrBottomPercent = useMemo(() => {
-        return (
-            brackets.find((bracket) => automationRateValue > bracket.value)
-                ?.result || 'bottom 20%'
-        )
-    }, [automationRateValue])
-
     const renderXTickLabel = function (
         this: Scale,
         value: string | number,
@@ -369,7 +356,7 @@ export function AutomationAddOnOverview() {
     return (
         <div className="full-width">
             <StatsPage
-                title={PAGE_TITLE_AAO}
+                title={PAGE_TITLE_AUTOMATE_PAYWALL}
                 filters={
                     <>
                         <ChannelsStatsFilter
@@ -406,18 +393,25 @@ export function AutomationAddOnOverview() {
                 }
             >
                 <div className={classnames(css.wrapper)}>
-                    {hasActivity || isDurationLast3Days ? (
-                        <Alert type={AlertType.Info} icon>
+                    {!hide72HourAlert &&
+                    (hasActivity || isDurationLast3Days) ? (
+                        <Alert
+                            type={AlertType.Info}
+                            icon
+                            onClose={() => set72HoursAlert(true)}
+                        >
                             Data for the past 72 hours is not included on this
                             dashboard, as interactions are considered automated
                             after 72 hours have passed without a customer reply.
                         </Alert>
                     ) : (
-                        showNoActivityAlert && (
+                        noActivityAlert &&
+                        !automatedInterationTrend.isFetching &&
+                        !automatedInterationTrend.data?.value && (
                             <Alert
                                 type={AlertType.Error}
                                 icon
-                                onClose={() => setShowActivityAlert(false)}
+                                onClose={() => setNoActivityAlert(false)}
                             >
                                 {moment(BILLING_PIPE_LINE_DATE).isAfter(
                                     moment(statsFilters.period.end_datetime),
@@ -450,7 +444,7 @@ export function AutomationAddOnOverview() {
                         <MetricCard
                             title={AUTOMATION_RATE_LABEL}
                             hint={{
-                                title: 'Automated interactions as a percent of all customer interactions handled without any agent intervention using Automation Add-on features.',
+                                title: 'Automated interactions as a percent of all customer interactions handled without any agent intervention using Automate features.',
                             }}
                             isLoading={automationRateTrend.isFetching}
                             trendBadge={
@@ -469,16 +463,15 @@ export function AutomationAddOnOverview() {
                                         )}
                                         type={automationRateSentiment}
                                     >
-                                        You’re in the {topOrBottomPercent} of
-                                        merchants. Set up all{' '}
+                                        Set up all{' '}
                                         <a
                                             target="blank"
                                             href="https://docs.gorgias.com/en-US/automation-add-on-101-81855"
                                         >
-                                            Automation Add-on features
+                                            Automate features
                                         </a>{' '}
-                                        to capture more traffic and increase
-                                        your automation rate.
+                                        to improve your automation rate across
+                                        all of your channels.
                                     </PerformanceTip>
                                 )
                             }
@@ -500,7 +493,7 @@ export function AutomationAddOnOverview() {
                             isLoading={automatedInterationTrend.isFetching}
                             title={AUTOMATED_INTERACTIONS_LABEL}
                             hint={{
-                                title: 'Fully automated interactions solved without any agent intervention using Automation Add-on features.',
+                                title: 'Fully automated interactions solved without any agent intervention using Gorgias Automate features.',
                             }}
                             trendBadge={
                                 <TrendBadge
@@ -518,9 +511,8 @@ export function AutomationAddOnOverview() {
                                             {' '}
                                             Automation Playbook
                                         </a>{' '}
-                                        for tactical tips on how to use
-                                        Automation Add-on features to their full
-                                        potential. Visit
+                                        for tactical tips on how to use Automate
+                                        to its full potential. Visit
                                         <a
                                             target="blank"
                                             href="/app/settings/billing"
@@ -528,7 +520,7 @@ export function AutomationAddOnOverview() {
                                             {' '}
                                             billing
                                         </a>{' '}
-                                        to make sure your automation plan is the
+                                        to make sure your Automate plan is the
                                         right size for you.
                                     </PerformanceTip>
                                 )
@@ -547,7 +539,7 @@ export function AutomationAddOnOverview() {
                         <MetricCard
                             title={TIME_SAVED_ON_FIRST_RESPONSE}
                             hint={{
-                                title: 'How much longer customers would have had to wait for a first response if you were not using Automation Add-on features, based on your average first response time.',
+                                title: 'How much longer customers would have had to wait for a first response if you were not using Gorgias Automate, based on your average first response time.',
                             }}
                             isLoading={firstResponseTimeTrend.isFetching}
                             trendBadge={
@@ -589,7 +581,7 @@ export function AutomationAddOnOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATION_RATE_LABEL}
-                            hint="Automated interactions as a percent of all customer interactions handled without any agent intervention using Automation Add-on features."
+                            hint="Automated interactions as a percent of all customer interactions handled without any agent intervention using Automate features."
                         >
                             <LineChart
                                 isCurvedLine={false}
@@ -609,7 +601,7 @@ export function AutomationAddOnOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATED_INTERACTIONS_LABEL}
-                            hint="Fully automated interactions that are solved without human intervention using Automation Add-on features."
+                            hint="Fully automated interactions that are solved without human intervention using Gorgias Automate features."
                         >
                             <LineChart
                                 isCurvedLine={false}
@@ -636,7 +628,7 @@ export function AutomationAddOnOverview() {
                         <ChartCard
                             {...getGreyAreaHint()}
                             title={AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL}
-                            hint="Fully automated interactions solved without any agent intervention using Automation Add-on features."
+                            hint="Fully automated interactions solved without any agent intervention using Automate features."
                         >
                             <LineChart
                                 isCurvedLine={false}
@@ -679,7 +671,16 @@ export function AutomationAddOnOverview() {
                         </ChartCard>
                     </DashboardGridCell>
                 </DashboardSection>
-                <AnalyticsFooter />
+                {userTimezone && (
+                    <div
+                        className={classnames(
+                            css.pageFooter,
+                            'caption-regular'
+                        )}
+                    >
+                        Analytics are using {userTimezone} timezone
+                    </div>
+                )}
             </StatsPage>
         </div>
     )
@@ -691,9 +692,11 @@ export default withFeaturePaywall(
         [AccountFeature.AutomationSelfServiceStatistics]: {
             ...defaultPaywallConfigs[AccountFeature.AutomationAddonOverview],
             pageHeader: (
-                <PageHeader title={<HeaderTitle title={PAGE_TITLE_AAO} />} />
+                <PageHeader
+                    title={<HeaderTitle title={PAGE_TITLE_AUTOMATE_PAYWALL} />}
+                />
             ),
             customCta: <SelfServiceStatsPagePaywallCustomCta />,
         } as PaywallConfig,
     }
-)(withEcommerceIntegration(PAGE_TITLE_AAO, AutomationAddOnOverview))
+)(withStoreIntegration(PAGE_TITLE_OVERVIEW, AutomateOverview))

@@ -1,6 +1,13 @@
 import {ProductType} from 'models/billing/types'
 import orderManagementIcon from 'assets/img/icons/order-management.svg'
 import {ProductSubscriptionDescriptions} from 'pages/settings/new_billing/types'
+import flowsIcon from 'assets/img/icons/flows.svg'
+import {
+    ARTICLE_RECOMMENDATION,
+    FLOWS,
+    ORDER_MANAGEMENT,
+    QUICK_RESPONSES,
+} from 'pages/automation/common/components/constants'
 import {Reason} from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
@@ -38,12 +45,12 @@ export const PRODUCT_INFO = {
         bannerLink: '/app/settings',
     },
     [ProductType.Automation]: {
-        title: 'Automation',
-        icon: 'auto_awesome',
+        title: 'Automate',
+        icon: 'bolt',
         counter: 'automated interactions',
         perTicket: 'per automated interaction',
         tooltip:
-            'An interaction is automated when your customer solves their request without human intervention using a feature from our automation add-on.',
+            'An interaction is automated when your customer solves their request without human intervention using a feature from our Automate.',
         tooltipLink: 'https://link.gorgias.com/5jnkqn7',
         bannerLink: '/app/automation',
     },
@@ -97,34 +104,34 @@ export const BILLING_SUPPORT_EMAIL = 'billing@gorgias.com'
 
 export const AUTOMATION_FEATURES = [
     {
-        title: 'Flows',
-        icon: 'account_tree',
-        description: 'Fully custom multi-step interactions',
+        title: FLOWS,
+        iconUrl: flowsIcon,
+        description: 'Build interactive, personalized resolutions',
     },
     {
-        title: 'Quick response flows',
+        title: QUICK_RESPONSES,
         icon: 'chat',
-        description: 'Provide instant automated responses',
+        description: 'Provide instant resolutions to FAQs',
     },
     {
-        title: 'Order management flows',
+        title: ORDER_MANAGEMENT,
         iconUrl: orderManagementIcon,
-        description: 'Allow customers to manager orders on their own',
+        description: 'Let customers manage and track orders',
     },
     {
-        title: 'Help Center article recommendation',
+        title: ARTICLE_RECOMMENDATION,
         icon: 'menu_book',
-        description: 'Answer customer questions automatically',
+        description: 'Answer customer questions with AI',
     },
     {
-        title: 'Email autoresponders',
+        title: 'Autoresponders',
         icon: 'email',
-        description: 'Leverage AI to target and resolve email tickets',
+        description: 'Filter and resolve email requests with AI',
     },
     {
-        title: 'Automation statistics',
+        title: 'Automate statistics',
         icon: 'bar_chart',
-        description: 'Measure automation impact and performance',
+        description: 'Measure and track your automation performance',
     },
 ]
 
@@ -145,7 +152,17 @@ export const CANCEL_AUTOMATION_REASONS: Reason[] = [
 export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =
     {
         [ProductType.Helpdesk]: {},
-        [ProductType.Automation]: {},
+        [ProductType.Automation]: {
+            detailsLink: {
+                label: 'Explore Pricing Plans',
+                url: 'https://link.gorgias.com/vyp',
+            },
+            features: [
+                'Lower ticket volume, resolution time, and stress',
+                'Choose a plan based on your usage',
+                'Change plans or cancel at any time',
+            ],
+        },
         [ProductType.Voice]: {},
         [ProductType.SMS]: {},
         [ProductType.Convert]: {

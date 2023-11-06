@@ -288,13 +288,51 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   name="prefill_best_macro"
                   onClick={[Function]}
                 >
-                  Macro prediction
+                  <i
+                    className="material-icons AIIcon"
+                  >
+                    auto_awesome
+                  </i>
+                  AI Macro prediction
                 </ToggleInput>
                 <FormText
+                  className="macroDescription"
                   color="muted"
                   tag="small"
                 >
                   Automatically select macros based on ticket content.
+                   
+                  <a
+                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more
+                  </a>
+                </FormText>
+              </Group>
+              <Group
+                className="inputField"
+                orientation="vertical"
+              >
+                <ToggleInput
+                  isToggled={true}
+                  name="show_macros_suggestions"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="material-icons AIIcon"
+                  >
+                    auto_awesome
+                  </i>
+                  AI Macro suggestions
+                </ToggleInput>
+                <FormText
+                  className="macroDescription"
+                  color="muted"
+                  tag="small"
+                >
+                  Display suggested macros that can be applied to tickets with one click.
                    
                   <a
                     href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
@@ -316,36 +354,11 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   Display macro search view by default
                 </ToggleInput>
                 <FormText
+                  className="macroDescription"
                   color="muted"
                   tag="small"
                 >
                   Always display the macro search view when responding to incoming emails.
-                   
-                  <a
-                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Learn more
-                  </a>
-                </FormText>
-              </Group>
-              <Group
-                className="inputField"
-                orientation="vertical"
-              >
-                <ToggleInput
-                  isToggled={true}
-                  name="show_macros_suggestions"
-                  onClick={[Function]}
-                >
-                  Macro suggestions
-                </ToggleInput>
-                <FormText
-                  color="muted"
-                  tag="small"
-                >
-                  Display suggested macros that can be applied to tickets with one click.
                    
                   <a
                     href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
@@ -640,13 +653,51 @@ exports[`YourProfileView render should render current user profile form 2`] = `
                   name="prefill_best_macro"
                   onClick={[Function]}
                 >
-                  Macro prediction
+                  <i
+                    className="material-icons AIIcon"
+                  >
+                    auto_awesome
+                  </i>
+                  AI Macro prediction
                 </ToggleInput>
                 <FormText
+                  className="macroDescription"
                   color="muted"
                   tag="small"
                 >
                   Automatically select macros based on ticket content.
+                   
+                  <a
+                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more
+                  </a>
+                </FormText>
+              </Group>
+              <Group
+                className="inputField"
+                orientation="vertical"
+              >
+                <ToggleInput
+                  isToggled={true}
+                  name="show_macros_suggestions"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="material-icons AIIcon"
+                  >
+                    auto_awesome
+                  </i>
+                  AI Macro suggestions
+                </ToggleInput>
+                <FormText
+                  className="macroDescription"
+                  color="muted"
+                  tag="small"
+                >
+                  Display suggested macros that can be applied to tickets with one click.
                    
                   <a
                     href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
@@ -668,36 +719,11 @@ exports[`YourProfileView render should render current user profile form 2`] = `
                   Display macro search view by default
                 </ToggleInput>
                 <FormText
+                  className="macroDescription"
                   color="muted"
                   tag="small"
                 >
                   Always display the macro search view when responding to incoming emails.
-                   
-                  <a
-                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Learn more
-                  </a>
-                </FormText>
-              </Group>
-              <Group
-                className="inputField"
-                orientation="vertical"
-              >
-                <ToggleInput
-                  isToggled={true}
-                  name="show_macros_suggestions"
-                  onClick={[Function]}
-                >
-                  Macro suggestions
-                </ToggleInput>
-                <FormText
-                  color="muted"
-                  tag="small"
-                >
-                  Display suggested macros that can be applied to tickets with one click.
                    
                   <a
                     href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"

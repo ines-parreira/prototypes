@@ -10,9 +10,9 @@ const CampaignStatsPaywallView = () => {
     return (
         <ConvertPaywallView
             pageHeader={TITLE}
-            header={'Level up your chat campaign conversions'}
+            header={'Level up your Chat campaign conversions'}
             description={
-                'Convert chat campaigns empower you to engage with shoppers at the perfect moment and allow seamless optimization through our campaign dashboard for effortless progress tracking.'
+                'Convert Chat campaigns empower you to engage with shoppers at the perfect moment and allow seamless optimization through our campaign dashboard for effortless progress tracking.'
             }
             previewImage={assetsUrl(
                 '/img/paywalls/screens/convert_campaigns_statistics.png'

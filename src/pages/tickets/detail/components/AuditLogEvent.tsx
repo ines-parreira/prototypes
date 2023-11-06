@@ -34,6 +34,7 @@ import {eventNameToLabel} from 'config/rules'
 
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {textToHTML} from 'utils/html'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import css from './Event.less'
 
 type Props = {
@@ -65,6 +66,7 @@ const RuleSuggestionEvent = ({
         | EventType.RuleSuggestionSuggested
 }) => {
     const recipes = useRuleRecipes()
+    const {rulesUrl} = useIsAutomateRebranding()
     const ruleName = recipes?.[slug]?.rule?.name ?? slug
 
     return (
@@ -74,7 +76,7 @@ const RuleSuggestionEvent = ({
                 : 'Rule'}
             {' "'}
             <Link
-                to={`/app/automation/rules/library?${slug}`}
+                to={`${rulesUrl}/library?${slug}`}
                 title="Rule"
                 target="_blank"
                 rel="noreferrer"
@@ -86,6 +88,38 @@ const RuleSuggestionEvent = ({
                 ? 'to ticket'
                 : 'applied to ticket manually'}
         </ActionName>
+    )
+}
+
+const RuleActionName = ({
+    rule_id,
+    context,
+    data,
+    triggeringEventType,
+}: {
+    rule_id: string
+    context: string
+    data: Map<any, any>
+    triggeringEventType: string
+}) => {
+    const {rulesUrl} = useIsAutomateRebranding()
+    return (
+        <div id={`rule-code-${rule_id}-${context}`}>
+            <ActionName>
+                Rule "
+                <a
+                    href={`${rulesUrl}/${data.get('id') as number}`}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    {data.get('name')}
+                </a>
+                " executed
+            </ActionName>
+            {triggeringEventType && (
+                <Filler>on "{eventNameToLabel[triggeringEventType]}"</Filler>
+            )}
+        </div>
     )
 }
 
@@ -228,26 +262,13 @@ export class AuditLogEventContainer extends Component<Props> {
 
         return (
             <>
-                <div id={`rule-code-${rule_id}-${context}`}>
-                    <ActionName>
-                        Rule "
-                        <a
-                            href={`/app/automation/rules/${
-                                data.get('id') as number
-                            }`}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {data.get('name')}
-                        </a>
-                        " executed
-                    </ActionName>
-                    {triggeringEventType && (
-                        <Filler>
-                            on "{eventNameToLabel[triggeringEventType]}"
-                        </Filler>
-                    )}
-                </div>
+                <RuleActionName
+                    data={data}
+                    triggeringEventType={triggeringEventType}
+                    rule_id={rule_id}
+                    context={context}
+                />
+
                 <Tooltip
                     placement="top"
                     target={`rule-code-${rule_id}-${context}`}

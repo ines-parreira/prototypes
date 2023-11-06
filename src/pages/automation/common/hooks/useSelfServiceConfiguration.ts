@@ -17,6 +17,7 @@ import {reportError} from 'utils/errors'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 import {useSelfServiceConfigurationUpdate} from './useSelfServiceConfigurationUpdate'
+import {useIsAutomateRebranding} from './useIsAutomateRebranding'
 
 const useSelfServiceConfiguration = (
     shopType: string,
@@ -25,6 +26,7 @@ const useSelfServiceConfiguration = (
 ) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
+    const {isAutomateRebranding} = useIsAutomateRebranding()
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
     )
@@ -63,7 +65,6 @@ const useSelfServiceConfiguration = (
                     message: 'Failed to fetch',
                     status: NotificationStatus.Error,
                 })
-                history.push('/app/automation/macros')
             }
         }, [])
 
@@ -107,9 +108,8 @@ const useSelfServiceConfiguration = (
                 message: 'Failed to fetch',
                 status: NotificationStatus.Error,
             })
-            history.push('/app/automation/macros')
         }
-    }, [storeIntegrationId, history, handleNotify])
+    }, [storeIntegrationId, history, handleNotify, isAutomateRebranding])
 
     useEffect(() => {
         if (!selfServiceConfiguration && storeIntegrationId) {

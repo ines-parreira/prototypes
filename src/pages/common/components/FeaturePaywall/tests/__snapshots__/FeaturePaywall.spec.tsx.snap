@@ -151,7 +151,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom price when missing feat
                       <i
                         class="material-icons icon isRight medium"
                       >
-                        auto_awesome
+                        bolt
                       </i>
                     </span>
                   </button>
@@ -333,7 +333,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy price into new price 1`
                       <i
                         class="material-icons icon isRight medium"
                       >
-                        auto_awesome
+                        bolt
                       </i>
                     </span>
                   </button>
@@ -504,7 +504,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
                       <i
                         class="material-icons icon isRight medium"
                       >
-                        auto_awesome
+                        bolt
                       </i>
                     </span>
                   </button>

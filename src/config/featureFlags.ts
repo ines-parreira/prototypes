@@ -60,4 +60,5 @@ export enum FeatureFlagKey {
     EnableNewLanguages = 'enable-new-languages',
     TaapNewReplyMessageChannelSelector = 'taap-new-reply-message-channel-selector',
     DisplayVoiceAnalytics = 'display-voice-analytics',
+    AutomateRebranding = 'automate-rebranding',
 }

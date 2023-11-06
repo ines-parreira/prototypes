@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+import classNames from 'classnames'
 import Button from 'pages/common/components/button/Button'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
@@ -12,7 +13,12 @@ import {TicketChannel} from 'business/types/ticket'
 
 import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
+import {
+    ARTICLE_RECOMMENDATION,
+    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+    ORDER_MANAGEMENT,
+    QUICK_RESPONSES,
+} from '../../common/components/constants'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomationSubscriptionAction from './AutomationSubscriptionAction'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
@@ -116,10 +122,10 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 maxActiveWorkflows={maxActiveWorkflows}
                 limitTooltipMessage={
                     <>
-                        You have reached the maximum number of enabled flows in
-                        this channel. Disable a flow or{' '}
-                        <Link to={quickResponsesUrl}>quick response flow</Link>{' '}
-                        in order to enable this flow.
+                        You have reached the maximum number of enabled Flows in
+                        this channel. Disable a Flow or{' '}
+                        <Link to={quickResponsesUrl}>Quick Response</Link> in
+                        order to enable this Flow.
                     </>
                 }
                 onChange={(nextEntrypoints) => {
@@ -134,7 +140,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
             />
 
             <ConnectedChannelFeatureToggle
-                name="Quick response flows"
+                name={QUICK_RESPONSES}
                 value={quickResponses.enabled}
                 onChange={updateSettings('quickResponses')}
                 disabled={
@@ -145,14 +151,14 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 action={!hasAutomationAddOn && <AutomationSubscriptionAction />}
                 tooltipMessage={
                     cantReactivateQuickResponses
-                        ? 'Disable individual Flows and Quick response flows to have a maximum of 6 flows between them in order to turn on Quick response flows again.'
+                        ? 'Disable individual Flows and Quick Responses to have a maximum of 6 Flows between them in order to turn on Quick Response again.'
                         : undefined
                 }
             />
 
             {isOrderManagementAvailable && (
                 <ConnectedChannelFeatureToggle
-                    name="Order management flows"
+                    name={ORDER_MANAGEMENT}
                     value={orderManagement.enabled}
                     onChange={updateSettings('orderManagement')}
                     disabled={isUpdatePending}
@@ -160,8 +166,15 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
             )}
 
             <ConnectedChannelFeatureToggle
-                name="Article recommendation"
-                description="Requires an active help center with published articles."
+                name={
+                    <span>
+                        <i className={classNames('material-icons', css.AIIcon)}>
+                            auto_awesome
+                        </i>
+                        {' ' + ARTICLE_RECOMMENDATION}
+                    </span>
+                }
+                description="Requires an active Help Center with published articles."
                 value={
                     !!articleRecommendationHelpCenterId &&
                     articleRecommendation.enabled

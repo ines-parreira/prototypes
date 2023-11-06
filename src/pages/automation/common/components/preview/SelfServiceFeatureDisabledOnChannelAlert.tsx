@@ -17,8 +17,13 @@ const SelfServiceFeatureDisabledOnChannelAlert = ({
     <Alert className={css.alert} type={AlertType.Warning} icon>
         This feature is currently disabled on this channel. Manage this setting
         in{' '}
-        <Link to={`/app/automation/${shopType}/${shopName}/connected-channels`}>
-            connected channels
+        <Link
+            to={{
+                pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
+                state: {from: 'self-service-preview-alert'},
+            }}
+        >
+            channels
         </Link>
         .
     </Alert>

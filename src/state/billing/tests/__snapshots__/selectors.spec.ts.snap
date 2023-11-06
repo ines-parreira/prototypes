@@ -645,11 +645,11 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
 }
 `;
 
-exports[`billing selectors getCurrentAutomationFullAmount() should return the full amount of automation add-on 1`] = `30`;
+exports[`billing selectors getCurrentAutomationFullAmount() should return the full amount of Automate 1`] = `30`;
 
-exports[`billing selectors getCurrentAutomationFullAmount() should return undefined when no automation add-on amount or discount exists 1`] = `undefined`;
+exports[`billing selectors getCurrentAutomationFullAmount() should return undefined when no Automate amount or discount exists 1`] = `undefined`;
 
-exports[`billing selectors getCurrentHelpdeskAutomationAddonAmount() should return the amount of automation add-on 1`] = `30`;
+exports[`billing selectors getCurrentHelpdeskAutomationAddonAmount() should return the amount of Automate 1`] = `30`;
 
 exports[`billing selectors getCurrentHelpdeskAutomationAddonAmount() should return undefined when addon does not exist 1`] = `undefined`;
 

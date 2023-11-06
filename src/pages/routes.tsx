@@ -19,6 +19,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
@@ -91,7 +92,6 @@ import TicketFields from 'pages/settings/ticketFields/TicketFields'
 import AddTicketField from 'pages/settings/ticketFields/AddTicketField'
 
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import CanduContent from 'pages/onboarding/CanduContent'
 import ReferralContent from 'pages/referral/ReferralContent'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
@@ -120,42 +120,43 @@ import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBil
 import EditTicketField from 'pages/settings/ticketFields/EditTicketField'
 import {RevenueAddonApiClientProvider} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
 import {
-    BundlesView,
-    BundleInstallView,
-    BundleDetailView,
-} from 'pages/settings/revenue/components/BundlesView'
-import OrderManagementViewContainer from 'pages/automation/orderManagement/OrderManagementViewContainer'
-import ReturnOrderFlowViewContainer from 'pages/automation/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
-import TrackOrderFlowViewContainer from 'pages/automation/orderManagement/trackOrder/TrackOrderFlowViewContainer'
-import CancelOrderFlowViewContainer from 'pages/automation/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
-import ReportOrderIssueFlowViewContainer from 'pages/automation/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
-import CreateReportOrderIssueFlowScenarioViewContainer from 'pages/automation/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
-import EditReportOrderIssueFlowScenarioViewContainer from 'pages/automation/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
-import ArticleRecommendationViewContainer from 'pages/automation/articleRecommendation/ArticleRecommendationViewContainer'
-import QuickResponsesViewContainer from 'pages/automation/quickResponses/QuickResponsesViewContainer'
-import WorkflowsViewContainer from 'pages/automation/workflows/WorkflowsViewContainer'
-import WorkflowEditorViewContainer from 'pages/automation/workflows/editor/WorkflowEditorViewContainer'
-import SelfServiceHelpCentersProvider from 'pages/automation/common/providers/SelfServiceHelpCentersProvider'
-import QuickResponsesPaywallView from 'pages/automation/quickResponses/QuickResponsesPaywallView'
-import OrderManagementPaywallView from 'pages/automation/orderManagement/OrderManagementPaywallView'
-import ArticleRecommendationPaywallView from 'pages/automation/articleRecommendation/ArticleRecommendationPaywallView'
-import OrderManagementPreviewProvider from 'pages/automation/orderManagement/OrderManagementPreviewProvider'
-import ConnectedChannelsViewContainer from 'pages/automation/connectedChannels/ConnectedChannelsViewContainer'
-import WorkflowsPaywallView from 'pages/automation/workflows/WorkflowsPaywallView'
-import WorkflowTemplatesViewContainer from 'pages/automation/workflows/WorkflowTemplatesViewContainer'
-import SelfServiceContactFormsProvider from 'pages/automation/common/providers/SelfServiceContactFormsProvider'
-import AutomationAddOnOverview from 'pages/stats/AutomationAddonOverview'
-import SupportPerformanceTicketInsights from 'pages/stats/SupportPerformanceTicketInsights'
-import {
-    AUTOMATION_ADD_ON_FEATURES_PATH,
-    AUTOMATION_ADD_ON_PATH,
+    ROUTE_AUTOMATION_ADD_ON_FEATURES,
+    ROUTE_AUTOMATE_OVERVIEW,
+    ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from 'pages/stats/self-service/constants'
 import CampaignStatsPaywallView from 'pages/stats/revenue/pages/CampaignsStats/CampaignStatsPaywallView'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 import ClickTrackingSettingsView from 'pages/settings/revenue/components/ClickTrackingSettingsView/ClickTrackingSettingsView'
-
 import {Routes as SplitTicketViewRoutes} from 'split-ticket-view'
+import {
+    BundlesView,
+    BundleInstallView,
+    BundleDetailView,
+} from './settings/revenue/components/BundlesView'
+import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
+import ReturnOrderFlowViewContainer from './automation/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
+import TrackOrderFlowViewContainer from './automation/orderManagement/trackOrder/TrackOrderFlowViewContainer'
+import CancelOrderFlowViewContainer from './automation/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
+import ReportOrderIssueFlowViewContainer from './automation/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
+import CreateReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
+import EditReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
+import ArticleRecommendationViewContainer from './automation/articleRecommendation/ArticleRecommendationViewContainer'
+import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
+import WorkflowsViewContainer from './automation/workflows/WorkflowsViewContainer'
+import WorkflowEditorViewContainer from './automation/workflows/editor/WorkflowEditorViewContainer'
+import SelfServiceHelpCentersProvider from './automation/common/providers/SelfServiceHelpCentersProvider'
+import QuickResponsesPaywallView from './automation/quickResponses/QuickResponsesPaywallView'
+import OrderManagementPaywallView from './automation/orderManagement/OrderManagementPaywallView'
+import ArticleRecommendationPaywallView from './automation/articleRecommendation/ArticleRecommendationPaywallView'
+import OrderManagementPreviewProvider from './automation/orderManagement/OrderManagementPreviewProvider'
+import ConnectedChannelsViewContainer from './automation/connectedChannels/ConnectedChannelsViewContainer'
+import WorkflowsPaywallView from './automation/workflows/WorkflowsPaywallView'
+import WorkflowTemplatesViewContainer from './automation/workflows/WorkflowTemplatesViewContainer'
+import SelfServiceContactFormsProvider from './automation/common/providers/SelfServiceContactFormsProvider'
+import SupportPerformanceTicketInsights from './stats/SupportPerformanceTicketInsights'
+import AutomateLandingPage from './automation/common/components/AutomateLandingPage'
+import AutomateStatsPaywall from './stats/AutomateStatsPaywall'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -200,7 +201,7 @@ export function AppRoutes() {
             <Route path={`${path}/settings`}>
                 <SettingsRoutes />
             </Route>
-            <Route path={`${path}/home`} render={HomepageRoutes} />
+
             <Route
                 path={`${path}/referral-program`}
                 exact
@@ -491,10 +492,10 @@ export function StatsRoutes() {
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
-    const isNewAutomationAddonEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewAutomationAddon]
+
     const displayVoiceAnalytics: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalytics]
+    const {isAutomateRebranding} = useIsAutomateRebranding()
 
     useEffect(logPageChange, [location.pathname])
 
@@ -683,21 +684,33 @@ export function StatsRoutes() {
                 />
                 <Route
                     exact
-                    path={`${path}/${AUTOMATION_ADD_ON_PATH}`}
+                    path={`${path}/${ROUTE_AUTOMATE_OVERVIEW}`}
                     render={() => (
                         <App
-                            content={
-                                isNewAutomationAddonEnabled
-                                    ? AutomationAddOnOverview
-                                    : SelfServiceStatsPage
-                            }
+                            content={AutomateStatsPaywall}
                             navbar={StatsNavbarContainer}
                         />
                     )}
                 />
+
                 <Route
                     exact
-                    path={`${path}/${AUTOMATION_ADD_ON_FEATURES_PATH}`}
+                    path={`${path}/${ROUTE_AUTOMATION_ADD_ON_FEATURES}`}
+                >
+                    {isAutomateRebranding ? (
+                        <Redirect
+                            to={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
+                        />
+                    ) : (
+                        <App
+                            content={SelfServiceStatsPage}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                </Route>
+                <Route
+                    exact
+                    path={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
                     render={() => (
                         <App
                             content={SelfServiceStatsPage}
@@ -925,6 +938,47 @@ export function SettingsRoutes() {
                 path={`${path}/ticket-fields`}
                 render={() => <TicketFieldsRoutes />}
             />
+
+            <Route path={`${path}/macros`} exact>
+                <App content={MacrosSettingsContent} navbar={SettingsNavbar} />
+            </Route>
+            <Route path={`${path}/macros/new`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
+                        MacrosSettingsForm,
+                        AGENT_ROLE,
+                        PageSection.SidebarSettings
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+
+            <Route path={`${path}/macros/:macroId`} exact>
+                <App content={MacrosSettingsForm} navbar={SettingsNavbar} />
+            </Route>
+            <Route path={`${path}/rules`} exact>
+                <App content={RulesView} navbar={SettingsNavbar} />
+            </Route>
+            <Route path={`${path}/rules/library`} exact>
+                <App content={RulesLibrary} navbar={SettingsNavbar} />
+            </Route>
+
+            <Route path={`${path}/rules/new`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
+                        RuleDetailForm,
+                        AGENT_ROLE,
+                        PageSection.SidebarSettings
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/rules/:ruleId`} exact>
+                <App content={RuleDetailForm} navbar={SettingsNavbar} />
+            </Route>
+            <Route path={`${path}/ticket-assignment`} exact>
+                <App content={TicketAssignment} navbar={SettingsNavbar} />
+            </Route>
         </Switch>
     )
 }
@@ -1245,45 +1299,87 @@ export function AutomationRoutes() {
 
 function AutomationContent() {
     const {path} = useRouteMatch()
-
+    const {isAutomateRebranding} = useIsAutomateRebranding()
+    const settingPath = '/app/settings'
     return (
         <Switch>
+            {/* Macros */}
             <Route path={`${path}/macros`} exact>
-                <MacrosSettingsContent />
-            </Route>
-            <Route
-                path={`${path}/macros/new`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    MacrosSettingsForm,
-                    AGENT_ROLE,
-                    PageSection.Macros
+                {isAutomateRebranding ? (
+                    <Redirect to={`${settingPath}/macros`} exact />
+                ) : (
+                    <MacrosSettingsContent />
                 )}
-            />
-            <Route path={`${path}/macros/:macroId`} exact>
-                <MacrosSettingsForm />
             </Route>
+            {isAutomateRebranding ? (
+                <Route path={`${path}/macros/new`} exact>
+                    <Redirect to={`${settingPath}/macros/new`} exact />
+                </Route>
+            ) : (
+                <Route
+                    path={`${path}/macros/new`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        MacrosSettingsForm,
+                        AGENT_ROLE,
+                        PageSection.Macros
+                    )}
+                />
+            )}
+            <Route path={`${path}/macros/:macroId`} exact>
+                {isAutomateRebranding ? (
+                    <Redirect to={`${settingPath}/macros/:macroId`} exact />
+                ) : (
+                    <MacrosSettingsForm />
+                )}
+            </Route>
+
+            {/* Rules */}
             <Route path={`${path}/rules`} exact>
-                <RulesView />
+                {isAutomateRebranding ? (
+                    <Redirect to={`${settingPath}/rules`} exact />
+                ) : (
+                    <RulesView />
+                )}
             </Route>
             <Route path={`${path}/rules/library`} exact>
-                <RulesLibrary />
-            </Route>
-            <Route
-                path={`${path}/rules/new`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    RuleDetailForm,
-                    AGENT_ROLE,
-                    PageSection.Rules
+                {isAutomateRebranding ? (
+                    <Redirect to={`${settingPath}/rules/library`} exact />
+                ) : (
+                    <RulesLibrary />
                 )}
-            />
+            </Route>
+            {isAutomateRebranding ? (
+                <Route
+                    path={`${path}/rules/new`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        RuleDetailForm,
+                        AGENT_ROLE,
+                        PageSection.Rules
+                    )}
+                />
+            ) : (
+                <Route path={`${path}/rules/new`} exact>
+                    <Redirect to={`${settingPath}/rules/new`} exact />
+                </Route>
+            )}
             <Route path={`${path}/rules/:ruleId`} exact>
-                <RuleDetailForm />
+                {isAutomateRebranding ? (
+                    <Redirect to={`${settingPath}/rules/:ruleId`} exact />
+                ) : (
+                    <RuleDetailForm />
+                )}
             </Route>
+            {/* ticket assignment */}
             <Route path={`${path}/ticket-assignment`} exact>
-                <TicketAssignment />
+                {isAutomateRebranding ? (
+                    <Redirect to={`${settingPath}/ticket-assignment`} exact />
+                ) : (
+                    <TicketAssignment />
+                )}
             </Route>
+            {/* Automate routes */}
             <Route
                 path={`${path}/:shopType/:shopName/quick-responses`}
                 exact
@@ -1433,20 +1529,45 @@ function AutomationContent() {
                 </SelfServiceHelpCentersProvider>
             </Route>
             <Route path={`${path}/flows`} exact>
-                <WorkflowsPaywallView />
+                {isAutomateRebranding ? (
+                    <Redirect to={`${path}`} />
+                ) : (
+                    <WorkflowsPaywallView />
+                )}
             </Route>
             <Route path={`${path}/quick-responses`} exact>
-                <QuickResponsesPaywallView />
+                {isAutomateRebranding ? (
+                    <Redirect to={`${path}`} />
+                ) : (
+                    <QuickResponsesPaywallView />
+                )}
             </Route>
             <Route path={`${path}/order-management`} exact>
-                <OrderManagementPaywallView />
+                {isAutomateRebranding ? (
+                    <Redirect to={`${path}`} />
+                ) : (
+                    <OrderManagementPaywallView />
+                )}
             </Route>
             <Route path={`${path}/article-recommendation`} exact>
-                <ArticleRecommendationPaywallView />
+                {isAutomateRebranding ? (
+                    <Redirect to={`${path}`} />
+                ) : (
+                    <ArticleRecommendationPaywallView />
+                )}
             </Route>
-            <Route>
-                <Redirect to="/app/automation/macros" />
+            <Route path={`${path}`} exact>
+                <AutomateLandingPage />
             </Route>
+            {typeof isAutomateRebranding !== 'undefined' && (
+                <Route>
+                    {isAutomateRebranding ? (
+                        <Redirect to={`${path}`} />
+                    ) : (
+                        <Redirect to={`${path}/macros`} />
+                    )}
+                </Route>
+            )}
         </Switch>
     )
 }
@@ -1749,34 +1870,6 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                     )}
                 />
             )}
-        </Switch>
-    )
-}
-
-export function HomepageRoutes({match: {path}}: RouteComponentProps) {
-    return (
-        <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={() => (
-                    <App navbar={TicketNavbar}>
-                        <CanduContent containerId="candu-home" title="Home" />
-                    </App>
-                )}
-            />
-            <Route
-                path={`${path}/automation`}
-                exact
-                render={() => (
-                    <App navbar={TicketNavbar}>
-                        <CanduContent
-                            containerId="candu-automation"
-                            title="Automation Add-on"
-                        />
-                    </App>
-                )}
-            />
         </Switch>
     )
 }

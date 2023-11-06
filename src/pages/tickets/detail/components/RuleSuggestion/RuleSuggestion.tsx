@@ -32,6 +32,7 @@ import {UserRole} from 'config/types/user'
 import {ManagedRule} from 'state/rules/types'
 import {hasRole} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import InTicketSuggestion from './InTicketSuggestion'
 
 import css from './RuleSuggestion.less'
@@ -90,6 +91,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     const currentUser = useAppSelector(getCurrentUser)
     const [rules, isLoadingRules] = useRules()
     const [isSending, setIsSending] = useState(false)
+    const {rulesUrl} = useIsAutomateRebranding()
 
     const suggestion = ticket.meta.rule_suggestion
     const {actions, text} = getRuleSuggestionContent(ticket)
@@ -146,7 +148,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             const {newMessage, newActions} = transformToInternalNote(
                 message,
                 fromJS(actions),
-                `Sent via suggested rule: <a target="_blank" href="/app/automation/rules/library?${suggestion.slug}">${ruleName}</a>`
+                `Sent via suggested rule: <a target="_blank" href="${rulesUrl}/library?${suggestion.slug}">${ruleName}</a>`
             )
             message = {...newMessage, actions: newActions ?? fromJS([])}
         }
@@ -166,7 +168,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                             size="small"
                             onClick={() =>
                                 window.open(
-                                    `/app/automation/rules/library?${suggestion.slug}&install`,
+                                    `${rulesUrl}/library?${suggestion.slug}&install`,
                                     '_blank'
                                 )
                             }
@@ -211,7 +213,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                     <a
                         target="_blank"
                         rel="noreferrer"
-                        href={`/app/automation/rules/library?${suggestion.slug}`}
+                        href={`${rulesUrl}/library?${suggestion.slug}`}
                     >
                         {ruleName}
                     </a>{' '}

@@ -137,7 +137,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
                         <i
                           class="material-icons icon isRight medium"
                         >
-                          auto_awesome
+                          bolt
                         </i>
                       </span>
                     </button>
@@ -300,7 +300,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
                         <i
                           class="material-icons icon isRight medium"
                         >
-                          auto_awesome
+                          bolt
                         </i>
                       </span>
                     </button>

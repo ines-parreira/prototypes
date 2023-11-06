@@ -15,6 +15,7 @@ import {ManagedRulesSlugs} from 'state/rules/types'
 import {isEmailList, findProperty} from 'utils'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'
 import css from './Action.less'
@@ -387,6 +388,16 @@ type Props = {
     leftsiblings?: List<any>
 }
 
+const TeamAssigneeActionWarning = () => {
+    const {ticketAssignmentUrl} = useIsAutomateRebranding()
+    return (
+        <ActionWarning key="warning">
+            To set up team auto-assignment, go to the{' '}
+            <Link to={ticketAssignmentUrl}>Ticket assignment</Link> page
+        </ActionWarning>
+    )
+}
+
 export default class Action extends React.Component<Props> {
     _renderBody = () => {
         const {value} = this.props
@@ -453,15 +464,7 @@ export default class Action extends React.Component<Props> {
                 >
                     {children}
                 </span>,
-                value === 'setTeamAssignee' && (
-                    <ActionWarning key="warning">
-                        To set up team auto-assignment, go to the{' '}
-                        <Link to="/app/automation/ticket-assignment">
-                            Ticket assignment
-                        </Link>{' '}
-                        page
-                    </ActionWarning>
-                ),
+                value === 'setTeamAssignee' && <TeamAssigneeActionWarning />,
                 errors.length ? (
                     <Errors className={css.inlineErrors} key="errors" inline>
                         {errors}

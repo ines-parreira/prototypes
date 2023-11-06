@@ -14,6 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
+import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import {TicketVias} from '../../../../../business/ticket'
 import {
     Meta as MetaType,
@@ -64,6 +65,7 @@ export default function Meta(props: Props) {
     const dispatch = useAppDispatch()
     const rules = useAppSelector(rulesSelector)
     const recipes = useRuleRecipes()
+    const {rulesUrl} = useIsAutomateRebranding()
 
     const {loading: isFetchingRule, value: rule} = useAsync(async () => {
         if (props.via === 'rule' && props.ruleId) {
@@ -412,7 +414,7 @@ export default function Meta(props: Props) {
                         <Spinner className={css.spinner} color="dark" />
                     ) : (
                         <Link
-                            to={`/app/automation/rules/${props.ruleId}`}
+                            to={`${rulesUrl}/${props.ruleId}`}
                             title="Rule"
                             target="_blank"
                             rel="noreferrer"
@@ -452,7 +454,7 @@ export default function Meta(props: Props) {
                         <Spinner className={css.spinner} color="dark" />
                     ) : (
                         <Link
-                            to={`/app/automation/rules/library?${meta.rule_suggestion_slug}`}
+                            to={`${rulesUrl}/library?${meta.rule_suggestion_slug}`}
                             title="Rule"
                             target="_blank"
                             rel="noreferrer"

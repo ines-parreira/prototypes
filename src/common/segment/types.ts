@@ -241,6 +241,14 @@ export enum SegmentEvent {
     TicketNextNavigation = 'ticket/ticket-navigation/next-ticket-navigation',
     TicketKeyboardShortcutsPreviousNavigation = 'ticket/keyboard-shortcuts-navigation/previous-ticket-navigation',
     TicketKeyboardShortcutsNextNavigation = 'ticket/keyboard-shortcuts-navigation/next-ticket-navigation',
+    AutomateFlowsVisited = 'automate/flows-visited',
+    AutomateQuickResponseVisited = 'automate/quick-response-visited',
+    AutomateOrderManagementVisited = 'automate/order-management-visited',
+    AutomateArticleRecommendationVisited = 'automate/article-recommendation-visited',
+    AutomateChannelsVisited = 'automate/channels-visited',
+    AutomatePaywallVisited = 'automate/paywall-visited',
+    AutomatePaywallModalUpsell = 'automate/paywall-modal-upsell',
+    AutomatePaywallLearnMore = 'automate/paywall-learn-more',
 }
 
 export type SegmentEventToSend = {

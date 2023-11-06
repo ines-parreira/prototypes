@@ -1466,6 +1466,7 @@ export const stats = toImmutable<
         ],
     },
     [AUTOMATION_ADD_ON_OVERVIEW]: {
+        // TODO:Sufiyan Remove it This has been remove As part of the new automation statistics page page
         style: 'key-metrics',
         api_resource_name: SELF_SERVICE_OVERVIEW_V2,
         metrics: [
@@ -1495,6 +1496,7 @@ export const stats = toImmutable<
         ],
     },
     [SELF_SERVICE_VOLUME_PER_FLOW]: {
+        // TODO:Sufiyan Remove it This has been remove As part of the new automation statistics page page
         style: 'normalized-line',
         padding: '0px 30px 30px 30px',
         downloadable: true,
@@ -1634,12 +1636,12 @@ export const stats = toImmutable<
         },
         axisHelpers: {
             'Automation rate':
-                'Number of interactions resolved by Quick Response Flow divided by the total number of times a user views the Quick Response Flow.',
+                'Number of interactions resolved by Quick Response divided by the total number of times a user views the Quick Response.',
             // TODO: deprecated by AUTEN-463
             'Served by an agent after quick response':
-                'If a customer is not satisfied with the response provided or if there is no response configured for a flow, a ticket is created.',
+                'If a customer is not satisfied with the response provided or if there is no response configured for a Quick Response, a ticket is created.',
             'Served by an agent after quick response flow':
-                'If a customer is not satisfied with the response provided or if there is no response configured for a flow, a ticket is created.',
+                'If a customer is not satisfied with the response provided or if there is no response configured for a Quick Response, a ticket is created.',
         },
         callbacks: {
             cell: ({value}) => {

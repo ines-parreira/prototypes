@@ -19,7 +19,7 @@ exports[`UpgradeButton should display with custom callback 1`] = `
         <i
           class="material-icons icon isRight medium"
         >
-          auto_awesome
+          bolt
         </i>
       </span>
     </button>
@@ -49,7 +49,7 @@ exports[`UpgradeButton should display with custom props 1`] = `
           <i
             class="material-icons icon isRight medium"
           >
-            auto_awesome
+            bolt
           </i>
         </span>
       </button>
@@ -78,7 +78,7 @@ exports[`UpgradeButton should display with default props 1`] = `
           <i
             class="material-icons icon isRight medium"
           >
-            auto_awesome
+            bolt
           </i>
         </span>
       </button>

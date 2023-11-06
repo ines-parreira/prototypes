@@ -273,26 +273,18 @@ exports[`<AuditLogEvent/> render() should render when the rule has a triggering 
           settings
         </i>
       </div>
-      <div
-        id="rule-code-1-foo"
-      >
-        <ActionName>
-          Rule "
-          <a
-            href="/app/automation/rules/1"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Rule 1
-          </a>
-          " executed
-        </ActionName>
-        <Filler>
-          on "
-          ticket created
-          "
-        </Filler>
-      </div>
+      <RuleActionName
+        context="foo"
+        data={
+          Immutable.Map {
+            "id": 1,
+            "name": "Rule 1",
+            "triggering_event_type": "ticket-created",
+          }
+        }
+        rule_id={1}
+        triggeringEventType="ticket-created"
+      />
       <Tooltip
         placement="top"
         target="rule-code-1-foo"
@@ -328,26 +320,24 @@ exports[`<AuditLogEvent/> render() should render when the rule has failed action
           settings
         </i>
       </div>
-      <div
-        id="rule-code-1-foo"
-      >
-        <ActionName>
-          Rule "
-          <a
-            href="/app/automation/rules/1"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Rule 1
-          </a>
-          " executed
-        </ActionName>
-        <Filler>
-          on "
-          ticket created
-          "
-        </Filler>
-      </div>
+      <RuleActionName
+        context="foo"
+        data={
+          Immutable.Map {
+            "id": 1,
+            "name": "Rule 1",
+            "triggering_event_type": "ticket-created",
+            "failed_actions": Immutable.List [
+              Immutable.Map {
+                "action_name": "applyMacro",
+                "failure_reason": "recent-auto-reply",
+              },
+            ],
+          }
+        }
+        rule_id={1}
+        triggeringEventType="ticket-created"
+      />
       <Tooltip
         placement="top"
         target="rule-code-1-foo"
@@ -524,21 +514,16 @@ exports[`<AuditLogEvent/> render() should render with event type rule-executed 1
           settings
         </i>
       </div>
-      <div
-        id="rule-code-1-foo"
-      >
-        <ActionName>
-          Rule "
-          <a
-            href="/app/automation/rules/1"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Rule 1
-          </a>
-          " executed
-        </ActionName>
-      </div>
+      <RuleActionName
+        context="foo"
+        data={
+          Immutable.Map {
+            "id": 1,
+            "name": "Rule 1",
+          }
+        }
+        rule_id={1}
+      />
       <Tooltip
         placement="top"
         target="rule-code-1-foo"

@@ -160,8 +160,8 @@ const GorgiasChatIntegrationInstall = ({
                                 Connect store
                             </div>
                             <div className={css.connectStoreDescription}>
-                                A store connection is required to use Automation
-                                Add-on features in chat and to enable 1-click
+                                A store connection is required to use Automate
+                                features in chat and to enable 1-click
                                 installation for Shopify stores.
                             </div>
                             <GorgiasChatIntegrationConnectStore

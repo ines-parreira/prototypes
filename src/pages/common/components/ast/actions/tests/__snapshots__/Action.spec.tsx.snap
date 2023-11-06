@@ -61,19 +61,7 @@ exports[`Action render() should render a warning regarding team assignment 1`] =
       properties={[]}
     />
   </span>
-  <ActionWarning
-    key="warning"
-  >
-    To set up team auto-assignment, go to the
-     
-    <Link
-      to="/app/automation/ticket-assignment"
-    >
-      Ticket assignment
-    </Link>
-     
-    page
-  </ActionWarning>
+  <TeamAssigneeActionWarning />
 </div>
 `;
 

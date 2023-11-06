@@ -153,7 +153,7 @@ describe('billing selectors', () => {
     })
 
     describe('getCurrentHelpdeskAutomationAddonAmount()', () => {
-        it('should return the amount of automation add-on', () => {
+        it('should return the amount of Automate', () => {
             expect(
                 selectors.getCurrentHelpdeskAutomationAddonAmount(state)
             ).toMatchSnapshot()
@@ -178,7 +178,7 @@ describe('billing selectors', () => {
     })
 
     describe('getCurrentAutomationFullAmount()', () => {
-        it('should return the full amount of automation add-on', () => {
+        it('should return the full amount of Automate', () => {
             const productsWithDiscountedAutomationPrice = _cloneDeep(products)
             productsWithDiscountedAutomationPrice[1].prices.push(
                 basicDiscountedAutomationPrice
@@ -206,7 +206,7 @@ describe('billing selectors', () => {
             ).toMatchSnapshot()
         })
 
-        it('should return undefined when no automation add-on amount or discount exists', () => {
+        it('should return undefined when no Automate amount or discount exists', () => {
             state = {
                 ...state,
                 currentAccount: fromJS({

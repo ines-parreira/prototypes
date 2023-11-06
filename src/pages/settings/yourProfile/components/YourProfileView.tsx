@@ -461,11 +461,74 @@ export class YourProfileView extends Component<Props, State> {
                                                     })
                                                 }
                                             >
-                                                Macro prediction
+                                                <i
+                                                    className={classnames(
+                                                        'material-icons',
+                                                        settingsCss.AIIcon
+                                                    )}
+                                                >
+                                                    auto_awesome
+                                                </i>
+                                                AI Macro prediction
                                             </ToggleInput>
-                                            <FormText color="muted">
+                                            <FormText
+                                                color="muted"
+                                                className={
+                                                    settingsCss.macroDescription
+                                                }
+                                            >
                                                 Automatically select macros
                                                 based on ticket content.{' '}
+                                                <a
+                                                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    Learn more
+                                                </a>
+                                            </FormText>
+                                        </Group>
+                                        <Group
+                                            orientation="vertical"
+                                            className={settingsCss.inputField}
+                                        >
+                                            <ToggleInput
+                                                name="show_macros_suggestions"
+                                                isToggled={
+                                                    this.state.preferences.get(
+                                                        'show_macros_suggestions',
+                                                        true
+                                                    ) as boolean
+                                                }
+                                                onClick={(value: boolean) =>
+                                                    this.setState({
+                                                        preferences:
+                                                            this.state.preferences.set(
+                                                                'show_macros_suggestions',
+                                                                value
+                                                            ),
+                                                    })
+                                                }
+                                            >
+                                                <i
+                                                    className={classnames(
+                                                        'material-icons',
+                                                        settingsCss.AIIcon
+                                                    )}
+                                                >
+                                                    auto_awesome
+                                                </i>
+                                                AI Macro suggestions
+                                            </ToggleInput>
+                                            <FormText
+                                                color="muted"
+                                                className={
+                                                    settingsCss.macroDescription
+                                                }
+                                            >
+                                                Display suggested macros that
+                                                can be applied to tickets with
+                                                one click.{' '}
                                                 <a
                                                     href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
                                                     target="_blank"
@@ -499,47 +562,15 @@ export class YourProfileView extends Component<Props, State> {
                                                 Display macro search view by
                                                 default
                                             </ToggleInput>
-                                            <FormText color="muted">
+                                            <FormText
+                                                color="muted"
+                                                className={
+                                                    settingsCss.macroDescription
+                                                }
+                                            >
                                                 Always display the macro search
                                                 view when responding to incoming
                                                 emails.{' '}
-                                                <a
-                                                    href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    Learn more
-                                                </a>
-                                            </FormText>
-                                        </Group>
-                                        <Group
-                                            orientation="vertical"
-                                            className={settingsCss.inputField}
-                                        >
-                                            <ToggleInput
-                                                name="show_macros_suggestions"
-                                                isToggled={
-                                                    this.state.preferences.get(
-                                                        'show_macros_suggestions',
-                                                        true
-                                                    ) as boolean
-                                                }
-                                                onClick={(value: boolean) =>
-                                                    this.setState({
-                                                        preferences:
-                                                            this.state.preferences.set(
-                                                                'show_macros_suggestions',
-                                                                value
-                                                            ),
-                                                    })
-                                                }
-                                            >
-                                                Macro suggestions
-                                            </ToggleInput>
-                                            <FormText color="muted">
-                                                Display suggested macros that
-                                                can be applied to tickets with
-                                                one click.{' '}
                                                 <a
                                                     href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
                                                     target="_blank"

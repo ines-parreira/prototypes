@@ -1,14 +1,19 @@
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBillingEventCube'
 
+import {
+    ARTICLE_RECOMMENDATION,
+    FLOWS,
+    QUICK_RESPONSES,
+} from 'pages/automation/common/components/constants'
 import {AutomatedInteractionByFeatures} from './types'
 
 export const FEATURE_LABELS: Record<AutomatedInteractionByFeatures, string> = {
     [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows]:
-        'Flows',
+        FLOWS,
     [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse]:
-        'Quick response flows',
+        QUICK_RESPONSES,
     [AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation]:
-        'Article recommendation',
+        ARTICLE_RECOMMENDATION,
     [AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder]:
         'Track order',
     [AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns]:

@@ -1,0 +1,27 @@
+@import (reference) '~css/typography';
+
+:global {
+    .popover-body {
+        padding: 8px;
+    }
+}
+
+:local {
+    .popoverContainer {
+        > div {
+            .caption-regular();
+            background: var(--neutral-grey-2);
+            opacity: 0.9;
+            width: 180px;
+        }
+
+        a {
+            color: var(--neutral-grey-6);
+        }
+        .arrow::after,
+        .arrow::before {
+            background: var(--neutral-grey-2);
+            opacity: 0.9;
+        }
+    }
+}

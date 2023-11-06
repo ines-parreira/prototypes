@@ -47,6 +47,11 @@ import {WorkflowConfigurationShallow} from 'pages/automation/workflows/models/wo
 import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import useStatResource from 'hooks/reporting/useStatResource'
+import {
+    ORDER_MANAGEMENT,
+    QUICK_RESPONSES,
+} from 'pages/automation/common/components/constants'
+import withEcommerceIntegration from 'pages/automation/common/utils/withStoreIntegrations'
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
 import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
@@ -55,7 +60,6 @@ import PeriodStatsFilter from '../PeriodStatsFilter'
 import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
 
-import withEcommerceIntegration from '../withEcommerceIntegrations'
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
 import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
@@ -63,7 +67,7 @@ import {
     AUTOMATION_SELF_SERVICE_STAT_NAME,
     HELP_URL,
     PAGE_DESCRIPTION,
-    PAGE_TITLE_AAO_FEATURES,
+    PAGE_TITLE_PERFORMANCE_BY_FEATURES,
 } from './constants'
 
 import css from './SelfServiceStatsPage.less'
@@ -282,7 +286,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     return (
         <StatsPage
-            title={PAGE_TITLE_AAO_FEATURES}
+            title={PAGE_TITLE_PERFORMANCE_BY_FEATURES}
             description={PAGE_DESCRIPTION}
             helpUrl={HELP_URL}
             filters={
@@ -369,10 +373,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         statsFilters={pageStatsFilters}
                         helpText={
                             <span>
-                                You can enable up to six Quick Response flows at
-                                a time to automatically answer shopper
-                                questions. Only flows enabled during the
-                                selected time period are displayed below.{' '}
+                                Only Quick Responses enabled during the selected
+                                time period are displayed below.{' '}
                                 <a
                                     href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
                                     target="_blank"
@@ -390,16 +392,16 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 {quickResponsePerformanceNoData &&
                                 quickResponseDisabled ? (
                                     <SelfServiceFeaturePreview
-                                        title="Automate up to 14% of interactions with quick response flows"
-                                        description="Enable and display up to 6 custom Quick Response Flows to provide customers with automated responses to common questions."
-                                        buttonText="Go to quick response flows"
+                                        title={`Automate up to 14% of interactions with ${QUICK_RESPONSES}`}
+                                        description="Enable and display up to 6 custom Text to provide customers with automated responses to common questions."
+                                        buttonText={`Go to ${QUICK_RESPONSES}`}
                                         buttonRedirectUrl={buildCtaRedirectUrl(
                                             'quickResponses'
                                         )}
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/quick-response-preview.png'
                                         )}
-                                        imageAltText="Quick response flows feature preview"
+                                        imageAltText={`${QUICK_RESPONSES} feature preview`}
                                     />
                                 ) : (
                                     <TableStat
@@ -509,7 +511,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                     <SelfServiceFeaturePreview
                                         title="Monitor order issues with the report issue flow"
                                         description="Monitor order issues with the report issue flow"
-                                        buttonText="Go to Order Management Flows"
+                                        buttonText={`Go to ${ORDER_MANAGEMENT}`}
                                         buttonRedirectUrl={buildCtaRedirectUrl(
                                             'orderManagement'
                                         )}
@@ -550,9 +552,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 returnOrderDisabled &&
                                 reportIssueDisabled ? (
                                     <SelfServiceFeaturePreview
-                                        title="Gain product insights by enabling the report issue and return flows"
-                                        description="Enable and customize these flows in Order Management Flows."
-                                        buttonText="Go to Order Management Flows"
+                                        title="Gain product insights by enabling the report issue and return Flows"
+                                        description={`Enable and customize these Flows in ${ORDER_MANAGEMENT}.`}
+                                        buttonText={`Go to ${ORDER_MANAGEMENT}`}
                                         buttonRedirectUrl={buildCtaRedirectUrl(
                                             'orderManagement'
                                         )}
@@ -592,7 +594,7 @@ export default withFeaturePaywall(
                 <PageHeader
                     title={
                         <HeaderTitle
-                            title={PAGE_TITLE_AAO_FEATURES}
+                            title={PAGE_TITLE_PERFORMANCE_BY_FEATURES}
                             description={PAGE_DESCRIPTION}
                             helpUrl={HELP_URL}
                         />
@@ -602,4 +604,9 @@ export default withFeaturePaywall(
             customCta: <SelfServiceStatsPagePaywallCustomCta />,
         } as PaywallConfig,
     }
-)(withEcommerceIntegration(PAGE_TITLE_AAO_FEATURES, SelfServiceStatsPage))
+)(
+    withEcommerceIntegration(
+        PAGE_TITLE_PERFORMANCE_BY_FEATURES,
+        SelfServiceStatsPage
+    )
+)

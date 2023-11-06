@@ -86,7 +86,7 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should render the paywall 1`] 
                       <i
                         class="material-icons icon isLeft medium"
                       >
-                        auto_awesome
+                        bolt
                       </i>
                       Add Automation Features
                     </span>
@@ -110,7 +110,7 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
   tabindex="-1"
 >
   <div
-    class="modal-dialog modal wide modal-dialog-centered"
+    class="modal-dialog modal modal-dialog-centered"
     role="document"
   >
     <div
@@ -122,7 +122,7 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
         <h5
           class="modal-title"
         >
-          Subscribe to Automation
+          Subscribe to Automate
         </h5>
         <button
           aria-label="Close"
@@ -385,7 +385,7 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
             class="wrapper fill primary medium isDisabled"
             type="button"
           >
-            Confirm
+            Subscribe
           </button>
         </div>
       </div>

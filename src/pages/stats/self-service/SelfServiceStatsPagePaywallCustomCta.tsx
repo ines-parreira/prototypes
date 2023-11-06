@@ -31,11 +31,12 @@ const SelfServiceStatsPagePaywallCustomCta = () => {
                 onClick={() => {
                     setIsAutomationModalOpened(true)
                 }}
-                label="Get Automation Add-on"
+                hasIcon={false}
+                label="Learn More"
                 segmentEventToSend={segmentEventToSend}
             />
             <AutomationSubscriptionModal
-                confirmLabel="Confirm"
+                confirmLabel="Subscribe"
                 isOpen={isAutomationModalOpened}
                 onClose={() => setIsAutomationModalOpened(false)}
             />

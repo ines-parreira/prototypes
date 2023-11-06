@@ -36,7 +36,7 @@ describe('SupportPerformanceTipService', () => {
         topTen: number
     ): Tip => ({
         type: qualifier,
-        content: randomIndexGrade(tips[metric][qualifier]),
+        content: randomIndexGrade(tips('/app/automation')[metric][qualifier]),
         average: formatMetricValue(metric, average),
         topTen: formatMetricValue(metric, topTen),
     })
@@ -212,9 +212,9 @@ describe('SupportPerformanceTipService', () => {
 
                 expect(expectedTip.type).not.toBeNull()
                 if (expectedTip.type !== null) {
-                    expect(tips[metric][expectedTip.type]).toContainEqual(
-                        tip.content
-                    )
+                    expect(
+                        tips('/app/automation')[metric][expectedTip.type]
+                    ).toContainEqual(tip.content)
                 }
             }
         }

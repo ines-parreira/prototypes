@@ -33,7 +33,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
         class="align-items-center"
       >
         <span>
-          Automation add-on features
+          Performance by feature
         </span>
         <button
           aria-disabled="false"
@@ -724,7 +724,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <h5
             class="mb-0 d-flex header"
           >
-            Quick response flows performance
+            Quick Responses performance
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
@@ -898,7 +898,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <h5
             class="mb-0 d-flex header"
           >
-            Article recommendation performance
+            Article Recommendation performance
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
@@ -1450,7 +1450,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
         class="align-items-center"
       >
         <span>
-          Automation add-on features
+          Performance by feature
         </span>
         <button
           aria-disabled="false"
@@ -1988,7 +1988,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           <h5
             class="mb-0 d-flex header"
           >
-            Quick response flows performance
+            Quick Responses performance
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
@@ -2006,7 +2006,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             class="previewImageContainer"
           >
             <img
-              alt="Quick response flows feature preview"
+              alt="Quick Responses feature preview"
               src="/assets/img/presentationals/quick-response-preview.png"
               width="246"
             />
@@ -2017,19 +2017,19 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="title"
             >
-              Automate up to 14% of interactions with quick response flows
+              Automate up to 14% of interactions with Quick Responses
             </div>
             <div
               class="description"
             >
-              Enable and display up to 6 custom Quick Response Flows to provide customers with automated responses to common questions.
+              Enable and display up to 6 custom Text to provide customers with automated responses to common questions.
             </div>
             <button
               aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to quick response flows
+              Go to Quick Responses
             </button>
           </div>
         </div>
@@ -2043,7 +2043,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           <h5
             class="mb-0 d-flex header"
           >
-            Article recommendation performance
+            Article Recommendation performance
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
@@ -2139,7 +2139,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to Order Management Flows
+              Go to Order Management
             </button>
           </div>
         </div>
@@ -2174,19 +2174,19 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="title"
             >
-              Gain product insights by enabling the report issue and return flows
+              Gain product insights by enabling the report issue and return Flows
             </div>
             <div
               class="description"
             >
-              Enable and customize these flows in Order Management Flows.
+              Enable and customize these Flows in Order Management.
             </div>
             <button
               aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to Order Management Flows
+              Go to Order Management
             </button>
           </div>
         </div>

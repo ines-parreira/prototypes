@@ -68,9 +68,9 @@ const ReasonsAAOModal = ({
                     />
                 </div>
                 <div className={css.disclaimer}>
-                    To remove Automation from your subscription, you must click{' '}
+                    To remove Automate from your subscription, you must click{' '}
                     <b>Update Subscription</b> on the following page. Once
-                    updated, you will still have access to Automation features
+                    updated, you will still have access to Automate features
                     until <b>{periodEnd}</b>.
                 </div>
             </ModalBody>

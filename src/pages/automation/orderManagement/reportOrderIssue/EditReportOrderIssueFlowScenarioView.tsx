@@ -9,6 +9,7 @@ import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
+import {ORDER_MANAGEMENT} from 'pages/automation/common/components/constants'
 import useReportOrderIssueFlowScenario from './hooks/useReportOrderIssueFlowScenario'
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
 import ReportOrderIssueScenarioFormContext, {
@@ -94,7 +95,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
                         <Link
                             to={`/app/automation/shopify/${shopName}/order-management`}
                         >
-                            Order management flows
+                            {ORDER_MANAGEMENT}
                         </Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem>

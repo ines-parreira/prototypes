@@ -7,7 +7,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import css from './ConnectedChannelFeatureToggle.less'
 
 type Props = {
-    name: string
+    name: ReactNode
     description?: string
     value: boolean
     onChange: (value: boolean) => void

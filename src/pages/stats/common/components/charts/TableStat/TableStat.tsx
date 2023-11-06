@@ -348,9 +348,14 @@ export class TableStat extends Component<
                         <div className={css.percentageValue}>{value}% </div>
                         {isQuickResponseEnabled && (
                             <Link
-                                to={`/app/automation/${shopType}/${shopName}/quick-responses?quickResponseId=${flowId}`}
+                                to={{
+                                    pathname: `/app/automation/${shopType}/${shopName}/quick-responses?quickResponseId=${flowId}`,
+                                    state: {
+                                        from: 'stats-automate-performance-by-features',
+                                    },
+                                }}
                             >
-                                Edit quick response
+                                Edit Quick Response
                             </Link>
                         )}
                     </div>
@@ -413,7 +418,12 @@ export class TableStat extends Component<
                     <div className={css.flexAlignCenter}>
                         <span className={css.percentageValue}>{value}%</span>
                         <Link
-                            to={`/app/automation/${shopType}/${shopName}/flows/edit/${configurationId}`}
+                            to={{
+                                pathname: `/app/automation/${shopType}/${shopName}/flows/edit/${configurationId}`,
+                                state: {
+                                    from: 'stats-automate-performance-by-features',
+                                },
+                            }}
                         >
                             Edit flow
                         </Link>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`metric trends Automation add-on useAutomatedInteractionTrend should create automation filters 1`] = `
+exports[`metric trends Automate useAutomatedInteractionTrend should create automation filters 1`] = `
 {
   "dimensions": [],
   "filters": [
@@ -34,7 +34,7 @@ exports[`metric trends Automation add-on useAutomatedInteractionTrend should cre
 }
 `;
 
-exports[`metric trends Automation add-on useAutomationRateTrend should create automation filters 1`] = `
+exports[`metric trends Automate useAutomationRateTrend should create automation filters 1`] = `
 {
   "dimensions": [],
   "filters": [
@@ -68,7 +68,7 @@ exports[`metric trends Automation add-on useAutomationRateTrend should create au
 }
 `;
 
-exports[`metric trends Automation add-on useFirstResponseTimeWithAutomationTrend should create automation filters 1`] = `
+exports[`metric trends Automate useFirstResponseTimeWithAutomationTrend should create automation filters 1`] = `
 {
   "dimensions": [],
   "filters": [
@@ -102,7 +102,7 @@ exports[`metric trends Automation add-on useFirstResponseTimeWithAutomationTrend
 }
 `;
 
-exports[`metric trends Automation add-on useOverallTimeSavedWithAutomationTrend should create automation filters 1`] = `
+exports[`metric trends Automate useOverallTimeSavedWithAutomationTrend should create automation filters 1`] = `
 {
   "dimensions": [],
   "filters": [
@@ -136,7 +136,7 @@ exports[`metric trends Automation add-on useOverallTimeSavedWithAutomationTrend 
 }
 `;
 
-exports[`metric trends Automation add-on useResolutionTimeWithAutomationTrend should create automation filters 1`] = `
+exports[`metric trends Automate useResolutionTimeWithAutomationTrend should create automation filters 1`] = `
 {
   "dimensions": [],
   "filters": [

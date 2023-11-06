@@ -30,7 +30,7 @@ const UpgradeButton = ({
     const buttonContent = useMemo(
         () =>
             hasIcon ? (
-                <ButtonIconLabel icon="auto_awesome" position={position}>
+                <ButtonIconLabel icon="bolt" position={position}>
                     {label}
                 </ButtonIconLabel>
             ) : (

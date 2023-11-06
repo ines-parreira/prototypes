@@ -110,7 +110,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
                         <i
                           class="material-icons icon isRight medium"
                         >
-                          auto_awesome
+                          bolt
                         </i>
                       </span>
                     </button>
@@ -237,7 +237,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
                         <i
                           class="material-icons icon isRight medium"
                         >
-                          auto_awesome
+                          bolt
                         </i>
                       </span>
                     </button>
@@ -363,7 +363,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
                         <i
                           class="material-icons icon isRight medium"
                         >
-                          auto_awesome
+                          bolt
                         </i>
                       </span>
                     </button>
@@ -490,7 +490,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
                         <i
                           class="material-icons icon isRight medium"
                         >
-                          auto_awesome
+                          bolt
                         </i>
                       </span>
                     </button>
@@ -616,7 +616,7 @@ exports[`HelpCenterPaywall should render the component correctly for when the pl
                         <i
                           class="material-icons icon isRight medium"
                         >
-                          auto_awesome
+                          bolt
                         </i>
                       </span>
                     </button>

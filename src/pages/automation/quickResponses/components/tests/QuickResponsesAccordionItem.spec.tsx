@@ -14,6 +14,10 @@ import {fromJS} from 'immutable'
 import {getLDClient} from 'utils/launchDarkly'
 import {RootState, StoreDispatch} from 'state/types'
 
+import {
+    FLOWS,
+    QUICK_RESPONSES,
+} from 'pages/automation/common/components/constants'
 import QuickResponsesViewContext from '../../QuickResponsesViewContext'
 import QuickResponsesAccordionItem from '../QuickResponsesAccordionItem'
 
@@ -176,7 +180,7 @@ describe('<QuickResponsesAccordionItem />', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'There are already 6 active quick response flows and/or flows. Disable one of them to activate this one.'
+                    `There are already 6 active ${QUICK_RESPONSES} and/or ${FLOWS}. Disable one of them to activate this one.`
                 )
             ).toBeVisible()
         })

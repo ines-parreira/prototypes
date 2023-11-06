@@ -5,8 +5,7 @@ import {withCanduPaywall} from 'pages/common/components/Paywall/CanduPaywall'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {assetsUrl} from 'utils'
-
-const TITLE = 'Article recommendation'
+import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
 
 const ArticleRecommendationPaywallView = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -14,7 +13,7 @@ const ArticleRecommendationPaywallView = () => {
 
     return (
         <Paywall
-            pageHeader={TITLE}
+            pageHeader={ARTICLE_RECOMMENDATION}
             header="Automate up to 25% of interactions with advanced automation features"
             description="Leverage AI to automatically recommend relevant Help Center articles to customers."
             previewImage={assetsUrl(
@@ -29,12 +28,12 @@ const ArticleRecommendationPaywallView = () => {
                     onClick={() => {
                         setIsAutomationModalOpened(true)
                     }}
-                    label="Get Automation Add-on"
+                    label="Get Automate Features"
                 />
             }
             modal={
                 <AutomationSubscriptionModal
-                    confirmLabel="Confirm"
+                    confirmLabel="Subscribe"
                     isOpen={isAutomationModalOpened}
                     onClose={() => setIsAutomationModalOpened(false)}
                 />
@@ -44,6 +43,6 @@ const ArticleRecommendationPaywallView = () => {
 }
 
 export default withCanduPaywall({
-    title: TITLE,
+    title: ARTICLE_RECOMMENDATION,
     canduId: 'article-recommendation-paywall',
 })(ArticleRecommendationPaywallView)

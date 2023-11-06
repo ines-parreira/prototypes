@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutomationNavbar /> render() should render automation navbar for admin with automation add-on 1`] = `
+exports[`<AutomationNavbar /> render() should not render automation navbar for non-agent user with Automate 1`] = `
 <div>
   <div
     class="sidebar"
@@ -22,7 +22,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             type="button"
           >
             <div>
-              Automation
+              Automate
               <i
                 class="material-icons icon-more"
               >
@@ -53,2244 +53,14 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="dropdown-item dropdown-item menu-item"
               role="menuitem"
               tabindex="0"
-              to="/app/automation/macros"
+              to="/app/automation"
             >
               <i
                 class="material-icons mr-2 icon"
               >
                 bolt
               </i>
-              Automation
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/customers"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                people
-              </i>
-              Customers
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/stats"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bar_chart
-              </i>
-              Statistics
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/settings"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                settings
-              </i>
-              Settings
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="navbar-cta-group"
-      >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
-        <button
-          aria-disabled="false"
-          class="wrapper button ghost primary medium"
-          id="spotlight-button-8"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft icon medium"
-            >
-              search
-            </i>
-          </span>
-          Search
-        </button>
-      </div>
-      <div
-        class="navbar-content"
-      >
-        <div
-          class="category link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/macros"
-          >
-            Macros
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/rules"
-          >
-            Rules
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/ticket-assignment"
-          >
-            Ticket assignment
-          </a>
-        </div>
-        <div
-          class="wrapper section"
-        >
-          <div
-            class="category"
-          >
-            <h4
-              class="category-title"
-            >
-              <div
-                class="title"
-              >
-                <i
-                  class="material-icons icon"
-                >
-                  auto_awesome
-                </i>
-                automation add-on
-              </div>
-            </h4>
-            <div
-              class="section section"
-            >
-              <div
-                class="toggleSectionIconWrapper"
-              >
-                <i
-                  class="toggleSectionIcon material-icons"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
-              <div
-                class="nameWrapper"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <img
-                    alt="shopify logo"
-                    role="presentation"
-                    src="/assets/img/integrations/shopify.png"
-                  />
-                </div>
-                <span
-                  class="name"
-                >
-                  gorgiastest
-                </span>
-              </div>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/flows"
-              >
-                <span
-                  class="item-name"
-                >
-                  Flow builder
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/quick-responses"
-              >
-                <span
-                  class="item-name"
-                >
-                  Quick response flows
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/order-management"
-              >
-                <span
-                  class="item-name"
-                >
-                  Order management flows
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/article-recommendation"
-              >
-                <span
-                  class="item-name"
-                >
-                  Article recommendation
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/connected-channels"
-              >
-                <span
-                  class="item-name"
-                >
-                  Connected channels
-                </span>
-              </a>
-            </div>
-            <div
-              class="section section"
-            >
-              <div
-                class="toggleSectionIconWrapper"
-              >
-                <i
-                  class="toggleSectionIcon material-icons"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
-              <div
-                class="nameWrapper"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <img
-                    alt="bigcommerce logo"
-                    role="presentation"
-                    src="/assets/img/integrations/bigcommerce-white.svg"
-                  />
-                </div>
-                <span
-                  class="name"
-                >
-                  gorgiastest.mybigcommerce.com
-                </span>
-              </div>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/bigcommerce/xb107iaz1n/flows"
-              >
-                <span
-                  class="item-name"
-                >
-                  Flow builder
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
-              >
-                <span
-                  class="item-name"
-                >
-                  Quick response flows
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
-              >
-                <span
-                  class="item-name"
-                >
-                  Article recommendation
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
-              >
-                <span
-                  class="item-name"
-                >
-                  Connected channels
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-candu-id="navbar-menu-spacer"
-      />
-      <button
-        class="dropdown-toggle dropdown-toggle-dropup"
-      >
-        <div>
-          Alex Plugaru
-        </div>
-        <div
-          class="component hasImage square"
-          style="width: 36px; height: 36px;"
-        >
-          <div
-            class="initials"
-            style="width: 36px; height: 36px; font-size: 15px;"
-          >
-            <span
-              style="line-height: 38px;"
-            >
-              AP
-            </span>
-          </div>
-          <img
-            alt="avatar"
-            class="gravatar"
-            src="https://config.gorgias.io/production/picture"
-          />
-          <div
-            class="badge"
-            style="background-color: rgb(36, 214, 157);"
-          />
-        </div>
-      </button>
-    </div>
-    <div
-      class="sidebar-resizer"
-      style="left: 238px;"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AutomationNavbar /> render() should render automation navbar for admin with legacy automation features 1`] = `
-<div>
-  <div
-    class="sidebar"
-    style="width: 238px;"
-  >
-    <div
-      class="nav-primary hidden-panel"
-    >
-      <div
-        class="nav-dropdown-wrapper"
-      >
-        <div
-          class="nav-dropdown dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
-            type="button"
-          >
-            <div>
-              Automation
-              <i
-                class="material-icons icon-more"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </button>
-          <div
-            aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/tickets"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                question_answer
-              </i>
-              Tickets
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/automation/macros"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bolt
-              </i>
-              Automation
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/customers"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                people
-              </i>
-              Customers
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/stats"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bar_chart
-              </i>
-              Statistics
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/settings"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                settings
-              </i>
-              Settings
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="navbar-cta-group"
-      >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
-        <button
-          aria-disabled="false"
-          class="wrapper button ghost primary medium"
-          id="spotlight-button-7"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft icon medium"
-            >
-              search
-            </i>
-          </span>
-          Search
-        </button>
-      </div>
-      <div
-        class="navbar-content"
-      >
-        <div
-          class="category link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/macros"
-          >
-            Macros
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/rules"
-          >
-            Rules
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/ticket-assignment"
-          >
-            Ticket assignment
-          </a>
-        </div>
-        <div
-          class="wrapper section"
-        >
-          <div
-            class="category"
-          >
-            <h4
-              class="category-title"
-            >
-              <div
-                class="title"
-              >
-                <i
-                  class="material-icons icon"
-                >
-                  auto_awesome
-                </i>
-                automation add-on
-              </div>
-            </h4>
-            <div
-              class="section section"
-            >
-              <div
-                class="toggleSectionIconWrapper"
-              >
-                <i
-                  class="toggleSectionIcon material-icons"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
-              <div
-                class="nameWrapper"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <img
-                    alt="shopify logo"
-                    role="presentation"
-                    src="/assets/img/integrations/shopify.png"
-                  />
-                </div>
-                <span
-                  class="name"
-                >
-                  gorgiastest
-                </span>
-              </div>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/flows"
-              >
-                <div
-                  class="name"
-                >
-                  <span
-                    class="item-name"
-                  >
-                    Flow builder
-                  </span>
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/quick-responses"
-              >
-                <div
-                  class="name"
-                >
-                  <span
-                    class="item-name"
-                  >
-                    Quick response flows
-                  </span>
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/order-management"
-              >
-                <span
-                  class="item-name"
-                >
-                  Order management flows
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/article-recommendation"
-              >
-                <div
-                  class="name"
-                >
-                  <span
-                    class="item-name"
-                  >
-                    Article recommendation
-                  </span>
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/connected-channels"
-              >
-                <span
-                  class="item-name"
-                >
-                  Connected channels
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-candu-id="navbar-menu-spacer"
-      />
-      <button
-        class="dropdown-toggle dropdown-toggle-dropup"
-      >
-        <div>
-          Alex Plugaru
-        </div>
-        <div
-          class="component hasImage square"
-          style="width: 36px; height: 36px;"
-        >
-          <div
-            class="initials"
-            style="width: 36px; height: 36px; font-size: 15px;"
-          >
-            <span
-              style="line-height: 38px;"
-            >
-              AP
-            </span>
-          </div>
-          <img
-            alt="avatar"
-            class="gravatar"
-            src="https://config.gorgias.io/production/picture"
-          />
-          <div
-            class="badge"
-            style="background-color: rgb(36, 214, 157);"
-          />
-        </div>
-      </button>
-    </div>
-    <div
-      class="sidebar-resizer"
-      style="left: 238px;"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AutomationNavbar /> render() should render automation navbar for admin without automation add-on and without legacy automation features 1`] = `
-<div>
-  <div
-    class="sidebar"
-    style="width: 238px;"
-  >
-    <div
-      class="nav-primary hidden-panel"
-    >
-      <div
-        class="nav-dropdown-wrapper"
-      >
-        <div
-          class="nav-dropdown dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
-            type="button"
-          >
-            <div>
-              Automation
-              <i
-                class="material-icons icon-more"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </button>
-          <div
-            aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/tickets"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                question_answer
-              </i>
-              Tickets
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/automation/macros"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bolt
-              </i>
-              Automation
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/customers"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                people
-              </i>
-              Customers
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/stats"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bar_chart
-              </i>
-              Statistics
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/settings"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                settings
-              </i>
-              Settings
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="navbar-cta-group"
-      >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
-        <button
-          aria-disabled="false"
-          class="wrapper button ghost primary medium"
-          id="spotlight-button-6"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft icon medium"
-            >
-              search
-            </i>
-          </span>
-          Search
-        </button>
-      </div>
-      <div
-        class="navbar-content"
-      >
-        <div
-          class="category link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/macros"
-          >
-            Macros
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/rules"
-          >
-            Rules
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/ticket-assignment"
-          >
-            Ticket assignment
-          </a>
-        </div>
-        <div
-          class="wrapper section"
-        >
-          <div
-            class="category"
-          >
-            <h4
-              class="category-title"
-            >
-              <div
-                class="title"
-              >
-                <i
-                  class="material-icons icon"
-                >
-                  auto_awesome
-                </i>
-                automation add-on
-              </div>
-            </h4>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/flows"
-              >
-                <div
-                  class="name"
-                >
-                  Flow builder
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/quick-responses"
-              >
-                <div
-                  class="name"
-                >
-                  Quick response flows
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/order-management"
-              >
-                <div
-                  class="name"
-                >
-                  Order management flows
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/article-recommendation"
-              >
-                <div
-                  class="name"
-                >
-                  Article recommendation
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-candu-id="navbar-menu-spacer"
-      />
-      <button
-        class="dropdown-toggle dropdown-toggle-dropup"
-      >
-        <div>
-          Alex Plugaru
-        </div>
-        <div
-          class="component hasImage square"
-          style="width: 36px; height: 36px;"
-        >
-          <div
-            class="initials"
-            style="width: 36px; height: 36px; font-size: 15px;"
-          >
-            <span
-              style="line-height: 38px;"
-            >
-              AP
-            </span>
-          </div>
-          <img
-            alt="avatar"
-            class="gravatar"
-            src="https://config.gorgias.io/production/picture"
-          />
-          <div
-            class="badge"
-            style="background-color: rgb(36, 214, 157);"
-          />
-        </div>
-      </button>
-    </div>
-    <div
-      class="sidebar-resizer"
-      style="left: 238px;"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AutomationNavbar /> render() should render automation navbar for agent with automation add-on 1`] = `
-<div>
-  <div
-    class="sidebar"
-    style="width: 238px;"
-  >
-    <div
-      class="nav-primary hidden-panel"
-    >
-      <div
-        class="nav-dropdown-wrapper"
-      >
-        <div
-          class="nav-dropdown dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
-            type="button"
-          >
-            <div>
-              Automation
-              <i
-                class="material-icons icon-more"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </button>
-          <div
-            aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/tickets"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                question_answer
-              </i>
-              Tickets
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/automation/macros"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bolt
-              </i>
-              Automation
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/customers"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                people
-              </i>
-              Customers
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/stats"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bar_chart
-              </i>
-              Statistics
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/settings"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                settings
-              </i>
-              Settings
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="navbar-cta-group"
-      >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
-        <button
-          aria-disabled="false"
-          class="wrapper button ghost primary medium"
-          id="spotlight-button-5"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft icon medium"
-            >
-              search
-            </i>
-          </span>
-          Search
-        </button>
-      </div>
-      <div
-        class="navbar-content"
-      >
-        <div
-          class="category link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/macros"
-          >
-            Macros
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/rules"
-          >
-            Rules
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/ticket-assignment"
-          >
-            Ticket assignment
-          </a>
-        </div>
-        <div
-          class="wrapper section"
-        >
-          <div
-            class="category"
-          >
-            <h4
-              class="category-title"
-            >
-              <div
-                class="title"
-              >
-                <i
-                  class="material-icons icon"
-                >
-                  auto_awesome
-                </i>
-                automation add-on
-              </div>
-            </h4>
-            <div
-              class="section section"
-            >
-              <div
-                class="toggleSectionIconWrapper"
-              >
-                <i
-                  class="toggleSectionIcon material-icons"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
-              <div
-                class="nameWrapper"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <img
-                    alt="shopify logo"
-                    role="presentation"
-                    src="/assets/img/integrations/shopify.png"
-                  />
-                </div>
-                <span
-                  class="name"
-                >
-                  gorgiastest
-                </span>
-              </div>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/flows"
-              >
-                <span
-                  class="item-name"
-                >
-                  Flow builder
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/quick-responses"
-              >
-                <span
-                  class="item-name"
-                >
-                  Quick response flows
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/order-management"
-              >
-                <span
-                  class="item-name"
-                >
-                  Order management flows
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/article-recommendation"
-              >
-                <span
-                  class="item-name"
-                >
-                  Article recommendation
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/connected-channels"
-              >
-                <span
-                  class="item-name"
-                >
-                  Connected channels
-                </span>
-              </a>
-            </div>
-            <div
-              class="section section"
-            >
-              <div
-                class="toggleSectionIconWrapper"
-              >
-                <i
-                  class="toggleSectionIcon material-icons"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
-              <div
-                class="nameWrapper"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <img
-                    alt="bigcommerce logo"
-                    role="presentation"
-                    src="/assets/img/integrations/bigcommerce-white.svg"
-                  />
-                </div>
-                <span
-                  class="name"
-                >
-                  gorgiastest.mybigcommerce.com
-                </span>
-              </div>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/bigcommerce/xb107iaz1n/flows"
-              >
-                <span
-                  class="item-name"
-                >
-                  Flow builder
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
-              >
-                <span
-                  class="item-name"
-                >
-                  Quick response flows
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
-              >
-                <span
-                  class="item-name"
-                >
-                  Article recommendation
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
-              >
-                <span
-                  class="item-name"
-                >
-                  Connected channels
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-candu-id="navbar-menu-spacer"
-      />
-      <button
-        class="dropdown-toggle dropdown-toggle-dropup"
-      >
-        <div>
-          Alex Plugaru
-        </div>
-        <div
-          class="component hasImage square"
-          style="width: 36px; height: 36px;"
-        >
-          <div
-            class="initials"
-            style="width: 36px; height: 36px; font-size: 15px;"
-          >
-            <span
-              style="line-height: 38px;"
-            >
-              AP
-            </span>
-          </div>
-          <img
-            alt="avatar"
-            class="gravatar"
-            src="https://config.gorgias.io/production/picture"
-          />
-          <div
-            class="badge"
-            style="background-color: rgb(36, 214, 157);"
-          />
-        </div>
-      </button>
-    </div>
-    <div
-      class="sidebar-resizer"
-      style="left: 238px;"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AutomationNavbar /> render() should render automation navbar for agent with legacy automation features 1`] = `
-<div>
-  <div
-    class="sidebar"
-    style="width: 238px;"
-  >
-    <div
-      class="nav-primary hidden-panel"
-    >
-      <div
-        class="nav-dropdown-wrapper"
-      >
-        <div
-          class="nav-dropdown dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
-            type="button"
-          >
-            <div>
-              Automation
-              <i
-                class="material-icons icon-more"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </button>
-          <div
-            aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/tickets"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                question_answer
-              </i>
-              Tickets
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/automation/macros"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bolt
-              </i>
-              Automation
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/customers"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                people
-              </i>
-              Customers
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/stats"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bar_chart
-              </i>
-              Statistics
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/settings"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                settings
-              </i>
-              Settings
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="navbar-cta-group"
-      >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
-        <button
-          aria-disabled="false"
-          class="wrapper button ghost primary medium"
-          id="spotlight-button-4"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft icon medium"
-            >
-              search
-            </i>
-          </span>
-          Search
-        </button>
-      </div>
-      <div
-        class="navbar-content"
-      >
-        <div
-          class="category link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/macros"
-          >
-            Macros
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/rules"
-          >
-            Rules
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/ticket-assignment"
-          >
-            Ticket assignment
-          </a>
-        </div>
-        <div
-          class="wrapper section"
-        >
-          <div
-            class="category"
-          >
-            <h4
-              class="category-title"
-            >
-              <div
-                class="title"
-              >
-                <i
-                  class="material-icons icon"
-                >
-                  auto_awesome
-                </i>
-                automation add-on
-              </div>
-            </h4>
-            <div
-              class="section section"
-            >
-              <div
-                class="toggleSectionIconWrapper"
-              >
-                <i
-                  class="toggleSectionIcon material-icons"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
-              <div
-                class="nameWrapper"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <img
-                    alt="shopify logo"
-                    role="presentation"
-                    src="/assets/img/integrations/shopify.png"
-                  />
-                </div>
-                <span
-                  class="name"
-                >
-                  gorgiastest
-                </span>
-              </div>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/flows"
-              >
-                <div
-                  class="name"
-                >
-                  <span
-                    class="item-name"
-                  >
-                    Flow builder
-                  </span>
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/quick-responses"
-              >
-                <div
-                  class="name"
-                >
-                  <span
-                    class="item-name"
-                  >
-                    Quick response flows
-                  </span>
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/order-management"
-              >
-                <span
-                  class="item-name"
-                >
-                  Order management flows
-                </span>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/article-recommendation"
-              >
-                <div
-                  class="name"
-                >
-                  <span
-                    class="item-name"
-                  >
-                    Article recommendation
-                  </span>
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper isNested"
-            >
-              <a
-                class="link"
-                data-active-class-name="active"
-                href="/app/automation/shopify/gorgiastest/connected-channels"
-              >
-                <span
-                  class="item-name"
-                >
-                  Connected channels
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-candu-id="navbar-menu-spacer"
-      />
-      <button
-        class="dropdown-toggle dropdown-toggle-dropup"
-      >
-        <div>
-          Alex Plugaru
-        </div>
-        <div
-          class="component hasImage square"
-          style="width: 36px; height: 36px;"
-        >
-          <div
-            class="initials"
-            style="width: 36px; height: 36px; font-size: 15px;"
-          >
-            <span
-              style="line-height: 38px;"
-            >
-              AP
-            </span>
-          </div>
-          <img
-            alt="avatar"
-            class="gravatar"
-            src="https://config.gorgias.io/production/picture"
-          />
-          <div
-            class="badge"
-            style="background-color: rgb(36, 214, 157);"
-          />
-        </div>
-      </button>
-    </div>
-    <div
-      class="sidebar-resizer"
-      style="left: 238px;"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AutomationNavbar /> render() should render automation navbar for agent without automation add-on and without legacy automation features 1`] = `
-<div>
-  <div
-    class="sidebar"
-    style="width: 238px;"
-  >
-    <div
-      class="nav-primary hidden-panel"
-    >
-      <div
-        class="nav-dropdown-wrapper"
-      >
-        <div
-          class="nav-dropdown dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
-            type="button"
-          >
-            <div>
-              Automation
-              <i
-                class="material-icons icon-more"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </button>
-          <div
-            aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/tickets"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                question_answer
-              </i>
-              Tickets
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/automation/macros"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bolt
-              </i>
-              Automation
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/customers"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                people
-              </i>
-              Customers
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/stats"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bar_chart
-              </i>
-              Statistics
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/settings"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                settings
-              </i>
-              Settings
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        class="navbar-cta-group"
-      >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
-          data-candu-id="navbar-home-spacer"
-        />
-        <button
-          aria-disabled="false"
-          class="wrapper button ghost primary medium"
-          id="spotlight-button-3"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft icon medium"
-            >
-              search
-            </i>
-          </span>
-          Search
-        </button>
-      </div>
-      <div
-        class="navbar-content"
-      >
-        <div
-          class="category link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/macros"
-          >
-            Macros
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/rules"
-          >
-            Rules
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/ticket-assignment"
-          >
-            Ticket assignment
-          </a>
-        </div>
-        <div
-          class="wrapper section"
-        >
-          <div
-            class="category"
-          >
-            <h4
-              class="category-title"
-            >
-              <div
-                class="title"
-              >
-                <i
-                  class="material-icons icon"
-                >
-                  auto_awesome
-                </i>
-                automation add-on
-              </div>
-            </h4>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/flows"
-              >
-                <div
-                  class="name"
-                >
-                  Flow builder
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/quick-responses"
-              >
-                <div
-                  class="name"
-                >
-                  Quick response flows
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/order-management"
-              >
-                <div
-                  class="name"
-                >
-                  Order management flows
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-            <div
-              class="link-wrapper"
-            >
-              <a
-                class="link item"
-                data-active-class-name="active"
-                href="/app/automation/article-recommendation"
-              >
-                <div
-                  class="name"
-                >
-                  Article recommendation
-                </div>
-                <i
-                  class="material-icons md-2 icon"
-                >
-                  arrow_circle_up
-                </i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-candu-id="navbar-menu-spacer"
-      />
-      <button
-        class="dropdown-toggle dropdown-toggle-dropup"
-      >
-        <div>
-          Alex Plugaru
-        </div>
-        <div
-          class="component hasImage square"
-          style="width: 36px; height: 36px;"
-        >
-          <div
-            class="initials"
-            style="width: 36px; height: 36px; font-size: 15px;"
-          >
-            <span
-              style="line-height: 38px;"
-            >
-              AP
-            </span>
-          </div>
-          <img
-            alt="avatar"
-            class="gravatar"
-            src="https://config.gorgias.io/production/picture"
-          />
-          <div
-            class="badge"
-            style="background-color: rgb(36, 214, 157);"
-          />
-        </div>
-      </button>
-    </div>
-    <div
-      class="sidebar-resizer"
-      style="left: 238px;"
-    />
-  </div>
-</div>
-`;
-
-exports[`<AutomationNavbar /> render() should render automation navbar for non-agent user with automation add-on 1`] = `
-<div>
-  <div
-    class="sidebar"
-    style="width: 238px;"
-  >
-    <div
-      class="nav-primary hidden-panel"
-    >
-      <div
-        class="nav-dropdown-wrapper"
-      >
-        <div
-          class="nav-dropdown dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
-            type="button"
-          >
-            <div>
-              Automation
-              <i
-                class="material-icons icon-more"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </button>
-          <div
-            aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/tickets"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                question_answer
-              </i>
-              Tickets
-            </a>
-            <a
-              class="dropdown-item dropdown-item menu-item"
-              role="menuitem"
-              tabindex="0"
-              to="/app/automation/macros"
-            >
-              <i
-                class="material-icons mr-2 icon"
-              >
-                bolt
-              </i>
-              Automation
+              Automate
             </a>
             <a
               class="dropdown-item dropdown-item menu-item"
@@ -2367,37 +137,47 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         class="navbar-content"
       >
         <div
-          class="category link-wrapper"
+          class="category"
         >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/macros"
-          >
-            Macros
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/rules"
-          >
-            Rules
-          </a>
-        </div>
-        <div
-          class="link-wrapper"
-        >
-          <a
-            class="link"
-            data-active-class-name="active"
-            href="/app/automation/ticket-assignment"
-          >
-            Ticket assignment
-          </a>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/macros"
+              >
+                Macros
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/rules"
+              >
+                Rules
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/ticket-assignment"
+              >
+                Ticket assignment
+              </a>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -2443,7 +223,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
 </div>
 `;
 
-exports[`<AutomationNavbar /> render() should render automation navbar for non-agent user without automation add-on 1`] = `
+exports[`<AutomationNavbar /> render() should not render automation navbar for non-agent user without Automate 1`] = `
 <div>
   <div
     class="sidebar"
@@ -2465,7 +245,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
             type="button"
           >
             <div>
-              Automation
+              Automate
               <i
                 class="material-icons icon-more"
               >
@@ -2496,14 +276,14 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
               class="dropdown-item dropdown-item menu-item"
               role="menuitem"
               tabindex="0"
-              to="/app/automation/macros"
+              to="/app/automation"
             >
               <i
                 class="material-icons mr-2 icon"
               >
                 bolt
               </i>
-              Automation
+              Automate
             </a>
             <a
               class="dropdown-item dropdown-item menu-item"
@@ -2580,36 +360,2220 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         class="navbar-content"
       >
         <div
-          class="category link-wrapper"
+          class="category"
+        >
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/macros"
+              >
+                Macros
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/rules"
+              >
+                Rules
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/ticket-assignment"
+              >
+                Ticket assignment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        data-candu-id="navbar-menu-spacer"
+      />
+      <button
+        class="dropdown-toggle dropdown-toggle-dropup"
+      >
+        <div>
+          Alex Plugaru
+        </div>
+        <div
+          class="component hasImage square"
+          style="width: 36px; height: 36px;"
+        >
+          <div
+            class="initials"
+            style="width: 36px; height: 36px; font-size: 15px;"
+          >
+            <span
+              style="line-height: 38px;"
+            >
+              AP
+            </span>
+          </div>
+          <img
+            alt="avatar"
+            class="gravatar"
+            src="https://config.gorgias.io/production/picture"
+          />
+          <div
+            class="badge"
+            style="background-color: rgb(36, 214, 157);"
+          />
+        </div>
+      </button>
+    </div>
+    <div
+      class="sidebar-resizer"
+      style="left: 238px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`<AutomationNavbar /> render() should render automation navbar for admin with Automate 1`] = `
+<div>
+  <div
+    class="sidebar"
+    style="width: 238px;"
+  >
+    <div
+      class="nav-primary hidden-panel"
+    >
+      <div
+        class="nav-dropdown-wrapper"
+      >
+        <div
+          class="nav-dropdown dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
+          >
+            <div>
+              Automate
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automate
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="navbar-cta-group"
+      >
+        <div
+          class="hiddenLink"
+          data-candu-id="navbar-dropdown"
+          data-testid="candu-hidden-link"
+        />
+        <div
+          data-candu-id="navbar-home-spacer"
+        />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-8"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
+      </div>
+      <div
+        class="navbar-content"
+      >
+        <div
+          class="category"
+        >
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/macros"
+              >
+                Macros
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/rules"
+              >
+                Rules
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/ticket-assignment"
+              >
+                Ticket assignment
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="category"
+        >
+          <div
+            class="section section"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="shopify logo"
+                  role="presentation"
+                  src="/assets/img/integrations/shopify.png"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest
+              </span>
+            </div>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Flows
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Quick Responses
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Order Management
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Article Recommendation
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Channels
+              </span>
+            </a>
+          </div>
+          <div
+            class="section section"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="bigcommerce logo"
+                  role="presentation"
+                  src="/assets/img/integrations/bigcommerce-white.svg"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest.mybigcommerce.com
+              </span>
+            </div>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Flows
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Quick Responses
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Article Recommendation
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Channels
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        data-candu-id="navbar-menu-spacer"
+      />
+      <button
+        class="dropdown-toggle dropdown-toggle-dropup"
+      >
+        <div>
+          Alex Plugaru
+        </div>
+        <div
+          class="component hasImage square"
+          style="width: 36px; height: 36px;"
+        >
+          <div
+            class="initials"
+            style="width: 36px; height: 36px; font-size: 15px;"
+          >
+            <span
+              style="line-height: 38px;"
+            >
+              AP
+            </span>
+          </div>
+          <img
+            alt="avatar"
+            class="gravatar"
+            src="https://config.gorgias.io/production/picture"
+          />
+          <div
+            class="badge"
+            style="background-color: rgb(36, 214, 157);"
+          />
+        </div>
+      </button>
+    </div>
+    <div
+      class="sidebar-resizer"
+      style="left: 238px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`<AutomationNavbar /> render() should render automation navbar for admin with legacy automation features 1`] = `
+<div>
+  <div
+    class="sidebar"
+    style="width: 238px;"
+  >
+    <div
+      class="nav-primary hidden-panel"
+    >
+      <div
+        class="nav-dropdown-wrapper"
+      >
+        <div
+          class="nav-dropdown dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
+          >
+            <div>
+              Automate
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automate
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="navbar-cta-group"
+      >
+        <div
+          class="hiddenLink"
+          data-candu-id="navbar-dropdown"
+          data-testid="candu-hidden-link"
+        />
+        <div
+          data-candu-id="navbar-home-spacer"
+        />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-7"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
+      </div>
+      <div
+        class="navbar-content"
+      >
+        <div
+          class="category"
+        >
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/macros"
+              >
+                Macros
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/rules"
+              >
+                Rules
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/ticket-assignment"
+              >
+                Ticket assignment
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="category"
+        >
+          <div
+            class="section section"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="shopify logo"
+                  role="presentation"
+                  src="/assets/img/integrations/shopify.png"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest
+              </span>
+            </div>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link item"
+              data-active-class-name="active"
+              href="/app/automation/flows"
+            >
+              <div
+                class="name"
+              >
+                <span
+                  class="item-name"
+                >
+                  Flows
+                </span>
+              </div>
+              <i
+                class="material-icons md-2 icon"
+              >
+                arrow_circle_up
+              </i>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link item"
+              data-active-class-name="active"
+              href="/app/automation/quick-responses"
+            >
+              <div
+                class="name"
+              >
+                <span
+                  class="item-name"
+                >
+                  Quick Responses
+                </span>
+              </div>
+              <i
+                class="material-icons md-2 icon"
+              >
+                arrow_circle_up
+              </i>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Order Management
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link item"
+              data-active-class-name="active"
+              href="/app/automation/article-recommendation"
+            >
+              <div
+                class="name"
+              >
+                <span
+                  class="item-name"
+                >
+                  Article Recommendation
+                </span>
+              </div>
+              <i
+                class="material-icons md-2 icon"
+              >
+                arrow_circle_up
+              </i>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Channels
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        data-candu-id="navbar-menu-spacer"
+      />
+      <button
+        class="dropdown-toggle dropdown-toggle-dropup"
+      >
+        <div>
+          Alex Plugaru
+        </div>
+        <div
+          class="component hasImage square"
+          style="width: 36px; height: 36px;"
+        >
+          <div
+            class="initials"
+            style="width: 36px; height: 36px; font-size: 15px;"
+          >
+            <span
+              style="line-height: 38px;"
+            >
+              AP
+            </span>
+          </div>
+          <img
+            alt="avatar"
+            class="gravatar"
+            src="https://config.gorgias.io/production/picture"
+          />
+          <div
+            class="badge"
+            style="background-color: rgb(36, 214, 157);"
+          />
+        </div>
+      </button>
+    </div>
+    <div
+      class="sidebar-resizer"
+      style="left: 238px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`<AutomationNavbar /> render() should render automation navbar for admin without Automate and without legacy automation features 1`] = `
+<div>
+  <div
+    class="sidebar"
+    style="width: 238px;"
+  >
+    <div
+      class="nav-primary hidden-panel"
+    >
+      <div
+        class="nav-dropdown-wrapper"
+      >
+        <div
+          class="nav-dropdown dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
+          >
+            <div>
+              Automate
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automate
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="navbar-cta-group"
+      >
+        <div
+          class="hiddenLink"
+          data-candu-id="navbar-dropdown"
+          data-testid="candu-hidden-link"
+        />
+        <div
+          data-candu-id="navbar-home-spacer"
+        />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-6"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
+      </div>
+      <div
+        class="navbar-content"
+      >
+        <div
+          class="category"
+        >
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/macros"
+              >
+                Macros
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/rules"
+              >
+                Rules
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/ticket-assignment"
+              >
+                Ticket assignment
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="link-wrapper"
         >
           <a
-            class="link"
+            class="link item"
             data-active-class-name="active"
-            href="/app/automation/macros"
+            href="/app/automation/flows"
           >
-            Macros
+            <div
+              class="name"
+            >
+              Flows
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              arrow_circle_up
+            </i>
           </a>
         </div>
         <div
           class="link-wrapper"
         >
           <a
-            class="link"
+            class="link item"
             data-active-class-name="active"
-            href="/app/automation/rules"
+            href="/app/automation/quick-responses"
           >
-            Rules
+            <div
+              class="name"
+            >
+              Quick Responses
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              arrow_circle_up
+            </i>
           </a>
         </div>
         <div
           class="link-wrapper"
         >
           <a
-            class="link"
+            class="link item"
             data-active-class-name="active"
-            href="/app/automation/ticket-assignment"
+            href="/app/automation/order-management"
           >
-            Ticket assignment
+            <div
+              class="name"
+            >
+              Order Management
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              arrow_circle_up
+            </i>
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
+        >
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/article-recommendation"
+          >
+            <div
+              class="name"
+            >
+              Article Recommendation
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              arrow_circle_up
+            </i>
+          </a>
+        </div>
+      </div>
+      <div
+        data-candu-id="navbar-menu-spacer"
+      />
+      <button
+        class="dropdown-toggle dropdown-toggle-dropup"
+      >
+        <div>
+          Alex Plugaru
+        </div>
+        <div
+          class="component hasImage square"
+          style="width: 36px; height: 36px;"
+        >
+          <div
+            class="initials"
+            style="width: 36px; height: 36px; font-size: 15px;"
+          >
+            <span
+              style="line-height: 38px;"
+            >
+              AP
+            </span>
+          </div>
+          <img
+            alt="avatar"
+            class="gravatar"
+            src="https://config.gorgias.io/production/picture"
+          />
+          <div
+            class="badge"
+            style="background-color: rgb(36, 214, 157);"
+          />
+        </div>
+      </button>
+    </div>
+    <div
+      class="sidebar-resizer"
+      style="left: 238px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`<AutomationNavbar /> render() should render automation navbar for agent with Automate 1`] = `
+<div>
+  <div
+    class="sidebar"
+    style="width: 238px;"
+  >
+    <div
+      class="nav-primary hidden-panel"
+    >
+      <div
+        class="nav-dropdown-wrapper"
+      >
+        <div
+          class="nav-dropdown dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
+          >
+            <div>
+              Automate
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automate
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="navbar-cta-group"
+      >
+        <div
+          class="hiddenLink"
+          data-candu-id="navbar-dropdown"
+          data-testid="candu-hidden-link"
+        />
+        <div
+          data-candu-id="navbar-home-spacer"
+        />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-5"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
+      </div>
+      <div
+        class="navbar-content"
+      >
+        <div
+          class="category"
+        >
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/macros"
+              >
+                Macros
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/rules"
+              >
+                Rules
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/ticket-assignment"
+              >
+                Ticket assignment
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="category"
+        >
+          <div
+            class="section section"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="shopify logo"
+                  role="presentation"
+                  src="/assets/img/integrations/shopify.png"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest
+              </span>
+            </div>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Flows
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Quick Responses
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Order Management
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Article Recommendation
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Channels
+              </span>
+            </a>
+          </div>
+          <div
+            class="section section"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="bigcommerce logo"
+                  role="presentation"
+                  src="/assets/img/integrations/bigcommerce-white.svg"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest.mybigcommerce.com
+              </span>
+            </div>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Flows
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Quick Responses
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Article Recommendation
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Channels
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        data-candu-id="navbar-menu-spacer"
+      />
+      <button
+        class="dropdown-toggle dropdown-toggle-dropup"
+      >
+        <div>
+          Alex Plugaru
+        </div>
+        <div
+          class="component hasImage square"
+          style="width: 36px; height: 36px;"
+        >
+          <div
+            class="initials"
+            style="width: 36px; height: 36px; font-size: 15px;"
+          >
+            <span
+              style="line-height: 38px;"
+            >
+              AP
+            </span>
+          </div>
+          <img
+            alt="avatar"
+            class="gravatar"
+            src="https://config.gorgias.io/production/picture"
+          />
+          <div
+            class="badge"
+            style="background-color: rgb(36, 214, 157);"
+          />
+        </div>
+      </button>
+    </div>
+    <div
+      class="sidebar-resizer"
+      style="left: 238px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`<AutomationNavbar /> render() should render automation navbar for agent with legacy automation features 1`] = `
+<div>
+  <div
+    class="sidebar"
+    style="width: 238px;"
+  >
+    <div
+      class="nav-primary hidden-panel"
+    >
+      <div
+        class="nav-dropdown-wrapper"
+      >
+        <div
+          class="nav-dropdown dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
+          >
+            <div>
+              Automate
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automate
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="navbar-cta-group"
+      >
+        <div
+          class="hiddenLink"
+          data-candu-id="navbar-dropdown"
+          data-testid="candu-hidden-link"
+        />
+        <div
+          data-candu-id="navbar-home-spacer"
+        />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-4"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
+      </div>
+      <div
+        class="navbar-content"
+      >
+        <div
+          class="category"
+        >
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/macros"
+              >
+                Macros
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/rules"
+              >
+                Rules
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/ticket-assignment"
+              >
+                Ticket assignment
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="category"
+        >
+          <div
+            class="section section"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="shopify logo"
+                  role="presentation"
+                  src="/assets/img/integrations/shopify.png"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest
+              </span>
+            </div>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link item"
+              data-active-class-name="active"
+              href="/app/automation/flows"
+            >
+              <div
+                class="name"
+              >
+                <span
+                  class="item-name"
+                >
+                  Flows
+                </span>
+              </div>
+              <i
+                class="material-icons md-2 icon"
+              >
+                arrow_circle_up
+              </i>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link item"
+              data-active-class-name="active"
+              href="/app/automation/quick-responses"
+            >
+              <div
+                class="name"
+              >
+                <span
+                  class="item-name"
+                >
+                  Quick Responses
+                </span>
+              </div>
+              <i
+                class="material-icons md-2 icon"
+              >
+                arrow_circle_up
+              </i>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Order Management
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link item"
+              data-active-class-name="active"
+              href="/app/automation/article-recommendation"
+            >
+              <div
+                class="name"
+              >
+                <span
+                  class="item-name"
+                >
+                  Article Recommendation
+                </span>
+              </div>
+              <i
+                class="material-icons md-2 icon"
+              >
+                arrow_circle_up
+              </i>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                Channels
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        data-candu-id="navbar-menu-spacer"
+      />
+      <button
+        class="dropdown-toggle dropdown-toggle-dropup"
+      >
+        <div>
+          Alex Plugaru
+        </div>
+        <div
+          class="component hasImage square"
+          style="width: 36px; height: 36px;"
+        >
+          <div
+            class="initials"
+            style="width: 36px; height: 36px; font-size: 15px;"
+          >
+            <span
+              style="line-height: 38px;"
+            >
+              AP
+            </span>
+          </div>
+          <img
+            alt="avatar"
+            class="gravatar"
+            src="https://config.gorgias.io/production/picture"
+          />
+          <div
+            class="badge"
+            style="background-color: rgb(36, 214, 157);"
+          />
+        </div>
+      </button>
+    </div>
+    <div
+      class="sidebar-resizer"
+      style="left: 238px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`<AutomationNavbar /> render() should render automation navbar for agent without Automate and without legacy automation features 1`] = `
+<div>
+  <div
+    class="sidebar"
+    style="width: 238px;"
+  >
+    <div
+      class="nav-primary hidden-panel"
+    >
+      <div
+        class="nav-dropdown-wrapper"
+      >
+        <div
+          class="nav-dropdown dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-transparent"
+            type="button"
+          >
+            <div>
+              Automate
+              <i
+                class="material-icons icon-more"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/tickets"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                question_answer
+              </i>
+              Tickets
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/automation"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bolt
+              </i>
+              Automate
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/customers"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                people
+              </i>
+              Customers
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/stats"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                bar_chart
+              </i>
+              Statistics
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/settings"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                settings
+              </i>
+              Settings
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="navbar-cta-group"
+      >
+        <div
+          class="hiddenLink"
+          data-candu-id="navbar-dropdown"
+          data-testid="candu-hidden-link"
+        />
+        <div
+          data-candu-id="navbar-home-spacer"
+        />
+        <button
+          aria-disabled="false"
+          class="wrapper button ghost primary medium"
+          id="spotlight-button-3"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft icon medium"
+            >
+              search
+            </i>
+          </span>
+          Search
+        </button>
+      </div>
+      <div
+        class="navbar-content"
+      >
+        <div
+          class="category"
+        >
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/macros"
+              >
+                Macros
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/rules"
+              >
+                Rules
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
+              class="link-wrapper"
+            >
+              <a
+                class="link"
+                data-active-class-name="active"
+                href="/app/automation/ticket-assignment"
+              >
+                Ticket assignment
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="link-wrapper"
+        >
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/flows"
+          >
+            <div
+              class="name"
+            >
+              Flows
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              arrow_circle_up
+            </i>
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
+        >
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/quick-responses"
+          >
+            <div
+              class="name"
+            >
+              Quick Responses
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              arrow_circle_up
+            </i>
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
+        >
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/order-management"
+          >
+            <div
+              class="name"
+            >
+              Order Management
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              arrow_circle_up
+            </i>
+          </a>
+        </div>
+        <div
+          class="link-wrapper"
+        >
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/article-recommendation"
+          >
+            <div
+              class="name"
+            >
+              Article Recommendation
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              arrow_circle_up
+            </i>
           </a>
         </div>
       </div>

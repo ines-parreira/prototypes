@@ -31,7 +31,7 @@ const CancelOrderFlowPreview = ({responseMessageContent}: Props) => {
             onChange={onChannelChange}
             alert={{
                 message:
-                    'Connect a chat or help center to your store to use this feature.',
+                    'Connect a Chat or Help Center to your store to use this feature.',
             }}
         >
             {(channel) => (

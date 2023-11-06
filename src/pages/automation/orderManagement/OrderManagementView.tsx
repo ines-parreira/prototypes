@@ -19,6 +19,7 @@ import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 import EmptyResponseMessageContentError from 'pages/automation/common/components/EmptyResponseMessageContentError'
 
+import {ORDER_MANAGEMENT} from '../common/components/constants'
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
 import OrderManagementPreview from './OrderManagementPreview'
 import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
@@ -32,7 +33,7 @@ const AutomationSubscriptionAction = () => {
     return (
         <>
             <AutomationSubscriptionButton
-                label="Get Automation Features"
+                label="Get Automate Features"
                 size="small"
                 onClick={() => {
                     setIsAutomationSubscriptionModalOpen(true)
@@ -133,11 +134,11 @@ const OrderManagementView = () => {
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
 
     return (
-        <AutomationView title="Order management flows" isLoading={isLoading}>
+        <AutomationView title={ORDER_MANAGEMENT} isLoading={isLoading}>
             <AutomationViewContent
-                description="Allow customers to take actions depending on their order status from your chat widget and Help Center."
+                description="Let customers track and manage orders in Chat, Help Center, and Contact Form with personalized options based on order status."
                 helpUrl="https://docs.gorgias.com/en-US/installing-self-service-81861"
-                helpTitle="How To Set Up Order Management Flows"
+                helpTitle={`How To Set Up ${ORDER_MANAGEMENT}`}
             >
                 <OrderManagementFlowItem
                     isEnabled={
