@@ -2,11 +2,12 @@ import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
+import {getChannels} from 'services/channels'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {BASE_VIEW_ID} from 'constants/view'
 import {OrderDirection} from 'models/api/types'
 import {ViewField, ViewType, ViewVisibility} from 'models/view/types'
-import {CHANNELS, STATUSES} from 'tickets/common/config'
+import {STATUSES} from 'tickets/common/config'
 import {
     fieldPath,
     fromAST,
@@ -161,7 +162,9 @@ export const views = fromAST([
                 name: ViewField.Channel,
                 title: 'Channel',
                 filter: {
-                    enum: CHANNELS,
+                    enum: getChannels()
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((channel) => channel.slug),
                 },
             },
             {

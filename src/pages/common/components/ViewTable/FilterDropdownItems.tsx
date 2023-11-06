@@ -2,6 +2,7 @@ import React from 'react'
 import {Map, List} from 'immutable'
 import {DropdownItem} from 'reactstrap'
 
+import {toChannel} from 'services/channels'
 import {RenderLabel} from 'pages/common/utils/labels'
 import {getDisplayName} from 'state/customers/helpers'
 import {getLanguageDisplayName, isImmutable} from 'utils'
@@ -59,7 +60,8 @@ export default function FilterDropdownItems({
         } else if (typeof value === 'object' || field.get('name') === 'role') {
             renderValue = <RenderLabel field={field} value={value} />
         } else if (field.get('name') === 'channel') {
-            renderValue = humanizeChannel(value)
+            const channel = toChannel(value)
+            renderValue = channel ? channel.name : humanizeChannel(value)
         }
 
         const passedValue = isImmutable(value)

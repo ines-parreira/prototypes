@@ -4,8 +4,10 @@ import {shallow} from 'enzyme'
 import thunk from 'redux-thunk'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 
+import {StoreDispatch} from 'state/types'
+import {channels as mockChannels} from 'fixtures/channels'
+
 import SelectTargetTicket from '../SelectTargetTicket'
-import {StoreDispatch} from '../../../../../state/types'
 
 type MockedRootState = Record<string, unknown>
 
@@ -13,6 +15,10 @@ const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
+
+jest.mock('services/channels', () => ({
+    getChannels: () => mockChannels,
+}))
 
 describe('SelectTargetTicket component', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
