@@ -92,6 +92,7 @@ import TicketFields from 'pages/settings/ticketFields/TicketFields'
 import AddTicketField from 'pages/settings/ticketFields/AddTicketField'
 
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import CanduContent from 'pages/onboarding/CanduContent'
 import ReferralContent from 'pages/referral/ReferralContent'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
@@ -201,7 +202,7 @@ export function AppRoutes() {
             <Route path={`${path}/settings`}>
                 <SettingsRoutes />
             </Route>
-
+            <Route path={`${path}/home`} render={HomepageRoutes} />
             <Route
                 path={`${path}/referral-program`}
                 exact
@@ -1870,6 +1871,22 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                     )}
                 />
             )}
+        </Switch>
+    )
+}
+
+export function HomepageRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={() => (
+                    <App navbar={TicketNavbar}>
+                        <CanduContent containerId="candu-home" title="Home" />
+                    </App>
+                )}
+            />
         </Switch>
     )
 }
