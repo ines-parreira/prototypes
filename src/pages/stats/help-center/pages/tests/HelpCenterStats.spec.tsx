@@ -26,6 +26,9 @@ jest.mock('../../hooks/useSearchTermsMetrics', () => ({
 jest.mock('../../hooks/usePerformanceByArticleMetrics', () => ({
     usePerformanceByArticleMetrics: () => ({data: [], isFetching: false}),
 }))
+jest.mock('../../hooks/useNoSearchResultsMetrics', () => ({
+    useNoSearchResultsMetrics: () => ({data: [], isFetching: false}),
+}))
 
 const mockStore = configureMockStore([thunk])
 

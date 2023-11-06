@@ -31,6 +31,7 @@ export enum HelpCenterTrackingEventMeasures {
 export enum HelpCenterTrackingEventSegment {
     ArticleViewOnly = 'HelpCenterTrackingEvent.articleViewOnly',
     SearchRequestedOnly = 'HelpCenterTrackingEvent.searchRequestedOnly',
+    NoSearchResultOnly = 'HelpCenterTrackingEvent.noSearchResultOnly',
 }
 
 export type HelpCenterTrackingEventCube = Cube<

@@ -14,6 +14,7 @@ import TipsToggle from '../../TipsToggle'
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
 import SearchTermsTable from '../components/SearchTermsTable/SearchTermsTable'
+import NoSearchTable from '../components/NoSearchTable/NoSearchTable'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
@@ -140,8 +141,14 @@ const HelpCenterStats = () => {
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Help Center searches">
-                    <DashboardGridCell size={7}>
+                    <DashboardGridCell size={8}>
                         <SearchTermsTable
+                            statsFilters={statsFilters}
+                            timezone={timezone}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={4}>
+                        <NoSearchTable
                             statsFilters={statsFilters}
                             timezone={timezone}
                         />

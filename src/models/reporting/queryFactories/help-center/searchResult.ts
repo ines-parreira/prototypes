@@ -9,8 +9,8 @@ import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventSegment,
-} from '../../cubes/HelpCenterTrackingEventCube'
-import {ReportingQuery} from '../../types'
+} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import {ReportingQuery} from 'models/reporting/types'
 
 export const searchResultTermsQueryFactory = (
     statsFilters: StatsFilters,
@@ -22,6 +22,28 @@ export const searchResultTermsQueryFactory = (
     ],
     dimensions: [HelpCenterTrackingEventDimensions.SearchQuery],
     timezone,
+    filters: [
+        ...statsFiltersToReportingFilters(
+            HelpCenterStatsFiltersMembers,
+            statsFilters
+        ),
+    ],
+    order: [
+        [
+            HelpCenterTrackingEventMeasures.SearchRequestedQueryCount,
+            OrderDirection.Desc,
+        ],
+    ],
+})
+
+export const noSearchResultsQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+): ReportingQuery<HelpCenterTrackingEventCube> => ({
+    measures: [HelpCenterTrackingEventMeasures.SearchRequestedQueryCount],
+    dimensions: [HelpCenterTrackingEventDimensions.SearchQuery],
+    timezone,
+    segments: [HelpCenterTrackingEventSegment.NoSearchResultOnly],
     filters: [
         ...statsFiltersToReportingFilters(
             HelpCenterStatsFiltersMembers,
@@ -50,4 +72,20 @@ export const searchResultQueryCountFactory = (
         ),
     ],
     segments: [HelpCenterTrackingEventSegment.SearchRequestedOnly],
+})
+
+export const noSearchResultsCountQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+): ReportingQuery<HelpCenterTrackingEventCube> => ({
+    measures: [HelpCenterTrackingEventMeasures.UniqueSearchQueryCount],
+    dimensions: [],
+    timezone,
+    segments: [HelpCenterTrackingEventSegment.NoSearchResultOnly],
+    filters: [
+        ...statsFiltersToReportingFilters(
+            HelpCenterStatsFiltersMembers,
+            statsFilters
+        ),
+    ],
 })
