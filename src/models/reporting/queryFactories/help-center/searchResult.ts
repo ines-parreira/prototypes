@@ -89,3 +89,18 @@ export const noSearchResultsCountQueryFactory = (
         ),
     ],
 })
+
+export const searchResultRangeQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string
+) => ({
+    measures: [HelpCenterTrackingEventMeasures.SearchRequestedCount],
+    dimensions: [HelpCenterTrackingEventDimensions.SearchResultRange],
+    timezone,
+    filters: [
+        ...statsFiltersToReportingFilters(
+            HelpCenterStatsFiltersMembers,
+            statsFilters
+        ),
+    ],
+})

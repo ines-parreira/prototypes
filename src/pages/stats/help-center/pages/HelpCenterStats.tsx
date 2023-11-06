@@ -13,6 +13,7 @@ import TipsToggle from '../../TipsToggle'
 
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
+import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut'
 import SearchTermsTable from '../components/SearchTermsTable/SearchTermsTable'
 import NoSearchTable from '../components/NoSearchTable/NoSearchTable'
 
@@ -141,6 +142,12 @@ const HelpCenterStats = () => {
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Help Center searches">
+                    <DashboardGridCell size={6}>
+                        <SearchResultDonut
+                            statsFilters={statsFilters}
+                            timezone={timezone}
+                        />
+                    </DashboardGridCell>
                     <DashboardGridCell size={8}>
                         <SearchTermsTable
                             statsFilters={statsFilters}

@@ -8,6 +8,7 @@ import {
     TooltipModel,
 } from 'chart.js'
 import colors from 'assets/tokens/colors.json'
+import typography from 'assets/tokens/typography.json'
 import {OneDimensionalDataItem} from 'pages/stats/types'
 import Legend from 'pages/stats/Legend'
 import {renderTickLabelAsNumber} from 'pages/stats/utils'
@@ -15,6 +16,7 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {useCustomTooltip} from '../../../../useCustomTooltip'
 import {ChartTooltip} from '../../../../ChartTooltip'
 import {DonutChartTooltip} from './DonutChartTooltip'
+import css from './DonutChart.less'
 
 const STAT_COLORS = [
     colors['📺 Classic'].Main.Primary.value,
@@ -30,14 +32,14 @@ const innerLabelPlugin: Plugin<'doughnut'> = {
         if (meta.total) {
             const xCoor = meta.data[0].x
             const yCoor = meta.data[0].y
-            const height = chart.height
             const ctx = chart.ctx
 
             const total = renderTickLabelAsNumber(meta.total)
+            const currentTypography =
+                typography['💬 Help Desk'].Heading['Page | Semibold']
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
-            const fontSize = (height * 0.4) / 2
-            ctx.font = `600 ${fontSize}px Inter`
+            ctx.font = `${currentTypography['font-weight'].value} ${currentTypography['font-size'].value} ${currentTypography['font-family'].value}`
             ctx.fillText(total, xCoor, yCoor)
             ctx.save()
         }
@@ -56,17 +58,21 @@ type DoughnutStatProps = {
     skeletonHeight?: number
     customTooltip?: TooltipModel
     showTooltip?: boolean
+    className?: string
+    legendClassName?: string
 }
 
 const DonutChart = ({
-    width = 180,
-    height = 180,
+    width,
+    height,
     customColors,
     displayLegend = false,
     isLoading = false,
     showTooltip = true,
     skeletonHeight = 250,
     data,
+    className,
+    legendClassName,
 }: DoughnutStatProps) => {
     const total = useMemo(
         () => data.reduce((acc, i) => acc + i.value, 0),
@@ -96,7 +102,7 @@ const DonutChart = ({
 
     const options: ChartOptions<'doughnut'> = useMemo(
         () => ({
-            cutout: '60%',
+            cutout: '65%',
             plugins: {
                 legend: {
                     display: false,
@@ -111,34 +117,38 @@ const DonutChart = ({
     )
 
     if (isLoading) {
-        return <Skeleton height={skeletonHeight} />
+        return <Skeleton height={skeletonHeight ?? height} />
     }
 
     return (
-        <div>
-            <Doughnut
-                id={DONUT_TOOLTIP_TARGET}
-                data={formattedData}
-                options={options}
-                plugins={[innerLabelPlugin]}
-                width={width}
-                height={height}
-            />
-            {showTooltip && (
-                <ChartTooltip
-                    target={DONUT_TOOLTIP_TARGET}
-                    tooltipStyle={tooltipStyle}
-                >
-                    {tooltipData && (
-                        <DonutChartTooltip
-                            total={total}
-                            tooltip={tooltipData}
-                        />
-                    )}
-                </ChartTooltip>
-            )}
+        <div className={className}>
+            <div className={css.container}>
+                <Doughnut
+                    id={DONUT_TOOLTIP_TARGET}
+                    data={formattedData}
+                    options={options}
+                    plugins={[innerLabelPlugin]}
+                    width={width}
+                    height={height}
+                />
+
+                {showTooltip && (
+                    <ChartTooltip
+                        target={DONUT_TOOLTIP_TARGET}
+                        tooltipStyle={tooltipStyle}
+                    >
+                        {tooltipData && (
+                            <DonutChartTooltip
+                                total={total}
+                                tooltip={tooltipData}
+                            />
+                        )}
+                    </ChartTooltip>
+                )}
+            </div>
             {displayLegend && (
                 <Legend
+                    className={legendClassName}
                     items={data.map(({label}, index) => ({
                         label,
                         color: chartColors(index),
