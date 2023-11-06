@@ -8,7 +8,7 @@ import {RuleItemActions} from '../../../settings/rules/types'
 
 import Widget from './Widget'
 import Errors from './Errors'
-import {validateEmailList} from './actions/Action'
+import {validateEmailList} from './actions/config'
 
 type Props = {
     compact: boolean

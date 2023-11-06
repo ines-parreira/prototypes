@@ -6,7 +6,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import Button from 'pages/common/components/button/Button'
 import {ActionStatus, Ticket} from 'models/ticket/types'
-import {actionsConfig} from 'pages/common/components/ast/actions/Action'
+import {actionsConfig} from 'pages/common/components/ast/actions/config'
 import {
     MacroAction,
     MacroActionName,

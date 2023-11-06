@@ -13,7 +13,7 @@ import {
     TeamLabel,
 } from 'pages/common/utils/labels'
 import Tooltip from 'pages/common/components/Tooltip'
-import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/Action'
+import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/config'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
 import {
     TicketEventType,

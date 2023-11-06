@@ -10,7 +10,7 @@ import {
 import {RuleOperation} from '../../../../../state/rules/types'
 import {RuleItemActions} from '../../../../settings/rules/types'
 
-import {actionsConfig} from './Action'
+import {actionsConfig} from './config'
 
 type Props = {
     rule: Map<any, any>

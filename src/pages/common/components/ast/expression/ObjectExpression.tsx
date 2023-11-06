@@ -4,7 +4,7 @@ import {Map, List} from 'immutable'
 
 import {RuleItemActions} from '../../../../settings/rules/types'
 import Property from '../Property'
-import {ActionConfig} from '../actions/Action'
+import {ActionConfig} from '../actions/config'
 
 type Props = {
     leftsiblings: List<any>
