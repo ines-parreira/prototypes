@@ -53,4 +53,21 @@ describe('TicketVoiceCallDuration', () => {
         expect(screen.queryByText('connected:')).not.toBeInTheDocument()
         expect(screen.queryByText('duration:')).not.toBeInTheDocument()
     })
+
+    it.each([
+        VoiceCallStatus.Canceled,
+        VoiceCallStatus.Ending,
+        VoiceCallStatus.Completed,
+    ])(
+        'should not render anything for an inbound missed call - %s',
+        (status) => {
+            renderComponent({
+                status,
+                direction: 'inbound',
+                last_answered_by_agent_id: null,
+            })
+            expect(screen.queryByText('connected:')).not.toBeInTheDocument()
+            expect(screen.queryByText('duration:')).not.toBeInTheDocument()
+        }
+    )
 })

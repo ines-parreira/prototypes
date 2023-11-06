@@ -1,5 +1,6 @@
 import {RootState} from 'state/types'
-import {getQueriesState, getQueryTimestamp} from '../selectors'
+import * as queryClient from 'api/queryClient'
+import {getQueriesState, getQueryData, getQueryTimestamp} from '../selectors'
 
 describe('queries selectors', () => {
     const state = {
@@ -16,5 +17,12 @@ describe('queries selectors', () => {
 
     it('should return query timestamp', () => {
         expect(getQueryTimestamp(['QK'])(state)).toEqual(123)
+    })
+
+    it('should return queryData', () => {
+        jest.spyOn(queryClient.appQueryClient, 'getQueryData').mockReturnValue(
+            'data'
+        )
+        expect(getQueryData(['QK'])(state)).toEqual('data')
     })
 })

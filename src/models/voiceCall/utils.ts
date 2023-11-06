@@ -9,6 +9,7 @@ export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
         VoiceCallStatus.Completed,
         VoiceCallStatus.Failed,
         VoiceCallStatus.NoAnswer,
+        VoiceCallStatus.Ending,
     ].includes(status)
 }
 
@@ -19,14 +20,14 @@ export const getFormattedDurationEndedCall = (
     const utcMoment = moment.utc(duration.asMilliseconds())
 
     if (duration.hours() > 0) {
-        return utcMoment.format('H[H] m[M] s[S]')
+        return utcMoment.format('H[h] m[m] s[s]')
     }
 
     if (duration.minutes() > 0) {
-        return utcMoment.format('m[M] s[S]')
+        return utcMoment.format('m[m] s[s]')
     }
 
-    return utcMoment.format('s[S]')
+    return utcMoment.format('s[s]')
 }
 
 export const getFormattedDurationOngoingCall = (

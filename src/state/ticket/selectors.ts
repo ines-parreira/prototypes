@@ -18,11 +18,9 @@ import {
     TicketSatisfactionSurvey,
 } from 'models/ticket/types'
 
-import {appQueryClient} from 'api/queryClient'
-import {listVoiceCalls} from 'models/voiceCall/resources'
-import {voiceCallsKeys} from 'models/voiceCall/queries'
+import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
-import {getQueriesState, getQueryTimestamp} from 'state/queries/selectors'
+import {getQueryData} from 'state/queries/selectors'
 import {LEGACY_PHONE_EVENTS} from 'constants/event'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -209,25 +207,15 @@ export const getTicketFieldState = createSelector(
     (state) => state.custom_fields || {}
 )
 
-const getVoiceCallQueryTimestamp = createSelector(
-    getTicketState,
-    getQueriesState,
-    (ticket, queries) => {
-        const voiceCallQueryKey = voiceCallsKeys.list({
-            ticket_id: ticket.get('id'),
-        })
-
-        return getQueryTimestamp(voiceCallQueryKey)({queries})
-    }
-)
-
 const getVoiceCalls = createSelector(
     getTicketState,
-    getVoiceCallQueryTimestamp,
-    (ticket) =>
-        appQueryClient.getQueryData<Awaited<ReturnType<typeof listVoiceCalls>>>(
-            voiceCallsKeys.list({ticket_id: ticket.get('id')})
-        )
+    (state: RootState) =>
+        getQueryData<UseListVoiceCalls>(
+            voiceCallsKeys.list({
+                ticket_id: getTicketState(state).get('id'),
+            })
+        )(state),
+    (_, queryData) => queryData
 )
 
 // return elements we display in the body of a ticket (messages, events, etc.)

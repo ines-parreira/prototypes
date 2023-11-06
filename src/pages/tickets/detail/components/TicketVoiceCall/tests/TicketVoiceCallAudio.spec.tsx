@@ -70,6 +70,7 @@ describe('TicketVoiceCallAudio', () => {
             expect.objectContaining({
                 downloadRecordingURL: audio.url,
                 deleteRecordingURL: `/api/integrations/${voiceCall.integration_id}/calls/${voiceCall.external_id}/recordings/${audio.external_id}`,
+                callId: voiceCall.id,
             }),
             {}
         )

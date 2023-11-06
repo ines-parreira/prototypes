@@ -28,7 +28,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('state/queries/selectors'),
-            getQueryTimestamp: jest.fn(() => jest.fn()),
+            getQueryData: jest.fn(() => jest.fn()),
         } as Record<string, unknown>)
 )
 

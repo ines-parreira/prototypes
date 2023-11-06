@@ -16,6 +16,7 @@ describe('voice call utils', () => {
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Completed)).toBe(true)
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Failed)).toBe(true)
             expect(isFinalVoiceCallStatus(VoiceCallStatus.NoAnswer)).toBe(true)
+            expect(isFinalVoiceCallStatus(VoiceCallStatus.Ending)).toBe(true)
         })
 
         it('should return false for non-final voice call statuses', () => {
@@ -31,16 +32,15 @@ describe('voice call utils', () => {
             )
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Queued)).toBe(false)
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Ringing)).toBe(false)
-            expect(isFinalVoiceCallStatus(VoiceCallStatus.Ending)).toBe(false)
         })
     })
 
     describe('getFormattedDurationEndedCall', () => {
         it('should return formatted duration for ended calls', () => {
-            expect(getFormattedDurationEndedCall(10)).toBe('10S')
-            expect(getFormattedDurationEndedCall(60)).toBe('1M 0S')
-            expect(getFormattedDurationEndedCall(3600)).toBe('1H 0M 0S')
-            expect(getFormattedDurationEndedCall(3661)).toBe('1H 1M 1S')
+            expect(getFormattedDurationEndedCall(10)).toBe('10s')
+            expect(getFormattedDurationEndedCall(60)).toBe('1m 0s')
+            expect(getFormattedDurationEndedCall(3600)).toBe('1h 0m 0s')
+            expect(getFormattedDurationEndedCall(3661)).toBe('1h 1m 1s')
         })
     })
 

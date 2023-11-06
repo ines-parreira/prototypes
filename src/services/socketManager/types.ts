@@ -9,6 +9,7 @@ import {Ticket} from 'models/ticket/types'
 import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'
 import {ActionData} from 'state/infobar/utils'
+import {VoiceCall} from 'models/voiceCall/types'
 
 export type SendData = {
     clientId?: string
@@ -79,6 +80,8 @@ export enum SocketEventType {
     ViewSectionCreated = 'view-section-created',
     ViewSectionDeleted = 'view-section-deleted',
     ViewSectionUpdated = 'view-section-updated',
+    VoiceCallCreated = 'voice-call-created',
+    VoiceCallUpdated = 'voice-call-updated',
     WhatsAppOnboardingSucceeded = 'whatsapp-onboarding-succeeded',
     WhatsAppOnboardingFailed = 'whatsapp-onboarding-failed',
 }
@@ -344,6 +347,20 @@ export type WhatsAppOnboardingFailedEvent = {
     phone_number: Maybe<string>
 }
 
+export type VoiceCallCreatedEvent = {
+    event: {
+        type: SocketEventType.VoiceCallCreated
+    }
+    voice_call: VoiceCall
+}
+
+export type VoiceCallUpdatedEvent = {
+    event: {
+        type: SocketEventType.VoiceCallUpdated
+    }
+    voice_call: VoiceCall
+}
+
 export type ServerMessage =
     | CustomerUpdatedEvent
     | CustomerExternalDataUpdatedEvent
@@ -378,6 +395,8 @@ export type ServerMessage =
     | ViewDeactivated
     | WhatsAppOnboardingSucceededEvent
     | WhatsAppOnboardingFailedEvent
+    | VoiceCallCreatedEvent
+    | VoiceCallUpdatedEvent
 
 export type WSMessage = {
     type?: BroadcastChannelEvent | MessagePortEvent | SocketEvent

@@ -28,7 +28,17 @@ export default function TicketVoiceCallDuration({
         setOngoingCallDuration(getFormattedDurationOngoingCall(voiceCall))
     }, 1000)
 
+    const isMissedInboundCall =
+        voiceCall.direction === 'inbound' &&
+        [
+            VoiceCallStatus.Canceled,
+            VoiceCallStatus.Completed,
+            VoiceCallStatus.Ending,
+        ].includes(voiceCall.status) &&
+        !voiceCall.last_answered_by_agent_id
+
     if (
+        isMissedInboundCall ||
         [
             VoiceCallStatus.InProgress,
             VoiceCallStatus.Initiated,

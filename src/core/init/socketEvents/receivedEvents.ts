@@ -2,6 +2,7 @@ import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 import * as Sentry from '@sentry/react'
 
+import {cloneDeep} from 'lodash'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {store as reduxStore} from 'common/store'
 import {MAX_RECENT_CHATS} from 'config/recentChats'
@@ -14,8 +15,10 @@ import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
 import {getEmailMigrations} from 'state/integrations/selectors'
 import {customFieldDefinitionKeys} from 'models/customField/queries'
+import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 
 import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
+import {isVoiceCall} from 'models/voiceCall/types'
 
 import * as agentsActions from 'state/agents/actions'
 import * as chatsActions from 'state/chats/actions'
@@ -68,6 +71,8 @@ import {
     ViewSectionDeletedEvent,
     ViewSectionUpdatedEvent,
     ViewUpdatedEvent,
+    VoiceCallCreatedEvent,
+    VoiceCallUpdatedEvent,
     WhatsAppOnboardingFailedEvent,
     WhatsAppOnboardingSucceededEvent,
 } from 'services/socketManager/types'
@@ -145,6 +150,7 @@ const receivedEvents: ReceivedEvent[] = [
             reduxStore.dispatch(ticketActions.mergeTicket(ticket) as any)
         },
     },
+
     {
         name: 'ticket-assigned',
         onReceive: function (json) {
@@ -727,6 +733,51 @@ const receivedEvents: ReceivedEvent[] = [
                     status: NotificationStatus.Error,
                     message,
                 }) as any
+            )
+        },
+    },
+    {
+        name: SocketEventType.VoiceCallCreated,
+        onReceive: function (json) {
+            const {voice_call} = json as VoiceCallCreatedEvent
+
+            if (!isVoiceCall(voice_call)) return
+
+            appQueryClient.setQueryData<UseListVoiceCalls>(
+                voiceCallsKeys.list({ticket_id: voice_call.ticket_id}),
+                (oldData) => {
+                    if (!oldData) return
+
+                    return {
+                        ...oldData,
+                        data: [...oldData.data, voice_call],
+                    }
+                }
+            )
+        },
+    },
+    {
+        name: SocketEventType.VoiceCallUpdated,
+        onReceive: function (json) {
+            const {voice_call} = json as VoiceCallUpdatedEvent
+
+            if (!isVoiceCall(voice_call)) return
+
+            appQueryClient.setQueryData<UseListVoiceCalls>(
+                voiceCallsKeys.list({ticket_id: voice_call.ticket_id}),
+                (oldData) => {
+                    const voiceCallIndex =
+                        oldData?.data.findIndex(
+                            (vc) => vc.id === voice_call.id
+                        ) ?? -1
+
+                    if (!oldData || voiceCallIndex === -1) return
+
+                    const newData = cloneDeep(oldData)
+                    newData.data[voiceCallIndex] = voice_call
+
+                    return newData
+                }
             )
         },
     },

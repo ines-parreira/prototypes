@@ -14,6 +14,8 @@ export const voiceCallsKeys = {
         [...voiceCallsKeys.all(), 'recordings', params] as const,
 }
 
+export type UseListVoiceCalls = Awaited<ReturnType<typeof listVoiceCalls>>
+
 export const useListVoiceCalls = (
     params?: ListVoiceCallsParams,
     overrides?: UseQueryOptions<Awaited<ReturnType<typeof listVoiceCalls>>>

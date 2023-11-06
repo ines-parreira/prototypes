@@ -49,6 +49,9 @@ import {
 import * as ticketActions from 'state/ticket/actions'
 import history from 'pages/history'
 import {mergeCustomerExternalData} from 'state/ticket/actions'
+import * as voiceCallTypes from 'models/voiceCall/types'
+import {appQueryClient} from 'api/queryClient'
+import {voiceCallsKeys} from 'models/voiceCall/queries'
 
 import receivedEvents from '../receivedEvents'
 
@@ -984,6 +987,101 @@ describe('receivedEvents', () => {
                 migration.integration.id,
                 migration.integration.meta.address
             )
+        })
+    })
+
+    describe('voice-call-created', () => {
+        it('should update query cache', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallCreated,
+            }) as ReceivedEvent
+
+            const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
+            isVoiceCallSpy.mockReturnValueOnce(true)
+
+            const voiceCall = {
+                id: 1,
+                ticket_id: 123,
+            } as voiceCallTypes.VoiceCall
+            const queryKey = voiceCallsKeys.list({
+                ticket_id: voiceCall.ticket_id,
+            })
+
+            appQueryClient.setQueryData(queryKey, {data: [{id: 2}]})
+
+            handler.onReceive({
+                event: {
+                    type: SocketEventType.VoiceCallCreated,
+                },
+                voice_call: voiceCall,
+            })
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: [{id: 2}, voiceCall],
+            })
+        })
+    })
+
+    describe('voice-call-updated', () => {
+        it('should update query cache when voiceCall exists', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallUpdated,
+            }) as ReceivedEvent
+
+            const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
+
+            isVoiceCallSpy.mockReturnValueOnce(true)
+            const voiceCall = {
+                id: 1,
+                ticket_id: 123,
+            } as voiceCallTypes.VoiceCall
+            const queryKey = voiceCallsKeys.list({
+                ticket_id: voiceCall.ticket_id,
+            })
+
+            appQueryClient.setQueryData(queryKey, {
+                data: [{id: 1}, {id: 2}],
+            })
+
+            handler.onReceive({
+                event: {
+                    type: SocketEventType.VoiceCallUpdated,
+                },
+                voice_call: voiceCall,
+            })
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: [voiceCall, {id: 2}],
+            })
+        })
+
+        it('should not update query cache when voiceCall does not exist', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallUpdated,
+            }) as ReceivedEvent
+
+            const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
+            isVoiceCallSpy.mockReturnValueOnce(true)
+
+            const voiceCall = {
+                id: 3,
+                ticket_id: 123,
+            } as voiceCallTypes.VoiceCall
+            const queryKey = voiceCallsKeys.list({
+                ticket_id: voiceCall.ticket_id,
+            })
+
+            appQueryClient.setQueryData(queryKey, {
+                data: [{id: 1}, {id: 2}],
+            })
+
+            handler.onReceive({
+                event: {
+                    type: SocketEventType.VoiceCallUpdated,
+                },
+                voice_call: voiceCall,
+            })
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: [{id: 1}, {id: 2}],
+            })
         })
     })
 })

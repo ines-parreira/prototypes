@@ -15,6 +15,8 @@ import {RootState} from 'state/types'
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {appQueryClient} from 'api/queryClient'
+import {voiceCallsKeys} from 'models/voiceCall/queries'
 
 import css from './DownloadableDeletableRecording.less'
 
@@ -22,13 +24,15 @@ type OwnProps = {
     downloadRecordingURL: string
     deleteRecordingURL: string
     currentUser: Map<any, any>
+    callId?: number
 }
 
 type ButtonProps = {
     url: string
+    callId?: number
 }
 
-function useDeleteRecording(url: string) {
+function useDeleteRecording(url: string, callId?: number) {
     const [isRequestPending, setIsRequestPending] = useState(false)
     const dispatch = useAppDispatch()
 
@@ -41,6 +45,12 @@ function useDeleteRecording(url: string) {
             const notification: Notification = {
                 status: NotificationStatus.Success,
                 message: 'Call recording successfully deleted.',
+            }
+
+            if (callId) {
+                await appQueryClient.refetchQueries(
+                    voiceCallsKeys.listRecordings({call_id: callId})
+                )
             }
 
             void (await dispatch(notifyAction(notification)))
@@ -116,8 +126,8 @@ function useDownloadRecording(url: string) {
     }
 }
 
-const DeleteButton = ({url}: ButtonProps) => {
-    const {deleteRecording, isRequestPending} = useDeleteRecording(url)
+const DeleteButton = ({url, callId}: ButtonProps) => {
+    const {deleteRecording, isRequestPending} = useDeleteRecording(url, callId)
 
     return (
         <ConfirmButton
@@ -153,6 +163,7 @@ const DownloadableDeletableRecording = ({
     downloadRecordingURL,
     deleteRecordingURL,
     currentUser,
+    callId,
 }: OwnProps): JSX.Element => (
     <div className={css['recording-wrapper']}>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
@@ -166,7 +177,7 @@ const DownloadableDeletableRecording = ({
         )}
 
         {hasRole(currentUser, UserRole.Admin) && (
-            <DeleteButton url={deleteRecordingURL} />
+            <DeleteButton url={deleteRecordingURL} callId={callId} />
         )}
     </div>
 )

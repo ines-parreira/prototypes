@@ -33,6 +33,7 @@ export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
             return <div className={css.errorStatus}>Failed</div>
         case VoiceCallStatus.Canceled:
         case VoiceCallStatus.Completed:
+        case VoiceCallStatus.Ending:
             if (!voiceCall.last_answered_by_agent_id) {
                 return (
                     <div

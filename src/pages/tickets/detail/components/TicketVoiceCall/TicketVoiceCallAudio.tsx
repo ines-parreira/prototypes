@@ -62,6 +62,7 @@ export default function TicketVoiceCallAudio({type, voiceCall}: Props) {
             <DownloadableDeletableRecording
                 downloadRecordingURL={audio.url}
                 deleteRecordingURL={`/api/integrations/${voiceCall.integration_id}/calls/${voiceCall.external_id}/${config[type].deletePath}/${audio.external_id}`}
+                callId={voiceCall.id}
             />
         </div>
     )
