@@ -390,7 +390,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                                         )
                                                     }
                                                     code={
-                                                        '<div>This will be the code<script/></div>'
+                                                        helpCenter.code_snippet_template
                                                     }
                                                 />
                                             </>

@@ -5,6 +5,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         {
             id: 1,
             uid: '1',
+            code_snippet_template: '<script...></script><div></div>',
             source: 'manual',
             subdomain: 'acme',
             name: 'ACME Help Center',
@@ -33,6 +34,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         {
             id: 2,
             uid: '2',
+            code_snippet_template: '<script...></script><div></div>',
             source: 'manual',
             subdomain: 'acme2',
             name: 'ACME Help Center 2',
@@ -61,6 +63,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         {
             id: 3,
             uid: '3',
+            code_snippet_template: '<script...></script><div></div>',
             source: 'manual',
             subdomain: 'acme3',
             name: 'ACME Help Center 3',
@@ -89,6 +92,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         {
             id: 4,
             uid: '4',
+            code_snippet_template: '<script...></script><div></div>',
             source: 'manual',
             subdomain: 'acme4',
             name: 'ACME Help Center 4',
@@ -128,6 +132,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
 export const getSingleHelpCenterResponseFixture: HelpCenter = {
     id: 1,
     uid: '1',
+    code_snippet_template: '<script...></script><div></div>',
     source: 'manual',
     subdomain: 'acme',
     name: 'ACME Help Center',

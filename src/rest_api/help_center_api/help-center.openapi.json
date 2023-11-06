@@ -4196,6 +4196,10 @@
                         "nullable": true,
                         "description": "Automation settings id in help center",
                         "example": 2
+                    },
+                    "code_snippet_template": {
+                        "type": "string",
+                        "description": "Code snippet template to use to embed this help center"
                     }
                 },
                 "required": [
@@ -4222,7 +4226,8 @@
                     "source",
                     "gaid",
                     "email_integration",
-                    "automation_settings_id"
+                    "automation_settings_id",
+                    "code_snippet_template"
                 ]
             },
             "AccountInfoDto": {
@@ -4628,6 +4633,10 @@
                         "description": "Automation settings id in help center",
                         "example": 2
                     },
+                    "code_snippet_template": {
+                        "type": "string",
+                        "description": "Code snippet template to use to embed this help center"
+                    },
                     "account_id": {"type": "number"},
                     "translations": {
                         "minItems": 1,
@@ -4666,6 +4675,7 @@
                     "gaid",
                     "email_integration",
                     "automation_settings_id",
+                    "code_snippet_template",
                     "account_id"
                 ]
             },

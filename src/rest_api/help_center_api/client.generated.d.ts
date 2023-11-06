@@ -1468,6 +1468,10 @@ declare namespace Components {
        * 2
        */
       automation_settings_id: number | null;
+      /**
+       * Code snippet template to use to embed this help center
+       */
+      code_snippet_template: string;
       account_id: number;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
@@ -1529,6 +1533,10 @@ declare namespace Components {
        * 2
        */
       automation_settings_id: number | null;
+      /**
+       * Code snippet template to use to embed this help center
+       */
+      code_snippet_template: string;
     }
     export interface HelpCenterStorePageDto {
       external_id: string;
