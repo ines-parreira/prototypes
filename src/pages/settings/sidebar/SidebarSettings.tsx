@@ -18,6 +18,7 @@ import {submitSetting} from 'state/currentAccount/actions'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Button from 'pages/common/components/button/Button'
+import {logEvent, SegmentEvent} from 'common/segment'
 
 import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
 
@@ -75,6 +76,14 @@ const SidebarSettings = () => {
         const hiddenViews = selectedViews
             .filter((view) => !view.enabled)
             .map((view) => view.id)
+
+        const enabledViews = selectedViews
+            .filter((view) => view.enabled)
+            .map((view) => view.name)
+
+        logEvent(SegmentEvent.SidebarViewsChanged, {
+            enabled_views: enabledViews,
+        })
 
         const settings: Partial<AccountSettingViewsVisibility> =
             viewVisibilitySetting || {

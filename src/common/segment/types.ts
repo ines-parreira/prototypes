@@ -249,6 +249,7 @@ export enum SegmentEvent {
     AutomatePaywallVisited = 'automate/paywall-visited',
     AutomatePaywallModalUpsell = 'automate/paywall-modal-upsell',
     AutomatePaywallLearnMore = 'automate/paywall-learn-more',
+    SidebarViewsChanged = 'sidebar-views-changed',
 }
 
 export type SegmentEventToSend = {

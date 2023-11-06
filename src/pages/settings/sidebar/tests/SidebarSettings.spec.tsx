@@ -6,12 +6,12 @@ import {Provider} from 'react-redux'
 import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 
-import {ViewCategory} from 'models/view/types'
-
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import {RootState, StoreDispatch} from 'state/types'
 import {AccountSettingType} from 'state/currentAccount/types'
 import * as accountActions from 'state/currentAccount/actions'
+import {ViewCategory} from 'models/view/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 
 const mockViewsStore = fromJS({
     items: [
@@ -36,6 +36,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 })
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('common/segment')
 
 const WrappedGeneralSettings = () => (
     <Provider store={mockStore}>
@@ -113,7 +114,7 @@ describe('SidebarSettings', () => {
         )
     })
 
-    it('should enable saving the performed changes', async () => {
+    it('should enable saving the performed changes and logging them via segment', async () => {
         const submitSettingSpy = jest.spyOn(accountActions, 'submitSetting')
         const {getByText} = render(<WrappedGeneralSettings />)
         userEvent.click(getByText('Spam'))
@@ -122,6 +123,10 @@ describe('SidebarSettings', () => {
         await waitFor(() => {
             expect(submitSettingSpy).toHaveBeenCalledWith(
                 expect.objectContaining({data: {hidden_views: [1]}})
+            )
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.SidebarViewsChanged,
+                {enabled_views: ['Inbox']}
             )
         })
     })
