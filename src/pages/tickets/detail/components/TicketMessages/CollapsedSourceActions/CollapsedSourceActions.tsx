@@ -7,7 +7,7 @@ import PrivateReplyModal from 'pages/common/components/PrivateReplyToFBComment/P
 
 import type {TicketMessage} from 'models/ticket/types'
 
-import {SourceDetailsContext} from '../SourceDetailsHeader'
+import SourceDetailsContext from '../SourceDetailsContext'
 
 import HideAction from './CollapsedActions/HideAction'
 import IntentsAction from './CollapsedActions/IntentsAction'
