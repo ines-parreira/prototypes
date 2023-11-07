@@ -7,8 +7,8 @@ import {
     ChartOptions,
     TooltipModel,
 } from 'chart.js'
-import colors from 'assets/tokens/colors.json'
-import typography from 'assets/tokens/typography.json'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
 import {OneDimensionalDataItem} from 'pages/stats/types'
 import Legend from 'pages/stats/Legend'
 import {renderTickLabelAsNumber} from 'pages/stats/utils'

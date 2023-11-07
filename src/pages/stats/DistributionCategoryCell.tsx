@@ -1,7 +1,7 @@
 import React, {PropsWithRef, useRef, useLayoutEffect, useState} from 'react'
 import classNames from 'classnames'
 
-import colors from 'assets/tokens/colors.json'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'

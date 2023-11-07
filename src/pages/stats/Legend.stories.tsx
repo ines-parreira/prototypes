@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
-import colors from 'assets/tokens/colors.json'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 
 import Legend from './Legend'
 

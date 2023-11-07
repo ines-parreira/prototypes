@@ -1,5 +1,6 @@
 import React from 'react'
 
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -11,7 +12,6 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
     formatMetricValue,
 } from 'pages/stats/common/utils'
-import colors from 'assets/tokens/colors.json'
 import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 
 import {DistributionCategoryCell} from './DistributionCategoryCell'

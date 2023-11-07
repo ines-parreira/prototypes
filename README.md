@@ -48,11 +48,7 @@ yarn storybook
 
 ### Design tokens
 
-We are using Zeroheight to manage the design tokens, in order to update them:
-
-1. Get the updated tokens urls in the [resources](https://zeroheight.com/13b3ef892/p/09941c-design-tokens)
-2. Update the `get-color-tokens` and `get-typography-tokens` script in `package.json`
-3. Run `yarn generate-design-tokens`
+Tokens are provided by the `@gorgias/design-tokens` package.
 
 ## Testing
 

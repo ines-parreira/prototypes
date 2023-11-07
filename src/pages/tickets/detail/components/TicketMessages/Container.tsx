@@ -4,7 +4,7 @@ import classNamesBind from 'classnames/bind'
 import moment, {Moment} from 'moment'
 import {fromJS, Map} from 'immutable'
 
-import colorTokens from 'assets/tokens/colors.json'
+import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {getDisplayCustomerLastSeenOnChat} from 'pages/common/components/infobar/utils'
 import {scrollToReactNode} from 'pages/common/utils/keyboard'

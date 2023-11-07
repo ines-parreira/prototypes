@@ -1,6 +1,6 @@
 import React from 'react'
 
-import colors from 'assets/tokens/colors.json'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
 import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
 import ChartCard from './ChartCard'

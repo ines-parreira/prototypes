@@ -2,9 +2,9 @@ import React from 'react'
 import {render, waitFor, fireEvent} from '@testing-library/react'
 import * as chartjs from 'chart.js'
 
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
 import {assumeMock} from 'utils/testing'
-import colors from 'assets/tokens/colors.json'
 
 import LineChart, {CHART_TOOLTIP_TARGET} from '../LineChart'
 import {useCustomTooltip} from '../useCustomTooltip'

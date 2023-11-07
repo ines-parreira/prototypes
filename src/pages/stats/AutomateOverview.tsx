@@ -3,6 +3,7 @@ import React, {useCallback, useMemo, useState} from 'react'
 import moment, {Moment} from 'moment'
 import {useLocalStorage} from 'react-use'
 import {Scale, TooltipItem} from 'chart.js'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -18,7 +19,6 @@ import {StatsFilters} from 'models/stat/types'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getStatsFilters} from 'state/stats/selectors'
 import {periodToReportingGranularity} from 'utils/reporting'
-import colors from 'assets/tokens/colors.json'
 import {
     useAutomatedInteractionsTrend,
     useAutomationRateTrend,
@@ -75,6 +75,7 @@ import TipsToggle from './TipsToggle'
 
 import {FEATURE_LABELS} from './constants'
 import {AutomatedInteractionByFeatures} from './types'
+
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
 // Below values are from https://app.periscopedata.com/app/gorgias/1123203/[Cross]-Automation-Add-on-Performance?widget=17138886&udv=0
@@ -685,6 +686,7 @@ export function AutomateOverview() {
         </div>
     )
 }
+
 export default withFeaturePaywall(
     AccountFeature.AutomationSelfServiceStatistics,
     undefined,

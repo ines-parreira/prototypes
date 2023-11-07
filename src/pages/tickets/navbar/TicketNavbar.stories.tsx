@@ -57,7 +57,10 @@ const storyConfig: Meta = {
     title: 'Navigation/TicketNavbar',
     component: TicketNavbarContainer,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: {
+            diffThreshold: 0.045,
+            disableSnapshot: false,
+        },
     },
     decorators: [
         (Component) => (

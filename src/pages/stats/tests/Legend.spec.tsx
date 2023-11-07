@@ -2,7 +2,7 @@ import React from 'react'
 import {render, act, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import colors from 'assets/tokens/colors.json'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 
 import Legend from '../Legend'
 

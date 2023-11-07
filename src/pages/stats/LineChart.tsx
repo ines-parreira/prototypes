@@ -12,7 +12,7 @@ import {Line} from 'react-chartjs-2'
 import {fromJS, Map} from 'immutable'
 
 import classNames from 'classnames'
-import colors from 'assets/tokens/colors.json'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Legend from 'pages/stats/Legend'
 import css from './LineChart.less'

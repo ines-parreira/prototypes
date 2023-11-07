@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 
-import colors from 'assets/tokens/colors.json'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 
 import {VisualBuilderNode} from './models/visualBuilderGraph.types'
