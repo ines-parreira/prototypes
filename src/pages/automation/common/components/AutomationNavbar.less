@@ -10,7 +10,7 @@
     .popoverContainer {
         > div {
             .caption-regular();
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-1);
             opacity: 0.9;
             width: 180px;
         }
@@ -20,8 +20,19 @@
         }
         .arrow::after,
         .arrow::before {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-1);
             opacity: 0.9;
+        }
+    }
+
+    .disabled {
+        color: var(--neutral-grey-5);
+        cursor: unset;
+        &:hover,
+        &:active,
+        &:focus {
+            background: none;
+            color: var(--neutral-grey-5);
         }
     }
 }

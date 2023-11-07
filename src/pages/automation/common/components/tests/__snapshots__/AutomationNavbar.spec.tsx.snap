@@ -144,7 +144,7 @@ exports[`<AutomationNavbar /> render() should not render automation navbar for n
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/macros"
               >
@@ -157,7 +157,7 @@ exports[`<AutomationNavbar /> render() should not render automation navbar for n
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/rules"
               >
@@ -170,7 +170,7 @@ exports[`<AutomationNavbar /> render() should not render automation navbar for n
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/ticket-assignment"
               >
@@ -367,7 +367,7 @@ exports[`<AutomationNavbar /> render() should not render automation navbar for n
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/macros"
               >
@@ -380,7 +380,7 @@ exports[`<AutomationNavbar /> render() should not render automation navbar for n
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/rules"
               >
@@ -393,7 +393,7 @@ exports[`<AutomationNavbar /> render() should not render automation navbar for n
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/ticket-assignment"
               >
@@ -590,7 +590,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/macros"
               >
@@ -603,7 +603,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/rules"
               >
@@ -616,7 +616,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/ticket-assignment"
               >
@@ -1014,7 +1014,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/macros"
               >
@@ -1027,7 +1027,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/rules"
               >
@@ -1040,7 +1040,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/ticket-assignment"
               >
@@ -1374,7 +1374,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/macros"
               >
@@ -1387,7 +1387,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/rules"
               >
@@ -1400,7 +1400,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/ticket-assignment"
               >
@@ -1677,7 +1677,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/macros"
               >
@@ -1690,7 +1690,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/rules"
               >
@@ -1703,7 +1703,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/ticket-assignment"
               >
@@ -2101,7 +2101,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/macros"
               >
@@ -2114,7 +2114,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/rules"
               >
@@ -2127,7 +2127,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/ticket-assignment"
               >
@@ -2461,7 +2461,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/macros"
               >
@@ -2474,7 +2474,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/rules"
               >
@@ -2487,7 +2487,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               class="link-wrapper"
             >
               <a
-                class="link"
+                class="link disabled"
                 data-active-class-name="active"
                 href="/app/automation/ticket-assignment"
               >

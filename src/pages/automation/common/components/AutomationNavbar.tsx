@@ -64,7 +64,11 @@ const MenuItem = ({menu}: {menu: MenuItem}) => {
                 }}
                 ref={ref}
             >
-                <NavbarLink onClick={handleClick} to={link}>
+                <NavbarLink
+                    className={css.disabled}
+                    onClick={handleClick}
+                    to={link}
+                >
                     {label}
                 </NavbarLink>
             </div>
