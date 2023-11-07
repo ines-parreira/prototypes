@@ -51,16 +51,16 @@ export default function TicketVoiceCallContainer({
                     />
                 </div>
                 <div className={css.row}>
-                    <div>{callStatus}</div>
+                    <div className={css.callStatus}>{callStatus}</div>
                     <TicketVoiceCallDuration voiceCall={voiceCall} />
                 </div>
                 {voiceCall.has_call_recording && (
                     <CollapsibleDetails
                         title={
-                            <>
+                            <div className={css.audioTitle}>
                                 <i className="material-icons">graphic_eq</i>
                                 <span>Call Recording</span>
-                            </>
+                            </div>
                         }
                     >
                         <TicketVoiceCallAudio
@@ -72,10 +72,10 @@ export default function TicketVoiceCallContainer({
                 {voiceCall.has_voicemail && (
                     <CollapsibleDetails
                         title={
-                            <>
+                            <div className={css.audioTitle}>
                                 <i className="material-icons">voicemail</i>
                                 <span>Voicemail left</span>
-                            </>
+                            </div>
                         }
                     >
                         <TicketVoiceCallAudio

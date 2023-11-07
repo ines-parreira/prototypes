@@ -12,7 +12,7 @@ export default function CollapsibleDetails({title, children}: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <div>
+        <>
             <div
                 className={css.header}
                 data-testid="collapsible-details-header"
@@ -24,6 +24,6 @@ export default function CollapsibleDetails({title, children}: Props) {
                 </i>
             </div>
             {isOpen && <div className={css.content}>{children}</div>}
-        </div>
+        </>
     )
 }

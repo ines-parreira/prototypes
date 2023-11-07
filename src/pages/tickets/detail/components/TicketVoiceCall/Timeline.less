@@ -1,0 +1,43 @@
+@import '~css/new/layout.less';
+
+:local {
+    .container {
+        position: relative;
+        padding: @layout-spacing-s 0 @layout-spacing-s @layout-spacing-s;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+        width: min(100%, 456px);
+
+        .timelineItem {
+            display: flex;
+            gap: @layout-spacing-xs;
+
+            &:last-of-type {
+                .separator .line {
+                    display: none;
+                }
+            }
+        }
+
+        .separator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            top: 8px;
+
+            .dot {
+                border-radius: 50%;
+                width: 7px;
+                height: 7px;
+                background-color: var(--neutral-grey-4);
+            }
+
+            .line {
+                background-color: var(--neutral-grey-4);
+                width: 1px;
+                flex: 1;
+            }
+        }
+    }
+}
