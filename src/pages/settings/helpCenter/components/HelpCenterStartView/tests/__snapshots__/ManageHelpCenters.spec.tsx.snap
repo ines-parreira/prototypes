@@ -151,7 +151,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper small"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <div
                       class="language-bullet-list"
@@ -174,7 +174,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     05/17/2021
                   </div>
@@ -183,11 +183,11 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      class="wrapper iconButton wrapper ghost ghost secondary medium"
                       title="Duplicate Help Center"
                       type="button"
                     >
@@ -203,11 +203,11 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper lastBodyCell normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      class="wrapper iconButton chevronRight wrapper ghost ghost secondary medium"
                       title="Open Help Center"
                       type="button"
                     >
@@ -249,7 +249,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper small"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <div
                       class="language-bullet-list"
@@ -283,7 +283,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     05/17/2021
                   </div>
@@ -292,11 +292,11 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      class="wrapper iconButton wrapper ghost ghost secondary medium"
                       title="Duplicate Help Center"
                       type="button"
                     >
@@ -312,11 +312,11 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper lastBodyCell normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      class="wrapper iconButton chevronRight wrapper ghost ghost secondary medium"
                       title="Open Help Center"
                       type="button"
                     >
@@ -358,7 +358,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper small"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <div
                       class="language-bullet-list"
@@ -392,7 +392,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     05/17/2021
                   </div>
@@ -401,11 +401,11 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      class="wrapper iconButton wrapper ghost ghost secondary medium"
                       title="Duplicate Help Center"
                       type="button"
                     >
@@ -421,11 +421,11 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper lastBodyCell normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      class="wrapper iconButton chevronRight wrapper ghost ghost secondary medium"
                       title="Open Help Center"
                       type="button"
                     >
@@ -467,7 +467,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper small"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <div
                       class="language-bullet-list"
@@ -501,7 +501,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     05/17/2021
                   </div>
@@ -510,11 +510,11 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      class="wrapper iconButton wrapper ghost ghost secondary medium"
                       title="Duplicate Help Center"
                       type="button"
                     >
@@ -530,11 +530,11 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                   class="wrapper lastBodyCell normal"
                 >
                   <div
-                    class="cellContent"
+                    class="cellContent bodyCell"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      class="wrapper iconButton chevronRight wrapper ghost ghost secondary medium"
                       title="Open Help Center"
                       type="button"
                     >

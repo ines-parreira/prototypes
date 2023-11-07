@@ -1,6 +1,7 @@
 import React, {MouseEvent, useCallback} from 'react'
 import moment from 'moment'
 
+import classNames from 'classnames'
 import {HelpCenter, Locale} from 'models/helpCenter/types'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -75,7 +76,10 @@ export const HelpCenterTable: React.FC<Props> = ({
                             <BodyCell className={css.storeName}>
                                 <StoreName name={helpCenter.shop_name} />
                             </BodyCell>
-                            <BodyCell size="small">
+                            <BodyCell
+                                size="small"
+                                innerClassName={css.bodyCell}
+                            >
                                 <LanguageList
                                     id={id}
                                     defaultLanguage={
@@ -86,15 +90,15 @@ export const HelpCenterTable: React.FC<Props> = ({
                                         .map((code) => locales[code])}
                                 />
                             </BodyCell>
-                            <BodyCell>
+                            <BodyCell innerClassName={css.bodyCell}>
                                 {moment(helpCenter.updated_datetime).format(
                                     'L'
                                 )}
                             </BodyCell>
 
-                            <BodyCell>
+                            <BodyCell innerClassName={css.bodyCell}>
                                 <IconButton
-                                    className="mr-1"
+                                    className={css.iconButton}
                                     fillStyle="ghost"
                                     intent="secondary"
                                     onClick={(event) =>
@@ -105,9 +109,15 @@ export const HelpCenterTable: React.FC<Props> = ({
                                     file_copy
                                 </IconButton>
                             </BodyCell>
-                            <BodyCell className={css.lastBodyCell}>
+                            <BodyCell
+                                className={css.lastBodyCell}
+                                innerClassName={css.bodyCell}
+                            >
                                 <IconButton
-                                    className="mr-1"
+                                    className={classNames(
+                                        css.iconButton,
+                                        css.chevronRight
+                                    )}
                                     fillStyle="ghost"
                                     intent="secondary"
                                     onClick={() => onClick(helpCenter)}
