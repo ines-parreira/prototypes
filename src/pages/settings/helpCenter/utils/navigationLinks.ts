@@ -1,6 +1,6 @@
 import {IsURLOptions} from 'validator/lib/isURL'
 
-import {HelpCenterClient} from 'rest_api/help_center_api'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
 
 import {
     LocaleCode,

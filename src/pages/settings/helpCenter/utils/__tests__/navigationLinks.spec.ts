@@ -1,6 +1,6 @@
+import {LocalSocialNavigationLink} from 'models/helpCenter/types'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {saveSocialLinks} from '../navigationLinks'
-import {HelpCenterClient} from '../../../../../rest_api/help_center_api'
-import {LocalSocialNavigationLink} from '../../../../../models/helpCenter/types'
 
 const mockedHelpCenterClient = {
     createNavigationLink: jest.fn(),

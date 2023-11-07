@@ -1,5 +1,5 @@
-import {HelpCenterClient} from '../../../../../rest_api/help_center_api'
-import {Paths} from '../../../../../rest_api/help_center_api/client.generated'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import {Paths} from 'rest_api/help_center_api/client.generated'
 
 export const getHelpCenterRedirects = async (
     client: HelpCenterClient | undefined,

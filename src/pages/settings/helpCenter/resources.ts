@@ -2,8 +2,8 @@ import {
     CreateShopifyPageEmbedmentDto,
     UpdateShopifyPageEmbedmentDto,
 } from 'models/contactForm/types'
-import {HelpCenterClient} from '../../../rest_api/help_center_api'
-import {Paths} from '../../../rest_api/help_center_api/client.generated'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import {Paths} from 'rest_api/help_center_api/client.generated'
 
 export const getShopifyPages = async (
     client: HelpCenterClient | undefined,

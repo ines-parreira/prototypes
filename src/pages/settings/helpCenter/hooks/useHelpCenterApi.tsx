@@ -9,10 +9,8 @@ import React, {
 } from 'react'
 import {AppAbility} from 'rest_api/help_center_api/ability'
 
-import {
-    getHelpCenterClient,
-    HelpCenterClient,
-} from 'rest_api/help_center_api/index'
+import {getHelpCenterClient} from 'rest_api/help_center_api'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
 
 type UseHelpCenterApiInterface = {
     isReady: boolean

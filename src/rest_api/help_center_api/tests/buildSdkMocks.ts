@@ -1,5 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
-import {HelpCenterClient, helpCenterAPI} from '..'
+
+import {HelpCenterClient, helpCenterAPI} from '../client'
 
 /**
  * This is a helper function to build the Help Center Client SDK mocks.

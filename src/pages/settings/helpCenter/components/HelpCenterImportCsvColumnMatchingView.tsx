@@ -3,7 +3,7 @@ import {useHistory, useLocation} from 'react-router-dom'
 import {parse as parseQueryString} from 'qs'
 import {AxiosError} from 'axios'
 
-import {getAccessToken} from 'rest_api/utils'
+import {getAccessToken} from 'rest_api/auth'
 
 import {CsvColumnPreview} from '../../../../models/helpCenter/types'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'

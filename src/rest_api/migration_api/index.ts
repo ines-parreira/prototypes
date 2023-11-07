@@ -1,7 +1,7 @@
 import memoize from 'memoize-one'
 import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
 
-import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/utils'
+import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/auth'
 import {isProduction, isStaging} from 'utils/environment'
 
 import {Client} from './client.generated'

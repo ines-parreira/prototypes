@@ -1,7 +1,7 @@
 import {useCallback, useState, useMemo} from 'react'
 import {chain as _chain} from 'lodash'
 
-import {HelpCenterClient} from 'rest_api/help_center_api/index'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'

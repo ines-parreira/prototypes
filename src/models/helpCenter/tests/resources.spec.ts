@@ -1,4 +1,4 @@
-import {HelpCenterClient} from 'rest_api/help_center_api'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {getHelpCenterArticles} from '../resources'
 
 const help_center_id = 1

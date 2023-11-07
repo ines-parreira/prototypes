@@ -3,7 +3,7 @@ import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {HelpCenterClient} from 'rest_api/help_center_api'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {useGetHelpCenterArticleList} from '../queries'
 import * as resources from '../resources'
 

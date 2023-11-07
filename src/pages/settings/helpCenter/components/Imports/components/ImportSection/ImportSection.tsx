@@ -20,7 +20,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
-import {getAccessToken} from 'rest_api/utils'
+import {getAccessToken} from 'rest_api/auth'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {CSV_MIGRATION_PROVIDER_TYPE} from '../CsvColumnMatching/utils'

@@ -1,35 +1,10 @@
-import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
 import memoize from 'memoize-one'
 
-import {isProduction, isStaging} from 'utils/environment'
-import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/utils'
+import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/auth'
 
-import OpenAPIDoc from './help-center.openapi.json'
 import {Client} from './client.generated'
 import {AppAbility, AbilityRules, createAbility} from './ability'
-
-export function getHelpCenterApiBaseUrl(): string {
-    // Use helpdesk's host
-    if (isStaging()) {
-        return 'https://acme.gorgias.xyz'
-    }
-    if (isProduction()) {
-        return 'https://internal-help-center-api.gorgias.com'
-    }
-
-    return 'http://acme.gorgias.docker:4001'
-}
-
-export const helpCenterAPI = new OpenAPIClientAxios({
-    // We prefer having the OpenAPI doc locally rather
-    // than fetching it at runtime.
-    // Reason: the OpenAPI spec may change and it may mess the client
-    // at runtime.
-    definition: OpenAPIDoc as unknown as Document,
-    ...(getHelpCenterApiBaseUrl()
-        ? {withServer: {url: getHelpCenterApiBaseUrl()}}
-        : {}),
-})
+import {helpCenterAPI} from './client'
 
 let agentAbility: AppAbility | undefined
 
@@ -82,5 +57,3 @@ export const getHelpCenterClient = memoize(buildHelpCenterClient)
 export function getAgentAbility(): AppAbility | undefined {
     return agentAbility
 }
-
-export type HelpCenterClient = Client & {ability?: AppAbility}

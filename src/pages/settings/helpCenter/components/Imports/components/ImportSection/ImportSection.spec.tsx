@@ -20,7 +20,7 @@ import {initialState as categoriesState} from 'state/entities/helpCenter/categor
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 
 import {getMigrationClient} from 'rest_api/migration_api'
-import {getAccessToken} from 'rest_api/utils'
+import {getAccessToken} from 'rest_api/auth'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
@@ -96,7 +96,7 @@ jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 
 // Migration client calls this function in an interceptor to set the access token
 // and as the data here is mocked we don't need auth calls
-jest.mock('rest_api/utils')
+jest.mock('rest_api/auth')
 ;(getAccessToken as jest.Mock).mockImplementation(() => 'token')
 
 const history = createMemoryHistory()
