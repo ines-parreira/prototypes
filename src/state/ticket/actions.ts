@@ -163,10 +163,6 @@ export const mergeCustomerExternalData = (
     }
 }
 
-export const fetchTicketReplyMacro = () => ({
-    type: types.FETCH_TICKET_REPLY_MACRO,
-})
-
 export const ticketPartialUpdate =
     (
         args: Record<string, unknown> & {

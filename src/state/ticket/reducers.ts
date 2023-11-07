@@ -1,6 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
+import {FETCH_TICKET_REPLY_MACRO} from 'common/state'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {CustomFieldState} from 'models/customField/types'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
@@ -353,7 +354,7 @@ export default function reducer(
             )
         }
 
-        case types.FETCH_TICKET_REPLY_MACRO: {
+        case FETCH_TICKET_REPLY_MACRO: {
             const cache = ticketReplyCache.get(state.get('id'))
             return state
                 .setIn(['state', 'appliedMacro'], cache.get('macro'))

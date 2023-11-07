@@ -784,14 +784,6 @@ exports[`ticket actions fetchTicket() should send ticket-viewed event when ticke
 ]
 `;
 
-exports[`ticket actions fetchTicketReplyMacro() 1`] = `
-[
-  {
-    "type": "FETCH_TICKET_REPLY_MACRO",
-  },
-]
-`;
-
 exports[`ticket actions findAndSetCustomer() should set the customer because there is a customer matching this id 1`] = `
 [
   {
@@ -2112,7 +2104,7 @@ exports[`ticket actions setTypingActivityShopper() should dispatch SET_TYPING_AC
   {
     "payload": {
       "isShopperTyping": true,
-      "isShopperTypingTimeoutId": 299,
+      "isShopperTypingTimeoutId": 295,
     },
     "type": "SET_TYPING_ACTIVITY_SHOPPER",
   },

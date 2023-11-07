@@ -167,11 +167,6 @@ describe('ticket actions', () => {
         return expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('fetchTicketReplyMacro()', () => {
-        store.dispatch(actions.fetchTicketReplyMacro())
-        return expect(store.getActions()).toMatchSnapshot()
-    })
-
     describe('ticketPartialUpdate()', () => {
         const update = {subject: 'new title'}
 

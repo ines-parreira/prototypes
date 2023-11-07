@@ -10,11 +10,11 @@ import _split from 'lodash/split'
 import axios, {AxiosError, CancelToken} from 'axios'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {fetchTicketReplyMacro} from 'common/state'
 import {Attachment} from 'common/types'
 import {uploadFiles} from 'common/utils'
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
-import * as ticketActions from 'state/ticket/actions'
 import {Context, renderTemplate} from 'pages/common/utils/template'
 import {
     castGorgiasVideosForUnsupportedSources,
@@ -729,7 +729,7 @@ export const updatePotentialCustomers =
 
 export const initializeMessageDraft = () => (dispatch: StoreDispatch) => {
     // get cached macro
-    dispatch(ticketActions.fetchTicketReplyMacro())
+    dispatch(fetchTicketReplyMacro())
     // get cached ticket reply message
     dispatch(setResponseText())
 }
