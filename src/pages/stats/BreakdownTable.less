@@ -1,4 +1,5 @@
 @import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins.less';
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
@@ -8,9 +9,20 @@
 
     .container {
         width: 100%;
-        max-height: 100vh;
+        max-height: calc(100vh - 300px);
         overflow: auto;
         margin-bottom: @layout-spacing-m;
+    }
+
+    .limitedHeight {
+        max-height: calc(100vh - 180px);
+        overflow: hidden;
+        @media @large-desktops {
+            max-height: calc(100vh - 60px);
+        }
+        @media @large-desktops and (min-height: 744px) {
+            max-height: 744px;
+        }
     }
 
     .table {

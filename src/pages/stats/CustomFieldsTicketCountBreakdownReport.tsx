@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/stats/BreakdownTable.less'
@@ -20,6 +21,7 @@ export const CustomFieldsTicketCountBreakdownReport = () => {
             title={REPORT_TITLE}
             hint={REPORT_HINT}
             noPadding={true}
+            className={css.limitedHeight}
             titleExtra={
                 <div className={css.switches}>
                     <TicketInsightsValueModeSwitch />
@@ -32,7 +34,12 @@ export const CustomFieldsTicketCountBreakdownReport = () => {
                     selectedCustomFieldId={id}
                 />
             ) : (
-                <NoDataAvailable className={css.NoDataAvailable} />
+                <NoDataAvailable
+                    className={classNames(
+                        css.NoDataAvailable,
+                        css.limitedHeight
+                    )}
+                />
             )}
         </ChartCard>
     )

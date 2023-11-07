@@ -48,21 +48,15 @@ export default function SupportPerformanceTicketInsights() {
 
             {selectedCustomField.id && (
                 <DashboardSection>
-                    {
-                        <DashboardGridCell size={1}>
-                            <TicketDistributionTable />
-                        </DashboardGridCell>
-                    }
-                    {
-                        <DashboardGridCell size={11}>
-                            <TicketInsightsFieldTrend />
-                        </DashboardGridCell>
-                    }
-                    {
-                        <DashboardGridCell>
-                            <CustomFieldsTicketCountBreakdownReport />
-                        </DashboardGridCell>
-                    }
+                    <DashboardGridCell size={1}>
+                        <TicketDistributionTable />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={11}>
+                        <TicketInsightsFieldTrend />
+                    </DashboardGridCell>
+                    <DashboardGridCell>
+                        <CustomFieldsTicketCountBreakdownReport />
+                    </DashboardGridCell>
                 </DashboardSection>
             )}
             <AnalyticsFooter />
