@@ -336,12 +336,19 @@ export const HelpCenterInstallationView: React.FC = () => {
                                         getPageEmbedments.data ?? []
                                     }
                                     isDisabled={
-                                        getPageEmbedments.isLoading &&
-                                        !getPageEmbedments.isFetched
+                                        Boolean(
+                                            helpCenter.deactivated_datetime
+                                        ) ||
+                                        (getPageEmbedments.isLoading &&
+                                            !getPageEmbedments.isFetched)
                                     }
                                 />
                                 <Accordion>
-                                    <AccordionItem>
+                                    <AccordionItem
+                                        isDisabled={Boolean(
+                                            helpCenter.deactivated_datetime
+                                        )}
+                                    >
                                         <AccordionHeader>
                                             <div>
                                                 <div className={css.cardHeader}>
@@ -396,7 +403,11 @@ export const HelpCenterInstallationView: React.FC = () => {
                                             </>
                                         </AccordionBody>
                                     </AccordionItem>
-                                    <AccordionItem>
+                                    <AccordionItem
+                                        isDisabled={Boolean(
+                                            helpCenter.deactivated_datetime
+                                        )}
+                                    >
                                         <AccordionHeader>
                                             <div>
                                                 <div className={css.cardHeader}>
