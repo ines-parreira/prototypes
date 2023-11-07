@@ -1,16 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import {useHistory} from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {ManagedRule, Rule, RuleType} from 'state/rules/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import RuleRecipeCard from './components/RuleRecipeCard'
 
 import css from './RuleLibrary.less'
@@ -34,9 +33,8 @@ export function RuleLibrary({
     activeSlug = '',
     autoInstall,
 }: Props) {
-    const currentAccount = useAppSelector(getCurrentAccountState)
+    const history = useHistory()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const [showAutomationModal, setShowAutomationModal] = useState(false)
     const [filteredRecipes, setFilteredRecipes] = useState(recipes)
     const [installedSlugs, setInstalledSlugs] = useState<string[]>([])
     const [installedManagedRules, setInstalledManagedRules] = useState<
@@ -126,30 +124,15 @@ export function RuleLibrary({
                             label="Get Automate Features"
                             onClick={() => {
                                 logEvent(
-                                    SegmentEvent.RuleAutomationAddOnUpsell,
+                                    SegmentEvent.AutomatePaywallFromRuleLibrary,
                                     {
-                                        from: 'rule-library',
-                                        domain: currentAccount?.get('domain'),
+                                        location: 'rule-library',
                                     }
                                 )
-                                setShowAutomationModal(true)
+
+                                history.push('/app/automation')
                             }}
                             position="left"
-                        />
-                        <AutomationSubscriptionModal
-                            confirmLabel="Subscribe"
-                            isOpen={showAutomationModal}
-                            onClose={() => setShowAutomationModal(false)}
-                            onSubscribe={() => {
-                                logEvent(
-                                    SegmentEvent.RuleAutomationAddOnSubscription,
-                                    {
-                                        from: 'rule-library',
-                                        domain: currentAccount?.get('domain'),
-                                    }
-                                )
-                            }}
-                            fade={false}
                         />
                     </div>
                 )}
