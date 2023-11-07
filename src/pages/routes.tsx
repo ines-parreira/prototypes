@@ -1327,13 +1327,17 @@ function AutomationContent() {
                     )}
                 />
             )}
-            <Route path={`${path}/macros/:macroId`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${settingPath}/macros/:macroId`} exact />
-                ) : (
+
+            {isAutomateRebranding ? (
+                <Redirect
+                    from={`${path}/macros/:macroId`}
+                    to={`${settingPath}/macros/:macroId`}
+                />
+            ) : (
+                <Route path={`${path}/macros/:macroId`} exact>
                     <MacrosSettingsForm />
-                )}
-            </Route>
+                </Route>
+            )}
 
             {/* Rules */}
             <Route path={`${path}/rules`} exact>
@@ -1365,13 +1369,17 @@ function AutomationContent() {
                     <Redirect to={`${settingPath}/rules/new`} exact />
                 </Route>
             )}
-            <Route path={`${path}/rules/:ruleId`} exact>
-                {isAutomateRebranding ? (
-                    <Redirect to={`${settingPath}/rules/:ruleId`} exact />
-                ) : (
+            {isAutomateRebranding ? (
+                <Redirect
+                    from={`${path}/rules/:ruleId`}
+                    to={`${settingPath}/rules/:ruleId`}
+                    exact
+                />
+            ) : (
+                <Route path={`${path}/rules/:ruleId`} exact>
                     <RuleDetailForm />
-                )}
-            </Route>
+                </Route>
+            )}
             {/* ticket assignment */}
             <Route path={`${path}/ticket-assignment`} exact>
                 {isAutomateRebranding ? (
