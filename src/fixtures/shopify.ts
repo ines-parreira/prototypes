@@ -149,7 +149,6 @@ export const shopifyOrderFixture = ({
         token: '46a2ba4414e9539325b3a03975da8657',
         app_id: 1354745,
         number: 684,
-        gateway: 'manual',
         refunds: [],
         user_id: 95205899,
         currency: 'USD',
@@ -336,7 +335,6 @@ export const shopifyOrderFixture = ({
             country_code: 'FR',
             province_code: null,
         },
-        processing_method: 'manual',
         source_identifier: null,
         fulfillment_status: null,
         subtotal_price_set: shopifyPriceSetFixture({amount: '5.00'}),
@@ -364,7 +362,6 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
         token: '02bb19dc21bf27e8f9763c5261019872',
         app_id: 580111,
         number: 12,
-        gateway: 'bogus',
         refunds: [],
         user_id: null,
         currency: 'JPY',
@@ -598,7 +595,6 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
                 },
                 tax_lines: [],
                 discounted_price: '1077',
-                delivery_category: null,
                 carrier_identifier: null,
                 discount_allocations: [],
                 discounted_price_set: {
@@ -635,13 +631,6 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
         },
         customer_locale: 'en',
         note_attributes: [],
-        payment_details: {
-            avs_result_code: null,
-            credit_card_bin: '1',
-            cvv_result_code: null,
-            credit_card_number: '•••• •••• •••• 1',
-            credit_card_company: 'Bogus',
-        },
         total_discounts: '0',
         total_price_set: {
             shop_money: {
@@ -675,7 +664,6 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
             country_code: 'US',
             province_code: 'CA',
         },
-        processing_method: 'direct',
         source_identifier: null,
         fulfillment_status: null,
         subtotal_price_set: {
