@@ -3,6 +3,7 @@ import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLab
 import {VoiceCall} from 'models/voiceCall/types'
 
 import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import TicketVoiceCallContainer from './TicketVoiceCallContainer'
 import {useCustomerDetails} from './hooks'
 import {TicketVoiceCallInboundStatus} from './TicketVoiceCallInboundStatus'
@@ -32,6 +33,16 @@ export default function TicketVoiceCallInbound({voiceCall}: Props) {
             icon={'call_received'}
             callStatus={<TicketVoiceCallInboundStatus voiceCall={voiceCall} />}
             voiceCall={voiceCall}
+            source={{
+                from: `${customer?.firstname ?? ''} ${
+                    customer?.lastname ?? ''
+                } (${formatPhoneNumberInternational(
+                    voiceCall.phone_number_source
+                )})`,
+                to: formatPhoneNumberInternational(
+                    voiceCall.phone_number_destination
+                ),
+            }}
         />
     )
 }

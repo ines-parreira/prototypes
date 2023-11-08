@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import classNames from 'classnames'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {User} from 'config/types/user'
@@ -10,6 +10,7 @@ import css from './TicketVoiceCallContainer.less'
 import TicketVoiceCallDuration from './TicketVoiceCallDuration'
 import TicketVoiceCallAudio from './TicketVoiceCallAudio'
 import CollapsibleDetails from './CollapsibleDetails'
+import TicketVoiceCallSource from './TicketVoiceCallSource'
 
 type Props = {
     header: JSX.Element
@@ -18,6 +19,7 @@ type Props = {
     dateTime: string
     voiceCall: VoiceCall
     icon: string
+    source: Pick<ComponentProps<typeof TicketVoiceCallSource>, 'from' | 'to'>
 }
 
 export default function TicketVoiceCallContainer({
@@ -27,6 +29,7 @@ export default function TicketVoiceCallContainer({
     dateTime,
     voiceCall,
     icon,
+    source,
 }: Props) {
     return (
         <div className={css.container}>
@@ -35,14 +38,13 @@ export default function TicketVoiceCallContainer({
                 <div className={css.row}>
                     <div className={css.header}>
                         {header}
-                        <i
-                            className={classNames(
-                                'material-icons',
-                                css.phoneIcon
-                            )}
-                        >
-                            {icon}
-                        </i>
+                        <TicketVoiceCallSource
+                            icon={icon}
+                            id={`source-${voiceCall.id}`}
+                            date={dateTime}
+                            from={source.from}
+                            to={source.to}
+                        />
                     </div>
                     <DatetimeLabel
                         dateTime={dateTime}

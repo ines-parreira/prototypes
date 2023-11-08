@@ -1,5 +1,6 @@
 import React from 'react'
 import {render} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
 import TicketVoiceCallInbound from '../TicketVoiceCallInbound'
@@ -19,8 +20,8 @@ jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({
     useCustomerDetails: (customerId: number) => ({
         customer: {
             id: customerId,
-            first_name: 'John',
-            last_name: 'Doe',
+            firstname: 'John',
+            lastname: 'Doe',
         },
     }),
 }))
@@ -45,7 +46,8 @@ describe('TicketVoiceCallInbound', () => {
     const voiceCall = {
         id: 1,
         customer_id: 123,
-        phone_number_source: '+1234567890',
+        phone_number_source: '+12133734253',
+        phone_number_destination: '+12133734444',
         created_datetime: '2022-01-01T00:00:00.000Z',
         status: VoiceCallStatus.InProgress,
     } as VoiceCall
@@ -68,10 +70,15 @@ describe('TicketVoiceCallInbound', () => {
         expect(callStatus).toBeInTheDocument()
     })
 
-    it('renders the call icon', () => {
-        const {getByText} = renderComponent()
+    it('renders the call icon with correct tooltip content', async () => {
+        const {getByText, findByText} = renderComponent()
         const icon = getByText('call_received')
         expect(icon).toBeInTheDocument()
+
+        userEvent.hover(icon)
+
+        await findByText('+1 213 373 4444')
+        expect(getByText('John Doe (+1 213 373 4253)')).toBeInTheDocument()
     })
 
     it('displays correct header when call is still in progress', () => {

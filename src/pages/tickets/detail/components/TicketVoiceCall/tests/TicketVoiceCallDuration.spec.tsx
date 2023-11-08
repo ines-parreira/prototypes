@@ -48,6 +48,7 @@ describe('TicketVoiceCallDuration', () => {
         VoiceCallStatus.Ringing,
         VoiceCallStatus.Busy,
         VoiceCallStatus.Failed,
+        VoiceCallStatus.NoAnswer,
     ])('should not render anything for %s voice call status', (status) => {
         renderComponent({status})
         expect(screen.queryByText('connected:')).not.toBeInTheDocument()

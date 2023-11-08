@@ -57,6 +57,10 @@ const renderComponent = (
             dateTime={dateTime}
             voiceCall={voiceCall}
             icon={icon}
+            source={{
+                from: 'John Doe',
+                to: 'Jane Doe',
+            }}
             {...props}
         />
     )

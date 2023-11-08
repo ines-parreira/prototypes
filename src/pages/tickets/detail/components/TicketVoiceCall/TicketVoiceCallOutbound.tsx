@@ -3,8 +3,9 @@ import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/Voi
 import {OutboundVoiceCall} from 'models/voiceCall/types'
 import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
 
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import TicketVoiceCallContainer from './TicketVoiceCallContainer'
-import {useAgentDetails} from './hooks'
+import {useAgentDetails, useCustomerDetails} from './hooks'
 import TicketVoiceCallOutboundStatus from './TicketVoiceCallOutboundStatus'
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
 
 export default function TicketVoiceCallOutbound({voiceCall}: Props) {
     const {data: agent} = useAgentDetails(voiceCall.initiated_by_agent_id)
+    const {customer} = useCustomerDetails(voiceCall.customer_id)
 
     return (
         <TicketVoiceCallContainer
@@ -32,6 +34,16 @@ export default function TicketVoiceCallOutbound({voiceCall}: Props) {
             icon={'call_made'}
             callStatus={<TicketVoiceCallOutboundStatus voiceCall={voiceCall} />}
             voiceCall={voiceCall}
+            source={{
+                from: formatPhoneNumberInternational(
+                    voiceCall.phone_number_source
+                ),
+                to: `${customer?.firstname ?? ''} ${
+                    customer?.lastname ?? ''
+                } (${formatPhoneNumberInternational(
+                    voiceCall.phone_number_destination
+                )})`,
+            }}
         />
     )
 }
