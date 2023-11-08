@@ -9,8 +9,6 @@ import ConvertSubscriptionModal from 'pages/settings/new_billing/components/Conv
 import {AccountFeature} from 'state/currentAccount/types'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
-import {isStarterTierPrice} from 'models/billing/utils'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ConvertNavbarAddOnPaywallNavbarLink from '../ConvertNavbarAddOnPaywallNavbarLink'
@@ -31,9 +29,6 @@ type Props = {
 const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
     const [isSubscriptionModalOpen, setISubscriptionModalOpen] = useState(false)
 
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const isStarterPlan = isStarterTierPrice(helpdeskPrice)
-
     const isConvertSubscriber = useIsConvertSubscriber()
     const hasRevenueStatisticsFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.RevenueStatistics)
@@ -52,7 +47,7 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
                 label: 'Campaigns',
                 to: '/app/stats/convert/campaigns',
                 isPaywalled: !isConvertSubscriber,
-                hasModal: !isConvertSubscriber && !isStarterPlan,
+                hasModal: !isConvertSubscriber,
                 requiresSubscriptionToBeSeen: false,
                 extra: (
                     <Badge type={ColorType.Blue} className={cssNavbar.badge}>
@@ -61,7 +56,7 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
                 ),
             },
         ]
-    }, [hasRevenueStatisticsFeature, isConvertSubscriber, isStarterPlan])
+    }, [hasRevenueStatisticsFeature, isConvertSubscriber])
 
     const isModalNeeded = useMemo(() => {
         return (

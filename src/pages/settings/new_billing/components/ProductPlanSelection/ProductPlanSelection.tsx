@@ -35,7 +35,6 @@ export type ProductPlanSelectionProps = {
     )[]
     selectedPlans: SelectedPlans
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
-    isStarterHelpdeskPlanSelected?: boolean
     isTrialing?: boolean
     initialIndex?: number
     periodEnd?: string
@@ -49,7 +48,6 @@ const ProductPlanSelection = ({
     prices = [],
     selectedPlans,
     setSelectedPlans,
-    isStarterHelpdeskPlanSelected,
     isTrialing = false,
     initialIndex = -1,
     periodEnd,
@@ -69,31 +67,20 @@ const ProductPlanSelection = ({
     const isStarterHelpdeskPlanDisabled = useCallback(
         (price) => {
             const isStarterPlan = isStarterTierPrice(price)
-
-            const isYearlyInterval = interval === INTERVAL.Year
-
-            const selectedProductsCount = Object.values(selectedPlans).filter(
-                (plan) => plan.isSelected
-            ).length
-
-            const tooltipText = isYearlyInterval
-                ? 'Switch to monthly billing to downgrade to a Starter plan.'
-                : selectedProductsCount > 1
-                ? 'To downgrade Helpdesk to a Starter plan, please cancel any other active subscriptions.'
-                : undefined
-
-            if (isStarterPlan) {
+            if (isStarterPlan && interval === INTERVAL.Year) {
                 return {
-                    isDisabled: isYearlyInterval || selectedProductsCount > 1,
-                    tooltipText: tooltipText,
+                    isDisabled: true,
+                    tooltipText:
+                        'Switch to monthly billing to downgrade to a Starter plan.',
                 }
             }
+
             return {
                 isDisabled: false,
                 tooltipText: undefined,
             }
         },
-        [interval, selectedPlans]
+        [interval]
     )
 
     const getLabel = useCallback(
@@ -156,10 +143,6 @@ const ProductPlanSelection = ({
     }, [setSelectedPlans, type])
 
     const handleOpen = useCallback(() => {
-        if (isStarterHelpdeskPlanSelected) {
-            return
-        }
-
         const initialPlan =
             initialIndex === -1
                 ? prices.find((price) => price.num_quota_tickets)
@@ -172,13 +155,7 @@ const ProductPlanSelection = ({
                 isSelected: true,
             },
         }))
-    }, [
-        prices,
-        setSelectedPlans,
-        type,
-        isStarterHelpdeskPlanSelected,
-        initialIndex,
-    ])
+    }, [prices, setSelectedPlans, type, initialIndex])
 
     const handleSelectProductPlan = (price_id: Value) => {
         const plan = prices.find((price) => price.price_id === price_id)
@@ -246,12 +223,7 @@ const ProductPlanSelection = ({
                         </i>
                     )
                 ) : (
-                    <div
-                        className={classNames(css.addProduct, {
-                            [css.openIsDisabled]: isStarterHelpdeskPlanSelected,
-                        })}
-                        onClick={handleOpen}
-                    >
+                    <div className={css.addProduct} onClick={handleOpen}>
                         <i className="material-icons">add</i>Add Product
                     </div>
                 )}

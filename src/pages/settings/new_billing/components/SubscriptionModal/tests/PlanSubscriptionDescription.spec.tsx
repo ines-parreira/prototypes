@@ -17,7 +17,6 @@ describe('PlanSubscriptionDescription', () => {
         productType: ProductType.Convert,
         prices: convertProduct.prices,
         tagline: '',
-        isStarterPlan: false,
         isTrialing: false,
         isEnterprisePlan: false,
         selectedPrice: convertProduct.prices[1],
@@ -37,26 +36,6 @@ describe('PlanSubscriptionDescription', () => {
         ).toBeInTheDocument()
         expect(getByText('$1/month', {exact: false})).toBeInTheDocument()
         expect(getByText('clicks/month')).toBeInTheDocument()
-
-        PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(
-            (feature) => {
-                expect(getByText(feature)).toBeInTheDocument()
-            }
-        )
-    })
-
-    it('should render correctly for starter plan', () => {
-        const {getByText} = render(
-            <Provider store={mockStore({} as any)}>
-                <PlanSubscriptionDescription {...props} isStarterPlan={true} />
-            </Provider>
-        )
-
-        expect(
-            getByText(
-                "You're on a Starter plan. Upgrade your Helpdesk subscription to unlock Convert."
-            )
-        ).toBeInTheDocument()
 
         PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(
             (feature) => {

@@ -28,7 +28,6 @@ describe('AutomationPlanSubscriptionDescription', () => {
 
     const defaultProps: AutomationPlanSubscriptionDescriptionProps = {
         automationPrices: mockAutomationPrices,
-        isStarterPlan: false,
         isTrialing: false,
         isEnterprisePlan: false,
         selectedPrice: mockAutomationPrices[0],
@@ -86,23 +85,5 @@ describe('AutomationPlanSubscriptionDescription', () => {
         )
 
         expect(enterpriseDescription).toBeInTheDocument()
-    })
-
-    it('displays error alert and description when isStarterPlan is true', () => {
-        const props = {...defaultProps, isStarterPlan: true}
-        render(
-            <Provider store={mockedStore(defaultState)}>
-                <AutomationPlanSubscriptionDescription {...props} />
-            </Provider>
-        )
-        const errorAlert = screen.getByText(
-            `You're on a Starter plan. Upgrade your Helpdesk subscription to unlock Automation.`
-        )
-        const starterDescription = screen.getByText(
-            'Please upgrade your Helpdesk plan to Basic, Pro, Advanced or Enterprise in order to subscribe to Automation.'
-        )
-
-        expect(errorAlert).toBeInTheDocument()
-        expect(starterDescription).toBeInTheDocument()
     })
 })

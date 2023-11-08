@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 import {AutomationPrice, PlanInterval} from 'models/billing/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert from 'pages/common/components/Alert/Alert'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     formatAmount,
@@ -23,7 +23,6 @@ import css from './AutomationPlanSubscriptionDescription.less'
 
 export type AutomationPlanSubscriptionDescriptionProps = {
     automationPrices: AutomationPrice[]
-    isStarterPlan: boolean
     isTrialing: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
@@ -34,7 +33,6 @@ export type AutomationPlanSubscriptionDescriptionProps = {
 
 const AutomationPlanSubscriptionDescription = ({
     automationPrices,
-    isStarterPlan,
     isTrialing,
     isEnterprisePlan,
     interval = PlanInterval.Month,
@@ -94,18 +92,20 @@ const AutomationPlanSubscriptionDescription = ({
 
     useEffect(() => {
         setIsSubscriptionEnabled(
-            isTermsChecked &&
-                isPaymentEnabled &&
-                isCreditCardFetched &&
-                !isStarterPlan
+            isTrialing ||
+                (isTermsChecked && isPaymentEnabled && isCreditCardFetched)
         )
     }, [
+        isTrialing,
         isTermsChecked,
         isPaymentEnabled,
         isCreditCardFetched,
         setIsSubscriptionEnabled,
-        isStarterPlan,
     ])
+
+    const isSummaryFooterVisible = useMemo(() => {
+        return !isEnterprisePlan && !isTrialing && isPaymentEnabled
+    }, [isEnterprisePlan, isTrialing, isPaymentEnabled])
 
     return (
         <div className={css.container} data-testid="automationModalDescription">
@@ -165,7 +165,6 @@ const AutomationPlanSubscriptionDescription = ({
                             fullWidth
                             onChange={handleSelectProductPlan}
                             showSelectedOption
-                            disabled={isStarterPlan}
                         />
                         <div className={css.counter} ref={ref}>
                             <div>
@@ -202,19 +201,6 @@ const AutomationPlanSubscriptionDescription = ({
                         Contact our team to subscribe to an Enterprise plan.
                     </div>
                 )}
-                {isStarterPlan && (
-                    <>
-                        <Alert type={AlertType.Error} icon>
-                            You're on a Starter plan. Upgrade your Helpdesk
-                            subscription to unlock Automation.
-                        </Alert>
-                        <div className={css.starterDescription}>
-                            Please upgrade your Helpdesk plan to Basic, Pro,
-                            Advanced or Enterprise in order to subscribe to
-                            Automation.
-                        </div>
-                    </>
-                )}
                 <div
                     className={classNames(css.payment, {
                         [css.show]: !isPaymentEnabled && isCreditCardFetched,
@@ -227,7 +213,7 @@ const AutomationPlanSubscriptionDescription = ({
                         hasSmallFont
                     />
                 </div>
-                {!isEnterprisePlan && !isStarterPlan && isPaymentEnabled && (
+                {isSummaryFooterVisible && (
                     <SummaryFooter
                         isPaymentEnabled={isPaymentEnabled}
                         isTrialing={isTrialing}

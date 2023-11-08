@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 import {PlanInterval, Price, ProductType} from 'models/billing/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     formatAmount,
@@ -28,7 +27,6 @@ export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
     prices: Price[]
     tagline?: string
-    isStarterPlan: boolean
     isTrialing: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
@@ -41,7 +39,6 @@ const PlanSubscriptionDescription = ({
     productType,
     prices,
     tagline,
-    isStarterPlan,
     isTrialing,
     isEnterprisePlan,
     interval = PlanInterval.Month,
@@ -116,18 +113,20 @@ const PlanSubscriptionDescription = ({
 
     useEffect(() => {
         setIsSubscriptionEnabled(
-            isTermsChecked &&
-                isPaymentEnabled &&
-                isCreditCardFetched &&
-                !isStarterPlan
+            isTrialing ||
+                (isTermsChecked && isPaymentEnabled && isCreditCardFetched)
         )
     }, [
+        isTrialing,
         isTermsChecked,
         isPaymentEnabled,
         isCreditCardFetched,
         setIsSubscriptionEnabled,
-        isStarterPlan,
     ])
+
+    const isSummaryFooterVisible = useMemo(() => {
+        return !isEnterprisePlan && !isTrialing && isPaymentEnabled
+    }, [isEnterprisePlan, isTrialing, isPaymentEnabled])
 
     return (
         <div
@@ -181,7 +180,6 @@ const PlanSubscriptionDescription = ({
                             fullWidth
                             onChange={handleSelectProductPlan}
                             showSelectedOption
-                            disabled={isStarterPlan}
                         />
                         <div className={css.counter} ref={ref}>
                             <div>
@@ -225,19 +223,6 @@ const PlanSubscriptionDescription = ({
                         Contact our team to subscribe to an Enterprise plan.
                     </div>
                 )}
-                {isStarterPlan && (
-                    <>
-                        <Alert type={AlertType.Error} icon>
-                            You're on a Starter plan. Upgrade your Helpdesk
-                            subscription to unlock {productInfo.title}.
-                        </Alert>
-                        <div className={css.starterDescription}>
-                            Please upgrade your Helpdesk plan to Basic, Pro,
-                            Advanced or Enterprise in order to subscribe to
-                            {productInfo.title}.
-                        </div>
-                    </>
-                )}
                 <div
                     className={classNames(css.payment, {
                         [css.show]: !isPaymentEnabled && isCreditCardFetched,
@@ -250,7 +235,7 @@ const PlanSubscriptionDescription = ({
                         hasSmallFont
                     />
                 </div>
-                {!isEnterprisePlan && !isStarterPlan && isPaymentEnabled && (
+                {isSummaryFooterVisible && (
                     <SummaryFooter
                         isPaymentEnabled={isPaymentEnabled}
                         isTrialing={isTrialing}

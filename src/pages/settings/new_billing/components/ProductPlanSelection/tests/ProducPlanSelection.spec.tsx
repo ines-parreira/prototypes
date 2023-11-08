@@ -49,7 +49,6 @@ describe('ProductPlanSelection', () => {
         ],
         selectedPlans,
         setSelectedPlans: mockSetSelectedPlans,
-        isStarterHelpdeskPlanSelected: false,
     }
 
     it('displays the product type title', () => {

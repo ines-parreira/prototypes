@@ -36,7 +36,6 @@ import {
     setCurrentSubscription,
     updateSubscriptionsForPlans,
 } from 'state/currentAccount/actions'
-import {isStarterTierPrice} from 'models/billing/utils'
 import GorgiasApi from 'services/gorgiasApi'
 import {isGorgiasApiError} from 'models/api/types'
 import {
@@ -281,13 +280,6 @@ export const useBillingPlans = ({
             smsProduct,
             convertProduct,
         ]
-    )
-
-    const isStarterHelpdeskPlanSelected = useMemo(
-        () =>
-            isStarterTierPrice(selectedPlans[ProductType.Helpdesk].plan) &&
-            selectedPlans[ProductType.Helpdesk].isSelected,
-        [selectedPlans]
     )
 
     const isEnterpriseHelpdeskPlanSelected = useMemo(
@@ -627,7 +619,6 @@ export const useBillingPlans = ({
         setSelectedPlans,
         interval,
         isEnterpriseHelpdeskPlanSelected,
-        isStarterHelpdeskPlanSelected,
         isSubscriptionCanceled,
         isSubscriptionUpdating,
     }

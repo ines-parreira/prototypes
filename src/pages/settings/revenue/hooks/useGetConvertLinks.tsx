@@ -1,7 +1,4 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
-import {isStarterTierPrice} from 'models/billing/utils'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import PaywallPopover from 'pages/settings/new_billing/components/PaywallPopover'
@@ -14,17 +11,11 @@ const useGetConvertLinks = (): CategoryLink[] => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
     const [isSubscriptionModalOpen, setISubscriptionModalOpen] = useState(false)
 
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const isStarterPlan = isStarterTierPrice(helpdeskPrice)
     const isConvertSubscriber = useIsConvertSubscriber()
 
-    const isDirectlyUpgradable = useMemo(() => {
-        return !isConvertSubscriber && !isStarterPlan
-    }, [isConvertSubscriber, isStarterPlan])
-
     const handeIconMouseEnter = useCallback(() => {
-        isDirectlyUpgradable && setIsPopoverOpen(true)
-    }, [isDirectlyUpgradable])
+        !isConvertSubscriber && setIsPopoverOpen(true)
+    }, [isConvertSubscriber])
 
     const iconComponent = useMemo(() => {
         return (
@@ -69,14 +60,14 @@ const useGetConvertLinks = (): CategoryLink[] => {
 
     const outerExtra = useMemo(() => {
         return (
-            isDirectlyUpgradable && (
+            !isConvertSubscriber && (
                 <>
                     {popoverComponent}
                     {subscriptionModalComponent}
                 </>
             )
         )
-    }, [isDirectlyUpgradable, popoverComponent, subscriptionModalComponent])
+    }, [isConvertSubscriber, popoverComponent, subscriptionModalComponent])
 
     return useMemo(() => {
         const links: CategoryLink[] = [

@@ -287,21 +287,21 @@ const UsageAndPlansView = ({
                     type={ProductType.Automation}
                     product={automationProduct}
                     usage={currentUsage?.automation}
-                    isDisabled={isSubscribedToHelpdeskStarter}
+                    isDisabled={false}
                 />
                 <ProductCard
                     type={ProductType.Voice}
                     product={voiceProduct}
                     usage={currentUsage?.voice}
                     banner={voiceBanner}
-                    isDisabled={isSubscribedToHelpdeskStarter}
+                    isDisabled={false}
                 />
                 <ProductCard
                     type={ProductType.SMS}
                     product={smsProduct}
                     usage={currentUsage?.sms}
                     banner={smsBanner}
-                    isDisabled={isSubscribedToHelpdeskStarter}
+                    isDisabled={false}
                 />
                 {isConvertProductActive && (
                     <ProductCard
@@ -309,7 +309,7 @@ const UsageAndPlansView = ({
                         product={convertProduct}
                         usage={currentUsage?.convert}
                         banner={convertBanner}
-                        isDisabled={isSubscribedToHelpdeskStarter}
+                        isDisabled={false}
                     />
                 )}
             </div>

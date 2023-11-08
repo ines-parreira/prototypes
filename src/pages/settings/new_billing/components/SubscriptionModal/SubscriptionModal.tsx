@@ -14,11 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import {
-    getCurrentHelpdeskInterval,
-    getCurrentHelpdeskProduct,
-} from 'state/billing/selectors'
-import {isStarterTierPrice} from 'models/billing/utils'
+import {getCurrentHelpdeskInterval} from 'state/billing/selectors'
 import {Price, ProductType} from 'models/billing/types'
 import css from './SubscriptionModal.less'
 
@@ -67,15 +63,12 @@ const SubscriptionModal = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
 
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
 
     const {isLoading: isSubscriptionUpdating, handleSubscriptionUpdate} =
         useUpdateSubscription()
-
-    const isStarterPlan = isStarterTierPrice(helpdeskPrice)
 
     const isEnterprisePlan = useMemo(
         () => selectedPrice?.price_id === ENTERPRISE_PRICE_ID,
@@ -137,7 +130,6 @@ const SubscriptionModal = ({
                     {topModalComponent}
                     <PlanSubscriptionDescription
                         productType={productType}
-                        isStarterPlan={isStarterPlan}
                         isTrialing={isTrialingSubscription}
                         isEnterprisePlan={isEnterprisePlan}
                         prices={prices}

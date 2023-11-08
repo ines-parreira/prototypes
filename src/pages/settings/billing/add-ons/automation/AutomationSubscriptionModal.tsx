@@ -23,7 +23,6 @@ import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {isStarterTierPrice} from 'models/billing/utils'
 import {
     BILLING_BASE_PATH,
     BILLING_SUPPORT_EMAIL,
@@ -155,8 +154,6 @@ const AutomationSubscriptionModal = ({
         helpdeskPrice && void handleSubscriptionUpdate([helpdeskPrice.price_id])
     }
 
-    const isStarterPlan = isStarterTierPrice(helpdeskPrice)
-
     const automationPrices = useAppSelector(
         getAutomationProduct
     )?.prices.filter(
@@ -222,7 +219,6 @@ const AutomationSubscriptionModal = ({
                         <PlanSubscriptionDescription
                             productType={ProductType.Automation}
                             prices={automationPrices}
-                            isStarterPlan={isStarterPlan}
                             isTrialing={isTrialingSubscription}
                             isEnterprisePlan={isEnterprisePlan}
                             interval={interval}
@@ -232,7 +228,6 @@ const AutomationSubscriptionModal = ({
                         />
                     ) : (
                         <AutomationPlanSubscriptionDescription
-                            isStarterPlan={isStarterPlan}
                             isTrialing={isTrialingSubscription}
                             isEnterprisePlan={isEnterprisePlan}
                             automationPrices={automationPrices}

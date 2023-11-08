@@ -5,7 +5,6 @@ import {MemoryRouter, Route} from 'react-router-dom'
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {starterHelpdeskPrice} from 'fixtures/productPrices'
 import {getStateWithPrice} from 'utils/paywallTesting'
 import ConvertCampaignsStats from '../CampaignsStats'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
@@ -37,6 +36,7 @@ describe('CampaignsStats', () => {
                 </Provider>
             </MemoryRouter>
         )
+    const mockedState = getStateWithPrice()
 
     beforeEach(() => {
         jest.spyOn(
@@ -45,47 +45,25 @@ describe('CampaignsStats', () => {
         ).mockImplementation(() => true)
     })
 
-    describe('when on Starter plan', () => {
-        const mockedState = getStateWithPrice(starterHelpdeskPrice)
+    it('should render the paywall with modal for Convert non-subscriber', () => {
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => false)
 
-        it('should render the default paywall with upgrade label', () => {
-            jest.spyOn(
-                isConvertSubscriberHook,
-                'useIsConvertSubscriber'
-            ).mockImplementation(() => false)
+        const {queryByText} = renderWithStore(mockedState)
 
-            const {getByText} = renderWithStore(mockedState)
-
-            expect(
-                getByText('Level up your Chat campaign conversions')
-            ).toBeInTheDocument()
-            expect(getByText('Upgrade to Convert')).toBeInTheDocument()
-        })
+        expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
     })
 
-    describe('when not on Starter plan', () => {
-        const mockedState = getStateWithPrice()
+    it('should render stats for Convert subscriber', () => {
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => true)
 
-        it('should render the paywall with modal for Convert non-subscriber', () => {
-            jest.spyOn(
-                isConvertSubscriberHook,
-                'useIsConvertSubscriber'
-            ).mockImplementation(() => false)
+        const {getByText} = renderWithStore(mockedState)
 
-            const {queryByText} = renderWithStore(mockedState)
-
-            expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
-        })
-
-        it('should render stats for Convert subscriber', () => {
-            jest.spyOn(
-                isConvertSubscriberHook,
-                'useIsConvertSubscriber'
-            ).mockImplementation(() => true)
-
-            const {getByText} = renderWithStore(mockedState)
-
-            expect(getByText('ConvertStatsContent')).toBeInTheDocument()
-        })
+        expect(getByText('ConvertStatsContent')).toBeInTheDocument()
     })
 })

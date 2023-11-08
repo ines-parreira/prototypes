@@ -115,7 +115,6 @@ const BillingProcessView = ({
         voicePrices,
         voiceInitialIndex,
         isEnterpriseHelpdeskPlanSelected,
-        isStarterHelpdeskPlanSelected,
         anyDowngradedPlanSelected,
         anyNewProductSelected,
         anyProductChanged,
@@ -241,9 +240,6 @@ const BillingProcessView = ({
                             prices={automationPrices}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
-                            isStarterHelpdeskPlanSelected={
-                                isStarterHelpdeskPlanSelected
-                            }
                             initialIndex={automationInitialIndex}
                             periodEnd={periodEnd}
                             currentUsage={currentUsage}
@@ -255,9 +251,6 @@ const BillingProcessView = ({
                             prices={voicePrices}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
-                            isStarterHelpdeskPlanSelected={
-                                isStarterHelpdeskPlanSelected
-                            }
                             isTrialing={isTrialing}
                             initialIndex={voiceInitialIndex}
                         />
@@ -268,9 +261,6 @@ const BillingProcessView = ({
                             prices={smsPrices}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
-                            isStarterHelpdeskPlanSelected={
-                                isStarterHelpdeskPlanSelected
-                            }
                             isTrialing={isTrialing}
                             initialIndex={smsInitialIndex}
                         />
@@ -282,9 +272,6 @@ const BillingProcessView = ({
                                 prices={convertPrices}
                                 selectedPlans={selectedPlans}
                                 setSelectedPlans={setSelectedPlans}
-                                isStarterHelpdeskPlanSelected={
-                                    isStarterHelpdeskPlanSelected
-                                }
                                 isTrialing={isTrialing}
                                 initialIndex={convertInitialIndex}
                             />

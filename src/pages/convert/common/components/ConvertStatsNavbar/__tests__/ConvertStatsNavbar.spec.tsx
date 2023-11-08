@@ -14,7 +14,6 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
     proMonthlyHelpdeskPrice,
-    starterHelpdeskPrice,
 } from 'fixtures/productPrices'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -113,23 +112,5 @@ describe('ConvertStatsNavbar', () => {
 
         const mockModal = getByTestId('mock-convert-subscription-modal')
         expect(mockModal).toBeInTheDocument()
-    })
-
-    it('should render links with subscription upgrade for starter plan', () => {
-        const mockedState = getState(starterHelpdeskPrice)
-
-        const {queryByTestId} = render(
-            <Provider store={mockStore(mockedState)}>
-                <ConvertStatsNavbar
-                    commonNavLinkProps={COMMON_NAV_LINK_PROPS}
-                />
-            </Provider>
-        )
-
-        const iconElement = screen.queryByText('arrow_circle_up')
-        expect(iconElement).toBeInTheDocument()
-
-        const mockModal = queryByTestId('mock-convert-subscription-modal')
-        expect(mockModal).not.toBeInTheDocument()
     })
 })

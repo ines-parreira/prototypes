@@ -3,7 +3,6 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
-import {starterHelpdeskPrice} from 'fixtures/productPrices'
 import {getStateWithPrice} from 'utils/paywallTesting'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
@@ -24,7 +23,7 @@ describe('CampaignStatsPaywallView', () => {
             </Provider>
         )
 
-    it('has custom CTA and modal when not Starter plan', () => {
+    it('has custom CTA and modal', () => {
         const mockedState = getStateWithPrice()
 
         const {getByText, queryByTestId} = renderWithStore(mockedState)
@@ -32,17 +31,5 @@ describe('CampaignStatsPaywallView', () => {
         expect(getByText('Get Convert')).toBeInTheDocument()
         const mockModal = queryByTestId('mock-convert-subscription-modal')
         expect(mockModal).toBeInTheDocument()
-    })
-
-    it('has default CTA when on Starter plan', () => {
-        const mockedState = getStateWithPrice(starterHelpdeskPrice)
-
-        const {getByText, queryByTestId, queryByText} =
-            renderWithStore(mockedState)
-
-        expect(getByText('Upgrade to Convert')).toBeInTheDocument()
-        expect(queryByText('Get Convert')).not.toBeInTheDocument()
-        const mockModal = queryByTestId('mock-convert-subscription-modal')
-        expect(mockModal).not.toBeInTheDocument()
     })
 })

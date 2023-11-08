@@ -4,9 +4,6 @@ import {Redirect} from 'react-router-dom'
 import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import ConvertSubscriptionModal from 'pages/settings/new_billing/components/ConvertSubscriptionModal'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
-import {isStarterTierPrice} from 'models/billing/utils'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 type Props = {
@@ -29,14 +26,8 @@ const ConvertPaywallView = ({
     const [isModalOpened, setIsModalOpened] = useState(false)
 
     const isConvertSubscriber = useIsConvertSubscriber()
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const isStarterPlan = isStarterTierPrice(helpdeskPrice)
 
     const customCta = useMemo(() => {
-        if (isStarterPlan) {
-            return null
-        }
-
         return (
             <UpgradeButton
                 onClick={() => {
@@ -46,13 +37,9 @@ const ConvertPaywallView = ({
                 label="Get Convert"
             />
         )
-    }, [isStarterPlan])
+    }, [])
 
     const modal = useMemo(() => {
-        if (isStarterPlan) {
-            return null
-        }
-
         return (
             <ConvertSubscriptionModal
                 canduId={modalCanduId}
@@ -62,7 +49,7 @@ const ConvertPaywallView = ({
                 redirectPath={onSubscribedRedirectPath}
             />
         )
-    }, [isStarterPlan, modalCanduId, isModalOpened, onSubscribedRedirectPath])
+    }, [modalCanduId, isModalOpened, onSubscribedRedirectPath])
 
     return (
         <>
