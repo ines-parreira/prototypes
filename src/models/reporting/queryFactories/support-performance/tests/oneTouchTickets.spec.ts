@@ -5,6 +5,7 @@ import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
+    TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
 import {
     TicketMessagesDimension,
@@ -39,11 +40,6 @@ describe('oneTouchTicketsPerAgentQueryFactory', () => {
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
-                {
-                    member: TicketMember.Status,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['closed'],
-                },
                 ...NotSpamNorTrashedTicketsFilter,
                 {
                     member: TicketMember.PeriodStart,
@@ -72,7 +68,10 @@ describe('oneTouchTicketsPerAgentQueryFactory', () => {
                 },
             ],
             measures: [TicketMeasure.TicketCount],
-            segments: [TicketMessagesDimension.OneTouchTickets],
+            segments: [
+                TicketMessagesDimension.OneTouchTickets,
+                TicketSegment.ClosedTickets,
+            ],
             timeDimensions: [],
             timezone: timezone,
         })
@@ -90,11 +89,6 @@ describe('oneTouchTicketsPerAgentQueryFactory', () => {
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
-                {
-                    member: TicketMember.Status,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['closed'],
-                },
                 ...NotSpamNorTrashedTicketsFilter,
                 {
                     member: TicketMember.PeriodStart,
@@ -129,7 +123,10 @@ describe('oneTouchTicketsPerAgentQueryFactory', () => {
             ],
             measures: [TicketMeasure.TicketCount],
             order: [[TicketMeasure.TicketCount, sorting]],
-            segments: [TicketMessagesDimension.OneTouchTickets],
+            segments: [
+                TicketMessagesDimension.OneTouchTickets,
+                TicketSegment.ClosedTickets,
+            ],
             timeDimensions: [],
             timezone: timezone,
         })

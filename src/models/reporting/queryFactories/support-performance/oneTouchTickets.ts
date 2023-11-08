@@ -4,10 +4,10 @@ import {
     TicketCubeWithJoins,
     TicketDimension,
     TicketMeasure,
-    TicketMember,
+    TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
+import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     NotSpamNorTrashedTicketsFilter,
@@ -24,15 +24,13 @@ export const oneTouchTicketsQueryFactory = (
     dimensions: [],
     timezone,
     filters: [
-        {
-            member: TicketMember.Status,
-            operator: ReportingFilterOperator.Equals,
-            values: ['closed'],
-        },
         ...NotSpamNorTrashedTicketsFilter,
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
-    segments: [TicketMessagesDimension.OneTouchTickets],
+    segments: [
+        TicketMessagesDimension.OneTouchTickets,
+        TicketSegment.ClosedTickets,
+    ],
     timeDimensions: [],
     ...(sorting
         ? {
