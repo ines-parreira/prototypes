@@ -2,19 +2,14 @@ import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
+import {fromAST} from 'common/utils'
 import {getChannels} from 'services/channels'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {BASE_VIEW_ID} from 'constants/view'
 import {OrderDirection} from 'models/api/types'
 import {ViewField, ViewType, ViewVisibility} from 'models/view/types'
 import {STATUSES} from 'tickets/common/config'
-import {
-    fieldPath,
-    fromAST,
-    getAST,
-    getLanguageDisplayName,
-    stripHTML,
-} from 'utils'
+import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
 import {getMomentUtcISOString} from 'utils/date'
 
 import ticketLanguages from './ticketLanguages'

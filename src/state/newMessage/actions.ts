@@ -12,14 +12,13 @@ import axios, {AxiosError, CancelToken} from 'axios'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {fetchTicketReplyMacro} from 'common/state'
 import {Attachment} from 'common/types'
-import {uploadFiles} from 'common/utils'
+import {isImmutable, uploadFiles} from 'common/utils'
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
 import {Context, renderTemplate} from 'pages/common/utils/template'
 import {
     castGorgiasVideosForUnsupportedSources,
     getActionTemplate,
-    isImmutable,
     toJS,
 } from 'utils'
 import {ActionTemplateExecution} from 'config'

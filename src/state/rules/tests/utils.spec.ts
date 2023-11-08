@@ -1,8 +1,9 @@
 import {fromJS, Map} from 'immutable'
 
+import {toImmutable} from 'common/utils'
 import {resolveCallee, resolveSecondArg} from '../utils'
 import schemasJSON from '../../../fixtures/openapi.json'
-import {findProperty, toImmutable} from '../../../utils'
+import {findProperty} from '../../../utils'
 
 const schemas = fromJS(schemasJSON) as Map<any, any>
 const emptyCallExpression = fromJS({})

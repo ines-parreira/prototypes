@@ -32,6 +32,7 @@ import {
 import {Route} from 'react-router-dom'
 import URLSafeBase64 from 'urlsafe-base64'
 
+import {fromAST, isImmutable} from 'common/utils'
 import {TicketEvent} from 'models/ticket/types'
 import {TicketChannel} from './business/types/ticket'
 import {humanize} from './business/format'
@@ -197,20 +198,6 @@ export function getFirstExpressionOfAST(ast: esprima.Program) {
         0,
         'expression',
     ]) as Map<any, any>
-}
-
-/*
- * Deeply converts AST, plain JS objects and arrays to Immutable Maps and Lists.
- * Why specifically for AST?
- * https://github.com/immutable-js/immutable-js/wiki/Converting-from-JS-objects#custom-conversion
- * https://stackoverflow.com/a/40663730/3443247
- */
-export function fromAST<T>(js: T): T | List<any> | Map<any, any> | any {
-    return typeof js !== 'object' || js === null
-        ? js
-        : Array.isArray(js)
-        ? Immutable.Seq(js).map(fromAST).toList()
-        : Immutable.Seq(js).map(fromAST).toMap()
 }
 
 export function getCode(ast: esprima.Program): string {
@@ -590,19 +577,6 @@ export function insertLink(
     )
     return EditorState.push(editorState, contentState, 'apply-entity')
 }
-
-/**
- * Return true if passed object is immutable (from Immutable JS)
- */
-export const isImmutable = (value: any): boolean =>
-    Immutable.Iterable.isIterable(value)
-
-/**
- * Return a passed object as immutable
- */
-export const toImmutable = <T, U = Record<string, unknown>>(
-    object: U | Iterable<any, any> | unknown[]
-) => (isImmutable(object) ? object : fromAST(object)) as T
 
 /**
  * Return a passed object as plain JS (not Immutable)

@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {FormGroup} from 'reactstrap'
 import classnames from 'classnames'
 
-import {fromAST} from 'utils'
+import {fromAST} from 'common/utils'
 import Program from '../../../common/components/ast/Program'
 import {RuleDraft} from '../../../../state/rules/types'
 import {RuleItemActions} from '../types'

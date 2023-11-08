@@ -1,7 +1,8 @@
 import {List, Map} from 'immutable'
 
+import {toImmutable} from 'common/utils'
 import {TicketMessage} from 'models/ticket/types'
-import {compare, toImmutable} from 'utils'
+import {compare} from 'utils'
 
 /**
  * Return passed messages ordered by created_datetime

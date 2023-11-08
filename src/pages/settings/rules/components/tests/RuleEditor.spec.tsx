@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 import {render} from '@testing-library/react'
 import {Map, List} from 'immutable'
 
-import {fromAST} from 'utils'
+import {fromAST} from 'common/utils'
 import {RuleDraft} from '../../../../../models/rule/types'
 import {emptyRule as rule} from '../../../../../fixtures/rule'
 import RuleEditor from '../RuleEditor'

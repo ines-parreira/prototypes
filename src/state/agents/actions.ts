@@ -1,6 +1,7 @@
 import axios, {CancelToken} from 'axios'
 import {Map} from 'immutable'
 
+import {toImmutable} from 'common/utils'
 import {User, UserDraft} from 'config/types/user'
 import {USER_ROLES} from 'config/user'
 import {fetchAgents} from 'models/agents/resources'
@@ -10,7 +11,7 @@ import GorgiasApi from 'services/gorgiasApi'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
-import {toImmutable, toJS} from 'utils'
+import {toJS} from 'utils'
 
 import * as constants from './constants'
 

@@ -8,6 +8,7 @@ import _isNumber from 'lodash/isNumber'
 import {BaseCallExpression, BaseNode} from 'estree'
 import {Syntax} from 'esprima'
 
+import {fromAST} from 'common/utils'
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 import {UserRole} from '../../config/types/user'
 import {ViewType, ViewVisibility} from '../../models/view/types'
@@ -18,7 +19,6 @@ import {
     toJS,
     hasRole,
     getCode,
-    fromAST,
 } from '../../utils'
 import {isTimedelta} from '../../utils/ast'
 import {Agents} from '../agents/types'

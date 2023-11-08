@@ -3,14 +3,9 @@ import {fromJS, Map, List} from 'immutable'
 import {CodeASTType} from 'pages/settings/rules/types'
 import {updateCodeAst} from 'pages/common/components/ast/utils'
 
+import {fromAST, isImmutable, toImmutable} from 'common/utils'
 import _schemas from 'fixtures/openapi.json'
-import {
-    fromAST,
-    getAST,
-    getFirstExpressionOfAST,
-    isImmutable,
-    toImmutable,
-} from 'utils'
+import {getAST, getFirstExpressionOfAST} from 'utils'
 import _astCodeContains from './fixtures/astCodeContains.json'
 import _astCodeEq from './fixtures/astCodeEq.json'
 import _astCodeNeq from './fixtures/astCodeNeq.json'

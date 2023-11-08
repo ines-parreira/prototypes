@@ -10,6 +10,7 @@ import {
     TicketMessageSourceType,
     TicketChannel,
 } from 'business/types/ticket'
+import {isImmutable, toImmutable} from 'common/utils'
 import {PHONE_EVENTS} from 'constants/event'
 import {MacroActionName} from 'models/macroAction/types'
 import {TicketEvent, TicketMessage} from 'models/ticket/types'
@@ -27,12 +28,7 @@ import {
     responseSourceType,
     sourceTypeToChannel,
 } from 'tickets/common/utils'
-import {
-    generateTicketMessagesId,
-    getActionTemplate,
-    isImmutable,
-    toImmutable,
-} from 'utils'
+import {generateTicketMessagesId, getActionTemplate} from 'utils'
 
 import {ChannelLike} from 'services/channels'
 import {EventType} from 'models/event/types'

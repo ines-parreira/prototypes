@@ -1,7 +1,7 @@
 import {List} from 'immutable'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {toImmutable} from 'utils'
+import {toImmutable} from 'common/utils'
 
 import sourceTypeToChannel from './sourceTypeToChannel'
 

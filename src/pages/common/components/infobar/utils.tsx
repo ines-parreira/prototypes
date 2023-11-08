@@ -24,6 +24,7 @@ import momentTimezone from 'moment-timezone'
 import moment, {MomentInput} from 'moment'
 import ReactStars from 'react-rating-stars-component'
 
+import {isImmutable} from 'common/utils'
 import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
 import * as utils from 'utils'
 import {reportError} from 'utils/errors'
@@ -89,7 +90,7 @@ export function isUppercase(string: string) {
  * Return true if passed customer data is valid (Immutable Map, etc.)
  */
 export const isCustomerDataValid = (data: any): data is Map<any, any> => {
-    return !!data && utils.isImmutable(data)
+    return !!data && isImmutable(data)
 }
 
 /**
@@ -641,7 +642,7 @@ export function guessFieldValueFromRawData(
     let assignedType = type
     const fallbackValue = '-'
     const data = (
-        utils.isImmutable(potentiallyImmutableData)
+        isImmutable(potentiallyImmutableData)
             ? (potentiallyImmutableData as Iterable<unknown, unknown>).toJS()
             : potentiallyImmutableData
     ) as unknown

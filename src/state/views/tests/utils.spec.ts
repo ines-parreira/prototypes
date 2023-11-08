@@ -1,8 +1,9 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
 
+import {fromAST} from 'common/utils'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
-import {fromAST, getAST} from 'utils'
+import {getAST} from 'utils'
 
 import * as utils from '../utils'
 

@@ -1,7 +1,7 @@
 import {Map} from 'immutable'
 
+import {toImmutable} from 'common/utils'
 import {TicketMessage} from 'models/ticket/types'
-import {toImmutable} from 'utils'
 
 /**
  * Return whether or not the message is forwarded

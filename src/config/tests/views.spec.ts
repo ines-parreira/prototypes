@@ -1,11 +1,12 @@
 import {fromJS, Map, List} from 'immutable'
 import _isObject from 'lodash/isObject'
 
+import {isImmutable} from 'common/utils'
 import * as viewsConfig from '../views'
 
 import * as ticketFixtures from '../../fixtures/ticket'
 import {customer} from '../../fixtures/customer'
-import {getAST, isImmutable} from '../../utils'
+import {getAST} from '../../utils'
 import {
     ViewType,
     View,

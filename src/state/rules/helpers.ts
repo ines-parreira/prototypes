@@ -2,7 +2,7 @@ import _trim from 'lodash/trim'
 import _compact from 'lodash/compact'
 import {Map} from 'immutable'
 
-import {toImmutable, isImmutable} from '../../utils'
+import {isImmutable, toImmutable} from 'common/utils'
 
 import {Rule, RuleDraft} from './types'
 

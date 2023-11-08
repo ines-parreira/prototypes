@@ -5,6 +5,7 @@ import {Container} from 'reactstrap'
 import {List, Map} from 'immutable'
 import {useAsyncFn, useEffectOnce} from 'react-use'
 
+import {toImmutable} from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {AgentsRelationshipsParam, FetchAgentsOptions} from 'models/agents/types'
@@ -23,7 +24,6 @@ import {
 import {getPaginatedAgents} from 'state/agents/selectors'
 import {getAccessSettings} from 'state/currentAccount/selectors'
 import {AccountSettingAccessSignupMode as SignupMode} from 'state/currentAccount/types'
-import {toImmutable} from 'utils'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 
 import {isStarterTierPrice} from 'models/billing/utils'

@@ -8,6 +8,7 @@ import {Badge as ReactstrapBadge, UncontrolledTooltipProps} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 import moment from 'moment-timezone'
 
+import {isImmutable} from 'common/utils'
 import {DEFAULT_TAG_COLOR} from 'config'
 import {UserRole} from 'config/types/user'
 import {
@@ -25,7 +26,7 @@ import * as customersHelpers from 'state/customers/helpers'
 import {getTeams} from 'state/teams/selectors'
 import {RootState} from 'state/types'
 import {parseTimeDelta} from 'tickets/common/utils'
-import {formatDatetime, humanizeString, isImmutable} from 'utils'
+import {formatDatetime, humanizeString} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationChannel} from 'state/integrations/selectors'
 

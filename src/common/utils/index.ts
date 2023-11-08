@@ -1,1 +1,4 @@
+export {default as fromAST} from './fromAST'
+export {default as isImmutable} from './isImmutable'
+export {default as toImmutable} from './toImmutable'
 export {default as uploadFiles} from './uploadFiles'

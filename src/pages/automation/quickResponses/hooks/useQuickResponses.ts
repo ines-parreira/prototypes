@@ -1,11 +1,11 @@
 import {useCallback, useMemo} from 'react'
 import {List} from 'immutable'
 
+import {toImmutable} from 'common/utils'
 import {trimHTML} from 'utils/html'
 import {convertFromHTML, convertToHTML} from 'utils/editor'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {toImmutable} from 'utils'
 
 const useQuickResponses = (shopType: string, shopName: string) => {
     const {

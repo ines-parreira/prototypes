@@ -5,6 +5,7 @@ import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {fromAST} from 'common/utils'
 import history from 'pages/history'
 import {
     AnyManagedRuleSettings,
@@ -47,7 +48,6 @@ import {RuleRecipe} from 'models/ruleRecipe/types'
 import successIcon from 'assets/img/icons/success.svg'
 
 import {RuleDraft} from 'models/rule/types'
-import {fromAST} from 'utils'
 import {useIsAutomateRebranding} from 'pages/automation/common/hooks/useIsAutomateRebranding'
 import {CodeASTType} from '../../types'
 
