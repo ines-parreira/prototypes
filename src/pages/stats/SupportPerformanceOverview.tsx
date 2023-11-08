@@ -62,6 +62,11 @@ import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getPreviousPeriod, periodToReportingGranularity} from 'utils/reporting'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     formatMetricValue,
     formatTimeSeriesData,
@@ -331,9 +336,18 @@ export default function SupportPerformanceOverview() {
                             <BigNumberMetric
                                 isLoading={!customerSatisfactionTrend.data}
                             >
-                                {formatMetricValue(
-                                    customerSatisfactionTrend.data?.value
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: CUSTOMER_SATISFACTION_LABEL,
+                                        metricName:
+                                            TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        customerSatisfactionTrend.data?.value
+                                    )}
+                                </DrillDownModalTrigger>
                                 {!customerSatisfactionTrend.data?.value ? (
                                     <NoDataTooltip />
                                 ) : (
@@ -386,10 +400,21 @@ export default function SupportPerformanceOverview() {
                             <BigNumberMetric
                                 isLoading={!medianFirstResponseTimeTrend.data}
                             >
-                                {formatMetricValue(
-                                    medianFirstResponseTimeTrend.data?.value,
-                                    'duration'
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
+                                        metricName:
+                                            TicketMessagesMeasure.MedianFirstResponseTime,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        medianFirstResponseTimeTrend.data
+                                            ?.value,
+                                        'duration'
+                                    )}
+                                </DrillDownModalTrigger>
+
                                 {!medianFirstResponseTimeTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
@@ -432,10 +457,20 @@ export default function SupportPerformanceOverview() {
                             <BigNumberMetric
                                 isLoading={!medianResolutionTimeTrend.data}
                             >
-                                {formatMetricValue(
-                                    medianResolutionTimeTrend.data?.value,
-                                    'duration'
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: MEDIAN_RESOLUTION_TIME_LABEL,
+                                        metricName:
+                                            TicketMessagesMeasure.MedianResolutionTime,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        medianResolutionTimeTrend.data?.value,
+                                        'duration'
+                                    )}
+                                </DrillDownModalTrigger>
+
                                 {!medianResolutionTimeTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
@@ -475,9 +510,18 @@ export default function SupportPerformanceOverview() {
                             <BigNumberMetric
                                 isLoading={!messagesPerTicketTrend.data}
                             >
-                                {formatMetricValue(
-                                    messagesPerTicketTrend.data?.value
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: MESSAGES_PER_TICKET_LABEL,
+                                        metricName:
+                                            TicketMessagesMeasure.MessagesAverage,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        messagesPerTicketTrend.data?.value
+                                    )}
+                                </DrillDownModalTrigger>
                                 {!messagesPerTicketTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
@@ -507,9 +551,18 @@ export default function SupportPerformanceOverview() {
                                     openTicketsTrend.data?.prevValue
                                 )}
                             >
-                                {formatMetricValue(
-                                    openTicketsTrend.data?.value
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: OPEN_TICKETS_LABEL,
+                                        metricName: TicketMeasure.TicketCount,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        openTicketsTrend.data?.value
+                                    )}
+                                </DrillDownModalTrigger>
+
                                 {!openTicketsTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
@@ -541,9 +594,18 @@ export default function SupportPerformanceOverview() {
                                     closedTicketsTrend.data?.prevValue
                                 )}
                             >
-                                {formatMetricValue(
-                                    closedTicketsTrend.data?.value
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: TICKETS_CLOSED_LABEL,
+                                        metricName: TicketMeasure.TicketCount,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        closedTicketsTrend.data?.value
+                                    )}
+                                </DrillDownModalTrigger>
+
                                 {!closedTicketsTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
@@ -575,9 +637,18 @@ export default function SupportPerformanceOverview() {
                                     ticketsCreatedTrend.data?.prevValue
                                 )}
                             >
-                                {formatMetricValue(
-                                    ticketsCreatedTrend.data?.value
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: TICKETS_CREATED_LABEL,
+                                        metricName: TicketMeasure.TicketCount,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        ticketsCreatedTrend.data?.value
+                                    )}
+                                </DrillDownModalTrigger>
+
                                 {!ticketsCreatedTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
@@ -609,9 +680,19 @@ export default function SupportPerformanceOverview() {
                                     ticketsRepliedTrend.data?.prevValue
                                 )}
                             >
-                                {formatMetricValue(
-                                    ticketsRepliedTrend.data?.value
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: TICKETS_REPLIED_LABEL,
+                                        metricName:
+                                            HelpdeskMessageMeasure.TicketCount,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        ticketsRepliedTrend.data?.value
+                                    )}
+                                </DrillDownModalTrigger>
+
                                 {!ticketsRepliedTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}
@@ -641,9 +722,19 @@ export default function SupportPerformanceOverview() {
                                     messagesSentTrend.data?.prevValue
                                 )}
                             >
-                                {formatMetricValue(
-                                    messagesSentTrend.data?.value
-                                )}
+                                <DrillDownModalTrigger
+                                    metricData={{
+                                        title: MESSAGES_SENT_LABEL,
+                                        metricName:
+                                            HelpdeskMessageMeasure.MessageCount,
+                                        dateRange: statsFilters.period,
+                                    }}
+                                >
+                                    {formatMetricValue(
+                                        messagesSentTrend.data?.value
+                                    )}
+                                </DrillDownModalTrigger>
+
                                 {!messagesSentTrend.data?.value && (
                                     <NoDataTooltip />
                                 )}

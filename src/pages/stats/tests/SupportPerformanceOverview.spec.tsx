@@ -46,6 +46,7 @@ import {
 import useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import TrendBadge from 'pages/stats/TrendBadge'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 
 import SupportPerformanceOverview, {
     AGENTS_REPORT_RELEASE_DATE,
@@ -65,6 +66,11 @@ jest.mock(
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
+}))
+jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
+    DrillDownModalTrigger: ({
+        children,
+    }: ComponentProps<typeof DrillDownModalTrigger>) => children,
 }))
 jest.mock('hooks/reporting/metricTrends')
 const useCustomerSatisfactionTrendMock = assumeMock(
