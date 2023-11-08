@@ -11,12 +11,15 @@ import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/Secon
 import {IntegrationType} from '../../../../../models/integration/types'
 
 import css from './GorgiasChatIntegrationNavigation.less'
+import useIsQuickRepliesEnabled from './GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 
 type Props = {
     integration: Map<any, any>
 }
 
 const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
+    const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
+
     const integrationId: number = integration.get('id')
 
     const installationStatus = useAppSelector(getChatInstallationStatus)
@@ -31,9 +34,11 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
     return (
         <SecondaryNavbar>
             <NavLink to={`${baseURL}/campaigns`}>Campaigns</NavLink>
-            <NavLink to={`${baseURL}/quick_replies`} exact>
-                Quick replies
-            </NavLink>
+            {isQuickRepliesEnabled && (
+                <NavLink to={`${baseURL}/quick_replies`} exact>
+                    Quick replies
+                </NavLink>
+            )}
             <NavLink to={`${baseURL}/appearance`} exact>
                 Appearance
             </NavLink>

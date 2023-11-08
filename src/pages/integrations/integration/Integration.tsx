@@ -99,6 +99,7 @@ import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import EmailMigration from './components/email/EmailMigration/EmailMigration'
 import SmoochDeprecatedIntegration from './components/deprecated/SmoochDeprecatedIntegration'
+import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import {Tab} from './types'
 
 export const IntegrationDetail = ({
@@ -114,6 +115,8 @@ export const IntegrationDetail = ({
         integrationType: IntegrationType
         subId: string
     }>()
+
+    const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
 
     const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)
@@ -368,7 +371,7 @@ export const IntegrationDetail = ({
                     )
                 }
 
-                if (extra === Tab.QuickReplies) {
+                if (extra === Tab.QuickReplies && isQuickRepliesEnabled) {
                     return (
                         <GorgiasChatIntegrationQuickReplies
                             integration={integration}
