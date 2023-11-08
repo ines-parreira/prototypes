@@ -18,6 +18,7 @@ type Props = {
     image?: string
     price: number
     title: string
+    hasOptions?: boolean
     isHeadlessStore?: boolean
     position?: AttachmentPosition
     onClickEdit: () => void
@@ -29,6 +30,7 @@ export const ProductCardView = ({
     image,
     price,
     title,
+    hasOptions = false,
     isHeadlessStore = false,
     position,
     onClickEdit,
@@ -51,6 +53,15 @@ export const ProductCardView = ({
         })
         return price > 0 ? formatter.format(price) : ''
     }, [currency, price])
+
+    const buttonText = useMemo(() => {
+        if (isHeadlessStore || !isConvertSubscriber) {
+            return 'Show details'
+        } else if (hasOptions) {
+            return 'Select Options'
+        }
+        return 'Add to cart'
+    }, [isHeadlessStore, isConvertSubscriber, hasOptions])
 
     const renderFeaturedImage = () => {
         return (
@@ -88,7 +99,7 @@ export const ProductCardView = ({
                 )}
             </div>
             <button className={css.addToCart} style={buttonStyle}>
-                {isHeadlessStore ? 'Show details' : 'Add to cart'}
+                {buttonText}
             </button>
         </BaseProductCard>
     )

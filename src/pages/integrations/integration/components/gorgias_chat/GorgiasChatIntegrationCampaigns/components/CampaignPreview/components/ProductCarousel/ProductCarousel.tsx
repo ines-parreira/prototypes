@@ -108,6 +108,7 @@ export const ProductCarousel = ({
                                 position={product.position}
                                 productId={product.id}
                                 title={product.title}
+                                hasOptions={!!product.variant_name}
                                 isHeadlessStore={isHeadlessStore}
                             />
                         </div>

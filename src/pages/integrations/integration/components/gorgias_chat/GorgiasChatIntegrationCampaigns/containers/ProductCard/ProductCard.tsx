@@ -27,6 +27,7 @@ type Props = {
     price: number
     productId: number
     title: string
+    hasOptions?: boolean
     isHeadlessStore?: boolean
     position?: AttachmentPosition
 }
@@ -40,6 +41,7 @@ export const ProductCard = ({
     price,
     productId,
     title,
+    hasOptions,
 }: Props) => {
     const dispatch = useAppDispatch()
     const [isEditOn, setIsEdit] = useState(false)
@@ -72,6 +74,7 @@ export const ProductCard = ({
             position={position}
             price={price}
             title={title}
+            hasOptions={hasOptions}
             onClickEdit={handleClickEdit}
         />
     )
