@@ -51,6 +51,9 @@ jest.mock('pages/automation/workflows/hooks/useWorkflowApi', () => ({
         fetchWorkflowConfigurations: jest.fn(() => Promise.resolve([])),
     })),
 }))
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<

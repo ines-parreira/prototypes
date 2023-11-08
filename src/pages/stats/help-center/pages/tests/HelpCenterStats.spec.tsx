@@ -32,6 +32,9 @@ jest.mock('../../hooks/useNoSearchResultsMetrics', () => ({
 jest.mock('../../hooks/useSearchResultRange', () => ({
     useSearchResultRange: () => ({data: [], isLoading: true}),
 }))
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
 
 const mockStore = configureMockStore([thunk])
 

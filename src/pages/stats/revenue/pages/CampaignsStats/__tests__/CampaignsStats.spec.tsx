@@ -21,6 +21,9 @@ jest.mock('../../../containers/RevenueFilters', () => ({
         return <div>Filters</div>
     },
 }))
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
 
 describe('CampaignsStats', () => {
     const renderWithStore = (state: Partial<RootState>, props = {}) =>

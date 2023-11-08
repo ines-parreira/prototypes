@@ -88,6 +88,10 @@ const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 jest.mock('pages/stats/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
 
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
+
 jest.mock('services/reporting/automateOverviewReportingService')
 const saveReportMock = assumeMock(saveReport)
 

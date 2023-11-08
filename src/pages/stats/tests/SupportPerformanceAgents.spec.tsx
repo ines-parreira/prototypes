@@ -34,6 +34,9 @@ jest.mock('hooks/reporting/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 jest.mock('hooks/reporting/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
 const componentMock = () => <div />
 
 describe('SupportPerformanceAgents', () => {

@@ -31,6 +31,9 @@ jest.mock(
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
 jest.mock(
     'pages/common/components/FeaturePaywall/FeaturePaywall',
     () =>

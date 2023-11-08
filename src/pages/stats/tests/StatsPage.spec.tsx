@@ -3,6 +3,9 @@ import {render} from '@testing-library/react'
 
 import StatsPage from '../StatsPage'
 
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
 describe('StatsPage', () => {
     it('should render the title, children and filters', () => {
         const {container} = render(

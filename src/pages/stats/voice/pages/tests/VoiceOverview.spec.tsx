@@ -14,6 +14,10 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {billingState} from 'fixtures/billing'
 import VoiceOverview from '../VoiceOverview'
 
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('VoiceOverview', () => {

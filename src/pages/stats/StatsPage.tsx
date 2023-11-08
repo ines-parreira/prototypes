@@ -4,6 +4,7 @@ import {Container} from 'reactstrap'
 
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
+import {DrillDownModal} from 'pages/stats/DrillDownModal'
 
 import css from './StatsPage.less'
 
@@ -34,6 +35,7 @@ export default function StatsPage({
                     {children}
                 </Container>
             </div>
+            <DrillDownModal />
         </div>
     )
 }
