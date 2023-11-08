@@ -18,7 +18,7 @@ import {
     isPhoneIntegration,
 } from 'models/integration/types'
 import {RootState} from 'state/types'
-
+import {getChannelBySlug} from 'services/channels'
 import {
     getBaseEmailIntegration,
     getChannelByTypeAndAddress,
@@ -50,6 +50,7 @@ import {
     getIntegrationByIdAndType,
     getIntegrationByAddress,
     getSendersForChannel,
+    getIntegrationChannel,
 } from '../selectors'
 
 jest.mock('api/queryClient', () => ({
@@ -223,6 +224,39 @@ describe('integrations selectors', () => {
                 'support@acme.gorgias.io'
             )(state)
         ).toMatchSnapshot()
+    })
+
+    describe('getIntegrationChannel()', () => {
+        it('should return the legacy channel for legacy integrations', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'email',
+                        },
+                    ],
+                }),
+            } as RootState
+            expect(getIntegrationChannel(1)(state)).toEqual(
+                getChannelBySlug('email')
+            )
+        })
+
+        it('should return the new channels for app integrations', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'app',
+                            application_id: mockApplications[0].id,
+                        },
+                    ],
+                }),
+            } as RootState
+            expect(getIntegrationChannel(1)(state)).toEqual(mockChannels[0])
+        })
     })
 
     describe('getChannelsForSourceType()', () => {

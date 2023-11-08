@@ -3,16 +3,18 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {channels as mockChannels} from 'fixtures/channels'
 
 import * as Avatar from 'pages/common/components/Avatar/Avatar'
-import {IntegrationType} from '../../../../models/integration/types'
+import {IntegrationType} from 'models/integration/types'
+import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
-} from '../../../../business/types/ticket'
+} from 'business/types/ticket'
+import * as channelsService from 'services/channels'
 import * as labels from '../labels'
-import {RECHARGE_INTEGRATION_TYPE} from '../../../../constants/integration'
 
 /* DatetimeLabel uses Math.random.
  * Mock it to always return the same data.
@@ -29,6 +31,10 @@ global.Math = mockMath
 const mockStore = configureMockStore()
 
 jest.mock('../../components/Tooltip', () => () => 'TooltipMock')
+jest.mock('state/integrations/selectors', () => ({
+    getIntegrationChannel: () => () => mockChannels[0],
+}))
+jest.spyOn(channelsService, 'toChannel').mockReturnValue(mockChannels[0])
 
 const AvatarSpy = jest.spyOn(Avatar, 'default')
 
@@ -167,10 +173,12 @@ describe('components utils: labels', () => {
                         ).container
                     } else {
                         result = render(
-                            <labels.RenderLabel
-                                field={fromJS({name: type})}
-                                value={fromJS(value)}
-                            />
+                            <Provider store={mockStore({})}>
+                                <labels.RenderLabel
+                                    field={fromJS({name: type})}
+                                    value={fromJS(value)}
+                                />
+                            </Provider>
                         ).container
                     }
 
@@ -182,67 +190,92 @@ describe('components utils: labels', () => {
         describe('ValueRendered', () => {
             it('should display the address to prevent confusion', () => {
                 const {container} = render(
-                    <labels.IntegrationsDetailLabel
-                        integration={fromJS({
-                            type: IntegrationType.Email,
-                            name: 'common',
-                            meta: {address: 'specific'},
-                        })}
-                    />
+                    <Provider store={mockStore({})}>
+                        <labels.IntegrationsDetailLabel
+                            integration={fromJS({
+                                type: IntegrationType.Email,
+                                name: 'common',
+                                meta: {address: 'specific'},
+                            })}
+                        />
+                    </Provider>
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display the name because the address is empty', () => {
                 const {container} = render(
-                    <labels.IntegrationsDetailLabel
-                        integration={fromJS({
-                            type: IntegrationType.Email,
-                            name: 'common',
-                            meta: {address: ''},
-                        })}
-                    />
+                    <Provider store={mockStore({})}>
+                        <labels.IntegrationsDetailLabel
+                            integration={fromJS({
+                                type: IntegrationType.Email,
+                                name: 'common',
+                                meta: {address: ''},
+                            })}
+                        />
+                    </Provider>
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display the name because the type is facebook', () => {
                 const {container} = render(
-                    <labels.IntegrationsDetailLabel
-                        integration={fromJS({
-                            type: IntegrationType.Facebook,
-                            name: 'common',
-                            meta: {address: 'specific'},
-                        })}
-                    />
+                    <Provider store={mockStore({})}>
+                        <labels.IntegrationsDetailLabel
+                            integration={fromJS({
+                                type: IntegrationType.Facebook,
+                                name: 'common',
+                                meta: {address: 'specific'},
+                            })}
+                        />
+                    </Provider>
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display name and address formatted in-lined', () => {
                 const {container} = render(
-                    <labels.IntegrationsDetailLabel
-                        integration={fromJS({
-                            type: IntegrationType.Gmail,
-                            name: 'common',
-                            address: 'inlined email',
-                        })}
-                    />
+                    <Provider store={mockStore({})}>
+                        <labels.IntegrationsDetailLabel
+                            integration={fromJS({
+                                type: IntegrationType.Gmail,
+                                name: 'common',
+                                address: 'inlined email',
+                            })}
+                        />
+                    </Provider>
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display name and address formatted as aircall eg: with address into parenthesis', () => {
                 const {container} = render(
-                    <labels.IntegrationsDetailLabel
-                        integration={fromJS({
-                            type: IntegrationType.Aircall,
-                            name: 'common',
-                            address: 'aircall style',
-                        })}
-                    />
+                    <Provider store={mockStore({})}>
+                        <labels.IntegrationsDetailLabel
+                            integration={fromJS({
+                                type: IntegrationType.Aircall,
+                                name: 'common',
+                                address: 'aircall style',
+                            })}
+                        />
+                    </Provider>
                 )
                 expect(container.firstChild).toMatchSnapshot()
+            })
+
+            it('should display correctly for app type integrations', () => {
+                const {getByAltText} = render(
+                    <Provider store={mockStore({})}>
+                        <labels.IntegrationsDetailLabel
+                            integration={fromJS({
+                                id: 1,
+                                type: IntegrationType.App,
+                                name: 'An App Integration',
+                            })}
+                        />
+                    </Provider>
+                )
+                expect(getByAltText('TikTok Shop')).toBeDefined()
             })
         })
     })

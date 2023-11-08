@@ -21,9 +21,17 @@ import {RootState} from 'state/types'
 import {getCurrentUserState} from 'state/currentUser/selectors'
 import {getNewPhoneNumbers as getNewPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
-import {ChannelLike} from 'services/channels'
+import {
+    Channel,
+    ChannelLike,
+    getChannelById,
+    getChannelBySlug,
+} from 'services/channels'
 import {SourceAddress} from 'models/ticket/types'
-import {getApplicationsByChannel} from 'services/applications'
+import {
+    getApplicationById,
+    getApplicationsByChannel,
+} from 'services/applications'
 import {
     isSourceAddress,
     isTicketChannel,
@@ -469,6 +477,35 @@ export const getChannelByTypeAndAddress = (
                 )
                 .first() as Map<any, any>) || fromJS({})
     )
+
+export const getIntegrationChannel = (
+    id: number
+): ((state: RootState) => Channel | undefined) =>
+    createSelector(getIntegrationById(id), (integration) => {
+        const type = integration.get('type')
+        if (type !== IntegrationType.App && isTicketMessageSourceType(type)) {
+            return getChannelBySlug(type)
+        }
+
+        const id = integration.get('id')
+        if (!id) {
+            return
+        }
+
+        const applicationId = integration.get('application_id')
+
+        if (!applicationId) {
+            return
+        }
+
+        const application = getApplicationById(applicationId)
+        const channelId = application?.channel_id
+        if (!channelId) {
+            return
+        }
+
+        return getChannelById(channelId)
+    })
 
 export const getChannelSignature = (type: IntegrationType, address: string) =>
     createSelector(

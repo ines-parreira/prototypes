@@ -134,11 +134,13 @@ exports[`components utils: labels RenderLabel ValueRendered should display name 
 
 exports[`components utils: labels RenderLabel ValueRendered should display name and address formatted in-lined 1`] = `
 <span>
-  <i
-    class="icon d-inline-block material-icons mr-2"
-  >
-    email
-  </i>
+  <img
+    alt="TikTok Shop"
+    class="icon d-inline-block newIcon mr-2"
+    height="13px"
+    src="https://gorgias-assets.gorgias.io/static/public/img/tiktok-shop.svg"
+    width="13px"
+  />
   common &lt;inlined email&gt;
 </span>
 `;

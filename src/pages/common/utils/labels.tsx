@@ -26,6 +26,8 @@ import {getTeams} from 'state/teams/selectors'
 import {RootState} from 'state/types'
 import {parseTimeDelta} from 'tickets/common/utils'
 import {formatDatetime, humanizeString, isImmutable} from 'utils'
+import useAppSelector from 'hooks/useAppSelector'
+import {getIntegrationChannel} from 'state/integrations/selectors'
 
 import css from './labels.less'
 
@@ -305,6 +307,21 @@ export const IntegrationsDetailLabel = ({
     integration: Map<any, any>
 }) => {
     const type = integration.get('type')
+    const channel =
+        useAppSelector((state) => {
+            const id = integration.get('id')
+            if (!id) {
+                return
+            }
+
+            const channel = getIntegrationChannel(id)(state)
+            if (!channel) {
+                return
+            }
+
+            return channel?.slug
+        }) ?? type
+
     let label = integration.get('name', integration.get('address'))
     const address = (integration.get('address') ||
         integration.getIn(['meta', 'address'])) as string
@@ -317,7 +334,7 @@ export const IntegrationsDetailLabel = ({
 
     return (
         <span>
-            <SourceIcon type={integration.get('type')} className="mr-2" />
+            <SourceIcon type={channel} className="mr-2" />
             {label}
         </span>
     )
