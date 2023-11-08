@@ -6,6 +6,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
+import {ThemeProvider} from 'theme'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
@@ -90,10 +91,12 @@ describe('<ConnectToShopSection />', () => {
         const onUpdate = jest.fn()
 
         const {container, getAllByText, getByText} = render(
-            <ConnectToShopSection
-                shopName={getHelpCentersResponseFixture.data[0].shop_name}
-                onUpdate={onUpdate}
-            />,
+            <ThemeProvider>
+                <ConnectToShopSection
+                    shopName={getHelpCentersResponseFixture.data[0].shop_name}
+                    onUpdate={onUpdate}
+                />
+            </ThemeProvider>,
             {wrapper: ReduxProvider}
         )
 
@@ -103,10 +106,10 @@ describe('<ConnectToShopSection />', () => {
             fireEvent.click(getAllByText('Connect')[0])
         })
 
-        await waitFor(() => getAllByText('Select store'))
+        await waitFor(() => getAllByText('Select a store'))
 
         act(() => {
-            fireEvent.click(getAllByText('Select store')[0])
+            fireEvent.click(getAllByText('Select a store')[0])
         })
 
         await waitFor(() => getByText('meow-shop'))
@@ -118,7 +121,7 @@ describe('<ConnectToShopSection />', () => {
         })
 
         act(() => {
-            fireEvent.click(getAllByText('Connect')[1])
+            fireEvent.click(getAllByText('Connect Store')[0])
         })
 
         expect(onUpdate).toBeCalledWith({

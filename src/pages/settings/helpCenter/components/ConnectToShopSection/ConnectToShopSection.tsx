@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
+import classNames from 'classnames'
+import {useTheme} from 'theme'
 import shopify from 'assets/img/integrations/shopify.png'
 
 import Button from 'pages/common/components/button/Button'
@@ -34,6 +36,7 @@ export const ConnectToShopSection = ({
     const [connectModalOpen, setConnectModalOpen] = useState(false)
     const [selectedShop, setSelectedShop] = useState(shopName)
     const [showWarning, setShowWarning] = useState(true)
+    const theme = useTheme()
 
     useEffect(() => {
         setSelectedShop(shopName)
@@ -146,11 +149,11 @@ export const ConnectToShopSection = ({
 
             <DEPRECATED_Modal
                 isOpen={connectModalOpen}
-                className={css['modal-centered']}
+                className={classNames(css['modal-centered'], theme)}
                 header={shopName ? 'Change store' : 'Connect store'}
                 onClose={() => setConnectModalOpen(false)}
                 footer={
-                    <div>
+                    <div className={css.buttonsWrapper}>
                         <Button
                             intent="secondary"
                             onClick={() => setConnectModalOpen(false)}
@@ -159,7 +162,6 @@ export const ConnectToShopSection = ({
                         </Button>
 
                         <Button
-                            className="ml-3"
                             isDisabled={selectedShop === null}
                             onClick={() => {
                                 onUpdate({
@@ -171,7 +173,7 @@ export const ConnectToShopSection = ({
                                 setConnectModalOpen(false)
                             }}
                         >
-                            {shopName ? 'Change Store' : 'Connect'}
+                            {shopName ? 'Change Store' : 'Connect Store'}
                         </Button>
                     </div>
                 }
@@ -195,12 +197,13 @@ export const ConnectToShopSection = ({
                     <SelectField
                         value={selectedShop}
                         fullWidth
-                        placeholder="Select store"
+                        placeholder="Select a store"
                         onChange={(value) => {
                             // this type cast is safe as all values are string
                             setSelectedShop(value as string)
                         }}
                         options={shopifyShopsOptions}
+                        icon={selectedShop ? '' : 'store'}
                     />
                 </>
             </DEPRECATED_Modal>
