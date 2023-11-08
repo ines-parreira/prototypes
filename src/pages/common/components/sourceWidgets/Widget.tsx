@@ -1,20 +1,19 @@
 import React from 'react'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 
 import {prepareWidgetToDisplay} from '../infobar/utils'
 import Field from './widgets/Field'
 import List from './widgets/List'
 import Card from './widgets/Card'
 import Wrapper from './widgets/Wrapper'
+import {WidgetProps} from './widgetReference'
 
-type Props = {
-    parent: Map<string, unknown>
-    source: Map<string, unknown>
-    widget: Map<string, unknown>
-    template: Map<any, any>
-}
-
-export default function Widget({parent, source, widget, template}: Props) {
+export default function Widget({
+    parent,
+    source,
+    widget,
+    template,
+}: WidgetProps) {
     const {updatedTemplate, data, type, path} = prepareWidgetToDisplay(
         template,
         source,

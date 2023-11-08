@@ -20,12 +20,12 @@ import {canDrop} from 'pages/common/components/infobar/utils'
 import {CardHeaderIcon} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderIcon'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
-import InfobarWidget from '../InfobarWidget'
+// This is to avoid circular dependencies while doing recursion
+import {widgetReference} from '../widgetReference'
 import {getWidgetTitle} from '../helpers'
 import WidgetEdit, {EditionHiddenField} from './forms/WidgetEdit'
 import {StaticField} from './StaticField'
 import CustomActions from './customActions'
-
 import css from './Card.less'
 
 type Props = {
@@ -287,6 +287,7 @@ export class Card extends React.Component<
             Wrapper,
         } = this.props
 
+        const InfobarWidget = widgetReference.Widget
         const ap = template.get('absolutePath')
         const tp = template.get('templatePath') as string
 

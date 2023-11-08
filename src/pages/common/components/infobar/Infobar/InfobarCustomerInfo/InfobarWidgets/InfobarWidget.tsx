@@ -36,15 +36,7 @@ import yotpo from './widgets/yotpo'
 import bigcommerce from './widgets/bigcommerce'
 import woocommerce from './widgets/woocommerce'
 import {infobarWidgetShouldRender} from './predicates'
-
-type Props = {
-    parent?: Map<any, any>
-    source?: Maybe<Map<string, unknown>>
-    widget: Map<string, unknown>
-    template: Map<unknown, unknown>
-    open?: boolean
-    removeBorderTop?: boolean
-}
+import {WidgetProps} from './widgetReference'
 
 export default function InfobarWidget({
     parent,
@@ -53,7 +45,7 @@ export default function InfobarWidget({
     template,
     open = false,
     removeBorderTop = false,
-}: Props) {
+}: WidgetProps) {
     const {isEditing} = useContext(EditionContext)
     if (!infobarWidgetShouldRender(source)) {
         return null

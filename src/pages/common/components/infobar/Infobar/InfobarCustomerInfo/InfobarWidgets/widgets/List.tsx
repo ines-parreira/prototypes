@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import classnames from 'classnames'
 import {Map, List} from 'immutable'
 
-import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget'
-
 import {compare} from 'utils'
 
+// This is to avoid circular dependencies while doing recursion
+import {widgetReference} from '../widgetReference'
 import WidgetListContext from './WidgetListContext'
 
 import css from './List.less'
@@ -43,6 +43,7 @@ class ListInfobarWidget extends Component<OwnProps> {
         )
             return null
 
+        const InfobarWidget = widgetReference.Widget
         const updatedTemplate = template.set(
             'absolutePath',
             (template.get('absolutePath') as List<string>).concat(['[]'])

@@ -27,6 +27,10 @@ import Placeholder from './widgets/Placeholder'
 import {infobarWidgetShouldRender} from './predicates'
 import InfobarWidget from './InfobarWidget'
 
+// This is to avoid circular dependencies while doing recursion
+import {widgetReference} from './widgetReference'
+widgetReference.Widget = InfobarWidget
+
 type Props = {
     context: WidgetContextType
     source: Map<string, unknown>

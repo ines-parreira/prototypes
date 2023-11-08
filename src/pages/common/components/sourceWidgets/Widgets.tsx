@@ -5,11 +5,15 @@ import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
 import css from './Widgets.less'
 import Widget from './Widget'
+import {widgetReference} from './widgetReference'
 
 type Props = {
     source: Map<string, unknown>
     widgets: List<Map<string, unknown>>
 }
+
+// This is to avoid circular dependencies while doing recursion
+widgetReference.Widget = Widget
 
 export default function Widgets({source, widgets}: Props) {
     return (

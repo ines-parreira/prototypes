@@ -6,7 +6,8 @@ import _last from 'lodash/last'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {stripLastListsFromPath} from 'pages/common/components/infobar/utils'
 
-import SourceWidget from '../Widget'
+// This is to avoid circular dependencies while doing recursion
+import {widgetReference} from '../widgetReference'
 import css from './Card.less'
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 }
 
 export default function Card({source, widget, template, isParentList}: Props) {
+    const SourceWidget = widgetReference.Widget
     const absolutePath = template.get('absolutePath') as string[]
     const templatePath = template.get('templatePath') as string
 

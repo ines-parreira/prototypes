@@ -15,7 +15,9 @@ import infobarWidgetCss from 'pages/common/components/infobar/Infobar/InfobarCus
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 
 import {WidgetType} from 'state/widgets/types'
-import SourceWidget from '../Widget'
+
+// This is to avoid circular dependencies while doing recursion
+import {widgetReference} from '../widgetReference'
 import css from './Wrapper.less'
 
 type Props = {
@@ -26,6 +28,7 @@ type Props = {
 }
 
 export default function Wrapper({widget, template, source, parent}: Props) {
+    const SourceWidget = widgetReference.Widget
     const absolutePath = template.get('absolutePath') as string[]
     const templatePath = template.get('templatePath') as string
     const children = template.get('widgets', fromJS([])) as List<

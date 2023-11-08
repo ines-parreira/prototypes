@@ -2,7 +2,8 @@ import React from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
-import SourceWidget from '../Widget'
+// This is to avoid circular dependencies while doing recursion
+import {widgetReference} from '../widgetReference'
 
 type Props = {
     source: Map<string, unknown>
@@ -17,6 +18,7 @@ export default function List({
     template,
     isParentList = false,
 }: Props) {
+    const SourceWidget = widgetReference.Widget
     const updatedTemplate = template.set(
         'absolutePath',
         (template.get('absolutePath') as string[]).concat(['[]'])

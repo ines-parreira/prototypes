@@ -32,10 +32,11 @@ import {
     getWidgetId,
     getWidgetTitle,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
+// This is to avoid circular dependencies while doing recursion
+import {widgetReference} from '../widgetReference'
 import css from './Wrapper.less'
 import WrapperEdit from './forms/WrapperEdit'
 
@@ -56,6 +57,7 @@ export default function Wrapper({widget, template, source}: Props) {
         setPopupOpen(false)
     }, [])
 
+    const InfobarWidget = widgetReference.Widget
     const absolutePath = template.get('absolutePath', []) as string[]
     const templatePath = template.get('templatePath', '') as string
 

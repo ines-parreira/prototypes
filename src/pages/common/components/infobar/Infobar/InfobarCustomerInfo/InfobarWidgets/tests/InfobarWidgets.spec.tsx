@@ -23,6 +23,8 @@ import {IntegrationType} from 'models/integration/constants'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
 import InfobarWidgets from '../InfobarWidgets'
+import {widgetReference} from '../widgetReference'
+import InfobarWidget from '../InfobarWidget'
 
 describe('InfobarWidgets component', () => {
     const httpIntegrationId = 1
@@ -315,6 +317,21 @@ describe('InfobarWidgets component', () => {
         expect(screen.queryAllByText(/bigcommerce/i).length).toBeFalsy()
     })
 
+    it('should replace the empty dummy widget reference with the real InfobarWidget component', () => {
+        render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: true}}>
+                    <InfobarWidgets
+                        widgets={baseWidgets}
+                        context={WidgetContextType.Ticket}
+                        source={baseSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+        expect(widgetReference.Widget).toEqual(InfobarWidget)
+    })
+
     it('should display all possible widgets in editing mode', () => {
         render(
             <Provider store={store}>
@@ -334,6 +351,7 @@ describe('InfobarWidgets component', () => {
                 )
             ).toBeTruthy()
         })
+        expect(widgetReference.Widget).toEqual(InfobarWidget)
     })
 
     it('should not break if data source is null with custom actions', () => {
