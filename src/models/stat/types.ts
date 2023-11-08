@@ -10,6 +10,7 @@ export type StatsFilters = {
     integrations?: number[]
     tags?: number[]
     agents?: number[]
+    helpCenters?: number[]
     channels?: ChannelIdentifier[]
     campaigns?: string[]
     score?: string[]

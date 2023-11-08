@@ -34,6 +34,7 @@ describe('reporting utils', () => {
                     integrations: [1],
                     agents: [2],
                     tags: [1, 2],
+                    helpCenters: [1],
                 })
             ).toMatchSnapshot()
         })

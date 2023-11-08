@@ -17,6 +17,7 @@ export enum HelpCenterTrackingEventDimensions {
 export enum HelpCenterTrackingEventMember {
     PeriodStart = 'HelpCenterTrackingEvent.periodStart',
     PeriodEnd = 'HelpCenterTrackingEvent.periodEnd',
+    HelpCenterId = 'HelpCenterTrackingEvent.helpCenterId',
 }
 
 export enum HelpCenterTrackingEventMeasures {

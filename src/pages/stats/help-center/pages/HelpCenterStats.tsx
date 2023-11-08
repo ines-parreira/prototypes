@@ -1,40 +1,58 @@
 import React, {useState} from 'react'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import useAppSelector from '../../../../hooks/useAppSelector'
-import {getTimezone} from '../../../../state/currentUser/selectors'
-import {HelpCenterTrackingEventMeasures} from '../../../../models/reporting/cubes/HelpCenterTrackingEventCube'
-import {DEFAULT_TIMEZONE} from '../../revenue/constants/components'
-import StatsPage from '../../StatsPage'
-import DashboardSection from '../../DashboardSection'
-import OverviewCard from '../components/OverviewCard/OverviewCard'
-import DashboardGridCell from '../../DashboardGridCell'
-import {useHelpCenterTrend} from '../hooks/useHelpCenterTrend'
-import TipsToggle from '../../TipsToggle'
+import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTimezone} from 'state/currentUser/selectors'
+import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
+import StatsPage from 'pages/stats/StatsPage'
+import DashboardSection from 'pages/stats/DashboardSection'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import TipsToggle from 'pages/stats/TipsToggle'
+import {getHelpCenterDomain} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
+import {HelpCenter} from 'models/helpCenter/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import {NonEmptyArray} from 'types'
+import {isNotEmptyArray} from 'utils'
 
+import OverviewCard from '../components/OverviewCard/OverviewCard'
+import {useHelpCenterTrend} from '../hooks/useHelpCenterTrend'
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
 import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut'
 import SearchTermsTable from '../components/SearchTermsTable/SearchTermsTable'
 import NoSearchTable from '../components/NoSearchTable/NoSearchTable'
+import HelpCenterFilter from '../components/HelpCenterFilter/HelpCenterFilter'
+import {useHelpCenterStatsFilters} from '../hooks/useHelpCenterStatsFilters'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
 // This is temp data before we implement filters
 const START_DATE = new Date().toString()
-const END_DATE = new Date('01/08/2023').toString()
-const HELP_CENTER_DOMAIN = 'acme'
-const HELP_CENTER_ID = 1
+const END_DATE = new Date('01/01/2023').toString()
 
-const HelpCenterStats = () => {
-    const timezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
-    )
-    const statsFilters = {
+type HelpCenterStatsComponentProps = {
+    helpCenters: NonEmptyArray<HelpCenter>
+}
+
+const HelpCenterStatsComponent = ({
+    helpCenters,
+}: HelpCenterStatsComponentProps) => {
+    const {statsFilters, setSelectedFilter} = useHelpCenterStatsFilters({
+        helpCenters: [helpCenters[0].id],
         period: {
             end_datetime: START_DATE,
             start_datetime: END_DATE,
         },
-    }
+    })
+    const timezone = useAppSelector(
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    )
+    const selectedHelpCenter =
+        helpCenters.find((helpCenter) =>
+            statsFilters.helpCenters.includes(helpCenter.id)
+        ) ?? helpCenters[0]
     const articleViewMetricTrend = useHelpCenterTrend({
         statsFilters,
         timezone,
@@ -54,6 +72,13 @@ const HelpCenterStats = () => {
     return (
         <div className="full-width">
             <StatsPage title={PAGE_TITLE_HELP_CENTER} filters={<div></div>}>
+                <DashboardSection title="">
+                    <HelpCenterFilter
+                        helpCenters={helpCenters}
+                        selectedHelpCenterIds={statsFilters.helpCenters ?? []}
+                        setSelectedHelpCenter={setSelectedFilter}
+                    />
+                </DashboardSection>
                 <DashboardSection
                     title="Overview"
                     titleExtra={
@@ -136,8 +161,10 @@ const HelpCenterStats = () => {
                         <PerformanceByArticle
                             statsFilters={statsFilters}
                             timezone={timezone}
-                            helpCenterDomain={HELP_CENTER_DOMAIN}
-                            helpCenterId={HELP_CENTER_ID}
+                            helpCenterDomain={getHelpCenterDomain(
+                                selectedHelpCenter
+                            )}
+                            helpCenterId={selectedHelpCenter.id}
                         />
                     </DashboardGridCell>
                 </DashboardSection>
@@ -164,6 +191,31 @@ const HelpCenterStats = () => {
                 <AnalyticsFooter />
             </StatsPage>
         </div>
+    )
+}
+
+const HelpCenterStats = () => {
+    const {helpCenters, isLoading} = useHelpCenterList({
+        per_page: HELP_CENTER_MAX_CREATION,
+    })
+
+    if (isLoading) {
+        return (
+            <div className="full-width">
+                <StatsPage title={PAGE_TITLE_HELP_CENTER} filters={<></>}>
+                    <Loader
+                        size="24px"
+                        data-testid="help-center-stats-loader"
+                    />
+                </StatsPage>
+            </div>
+        )
+    }
+
+    return isNotEmptyArray(helpCenters) ? (
+        <HelpCenterStatsComponent helpCenters={helpCenters} />
+    ) : (
+        <div>TODO: Implement empty state</div>
     )
 }
 
