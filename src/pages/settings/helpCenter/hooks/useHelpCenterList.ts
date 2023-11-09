@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
@@ -31,8 +31,10 @@ export const useHelpCenterList = (
     params: Omit<Paths.ListHelpCenters.QueryParameters, 'page'>
 ): HelpCenterListHook => {
     const dispatch = useAppDispatch()
-    const helpCenters = Object.values(useAppSelector(getHelpCenters)).map(
-        (hc) => hc
+    const helpCenterByid = useAppSelector(getHelpCenters)
+    const helpCenters = useMemo(
+        () => Object.values(helpCenterByid).map((hc) => hc),
+        [helpCenterByid]
     )
 
     const {client} = useHelpCenterApi()
@@ -46,42 +48,48 @@ export const useHelpCenterList = (
         [pagination]
     )
 
-    const fetchHelpCenters = async (page: number) => {
-        if (client) {
-            try {
-                setLoading(true)
+    const fetchHelpCenters = useCallback(
+        async (page: number) => {
+            if (client) {
+                try {
+                    setLoading(true)
 
-                const {
-                    data: {meta, data: fetchedHelpCenters},
-                } = await client.listHelpCenters({
-                    ...params,
-                    page: page + 1,
-                })
-
-                dispatch(
-                    helpCentersFetched([...helpCenters, ...fetchedHelpCenters])
-                )
-
-                setPagination({page: meta.page, nbPages: meta.nb_pages})
-            } catch (err) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to retrieve the Help Center list',
-                        status: NotificationStatus.Error,
+                    const {
+                        data: {meta, data: fetchedHelpCenters},
+                    } = await client.listHelpCenters({
+                        ...params,
+                        page: page + 1,
                     })
-                )
-                reportError(err as Error)
-            } finally {
-                setLoading(false)
-            }
-        }
-    }
 
-    const fetchMore = async () => {
+                    dispatch(
+                        helpCentersFetched([
+                            ...helpCenters,
+                            ...fetchedHelpCenters,
+                        ])
+                    )
+
+                    setPagination({page: meta.page, nbPages: meta.nb_pages})
+                } catch (err) {
+                    void dispatch(
+                        notify({
+                            message: 'Failed to retrieve the Help Center list',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                    reportError(err as Error)
+                } finally {
+                    setLoading(false)
+                }
+            }
+        },
+        [client, dispatch, helpCenters, params]
+    )
+
+    const fetchMore = useCallback(async () => {
         if (hasMore && !isLoading) {
             await fetchHelpCenters(pagination.page)
         }
-    }
+    }, [fetchHelpCenters, hasMore, isLoading, pagination.page])
 
     useEffect(() => {
         if (client) {
@@ -90,5 +98,8 @@ export const useHelpCenterList = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client])
 
-    return {helpCenters, isLoading, hasMore, fetchMore}
+    return useMemo(
+        () => ({helpCenters, isLoading, hasMore, fetchMore}),
+        [fetchMore, hasMore, helpCenters, isLoading]
+    )
 }
