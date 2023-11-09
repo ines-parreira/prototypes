@@ -33,9 +33,6 @@ const vendorsBundleFile = __PRODUCTION__
     ? `helpdesk.vendors.${HASH}.js`
     : 'helpdesk.vendors.js'
 
-let circularDepsCount = 0
-let cdHandle
-
 const mode = __PRODUCTION__ ? 'production' : 'development'
 const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
 const devServer = {
@@ -251,20 +248,7 @@ module.exports = (env = {}) => {
         plugins: [
             new CircularDependencyPlugin({
                 exclude: /node_modules/,
-                onStart: () => {
-                    circularDepsCount = 0
-                    cdHandle = fs.openSync(`${__dirname}/circular_deps`, 'w')
-                },
-                onDetected({paths}) {
-                    circularDepsCount++
-                    fs.appendFileSync(cdHandle, `${paths.join(' -> ')}\n`, 'utf8')
-                },
-                onEnd({compilation}) {
-                    if (circularDepsCount > 0) {
-                        console.info(`\n\n${circularDepsCount} circular dependencies detected, check ./circular_deps for a full list.`)
-                    }
-                    fs.closeSync(cdHandle)
-                },
+                failOnError: true,
             }),
             new MiniCssExtractPlugin({
                 filename: ({chunk}, assetInfo) => {
