@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {OrderDirection} from 'models/api/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {StatsFilters} from 'models/stat/types'
 import {ReportingFilterOperator} from 'models/reporting/types'
@@ -6,8 +7,15 @@ import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventMember,
+    HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {searchResultRangeQueryFactory} from '../searchResult'
+import {
+    noSearchResultsCountQueryFactory,
+    noSearchResultsQueryFactory,
+    searchResultQueryCountFactory,
+    searchResultRangeQueryFactory,
+    searchResultTermsQueryFactory,
+} from '../searchResult'
 
 describe('help center queries factories', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -22,12 +30,59 @@ describe('help center queries factories', () => {
 
     describe.each([
         [
-            'FirstResponseTimeWithAutomation',
+            'searchResultRangeQueryFactory',
             [HelpCenterTrackingEventMeasures.SearchRequestedCount],
             [HelpCenterTrackingEventDimensions.SearchResultRange],
+            undefined,
+            undefined,
             searchResultRangeQueryFactory,
         ],
-    ])('%s', (_testName, measures, dimensions, getFactory) => {
+        [
+            'searchResultTermsQueryFactory',
+            [
+                HelpCenterTrackingEventMeasures.SearchRequestedQueryCount,
+                HelpCenterTrackingEventMeasures.SearchArticlesClickedCount,
+            ],
+            [HelpCenterTrackingEventDimensions.SearchQuery],
+            [
+                [
+                    HelpCenterTrackingEventMeasures.SearchRequestedQueryCount,
+                    OrderDirection.Desc,
+                ],
+            ],
+            undefined,
+            searchResultTermsQueryFactory,
+        ],
+        [
+            'noSearchResultsQueryFactory',
+            [HelpCenterTrackingEventMeasures.SearchRequestedQueryCount],
+            [HelpCenterTrackingEventDimensions.SearchQuery],
+            [
+                [
+                    HelpCenterTrackingEventMeasures.SearchRequestedQueryCount,
+                    OrderDirection.Desc,
+                ],
+            ],
+            [HelpCenterTrackingEventSegment.NoSearchResultOnly],
+            noSearchResultsQueryFactory,
+        ],
+        [
+            'searchResultQueryCountFactory',
+            [HelpCenterTrackingEventMeasures.UniqueSearchQueryCount],
+            [],
+            undefined,
+            [HelpCenterTrackingEventSegment.SearchRequestedOnly],
+            searchResultQueryCountFactory,
+        ],
+        [
+            'noSearchResultsCountQueryFactory',
+            [HelpCenterTrackingEventMeasures.UniqueSearchQueryCount],
+            [],
+            undefined,
+            [HelpCenterTrackingEventSegment.NoSearchResultOnly],
+            noSearchResultsCountQueryFactory,
+        ],
+    ])('%s', (_testName, measures, dimensions, order, segments, getFactory) => {
         it('should create a query', () => {
             const query = getFactory(statsFilters, timezone)
 
@@ -47,6 +102,8 @@ describe('help center queries factories', () => {
                     },
                 ],
                 timezone,
+                order,
+                segments,
             })
         })
     })

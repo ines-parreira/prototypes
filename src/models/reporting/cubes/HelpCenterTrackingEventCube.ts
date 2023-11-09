@@ -15,6 +15,8 @@ export enum HelpCenterTrackingEventDimensions {
 }
 
 export enum HelpCenterTrackingEventMember {
+    SearchQuery = 'HelpCenterTrackingEvent.searchQuery',
+    ArticleTitle = 'HelpCenterTrackingEvent.articleTitle',
     PeriodStart = 'HelpCenterTrackingEvent.periodStart',
     PeriodEnd = 'HelpCenterTrackingEvent.periodEnd',
     HelpCenterId = 'HelpCenterTrackingEvent.helpCenterId',
@@ -32,6 +34,7 @@ export enum HelpCenterTrackingEventMeasures {
 export enum HelpCenterTrackingEventSegment {
     ArticleViewOnly = 'HelpCenterTrackingEvent.articleViewOnly',
     SearchRequestedOnly = 'HelpCenterTrackingEvent.searchRequestedOnly',
+    SearchResultClickedOnly = 'HelpCenterTrackingEvent.searchResultClickedOnly',
     NoSearchResultOnly = 'HelpCenterTrackingEvent.noSearchResultOnly',
 }
 

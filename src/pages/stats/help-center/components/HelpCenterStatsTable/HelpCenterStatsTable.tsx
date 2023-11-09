@@ -153,33 +153,33 @@ const HelpCenterStatsTable = ({
                                           ))}
                                       </TableBodyRow>
                                   ))
-                            : data.map((line, index) => (
-                                  <TableBodyRow key={index}>
-                                      {line.map((cell, lineIndex) => (
+                            : data.map((line, rowNumber) => (
+                                  <TableBodyRow key={rowNumber}>
+                                      {line.map((cell, columnNumber) => (
                                           <BodyCell
                                               key={`${
-                                                  columns[lineIndex]?.name ??
-                                                  lineIndex
+                                                  columns[columnNumber]?.name ??
+                                                  columnNumber
                                               }-${
                                                   cell.value
                                                       ? cell.value.toString()
-                                                      : lineIndex
+                                                      : columnNumber
                                               }`}
                                               className={classNames({
                                                   [css.withShadow]:
                                                       isTableScrolled &&
-                                                      lineIndex === 0,
+                                                      columnNumber === 0,
                                               })}
                                               innerClassName={
                                                   css.bodyCellContent
                                               }
                                               justifyContent={
-                                                  lineIndex === 0
+                                                  columnNumber === 0
                                                       ? 'left'
                                                       : 'right'
                                               }
                                               width={
-                                                  tableWidth[lineIndex] ??
+                                                  tableWidth[columnNumber] ??
                                                   DEFAULT_COLUMN_WIDTH
                                               }
                                               onClick={cell.onClick}
@@ -193,6 +193,7 @@ const HelpCenterStatsTable = ({
                                                               undefined,
                                                       }
                                                   )}
+                                                  data-testid={`${columns[columnNumber]?.name}-${rowNumber}`}
                                                   title={getCellFormatter(
                                                       cell
                                                   ).toString()}

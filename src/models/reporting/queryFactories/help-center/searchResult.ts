@@ -8,9 +8,10 @@ import {
     HelpCenterTrackingEventCube,
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
+    HelpCenterTrackingEventMember,
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {ReportingQuery} from 'models/reporting/types'
+import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 
 export const searchResultTermsQueryFactory = (
     statsFilters: StatsFilters,
@@ -103,4 +104,37 @@ export const searchResultRangeQueryFactory = (
             statsFilters
         ),
     ],
+})
+
+export const searchQueryClicksQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    searchQueries: string[]
+): ReportingQuery<HelpCenterTrackingEventCube> => ({
+    measures: [HelpCenterTrackingEventMeasures.SearchArticlesClickedCount],
+    dimensions: [HelpCenterTrackingEventDimensions.ArticleTitle],
+    timezone,
+    filters: [
+        ...statsFiltersToReportingFilters(
+            HelpCenterStatsFiltersMembers,
+            statsFilters
+        ),
+        {
+            member: HelpCenterTrackingEventMember.SearchQuery,
+            operator: ReportingFilterOperator.Equals,
+            values: searchQueries,
+        },
+        {
+            member: HelpCenterTrackingEventMember.ArticleTitle,
+            operator: ReportingFilterOperator.Set,
+            values: [],
+        },
+    ],
+    order: [
+        [
+            HelpCenterTrackingEventMeasures.SearchArticlesClickedCount,
+            OrderDirection.Desc,
+        ],
+    ],
+    segments: [HelpCenterTrackingEventSegment.SearchResultClickedOnly],
 })

@@ -50,6 +50,7 @@ describe('useSearchTermsMetrics', () => {
                 timezone,
                 itemPerPage,
                 currentPage,
+                onModalOpen: jest.fn(),
             })
         )
 
@@ -85,6 +86,7 @@ describe('useSearchTermsMetrics', () => {
                 timezone,
                 itemPerPage,
                 currentPage,
+                onModalOpen: jest.fn(),
             })
         )
 
@@ -114,12 +116,14 @@ describe('useSearchTermsMetrics', () => {
                 decile: null,
             },
         })
+        const mockOnModalOpen = jest.fn()
         const {result} = renderHook(() =>
             useSearchTermsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
+                onModalOpen: mockOnModalOpen,
             })
         )
 
@@ -137,6 +141,7 @@ describe('useSearchTermsMetrics', () => {
                         value: 10,
                     },
                     {
+                        onClick: expect.anything(),
                         type: 'number',
                         value: 5,
                     },
@@ -165,6 +170,7 @@ describe('useSearchTermsMetrics', () => {
                 timezone,
                 itemPerPage,
                 currentPage,
+                onModalOpen: jest.fn(),
             })
         )
 

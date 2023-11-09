@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
+import Modal from 'pages/common/components/modal/Modal'
 import ChartCard from 'pages/stats/ChartCard'
 import {StatsFilters} from 'models/stat/types'
 import HelpCenterStatsTable, {
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
 import {useSearchTermsMetrics} from '../../hooks/useSearchTermsMetrics'
+import SearchQueryModal from '../SearchQueryModal/SearchQueryModal'
 
 const ITEMS_PER_PAGE = 20
 
@@ -43,14 +45,34 @@ type SearchTermsTableProps = {
     timezone: string
 }
 
+type ModalStateType =
+    | {
+          isOpen: false
+      }
+    | {
+          isOpen: true
+          searchQuery: string
+          articleClickedCount: number
+      }
+
+const modalIntiState: ModalStateType = {
+    isOpen: false,
+}
+
 const SearchTermsTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
-    const [currentPage, setCurrentPage] = React.useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
+
+    const [modalState, setModalState] = useState<ModalStateType>(modalIntiState)
+    const onModalOpen = (searchQuery: string, articleClickedCount: number) => {
+        setModalState({isOpen: true, searchQuery, articleClickedCount})
+    }
 
     const {data, total, isLoading} = useSearchTermsMetrics({
         statsFilters,
         timezone,
         currentPage: currentPage,
         itemPerPage: ITEMS_PER_PAGE,
+        onModalOpen,
     })
 
     const onPageChange = (page: number) => {
@@ -60,6 +82,10 @@ const SearchTermsTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
     }
 
     const count = Math.ceil(total / ITEMS_PER_PAGE)
+
+    const onModalClose = () => {
+        setModalState(modalIntiState)
+    }
 
     return (
         <ChartCard title="Search terms with results" noPadding>
@@ -72,6 +98,21 @@ const SearchTermsTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
                 columns={columns}
                 data={data}
             />
+            <Modal
+                isOpen={modalState.isOpen}
+                onClose={onModalClose}
+                size="huge"
+            >
+                {modalState.isOpen && (
+                    <SearchQueryModal
+                        timezone={timezone}
+                        statsFilters={statsFilters}
+                        searchQuery={modalState.searchQuery}
+                        onClose={onModalClose}
+                        articleClickedCount={modalState.articleClickedCount}
+                    />
+                )}
+            </Modal>
         </ChartCard>
     )
 }

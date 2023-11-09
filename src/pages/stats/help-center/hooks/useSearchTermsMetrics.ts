@@ -20,11 +20,13 @@ export const useSearchTermsMetrics = ({
     timezone,
     itemPerPage,
     currentPage,
+    onModalOpen,
 }: {
     statsFilters: StatsFilters
     timezone: string
     currentPage: number
     itemPerPage: number
+    onModalOpen: (searchQuery: string, articleClickedCount: number) => void
 }) => {
     const searchResultTerms = useMetricPerDimension({
         ...searchResultTermsQueryFactory(statsFilters, timezone),
@@ -73,6 +75,10 @@ export const useSearchTermsMetrics = ({
                     {
                         type: TableCellType.Number,
                         value: isNaN(articlesClicked) ? null : articlesClicked,
+                        onClick:
+                            searchTerm && articlesClicked > 0
+                                ? () => onModalOpen(searchTerm, articlesClicked)
+                                : undefined,
                     },
                     {
                         type: TableCellType.Percent,
@@ -82,7 +88,7 @@ export const useSearchTermsMetrics = ({
                     },
                 ]
             }) ?? [[]],
-        [searchResultTerms.data?.allData]
+        [onModalOpen, searchResultTerms.data?.allData]
     )
 
     return useMemo(
