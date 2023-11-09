@@ -309,7 +309,7 @@ export function useWorkflowEditor(
                 type: 'RESET_GRAPH',
                 graph: nextGraph,
             })
-            return 'This flow is too large to save. Please remove unnecessary steps and shorten response text in order to save'
+            return 'This Flow is too large to save. Please remove steps or shorten responses and try again.'
         }
 
         return null
@@ -518,7 +518,7 @@ function validate(conf: WorkflowConfiguration): Maybe<string> {
     if (conf.steps.length === 1)
         return 'You must add at least one step after the trigger button in order to save'
     if (isPayloadTooLarge(emptyTranslatedTexts(conf))) {
-        return 'This flow is too large to save. Please remove unnecessary steps in order to save'
+        return 'This Flow is too large to save. Please remove steps and try again.'
     }
 }
 
