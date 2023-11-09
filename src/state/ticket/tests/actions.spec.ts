@@ -22,14 +22,7 @@ import history from 'pages/history'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {ViewType} from 'models/view/types'
-import {
-    ticketDropdownFieldDefinition,
-    ticketInputFieldDefinition,
-} from 'fixtures/customField'
 
-import {appQueryClient} from 'api/queryClient'
-import {customFieldDefinitionKeys} from 'models/customField/queries'
-import {getCustomFields} from 'models/customField/resources'
 import {initialState} from '../reducers'
 import * as actions from '../actions'
 
@@ -1229,13 +1222,6 @@ describe('ticket actions', () => {
         })
     })
 
-    describe('setInvalidCustomFieldsToErrored()', () => {
-        it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED action', () => {
-            store.dispatch(actions.setInvalidCustomFieldsToErrored([1, 2, 3]))
-            expect(store.getActions()).toMatchSnapshot()
-        })
-    })
-
     describe('triggerTicketFieldsErrors()', () => {
         it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED and notify action', () => {
             store.dispatch(actions.triggerTicketFieldsErrors([1, 2, 3]))
@@ -1253,32 +1239,6 @@ describe('ticket actions', () => {
                 tags: [],
             }
             expect(actions.restoreTicketDraft(ticketDraft)).toMatchSnapshot()
-        })
-    })
-
-    describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
-        it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields', async () => {
-            mockServer.onGet('/api/custom-fields/').reply(200, {
-                data: [
-                    ticketDropdownFieldDefinition,
-                    {...ticketInputFieldDefinition, required: true},
-                ],
-            })
-
-            const params = {
-                archived: false,
-                object_type: 'Ticket',
-            } as const
-
-            await appQueryClient.prefetchQuery({
-                queryKey: customFieldDefinitionKeys.list(params),
-                queryFn: () => getCustomFields(params),
-            })
-
-            await store.dispatch(
-                actions.triggerTicketFieldsRefreshAndInvalidation()
-            )
-            expect(store.getActions()).toMatchSnapshot()
         })
     })
 

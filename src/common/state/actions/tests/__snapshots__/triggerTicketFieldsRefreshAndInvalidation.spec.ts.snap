@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`triggerTicketFieldsRefreshAndInvalidation() should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields 1`] = `
+[
+  {
+    "payload": [
+      123,
+    ],
+    "type": "SET_INVALID_CUSTOM_FIELDS_TO_ERRORED",
+  },
+]
+`;

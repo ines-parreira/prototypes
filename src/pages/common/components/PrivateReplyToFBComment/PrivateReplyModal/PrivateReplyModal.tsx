@@ -4,12 +4,9 @@ import classnames from 'classnames'
 
 import {connect, ConnectedProps} from 'react-redux'
 
+import {triggerTicketFieldsRefreshAndInvalidation} from 'common/state'
 import {TICKET_PARTIAL_UPDATE_ERROR} from 'state/ticket/constants'
-import {
-    goToNextTicket,
-    setStatus,
-    triggerTicketFieldsRefreshAndInvalidation,
-} from 'state/ticket/actions'
+import {goToNextTicket, setStatus} from 'state/ticket/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 
