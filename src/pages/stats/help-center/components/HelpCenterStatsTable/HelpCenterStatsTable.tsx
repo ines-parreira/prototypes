@@ -185,7 +185,14 @@ const HelpCenterStatsTable = ({
                                               onClick={cell.onClick}
                                           >
                                               <span
-                                                  className={css.textTruncate}
+                                                  className={classNames(
+                                                      css.textTruncate,
+                                                      {
+                                                          [css.clickableSpan]:
+                                                              cell.onClick !==
+                                                              undefined,
+                                                      }
+                                                  )}
                                                   title={getCellFormatter(
                                                       cell
                                                   ).toString()}
