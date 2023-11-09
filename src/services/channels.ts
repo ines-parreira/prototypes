@@ -10,7 +10,7 @@ import {
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {getChannelFromSourceType} from 'tickets/common/utils'
+import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
 
 export type {
     Channel,
