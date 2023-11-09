@@ -2,11 +2,12 @@ import {fromJS, Map} from 'immutable'
 import {ContentState, EditorState, SelectionState} from 'draft-js'
 import AxiosMock from 'axios-mock-adapter'
 
-import createPredictionPlugin, {clearCache, setPredictionKey} from '../index'
+import createPredictionPlugin, {clearCache} from '../index'
 import * as DraftTestUtils from '../../../tests/draftTestUtils'
 import {Plugin, PluginMethods} from '../../types'
 import {flushPromises} from '../../../../../../utils/testing'
 import client from '../../../../../../models/api/resources'
+import {predictionKey} from '../state'
 
 jest.mock('../../../../../../utils/errors')
 
@@ -43,7 +44,7 @@ const getFeedbackCalls = () =>
 // Clear plugin caches
 beforeEach(() => {
     clearCache()
-    setPredictionKey('')
+    predictionKey.set(null)
     jest.resetAllMocks()
     jest.restoreAllMocks()
 })

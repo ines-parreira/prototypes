@@ -1,5 +1,5 @@
 import {KeyboardEvent} from 'react'
-import {EditorState, SelectionState} from 'draft-js'
+import {EditorState} from 'draft-js'
 import axios, {CancelTokenSource} from 'axios'
 import {Map} from 'immutable'
 
@@ -17,19 +17,9 @@ import {
     usePrediction,
 } from './utils'
 import decorators from './decorators'
+import {cachedSelection, predictionKey} from './state'
 
 const client = createClient()
-
-let predictionKey: string | null = null
-let cachedSelection: SelectionState | null = null
-
-export const setPredictionKey = (value: string) => {
-    predictionKey = value
-}
-
-export const setCachedSelection = (value: SelectionState) => {
-    cachedSelection = value
-}
 
 let predictionCache: string[] = []
 export const clearCache = () => (predictionCache = [])
@@ -62,9 +52,10 @@ const resetCurrentPrediction = (inputText = '', predictionText = '') => {
 }
 
 const removeExistingPrediction = (editorState: EditorState) => {
-    if (predictionKey) {
-        const newEditorState = removePrediction(predictionKey, editorState)
-        predictionKey = null
+    const preKey = predictionKey.get()
+    if (preKey) {
+        const newEditorState = removePrediction(preKey, editorState)
+        predictionKey.set(null)
         return newEditorState
     }
 
@@ -99,11 +90,12 @@ const requestPrediction = (
             const selection = editorState.getSelection()
 
             const newEditorState = removeExistingPrediction(editorState)
-            predictionKey = createPrediction(predictionText, newEditorState)
+            const preKey = createPrediction(predictionText, newEditorState)
+            predictionKey.set(preKey)
 
             plugin.setEditorState(
                 EditorState.forceSelection(
-                    insertPrediction(predictionKey, newEditorState),
+                    insertPrediction(preKey, newEditorState),
                     selection
                 )
             )
@@ -125,11 +117,12 @@ const sendFeedback = async (
     editorState: EditorState,
     tabKeyUsed = false
 ) => {
-    if (!predictionKey) {
+    const preKey = predictionKey.get()
+    if (!preKey) {
         return
     }
 
-    const predictionText = getPredictionText(predictionKey, editorState)
+    const predictionText = getPredictionText(preKey, editorState)
     let acceptedPredictionChars = 0
     let charIndex = 0
     while (
@@ -163,7 +156,8 @@ const completePrediction = (
     plugin: PluginMethods,
     config: {context: Map<any, any>}
 ) => {
-    if (!predictionKey) {
+    const preKey = predictionKey.get()
+    if (!preKey) {
         return
     }
     event.preventDefault()
@@ -171,14 +165,14 @@ const completePrediction = (
     const editorState = plugin.getEditorState()
     void sendFeedback(
         config.context,
-        getPredictionText(predictionKey, editorState),
+        getPredictionText(preKey, editorState),
         editorState,
         true
     )
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const newEditorState = usePrediction(predictionKey, editorState)
-    predictionKey = null
+    const newEditorState = usePrediction(preKey, editorState)
+    predictionKey.set(null)
     plugin.setEditorState(newEditorState)
 }
 
@@ -205,21 +199,19 @@ const predictionPlugin = (config: {
 
             // if cursor wasn't moved, skip this change event.
             // it was caused by plugin.setEditorState
-            if (cachedSelection === selection) {
+            if (cachedSelection.get() === selection) {
                 return editorState
             }
-            cachedSelection = selection
+            cachedSelection.set(selection)
 
             // clear cache on empty content
             if (!contentState.hasText()) {
                 clearCache()
             }
 
-            if (predictionKey) {
-                const predictionText = getPredictionText(
-                    predictionKey,
-                    editorState
-                )
+            const preKey = predictionKey.get()
+            if (preKey) {
+                const predictionText = getPredictionText(preKey, editorState)
                 const currentText =
                     getPlainTextFromStateWithPrediction(editorState)
                 const prevText = getPlainTextFromStateWithPrediction(
@@ -238,7 +230,7 @@ const predictionPlugin = (config: {
                     currentPrediction.numberAcceptedCharacters +=
                         addedText.length
                     return removeFirstNCharsOfPrediction(
-                        predictionKey,
+                        preKey,
                         editorState,
                         addedText.length
                     )

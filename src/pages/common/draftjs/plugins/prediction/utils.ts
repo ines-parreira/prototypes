@@ -9,7 +9,7 @@ import _pickBy from 'lodash/pickBy'
 
 import {getEntitySelectionState} from '../../../../../utils/editor'
 
-import {setCachedSelection, setPredictionKey} from './index'
+import {cachedSelection, predictionKey} from './state'
 
 const PREDICTION_TYPE = 'prediction'
 
@@ -111,8 +111,8 @@ export const removeFirstNCharsOfPrediction = (
     let newEditorState = removePrediction(entityKey, editorState)
     newEditorState = insertPrediction(newEntityKey, newEditorState)
 
-    setPredictionKey(newEntityKey)
-    setCachedSelection(selection)
+    predictionKey.set(newEntityKey)
+    cachedSelection.set(selection)
 
     return EditorState.acceptSelection(newEditorState, selection)
 }
