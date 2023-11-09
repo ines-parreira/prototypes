@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react'
-import {Redirect, useHistory, useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
@@ -8,6 +8,8 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 
+import AutomatePaywallView from '../common/components/AutomatePaywallView'
+import {AutomateFeatures} from '../common/types'
 import WorkflowsView from './WorkflowsView'
 
 export default function WorkflowsViewContainer() {
@@ -52,7 +54,9 @@ export default function WorkflowsViewContainer() {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     if (!hasAutomationAddOn) {
-        return <Redirect to="/app/automation" />
+        return (
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+        )
     }
 
     return (
