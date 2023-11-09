@@ -70,7 +70,10 @@ import {
     getBottomSystemTicketNavbarElements,
 } from 'state/views/selectors'
 
-import {SplitTicketViewProvider, SplitTicketViewToggle} from 'split-ticket-view'
+import {
+    SplitTicketViewProvider,
+    SplitTicketViewToggle,
+} from 'split-ticket-view-toggle'
 
 import {hasRole} from 'utils'
 import {systemViewIcons} from 'utils/views'

@@ -11,7 +11,7 @@ import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import {activeViewIdSet} from 'state/ui/views/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useSplitTicketView} from 'split-ticket-view'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {getActiveView} from 'state/views/selectors'
 
 import css from './TicketNavbarViewLink.less'
