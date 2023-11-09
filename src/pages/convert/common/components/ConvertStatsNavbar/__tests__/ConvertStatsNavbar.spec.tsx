@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -18,6 +18,8 @@ import {
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {HelpdeskPrice} from 'models/billing/types'
+import {renderWithRouter} from 'utils/testing'
+
 import ConvertStatsNavbar from '../ConvertStatsNavbar'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -75,7 +77,7 @@ describe('ConvertStatsNavbar', () => {
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
 
-        const {queryByTestId} = render(
+        const {queryByTestId} = renderWithRouter(
             <Provider store={mockStore(mockedState)}>
                 <ConvertStatsNavbar
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
@@ -96,7 +98,7 @@ describe('ConvertStatsNavbar', () => {
     })
 
     it('should render links with subscription upgrade icon and modal', () => {
-        const {getByTestId} = render(
+        const {getByTestId} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ConvertStatsNavbar
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}

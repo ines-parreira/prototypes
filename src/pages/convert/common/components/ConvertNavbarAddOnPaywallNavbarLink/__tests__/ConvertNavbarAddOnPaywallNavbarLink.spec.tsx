@@ -1,12 +1,15 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fireEvent, screen, waitFor} from '@testing-library/react'
 import React from 'react'
+
+import {renderWithRouter} from 'utils/testing'
+
 import ConvertNavbarAddOnPaywallNavbarLink from '../ConvertNavbarAddOnPaywallNavbarLink'
 
 describe('ConvertNavbarAddOnPaywallNavbarLink', () => {
     it('should call callback on button click', async () => {
         const onSubscribeToAddOnClick = jest.fn()
 
-        const {getByText} = render(
+        const {getByText} = renderWithRouter(
             <ConvertNavbarAddOnPaywallNavbarLink
                 to="/convert"
                 onSubscribeToAddOnClick={onSubscribeToAddOnClick}

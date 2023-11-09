@@ -5987,6 +5987,11 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.5.tgz#4751153abbf8d6199babb345a52e1eb4167d64af"
   integrity sha512-s/FPdYRmZR8SjLWGMCuax7r3qCWQw9QKHzXVukAuuIJkXkDRwp+Pu5LMIVFi0Fxbav35WURicYr8u1QsoybnQw==
 
+"@types/scrollparent@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/scrollparent/-/scrollparent-2.0.1.tgz#fa4fefb1e8d7714d3377dd2b8981476d2ec910f2"
+  integrity sha512-LcvYdxOG83yL0IoJOmdeoCVlJUgf5WA+cxrBPh2mfYy3bsMoY72fOe87vneW4W/NWuqsdGjoK7fVldUkD1xVSw==
+
 "@types/segment-analytics@0.0.34":
   version "0.0.34"
   resolved "https://registry.yarnpkg.com/@types/segment-analytics/-/segment-analytics-0.0.34.tgz#e88fd5286e27eefafbc1b98c8c7e143b9aab5fb5"
@@ -17137,6 +17142,11 @@ scroll-into-view-if-needed@3.0.8:
   integrity sha512-gHw7Dia3koOUlJvOJnxL9VCqGEmh5kf449FrvhnG9K28D9UXqdkQtw9nUnkauPcdadM3GuPD1J8XgdiPpFtHyg==
   dependencies:
     compute-scroll-into-view "^3.0.1"
+
+scrollparent@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/scrollparent/-/scrollparent-2.1.0.tgz#6cae915c953835886a6ba0d77fdc2bb1ed09076d"
+  integrity sha512-bnnvJL28/Rtz/kz2+4wpBjHzWoEzXhVg/TE8BeVGJHUqE8THNIRnDxDWMktwM+qahvlRdvlLdsQfYe+cuqfZeA==
 
 sdp@^2.6.0:
   version "2.12.0"

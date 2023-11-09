@@ -31,6 +31,7 @@ Object.defineProperty(window, 'ResizeObserver', {
             disconnect: () => null,
         }
     },
+    writable: true,
 })
 
 // jsdom does not support matchMedia

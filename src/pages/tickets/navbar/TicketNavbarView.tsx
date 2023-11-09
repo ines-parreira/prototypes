@@ -8,8 +8,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {View, ViewVisibility} from 'models/view/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {getActiveView} from 'state/views/selectors'
-import {hasRole} from 'utils'
 
+import {hasRole} from 'utils'
 import css from './TicketNavbarView.less'
 import TicketNavbarDropTarget from './TicketNavbarDropTarget'
 import TicketNavbarViewLink from './TicketNavbarViewLink'
@@ -44,7 +44,13 @@ const TicketNavbarView = ({className, view, viewCount}: Props) => {
         }),
     })
 
+    const isActiveView = useMemo(
+        () => view.id === activeView.get('id'),
+        [activeView, view]
+    )
+
     drag(wrapperRef)
+
     return (
         <TicketNavbarDropTarget
             accept={[
@@ -89,7 +95,7 @@ const TicketNavbarView = ({className, view, viewCount}: Props) => {
                         view={view}
                         viewCount={viewCount}
                         className={classnames({
-                            active: view.id === activeView.get('id') && !isOver,
+                            active: isActiveView && !isOver,
                             [navbarCss.isDragged]: isDragging,
                         })}
                     />

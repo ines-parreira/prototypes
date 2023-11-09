@@ -1,7 +1,7 @@
 import {flatMap} from 'lodash'
 import React, {ReactNode} from 'react'
 import classnames from 'classnames'
-import {Link, useLocation} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import css from 'assets/css/navbar.less'
@@ -24,6 +24,7 @@ import useGetConvertLinks from 'pages/settings/revenue/hooks/useGetConvertLinks'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
+import SettingsNavbarLink from './SettingsNavbarLink'
 
 export type CategoryLink = {
     className?: string
@@ -329,11 +330,11 @@ const SettingsNavbar = () => {
                                         css.isNested
                                     )}
                                 >
-                                    <Link
-                                        to={`/app/settings/${to}`}
-                                        className={classnames(css.link, {
-                                            active: isActive,
-                                        })}
+                                    <SettingsNavbarLink
+                                        to={to}
+                                        isActive={isActive}
+                                        computedText={computedText}
+                                        extra={extra}
                                         onClick={() => {
                                             logEvent(
                                                 SegmentEvent.SettingsNavigationClicked,
@@ -345,10 +346,7 @@ const SettingsNavbar = () => {
                                             )
                                             dispatch(closePanels())
                                         }}
-                                    >
-                                        {computedText}
-                                        {extra}
-                                    </Link>
+                                    />
                                     {outerExtra}
                                 </div>
                             )

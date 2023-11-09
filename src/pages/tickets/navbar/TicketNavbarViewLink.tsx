@@ -1,8 +1,14 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {ForwardedRef, forwardRef} from 'react'
+import React, {
+    forwardRef,
+    useRef,
+    ForwardedRef,
+    useImperativeHandle,
+} from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 
+import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import navbarCss from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -25,7 +31,7 @@ type Props = {
 
 const TicketNavbarViewLink = (
     {className, icon, view, viewCount}: Props,
-    ref: ForwardedRef<HTMLDivElement>
+    forwardedRef: ForwardedRef<HTMLDivElement>
 ) => {
     const hasSplitTicketView: boolean | undefined =
         useFlags()[FeatureFlagKey.SplitTicketView]
@@ -33,9 +39,14 @@ const TicketNavbarViewLink = (
     const [splitTicketViewEnabled] = useSplitTicketView()
 
     const activeView = useAppSelector(getActiveView)
+    const ref = useRef<HTMLDivElement>(null)
+    useImperativeHandle(forwardedRef, () => ref.current!)
+    const isActiveView = view.id === activeView.get('id')
 
     const dispatch = useAppDispatch()
     const ticketNavbarId = `ticket-navbar-view-${view.id}`
+
+    useScrollActiveItemIntoView(ref, isActiveView, true)
 
     return (
         <div
@@ -50,7 +61,7 @@ const TicketNavbarViewLink = (
                     navbarCss.link,
                     {
                         [navbarCss.isNested]: view.section_id != null,
-                        active: view.id === activeView.get('id'),
+                        active: isActiveView,
                     },
                     className
                 )}
