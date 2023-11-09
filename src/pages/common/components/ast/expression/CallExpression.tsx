@@ -13,8 +13,8 @@ import DeleteBinaryExpression from 'pages/common/components/ast/operations/Delet
 
 import {getSyntaxTreeLeaves} from 'pages/common/components/ast/utils'
 
+import {expressionReference} from './expressionReference'
 import ObjectExpression from './ObjectExpression'
-import Expression from './Expression'
 
 type Props = {
     rule: Map<any, any>
@@ -34,6 +34,8 @@ export class WrappedCallExpression extends React.Component<Props> {
     render() {
         const {actions, callee, rule, parent, schemas, depth} = this.props
         const {hovered} = this.context
+
+        const {Expression} = expressionReference
 
         const funcArgs = this.props.arguments
         const parentCallee = parent.push('callee')

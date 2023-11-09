@@ -8,12 +8,12 @@ import {
 import {RuleItemActions} from 'pages/settings/rules/types'
 import Widget from 'pages/common/components/ast/Widget'
 
-import Expression from './Expression'
+import {ExpressionProps, expressionReference} from './expressionReference'
 
 type Props = {
     operator: string
-    left: Partial<ComponentProps<typeof Expression>> & SyntaxTree
-    right: Partial<ComponentProps<typeof Expression>> & SyntaxTree
+    left: Partial<ExpressionProps> & SyntaxTree
+    right: Partial<ExpressionProps> & SyntaxTree
     rule: Map<any, any>
     actions: RuleItemActions
     schemas: Map<any, any>
@@ -31,6 +31,7 @@ const BinaryExpression = ({
     parent,
     leftsiblings,
 }: Props) => {
+    const {Expression} = expressionReference
     const parentLeft = parent.push('left')
     const parentRight = parent.push('right')
     const parentOperator = parent.push('operator')

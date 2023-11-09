@@ -1,25 +1,15 @@
-import {List, Map} from 'immutable'
 import React, {ComponentType} from 'react'
 import {connect} from 'react-redux'
 
-import {RuleItemActions} from '../../../../settings/rules/types'
 import {RootState} from '../../../../../state/types'
 import UnknownSyntax from '../UnknownSyntax'
 
+import {StatementProps} from './statementReference'
 import BlockStatement from './BlockStatement'
 import ExpressionStatement from './ExpressionStatement'
 import IfStatement from './IfStatement'
 
-type Props = {
-    parent: List<any>
-    type: string
-    schemas: Map<any, any>
-    depth: number
-    rule: Map<any, any>
-    actions: RuleItemActions
-}
-
-class Statement extends React.Component<Props> {
+class Statement extends React.Component<StatementProps> {
     types: {
         [key: string]:
             | typeof IfStatement
@@ -34,7 +24,7 @@ class Statement extends React.Component<Props> {
     render() {
         const {schemas, depth} = this.props
         const Component = (this.types[this.props.type] ||
-            UnknownSyntax) as ComponentType<Props>
+            UnknownSyntax) as ComponentType<StatementProps>
 
         return <Component {...this.props} schemas={schemas} depth={depth} />
     }
@@ -44,4 +34,6 @@ const mapStateToProps = (state: RootState) => ({
     schemas: state.schemas,
 })
 
-export default connect(mapStateToProps)(Statement) as ComponentType<Props>
+export default connect(mapStateToProps)(
+    Statement
+) as ComponentType<StatementProps>

@@ -4,7 +4,7 @@ import {List, Map} from 'immutable'
 import {RuleItemActions} from '../../../../settings/rules/types'
 import Hoverable from '../../Hoverable'
 
-import Statement from './Statement'
+import {statementReference} from './statementReference'
 
 type BlockStatementItemProps = {
     rule: Map<any, any>
@@ -18,6 +18,7 @@ type BlockStatementItemProps = {
 class _BlockStatementItem extends React.Component<BlockStatementItemProps> {
     render() {
         const {actions, body, rule, parent, schemas, depth} = this.props
+        const {Statement} = statementReference
 
         return (
             <div className="BlockStatementItem">

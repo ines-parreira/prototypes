@@ -8,16 +8,16 @@ import {
     SyntaxTree,
 } from 'pages/common/components/ast/utils'
 
-import Expression from './Expression'
+import {ExpressionProps, expressionReference} from './expressionReference'
 
 type Props = {
     rule: Map<any, any>
     actions: RuleItemActions
-    left: Partial<ComponentProps<typeof Expression>> & SyntaxTree
+    left: Partial<ExpressionProps> & SyntaxTree
     leftsiblings?: List<any>
     operator: string
     parent: List<any>
-    right: Partial<ComponentProps<typeof Expression>> & SyntaxTree
+    right: Partial<ExpressionProps> & SyntaxTree
     schemas: Map<any, any>
 }
 
@@ -33,6 +33,8 @@ export default class LogicalExpression extends React.Component<Props> {
             leftsiblings,
             schemas,
         } = this.props
+
+        const {Expression} = expressionReference
 
         let leftsiblings2
         let leftsiblings3

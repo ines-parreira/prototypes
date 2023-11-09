@@ -5,7 +5,12 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {rule} from 'fixtures/rule'
 
+import Statement from '../Statement'
+import {statementReference} from '../statementReference'
+
 import IfStatement, {ConsequentStatement} from '../IfStatement'
+
+statementReference.Statement = Statement
 
 const mockStore = configureMockStore()
 const defaultStore = {

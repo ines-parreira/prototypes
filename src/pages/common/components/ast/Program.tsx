@@ -3,8 +3,17 @@ import {List, Map} from 'immutable'
 
 import {RuleItemActions} from 'pages/settings/rules/types'
 
+import Expression from './expression/Expression'
+import {expressionReference} from './expression/expressionReference'
 import Statement from './statements/Statement'
+import {statementReference} from './statements/statementReference'
 import AddActionOrIfStatement from './operations/AddActionOrIfStatement'
+
+// we store a reference to `Expression` and `Statement` in
+// order to avoid a circular reference down the line from
+// child-expression/statements to the generic components
+expressionReference.Expression = Expression
+statementReference.Statement = Statement
 
 type Props = {
     rule: Map<any, any>

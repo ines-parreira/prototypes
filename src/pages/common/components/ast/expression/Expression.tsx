@@ -1,11 +1,10 @@
 import React, {ComponentType} from 'react'
-import {List, Map} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/types'
 import Literal from '../Literal'
 import Identifier from '../Identifier'
 import UnknownSyntax from '../UnknownSyntax'
 
+import {ExpressionProps} from './expressionReference'
 import LogicalExpression from './LogicalExpression'
 import BinaryExpression from './BinaryExpression'
 import MemberExpression from './MemberExpression'
@@ -13,18 +12,7 @@ import CallExpression from './CallExpression'
 import ArrayExpression from './ArrayExpression'
 import ObjectExpression from './ObjectExpression'
 
-type Props = {
-    actions: RuleItemActions
-    className?: string
-    parent: List<any>
-    rule: Map<any, any>
-    schemas: Map<any, any>
-    leftsiblings: Maybe<List<any>>
-    type: string
-    depth: number
-}
-
-export default class Expression extends React.Component<Props> {
+export default class Expression extends React.Component<ExpressionProps> {
     types: {
         [key: string]:
             | typeof BinaryExpression
@@ -48,7 +36,7 @@ export default class Expression extends React.Component<Props> {
 
     render() {
         const Component = (this.types[this.props.type] ||
-            UnknownSyntax) as ComponentType<Props>
+            UnknownSyntax) as ComponentType<ExpressionProps>
 
         return <Component {...this.props} />
     }

@@ -12,7 +12,7 @@ import {computeLeftPadding} from 'pages/common/components/ast/utils'
 import Foldable from 'pages/common/components/ast/Foldable/Foldable'
 
 import BlockStatement from './BlockStatement'
-import Statement from './Statement'
+import {StatementProps, statementReference} from './statementReference'
 
 class TestExpression extends React.Component<TestExpressionProps> {
     render() {
@@ -86,6 +86,7 @@ type ConsequentStatementProps = {
 export class ConsequentStatement extends React.Component<ConsequentStatementProps> {
     render() {
         const {actions, consequent, rule, parent, schemas, depth} = this.props
+        const {Statement} = statementReference
 
         return (
             <div className="consequent">
@@ -123,6 +124,7 @@ export class ConsequentStatement extends React.Component<ConsequentStatementProp
 class AlternateStatement extends React.Component<AlternateStatementProps> {
     render() {
         const {actions, alternate, rule, parent, schemas, depth} = this.props
+        const {Statement} = statementReference
 
         return (
             <div className="alternate">
@@ -171,7 +173,7 @@ type IfStatementProps = {
     rule: Map<any, any>
     test: Partial<ComponentProps<typeof Expression>>
     consequent: Partial<ComponentProps<typeof Expression>>
-    alternate?: Partial<ComponentProps<typeof Statement>>
+    alternate?: Partial<StatementProps>
     parent: List<any>
     schemas: Map<any, any>
     actions: RuleItemActions
