@@ -1042,7 +1042,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     />
                                 </div>
 
-                                {!SHOW_CHAT_CONVERSATIONS_SECTION && (
+                                {SHOW_CHAT_CONVERSATIONS_SECTION && (
                                     <div className={css.formSection}>
                                         <h4 className={css.title}>
                                             Chat conversations
