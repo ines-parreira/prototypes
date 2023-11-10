@@ -10,6 +10,8 @@ import {
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {integrationsState} from 'fixtures/integrations'
+import {channels as mockChannels} from 'fixtures/channels'
+import * as channelsService from 'services/channels'
 import {
     addInternalNoteAction,
     addTagsAction,
@@ -1549,6 +1551,14 @@ describe('ticket utils', () => {
             expect(
                 humanizeChannel(TicketMessageSourceType.WhatsAppMessage)
             ).toEqual('WhatsApp')
+        })
+
+        it('should work with new channels', () => {
+            jest.spyOn(channelsService, 'toChannel').mockReturnValue(
+                mockChannels[0]
+            )
+
+            expect(humanizeChannel('tiktok-shop')).toEqual('TikTok Shop')
         })
     })
 

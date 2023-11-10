@@ -8,7 +8,7 @@ import SourceIcon from 'pages/common/components/SourceIcon'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import Tooltip from 'pages/common/components/Tooltip'
-import {isChannel, toChannel} from 'services/channels'
+import {toChannel} from 'services/channels'
 import {isTicketMessageSourceType} from 'models/ticket/predicates'
 import {humanizeChannel} from 'state/ticket/utils'
 
@@ -33,9 +33,6 @@ export default function Source({
     const sourceChannel = isTicketMessageSourceType(channelIdentifier)
         ? channelIdentifier
         : toChannel(channelIdentifier)
-    const channelName = isChannel(sourceChannel)
-        ? sourceChannel.name
-        : humanizeChannel(channelIdentifier)
 
     return (
         <div>
@@ -75,7 +72,9 @@ export default function Source({
                         />
                         <li>
                             <span className="text-faded">Channel: </span>
-                            <strong>{channelName}</strong>
+                            <strong>
+                                {humanizeChannel(channelIdentifier)}
+                            </strong>
                         </li>
                         <li>
                             <span className="text-faded">Date: </span>

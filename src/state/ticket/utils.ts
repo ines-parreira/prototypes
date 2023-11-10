@@ -30,7 +30,7 @@ import {
 } from 'tickets/common/utils'
 import {generateTicketMessagesId, getActionTemplate} from 'utils'
 
-import {ChannelLike} from 'services/channels'
+import {ChannelIdentifier, ChannelLike, toChannel} from 'services/channels'
 import {EventType} from 'models/event/types'
 import {humanize} from 'business/format'
 import {
@@ -963,29 +963,30 @@ export function humanizeAddress(
     return address.toLowerCase()
 }
 
-export function humanizeChannel(channel: string): string {
-    const existing = TICKET_CHANNEL_NAMES[channel]
+export function humanizeChannel(channelName: ChannelIdentifier): string {
+    const existing = TICKET_CHANNEL_NAMES[channelName]
     if (existing) {
         return existing
     }
 
-    if (isTicketMessageSourceType(channel)) {
-        if (channel === TicketMessageSourceType.InternalNote) {
-            return humanize(channel)
+    if (isTicketMessageSourceType(channelName)) {
+        if (channelName === TicketMessageSourceType.InternalNote) {
+            return humanize(channelName)
         }
 
-        if (channel === TicketMessageSourceType.EmailForward) {
+        if (channelName === TicketMessageSourceType.EmailForward) {
             return 'Forward'
         }
 
-        const channelFromSource = sourceTypeToChannel(channel)
+        const channelFromSource = sourceTypeToChannel(channelName)
         return (
             TICKET_CHANNEL_NAMES[channelFromSource] ??
             humanize(channelFromSource)
         )
     }
 
-    return humanize(channel)
+    const channel = toChannel(channelName)
+    return channel ? channel.name : humanize(channelName)
 }
 
 export function buildFirstTicketMessage(
