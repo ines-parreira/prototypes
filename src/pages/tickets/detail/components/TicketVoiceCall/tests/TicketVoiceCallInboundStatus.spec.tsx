@@ -40,7 +40,7 @@ describe('TicketVoiceCallInboundStatus', () => {
         expect(getByText('Failed')).toBeInTheDocument()
     })
 
-    it.each([VoiceCallStatus.Canceled, VoiceCallStatus.Canceled])(
+    it.each([VoiceCallStatus.Completed, VoiceCallStatus.Ending])(
         'should render "Missed call" when voice call status is %s and last answered by agent is null',
         (status) => {
             const voiceCall: VoiceCall = {
