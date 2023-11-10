@@ -1,5 +1,6 @@
 import {assetsUrl} from 'utils'
-import {AutomateFeatures, PaywallFeature} from '../types'
+import {CarouselData} from 'pages/common/components/PaywallCarousel/PaywallCarousel'
+import {AutomateFeatures} from '../types'
 
 export const AUTOMATION_NAVBAR_COLLAPSED_AAO_SECTIONS_KEY =
     'automation:navbar:collapsed-aao-sections'
@@ -10,6 +11,15 @@ export const ORDER_MANAGEMENT = 'Order Management'
 export const QUICK_RESPONSES = 'Quick Responses'
 export const FLOWS = 'Flows'
 export const CHANNELS = 'Channels'
+
+export type PaywallFeature = {
+    headerTitle: string
+    greyButtonText: string
+    primaryButtonText: string
+    paywallTitle: string
+    descriptions: string[]
+    slidesData: CarouselData[]
+}
 
 export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
     [AutomateFeatures.Automate]: {

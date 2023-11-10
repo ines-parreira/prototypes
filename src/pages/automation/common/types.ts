@@ -33,15 +33,3 @@ export enum AutomateFeatures {
     Automate = 'Automate',
     AutomateStats = 'AutomateStats',
 }
-export type SlideData = {
-    imageUrl: string
-    description: string
-}
-export type PaywallFeature = {
-    headerTitle: string
-    greyButtonText: string
-    primaryButtonText: string
-    paywallTitle: string
-    descriptions: string[]
-    slidesData: SlideData[]
-}

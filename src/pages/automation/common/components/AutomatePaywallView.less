@@ -1,13 +1,7 @@
 @import (reference) '~css/new/mixins';
 @import (reference) '~css/typography.less';
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
-:global {
-    .slick-list {
-        box-sizing: initial;
-        margin: 0 -16px;
-        padding: 16px;
-    }
-}
+
 :local {
     .layout {
         width: 100%;
@@ -69,53 +63,6 @@
             width: 420px;
             @media @mobiles {
                 padding-bottom: 64px;
-            }
-            .slideImage {
-                border-radius: 8px;
-                box-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0.16);
-                margin-bottom: 32px;
-            }
-            .sliderWrapper {
-                width: calc(100% + 30px);
-                padding: 0 15px;
-                margin-left: -15px;
-                overflow: hidden;
-            }
-            .slideDescription {
-                color: var(--neutral-grey-5);
-                .heading-subsection-regular();
-                max-width: 420px;
-                text-align: center;
-                height: 48px;
-            }
-            .slideAction {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                color: var(--neutral-grey-5);
-            }
-            .actionIcon {
-                margin: 6px;
-                font-size: 20px;
-                cursor: pointer;
-                &.disabled {
-                    color: var(--neutral-grey-3);
-                    cursor: default;
-                }
-            }
-            .slideDot {
-                display: flex;
-                gap: 4px;
-                margin: 0 24px;
-                div {
-                    background-color: var(--neutral-grey-3);
-                    &.current {
-                        background-color: var(--neutral-grey-4);
-                    }
-                    height: 6px;
-                    width: 6px;
-                    border-radius: 50%;
-                }
             }
         }
     }
