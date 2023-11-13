@@ -26,6 +26,6 @@ describe('<DiscountCodeCreateModal />', () => {
                 <DiscountCodeCreateModal {...minProps} />
             </Provider>
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 })
