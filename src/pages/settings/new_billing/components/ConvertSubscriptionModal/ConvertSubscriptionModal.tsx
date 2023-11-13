@@ -10,6 +10,7 @@ import {
 } from 'state/billing/selectors'
 import {ConvertPrice, ProductType} from 'models/billing/types'
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
+import {isTrialing} from 'state/currentAccount/selectors'
 import {getDefaultConvertPriceIndex} from '../../utils/getDefaultConvertPriceIndex'
 import css from './ConvertSubscriptionModal.less'
 
@@ -34,6 +35,7 @@ const ConvertSubscriptionModal = ({
     const currentPrice = useAppSelector(getCurrentConvertProduct)
     const cheapestPrice = useAppSelector(getCheapestConvertPrice)
     const convertPrices = useAppSelector(getConvertProduct)?.prices
+    const isTrialingSubscription = useAppSelector(isTrialing)
 
     const defaultPrice = useMemo((): ConvertPrice | undefined => {
         const convertInitialIndex = getDefaultConvertPriceIndex(
@@ -82,8 +84,7 @@ const ConvertSubscriptionModal = ({
             tagline={'Ready to boost sales with Convert?'}
             currentPage={currentPath}
             defaultPrice={defaultPrice}
-            // Convert doesn't have helpdesk trial
-            isTrialingSubscription={false}
+            isTrialingSubscription={isTrialingSubscription}
             isOpen={isOpen}
             onClose={onClose}
             onSubscribe={onSubscribe}
