@@ -317,7 +317,7 @@ describe('handleDeviceEvents', () => {
             expect(handleCallEvents).toHaveBeenCalledWith(call, dispatch)
         })
 
-        it('should handle Device.EventName.Incoming event when the device is busy and NewPhoneRoundRobin FF is disabled', () => {
+        it('should handle Device.EventName.Incoming event when the device is busy and reject_call_on_decline is false', () => {
             const call = {
                 direction: Call.CallDirection.Incoming,
                 parameters: {
@@ -325,6 +325,7 @@ describe('handleDeviceEvents', () => {
                 },
                 customParameters: fromJS({
                     call_sid: '123',
+                    reject_call_on_decline: 'false',
                 }),
                 on: jest.fn(),
                 reject: jest.fn(),
@@ -332,9 +333,6 @@ describe('handleDeviceEvents', () => {
                 emit: jest.fn(),
             } as unknown as Call
 
-            getLDClientSpy.mockReturnValueOnce({
-                variation: () => false,
-            } as any)
             ;(device as EventEmitter & {isBusy: boolean}).isBusy = true
             jest.spyOn(api, 'declineCall')
             device.emit(Device.EventName.Incoming, call)
@@ -350,7 +348,7 @@ describe('handleDeviceEvents', () => {
             expect(handleCallEvents).not.toHaveBeenCalledWith(call, dispatch)
         })
 
-        it('should handle Device.EventName.Incoming event when the device is busy and NewPhoneRoundRobin FF is enabled', () => {
+        it('should handle Device.EventName.Incoming event when the device is busy and reject_call_on_decline is true', () => {
             const call = {
                 direction: Call.CallDirection.Incoming,
                 parameters: {
@@ -358,10 +356,12 @@ describe('handleDeviceEvents', () => {
                 },
                 customParameters: fromJS({
                     call_sid: '123',
+                    reject_call_on_decline: 'true',
                 }),
                 on: jest.fn(),
                 reject: jest.fn(),
                 ignore: jest.fn(),
+                emit: jest.fn(),
             } as unknown as Call
 
             getLDClientSpy.mockReturnValueOnce({

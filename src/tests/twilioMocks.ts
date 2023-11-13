@@ -11,7 +11,8 @@ const mockCall = (): Partial<Call> => ({
 
 export const mockIncomingCall = (
     integrationId = 1,
-    ticketId = 2
+    ticketId = 2,
+    rejectCallOnDecline = false
 ): Partial<Call> => ({
     ...mockCall(),
     direction: Call.CallDirection.Incoming,
@@ -21,6 +22,7 @@ export const mockIncomingCall = (
         ['ticket_id', ticketId.toString()],
         ['call_sid', 'fake-call-sid'],
         ['customer_name', 'Bob'],
+        ['reject_call_on_decline', rejectCallOnDecline.toString()],
     ]),
     parameters: {From: '+14158880101'},
     accept: jest.fn(),

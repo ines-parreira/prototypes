@@ -9,12 +9,10 @@ import MockAdapter from 'axios-mock-adapter'
 import {Router} from 'react-router-dom'
 import {History} from 'history'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
 import IncomingPhoneCall from '../IncomingPhoneCall'
-import {FeatureFlagKey} from '../../../../../../config/featureFlags'
 
 jest.mock('@twilio/voice-sdk')
 
@@ -37,9 +35,6 @@ describe('<IncomingPhoneCall/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
-        mockFlags({
-            [FeatureFlagKey.NewPhoneRoundRobin]: false,
-        })
         history = {
             location: {
                 pathname: '/app',
@@ -102,12 +97,8 @@ describe('<IncomingPhoneCall/>', () => {
         })
     })
 
-    it('should decline call new round robin', (done) => {
-        mockFlags({
-            [FeatureFlagKey.NewPhoneRoundRobin]: true,
-        })
-
-        const call = mockIncomingCall(integrationId, ticketId) as Call
+    it('should reject call on decline', (done) => {
+        const call = mockIncomingCall(integrationId, ticketId, true) as Call
 
         mockedServer.onPost('/integrations/phone/call/declined').reply(201)
         mockedServer.onPost('/integrations/phone/call/cancelled').reply(201)

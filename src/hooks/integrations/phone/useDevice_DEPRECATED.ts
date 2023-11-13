@@ -19,9 +19,8 @@ import {
     gatherCallContext,
 } from 'hooks/integrations/phone/utils'
 import {declineCall, getToken} from 'hooks/integrations/phone/api'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
+import {useConnectionParameters} from '../../../pages/common/components/PhoneIntegrationBar/hooks'
 
 export function useDevice_DEPRECATED(useNewErrorHandling: boolean | undefined) {
     const dispatch = useAppDispatch()
@@ -243,22 +242,19 @@ function useInstantiateDevice() {
 
             device.on(Device.EventName.Incoming, (call: Call) => {
                 if (device.isBusy) {
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                    const {rejectCallOnDecline} = useConnectionParameters(call)
+
                     reportError(
                         new Error('Incoming call for agent already in a call')
                     )
 
-                    const launchDarklyClient = getLDClient()
-                    const isNewPhoneRoundRobinEnabled =
-                        launchDarklyClient.variation(
-                            FeatureFlagKey.NewPhoneRoundRobin
-                        )
-
-                    if (isNewPhoneRoundRobinEnabled) {
+                    if (rejectCallOnDecline) {
                         call.reject()
-                        return
+                    } else {
+                        call.ignore()
                     }
 
-                    call.ignore()
                     call.emit('cancel')
 
                     void declineCall(call)

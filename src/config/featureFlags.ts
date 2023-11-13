@@ -39,7 +39,6 @@ export enum FeatureFlagKey {
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     NewBillingInterface = 'new-billing-interface',
     NewPhoneErrorHandling = 'new-phone-error-handling',
-    NewPhoneRoundRobin = 'phone-new-round-robin',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
