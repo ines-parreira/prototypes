@@ -3,6 +3,8 @@ import React from 'react'
 import userEvent from '@testing-library/user-event'
 import {CategoryImageEdit, CategoryImageEditProps} from '../CategoryImageEdit'
 import {useFileUpload} from '../../../../../hooks/useFileUpload'
+import CurrentHelpCenterContext from '../../../../../contexts/CurrentHelpCenterContext'
+import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 
 window.URL.createObjectURL = jest.fn((file: File) => file.name) // avoid upload image error
 
@@ -19,7 +21,16 @@ const renderComponent = (props: Partial<CategoryImageEditTestProps>) => {
             onRemoveImage={jest.fn()}
             currentImageUrl=""
             {...props}
-        />
+        />,
+        {
+            wrapper: ({children}: {children: React.ReactNode}) => (
+                <CurrentHelpCenterContext.Provider
+                    value={getSingleHelpCenterResponseFixture}
+                >
+                    {children}
+                </CurrentHelpCenterContext.Provider>
+            ),
+        }
     )
 }
 

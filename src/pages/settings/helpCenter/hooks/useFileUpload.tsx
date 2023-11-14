@@ -1,7 +1,8 @@
 import {useState} from 'react'
 
 import {Attachment} from 'common/types'
-import {uploadFiles} from 'common/utils'
+import {uploadAttachments} from 'rest_api/help_center_api/uploadAttachments'
+import useCurrentHelpCenter from './useCurrentHelpCenter'
 
 export type FileUpload = {
     isTouched: boolean
@@ -12,6 +13,9 @@ export type FileUpload = {
 }
 
 export function useFileUpload(): FileUpload {
+    // needed to specify the channel type of the attachment
+    const helpCenter = useCurrentHelpCenter()
+
     const [isTouched, setIsTouched] = useState(false)
     const [localFile, setLocalFile] = useState<File>()
 
@@ -27,7 +31,10 @@ export function useFileUpload(): FileUpload {
 
     const uploadFile = async () => {
         if (isTouched && localFile) {
-            return uploadFiles([localFile]).then((response) => response[0])
+            return uploadAttachments([localFile], {
+                id: helpCenter.id,
+                type: 'HC',
+            }).then((response) => response[0])
         }
 
         return null

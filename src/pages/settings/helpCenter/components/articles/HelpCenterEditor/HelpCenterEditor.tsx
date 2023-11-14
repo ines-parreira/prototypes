@@ -6,13 +6,14 @@ import FroalaEditorComponentType from 'react-froala-wysiwyg'
 import bytes from 'bytes'
 import {zip} from 'lodash'
 
-import {uploadFiles} from 'common/utils'
 import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import {notify} from '../../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../../state/notifications/types'
 
 import {useEditionManager} from '../../../providers/EditionManagerContext'
+import {uploadAttachments} from '../../../../../../rest_api/help_center_api/uploadAttachments'
+import useCurrentHelpCenter from '../../../hooks/useCurrentHelpCenter'
 import FroalaEditorComponent from './FroalaEditorComponent.js'
 import {FroalaEditor, config} from './froala-config'
 import {Editor} from './types'
@@ -47,6 +48,9 @@ const HelpCenterEditor = ({
     const {setIsEditorCodeViewActive} = useEditionManager()
     const nrOfFileAttachments = useRef(0)
     const editorOnRemoveAttachmentHandler = useRef<EventListener>()
+
+    // needed to specify the channel type of the attachment
+    const helpCenter = useCurrentHelpCenter()
 
     useEffect(() => {
         setIsEditorCodeViewActive(false)
@@ -112,7 +116,10 @@ const HelpCenterEditor = ({
                             return false
                         }
 
-                        void uploadFiles(files)
+                        void uploadAttachments(files, {
+                            id: helpCenter.id,
+                            type: 'HC',
+                        })
                             .then((attachments) => {
                                 const editor = editorRef.current?.editor
 
@@ -166,7 +173,10 @@ const HelpCenterEditor = ({
                             return false
                         }
 
-                        void uploadFiles([images[0]])
+                        void uploadAttachments([images[0]], {
+                            id: helpCenter.id,
+                            type: 'HC',
+                        })
                             .then((res) => {
                                 const editor = editorRef.current?.editor
 
@@ -179,13 +189,16 @@ const HelpCenterEditor = ({
                                 // else by default, froala uses base64 images
                                 const {url} = res[0]
 
-                                editor.image.insert(
-                                    url,
-                                    false,
-                                    null,
-                                    editor.image.get(),
-                                    res
-                                )
+                                // This is needed to make sure the image we just uploaded is available at the given URL before trying to display it
+                                setTimeout(() => {
+                                    editor.image.insert(
+                                        url,
+                                        false,
+                                        null,
+                                        editor.image.get(),
+                                        res
+                                    )
+                                }, 500)
                             })
                             .catch(() => {
                                 void dispatch(

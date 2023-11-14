@@ -23,6 +23,7 @@ import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getL
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
 import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
+import CurrentHelpCenterContext from '../../../contexts/CurrentHelpCenterContext'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -43,11 +44,9 @@ const store = mockStore(defaultState)
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
-jest.mock('common/utils', () => {
-    const mockedUtils = jest.requireActual('common/utils')
+jest.mock('rest_api/help_center_api/uploadAttachments', () => {
     return {
-        ...mockedUtils,
-        uploadFiles: jest.fn(
+        uploadAttachments: jest.fn(
             (files: FileList) => Promise.resolve([{url: files[0].name}]) // Use this just for testing purposes to see which exact image was "uploaded"
         ),
     } as unknown
@@ -56,7 +55,11 @@ jest.mock('common/utils', () => {
 const onLocaleChange = jest.fn()
 
 const wrapper = ({children}: {children?: React.ReactNode}) => (
-    <Provider store={store}>{children}</Provider>
+    <CurrentHelpCenterContext.Provider
+        value={getSingleHelpCenterResponseFixture}
+    >
+        <Provider store={store}>{children}</Provider>
+    </CurrentHelpCenterContext.Provider>
 )
 
 type Props = {
@@ -87,23 +90,27 @@ const Example = ({
 
     return (
         <Provider store={store}>
-            <button data-testid="toggle-btn" onClick={() => setOpen(true)}>
-                Click me
-            </button>
-            <HelpCenterCategoryEdit
-                isOpen={open}
-                isCreate={isCreate}
-                translation={translation}
-                onSave={onSave}
-                onCreate={onCreate}
-                isLoading={false}
-                canSave={canSave}
-                helpCenter={helpCenter}
-                onClose={() => setOpen(false)}
-                onLocaleChange={onLocaleChange}
-                onDeleteTranslation={jest.fn()}
-                category={category}
-            />
+            <CurrentHelpCenterContext.Provider
+                value={getSingleHelpCenterResponseFixture}
+            >
+                <button data-testid="toggle-btn" onClick={() => setOpen(true)}>
+                    Click me
+                </button>
+                <HelpCenterCategoryEdit
+                    isOpen={open}
+                    isCreate={isCreate}
+                    translation={translation}
+                    onSave={onSave}
+                    onCreate={onCreate}
+                    isLoading={false}
+                    canSave={canSave}
+                    helpCenter={helpCenter}
+                    onClose={() => setOpen(false)}
+                    onLocaleChange={onLocaleChange}
+                    onDeleteTranslation={jest.fn()}
+                    category={category}
+                />
+            </CurrentHelpCenterContext.Provider>
         </Provider>
     )
 }
