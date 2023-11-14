@@ -42,6 +42,7 @@ import {
 import CustomizedChatLauncher from './CustomizedChatLauncher'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 import {AddIcon, PlaneIcon} from './icon-utils'
+import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
 
 export type ChatTheme = {
     mainColor: string
@@ -59,6 +60,7 @@ type Props = {
     languages?: List<LanguageItem>
     children: ReactNode
     renderFooter?: boolean
+    renderPrivacyPolicyDisclaimer?: boolean
     renderPoweredBy?: boolean
     position?: GorgiasChatPosition
     editedPositionAxis?: PositionAxis | null
@@ -76,6 +78,7 @@ type Props = {
     isWidgetConversation?: boolean
     backgroundColorStyle?: GorgiasChatBackgroundColorStyle
     headerPictureUrl?: string
+    privacyPolicyDisclaimerText?: string
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -89,6 +92,8 @@ const ChatIntegrationPreview = (props: Props) => {
         language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
         children,
         renderFooter = true,
+        renderPrivacyPolicyDisclaimer = false,
+        privacyPolicyDisclaimerText = '',
         renderPoweredBy = false,
         position = {
             alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
@@ -302,6 +307,15 @@ const ChatIntegrationPreview = (props: Props) => {
                         )}
                     >
                         {children}
+
+                        {renderPrivacyPolicyDisclaimer && (
+                            <PrivacyPolicyDisclaimer
+                                privacyPolicyDisclaimerText={
+                                    privacyPolicyDisclaimerText
+                                }
+                                variant="collapsed"
+                            />
+                        )}
 
                         {renderPoweredBy && (
                             <GorgiasChatPoweredBy

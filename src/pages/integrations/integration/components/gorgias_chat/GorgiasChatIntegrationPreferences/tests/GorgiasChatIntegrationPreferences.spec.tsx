@@ -78,6 +78,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             getApplicationTexts: jest.fn(),
             updateApplicationTexts: jest.fn(),
         } as unknown as typeof IntegrationsActions,
+        selfServiceConfiguration: null,
+        selfServiceConfigurationEnabled: false,
     }
 
     describe('componentDidMount()', () => {
@@ -232,6 +234,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             integration={integration}
                             articleRecommendationEnabled={true}
                             actions={minProps.actions}
+                            selfServiceConfiguration={null}
+                            selfServiceConfigurationEnabled={false}
                         />
                     )
 
@@ -395,6 +399,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             integration={integration}
                             articleRecommendationEnabled={true}
                             actions={minProps.actions}
+                            selfServiceConfiguration={null}
+                            selfServiceConfigurationEnabled={false}
                         />
                     )
 

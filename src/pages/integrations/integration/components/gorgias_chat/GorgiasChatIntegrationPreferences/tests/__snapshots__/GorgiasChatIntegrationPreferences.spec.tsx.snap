@@ -20,7 +20,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
   "preview": "live-chat-availability",
   "privacyPolicyDisclaimerEnabled": false,
   "privacyPolicyDisclaimerText": undefined,
-  "selfServiceConfiguration": null,
   "texts": {
     "cz": {
       "meta": {},
@@ -122,7 +121,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
   "preview": "control-ticket-volume",
   "privacyPolicyDisclaimerEnabled": false,
   "privacyPolicyDisclaimerText": undefined,
-  "selfServiceConfiguration": null,
   "texts": {
     "cz": {
       "meta": {},
@@ -224,7 +222,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
   "preview": "live-chat-availability",
   "privacyPolicyDisclaimerEnabled": false,
   "privacyPolicyDisclaimerText": undefined,
-  "selfServiceConfiguration": null,
   "texts": {
     "cz": {
       "meta": {},
@@ -326,7 +323,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
   "preview": "live-chat-availability",
   "privacyPolicyDisclaimerEnabled": false,
   "privacyPolicyDisclaimerText": undefined,
-  "selfServiceConfiguration": null,
   "texts": {
     "cz": {
       "meta": {},
@@ -428,7 +424,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "preview": "live-chat-availability",
   "privacyPolicyDisclaimerEnabled": false,
   "privacyPolicyDisclaimerText": undefined,
-  "selfServiceConfiguration": null,
   "texts": {
     "cz": {
       "meta": {},
@@ -530,7 +525,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "preview": "live-chat-availability",
   "privacyPolicyDisclaimerEnabled": false,
   "privacyPolicyDisclaimerText": undefined,
-  "selfServiceConfiguration": null,
   "texts": {
     "cz": {
       "meta": {},
@@ -714,7 +708,6 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initial
   "preview": "live-chat-availability",
   "privacyPolicyDisclaimerEnabled": false,
   "privacyPolicyDisclaimerText": undefined,
-  "selfServiceConfiguration": null,
   "texts": {
     "cz": {
       "meta": {},
@@ -820,7 +813,6 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initia
   "preview": "live-chat-availability",
   "privacyPolicyDisclaimerEnabled": false,
   "privacyPolicyDisclaimerText": undefined,
-  "selfServiceConfiguration": null,
   "texts": {
     "cz": {
       "meta": {},
@@ -985,7 +977,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           autoResponderReply="reply-dynamic"
           backgroundColorStyle="gradient"
           isOnline={true}
-          isWidgetConversation={true}
           language="en-US"
           mainColor="#789c5d"
           mainFontFamily="Inter"
@@ -996,8 +987,10 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               "offsetY": 0,
             }
           }
+          privacyPolicyDisclaimerText="By using this chat, you consent to our Privacy Policy."
           renderFooter={true}
           renderPoweredBy={false}
+          renderPrivacyPolicyDisclaimer={false}
         >
           <ChatIntegrationPreviewContent>
             <ChatIntegrationPreviewProvider
@@ -1011,7 +1004,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                 }
               }
             >
-              <ConversationTimestamp />
               <CustomerInitialMessages
                 conversationColor="#08d123"
                 hideConversationTimestamp={true}
@@ -1515,7 +1507,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           autoResponderReply="reply-dynamic"
           backgroundColorStyle="gradient"
           isOnline={true}
-          isWidgetConversation={true}
           language="en-US"
           mainColor="#789c5d"
           mainFontFamily="Inter"
@@ -1526,8 +1517,10 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               "offsetY": 0,
             }
           }
+          privacyPolicyDisclaimerText="By using this chat, you consent to our Privacy Policy."
           renderFooter={true}
           renderPoweredBy={false}
+          renderPrivacyPolicyDisclaimer={false}
         >
           <ChatIntegrationPreviewContent>
             <ChatIntegrationPreviewProvider
@@ -1541,7 +1534,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 }
               }
             >
-              <ConversationTimestamp />
               <CustomerInitialMessages
                 conversationColor="#08d123"
                 hideConversationTimestamp={true}

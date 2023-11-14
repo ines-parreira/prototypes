@@ -101,6 +101,7 @@ import EmailMigration from './components/email/EmailMigration/EmailMigration'
 import SmoochDeprecatedIntegration from './components/deprecated/SmoochDeprecatedIntegration'
 import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import {Tab} from './types'
+import useSelfServiceConfiguration from './components/gorgias_chat/hooks/useSelfServiceConfiguration'
 
 export const IntegrationDetail = ({
     actions,
@@ -222,6 +223,9 @@ export const IntegrationDetail = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [integration, integrationType])
+
+    const {selfServiceConfiguration, selfServiceConfigurationEnabled} =
+        useSelfServiceConfiguration(integration)
 
     const dispatch = useAppDispatch()
 
@@ -368,6 +372,10 @@ export const IntegrationDetail = ({
                                 articleRecommendationEnabled
                             }
                             actions={actions}
+                            selfServiceConfiguration={selfServiceConfiguration}
+                            selfServiceConfigurationEnabled={
+                                selfServiceConfigurationEnabled
+                            }
                         />
                     )
                 }

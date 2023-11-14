@@ -20,6 +20,7 @@ import css from './ChatHomePreview.less'
 import {BoxIcon, ChevronRightIcon, PlaneIcon, AddIcon} from './icon-utils'
 import ConversationAvatars from './ConversationAvatars'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
+import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
 
 const StyledCard = styled(Card)`
     padding: 8px 16px 8px 8px;
@@ -32,15 +33,19 @@ type Props = {
     selfServiceConfiguration: SelfServiceConfiguration | null
     language?: string
     variant?: 'collapsed' | 'expanded'
+    renderPrivacyPolicyDisclaimer?: boolean
+    privacyPolicyDisclaimerText?: string
 }
 
 const ChatHomePreview: React.FC<Props> = ({
     avatar,
     title,
     renderConversation = false,
+    renderPrivacyPolicyDisclaimer = false,
     language,
     selfServiceConfiguration,
     variant = 'collapsed',
+    privacyPolicyDisclaimerText = '',
 }) => {
     const quickResponses =
         selfServiceConfiguration?.quick_response_policies?.filter(
@@ -69,6 +74,14 @@ const ChatHomePreview: React.FC<Props> = ({
                 }
                 footer={
                     <>
+                        {renderPrivacyPolicyDisclaimer && (
+                            <PrivacyPolicyDisclaimer
+                                privacyPolicyDisclaimerText={
+                                    privacyPolicyDisclaimerText
+                                }
+                                variant="expanded"
+                            />
+                        )}
                         <GorgiasChatPoweredBy
                             translatedTexts={translatedTexts}
                         />
@@ -80,7 +93,7 @@ const ChatHomePreview: React.FC<Props> = ({
                             trailIcon={<PlaneIcon />}
                             trailIconAriaLabel="Send message"
                             readOnly
-                            style={{marginTop: '16px'}}
+                            style={{marginTop: '16px', maxHeight: '45px'}}
                         />
                     </>
                 }

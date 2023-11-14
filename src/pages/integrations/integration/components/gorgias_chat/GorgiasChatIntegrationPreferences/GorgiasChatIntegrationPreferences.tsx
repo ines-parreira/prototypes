@@ -32,7 +32,6 @@ import NavigatedSuccessModal, {
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import * as IntegrationsActions from 'state/integrations/actions'
 
-import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
@@ -108,10 +107,12 @@ const emailCaptureOptions = [
     },
 ]
 
+// TODO. Refactor to enum.
 export const PREVIEW_EMAIL_CAPTURE = 'email-capture'
 export const PREVIEW_AUTO_RESPONDER = 'auto-responder'
 export const PREVIEW_LIVE_CHAT_AVAILABILITY = 'live-chat-availability'
 export const PREVIEW_CONTROL_TICKET_VOLUME = 'control-ticket-volume'
+export const PREVIEW_PRIVACY_POLICY_DISCLAIMER = 'privacy-policy-disclaimer'
 
 /**
  * For backwards compatibility, the "Chat conversation" section that holds
@@ -126,6 +127,8 @@ type Props = {
     integration: Map<any, any>
     actions: typeof IntegrationsActions
     articleRecommendationEnabled: boolean
+    selfServiceConfiguration: SelfServiceConfiguration | null
+    selfServiceConfigurationEnabled: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -146,8 +149,6 @@ type State = {
     liveChatAvailability: string
     avatar: GorgiasChatAvatarSettings | undefined
     controlTicketVolume: boolean
-    selfServiceConfiguration: SelfServiceConfiguration | null
-
     translations: Translations | undefined
     texts: TextsMultiLanguage
     privacyPolicyDisclaimerText: string | undefined
@@ -185,8 +186,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
         avatar: undefined,
         controlTicketVolume: false,
-        selfServiceConfiguration: null,
-
         translations: undefined,
         texts: multiLanguageInitialTextsEmptyData,
         privacyPolicyDisclaimerText: undefined,
@@ -291,18 +290,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         )
     }
 
-    fetchSelfServiceConfiguration = async (integration: Map<any, any>) => {
-        const shopIntegrationId = integration.getIn([
-            'meta',
-            'shop_integration_id',
-        ])
-        if (!shopIntegrationId) return
-        const selfServiceConfiguration = await fetchSelfServiceConfiguration(
-            shopIntegrationId
-        )
-        this.setState({selfServiceConfiguration})
-    }
-
     fetchApplicationTexts = (integration: Map<any, any>) => {
         const integrationChat = integration.toJS() as GorgiasChatIntegration
         const chatApplicationId = integrationChat?.meta?.app_id
@@ -376,7 +363,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 
     _fetchDeps() {
-        void this.fetchSelfServiceConfiguration(this.props.integration)
         void this.fetchTranslations(this.props.integration)
         void this.fetchApplicationTexts(this.props.integration)
     }
@@ -448,6 +434,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     _setPrivacyPolicyDisclaimerEnabled = (value: boolean) => {
         this.setState({
             privacyPolicyDisclaimerEnabled: value,
+            preview: PREVIEW_PRIVACY_POLICY_DISCLAIMER,
         })
     }
 
@@ -600,7 +587,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             liveChatAvailability,
             avatar,
             controlTicketVolume,
-            selfServiceConfiguration,
         } = this.state
 
         const {
@@ -609,6 +595,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             emailIntegrations: integrations,
             flags,
             convertProduct,
+            selfServiceConfiguration,
+            selfServiceConfigurationEnabled,
         } = this.props
         const chatMultiLanguagesEnabled =
             flags?.[FeatureFlagKey.ChatMultiLanguages]
@@ -649,9 +637,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const isLiveChatAvailable =
             preview === PREVIEW_LIVE_CHAT_AVAILABILITY &&
             liveChatAvailability !== GORGIAS_CHAT_LIVE_CHAT_OFFLINE
-
-        const isControlTicketVolumeEnabled =
-            preview === PREVIEW_CONTROL_TICKET_VOLUME && !controlTicketVolume
 
         const isEmailCaptureOptional =
             preview === PREVIEW_EMAIL_CAPTURE &&
@@ -719,14 +704,30 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     name={chatTitle}
                 />
             )
-        } else if (preview === PREVIEW_CONTROL_TICKET_VOLUME) {
+        } else if (
+            preview === PREVIEW_CONTROL_TICKET_VOLUME ||
+            preview === PREVIEW_PRIVACY_POLICY_DISCLAIMER
+        ) {
             previewChildren = (
                 <ChatHomePreview
                     avatar={avatar}
                     title={chatTitle}
-                    renderConversation={isControlTicketVolumeEnabled}
+                    renderConversation={!controlTicketVolume}
+                    renderPrivacyPolicyDisclaimer={
+                        privacyPolicyDisclaimerEnabled
+                    }
+                    privacyPolicyDisclaimerText={
+                        this.state.privacyPolicyDisclaimerText ||
+                        widgetTranslatedTexts.privacyPolicyDisclaimer
+                    }
                     selfServiceConfiguration={selfServiceConfiguration}
                     language={language}
+                    variant={
+                        selfServiceConfigurationEnabled ||
+                        preview === PREVIEW_CONTROL_TICKET_VOLUME
+                            ? 'collapsed'
+                            : 'expanded'
+                    }
                 />
             )
         } else {
@@ -769,6 +770,31 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             },
         ]
 
+        const previewIsWidgetConversation = (preview: string) => {
+            if (preview === PREVIEW_CONTROL_TICKET_VOLUME) {
+                return false
+            }
+            if (preview === PREVIEW_PRIVACY_POLICY_DISCLAIMER) {
+                return false
+            }
+        }
+
+        const previewRenderPoweredBy = (preview: string) => {
+            return (
+                preview === PREVIEW_CONTROL_TICKET_VOLUME ||
+                (preview === PREVIEW_PRIVACY_POLICY_DISCLAIMER &&
+                    selfServiceConfigurationEnabled)
+            )
+        }
+
+        const previewRenderPrivacyPolicyDisclaimer = (preview: string) => {
+            return (
+                preview === PREVIEW_PRIVACY_POLICY_DISCLAIMER &&
+                privacyPolicyDisclaimerEnabled &&
+                selfServiceConfigurationEnabled
+            )
+        }
+
         const chatPreview = (
             <ChatIntegrationPreview
                 name={chatTitle}
@@ -793,8 +819,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     preview === PREVIEW_AUTO_RESPONDER && autoResponderEnabled
                 }
                 autoResponderReply={autoResponderReply}
-                renderPoweredBy={preview === PREVIEW_CONTROL_TICKET_VOLUME}
-                isWidgetConversation={preview !== PREVIEW_CONTROL_TICKET_VOLUME}
+                renderPrivacyPolicyDisclaimer={previewRenderPrivacyPolicyDisclaimer(
+                    preview
+                )}
+                privacyPolicyDisclaimerText={
+                    this.state.privacyPolicyDisclaimerText ||
+                    widgetTranslatedTexts.privacyPolicyDisclaimer
+                }
+                renderPoweredBy={previewRenderPoweredBy(preview)}
+                isWidgetConversation={previewIsWidgetConversation(preview)}
                 backgroundColorStyle={integration.getIn(
                     ['decoration', 'background_color_style'],
                     GorgiasChatBackgroundColorStyle.Gradient
@@ -802,7 +835,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             >
                 <ChatIntegrationPreviewContent>
                     <ChatIntegrationPreviewProvider value={{avatar}}>
-                        {preview !== PREVIEW_CONTROL_TICKET_VOLUME && (
+                        {previewIsWidgetConversation(preview) && (
                             <ConversationTimestamp />
                         )}
                         {showCustomerInitialMessages && (
@@ -1381,6 +1414,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                         this
                                                             ._onChangeTicketRichField
                                                     }
+                                                    onFocus={() => {
+                                                        this.setState({
+                                                            preview:
+                                                                PREVIEW_PRIVACY_POLICY_DISCLAIMER,
+                                                        })
+                                                    }}
                                                     displayedActions={[
                                                         ActionName.Bold,
                                                         ActionName.Italic,
