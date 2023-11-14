@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,7 +12,6 @@ import {getHelpCenterDomain} from 'pages/settings/helpCenter/utils/helpCenter.ut
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
-import Loader from 'pages/common/components/Loader/Loader'
 import {NonEmptyArray} from 'types'
 import {isNotEmptyArray} from 'utils'
 
@@ -24,35 +23,32 @@ import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut
 import SearchTermsTable from '../components/SearchTermsTable/SearchTermsTable'
 import NoSearchTable from '../components/NoSearchTable/NoSearchTable'
 import HelpCenterFilter from '../components/HelpCenterFilter/HelpCenterFilter'
-import {useHelpCenterStatsFilters} from '../hooks/useHelpCenterStatsFilters'
+import {useStatsFilters} from '../hooks/useStatsFilters'
+import PeriodStatsFilter from '../../PeriodStatsFilter'
+import HelpCenterStatsLoading from '../components/HelpCenterStatsLoading/HelpCenterStatsLoading'
+import {StatsFilters} from '../../../../models/stat/types'
+import {HelpCenterStatsFilters} from '../types'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 
-// This is temp data before we implement filters
-const START_DATE = new Date().toString()
-const END_DATE = new Date('01/01/2023').toString()
+const isHelpCenterStatsFiltersValid = (
+    filters: StatsFilters
+): filters is HelpCenterStatsFilters => Array.isArray(filters.helpCenters)
 
 type HelpCenterStatsComponentProps = {
     helpCenters: NonEmptyArray<HelpCenter>
+    statsFilters: HelpCenterStatsFilters
+    setStatsFilters: (filter: Partial<StatsFilters>) => void
 }
 
 const HelpCenterStatsComponent = ({
     helpCenters,
+    statsFilters,
+    setStatsFilters,
 }: HelpCenterStatsComponentProps) => {
-    const {statsFilters, setSelectedFilter} = useHelpCenterStatsFilters({
-        helpCenters: [helpCenters[0].id],
-        period: {
-            end_datetime: START_DATE,
-            start_datetime: END_DATE,
-        },
-    })
     const timezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
-    const selectedHelpCenter =
-        helpCenters.find((helpCenter) =>
-            statsFilters.helpCenters.includes(helpCenter.id)
-        ) ?? helpCenters[0]
     const articleViewMetricTrend = useHelpCenterTrend({
         statsFilters,
         timezone,
@@ -69,14 +65,32 @@ const HelpCenterStatsComponent = ({
         setIsTipsVisible(!isTipVisible)
     }
 
+    const selectedHelpCenter =
+        helpCenters.find((helpCenter) =>
+            statsFilters.helpCenters?.includes(helpCenter.id)
+        ) ?? helpCenters[0]
+
     return (
         <div className="full-width">
-            <StatsPage title={PAGE_TITLE_HELP_CENTER} filters={<div></div>}>
-                <DashboardSection title="">
+            <StatsPage
+                title={PAGE_TITLE_HELP_CENTER}
+                filters={
+                    <>
+                        <PeriodStatsFilter
+                            initialSettings={{
+                                maxSpan: 365,
+                            }}
+                            value={statsFilters.period}
+                            variant="ghost"
+                        />
+                    </>
+                }
+            >
+                <DashboardSection title="" className="pb-0">
                     <HelpCenterFilter
+                        selectedHelpCenter={selectedHelpCenter}
                         helpCenters={helpCenters}
-                        selectedHelpCenterIds={statsFilters.helpCenters ?? []}
-                        setSelectedHelpCenter={setSelectedFilter}
+                        setSelectedHelpCenter={setStatsFilters}
                     />
                 </DashboardSection>
                 <DashboardSection
@@ -93,8 +107,8 @@ const HelpCenterStatsComponent = ({
                             showTip={isTipVisible}
                             isLoading={articleViewMetricTrend.isFetching}
                             hintTitle="Total number of article views, including duplicate views by the same user"
-                            startDate={START_DATE}
-                            endDate={END_DATE}
+                            startDate={statsFilters.period.start_datetime}
+                            endDate={statsFilters.period.end_datetime}
                             trendValue={articleViewMetricTrend.data?.value}
                             prevTrendValue={
                                 articleViewMetricTrend.data?.prevValue
@@ -121,8 +135,8 @@ const HelpCenterStatsComponent = ({
                             showTip={isTipVisible}
                             isLoading={searchesMetricTrend.isFetching}
                             hintTitle="Total number of searches performed in the Help Center"
-                            startDate={START_DATE}
-                            endDate={END_DATE}
+                            startDate={statsFilters.period.start_datetime}
+                            endDate={statsFilters.period.end_datetime}
                             trendValue={searchesMetricTrend.data?.value}
                             prevTrendValue={searchesMetricTrend.data?.prevValue}
                             title="Searches"
@@ -198,22 +212,26 @@ const HelpCenterStats = () => {
     const {helpCenters, isLoading} = useHelpCenterList({
         per_page: HELP_CENTER_MAX_CREATION,
     })
+    const statsFiltersInitState = useMemo(
+        () => ({
+            helpCenters: helpCenters[0] ? [helpCenters[0].id] : [],
+        }),
+        [helpCenters]
+    )
+    const [statsFilters, setStatsFilters] = useStatsFilters(
+        statsFiltersInitState
+    )
 
-    if (isLoading) {
-        return (
-            <div className="full-width">
-                <StatsPage title={PAGE_TITLE_HELP_CENTER} filters={<></>}>
-                    <Loader
-                        size="24px"
-                        data-testid="help-center-stats-loader"
-                    />
-                </StatsPage>
-            </div>
-        )
+    if (isLoading || !isHelpCenterStatsFiltersValid(statsFilters)) {
+        return <HelpCenterStatsLoading title={PAGE_TITLE_HELP_CENTER} />
     }
 
     return isNotEmptyArray(helpCenters) ? (
-        <HelpCenterStatsComponent helpCenters={helpCenters} />
+        <HelpCenterStatsComponent
+            helpCenters={helpCenters}
+            statsFilters={statsFilters}
+            setStatsFilters={setStatsFilters}
+        />
     ) : (
         <div>TODO: Implement empty state</div>
     )

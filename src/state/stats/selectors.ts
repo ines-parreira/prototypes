@@ -57,13 +57,14 @@ export const getPageStatsFilters = createSelector(
     getStatsFilters,
     getMessagingIntegrationsStatsFilter,
     (statsFilters, integrationsStatsFilter) => {
-        const {channels, agents, period, tags} = statsFilters
+        const {channels, agents, period, tags, helpCenters} = statsFilters
         return {
             channels,
             agents,
             period,
             integrations: integrationsStatsFilter,
             tags,
+            helpCenters,
         }
     }
 )

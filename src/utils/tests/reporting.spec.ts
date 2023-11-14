@@ -7,6 +7,7 @@ import {
 } from 'models/reporting/types'
 import {
     formatReportingQueryDate,
+    HelpCenterStatsFiltersMembers,
     periodToReportingGranularity,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
@@ -34,9 +35,44 @@ describe('reporting utils', () => {
                     integrations: [1],
                     agents: [2],
                     tags: [1, 2],
-                    helpCenters: [1],
                 })
             ).toMatchSnapshot()
+        })
+
+        it('should convert StatsFilters to an array of ReportingFilter with help center id', () => {
+            expect(
+                statsFiltersToReportingFilters(HelpCenterStatsFiltersMembers, {
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00.000+02:00',
+                        end_datetime: '2021-06-04T23:59:59.000+02:00',
+                    },
+                    helpCenters: [1],
+                })
+            ).toMatchInlineSnapshot(`
+                [
+                  {
+                    "member": "HelpCenterTrackingEvent.periodStart",
+                    "operator": "afterDate",
+                    "values": [
+                      "2021-05-29T00:00:00.000",
+                    ],
+                  },
+                  {
+                    "member": "HelpCenterTrackingEvent.periodEnd",
+                    "operator": "beforeDate",
+                    "values": [
+                      "2021-06-04T23:59:59.000",
+                    ],
+                  },
+                  {
+                    "member": "HelpCenterTrackingEvent.helpCenterId",
+                    "operator": "equals",
+                    "values": [
+                      "1",
+                    ],
+                  },
+                ]
+            `)
         })
     })
 

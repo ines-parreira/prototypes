@@ -6,6 +6,8 @@ import {mockStore} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import HelpCenterFilter from './HelpCenterFilter'
 
+const helpCenters = getHelpCentersResponseFixture.data
+
 const renderComponent = (
     props: Partial<ComponentProps<typeof HelpCenterFilter>>
 ) => {
@@ -13,7 +15,7 @@ const renderComponent = (
         <Provider store={mockStore({} as any)}>
             <HelpCenterFilter
                 helpCenters={[]}
-                selectedHelpCenterIds={[]}
+                selectedHelpCenter={helpCenters[0]}
                 setSelectedHelpCenter={jest.fn}
                 {...props}
             />
@@ -23,9 +25,9 @@ const renderComponent = (
 
 describe('<HelpCenterFilter />', () => {
     it('should render component', () => {
-        renderComponent({})
+        renderComponent({selectedHelpCenter: helpCenters[0]})
 
-        expect(screen.getByText('Select help center')).toBeInTheDocument()
+        expect(screen.getByText(helpCenters[0].name)).toBeInTheDocument()
     })
 
     it('should render with initial filter', () => {
@@ -33,7 +35,7 @@ describe('<HelpCenterFilter />', () => {
 
         renderComponent({
             helpCenters,
-            selectedHelpCenterIds: [helpCenters[0].id],
+            selectedHelpCenter: helpCenters[0],
         })
 
         expect(screen.getByRole('button')).toHaveTextContent(
@@ -50,12 +52,12 @@ describe('<HelpCenterFilter />', () => {
             helpCenters,
         })
 
-        userEvent.click(screen.getByText('Select help center'))
-
         userEvent.click(screen.getByText(helpCenters[0].name))
 
-        expect(mockSetSelectedHelpCenter).toHaveBeenCalledWith('helpCenters', {
-            helpCenters: [helpCenters[0].id],
+        userEvent.click(screen.getByText(helpCenters[1].name))
+
+        expect(mockSetSelectedHelpCenter).toHaveBeenCalledWith({
+            helpCenters: [helpCenters[1].id],
         })
     })
 })

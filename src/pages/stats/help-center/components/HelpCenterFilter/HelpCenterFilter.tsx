@@ -1,45 +1,70 @@
-import React from 'react'
-import SelectFilter from 'pages/stats/common/SelectFilter'
-import {Value} from 'pages/common/forms/SelectField/types'
+import React, {useRef, useState} from 'react'
+import classnames from 'classnames'
 import {HelpCenter} from 'models/helpCenter/types'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import Button from 'pages/common/components/button/Button'
+import css from './HelpCenterFilter.less'
 
 type HelpCenterFilterProps = {
-    selectedHelpCenterIds: number[]
+    selectedHelpCenter: HelpCenter
     helpCenters: HelpCenter[]
-    setSelectedHelpCenter: (
-        filterName: 'helpCenters',
-        helpCenters: {helpCenters: number[]}
-    ) => void
+    setSelectedHelpCenter: (helpCenters: {helpCenters: number[]}) => void
 }
 
 const HelpCenterFilter = ({
-    selectedHelpCenterIds,
+    selectedHelpCenter,
     setSelectedHelpCenter,
     helpCenters,
 }: HelpCenterFilterProps) => {
-    const onFilterChange = ([value]: Value[]) => {
-        if (typeof value === 'number')
-            setSelectedHelpCenter('helpCenters', {
-                helpCenters: [value],
-            })
+    const [isOpen, setIsOpen] = useState(false)
+    const buttonRef = useRef(null)
+
+    const onFilterChange = (helpCenterId: number) => {
+        setSelectedHelpCenter({helpCenters: [helpCenterId]})
+        setIsOpen(false)
     }
 
     return (
-        <SelectFilter
-            isRequired
-            onChange={onFilterChange}
-            value={selectedHelpCenterIds}
-            isMultiple={false}
-            singular="Select Help Center"
-        >
-            {helpCenters.map((helpCenter) => (
-                <SelectFilter.Item
-                    key={helpCenter.id}
-                    label={helpCenter.name}
-                    value={helpCenter.id}
-                />
-            ))}
-        </SelectFilter>
+        <div className={css.wrapper}>
+            <Button
+                onClick={() => setIsOpen(!isOpen)}
+                ref={buttonRef}
+                intent={'secondary'}
+                className={css.button}
+            >
+                <span className={css.buttonText}>
+                    {selectedHelpCenter.name}
+                </span>
+                <i className={classnames('material-icons')}>arrow_drop_down</i>
+            </Button>
+            <Dropdown
+                isOpen={isOpen}
+                value={selectedHelpCenter.id}
+                onToggle={setIsOpen}
+                target={buttonRef}
+            >
+                <DropdownBody>
+                    {helpCenters.map((helpCenter) => (
+                        <DropdownItem
+                            key={helpCenter.id}
+                            onClick={() => {
+                                onFilterChange(helpCenter.id)
+                            }}
+                            option={{
+                                value: helpCenter.id,
+                                label: helpCenter.name,
+                            }}
+                        >
+                            <span className={css.dropdownItemContent}>
+                                {helpCenter.name}
+                            </span>
+                        </DropdownItem>
+                    ))}
+                </DropdownBody>
+            </Dropdown>
+        </div>
     )
 }
 

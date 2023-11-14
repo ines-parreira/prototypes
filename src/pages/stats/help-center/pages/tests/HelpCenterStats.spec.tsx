@@ -1,22 +1,15 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import userEvent from '@testing-library/user-event'
 import {UseQueryResult} from '@tanstack/react-query'
-import {RootState} from 'state/types'
-import {account} from 'fixtures/account'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import configureStore from 'store/configureStore.prod'
 import HelpCenterStats from '../HelpCenterStats'
 import {useArticleViewTimeSeries} from '../../hooks/useArticleViewTimeSeries'
-
-const defaultState = {
-    currentAccount: fromJS(account),
-} as RootState
+import {InitialRootState} from '../../../../../types'
 
 jest.mock('../../hooks/useHelpCenterTrend', () => ({
     useHelpCenterTrend: () => ({data: {value: 1}, isFetching: false}),
@@ -46,13 +39,13 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 
 const mockUseHelpCenterList = jest.mocked(useHelpCenterList)
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
-const mockStore = configureMockStore([thunk])
 
 const helpCenters = getHelpCentersResponseFixture.data
 
 const renderComponent = () => {
+    const store = configureStore({} as InitialRootState)
     render(
-        <Provider store={mockStore(defaultState)}>
+        <Provider store={store}>
             <HelpCenterStats />
         </Provider>
     )
@@ -111,7 +104,6 @@ describe('<HelpCenterStats />', () => {
 
         renderComponent()
 
-        expect(screen.getByText('Help Center')).toBeInTheDocument()
         expect(
             screen.getByTestId('help-center-stats-loader')
         ).toBeInTheDocument()
@@ -135,9 +127,10 @@ describe('<HelpCenterStats />', () => {
             expect.anything()
         )
 
+        userEvent.click(screen.getByText(helpCenters[0].name))
         userEvent.click(screen.getByText(helpCenters[1].name))
 
-        expect(mockUseArticleViewTimeSeries).toHaveBeenCalledWith(
+        expect(mockUseArticleViewTimeSeries).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 helpCenters: [helpCenters[1].id],
             }),
