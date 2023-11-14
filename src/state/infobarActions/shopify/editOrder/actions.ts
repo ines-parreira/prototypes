@@ -30,6 +30,7 @@ import {
     SET_PAYLOAD,
     SET_PRODUCTS,
 } from './constants'
+
 let _apiInstances: {[key: string]: GorgiasApi} = {}
 
 const getApiInstance = (key: string) => () => {

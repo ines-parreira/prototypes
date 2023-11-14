@@ -45,6 +45,7 @@ module.exports = {
         'import/no-named-as-default-member': ['off'],
         'react/prop-types': 'off',
         'import/no-unresolved': [2, {ignore: ['estree']}],
+        'import/newline-after-import': ['error'],
         'no-restricted-imports': [
             'error',
             {

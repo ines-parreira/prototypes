@@ -24,6 +24,7 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
 import {notUndefined} from 'utils/types'
+
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(

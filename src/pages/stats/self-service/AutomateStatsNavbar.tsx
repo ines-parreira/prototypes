@@ -24,6 +24,7 @@ import {
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from './constants'
+
 type Props = {
     commonNavLinkProps: Partial<NavbarLinkProps>
 }

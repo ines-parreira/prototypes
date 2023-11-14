@@ -3,6 +3,7 @@ import {getPreviousPeriod} from 'utils/reporting'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {StatsFilters} from 'models/stat/types'
 import {helpCenterTrendQueryFactory} from 'models/reporting/queryFactories/help-center/trend'
+
 export const useHelpCenterTrend = ({
     statsFilters,
     timezone,

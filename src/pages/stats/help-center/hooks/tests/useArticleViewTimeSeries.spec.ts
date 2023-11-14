@@ -5,6 +5,7 @@ import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenter
 import {formatReportingQueryDate} from 'utils/reporting'
 import {ReportingGranularity} from 'models/reporting/types'
 import {useArticleViewTimeSeries} from '../useArticleViewTimeSeries'
+
 jest.mock('hooks/reporting/useTimeSeries', () => jest.fn())
 
 const mockUseTimeSeries = jest.mocked(useTimeSeries)

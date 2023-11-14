@@ -9,6 +9,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {StoreIntegration} from 'models/integration/types'
 import WorkflowsRow, {getLink} from '../WorkflowsRow'
 import {Workflow} from '../WorkflowsList'
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 describe('<WorkflowsRow />', () => {

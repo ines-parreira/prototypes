@@ -8,6 +8,7 @@ import {LanguageCode} from '../models/workflowConfiguration.types'
 
 import css from './WorkflowsList.less'
 import WorkflowsRow from './WorkflowsRow'
+
 export type Workflow = {
     workflow_id: string
     name: string

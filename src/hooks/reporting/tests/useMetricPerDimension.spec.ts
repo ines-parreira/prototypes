@@ -23,6 +23,7 @@ import {
     VALUE_FIELD,
     withBreakdown,
 } from '../withBreakdown'
+
 jest.mock('models/reporting/queries')
 jest.mock('models/reporting/resources')
 const usePostReportingMock = assumeMock(usePostReporting)

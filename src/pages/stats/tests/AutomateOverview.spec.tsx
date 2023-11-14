@@ -40,6 +40,7 @@ import AutomateOverview, {
     automationRate,
 } from '../AutomateOverview'
 import TagsStatsFilter from '../TagsStatsFilter'
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('hooks/useId', () => () => 'abc')

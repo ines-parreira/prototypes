@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import Button from '../button/Button'
 import css from './HeroImageCarousel.less'
+
 export type CarouselData = {
     imageUrl: string
     description?: string

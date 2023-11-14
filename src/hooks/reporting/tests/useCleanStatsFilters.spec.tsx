@@ -14,6 +14,7 @@ import {TicketChannel} from 'business/types/ticket'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {useCleanStatsFilters} from '../useCleanStatsFilters'
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('state/ui/stats/selectors')

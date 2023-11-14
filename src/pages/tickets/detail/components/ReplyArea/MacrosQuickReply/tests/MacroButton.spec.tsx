@@ -8,6 +8,7 @@ import {StoreDispatch, RootState} from '../../../../../../../state/types'
 import {MacroButton} from '../MacroButton'
 
 import {setTextAction, macroFixture} from '../../../../../../../fixtures/macro'
+
 jest.mock('draft-js/lib/generateRandomKey', () => () => '42')
 
 jest.mock('pages/tickets/common/macros/Preview', () => () => <>Preview</>)

@@ -20,6 +20,7 @@ import {
 
 import {IntegrationType} from 'models/integration/types'
 import rawCountries from 'pages/phoneNumbers/options/countries.json'
+
 const CAPABILITY_KEY: Record<
     IntegrationType.Sms | IntegrationType.Phone | IntegrationType.WhatsApp,
     keyof PhoneCapabilities

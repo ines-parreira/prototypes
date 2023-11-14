@@ -3,6 +3,7 @@ import React from 'react'
 import * as ReactRouterDom from 'react-router-dom'
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
 import ReportOrderIssueScenarioItem from '../ReportOrderIssueScenarioItem'
+
 const mockHistoryPush = jest.fn()
 const mockHistoryGoBack = jest.fn()
 

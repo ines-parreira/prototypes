@@ -14,6 +14,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import ChatApplication from '../ChatApplication'
+
 const queryClient = mockQueryClient()
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([

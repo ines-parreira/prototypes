@@ -15,6 +15,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {assumeMock} from 'utils/testing'
 import {SegmentEvent, logEvent} from 'common/segment'
 import AutomationSubscriptionModal from '../AutomationSubscriptionModal'
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     currentUser: fromJS({

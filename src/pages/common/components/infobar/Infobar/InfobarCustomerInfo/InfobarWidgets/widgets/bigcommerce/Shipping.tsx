@@ -4,6 +4,7 @@ import {Map} from 'immutable'
 import {getTrackingLink} from 'common/tracking'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {StaticField} from '../StaticField'
+
 export default function Shipping() {
     return {
         AfterTitle,

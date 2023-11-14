@@ -19,6 +19,7 @@ import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {CALENDAR_ICON} from '../common/PeriodPicker'
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('Support Performance Filters', () => {

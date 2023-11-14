@@ -29,6 +29,7 @@ import InfobarWidget from './InfobarWidget'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from './widgetReference'
+
 widgetReference.Widget = InfobarWidget
 
 type Props = {

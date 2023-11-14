@@ -4,6 +4,7 @@ import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {useHelpCenterTrend} from '../useHelpCenterTrend'
 import {HelpCenterTrackingEventMeasures} from '../../../../../models/reporting/cubes/HelpCenterTrackingEventCube'
 import {formatReportingQueryDate} from '../../../../../utils/reporting'
+
 jest.mock('hooks/reporting/useMetricTrend', () => jest.fn())
 
 const mockUseMetricTrend = jest.mocked(useMetricTrend)

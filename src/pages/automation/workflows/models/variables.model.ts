@@ -10,6 +10,7 @@ import {
     VisualBuilderNode,
 } from './visualBuilderGraph.types'
 import {LanguageCode, MessageContent} from './workflowConfiguration.types'
+
 type GraphVariablesValidationResult = {
     error: string
     lang: LanguageCode
