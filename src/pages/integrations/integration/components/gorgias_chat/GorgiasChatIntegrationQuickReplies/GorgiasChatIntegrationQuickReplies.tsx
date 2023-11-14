@@ -33,6 +33,9 @@ import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/Chat
 import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
 import css from './GorgiasChatIntegrationQuickReplies.less'
 
+import GorgiasChatIntegrationQuickRepliesSunsetAlert from './GorgiasChatIntegrationQuickRepliesSunsetAlert'
+import GorgiasChatIntegrationQuickRepliesSunsetModal from './GorgiasChatIntegrationQuickRepliesSunsetModal'
+
 type Props = {
     integration: Map<any, any>
 } & ConnectedProps<typeof connector>
@@ -224,7 +227,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                     <Form onSubmit={this._submit}>
                         <div className="mb-4">
                             <h4>Quick replies</h4>
-                            <p className={css.mb16}>
+                            <p className={css.section}>
                                 {this.state.chatMultiLanguageFeatureFlag ? (
                                     <>
                                         When a customer opens the chat, select
@@ -250,6 +253,10 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                 </a>{' '}
                                 about quick replies in our Help Center.
                             </p>
+
+                            <GorgiasChatIntegrationQuickRepliesSunsetAlert
+                                integration={integration}
+                            />
 
                             <div
                                 className={classnames(
@@ -297,6 +304,9 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         </div>
                     </Form>
                 </GorgiasChatIntegrationPreviewContainer>
+                <GorgiasChatIntegrationQuickRepliesSunsetModal
+                    integration={integration}
+                />
             </div>
         )
     }

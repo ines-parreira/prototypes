@@ -242,7 +242,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                               Quick replies
                             </h4>
                             <p
-                              className="mb16"
+                              className="section"
                             >
                               When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
                               <br />
@@ -256,6 +256,20 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                
                               about quick replies in our Help Center.
                             </p>
+                            <GorgiasChatIntegrationQuickRepliesSunsetAlert
+                              integration={
+                                Immutable.Map {
+                                  "id": 7,
+                                  "name": "my chat integration",
+                                  "meta": Immutable.Map {},
+                                  "decoration": Immutable.Map {
+                                    "introduction_text": "this is an intro",
+                                    "input_placeholder": "type something please",
+                                    "main_color": "#123456",
+                                  },
+                                }
+                              }
+                            />
                             <div
                               className="d-flex align-items-center mb16"
                             >
@@ -1070,6 +1084,20 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
             </div>
           </Container>
         </GorgiasChatIntegrationPreviewContainer>
+        <GorgiasChatIntegrationQuickRepliesSunsetModal
+          integration={
+            Immutable.Map {
+              "id": 7,
+              "name": "my chat integration",
+              "meta": Immutable.Map {},
+              "decoration": Immutable.Map {
+                "introduction_text": "this is an intro",
+                "input_placeholder": "type something please",
+                "main_color": "#123456",
+              },
+            }
+          }
+        />
       </div>
     </GorgiasChatIntegrationQuickRepliesComponent>
   </Connect(GorgiasChatIntegrationQuickRepliesComponent)>
@@ -1350,7 +1378,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                               Quick replies
                             </h4>
                             <p
-                              className="mb16"
+                              className="section"
                             >
                               When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
                               <br />
@@ -1364,6 +1392,28 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                
                               about quick replies in our Help Center.
                             </p>
+                            <GorgiasChatIntegrationQuickRepliesSunsetAlert
+                              integration={
+                                Immutable.Map {
+                                  "id": 7,
+                                  "name": "my chat integration",
+                                  "meta": Immutable.Map {
+                                    "quick_replies": Immutable.Map {
+                                      "enabled": true,
+                                      "replies": Immutable.List [
+                                        "foo",
+                                        "bar",
+                                      ],
+                                    },
+                                  },
+                                  "decoration": Immutable.Map {
+                                    "introduction_text": "this is an intro",
+                                    "input_placeholder": "type something please",
+                                    "main_color": "#123456",
+                                  },
+                                }
+                              }
+                            />
                             <div
                               className="d-flex align-items-center mb16"
                             >
@@ -2178,6 +2228,28 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
             </div>
           </Container>
         </GorgiasChatIntegrationPreviewContainer>
+        <GorgiasChatIntegrationQuickRepliesSunsetModal
+          integration={
+            Immutable.Map {
+              "id": 7,
+              "name": "my chat integration",
+              "meta": Immutable.Map {
+                "quick_replies": Immutable.Map {
+                  "enabled": true,
+                  "replies": Immutable.List [
+                    "foo",
+                    "bar",
+                  ],
+                },
+              },
+              "decoration": Immutable.Map {
+                "introduction_text": "this is an intro",
+                "input_placeholder": "type something please",
+                "main_color": "#123456",
+              },
+            }
+          }
+        />
       </div>
     </GorgiasChatIntegrationQuickRepliesComponent>
   </Connect(GorgiasChatIntegrationQuickRepliesComponent)>

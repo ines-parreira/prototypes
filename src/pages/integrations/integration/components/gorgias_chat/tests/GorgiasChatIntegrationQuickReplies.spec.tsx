@@ -7,6 +7,8 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
+import {integrationsState} from 'fixtures/integrations'
+import {billingState} from 'fixtures/billing'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -61,6 +63,8 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
     beforeEach(() => {
         store = mockStore({
             entities: entitiesInitialState,
+            integrations: fromJS(integrationsState),
+            billing: fromJS(billingState),
         } as unknown as RootState)
     })
 
