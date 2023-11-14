@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomizeTranslationButton /> should match snapshot 1`] = `
+<div>
+  <button
+    aria-disabled="false"
+    class="wrapper ghost primary medium"
+    type="button"
+  >
+    Customize Translations
+  </button>
+</div>
+`;

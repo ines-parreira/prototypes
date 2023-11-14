@@ -24,6 +24,7 @@ import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {Language} from 'constants/languages'
 import {getLDClient} from 'utils/launchDarkly'
 import {RootState, StoreDispatch} from 'state/types'
+import * as IntegrationsActions from 'state/integrations/actions'
 
 import {
     GorgiasChatIntegrationPreferencesComponent,
@@ -72,6 +73,11 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         updateOrCreateIntegration: jest.fn(),
         articleRecommendationEnabled: true,
         convertProduct: undefined,
+        actions: {
+            getTranslations: jest.fn(),
+            getApplicationTexts: jest.fn(),
+            updateApplicationTexts: jest.fn(),
+        } as unknown as typeof IntegrationsActions,
     }
 
     describe('componentDidMount()', () => {
@@ -225,6 +231,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             updateOrCreateIntegration={jest.fn()}
                             integration={integration}
                             articleRecommendationEnabled={true}
+                            actions={minProps.actions}
                         />
                     )
 
@@ -387,6 +394,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             updateOrCreateIntegration={jest.fn()}
                             integration={integration}
                             articleRecommendationEnabled={true}
+                            actions={minProps.actions}
                         />
                     )
 

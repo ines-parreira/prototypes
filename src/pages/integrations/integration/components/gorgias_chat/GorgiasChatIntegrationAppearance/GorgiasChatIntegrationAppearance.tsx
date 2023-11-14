@@ -98,6 +98,7 @@ import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/Chat
 import {defaultChatFontFamily} from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
 import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
 import useSelfServiceConfiguration from '../hooks/useSelfServiceConfiguration'
+import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
 import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
 import ImageField, {ImageFieldVariant} from './components/ImageField'
 import UploadLogoCaption from './components/UploadLogoCaption'
@@ -1021,21 +1022,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             <div className={css.introMessageHeader}>
                                 <h2 className={css.title}>Intro message</h2>
                                 {chatMultiLanguagesEnabled && (
-                                    <Button
-                                        fillStyle="ghost"
-                                        intent="primary"
-                                        onClick={() =>
-                                            history.push(
-                                                `/app/settings/channels/gorgias_chat/${
-                                                    integration.get(
-                                                        'id'
-                                                    ) as string
-                                                }/languages`
-                                            )
-                                        }
-                                    >
-                                        Customize Translations
-                                    </Button>
+                                    <CustomizeTranslationsButton
+                                        integrationId={integration.get('id')}
+                                    />
                                 )}
                             </div>
                             <DEPRECATED_InputField

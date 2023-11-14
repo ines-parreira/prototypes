@@ -18,7 +18,87 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "live-chat-availability",
+  "privacyPolicyDisclaimerEnabled": false,
+  "privacyPolicyDisclaimerText": undefined,
   "selfServiceConfiguration": null,
+  "texts": {
+    "cz": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "da": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "de": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-GB": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-US": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "es": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fi": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-CA": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-FR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "it": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "ja": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "nl": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "no": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "pt-BR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "sv": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+  },
+  "translations": undefined,
 }
 `;
 
@@ -40,7 +120,87 @@ exports[`<GorgiasChatIntegrationPreferences/> _setControlTicketVolume() should u
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "control-ticket-volume",
+  "privacyPolicyDisclaimerEnabled": false,
+  "privacyPolicyDisclaimerText": undefined,
   "selfServiceConfiguration": null,
+  "texts": {
+    "cz": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "da": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "de": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-GB": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-US": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "es": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fi": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-CA": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-FR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "it": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "ja": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "nl": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "no": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "pt-BR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "sv": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+  },
+  "translations": undefined,
 }
 `;
 
@@ -62,7 +222,87 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "live-chat-availability",
+  "privacyPolicyDisclaimerEnabled": false,
+  "privacyPolicyDisclaimerText": undefined,
   "selfServiceConfiguration": null,
+  "texts": {
+    "cz": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "da": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "de": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-GB": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-US": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "es": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fi": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-CA": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-FR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "it": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "ja": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "nl": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "no": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "pt-BR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "sv": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+  },
+  "translations": undefined,
 }
 `;
 
@@ -84,7 +324,87 @@ exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() s
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "live-chat-availability",
+  "privacyPolicyDisclaimerEnabled": false,
+  "privacyPolicyDisclaimerText": undefined,
   "selfServiceConfiguration": null,
+  "texts": {
+    "cz": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "da": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "de": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-GB": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-US": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "es": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fi": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-CA": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-FR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "it": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "ja": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "nl": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "no": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "pt-BR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "sv": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+  },
+  "translations": undefined,
 }
 `;
 
@@ -106,7 +426,87 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "live-chat-availability",
+  "privacyPolicyDisclaimerEnabled": false,
+  "privacyPolicyDisclaimerText": undefined,
   "selfServiceConfiguration": null,
+  "texts": {
+    "cz": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "da": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "de": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-GB": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-US": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "es": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fi": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-CA": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-FR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "it": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "ja": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "nl": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "no": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "pt-BR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "sv": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+  },
+  "translations": undefined,
 }
 `;
 
@@ -128,7 +528,87 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "live-chat-availability",
+  "privacyPolicyDisclaimerEnabled": false,
+  "privacyPolicyDisclaimerText": undefined,
   "selfServiceConfiguration": null,
+  "texts": {
+    "cz": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "da": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "de": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-GB": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-US": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "es": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fi": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-CA": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-FR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "it": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "ja": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "nl": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "no": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "pt-BR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "sv": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+  },
+  "translations": undefined,
 }
 `;
 
@@ -153,6 +633,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
               "enabled": true,
               "reply": "reply-dynamic",
             },
+            "privacy_policy_disclaimer_enabled": false,
             "display_campaigns_hidden_chat": false,
             "offline_mode_enabled_datetime": null,
           },
@@ -189,6 +670,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
               "enabled": false,
               "reply": "reply-in-minutes",
             },
+            "privacy_policy_disclaimer_enabled": false,
             "display_campaigns_hidden_chat": false,
             "offline_mode_enabled_datetime": null,
           },
@@ -230,7 +712,87 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initial
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "live-chat-availability",
+  "privacyPolicyDisclaimerEnabled": false,
+  "privacyPolicyDisclaimerText": undefined,
   "selfServiceConfiguration": null,
+  "texts": {
+    "cz": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "da": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "de": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-GB": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-US": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "es": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fi": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-CA": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-FR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "it": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "ja": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "nl": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "no": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "pt-BR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "sv": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+  },
+  "translations": undefined,
 }
 `;
 
@@ -256,7 +818,87 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initia
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "live-chat-availability",
+  "privacyPolicyDisclaimerEnabled": false,
+  "privacyPolicyDisclaimerText": undefined,
   "selfServiceConfiguration": null,
+  "texts": {
+    "cz": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "da": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "de": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-GB": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "en-US": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "es": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fi": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-CA": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "fr-FR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "it": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "ja": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "nl": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "no": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "pt-BR": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+    "sv": {
+      "meta": {},
+      "sspTexts": {},
+      "texts": {},
+    },
+  },
+  "translations": undefined,
 }
 `;
 

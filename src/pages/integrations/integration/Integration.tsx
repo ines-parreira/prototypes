@@ -367,6 +367,7 @@ export const IntegrationDetail = ({
                             articleRecommendationEnabled={
                                 articleRecommendationEnabled
                             }
+                            actions={actions}
                         />
                     )
                 }

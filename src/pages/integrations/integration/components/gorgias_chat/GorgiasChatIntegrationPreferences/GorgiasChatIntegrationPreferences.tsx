@@ -10,7 +10,10 @@ import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import {get, set} from 'lodash'
+import {produce} from 'immer'
 
+import {EditorState} from 'draft-js'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {IntegrationType} from 'models/integration/constants'
@@ -19,6 +22,7 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatBackgroundColorStyle,
+    GorgiasChatIntegration,
 } from 'models/integration/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
@@ -26,12 +30,25 @@ import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
+import * as IntegrationsActions from 'state/integrations/actions'
 
 import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
 import {getCurrentConvertProduct} from 'state/billing/selectors'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import RichField from 'pages/common/forms/RichField/RichField'
+import {
+    Texts,
+    TextsMultiLanguage,
+    TextsPerLanguage,
+    Translations,
+} from 'rest_api/gorgias_chat_protected_api/types'
+import {LanguageChat} from 'constants/languages'
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import {convertToHTML} from 'utils/editor'
+import {sanitizeHtmlDefault} from 'utils/html'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -50,6 +67,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     getPrimaryLanguageFromChatConfig,
+    isTextsMultiLanguage,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
@@ -73,6 +91,9 @@ import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {isGenericEmailIntegration} from '../../email/helpers'
 import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
+import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
+import {multiLanguageInitialTextsEmptyData} from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
+import translationsAvailableKeys from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
 import ControlTicketVolumeControls from './ControlTicketVolumeControls'
 import css from './GorgiasChatIntegrationPreferences.less'
 
@@ -103,6 +124,7 @@ type Props = {
     currentUser: Map<any, any>
     flags?: LDFlagSet
     integration: Map<any, any>
+    actions: typeof IntegrationsActions
     articleRecommendationEnabled: boolean
 } & ConnectedProps<typeof connector>
 
@@ -114,6 +136,7 @@ type State = {
     hide: boolean
     hideOnMobile: boolean
     hideOutsideBusinessHours: boolean
+    privacyPolicyDisclaimerEnabled: boolean
     displayCampaignsHiddenChat: boolean
     isInitialized: boolean
     isUpdating: boolean
@@ -124,6 +147,10 @@ type State = {
     avatar: GorgiasChatAvatarSettings | undefined
     controlTicketVolume: boolean
     selfServiceConfiguration: SelfServiceConfiguration | null
+
+    translations: Translations | undefined
+    texts: TextsMultiLanguage
+    privacyPolicyDisclaimerText: string | undefined
 }
 
 export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
@@ -135,6 +162,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         convertProduct: undefined,
     }
 
+    richArea?: RichField | null
+
+    privacPolicyDisclaimerFeatureFlagEnabled = false
+
     state: State = {
         autoResponderEnabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
         autoResponderReply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
@@ -144,6 +175,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         hide: false,
         hideOnMobile: false,
         hideOutsideBusinessHours: false,
+        privacyPolicyDisclaimerEnabled: false,
         displayCampaignsHiddenChat: false,
         isInitialized: false,
         isUpdating: false,
@@ -154,6 +186,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         avatar: undefined,
         controlTicketVolume: false,
         selfServiceConfiguration: null,
+
+        translations: undefined,
+        texts: multiLanguageInitialTextsEmptyData,
+        privacyPolicyDisclaimerText: undefined,
     }
 
     _initState = (integration: Map<any, any>) => {
@@ -203,6 +239,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'meta',
                         'preferences',
                         'hide_outside_business_hours',
+                    ]),
+                    privacyPolicyDisclaimerEnabled: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'privacy_policy_disclaimer_enabled',
                     ]),
                     displayCampaignsHiddenChat: integration.getIn([
                         'meta',
@@ -262,18 +303,82 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         this.setState({selfServiceConfiguration})
     }
 
+    fetchApplicationTexts = (integration: Map<any, any>) => {
+        const integrationChat = integration.toJS() as GorgiasChatIntegration
+        const chatApplicationId = integrationChat?.meta?.app_id
+        const integrationDefaultLanguage = getPrimaryLanguageFromChatConfig(
+            integrationChat.meta
+        )
+
+        void IntegrationsActions.getApplicationTexts(
+            chatApplicationId as string
+        ).then((data: Texts) => {
+            let textsMultiLanguage: TextsMultiLanguage | undefined = undefined
+
+            // Migrate to multi-language if needed.
+            if (!isTextsMultiLanguage(data)) {
+                textsMultiLanguage = {
+                    ...multiLanguageInitialTextsEmptyData,
+                    [integrationDefaultLanguage as LanguageChat]:
+                        data as TextsPerLanguage,
+                }
+            } else {
+                textsMultiLanguage = data as TextsMultiLanguage
+            }
+
+            this.setState({texts: textsMultiLanguage})
+
+            const textsPerLanguage =
+                textsMultiLanguage[integrationDefaultLanguage as LanguageChat]
+
+            let privacyPolicyDisclaimerText: string | undefined =
+                textsPerLanguage?.texts?.privacyPolicyDisclaimer
+            if (!privacyPolicyDisclaimerText) {
+                privacyPolicyDisclaimerText = get(
+                    this.state.translations,
+                    'texts.privacyPolicyDisclaimer'
+                )
+            }
+            this.setState({
+                privacyPolicyDisclaimerText,
+            })
+        })
+    }
+
+    fetchTranslations = (integration: Map<any, any>) => {
+        const integrationChat = integration.toJS() as GorgiasChatIntegration
+        const integrationDefaultLanguage = getPrimaryLanguageFromChatConfig(
+            integrationChat.meta
+        )
+
+        void IntegrationsActions.getTranslations(
+            integrationDefaultLanguage
+        ).then((translations) => {
+            this.setState({translations})
+        })
+    }
+
     componentDidMount() {
         if (!this.props.integration.isEmpty()) {
             this._initState(this.props.integration)
-            void this.fetchSelfServiceConfiguration(this.props.integration)
+            this._fetchDeps()
         }
     }
 
     componentDidUpdate() {
+        this.privacPolicyDisclaimerFeatureFlagEnabled =
+            !!this.props.flags?.[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
+
         if (!this.state.isInitialized && !this.props.integration.isEmpty()) {
             this._initState(this.props.integration)
-            void this.fetchSelfServiceConfiguration(this.props.integration)
+            this._fetchDeps()
         }
+    }
+
+    _fetchDeps() {
+        void this.fetchSelfServiceConfiguration(this.props.integration)
+        void this.fetchTranslations(this.props.integration)
+        void this.fetchApplicationTexts(this.props.integration)
     }
 
     _setEmailCaptureEnabled = (value: boolean) => {
@@ -340,6 +445,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
+    _setPrivacyPolicyDisclaimerEnabled = (value: boolean) => {
+        this.setState({
+            privacyPolicyDisclaimerEnabled: value,
+        })
+    }
+
     _setDisplayCampaignsChatHidden = (value: boolean) => {
         this.setState({
             displayCampaignsHiddenChat: value,
@@ -375,6 +486,25 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
+    // TODO. Refactor with `GorgiasTranslateInputField` as they are very similar.
+    _onChangeTicketRichField = (value: EditorState) => {
+        let html = convertToHTML(value.getCurrentContent())
+        // Sanitize the HTML to remove unwanted tags coming from draftjs.
+        // This is commomly done in the Helpdesk when extracting the HTML from the rich text editor.
+        // This one is especially usefull to add `noreferrer noopener` to links.
+        // TODO. See why `noreferrer noopener` are not added.
+        html = sanitizeHtmlDefault(html)
+
+        // `TicketRichField` component can return a value of '<div><br></div>'/'<div><br /></div>' when the user deletes all the text.
+        if (html === `<div><br></div>'` || html === '<div><br /></div>') {
+            html = ''
+        }
+
+        this.setState({
+            privacyPolicyDisclaimerText: html,
+        })
+    }
+
     _submitPreferences = async (event: React.SyntheticEvent) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
@@ -394,6 +524,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             linked_email_integration: this.state.linkedEmailIntegration,
             hide_on_mobile: this.state.hideOnMobile,
             hide_outside_business_hours: this.state.hideOutsideBusinessHours,
+            privacy_policy_disclaimer_enabled:
+                this.state.privacyPolicyDisclaimerEnabled,
             display_campaigns_hidden_chat:
                 this.state.displayCampaignsHiddenChat,
             offline_mode_enabled_datetime:
@@ -414,6 +546,34 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 
         await updateOrCreateIntegration(payload)
 
+        // Save `texts`.
+        if (this.privacPolicyDisclaimerFeatureFlagEnabled) {
+            const integrationChat = integration.toJS() as GorgiasChatIntegration
+            const chatApplicationId = integrationChat?.meta?.app_id
+            const integrationDefaultLanguage = getPrimaryLanguageFromChatConfig(
+                integrationChat.meta
+            )
+
+            let textsIncludingSyncedState = this.state.texts
+
+            textsIncludingSyncedState = produce(
+                this.state.texts,
+                (textsDraft) => {
+                    const path = `${integrationDefaultLanguage}.texts`
+                    set(
+                        textsDraft,
+                        `${path}.privacyPolicyDisclaimer`,
+                        this.state.privacyPolicyDisclaimerText
+                    )
+                }
+            )
+
+            void IntegrationsActions.updateApplicationTexts(
+                chatApplicationId as string,
+                textsIncludingSyncedState
+            )
+        }
+
         this.setState({isUpdating: false})
 
         logEvent(SegmentEvent.ChatPreferencesUpdated, {
@@ -431,6 +591,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             hide,
             hideOnMobile,
             hideOutsideBusinessHours,
+            privacyPolicyDisclaimerEnabled,
             displayCampaignsHiddenChat,
             isUpdating,
             preview,
@@ -583,6 +744,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 
         const renameContactFormEnabled =
             flags?.[FeatureFlagKey.ChatRenameContactForm]
+
         const liveChatAvailabilityOptions = [
             {
                 caption:
@@ -1138,6 +1300,98 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         />
                                     </div>
                                 </div>
+
+                                {this
+                                    .privacPolicyDisclaimerFeatureFlagEnabled && (
+                                    <div className={css.formSection}>
+                                        <div
+                                            className={
+                                                css.privacyPolicyDisclaimerHeader
+                                            }
+                                        >
+                                            <h4 className={css.title}>
+                                                Privacy policy disclaimer
+                                            </h4>
+                                            <CustomizeTranslationsButton
+                                                integrationId={integration.get(
+                                                    'id'
+                                                )}
+                                                isDisabled={
+                                                    !privacyPolicyDisclaimerEnabled
+                                                }
+                                            />
+                                        </div>
+
+                                        <div
+                                            className={classnames(
+                                                css.formGroup,
+                                                'd-flex'
+                                            )}
+                                        >
+                                            <ToggleInput
+                                                onClick={
+                                                    this
+                                                        ._setPrivacyPolicyDisclaimerEnabled
+                                                }
+                                                isToggled={
+                                                    privacyPolicyDisclaimerEnabled
+                                                }
+                                                aria-label="Display privacy policy disclaimer"
+                                            />
+                                            <div
+                                                className={classnames(
+                                                    css.toggleInfo,
+                                                    'ml-1'
+                                                )}
+                                            >
+                                                <b>
+                                                    Display privacy policy
+                                                    disclaimer
+                                                </b>
+                                            </div>
+                                        </div>
+
+                                        {privacyPolicyDisclaimerEnabled &&
+                                            this.state
+                                                .privacyPolicyDisclaimerText && (
+                                                <TicketRichField
+                                                    // className={
+                                                    //     css.richTextareaWrapper
+                                                    // } // TODO. Sync with GorgiasTranslateInputField.tsx style.
+                                                    ref={(richArea) => {
+                                                        this.richArea = richArea
+                                                    }}
+                                                    value={{
+                                                        html: this.state
+                                                            .privacyPolicyDisclaimerText,
+                                                        text: this.state
+                                                            .privacyPolicyDisclaimerText,
+                                                    }}
+                                                    aria-label={
+                                                        'privacy policy disclaimer content'
+                                                    }
+                                                    maxLength={
+                                                        translationsAvailableKeys
+                                                            .privacyPolicyDisclaimer[
+                                                            'texts.privacyPolicyDisclaimer'
+                                                        ].maxLength
+                                                    }
+                                                    isRequired={true}
+                                                    onChange={
+                                                        this
+                                                            ._onChangeTicketRichField
+                                                    }
+                                                    displayedActions={[
+                                                        ActionName.Bold,
+                                                        ActionName.Italic,
+                                                        ActionName.Underline,
+                                                        ActionName.Link,
+                                                        ActionName.Emoji,
+                                                    ]}
+                                                />
+                                            )}
+                                    </div>
+                                )}
 
                                 <div className={css.formSection}>
                                     <h4

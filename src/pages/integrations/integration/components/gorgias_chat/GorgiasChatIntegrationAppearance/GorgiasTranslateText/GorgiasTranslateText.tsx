@@ -1,6 +1,6 @@
 import {produce} from 'immer'
 import {fromJS, Map} from 'immutable'
-import {set} from 'lodash'
+import {get, set} from 'lodash'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
@@ -60,23 +60,25 @@ import GorgiasTranslateExitModal from './GorgiasTranslateExitModal'
 import GorgiasTranslateInputGroup from './GorgiasTranslateInputGroup'
 import css from './GorgiasTranslateText.less'
 import GorgiasTranslateTextBackLink from './GorgiasTranslateTextBackLink'
-import formProps from './translations-available-keys'
+import translationsAvailableKeys from './translations-available-keys'
 import isEqualTextsPerLanguage from './utils/CompareTextsPerLanguage'
 
-const generalKeys = Object.keys(formProps.general)
+const generalKeys = Object.keys(translationsAvailableKeys.general)
 const generalLegacySoloLanguage = Object.keys(
-    formProps.generalLegacySoloLanguage
+    translationsAvailableKeys.generalLegacySoloLanguage
 )
-const introKeys = Object.keys(formProps.intro)
-const contactFormKeys = Object.keys(formProps.contactForm)
+const introKeys = Object.keys(translationsAvailableKeys.intro)
+const contactFormKeys = Object.keys(translationsAvailableKeys.contactForm)
 const contactFormComfirmationEmailKeys = Object.keys(
-    formProps.contactFormConfirmationEmail
+    translationsAvailableKeys.contactFormConfirmationEmail
 )
-const dynamicWaitTimeKeys = Object.keys(formProps.dynamicWaitTime)
-const emailCaptureKeys = Object.keys(formProps.emailCapture)
-const autoResponderKeys = Object.keys(formProps.autoResponder)
+const dynamicWaitTimeKeys = Object.keys(
+    translationsAvailableKeys.dynamicWaitTime
+)
+const emailCaptureKeys = Object.keys(translationsAvailableKeys.emailCapture)
+const autoResponderKeys = Object.keys(translationsAvailableKeys.autoResponder)
 const privacyPolicyDisclaimerKeys = Object.keys(
-    formProps.privacyPolicyDisclaimer
+    translationsAvailableKeys.privacyPolicyDisclaimer
 )
 
 type OwnProps = {
@@ -132,7 +134,7 @@ function GorgiasTranslateText({
 
     const renameContactFormEnabled =
         useFlags()[FeatureFlagKey.ChatRenameContactForm]
-    const chatPrivacPolicyDisclaimerEnabled =
+    const privacPolicyDisclaimerFeatureFlagEnabled =
         useFlags()[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
 
     const integrationChat = integration.toJS() as GorgiasChatIntegration
@@ -294,7 +296,8 @@ function GorgiasTranslateText({
             textsLoadingState === LoadingState.NOT_LOADED &&
             language &&
             integrationDefaultLanguage &&
-            initialTexts
+            initialTexts &&
+            translationsLoadingState === LoadingState.LOADED
         ) {
             setTextsLoadingState(LoadingState.LOADING)
 
@@ -327,7 +330,7 @@ function GorgiasTranslateText({
                         }
                     } else {
                         // Merge existing TextsMultiLanguage data to multiLanguageInitialTextsEmptyData to ensure all languages are present.
-                        const textsMultiLanguage: TextsMultiLanguage = {
+                        let textsMultiLanguage: TextsMultiLanguage = {
                             ...multiLanguageInitialTextsEmptyData,
                             ...(data as TextsMultiLanguage),
                         }
@@ -335,6 +338,30 @@ function GorgiasTranslateText({
                         const languageEnum = language.get(
                             'value'
                         ) as LanguageChat
+
+                        // Set Privacy policy disclaimer text if missing and needed, to avoid blocking the user with a required field empty.
+                        // This can occurs when switching the primary language.
+                        if (
+                            integrationChat.meta.preferences
+                                ?.privacy_policy_disclaimer_enabled &&
+                            !textsMultiLanguage[languageEnum].texts
+                                .privacyPolicyDisclaimer
+                        ) {
+                            textsMultiLanguage = produce(
+                                textsMultiLanguage,
+                                (textsDraft) => {
+                                    set(
+                                        textsDraft,
+                                        `${languageEnum}.texts.privacyPolicyDisclaimer`,
+                                        get(
+                                            translations,
+                                            'texts.privacyPolicyDisclaimer'
+                                        )
+                                    )
+                                }
+                            )
+                        }
+
                         const textsSelectedLanguage =
                             textsMultiLanguage[languageEnum]
                         setInitialTexts(textsMultiLanguage)
@@ -355,6 +382,7 @@ function GorgiasTranslateText({
         initialTexts,
         integration,
         integrationChat,
+        translations,
     ])
 
     /**
@@ -873,14 +901,17 @@ function GorgiasTranslateText({
                         }
                         requiredKeys={
                             !IsLegacyMonoLanguageMode && isDefaultLanguageLoaded
-                                ? ['texts.chatTitle', 'texts.chatWithUs']
+                                ? integrationChat.decoration.launcher?.type ===
+                                  GorgiasChatLauncherType.ICON_AND_LABEL
+                                    ? ['texts.chatTitle', 'texts.chatWithUs']
+                                    : ['texts.chatTitle']
                                 : []
                         }
                         filtersForKeys={{}}
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
                         saveValue={saveKeyValue}
-                        formPropsValues={formProps.general}
+                        formPropsValues={translationsAvailableKeys.general}
                         trackInputMethod={trackInput}
                     />
                     {!IsLegacyMonoLanguageMode && (
@@ -900,7 +931,7 @@ function GorgiasTranslateText({
                             textsPerLanguage={textsOfSelectedLanguage}
                             translations={translations}
                             saveValue={saveKeyValue}
-                            formPropsValues={formProps.intro}
+                            formPropsValues={translationsAvailableKeys.intro}
                             trackInputMethod={trackInput}
                         />
                     )}
@@ -916,7 +947,7 @@ function GorgiasTranslateText({
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
                         saveValue={saveKeyValue}
-                        formPropsValues={formProps.contactForm}
+                        formPropsValues={translationsAvailableKeys.contactForm}
                         trackInputMethod={trackInput}
                     />
                     <GorgiasTranslateInputGroup
@@ -926,7 +957,9 @@ function GorgiasTranslateText({
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
                         saveValue={saveKeyValue}
-                        formPropsValues={formProps.contactFormConfirmationEmail}
+                        formPropsValues={
+                            translationsAvailableKeys.contactFormConfirmationEmail
+                        }
                         trackInputMethod={trackInput}
                     />
 
@@ -937,31 +970,9 @@ function GorgiasTranslateText({
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
                         saveValue={saveKeyValue}
-                        formPropsValues={formProps.dynamicWaitTime}
-                        trackInputMethod={trackInput}
-                    />
-
-                    {chatPrivacPolicyDisclaimerEnabled && (
-                        <GorgiasTranslateInputGroup
-                            title="Privacy policy disclaimer"
-                            keys={privacyPolicyDisclaimerKeys}
-                            filtersForKeys={{}}
-                            textsPerLanguage={textsOfSelectedLanguage}
-                            translations={translations}
-                            saveValue={saveKeyValue}
-                            formPropsValues={formProps.privacyPolicyDisclaimer}
-                            trackInputMethod={trackInput}
-                        />
-                    )}
-
-                    <GorgiasTranslateInputGroup
-                        title="Autoresponder"
-                        keys={autoResponderKeys}
-                        filtersForKeys={{}}
-                        textsPerLanguage={textsOfSelectedLanguage}
-                        translations={translations}
-                        saveValue={saveKeyValue}
-                        formPropsValues={formProps.autoResponder}
+                        formPropsValues={
+                            translationsAvailableKeys.dynamicWaitTime
+                        }
                         trackInputMethod={trackInput}
                     />
 
@@ -972,9 +983,45 @@ function GorgiasTranslateText({
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
                         saveValue={saveKeyValue}
-                        formPropsValues={formProps.emailCapture}
+                        formPropsValues={translationsAvailableKeys.emailCapture}
                         trackInputMethod={trackInput}
                     />
+
+                    <GorgiasTranslateInputGroup
+                        title="Autoresponder"
+                        keys={autoResponderKeys}
+                        filtersForKeys={{}}
+                        textsPerLanguage={textsOfSelectedLanguage}
+                        translations={translations}
+                        saveValue={saveKeyValue}
+                        formPropsValues={
+                            translationsAvailableKeys.autoResponder
+                        }
+                        trackInputMethod={trackInput}
+                    />
+
+                    {privacPolicyDisclaimerFeatureFlagEnabled && (
+                        <GorgiasTranslateInputGroup
+                            title="Privacy policy disclaimer"
+                            keys={privacyPolicyDisclaimerKeys}
+                            filtersForKeys={{}}
+                            textsPerLanguage={textsOfSelectedLanguage}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={
+                                translationsAvailableKeys.privacyPolicyDisclaimer
+                            }
+                            trackInputMethod={trackInput}
+                            requiredKeys={
+                                !IsLegacyMonoLanguageMode &&
+                                isDefaultLanguageLoaded &&
+                                integrationChat.meta.preferences
+                                    ?.privacy_policy_disclaimer_enabled
+                                    ? ['texts.privacyPolicyDisclaimer']
+                                    : []
+                            }
+                        />
+                    )}
 
                     <Container fluid className={css.buttonsContainer}>
                         <Button type="submit" color="primary" className="mr-3">

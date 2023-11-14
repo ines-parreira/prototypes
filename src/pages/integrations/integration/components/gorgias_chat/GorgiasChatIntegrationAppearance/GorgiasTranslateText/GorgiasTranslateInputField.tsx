@@ -35,12 +35,22 @@ const GorgiasTranslateInputField = ({
     const [hasTextAreaFocus, setHasTextAreaFocus] = useState(focus)
     const [, setRichArea] = useState<RichField | null>(null)
 
-    const onChangeTextArea = (value: string) => {
-        saveValue(keyName, value)
+    const onChangeTextArea = (newValue: string) => {
+        saveValue(keyName, newValue)
     }
 
-    const onChangeTicketRichField = (value: EditorState) => {
-        let html = convertToHTML(value.getCurrentContent())
+    const onChangeTicketRichField = (newValue: EditorState) => {
+        let html = convertToHTML(newValue.getCurrentContent())
+
+        // Ignore initial callback from TicketRichField. This is to avoid flagging the form as dirty when the user has not changed anything.
+        if (
+            value === html ||
+            // Value might not be HTML at first, if we've just set it using our translations.
+            value === html.replace('<div>', '').replace('</div>', '')
+        ) {
+            return
+        }
+
         // Sanitize the HTML to remove unwanted tags coming from draftjs.
         // This is commomly done in the Helpdesk when extracting the HTML from the rich text editor.
         // This one is especially usefull to add `noreferrer noopener` to links.
@@ -93,13 +103,13 @@ const GorgiasTranslateInputField = ({
                         </>
                     ) : (
                         <TicketRichField
-                            className={css.richTextareaWrapper}
+                            //className={css.richTextareaWrapper} // TODO. Fix me https://linear.app/gorgias/issue/AUTWD-1820/bug-fix-tone-of-voice-text-overflow-not-scrolling
                             ref={(ref) => setRichArea(ref)}
                             value={{html: value, text: value}}
                             aria-label={defaultValue}
                             placeholder={'Enter customer value'}
                             maxLength={maxLength}
-                            isRequired={false}
+                            isRequired={isRequired}
                             onChange={onChangeTicketRichField}
                             displayedActions={[
                                 ActionName.Bold,
@@ -108,8 +118,6 @@ const GorgiasTranslateInputField = ({
                                 ActionName.Link,
                                 ActionName.Emoji,
                             ]}
-                            allowExternalChanges={false}
-                            isFocused={false}
                         />
                     )}
                 </Col>
