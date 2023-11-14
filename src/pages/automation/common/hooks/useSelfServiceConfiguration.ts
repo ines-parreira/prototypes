@@ -13,7 +13,6 @@ import {
 import {selfServiceConfigurationFetched} from 'state/entities/selfServiceConfigurations/actions'
 import {notify} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 import {useSelfServiceConfigurationUpdate} from './useSelfServiceConfigurationUpdate'
@@ -50,10 +49,6 @@ const useSelfServiceConfiguration = (
                     storeIntegrationId
                 )
                 if (res.deactivated_datetime) {
-                    reportError(
-                        new Error('Self-service configuration is deactivated'),
-                        {extra: {shopName: res.shop_name, shopType: res.type}}
-                    )
                     res = await updateSelfServiceConfiguration({
                         ...res,
                         deactivated_datetime: null,
