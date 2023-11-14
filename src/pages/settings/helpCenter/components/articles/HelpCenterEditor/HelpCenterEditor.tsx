@@ -22,6 +22,7 @@ import {
     HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS,
     createOnCloseEventHandler,
     validateFileAttachments,
+    replaceUploadUrls,
 } from './HelpCenterEditor.utils'
 
 type Props = {
@@ -255,7 +256,8 @@ const HelpCenterEditor = ({
                         if (!editor) return
 
                         const content = editor.html.get(true)
-                        onEditorReady(content)
+
+                        onEditorReady(replaceUploadUrls(content))
 
                         const closeClickEventHandler =
                             createOnCloseEventHandler(editor)
