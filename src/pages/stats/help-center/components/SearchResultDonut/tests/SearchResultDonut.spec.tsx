@@ -30,10 +30,19 @@ const renderComponent = () => {
 
 describe('<SearchResultDonut/>', () => {
     beforeEach(() => {
-        mockUseSearchResultRange.mockReturnValue({isLoading: false, data: []})
+        mockUseSearchResultRange.mockReturnValue({
+            isLoading: false,
+            data: [{label: 'Search', value: 3}],
+        })
     })
     it('should render', () => {
         renderComponent()
         expect(screen.getByText('Search results')).toBeInTheDocument()
+    })
+
+    it('should show no data state', () => {
+        mockUseSearchResultRange.mockReturnValue({isLoading: false, data: []})
+        renderComponent()
+        expect(screen.getByText('No data available')).toBeInTheDocument()
     })
 })

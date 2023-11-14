@@ -63,7 +63,30 @@ describe('<SearchTermsTable/>', () => {
         ).toBeInTheDocument()
     })
 
+    it('should render no data state', () => {
+        renderComponent()
+        expect(screen.getByText('No data available')).toBeInTheDocument()
+    })
+
     it('should paginate to the next page', () => {
+        mockUseMetricPerDimension.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                allData: [
+                    {
+                        [HelpCenterTrackingEventDimensions.SearchQuery]:
+                            'report issue',
+                        [HelpCenterTrackingEventMeasures.SearchRequestedQueryCount]:
+                            '10',
+                        [HelpCenterTrackingEventMeasures.SearchArticlesClickedCount]:
+                            '3',
+                    },
+                ],
+                decile: null,
+            },
+        })
         mockUseMetric.mockReturnValue({
             data: {
                 value: 40,

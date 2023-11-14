@@ -1,11 +1,12 @@
 import React, {ReactNode} from 'react'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {formatReportingQueryDate} from 'utils/reporting'
-import MetricCard from '../../../MetricCard'
-import TrendBadge from '../../../TrendBadge'
-import {formatMetricValue} from '../../../common/utils'
-import PerformanceTip from '../../../PerformanceTip'
-import BigNumberMetric from '../../../BigNumberMetric'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import MetricCard from 'pages/stats/MetricCard'
+import TrendBadge from 'pages/stats/TrendBadge'
+import {formatMetricValue} from 'pages/stats/common/utils'
+import PerformanceTip from 'pages/stats/PerformanceTip'
+import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import css from './OverviewCard.less'
 
 export type OverviewCardProps = {
@@ -60,9 +61,17 @@ const OverviewCard = ({
             }
             tip={
                 showTip ? (
-                    <PerformanceTip showBenchmark={false}>
-                        {tipContent}
-                    </PerformanceTip>
+                    !isLoading && !prevTrendValue && !trendValue ? (
+                        <NoDataAvailable
+                            title="No data"
+                            description="No data available for the selected filters."
+                            className={css.noDataContainer}
+                        />
+                    ) : (
+                        <PerformanceTip showBenchmark={false}>
+                            {tipContent}
+                        </PerformanceTip>
+                    )
                 ) : null
             }
         >

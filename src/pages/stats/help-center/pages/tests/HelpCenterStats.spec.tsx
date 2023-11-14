@@ -19,7 +19,7 @@ const defaultState = {
 } as RootState
 
 jest.mock('../../hooks/useHelpCenterTrend', () => ({
-    useHelpCenterTrend: () => ({data: 0, isFetching: false}),
+    useHelpCenterTrend: () => ({data: {value: 1}, isFetching: false}),
 }))
 jest.mock('../../hooks/useArticleViewTimeSeries', () => ({
     useArticleViewTimeSeries: jest.fn(),

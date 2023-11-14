@@ -38,9 +38,14 @@ describe('<NoSearchTable/>', () => {
         expect(screen.getByText('No search results')).toBeInTheDocument()
     })
 
+    it('should render no data state', () => {
+        renderComponent()
+        expect(screen.getByText('No data available')).toBeInTheDocument()
+    })
+
     it('should paginate to the next page', () => {
         mockUseNoSearchResultsMetrics.mockReturnValue({
-            data: [],
+            data: [[]],
             isLoading: false,
             total: 40,
         })

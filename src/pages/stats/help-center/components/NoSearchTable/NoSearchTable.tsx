@@ -1,6 +1,7 @@
 import React from 'react'
 import ChartCard from 'pages/stats/ChartCard'
 import {StatsFilters} from 'models/stat/types'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import HelpCenterStatsTable, {
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
@@ -48,15 +49,23 @@ const NoSearchTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
 
     return (
         <ChartCard title="No search results" noPadding>
-            <HelpCenterStatsTable
-                onPageChange={onPageChange}
-                isLoading={isLoading}
-                currentPage={currentPage}
-                count={count}
-                pageSize={ITEMS_PER_PAGE}
-                columns={columns}
-                data={data}
-            />
+            {!isLoading && data.length === 0 ? (
+                <NoDataAvailable
+                    title="No data available"
+                    description="Try adjusting filters to get results."
+                    style={{height: 448}}
+                />
+            ) : (
+                <HelpCenterStatsTable
+                    onPageChange={onPageChange}
+                    isLoading={isLoading}
+                    currentPage={currentPage}
+                    count={count}
+                    pageSize={ITEMS_PER_PAGE}
+                    columns={columns}
+                    data={data}
+                />
+            )}
         </ChartCard>
     )
 }

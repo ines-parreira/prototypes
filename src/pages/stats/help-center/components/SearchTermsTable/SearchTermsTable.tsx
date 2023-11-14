@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import Modal from 'pages/common/components/modal/Modal'
 import ChartCard from 'pages/stats/ChartCard'
 import {StatsFilters} from 'models/stat/types'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import HelpCenterStatsTable, {
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
@@ -89,30 +90,42 @@ const SearchTermsTable = ({statsFilters, timezone}: SearchTermsTableProps) => {
 
     return (
         <ChartCard title="Search terms with results" noPadding>
-            <HelpCenterStatsTable
-                onPageChange={onPageChange}
-                isLoading={isLoading}
-                currentPage={currentPage}
-                count={count}
-                pageSize={ITEMS_PER_PAGE}
-                columns={columns}
-                data={data}
-            />
-            <Modal
-                isOpen={modalState.isOpen}
-                onClose={onModalClose}
-                size="huge"
-            >
-                {modalState.isOpen && (
-                    <SearchQueryModal
-                        timezone={timezone}
-                        statsFilters={statsFilters}
-                        searchQuery={modalState.searchQuery}
-                        onClose={onModalClose}
-                        articleClickedCount={modalState.articleClickedCount}
+            {!isLoading && data.length === 0 ? (
+                <NoDataAvailable
+                    title="No data available"
+                    description="Try adjusting filters to get results."
+                    style={{height: 448}}
+                />
+            ) : (
+                <>
+                    <HelpCenterStatsTable
+                        onPageChange={onPageChange}
+                        isLoading={isLoading}
+                        currentPage={currentPage}
+                        count={count}
+                        pageSize={ITEMS_PER_PAGE}
+                        columns={columns}
+                        data={data}
                     />
-                )}
-            </Modal>
+                    <Modal
+                        isOpen={modalState.isOpen}
+                        onClose={onModalClose}
+                        size="huge"
+                    >
+                        {modalState.isOpen && (
+                            <SearchQueryModal
+                                timezone={timezone}
+                                statsFilters={statsFilters}
+                                searchQuery={modalState.searchQuery}
+                                onClose={onModalClose}
+                                articleClickedCount={
+                                    modalState.articleClickedCount
+                                }
+                            />
+                        )}
+                    </Modal>
+                </>
+            )}
         </ChartCard>
     )
 }

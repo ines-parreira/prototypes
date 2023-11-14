@@ -1,6 +1,6 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
-import OverviewCard, {OverviewCardProps} from './OverviewCard'
+import OverviewCard, {OverviewCardProps} from '../OverviewCard'
 
 const renderComponent = (props: Partial<OverviewCardProps>) => {
     return render(
@@ -58,5 +58,17 @@ describe('<OverviewCard />', () => {
         expect(
             screen.queryByText('article views for your Help Center')
         ).not.toBeInTheDocument()
+    })
+
+    it('should show no data state', () => {
+        renderComponent({
+            isLoading: false,
+            prevTrendValue: null,
+            trendValue: null,
+        })
+
+        expect(
+            screen.queryByText('No data available for the selected filters.')
+        ).toBeInTheDocument()
     })
 })
