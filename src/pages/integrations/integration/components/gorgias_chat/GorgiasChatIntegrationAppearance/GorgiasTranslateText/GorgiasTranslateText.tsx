@@ -548,7 +548,7 @@ function GorgiasTranslateText({
             // When updating the default language copy, we need to update the integration decoration + name as well.
             // It's important for integration.name, and less for decoration but we can sync until we fully drop the decoration texts.
             if (!IsLegacyMonoLanguageMode && isDefaultLanguageLoaded) {
-                // NOTE. With isDefaultLanguageLoaded=true, `introductionText`, `offlineIntroductionText`, `launcherLabel` and `chatTitle`
+                // NOTE. With isDefaultLanguageLoaded=true, `introductionText`, `offlineIntroductionText`, `chatWithUs` and `chatTitle`
                 // cannot be empty as they are marked as required.
                 let newDecoration = {
                     ...integrationChat.decoration,
@@ -565,7 +565,7 @@ function GorgiasTranslateText({
                         ...newDecoration,
                         launcher: {
                             type: GorgiasChatLauncherType.ICON_AND_LABEL,
-                            label: textsOfSelectedLanguage.texts.launcherLabel,
+                            label: textsOfSelectedLanguage.texts.chatWithUs,
                         },
                     }
                 }
